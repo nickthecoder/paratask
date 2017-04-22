@@ -5,15 +5,15 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 
 class ParaTaskApp() : Application() {
-	override fun start(stage: Stage?) {
-		if (stage == null) {
-			return;
-		}
-		TaskPrompter(stage, task)
-	}
+    override fun start(stage: Stage?) {
+        if (stage == null) {
+            return;
+        }
+        TaskPrompter(stage, task)
+    }
 
-	companion object {
-		lateinit var task: Task
-	}
+    companion object {
+        lateinit var task: Task
+    }
 
 }

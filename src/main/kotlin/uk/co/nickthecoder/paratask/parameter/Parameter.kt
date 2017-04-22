@@ -5,13 +5,13 @@ import uk.co.nickthecoder.paratask.gui.Form
 
 interface Parameter {
 
-	val name: String
+    val name: String
 
-	fun addListener(l: ParameterListener)
+    fun addListener(l: ParameterListener)
 
-	fun removeListener(l: ParameterListener)
+    fun removeListener(l: ParameterListener)
 
-	fun createField(): Field
+    fun createField(): Field
 
-	fun isStretchy(): Boolean
+    fun isStretchy(): Boolean
 }

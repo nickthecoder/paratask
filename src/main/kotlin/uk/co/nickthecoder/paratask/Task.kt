@@ -4,34 +4,34 @@ import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 
 abstract class Task(var name: String = "") : Runnable {
-	var description: String = ""
+    var description: String = ""
 
-	val root: GroupParameter = GroupParameter("taskRoot")
+    val root: GroupParameter = GroupParameter("taskRoot")
 
-	fun addParameters(vararg parameters: Parameter) {
-		parameters.forEach { root.add(it) }
-	}
+    fun addParameters(vararg parameters: Parameter) {
+        parameters.forEach { root.add(it) }
+    }
 
-	fun removeParameter(parameter: Parameter) {
-		root.remove(parameter)
-	}
+    fun removeParameter(parameter: Parameter) {
+        root.remove(parameter)
+    }
 
-	override fun run() {
-		try {
-			pre()
-			body()
-			post()
-		} finally {
-			tidyUp()
-		}
-	}
+    override fun run() {
+        try {
+            pre()
+            body()
+            post()
+        } finally {
+            tidyUp()
+        }
+    }
 
-	open fun pre() {}
+    open fun pre() {}
 
-	abstract fun body()
+    abstract fun body()
 
-	open fun post() {}
+    open fun post() {}
 
-	open fun tidyUp() {}
+    open fun tidyUp() {}
 
 }

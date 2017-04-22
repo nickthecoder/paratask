@@ -12,9 +12,9 @@ class GroupParameterTest : ParameterListener {
     var group = GroupParameter("group")
     val abc = IntParameter("abc")
     val def = IntParameter("def")
-    val xyz = IntParameter( "xyz" )
+    val xyz = IntParameter("xyz")
     var count = 0 // Count the number of times the listener is notified.
-    var changedParameter : Parameter? = null
+    var changedParameter: Parameter? = null
 
     @Before
     fun setUp() {
@@ -30,7 +30,7 @@ class GroupParameterTest : ParameterListener {
 
     override fun parameterChanged(parameter: Parameter) {
         changedParameter = parameter
-        count ++
+        count++
     }
 
     @Test
@@ -60,15 +60,15 @@ class GroupParameterTest : ParameterListener {
 
         abc.value = 5
         assertEquals(1, count)
-        assertSame(abc,changedParameter)
+        assertSame(abc, changedParameter)
         abc.value = 5 // Same value
         assertEquals(1, count)
 
         def.value = 10
-        assertEquals(2,count)
-        assertSame(def,changedParameter)
+        assertEquals(2, count)
+        assertSame(def, changedParameter)
 
         xyz.value = 15
-        assertEquals(2,count)
+        assertEquals(2, count)
     }
 }

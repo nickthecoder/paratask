@@ -7,12 +7,12 @@ import javafx.application.Application
  * GUI to prompt the parameters.
  */
 class CommandTask(val task: Task) {
-	fun go(args: Array<String>) {
+    fun go(args: Array<String>) {
 
-		// TODO Parse command line arguments, and decide if we need to prompt
-		println("Creating ParaTaskAppliction. Number of args : ${args.size}")
+        // TODO Parse command line arguments, and decide if we need to prompt
+        println("Creating ParaTaskAppliction. Number of args : ${args.size}")
 
-		ParaTaskApp.task = task
-		Application.launch(ParaTaskApp::class.java);
-	}
+        ParaTaskApp.task = task
+        Application.launch(ParaTaskApp::class.java);
+    }
 }
