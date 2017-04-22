@@ -19,11 +19,13 @@ apply plugin: 'eclipse'
 repositories {
     mavenCentral()
     mavenLocal()
+    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile 'junit:junit:4.11'
+    testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
 }
 
 defaultTasks 'run'

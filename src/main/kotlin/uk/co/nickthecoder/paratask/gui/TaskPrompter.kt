@@ -1,25 +1,28 @@
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.ScrollPane.ScrollBarPolicy
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
 
-class TaskPrompter(val stage: Stage, val task: Task) {
+class TaskPrompter(val task: Task) {
+
+    var root: BorderPane
 
     init {
-        stage.title = task.name
 
-        val root = BorderPane()
+        root = BorderPane()
         val ok = Button("OK")
 
         val form = Form()
 
         task.root.forEach() {
-            form.addField(it.createField())
+            val field: Field = it.createField()
+            field.getStyleClass().add("field-${it.name}")
+            form.addField(field)
         }
 
         root.getStyleClass().add("task-prompter")
@@ -31,6 +34,11 @@ class TaskPrompter(val stage: Stage, val task: Task) {
         root.bottom = ok
         root.center = scrollPane
 
+    }
+
+    fun placeOnStage(stage: Stage) {
+        stage.title = task.name
+
         val scene = Scene(root)
 
         val cssLocation = javaClass.getResource("paratask.css").toExternalForm()
@@ -40,5 +48,4 @@ class TaskPrompter(val stage: Stage, val task: Task) {
         println("Showing TaskPrompter")
         stage.show()
     }
-
 }

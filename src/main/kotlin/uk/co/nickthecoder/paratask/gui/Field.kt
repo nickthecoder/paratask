@@ -21,6 +21,8 @@ class Field(text: String, val control: Node, val isStretchy: Boolean = true) : R
         error.setVisible(false)
         error.getStyleClass().add("error");
 
+        control.getStyleClass().add("control")
+
         children.add(label)
         children.add(control)
         children.add(error)

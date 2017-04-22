@@ -121,7 +121,7 @@ class IntControl(val parameter: IntParameter) {
 
             @Suppress("UNUSED_PARAMETER")
             valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
-                value = if (newValue == null) min else newValue
+                value = if (newValue == null) if ( min > 0 ) min else 0 else newValue
             }
 
             if ((initialValue == null) || (initialValue < min) || (initialValue > max)) {
