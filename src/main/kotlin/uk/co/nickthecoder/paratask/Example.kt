@@ -6,8 +6,8 @@ import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
 class Example : Task("Example") {
 
-    val oneToTen = IntParameter("oneToTen", range = 1..10)
-    val fromOne = IntParameter("fromOne", range = 1..Int.MAX_VALUE, required = false)
+    val oneToTen = IntParameter("oneToTenRequired", range = 1..10)
+    val fromOne = IntParameter("fromOneOptional", range = 1..Int.MAX_VALUE, required = false)
     val greeting = StringParameter("Greeting")
 
     init {

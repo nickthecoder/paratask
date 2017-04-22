@@ -16,8 +16,8 @@ class IntControl(val parameter: IntParameter) {
         val spinner = createSpinner()
         field = Field(parameter.name, spinner)
 
-        spinner.editableProperty().set(true)
         spinner.valueFactory.converter = parameter.converter;
+        spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, {
             if (it.code == KeyCode.UP) {
@@ -32,7 +32,8 @@ class IntControl(val parameter: IntParameter) {
         @Suppress("UNUSED_PARAMETER")
         spinner.editor.textProperty().addListener({ o: Any?, oldValue: String, newValue: String ->
             try {
-                parameter.converter.fromString(newValue)
+                val v = parameter.converter.fromString(newValue)
+                spinner.valueFactory.value = v
                 field.clearError()
             } catch (e: ParameterException) {
                 field.showError(e)
@@ -45,15 +46,16 @@ class IntControl(val parameter: IntParameter) {
     private fun createSpinner(): Spinner<*> {
         if (parameter.required) {
             val spinner = Spinner(IntSpinnerValueFactory(parameter.range, parameter.value))
+            parameter.value = spinner.valueFactory.value
             spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
             return spinner
         } else {
             val spinner = Spinner(IntQSpinnerValueFactory(parameter.range, parameter.value))
+            parameter.value = spinner.valueFactory.value
             spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
             return spinner
         }
     }
-
 
     class IntQSpinnerValueFactory(
             val min: Int = Integer.MIN_VALUE,
@@ -68,15 +70,17 @@ class IntControl(val parameter: IntParameter) {
 
         init {
 
-            @Suppress("UNUSED_PARAMETER")
-            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
-                value = newValue
-            }
-
-            if ((initialValue == null) || (initialValue < min) || (initialValue > max)) {
+            if (initialValue == null) {
+                value = null
+            } else if ((initialValue < min) || (initialValue > max)) {
                 value = if (min > 0) min else 0;
             } else {
                 value = initialValue;
+            }
+
+            @Suppress("UNUSED_PARAMETER")
+            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
+                value = newValue
             }
         }
 
@@ -119,15 +123,15 @@ class IntControl(val parameter: IntParameter) {
 
         init {
 
-            @Suppress("UNUSED_PARAMETER")
-            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
-                value = if (newValue == null) if ( min > 0 ) min else 0 else newValue
-            }
-
             if ((initialValue == null) || (initialValue < min) || (initialValue > max)) {
                 value = if (min > 0) min else 0;
             } else {
                 value = initialValue;
+            }
+
+            @Suppress("UNUSED_PARAMETER")
+            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
+                value = if (newValue == null) if (min > 0) min else 0 else newValue
             }
         }
 
