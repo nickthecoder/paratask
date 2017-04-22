@@ -82,7 +82,7 @@ open class IntControlTest : IntControlBase() {
     fun downFromMin1() {
 
         val oneToTenOptional = findSpinner("oneToTenOptional")
-        click(oneToTenOptional).type(KeyCode.DELETE)
+        click(oneToTenOptional).type(KeyCode.DELETE, KeyCode.BACK_SPACE)
         type("2")
 
         typeSequential(KeyCode.DOWN, KeyCode.DOWN)
@@ -96,6 +96,7 @@ open class IntControlTest : IntControlBase() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
         assertEquals(0, task.tenToTenRequired.value)
+
         click(tenToTenRequired).type(KeyCode.DELETE)
         click(tenToTenRequired).type(KeyCode.BACK_SPACE)
         type("-9")

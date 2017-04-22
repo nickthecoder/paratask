@@ -21,10 +21,18 @@ class IntControl(val parameter: IntParameter) {
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, {
             if (it.code == KeyCode.UP) {
-                spinner.increment(1);
+                try {
+                    spinner.increment(1);
+                } catch (e: Exception) {
+                    // Do nothing when editor contains an invalid numbers
+                }
                 it.consume()
             } else if (it.code == KeyCode.DOWN) {
-                spinner.decrement(1);
+                try {
+                    spinner.decrement(1);
+                } catch (e: Exception) {
+                    // Do nothing when editor contains an invalid numbers
+                }
                 it.consume()
             }
         })
@@ -44,39 +52,39 @@ class IntControl(val parameter: IntParameter) {
     }
 
     private fun createSpinner(): Spinner<*> {
-        if (parameter.required) {
-            val spinner = Spinner(IntSpinnerValueFactory(parameter.range, parameter.value))
-            parameter.value = spinner.valueFactory.value
-            spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
-            return spinner
+        val initialValue = if (parameter.value == null && parameter.required) {
+            if (parameter.range.start > 0) {
+                parameter.range.start
+            } else if (parameter.range.endInclusive < 0) {
+                parameter.range.endInclusive
+            } else {
+                0
+            }
+
         } else {
-            val spinner = Spinner(IntQSpinnerValueFactory(parameter.range, parameter.value))
-            parameter.value = spinner.valueFactory.value
-            spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
-            return spinner
+            parameter.value
         }
+
+        val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
+        parameter.value = spinner.valueFactory.value
+        spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
+        return spinner
     }
 
-    class IntQSpinnerValueFactory(
+    class IntSpinnerValueFactory(
             val min: Int = Integer.MIN_VALUE,
             val max: Int = Integer.MAX_VALUE,
             initialValue: Int? = null,
             val amountToStepBy: Int = 1)
         : SpinnerValueFactory<Int?>() {
 
-        constructor(range: IntRange, initialValue: Int? = 0, amountToStepBy: Int = 1)
+        constructor(range: IntRange, initialValue: Int? = null, amountToStepBy: Int = 1)
                 : this(range.start, range.endInclusive, initialValue, amountToStepBy) {
         }
 
         init {
 
-            if (initialValue == null) {
-                value = null
-            } else if ((initialValue < min) || (initialValue > max)) {
-                value = if (min > 0) min else 0;
-            } else {
-                value = initialValue;
-            }
+            value = initialValue
 
             @Suppress("UNUSED_PARAMETER")
             valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
@@ -106,44 +114,6 @@ class IntControl(val parameter: IntParameter) {
 
         override fun increment(steps: Int) {
             val newValue: Int = add(value, steps * amountToStepBy);
-            value = if (newValue <= max) newValue else if (isWrapAround()) min else max;
-        }
-    }
-
-    class IntSpinnerValueFactory(
-            val min: Int = Integer.MIN_VALUE,
-            val max: Int = Integer.MAX_VALUE,
-            initialValue: Int? = 0,
-            val amountToStepBy: Int = 1)
-        : SpinnerValueFactory<Int>() {
-
-        constructor(range: IntRange, initialValue: Int? = 0, amountToStepBy: Int = 1)
-                : this(range.start, range.endInclusive, initialValue, amountToStepBy) {
-        }
-
-        init {
-
-            if ((initialValue == null) || (initialValue < min) || (initialValue > max)) {
-                value = if (min > 0) min else 0;
-            } else {
-                value = initialValue;
-            }
-
-            @Suppress("UNUSED_PARAMETER")
-            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
-                value = if (newValue == null) if (min > 0) min else 0 else newValue
-            }
-        }
-
-        override fun decrement(steps: Int) {
-            val v = value
-            val newValue: Int = v - steps * amountToStepBy;
-            value = if (newValue >= min) newValue else if (isWrapAround()) max else min
-        }
-
-        override fun increment(steps: Int) {
-            val v = value
-            val newValue: Int = v + steps * amountToStepBy;
             value = if (newValue <= max) newValue else if (isWrapAround()) min else max;
         }
     }

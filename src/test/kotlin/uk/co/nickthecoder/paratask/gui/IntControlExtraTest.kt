@@ -13,9 +13,8 @@ import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 
 /**
- * When creating a new test, or debuggin a failing test, I do it here, and the put it in the sister class.
+ * When creating a new test, or debugging a failing test, I do it here, and the put it in the sister class.
  */
 class IntControlExtraTest : IntControlBase() {
-
 
 }
