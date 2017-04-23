@@ -4,11 +4,7 @@ Use LinkedMap for parameter collections, such as Group
 Think about how a Task should handle its parameter values while running
     They could change halfway through the task's execution!
 
-    Maybe I should abandon the pre/post methods, so that local copies of the parameter can be
-        set at the top of body().
-
     Allow parameter to become temporarily FIXED (Forms all ParameterMetaListener and will grey out controls)
-        This could done in pre/post
 
     Maybe Task should be broken in two. One part has the parameters, and can be prompted etc.
         The other half is a Runnable, and you can choose a flexible Runnable with pre/post, and a plain one.

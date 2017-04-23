@@ -1,24 +1,30 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import uk.co.nickthecoder.paratask.ParameterException
 
 abstract class ValueParameter<T>(name: String, var required: Boolean = false)
     : AbstractParameter(name) {
 
-    val property = SimpleObjectProperty<T>(this, "value")
+    val property = ValueProperty()
 
-    var value: T
+    var value: T? = null
         set(v) {
-            val changed = property.get() != v
-            property.set(v)
+            if (locked) return
+
+            val changed = field != v
+            field = v
             if (changed) {
                 fireChanged()
             }
         }
-        get() {
-            return property.get()
-        }
+
+    var locked: Boolean = false
+
+    open fun lock() {
+
+    }
 
     open fun errorMesssage(): String? {
         return errorMessage(value)
@@ -52,4 +58,14 @@ abstract class ValueParameter<T>(name: String, var required: Boolean = false)
      * when loading parameter values from an external source, such as from a JSON representation of a Task.
      */
     abstract fun setStringValue(s: String)
+
+    inner open class ValueProperty : SimpleObjectProperty<T>() {
+        open override fun getValue(): T? {
+            return this@ValueParameter.value
+        }
+
+        open override fun setValue(v: T?) {
+            this@ValueParameter.value = v
+        }
+    }
 }

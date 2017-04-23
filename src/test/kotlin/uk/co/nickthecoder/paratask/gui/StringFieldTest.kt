@@ -1,11 +1,17 @@
 package uk.co.nickthecoder.paratask.gui
 
 import org.junit.Test
+import org.junit.Before
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 
 class StringFieldTest : StringFieldBase() {
+
+    @Before
+    fun waitForScene() {
+        waitForScene("optional")
+    }
 
     @Test
     fun initialValues() {
