@@ -1,11 +1,15 @@
 package uk.co.nickthecoder.paratask
 
-abstract class SimpleTask<T : TaskDescription>( override val taskD: T) : Task, Runnable {
+abstract class SimpleTask() : Task, Runnable {
+
+    override fun check() {
+        taskD.root.check()
+    }
 
     override fun checkAndRun(): Boolean {
         taskD.root.lock()
         try {
-            taskD.check() // May throw a ParameterExecption
+            check() // May throw a ParameterExecption
         } catch(e: Exception) {
             taskD.root.unlock()
             return false

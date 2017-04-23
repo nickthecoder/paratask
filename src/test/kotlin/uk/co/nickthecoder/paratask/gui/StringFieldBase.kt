@@ -7,25 +7,17 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 open class StringFieldBase : MyGuiTest() {
 
-    lateinit var taskPrompter: TaskPrompter
+    val task = EmptySimpleTask()
 
-    lateinit var taskD: ExampleTaskD
+    val required = StringParameter("required")
+    val optional = StringParameter("optional", required = false)
+    val initialA = StringParameter("initialA", value = "A")
 
     override fun getRootNode(): Parent {
-        taskD = ExampleTaskD()
-        taskPrompter = TaskPrompter(EmptySimpleTask(taskD))
 
+        task.taskD.addParameters(required, optional, initialA)
+
+        val taskPrompter = TaskPrompter(task)
         return taskPrompter.root
-    }
-
-    class ExampleTaskD : TaskDescription() {
-
-        val required = StringParameter("required")
-        val optional = StringParameter("optional", required = false)
-        val initialA = StringParameter("initialA", value = "A")
-
-        init {
-            addParameters(required, optional, initialA)
-        }
     }
 }

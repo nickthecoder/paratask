@@ -4,7 +4,18 @@ import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
-class Example : SimpleTask<ExampleD>(ExampleD()) {
+class Example : SimpleTask() {
+
+    override val taskD = TaskDescription()
+
+    init {
+        val oneToTen = IntParameter("oneToTenRequired", range = 1..10)
+        val fromOne = IntParameter("fromOneOptional", range = 1..Int.MAX_VALUE, required = false)
+        val greeting = StringParameter("Greeting")
+
+        taskD.addParameters(oneToTen, fromOne, greeting)
+    }
+
     override fun run() {
         println("Example Parameter values : ")
 
@@ -14,17 +25,6 @@ class Example : SimpleTask<ExampleD>(ExampleD()) {
                 println("Parameter ${parameter.name} = ${parameter.value} ('${parameter.getStringValue()}')")
             }
         }
-    }
-}
-
-class ExampleD : TaskDescription("Example") {
-
-    val oneToTen = IntParameter("oneToTenRequired", range = 1..10)
-    val fromOne = IntParameter("fromOneOptional", range = 1..Int.MAX_VALUE, required = false)
-    val greeting = StringParameter("Greeting")
-
-    init {
-        addParameters(oneToTen, fromOne, greeting)
     }
 }
 

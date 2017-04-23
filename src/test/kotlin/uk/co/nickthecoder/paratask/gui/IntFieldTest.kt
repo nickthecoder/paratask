@@ -35,10 +35,10 @@ open class IntFieldTest : IntFieldBase() {
     @Test
     fun initialValues() {
         assertNull(findSpinner("optional").value)
-        assertNull(taskD.optional.value)
+        assertNull(optional.value)
 
         assertEquals(0, findSpinner("required").value)
-        assertEquals(0, taskD.required.value)
+        assertEquals(0, required.value)
 
         assertNull(findSpinner("oneToTenOptional").value)
         assertEquals(1, findSpinner("oneToTenRequired").value)
@@ -46,7 +46,7 @@ open class IntFieldTest : IntFieldBase() {
         assertNull(findSpinner("tenToTenOptional").value)
         assertEquals(0, findSpinner("tenToTenRequired").value)
 
-        assertEquals(5, taskD.initial5.value)
+        assertEquals(5, initial5.value)
         assertEquals(5, findSpinner("initial5").value)
     }
 
@@ -54,19 +54,19 @@ open class IntFieldTest : IntFieldBase() {
     fun upFromInitial() {
         click(findSpinner("optional")).type(KeyCode.UP)
         assertEquals(0, findSpinner("optional").value)
-        assertEquals(0, taskD.optional.value)
+        assertEquals(0, optional.value)
 
         click(findSpinner("required")).type(KeyCode.UP)
         assertEquals(1, findSpinner("required").value)
-        assertEquals(1, taskD.required.value)
+        assertEquals(1, required.value)
 
         click(findSpinner("oneToTenOptional")).type(KeyCode.UP)
         assertEquals(1, findSpinner("oneToTenOptional").value)
-        assertEquals(1, taskD.oneToTenOptional.value)
+        assertEquals(1, oneToTenOptional.value)
 
         click(findSpinner("oneToTenRequired")).type(KeyCode.UP)
         assertEquals(2, findSpinner("oneToTenRequired").value)
-        assertEquals(2, taskD.oneToTenRequired.value)
+        assertEquals(2, oneToTenRequired.value)
     }
 
     @Test
@@ -93,53 +93,53 @@ open class IntFieldTest : IntFieldBase() {
         typeSequential(KeyCode.DOWN, KeyCode.DOWN)
 
         assertEquals(1, oneToTenOptional.value)
-        assertEquals(1, taskD.oneToTenOptional.value)
+        assertEquals(1, oneToTenOptional.value)
     }
 
     @Test
     fun downFromMin2() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
-        assertEquals(0, taskD.tenToTenRequired.value)
+        assertEquals(0, tenToTenRequired.value)
 
         click(tenToTenRequired).type(KeyCode.DELETE)
         click(tenToTenRequired).type(KeyCode.BACK_SPACE)
         type("-9")
         assertEquals(-9, tenToTenRequired.value)
-        assertEquals(-9, taskD.tenToTenRequired.value)
+        assertEquals(-9, tenToTenRequired.value)
 
         typeSequential(KeyCode.DOWN)
 
         assertEquals(-10, tenToTenRequired.value)
-        assertEquals(-10, taskD.tenToTenRequired.value)
+        assertEquals(-10, tenToTenRequired.value)
 
         typeSequential(KeyCode.DOWN)
 
         assertEquals(-10, tenToTenRequired.value)
-        assertEquals(-10, taskD.tenToTenRequired.value)
+        assertEquals(-10, tenToTenRequired.value)
     }
 
     @Test
     fun upToMax() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
-        assertEquals(0, taskD.tenToTenRequired.value)
+        assertEquals(0, tenToTenRequired.value)
 
         click(tenToTenRequired).type(KeyCode.DELETE)
         click(tenToTenRequired).type(KeyCode.BACK_SPACE)
         type("9")
         assertEquals(9, tenToTenRequired.value)
-        assertEquals(9, taskD.tenToTenRequired.value)
+        assertEquals(9, tenToTenRequired.value)
 
         typeSequential(KeyCode.UP)
 
         assertEquals(10, tenToTenRequired.value)
-        assertEquals(10, taskD.tenToTenRequired.value)
+        assertEquals(10, tenToTenRequired.value)
 
         typeSequential(KeyCode.UP)
 
         assertEquals(10, tenToTenRequired.value)
-        assertEquals(10, taskD.tenToTenRequired.value)
+        assertEquals(10, tenToTenRequired.value)
     }
 
 
@@ -150,11 +150,11 @@ open class IntFieldTest : IntFieldBase() {
         val error = findError("tenToTenRequired")
 
         clickAndClear(tenToTenRequired).type("9")
-        assertEquals(9, taskD.tenToTenRequired.value)
+        assertEquals(9, tenToTenRequired.value)
         assertEquals(false, error.isVisible)
 
         clickAndClear(tenToTenRequired).type("a")
-        assertEquals(9, taskD.tenToTenRequired.value)
+        assertEquals(9, tenToTenRequired.value)
         assertEquals(true, error.isVisible)
         assertEquals("Not an integer", error.text)
 
@@ -187,7 +187,7 @@ open class IntFieldTest : IntFieldBase() {
         val error = findError("oneToTenOptional")
 
         clickAndClear(oneToTenOptional).type("9")
-        assertEquals(9, taskD.oneToTenOptional.value)
+        assertEquals(9, oneToTenOptional.value)
         assertEquals(false, error.isVisible)
 
         clickAndClear(oneToTenOptional).type("a")
