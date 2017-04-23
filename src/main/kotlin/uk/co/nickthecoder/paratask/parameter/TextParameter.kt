@@ -6,12 +6,12 @@ import uk.co.nickthecoder.paratask.gui.Form
 
 abstract class TextParameter<T>(name: String, required: Boolean, var columns: Int = 0)
     : ValueParameter<T>(name = name, required = required) {
+
     protected abstract fun bind(textField: TextField)
 
     protected fun adjustNode(node: TextField) {
         node.text = getStringValue()
         if (columns != 0) {
-            println("TextParameter columns ${columns} stretchy ? ${isStretchy()}")
             node.prefColumnCount = columns
         }
     }

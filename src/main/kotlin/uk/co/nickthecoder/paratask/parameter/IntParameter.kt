@@ -10,7 +10,7 @@ open class IntParameter(
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
 
-) : ValueParameter<Int>(name = name, required = required) {
+) : ValueParameter<Int?>(name = name, required = required) {
 
     val converter = IntStringConverter()
 

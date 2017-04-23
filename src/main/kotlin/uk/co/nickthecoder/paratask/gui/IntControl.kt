@@ -24,21 +24,20 @@ class IntControl(val parameter: IntParameter) {
                 try {
                     spinner.increment(1);
                 } catch (e: Exception) {
-                    // Do nothing when editor contains an invalid numbers
+                    // Do nothing when spinner's editor contains an invalid number
                 }
                 it.consume()
             } else if (it.code == KeyCode.DOWN) {
                 try {
                     spinner.decrement(1);
                 } catch (e: Exception) {
-                    // Do nothing when editor contains an invalid numbers
+                    // Do nothing when spinner's editor contains an invalid number
                 }
                 it.consume()
             }
         })
 
-        @Suppress("UNUSED_PARAMETER")
-        spinner.editor.textProperty().addListener({ o: Any?, oldValue: String, newValue: String ->
+        spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
                 val v = parameter.converter.fromString(newValue)
                 spinner.valueFactory.value = v
@@ -86,8 +85,7 @@ class IntControl(val parameter: IntParameter) {
 
             value = initialValue
 
-            @Suppress("UNUSED_PARAMETER")
-            valueProperty().addListener { o: Any?, oldValue: Int?, newValue: Int? ->
+            valueProperty().addListener { _, _, newValue: Int? ->
                 value = newValue
             }
         }

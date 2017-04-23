@@ -25,14 +25,6 @@ open class IntControlBase : MyGuiTest() {
         return taskPrompter.root
     }
 
-    fun findControl(parameterName: String): Node {
-        return find<Node>(".control", find(".field-${parameterName}"))
-    }
-
-    fun findSpinner(parameterName: String): Spinner<*> {
-        return findControl(parameterName) as Spinner<*>
-    }
-
     class ExampleTask : Task() {
 
         val required = IntParameter("required", required = true)

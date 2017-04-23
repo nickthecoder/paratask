@@ -4,6 +4,11 @@ import javafx.scene.control.TextField
 
 class StringParameter(name: String, required: Boolean = true, columns: Int = 30, val stretchy: Boolean = true)
     : TextParameter<String>(name = name, required = required, columns = columns) {
+
+    init {
+        value = ""
+    }
+
     override fun setStringValue(s: String) {
         value = s
     }

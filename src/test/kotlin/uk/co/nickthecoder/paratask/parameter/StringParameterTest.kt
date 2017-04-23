@@ -28,9 +28,6 @@ class StringParameterTest {
         assertEquals("", optional.value)
         assertNull(optional.errorMesssage())
 
-        optional.value = null
-        assertEquals("Null values not allowed", optional.errorMesssage())
-
     }
 
     @Test
@@ -44,8 +41,6 @@ class StringParameterTest {
         required.value = "a"
         assertNull(required.errorMesssage())
 
-        required.value = null
-        assertEquals("Null values not allowed", required.errorMesssage())
     }
 
     @Test

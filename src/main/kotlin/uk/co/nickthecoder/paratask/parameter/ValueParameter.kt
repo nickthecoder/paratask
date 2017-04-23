@@ -8,7 +8,7 @@ abstract class ValueParameter<T>(name: String, var required: Boolean = false)
 
     val property = SimpleObjectProperty<T>(this, "value")
 
-    var value: T?
+    var value: T
         set(v) {
             val changed = property.get() != v
             property.set(v)
