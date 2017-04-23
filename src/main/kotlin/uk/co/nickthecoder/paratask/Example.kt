@@ -14,8 +14,9 @@ class Example : Task("Example") {
         addParameters(oneToTen, fromOne, greeting)
     }
 
-    override fun body() {
+    override fun run() {
         println("Example Parameter values : ")
+
         // TODO Iteratate over all parameters, including those in a Group (when that feature has been implemented)
         root.forEach {
             if (it is ValueParameter<*>) {

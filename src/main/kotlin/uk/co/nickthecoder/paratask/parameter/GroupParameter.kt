@@ -26,7 +26,36 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
     }
 
     fun find(name: String): Parameter? {
-        return children.find { it.name == name }
+        children.forEach { child ->
+            if (child.name == name) {
+                return child
+            }
+            if (child is GroupParameter) {
+                child.find(name)?.let { return it }
+            }
+        }
+
+        return null
+    }
+
+    fun children(): List<Parameter> {
+        return children
+    }
+
+    fun descendants(): List<Parameter> {
+        val result = mutableListOf<Parameter>()
+
+        fun addAll(group: GroupParameter) {
+            group.children.forEach { child ->
+                result.add(child)
+                if (child is GroupParameter) {
+                    addAll(child)
+                }
+            }
+        }
+
+        addAll(this)
+        return result
     }
 
     override fun parameterChanged(parameter: Parameter) {

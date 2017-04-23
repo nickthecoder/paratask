@@ -44,6 +44,6 @@ open class IntFieldBase : MyGuiTest() {
             )
         }
 
-        override fun body() {}
+        override fun run() {}
     }
 }
