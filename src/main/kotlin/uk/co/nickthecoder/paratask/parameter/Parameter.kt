@@ -14,4 +14,11 @@ interface Parameter {
     fun createField(): Field
 
     fun isStretchy(): Boolean
+
+    fun lock()
+
+    fun unlock()
+
+    fun check()
+
 }

@@ -72,5 +72,17 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
         return Field(name, Label())
     }
 
+    override fun lock() {
+        children.forEach { lock() }
+    }
+
+    override fun unlock() {
+        children.forEach { unlock() }
+    }
+
+    override fun check() {
+        children.forEach { check() }
+    }
+
     override fun isStretchy(): Boolean = true
 }

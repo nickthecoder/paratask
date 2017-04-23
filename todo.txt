@@ -1,20 +1,15 @@
+Test locking
+    Lock a single parameter, try to alter a value
+    Lock, then unlock and assert that you can change it
+    Lock a Group try to change a child
+    Lock, then unlock a group
 
-Use LinkedMap for parameter collections, such as Group
+Test RunStrategies
 
-Think about how a Task should handle its parameter values while running
-    They could change halfway through the task's execution!
+CopyRunStrategy :
+    locks, calls the abstract method copyValues(), unlocks, runs, and returns
 
-    Allow parameter to become temporarily FIXED (Forms all ParameterMetaListener and will grey out controls)
-
-    Maybe Task should be broken in two. One part has the parameters, and can be prompted etc.
-        The other half is a Runnable, and you can choose a flexible Runnable with pre/post, and a plain one.
-
-    Maybe Task should have a factory method to create the Runnable
-        That would allow the factory to return "this" to mimic the old design
-        This may help when creating threaded/unthreaded tools in wrkfoo
-
-    Task can become an interface, and a CommandLineTask can have additional properties :
-        command name
-        description (used for --help text only)
+ThreadedRunStrategy :
+    locks, calls the abstract method copyValues(), unlocks, create a Thread which runs, and returns
 
 

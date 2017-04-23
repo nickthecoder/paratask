@@ -9,23 +9,24 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.loadui.testfx.GuiTest
-import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 
 open class IntFieldBase : MyGuiTest() {
 
     lateinit var taskPrompter: TaskPrompter
 
-    lateinit var task: ExampleTask
+    lateinit var taskD: ExampleTaskD
 
     override fun getRootNode(): Parent {
-        task = ExampleTask()
-        taskPrompter = TaskPrompter(task)
+        taskD = ExampleTaskD()
+        taskPrompter = TaskPrompter(EmptySimpleTask(taskD))
 
         return taskPrompter.root
     }
 
-    class ExampleTask : Task() {
+    class ExampleTaskD : TaskDescription() {
 
         val required = IntParameter("required", required = true)
         val optional = IntParameter("optional", required = false)
@@ -43,7 +44,5 @@ open class IntFieldBase : MyGuiTest() {
                     initial5
             )
         }
-
-        override fun run() {}
     }
 }

@@ -15,8 +15,8 @@ open class TaskPrompter(val task: Task) {
 
     var stage: Stage? = null
 
-    val okButton : Button
-    
+    val okButton: Button
+
     val cancelButton: Button
 
     val applyButton: Button
@@ -48,7 +48,7 @@ open class TaskPrompter(val task: Task) {
 
         val form = Form()
 
-        task.root.forEach() {
+        task.taskD.root.forEach() {
             val field: Field = it.createField()
             field.getStyleClass().add("field-${it.name}")
             form.addField(field)
@@ -74,17 +74,18 @@ open class TaskPrompter(val task: Task) {
     }
 
     open protected fun run() {
-        task.run()
-        close()
+        if (task.checkAndRun()) {
+            close()
+        }
     }
 
     open protected fun apply() {
-        task.run()
+        task.checkAndRun()
     }
 
     fun placeOnStage(stage: Stage) {
         this.stage = stage
-        stage.title = task.name
+        stage.title = task.taskD.name
 
         cancelButton.visibleProperty().set(true)
 
