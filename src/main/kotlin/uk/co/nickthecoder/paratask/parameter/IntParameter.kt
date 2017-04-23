@@ -3,7 +3,7 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.Field
-import uk.co.nickthecoder.paratask.gui.IntControl
+import uk.co.nickthecoder.paratask.gui.IntField
 
 open class IntParameter(
         name: String,
@@ -39,8 +39,7 @@ open class IntParameter(
         return converter.toString(value)
     }
 
-    override fun createField(): Field = IntControl(this).createField()
-
+    override fun createField(): Field = IntField(this)
 
     inner public class IntStringConverter() : StringConverter<Int?>() {
 

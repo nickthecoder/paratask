@@ -1,20 +1,27 @@
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.parameter.Parameter
 
-class IntControl(val parameter: IntParameter) {
+class IntField : Field {
 
-    private lateinit var field: Field
+    val parameter: IntParameter
 
-    public fun createField(): Field {
+    constructor(parameter: IntParameter) : super(parameter.name) {
+        this.parameter = parameter
+        control = createControl()
+    }
+
+    private fun createControl(): Node {
 
         val spinner = createSpinner()
-        field = Field(parameter.name, spinner)
 
         spinner.valueFactory.converter = parameter.converter;
         spinner.editableProperty().set(true)
@@ -41,13 +48,13 @@ class IntControl(val parameter: IntParameter) {
             try {
                 val v = parameter.converter.fromString(newValue)
                 spinner.valueFactory.value = v
-                field.clearError()
+                clearError()
             } catch (e: ParameterException) {
-                field.showError(e)
+                showError(e)
             }
         })
 
-        return field
+        return spinner
     }
 
     private fun createSpinner(): Spinner<*> {

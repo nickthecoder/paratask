@@ -8,42 +8,60 @@ import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.Form.Column
 
-class Field(text: String, val control: Node, val isStretchy: Boolean = true) : Region() {
+open class Field : Region {
 
     lateinit var form: Form
 
-    val label = Label(text)
+    val label: Label
 
     val error = Label()
 
-    init {
+    var control: Node? = null
+        set(v) {
+            if (field != null) {
+                children.remove(field)
+            }
+            field = v
+            if (v != null) {
+                v.getStyleClass().add("control")
+                children.add(v)
+            }
+        }
+
+    val isStretchy: Boolean
+
+    constructor(label: String, isStretchy: Boolean = true) {
+        this.label = Label(label)
+        this.isStretchy = isStretchy
+
         getStyleClass().add("field");
         error.setVisible(false)
         error.getStyleClass().add("error");
 
-        control.getStyleClass().add("control")
-
-        children.add(label)
-        children.add(control)
+        children.add(this.label)
         children.add(error)
     }
 
+    constructor(label: String, control: Node, isStretchy: Boolean = true) : this(label, isStretchy) {
+        this.control = control
+    }
+
     override fun computeMinHeight(width: Double): Double {
-        val both = Math.max(label.minHeight(width), control.minHeight(width))
+        val both = Math.max(label.minHeight(width), control?.minHeight(width) ?: 0.0)
         val err = if (error.isVisible) error.minHeight(width) else 0.0
 
         return both + err
     }
 
     override fun computePrefHeight(width: Double): Double {
-        val both = Math.max(label.prefHeight(width), control.minHeight(width))
+        val both = Math.max(label.prefHeight(width), control?.minHeight(width) ?: 0.0)
         val err = if (error.isVisible) error.prefHeight(width) else 0.0
 
         return both + err
     }
 
     override fun computeMinWidth(height: Double): Double {
-        val both = label.minWidth(height) + control.minWidth(height) + form.spacing
+        val both = label.minWidth(height) + form.spacing + (control?.minWidth(height) ?: 0.0)
         val err = if (error.isVisible) error.minWidth(height) else 0.0
 
         return Math.max(both, err)
@@ -57,17 +75,17 @@ class Field(text: String, val control: Node, val isStretchy: Boolean = true) : R
         var y = insets.top
 
         // Label
-        var h = Math.max(label.prefHeight(-1.0), control.prefHeight(-1.0))
+        var h = Math.max(label.prefHeight(-1.0), control?.prefHeight(-1.0) ?: 0.0)
         var w = form.columns[0].width
         layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
         // Control
         x += w + form.spacing
-        w = if (isStretchy) form.columns[1].width else control.prefWidth(h)
+        w = if (isStretchy) form.columns[1].width else control?.prefWidth(h) ?: 0.0
         layoutInArea(control, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
         // Error message
-        y += Math.max(label.prefHeight(-1.0), control.prefHeight(-1.0))
+        y += Math.max(label.prefHeight(-1.0), control?.prefHeight(-1.0) ?: 0.0)
         x = insets.left
 
         if (error.isVisible) {
@@ -90,8 +108,9 @@ class Field(text: String, val control: Node, val isStretchy: Boolean = true) : R
 
     internal fun adjustColumnWidths(columns: List<Form.Column>) {
         adjustColumnWidth(columns[0], label)
-        adjustColumnWidth(columns[1], control)
+        control?.let { adjustColumnWidth(columns[1], it) }
     }
+
 
     fun showError(e: ParameterException) {
         showError(e.message!!)

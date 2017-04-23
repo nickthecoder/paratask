@@ -12,7 +12,7 @@ import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 
-open class IntControlBase : MyGuiTest() {
+open class IntFieldBase : MyGuiTest() {
 
     lateinit var taskPrompter: TaskPrompter
 

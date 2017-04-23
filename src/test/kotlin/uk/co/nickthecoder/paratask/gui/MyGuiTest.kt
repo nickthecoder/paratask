@@ -53,6 +53,12 @@ abstract class MyGuiTest : GuiTest() {
         return this
     }
 
+    fun GuiTest.clickAndClear(textField: TextField): GuiTest {
+        click(textField)
+        runAndWait { textField.text = "" }
+        return this
+    }
+
     fun findControl(parameterName: String): Node {
         return find<Node>(".control", find(".field-${parameterName}"))
     }
