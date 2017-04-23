@@ -33,12 +33,14 @@ open class IntFieldBase : MyGuiTest() {
         val oneToTenOptional = IntParameter("oneToTenOptional", range = 1..10, required = false)
         val tenToTenRequired = IntParameter("tenToTenRequired", range = -10..10, required = true)
         val tenToTenOptional = IntParameter("tenToTenOptional", range = -10..10, required = false)
+        val initial5 = IntParameter("initial5", value = 5)
 
         init {
             addParameters(
                     required, optional,
                     oneToTenRequired, oneToTenOptional,
-                    tenToTenRequired, tenToTenOptional
+                    tenToTenRequired, tenToTenOptional,
+                    initial5
             )
         }
 

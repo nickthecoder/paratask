@@ -7,10 +7,15 @@ import uk.co.nickthecoder.paratask.gui.IntField
 
 open class IntParameter(
         name: String,
+        value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
 
 ) : ValueParameter<Int?>(name = name, required = required) {
+
+    init {
+        this.value = value
+    }
 
     val converter = IntStringConverter()
 

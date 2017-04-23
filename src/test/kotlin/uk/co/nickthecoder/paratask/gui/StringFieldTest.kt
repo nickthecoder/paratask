@@ -14,6 +14,9 @@ class StringFieldTest : StringFieldBase() {
 
         assertEquals("", findTextField("required").text)
         assertEquals("", task.required.value)
+
+        assertEquals("A", findTextField("initialA").text)
+        assertEquals("A", task.initialA.value)
     }
 
     @Test

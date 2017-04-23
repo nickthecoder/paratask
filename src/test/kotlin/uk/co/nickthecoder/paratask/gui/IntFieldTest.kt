@@ -45,6 +45,9 @@ open class IntFieldTest : IntFieldBase() {
 
         assertNull(findSpinner("tenToTenOptional").value)
         assertEquals(0, findSpinner("tenToTenRequired").value)
+
+        assertEquals(5, task.initial5.value)
+        assertEquals(5, findSpinner("initial5").value)
     }
 
     @Test

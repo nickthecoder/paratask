@@ -21,9 +21,10 @@ open class StringFieldBase : MyGuiTest() {
 
         val required = StringParameter("required")
         val optional = StringParameter("optional", required = false)
+        val initialA = StringParameter("initialA", value="A")
 
         init {
-            addParameters(required, optional)
+            addParameters(required, optional, initialA)
         }
 
         override fun body() {}
