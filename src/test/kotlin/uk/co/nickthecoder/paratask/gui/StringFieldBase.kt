@@ -27,6 +27,6 @@ open class StringFieldBase : MyGuiTest() {
             addParameters(required, optional, initialA)
         }
 
-        override fun body() {}
+        override fun run() {}
     }
 }

@@ -8,10 +8,11 @@ import org.junit.Test
 
 class GroupParameterTest : ParameterListener {
 
-
     var group = GroupParameter("group")
+    var subGroup = GroupParameter("subGroup")
     val abc = IntParameter("abc")
     val def = IntParameter("def")
+    val hij = StringParameter("hij")
     val xyz = IntParameter("xyz")
     var count = 0 // Count the number of times the listener is notified.
     var changedParameter: Parameter? = null
@@ -34,6 +35,15 @@ class GroupParameterTest : ParameterListener {
     }
 
     @Test
+    fun addAll() {
+        group.add(abc, def)
+
+        assertEquals(abc, group.find("abc"))
+        assertEquals(def, group.find("def"))
+        assertNull(group.find("xyz"))
+    }
+
+    @Test
     fun find() {
         group.add(abc)
         group.add(def)
@@ -44,12 +54,11 @@ class GroupParameterTest : ParameterListener {
     }
 
     @Test
-    fun addAll() {
-        group.add(abc, def)
+    fun subFind() {
+        group.add(abc, def, subGroup)
+        subGroup.add(xyz)
 
-        assertEquals(abc, group.find("abc"))
-        assertEquals(def, group.find("def"))
-        assertNull(group.find("xyz"))
+        assertEquals(xyz, group.find("xyz"))
     }
 
     @Test
@@ -70,5 +79,21 @@ class GroupParameterTest : ParameterListener {
 
         xyz.value = 15
         assertEquals(2, count)
+    }
+
+    @Test
+    fun children() {
+        group.add(abc, def, subGroup)
+        subGroup.add(hij)
+
+        assertEquals(listOf(abc, def, subGroup), group.children())
+    }
+
+    @Test
+    fun descendants() {
+        group.add(abc, def, subGroup)
+        subGroup.add(hij)
+
+        assertEquals(listOf(abc, def, subGroup, hij), group.descendants())
     }
 }
