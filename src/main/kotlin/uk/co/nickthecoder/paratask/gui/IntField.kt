@@ -1,14 +1,19 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
-import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.Parameter
+
+val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
+
+val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
+
+val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
 class IntField : Field {
 
@@ -26,21 +31,24 @@ class IntField : Field {
         spinner.valueFactory.converter = parameter.converter;
         spinner.editableProperty().set(true)
 
-        spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, {
-            if (it.code == KeyCode.UP) {
+        spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
+            if (acceleratorUp.match(event)) {
                 try {
                     spinner.increment(1);
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
-                it.consume()
-            } else if (it.code == KeyCode.DOWN) {
+                event.consume()
+            } else if (acceleratorDown.match(event)) {
                 try {
                     spinner.decrement(1);
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
-                it.consume()
+                event.consume()
+            } else if (acceleratorEnter.match(event)) {
+                processEnter()
+                event.consume()
             }
         })
 
@@ -55,6 +63,16 @@ class IntField : Field {
         })
 
         return spinner
+    }
+
+    /**
+     * Spinners normally consume the ENTER key, which means the default button won't be run when ENTER is
+     * pressed in a Spinner. My Spinner doesn't need to handle the ENTER key, and therefore, this code
+     * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
+     */
+    private fun processEnter() {
+        val defaultRunnable = scene?.accelerators?.get(acceleratorEnter)
+        defaultRunnable?.let { defaultRunnable.run() }
     }
 
     private fun createSpinner(): Spinner<*> {

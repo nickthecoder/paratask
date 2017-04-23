@@ -1,3 +1,5 @@
 .form { -fx-padding: 10px 10px 30px 10px; -fx-spacing: 10px; }
-.task-prompter > .scroll-pane { -fx-background-color: red; padding: 50px; -fx-background-insets: 0; -fx-padding: 0; }
+.task-prompter > .scroll-pane { padding: 50px; -fx-background-insets: 0; -fx-padding: 0; }
 .error { -fx-text-fill: #a00; -fx-padding: 5px 0 0 0; }
+.buttons { -fx-padding: 10px; -fx-hgap: 10px; -fx-vgap: 10px; -fx-alignment: top-right; }
+.buttons .button { -fx-min-width: 90px; }

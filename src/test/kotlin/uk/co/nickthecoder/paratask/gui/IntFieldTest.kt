@@ -1,18 +1,21 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
-import javafx.scene.Parent
+import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.input.KeyCode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
-import org.loadui.testfx.GuiTest
-import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.parameter.IntParameter
 
 open class IntFieldTest : IntFieldBase() {
+
+    @Before
+    fun waitForScene() {
+        waitForScene("optional")
+    }
 
     @Test
     fun findFields() {
@@ -84,7 +87,6 @@ open class IntFieldTest : IntFieldBase() {
         val oneToTenOptional = findSpinner("oneToTenOptional")
         click(oneToTenOptional).type(KeyCode.DELETE, KeyCode.BACK_SPACE)
         type("2")
-
         typeSequential(KeyCode.DOWN, KeyCode.DOWN)
 
         assertEquals(1, oneToTenOptional.value)

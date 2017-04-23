@@ -19,7 +19,7 @@ class Example : Task("Example") {
         // TODO Iteratate over all parameters, including those in a Group (when that feature has been implemented)
         root.forEach {
             if (it is ValueParameter<*>) {
-                println("Parameter ${it.name} = ${it.getStringValue()} (${it.value})")
+                println("Parameter ${it.name} = ${it.value} ('${it.getStringValue()}')")
             }
         }
     }

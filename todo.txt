@@ -1,3 +1,4 @@
+Test IntField and TextField put the initial value of the Parameter in the TextField
 
 Use LinkedMap for parameter collections, such as Group
 

@@ -11,7 +11,25 @@ import java.util.concurrent.CountDownLatch
 
 abstract class MyGuiTest : GuiTest() {
 
-    fun runAndWait( action : () -> Unit ) {
+    /**
+     * I was having intermittent failures, which I think was caused by the tests running before the scene was fully created.
+     * This is my attempt at trying to fix the problem.
+     */
+    fun waitForScene(label: String) {
+        for (i in 1..10) {
+            try {
+                if (find<Label>(label) != null) {
+                    return
+                }
+            } catch (e: Exception) {
+                println("Didn't find label : '${label}'. Sleeping")
+            }
+            sleep(1000)
+        }
+        println("*** Didn't find label : '${label}'. Gave up after many attempt.")
+    }
+
+    fun runAndWait(action: () -> Unit) {
 
         // run synchronously on JavaFX thread
         if (Platform.isFxApplicationThread()) {
