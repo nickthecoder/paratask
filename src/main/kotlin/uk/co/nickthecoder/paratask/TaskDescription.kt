@@ -22,7 +22,7 @@ class TaskDescription(var name: String = "") {
         root.remove(parameter)
     }
 
-    fun createValues(): Values {
-        return root.createValue()
-    }
+    fun createValues(): Values = root.createValue()
+
+    fun copyValues(source: Values): Values = root.copyValues(source)
 }

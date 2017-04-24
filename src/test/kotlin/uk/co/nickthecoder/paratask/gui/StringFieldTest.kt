@@ -9,7 +9,7 @@ class StringFieldTest : StringFieldBase() {
 
     @Before
     fun waitForScene() {
-        waitForScene("optional")
+        waitForScene("Optional")
     }
 
     @Test

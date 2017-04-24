@@ -9,7 +9,7 @@ import javafx.application.Application
 class CommandTask(val task: Task) {
     fun go(args: Array<String>) {
 
-        // TODO Parse command line arguments, and decide if we need to prompt
+        // TODO LATER Parse command line arguments, and decide if we need to prompt
         println("Creating ParaTaskAppliction. Number of args : ${args.size}")
 
         ParaTaskApp.task = task

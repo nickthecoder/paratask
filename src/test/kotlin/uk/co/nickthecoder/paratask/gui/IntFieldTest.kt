@@ -14,7 +14,7 @@ open class IntFieldTest : IntFieldBase() {
 
     @Before
     fun waitForScene() {
-        waitForScene("optional")
+        waitForScene("Optional")
     }
 
     @Test

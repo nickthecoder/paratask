@@ -51,4 +51,7 @@ class IntValue(override val parameter: IntParameter) : StringConverter<Int?>(), 
     override fun errorMessage() = errorMessage(value)
 
     fun errorMessage(v: Int?) = parameter.errorMessage(v)
+
+    override fun toString(): String = "IntValue name '${parameter.name}' = ${value}"
+
 }

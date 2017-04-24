@@ -39,4 +39,9 @@ open class IntParameter(
 
     fun valueFrom(values: Values) = values.get(name) as IntValue
 
+    override fun copyValue(source: Values): IntValue {
+        val copy = IntValue(this)
+        copy.value = valueFrom(source).value
+        return copy
+    }
 }

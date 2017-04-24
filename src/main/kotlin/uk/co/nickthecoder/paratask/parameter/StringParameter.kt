@@ -27,4 +27,9 @@ class StringParameter(
 
     fun valueFrom(values: Values) = values.get(name) as StringValue
 
+    override fun copyValue(source: Values): StringValue {
+        val copy = StringValue(this)
+        copy.value = valueFrom(source).value
+        return copy
+    }
 }

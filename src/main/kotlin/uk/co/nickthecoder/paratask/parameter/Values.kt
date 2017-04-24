@@ -28,4 +28,14 @@ class Values(override val parameter: GroupParameter) : Value<Unit>, ValueListene
     override fun valueChanged(value: Value<*>) {
         valueListeners.fireChanged(value)
     }
+
+    override fun toString(): String {
+        val builder = StringBuilder()
+        builder.append("Values name '${parameter.name}' =\n")
+        values.forEach { (name, value) ->
+            builder.append("'${name}' = ${value}")
+            builder.append("\n")
+        }
+        return builder.toString()
+    }
 }

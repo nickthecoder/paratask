@@ -11,8 +11,8 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
         children.add(child)
     }
 
-    fun add(vararg children: Parameter) {
-        children.forEach { add(it) }
+    fun addParameters(vararg parameters: Parameter) {
+        parameters.forEach { add(it) }
     }
 
     fun remove(child: Parameter) {
@@ -62,7 +62,7 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
     override fun createField(values: Values): ParameterField {
-        // TODO Implement GroupParameter.createField()
+        // TODO LATER Implement GroupParameter.createField()
         throw Exception("Not implemented")
     }
 
@@ -90,5 +90,24 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
             }
         }
         return values
+    }
+
+    fun copyValues(source: Values) = copyValue(source)
+
+    override fun copyValue(source: Values): Values {
+        val copy = Values(this)
+
+        children().forEach { parameter ->
+            val copySingleValue = parameter.copyValue(source)
+
+            if (parameter is GroupParameter) {
+                (copySingleValue as Values).values.forEach { (subName, subValue) ->
+                    copy.put(subName, subValue)
+                }
+            }
+
+            copy.put(parameter.name, copySingleValue)
+        }
+        return copy
     }
 }

@@ -31,4 +31,7 @@ class StringValue(override val parameter: StringParameter) : Value<String> {
     override fun errorMessage() = errorMessage(value)
 
     fun errorMessage(v: String) = parameter.errorMessage(v)
+
+    override fun toString(): String = "StringValue name '${parameter.name}' = '${value}'"
+
 }

@@ -72,27 +72,35 @@ open class TaskPrompter(val task: Task, val values: Values) {
     }
 
     private fun onOk() {
-        if (check()) {
-            run()
+        if (checkAndRun()) {
             close()
         }
     }
 
     private fun onApply() {
-        if (check()) {
-            run()
-        }
+        checkAndRun()
     }
 
-    fun check(): Boolean {
+    fun checkAndRun(): Boolean {
 
         // Are there any error messages outstanding
         form.fieldSet.forEach { field ->
             if (field.hasError()) {
-                // TODO ensure the field is visible
+                // TODO LATER ensure the field is visible
                 return false;
             }
         }
+
+        val values = task.taskD.copyValues(values)
+
+        if (check(values)) {
+            run()
+            return true
+        }
+        return false
+    }
+
+    fun check(values: Values): Boolean {
 
         try {
             task.check(values)

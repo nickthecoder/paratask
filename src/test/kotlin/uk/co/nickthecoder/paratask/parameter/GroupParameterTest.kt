@@ -20,7 +20,7 @@ class GroupParameterTest : ValueListener {
     var changedValue: Value<*>? = null
 
     init {
-        group.add(abc, def, subGroup)
+        group.addParameters(abc, def, subGroup)
         subGroup.add(hij)
     }
 

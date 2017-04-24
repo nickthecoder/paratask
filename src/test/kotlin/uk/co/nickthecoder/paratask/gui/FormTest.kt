@@ -42,9 +42,9 @@ class FormTest : GuiTest() {
 
     @Test
     fun alignment() {
-        val label1 = find<Label>("first")
-        val label2 = find<Label>("hello")
-        val label3 = find<Label>("world")
+        val label1 = find<Label>("First")
+        val label2 = find<Label>("Hello")
+        val label3 = find<Label>("World")
 
         // They should all be within half a pixel of each other
         val delta = 0.5

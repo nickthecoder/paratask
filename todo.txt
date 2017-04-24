@@ -1,5 +1,3 @@
 TaskPrompter to show running tasks, and allow them to be killed
     "OK" button hides the parameters section, and ONLY shows the "Running" section
 
-Un-camel case parameter names when used as labels.
-    Tests need to look for different labels.

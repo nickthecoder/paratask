@@ -34,7 +34,7 @@ open class ParameterField : Region {
     constructor(parameter: Parameter) {
 
         this.parameter = parameter
-        this.label = Label(parameter.name)
+        this.label = Label(parameter.label)
 
         getStyleClass().add("field");
         error.setVisible(false)

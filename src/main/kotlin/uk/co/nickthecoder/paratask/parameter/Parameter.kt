@@ -1,11 +1,12 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.gui.ParameterField
-import uk.co.nickthecoder.paratask.gui.ParametersForm
 
 interface Parameter {
 
     val name: String
+
+    var label: String
 
     fun createField(values: Values): ParameterField
 
@@ -14,5 +15,7 @@ interface Parameter {
     fun errorMessage(values: Values): String?
 
     fun createValue(): Value<*>
+
+    fun copyValue(source: Values): Value<*>
 
 }

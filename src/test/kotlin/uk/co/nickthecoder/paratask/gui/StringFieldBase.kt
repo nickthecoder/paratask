@@ -16,8 +16,6 @@ open class StringFieldBase : MyGuiTest() {
 
     override fun getRootNode(): Parent {
 
-        println("Creating root node")
-
         task.taskD.addParameters(required, optional, initialA)
         values = task.taskD.createValues()
         values.get("initialA")!!.stringValue = "A"

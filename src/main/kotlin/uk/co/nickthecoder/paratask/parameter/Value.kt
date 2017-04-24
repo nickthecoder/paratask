@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.parameter
 
 interface Value<T> {
 
-    val valueListeners : ValueListeners
+    val valueListeners: ValueListeners
 
     val parameter: Parameter
 
