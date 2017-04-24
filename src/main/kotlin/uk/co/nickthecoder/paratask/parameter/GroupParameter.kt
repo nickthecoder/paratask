@@ -1,9 +1,16 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.LabelledField
+import uk.co.nickthecoder.paratask.gui.ParametersForm
+import uk.co.nickthecoder.paratask.util.uncamel
 
-class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter> {
+class GroupParameter(
+        name: String,
+        override val label: String = name.uncamel(),
+        val isRoot: Boolean = false)
+
+    : AbstractParameter(name), Iterable<Parameter> {
 
     private val children = mutableListOf<Parameter>()
 
@@ -61,9 +68,14 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(values: Values): ParameterField {
-        // TODO LATER Implement GroupParameter.createField()
-        throw Exception("Not implemented")
+    override fun createField(values: Values): ParametersForm {
+        val parametersForm = ParametersForm(this, values)
+
+        //if (isRoot) {
+        //    return BoxedField(this, parametersForm)
+        //} else {
+        return parametersForm
+        //}
     }
 
     override fun errorMessage(values: Values): String? = null

@@ -8,7 +8,7 @@ class TaskDescription(var name: String = "") {
 
     var description: String = ""
 
-    val root: GroupParameter = GroupParameter("taskRoot")
+    val root: GroupParameter = GroupParameter("taskRoot", isRoot = true)
 
     fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }

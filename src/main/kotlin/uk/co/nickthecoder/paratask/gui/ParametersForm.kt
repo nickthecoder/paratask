@@ -15,7 +15,8 @@ import uk.co.nickthecoder.paratask.parameter.Values
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  */
-class ParametersForm(var groupParameter: GroupParameter, values: Values) : Pane() {
+class ParametersForm(var groupParameter: GroupParameter, values: Values)
+    : ParameterField(groupParameter) {
 
     internal val columns = mutableListOf<Column>()
 
@@ -26,7 +27,6 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values) : Pane(
             field(parameter, values)
         }
     }
-
 
     fun findField(parameter: Parameter): ParameterField? {
         fieldSet.forEach { field ->
@@ -79,8 +79,10 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values) : Pane(
             it.prefWidth = 0.0
             it.minWidth = 0.0
         }
-        fieldSet.forEach {
-            it.adjustColumnWidths(columns)
+        fieldSet.forEach { field ->
+            if (field is LabelledField) {
+                field.adjustColumnWidths(columns)
+            }
         }
     }
 
@@ -102,8 +104,10 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values) : Pane(
                 it.width = it.prefWidth + extra * it.stretch / totalStretch
             }
         }
-        fieldSet.forEach {
-            it.adjustColumnWidths(columns)
+        fieldSet.forEach { field ->
+            if (field is LabelledField) {
+                field.adjustColumnWidths(columns)
+            }
         }
     }
 

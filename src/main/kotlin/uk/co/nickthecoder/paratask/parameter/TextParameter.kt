@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.control.TextField
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.LabelledField
 import uk.co.nickthecoder.paratask.gui.ParametersForm
 
 abstract class TextParameter<T : Value<*>>(

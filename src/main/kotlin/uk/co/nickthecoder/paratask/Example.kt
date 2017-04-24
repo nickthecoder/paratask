@@ -16,7 +16,8 @@ class Example : SimpleTask() {
         val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
         val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)
 
-        taskD.addParameters(greeting, rangeFrom, rangeTo)
+        range.addParameters( rangeFrom, rangeTo)
+        taskD.addParameters(greeting, range)
     }
 
     override fun run(values: Values) {

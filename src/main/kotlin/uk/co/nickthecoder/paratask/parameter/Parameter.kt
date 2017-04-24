@@ -6,7 +6,7 @@ interface Parameter {
 
     val name: String
 
-    var label: String
+    val label: String
 
     fun createField(values: Values): ParameterField
 
