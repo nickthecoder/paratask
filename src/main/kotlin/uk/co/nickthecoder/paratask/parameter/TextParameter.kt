@@ -1,8 +1,8 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.control.TextField
-import uk.co.nickthecoder.paratask.gui.Field
-import uk.co.nickthecoder.paratask.gui.Form
+import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.ParametersForm
 
 abstract class TextParameter<T : Value<*>>(name: String, required: Boolean, var columns: Int = 0)
     : ValueParameter<T>(name = name, required = required) {

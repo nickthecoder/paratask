@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.control.Label
-import uk.co.nickthecoder.paratask.gui.Field
+import uk.co.nickthecoder.paratask.gui.ParameterField
 
 class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter> {
 
@@ -61,7 +61,7 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(values: Values): Field {
+    override fun createField(values: Values): ParameterField {
         // TODO Implement GroupParameter.createField()
         throw Exception("Not implemented")
     }

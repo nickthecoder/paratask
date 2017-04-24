@@ -13,16 +13,16 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class FormTest : GuiTest() {
 
-    lateinit var form: Form
+    lateinit var form: ParametersForm
 
     lateinit var scene: Scene
 
-    lateinit var firstF: Field
-    lateinit var helloF: Field
-    lateinit var worldF: Field
+    lateinit var firstF: ParameterField
+    lateinit var helloF: ParameterField
+    lateinit var worldF: ParameterField
 
     override fun getRootNode(): Parent {
-        form = Form()
+        form = ParametersForm()
 
         val taskD = TaskDescription()
         val firstP = IntParameter("first")

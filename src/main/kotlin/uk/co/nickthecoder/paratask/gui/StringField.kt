@@ -6,7 +6,7 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.StringValue
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class StringField : Field {
+class StringField : ParameterField {
 
     override val parameter: StringParameter
 

@@ -1,13 +1,13 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.Field
-import uk.co.nickthecoder.paratask.gui.Form
+import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.ParametersForm
 
 interface Parameter {
 
     val name: String
 
-    fun createField(values: Values): Field
+    fun createField(values: Values): ParameterField
 
     fun isStretchy(): Boolean
 

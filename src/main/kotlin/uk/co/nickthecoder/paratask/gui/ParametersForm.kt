@@ -12,15 +12,15 @@ import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
 /**
- * Contains a list of field layed out vertically, so that the controls line up (sharing the same x coordinate).
+ * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  */
-class Form() : Pane() {
+class ParametersForm() : Pane() {
 
     internal val columns = mutableListOf<Column>()
 
-    internal val fieldSet = mutableListOf<Field>()
+    internal val fieldSet = mutableListOf<ParameterField>()
 
-    fun findField(parameter: Parameter): Field? {
+    fun findField(parameter: Parameter): ParameterField? {
         fieldSet.forEach { field ->
             if (field.parameter === parameter) {
                 return field
@@ -39,9 +39,9 @@ class Form() : Pane() {
      */
     var spacingProperty: StyleableDoubleProperty = object : StyleableDoubleProperty(5.0) {
         override fun getName() = "spacingProperty"
-        override fun getBean() = this@Form
+        override fun getBean() = this@ParametersForm
 
-        override fun getCssMetaData(): CssMetaData<Form, Number> {
+        override fun getCssMetaData(): CssMetaData<ParametersForm, Number> {
             return SPACING;
         }
 
@@ -56,7 +56,7 @@ class Form() : Pane() {
         getStyleClass().add("form");
     }
 
-    fun field(parameter: Parameter, values: Values): Field {
+    fun field(parameter: Parameter, values: Values): ParameterField {
         val field = parameter.createField(values)
         field.getStyleClass().add("field-${parameter.name}")
 
@@ -156,10 +156,10 @@ class Form() : Pane() {
 
         internal val cssMetaDataList = mutableListOf<CssMetaData<out Styleable, *>>()
 
-        internal val SPACING = object : CssMetaData<Form, Number>("-fx-spacing", StyleConverter.getSizeConverter(), 0.0) {
-            override fun isSettable(form: Form): Boolean = true
+        internal val SPACING = object : CssMetaData<ParametersForm, Number>("-fx-spacing", StyleConverter.getSizeConverter(), 0.0) {
+            override fun isSettable(form: ParametersForm): Boolean = true
 
-            override fun getStyleableProperty(form: Form): StyleableDoubleProperty {
+            override fun getStyleableProperty(form: ParametersForm): StyleableDoubleProperty {
                 return form.spacingProperty;
             }
         }

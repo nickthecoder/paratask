@@ -5,13 +5,13 @@ import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.Region
-import uk.co.nickthecoder.paratask.gui.Form.Column
+import uk.co.nickthecoder.paratask.gui.ParametersForm.Column
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
-open class Field : Region {
+open class ParameterField : Region {
 
-    lateinit var form: Form
+    lateinit var form: ParametersForm
 
     open val parameter: Parameter
 
@@ -104,7 +104,7 @@ open class Field : Region {
         }
     }
 
-    internal fun adjustColumnWidths(columns: List<Form.Column>) {
+    internal fun adjustColumnWidths(columns: List<ParametersForm.Column>) {
         adjustColumnWidth(columns[0], label)
         control?.let { adjustColumnWidth(columns[1], it) }
     }

@@ -19,8 +19,8 @@ open class IntFieldTest : IntFieldBase() {
 
     @Test
     fun findFields() {
-        val optionalField = find<Field>(".field-optional")
-        assertTrue(optionalField is Field)
+        val optionalField = find<ParameterField>(".field-optional")
+        assertTrue(optionalField is ParameterField)
     }
 
     @Test

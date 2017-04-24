@@ -16,7 +16,7 @@ val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
-class IntField : Field {
+class IntField : ParameterField {
 
     override val parameter: IntParameter
 

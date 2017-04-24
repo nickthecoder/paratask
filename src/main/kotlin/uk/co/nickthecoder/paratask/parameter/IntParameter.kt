@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.Field
+import uk.co.nickthecoder.paratask.gui.ParameterField
 import uk.co.nickthecoder.paratask.gui.IntField
 
 open class IntParameter(
@@ -33,7 +33,7 @@ open class IntParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(values: Values): Field = IntField(this, values)
+    override fun createField(values: Values): ParameterField = IntField(this, values)
 
     override fun createValue() = IntValue(this)
 

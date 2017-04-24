@@ -15,7 +15,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     var root: BorderPane
 
-    var form: Form
+    var form: ParametersForm
 
     var stage: Stage? = null
 
@@ -50,7 +50,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
         buttons.children.add(cancelButton)
         buttons.children.add(applyButton)
 
-        form = Form()
+        form = ParametersForm()
 
         task.taskD.root.forEach() { parameter ->
             form.field(parameter, values)
