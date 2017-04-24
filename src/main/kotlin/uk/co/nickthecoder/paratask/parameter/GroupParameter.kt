@@ -3,27 +3,27 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.control.Label
 import uk.co.nickthecoder.paratask.gui.Field
 
-class GroupParameter(name: String) : AbstractParameter<Values>(name), Iterable<Parameter<*>> {
+class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter> {
 
-    private val children = mutableListOf<Parameter<*>>()
+    private val children = mutableListOf<Parameter>()
 
-    fun add(child: Parameter<*>) {
+    fun add(child: Parameter) {
         children.add(child)
     }
 
-    fun add(vararg children: Parameter<*>) {
+    fun add(vararg children: Parameter) {
         children.forEach { add(it) }
     }
 
-    fun remove(child: Parameter<*>) {
+    fun remove(child: Parameter) {
         children.remove(child)
     }
 
-    override fun iterator(): Iterator<Parameter<*>> {
+    override fun iterator(): Iterator<Parameter> {
         return children.iterator()
     }
 
-    fun find(name: String): Parameter<*>? {
+    fun find(name: String): Parameter? {
         children.forEach { child ->
             if (child.name == name) {
                 return child
@@ -36,12 +36,12 @@ class GroupParameter(name: String) : AbstractParameter<Values>(name), Iterable<P
         return null
     }
 
-    fun children(): List<Parameter<*>> {
+    fun children(): List<Parameter> {
         return children
     }
 
-    fun descendants(): List<Parameter<*>> {
-        val result = mutableListOf<Parameter<*>>()
+    fun descendants(): List<Parameter> {
+        val result = mutableListOf<Parameter>()
 
         fun addAll(group: GroupParameter) {
             group.children.forEach { child ->

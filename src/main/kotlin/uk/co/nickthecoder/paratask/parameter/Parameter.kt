@@ -3,7 +3,7 @@ package uk.co.nickthecoder.paratask.parameter
 import uk.co.nickthecoder.paratask.gui.Field
 import uk.co.nickthecoder.paratask.gui.Form
 
-interface Parameter<T : Value<*>> {
+interface Parameter {
 
     val name: String
 

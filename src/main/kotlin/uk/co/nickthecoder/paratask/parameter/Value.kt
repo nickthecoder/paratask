@@ -4,7 +4,7 @@ interface Value<T> {
 
     val valueListeners : ValueListeners
 
-    val parameter: Parameter<*>
+    val parameter: Parameter
 
     var value: T
 

@@ -10,15 +10,15 @@ class TaskDescription(var name: String = "") {
 
     val root: GroupParameter = GroupParameter("taskRoot")
 
-    fun addParameters(vararg parameters: Parameter<*>) {
+    fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }
     }
 
-    fun removeParameters(vararg parameters: Parameter<*>) {
+    fun removeParameters(vararg parameters: Parameter) {
         parameters.forEach { root.remove(it) }
     }
 
-    fun removeParameter(parameter: Parameter<*>) {
+    fun removeParameter(parameter: Parameter) {
         root.remove(parameter)
     }
 
