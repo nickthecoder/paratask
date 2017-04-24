@@ -12,7 +12,7 @@ class StringParameter(
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun errorMessage(values: Values): String? = errorMessage( valueFrom(values).value )
+    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
 
     fun errorMessage(v: String): String? {
         if (required && v.length == 0) {
@@ -21,10 +21,7 @@ class StringParameter(
         return null
     }
 
-    override fun createField(values: Values): StringField {
-        val value = values.get(name) as StringValue
-        return StringField(this, value)
-    }
+    override fun createField(values: Values): StringField = StringField(this, values)
 
     override fun createValue() = StringValue(this)
 

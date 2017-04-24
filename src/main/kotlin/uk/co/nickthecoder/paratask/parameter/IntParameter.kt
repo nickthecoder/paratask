@@ -33,10 +33,7 @@ open class IntParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(values: Values): Field {
-        val value = values.get(name) as IntValue
-        return IntField(this, value)
-    }
+    override fun createField(values: Values): Field = IntField(this, values)
 
     override fun createValue() = IntValue(this)
 

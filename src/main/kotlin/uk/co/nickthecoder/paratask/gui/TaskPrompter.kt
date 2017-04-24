@@ -15,6 +15,8 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     var root: BorderPane
 
+    var form: Form
+
     var stage: Stage? = null
 
     val okButton: Button
@@ -29,17 +31,17 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
         okButton = Button("OK")
         okButton.onAction = EventHandler {
-            run()
+            onOk()
         }
         okButton.defaultButtonProperty().set(true)
 
         cancelButton = Button("Cancel")
-        cancelButton.onAction = EventHandler { cancel() }
+        cancelButton.onAction = EventHandler { onCancel() }
         cancelButton.visibleProperty().set(false)
         cancelButton.cancelButtonProperty().set(true)
 
         applyButton = Button("Apply")
-        applyButton.onAction = EventHandler { apply() }
+        applyButton.onAction = EventHandler { onApply() }
         //applyButton.visibleProperty().set(false)
 
         val buttons = FlowPane()
@@ -48,12 +50,10 @@ open class TaskPrompter(val task: Task, val values: Values) {
         buttons.children.add(cancelButton)
         buttons.children.add(applyButton)
 
-        val form = Form()
+        form = Form()
 
-        task.taskD.root.forEach() {
-            val field: Field = it.createField(values)
-            field.getStyleClass().add("field-${it.name}")
-            form.addField(field)
+        task.taskD.root.forEach() { parameter ->
+            form.field(parameter, values)
         }
 
         root.getStyleClass().add("task-prompter")
@@ -67,28 +67,53 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     }
 
-    open protected fun cancel() {
+    private fun onCancel() {
         close()
+    }
+
+    private fun onOk() {
+        if (check()) {
+            run()
+            close()
+        }
+    }
+
+    private fun onApply() {
+        if (check()) {
+            run()
+        }
+    }
+
+    fun check(): Boolean {
+
+        // Are there any error messages outstanding
+        form.fieldSet.forEach { field ->
+            if (field.hasError()) {
+                // TODO ensure the field is visible
+                return false;
+            }
+        }
+
+        try {
+            task.check(values)
+        } catch (e: ParameterException) {
+            val field = form.findField(e.parameter)
+            if (field != null) {
+                field.showError(e.message!!)
+            }
+            return false
+        }
+        return true
+    }
+
+    open fun run() {
+        task.run(values)
     }
 
     open protected fun close() {
         stage?.let { it.hide() }
     }
 
-    open protected fun run() {
-        apply()
-        close()
-    }
-
-    open protected fun apply() {
-        try {
-            // TODO Copy the values
-            task.check(values)
-        } catch (e: ParameterException) {
-            // TODO Highlight the error
-        }
-        task.run(values)
-    }
 
     fun placeOnStage(stage: Stage) {
         this.stage = stage

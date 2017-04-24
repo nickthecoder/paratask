@@ -5,12 +5,15 @@ import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.Region
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.Form.Column
+import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.Values
 
 open class Field : Region {
 
     lateinit var form: Form
+
+    open val parameter: Parameter
 
     val label: Label
 
@@ -28,11 +31,10 @@ open class Field : Region {
             }
         }
 
-    val isStretchy: Boolean
+    constructor(parameter: Parameter) {
 
-    constructor(label: String, isStretchy: Boolean = true) {
-        this.label = Label(label)
-        this.isStretchy = isStretchy
+        this.parameter = parameter
+        this.label = Label(parameter.name)
 
         getStyleClass().add("field");
         error.setVisible(false)
@@ -40,10 +42,6 @@ open class Field : Region {
 
         children.add(this.label)
         children.add(error)
-    }
-
-    constructor(label: String, control: Node, isStretchy: Boolean = true) : this(label, isStretchy) {
-        this.control = control
     }
 
     override fun computeMinHeight(width: Double): Double {
@@ -81,7 +79,7 @@ open class Field : Region {
 
         // Control
         x += w + form.spacing
-        w = if (isStretchy) form.columns[1].width else control?.prefWidth(h) ?: 0.0
+        w = if (parameter.isStretchy()) form.columns[1].width else control?.prefWidth(h) ?: 0.0
         layoutInArea(control, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
         // Error message
@@ -128,4 +126,6 @@ open class Field : Region {
     fun clearError() {
         error.visibleProperty().value = false
     }
+
+    fun hasError(): Boolean = error.visibleProperty().value == true
 }

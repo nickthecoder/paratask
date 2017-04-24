@@ -4,16 +4,17 @@ import javafx.scene.Node
 import javafx.scene.control.TextField
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.StringValue
+import uk.co.nickthecoder.paratask.parameter.Values
 
 class StringField : Field {
 
-    val parameter: StringParameter
+    override val parameter: StringParameter
 
     val value: StringValue
 
-    constructor(parameter: StringParameter, value: StringValue) : super(parameter.name, parameter.isStretchy()) {
+    constructor(parameter: StringParameter, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = value
+        this.value = parameter.valueFrom(values)
         control = createControl()
     }
 

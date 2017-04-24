@@ -8,6 +8,8 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
+import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.Values
 
 /**
  * Contains a list of field layed out vertically, so that the controls line up (sharing the same x coordinate).
@@ -17,6 +19,15 @@ class Form() : Pane() {
     internal val columns = mutableListOf<Column>()
 
     internal val fieldSet = mutableListOf<Field>()
+
+    fun findField(parameter: Parameter): Field? {
+        fieldSet.forEach { field ->
+            if (field.parameter === parameter) {
+                return field
+            }
+        }
+        return null
+    }
 
     val spacing: Double
         get() {
@@ -45,15 +56,13 @@ class Form() : Pane() {
         getStyleClass().add("form");
     }
 
-    fun addField(field: Field) {
+    fun field(parameter: Parameter, values: Values): Field {
+        val field = parameter.createField(values)
+        field.getStyleClass().add("field-${parameter.name}")
+
         field.form = this
         children.add(field)
         fieldSet.add(field)
-    }
-
-    fun field(label: String, control: Node, isStretchy: Boolean = false): Field {
-        val field = Field(label, control, isStretchy)
-        addField(field)
         return field
     }
 

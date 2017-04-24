@@ -7,6 +7,9 @@ import javafx.scene.control.TextField
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.loadui.testfx.GuiTest
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class FormTest : GuiTest() {
 
@@ -14,40 +17,45 @@ class FormTest : GuiTest() {
 
     lateinit var scene: Scene
 
-    lateinit var first: TextField
-    lateinit var hello: TextField
-    lateinit var world: TextField
+    lateinit var firstF: Field
+    lateinit var helloF: Field
+    lateinit var worldF: Field
 
     override fun getRootNode(): Parent {
         form = Form()
 
-        first = TextField("First")
-        hello = TextField("Hello")
-        world = TextField("World")
+        val taskD = TaskDescription()
+        val firstP = IntParameter("first")
+        val helloP = StringParameter("hello")
+        val worldP = StringParameter("world")
 
-        form.field("1st", first)
-        form.field("Hello Label", hello)
-        form.field("Short", world)
+        taskD.addParameters(firstP, helloP, worldP)
+
+        val values = taskD.createValues()
+
+        firstF = form.field(firstP, values)
+        helloF = form.field(helloP, values)
+        worldF = form.field(worldP, values)
 
         return form
     }
 
     @Test
     fun alignment() {
-        val label1 = find<Label>("1st")
-        val label2 = find<Label>("Hello Label")
-        val label3 = find<Label>("Short")
+        val label1 = find<Label>("first")
+        val label2 = find<Label>("hello")
+        val label3 = find<Label>("world")
 
         // They should all be within half a pixel of each other
         val delta = 0.5
         assertEquals(label1.getBoundsInParent().minX, label2.getBoundsInParent().minX, delta)
         assertEquals(label2.getBoundsInParent().minX, label3.getBoundsInParent().minX, delta)
 
-        assertEquals(hello.getBoundsInParent().minX, world.getBoundsInParent().minX, delta)
+        assertEquals(helloF.control!!.getBoundsInParent().minX, worldF.control!!.getBoundsInParent().minX, delta)
 
         // Note that due to the borders added to the focused item the first may NOT be aligned with world
         // until we we make neither of them the focused node
-        click( hello )
-        assertEquals(first.getBoundsInParent().minX, world.getBoundsInParent().minX, delta)
+        click(helloF.control!!)
+        assertEquals(firstF.control!!.getBoundsInParent().minX, worldF.control!!.getBoundsInParent().minX, delta)
     }
 }

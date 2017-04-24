@@ -6,9 +6,9 @@ import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.IntValue
+import uk.co.nickthecoder.paratask.parameter.Values
 
 val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
 
@@ -18,13 +18,13 @@ val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
 class IntField : Field {
 
-    val parameter: IntParameter
+    override val parameter: IntParameter
 
     val value: IntValue
 
-    constructor(parameter: IntParameter, value: IntValue) : super(parameter.name) {
+    constructor(parameter: IntParameter, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = value
+        this.value = parameter.valueFrom(values)
         control = createControl()
     }
 

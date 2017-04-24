@@ -62,8 +62,8 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
     override fun createField(values: Values): Field {
-        // TODO Implement correctly
-        return Field(name, Label())
+        // TODO Implement GroupParameter.createField()
+        throw Exception("Not implemented")
     }
 
     override fun errorMessage(values: Values): String? = null

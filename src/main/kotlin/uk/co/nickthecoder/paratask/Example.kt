@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
@@ -20,11 +21,12 @@ class Example : SimpleTask() {
     override fun run(values: Values) {
         println("Example Parameter values : ")
 
-        // TODO Iteratate over all parameters, including those in a Group (when that feature has been implemented)
-        taskD.root.forEach { parameter ->
+        taskD.root.descendants().forEach { parameter ->
             if (parameter is ValueParameter<*>) {
-                val value = values.get(parameter.name)
-                println("Parameter ${parameter.name} = ${value?.value} ('${value?.stringValue}')")
+                if (parameter !is GroupParameter) {
+                    val value = values.get(parameter.name)
+                    println("Parameter ${parameter.name} = ${value?.value} ('${value?.stringValue}')")
+                }
             }
         }
     }
