@@ -83,7 +83,6 @@ class GroupParameter(
                 titledPane.setExpanded(expanded)
             }
             return titledPane
-            //return Boxed(label, parametersForm)
         }
     }
 
