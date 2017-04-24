@@ -29,6 +29,9 @@ class Example : SimpleTask() {
                 }
             }
         }
+        //println( "Example Task Sleeping")
+        //Thread.sleep(1000)
+        //println( "Example Task Ended")
     }
 }
 

@@ -115,7 +115,9 @@ open class TaskPrompter(val task: Task, val values: Values) {
     }
 
     open fun run() {
-        task.run(values)
+        Thread({
+            task.run(values)
+        }).start()
     }
 
     open protected fun close() {

@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.scene.control.Label
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.ParameterField
 
 class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter> {
@@ -70,7 +70,10 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
 
     fun check(values: Values) {
         descendants().forEach { parameter ->
-            parameter.errorMessage(values)
+            val error = parameter.errorMessage(values)
+            if (error != null) {
+                throw ParameterException(parameter, error)
+            }
         }
     }
 
