@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.parameter.IntValue
 
 val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
 
@@ -19,8 +20,11 @@ class IntField : Field {
 
     val parameter: IntParameter
 
-    constructor(parameter: IntParameter) : super(parameter.name) {
+    val value: IntValue
+
+    constructor(parameter: IntParameter, value: IntValue) : super(parameter.name) {
         this.parameter = parameter
+        this.value = value
         control = createControl()
     }
 
@@ -28,7 +32,7 @@ class IntField : Field {
 
         val spinner = createSpinner()
 
-        spinner.valueFactory.converter = parameter.converter;
+        spinner.valueFactory.converter = value;
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -54,11 +58,11 @@ class IntField : Field {
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = parameter.converter.fromString(newValue)
+                val v = value.fromString(newValue)
                 spinner.valueFactory.value = v
-                clearError()
-            } catch (e: ParameterException) {
-                showError(e)
+                showOrClearError(value.errorMessage(v))
+            } catch (e: Exception) {
+                showError("Not an integer")
             }
         })
 
@@ -76,7 +80,7 @@ class IntField : Field {
     }
 
     private fun createSpinner(): Spinner<*> {
-        val initialValue = if (parameter.value == null && parameter.required) {
+        val initialValue = if (value.value == null && parameter.required) {
             if (parameter.range.start > 0) {
                 parameter.range.start
             } else if (parameter.range.endInclusive < 0) {
@@ -86,12 +90,12 @@ class IntField : Field {
             }
 
         } else {
-            parameter.value
+            value.value
         }
 
         val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
-        parameter.value = spinner.valueFactory.value
-        spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
+        value.value = spinner.valueFactory.value
+        spinner.valueFactory.valueProperty().bindBidirectional(value.property);
         return spinner
     }
 

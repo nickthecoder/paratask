@@ -2,30 +2,28 @@ package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.control.Label
 import uk.co.nickthecoder.paratask.gui.Field
-import uk.co.nickthecoder.paratask.gui.Form
 
-class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter>, ParameterListener {
-    private val children = mutableListOf<Parameter>()
+class GroupParameter(name: String) : AbstractParameter<Values>(name), Iterable<Parameter<*>> {
 
-    fun add(child: Parameter) {
+    private val children = mutableListOf<Parameter<*>>()
+
+    fun add(child: Parameter<*>) {
         children.add(child)
-        child.addListener(this)
     }
 
-    fun add(vararg children: Parameter) {
+    fun add(vararg children: Parameter<*>) {
         children.forEach { add(it) }
     }
 
-    fun remove(child: Parameter) {
+    fun remove(child: Parameter<*>) {
         children.remove(child)
-        child.removeListener(this)
     }
 
-    override fun iterator(): Iterator<Parameter> {
+    override fun iterator(): Iterator<Parameter<*>> {
         return children.iterator()
     }
 
-    fun find(name: String): Parameter? {
+    fun find(name: String): Parameter<*>? {
         children.forEach { child ->
             if (child.name == name) {
                 return child
@@ -38,12 +36,12 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
         return null
     }
 
-    fun children(): List<Parameter> {
+    fun children(): List<Parameter<*>> {
         return children
     }
 
-    fun descendants(): List<Parameter> {
-        val result = mutableListOf<Parameter>()
+    fun descendants(): List<Parameter<*>> {
+        val result = mutableListOf<Parameter<*>>()
 
         fun addAll(group: GroupParameter) {
             group.children.forEach { child ->
@@ -58,31 +56,39 @@ class GroupParameter(name: String) : AbstractParameter(name), Iterable<Parameter
         return result
     }
 
-    override fun parameterChanged(parameter: Parameter) {
-        fireChanged(parameter)
-    }
-
     /**
      * Creates a box with the name of the group at the top, and all of the child parameters' Nodes
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(): Field {
+    override fun createField(values: Values): Field {
         // TODO Implement correctly
         return Field(name, Label())
     }
 
-    override fun lock() {
-        children.forEach { lock() }
-    }
+    override fun errorMessage(values: Values): String? = null
 
-    override fun unlock() {
-        children.forEach { unlock() }
-    }
-
-    override fun check() {
-        children.forEach { check() }
+    fun check(values: Values) {
+        descendants().forEach { parameter ->
+            parameter.errorMessage(values)
+        }
     }
 
     override fun isStretchy(): Boolean = true
+
+    override fun createValue(): Values {
+        val values = Values(this)
+        children().forEach { parameter ->
+
+            val value = parameter.createValue()
+            values.put(parameter.name, value)
+
+            if (parameter is GroupParameter) {
+                (value as Values).values.forEach { (name, value) ->
+                    values.put(name, value)
+                }
+            }
+        }
+        return values
+    }
 }

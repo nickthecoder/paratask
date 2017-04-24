@@ -5,59 +5,64 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ParameterListenerTest : ParameterListener {
+class ValueListenerTest : ValueListener {
     var count = 0
 
     var notListening = IntParameter("notListening")
-
     var listening = IntParameter("listening")
 
-    override fun parameterChanged(parameter: Parameter) {
+        var notListeningValue = notListening.createValue()
+    var listeningValue = listening.createValue()
+
+    override fun valueChanged(value: Value<*>) {
         count++
     }
 
     @Before
     fun setUp() {
         count = 0
-        listening.addListener(this)
+        notListeningValue = notListening.createValue()
+        listeningValue = listening.createValue()
+
+        listeningValue.valueListeners.add(this)
     }
 
     @After
     fun tearDown() {
-        listening.removeListener(this)
+        listeningValue.valueListeners.remove(this)
     }
 
     @Test
     fun noListner() {
-        notListening.value = 1
+        notListeningValue.value = 1
         assertEquals(0, count)
     }
 
     @Test
     fun singleChange() {
-        listening.value = 1
+        listeningValue.value = 1
         assertEquals(1, count)
     }
 
     @Test
     fun doubleChange() {
-        listening.value = 1
-        listening.value = 0
+        listeningValue.value = 1
+        listeningValue.value = 0
         assertEquals(2, count)
     }
 
     @Test
     fun doubleChangeWithRemove() {
-        listening.value = 1
-        listening.removeListener(this)
-        listening.value = 0
+        listeningValue.value = 1
+        listeningValue.valueListeners.remove(this)
+        listeningValue.value = 0
         assertEquals(1, count)
     }
 
     @Test
     fun sameValue() {
-        listening.value = 1
-        listening.value = 1
+        listeningValue.value = 1
+        listeningValue.value = 1
         assertEquals(1, count)
     }
 }

@@ -3,22 +3,16 @@ package uk.co.nickthecoder.paratask.parameter
 import uk.co.nickthecoder.paratask.gui.Field
 import uk.co.nickthecoder.paratask.gui.Form
 
-interface Parameter {
+interface Parameter<T : Value<*>> {
 
     val name: String
 
-    fun addListener(l: ParameterListener)
-
-    fun removeListener(l: ParameterListener)
-
-    fun createField(): Field
+    fun createField(values: Values): Field
 
     fun isStretchy(): Boolean
 
-    fun lock()
+    fun errorMessage(values: Values): String?
 
-    fun unlock()
-
-    fun check()
+    fun createValue(): Value<*>
 
 }

@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.parameter.Values
 
 class Example : SimpleTask() {
 
@@ -16,13 +17,14 @@ class Example : SimpleTask() {
         taskD.addParameters(oneToTen, fromOne, greeting)
     }
 
-    override fun run() {
+    override fun run(values: Values) {
         println("Example Parameter values : ")
 
         // TODO Iteratate over all parameters, including those in a Group (when that feature has been implemented)
         taskD.root.forEach { parameter ->
             if (parameter is ValueParameter<*>) {
-                println("Parameter ${parameter.name} = ${parameter.value} ('${parameter.getStringValue()}')")
+                val value = values.get(parameter.name)
+                println("Parameter ${parameter.name} = ${value?.value} ('${value?.stringValue}')")
             }
         }
     }

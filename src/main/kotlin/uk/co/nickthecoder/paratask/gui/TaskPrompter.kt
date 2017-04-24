@@ -7,9 +7,11 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.parameter.Values
 
-open class TaskPrompter(val task: Task) {
+open class TaskPrompter(val task: Task, val values: Values) {
 
     var root: BorderPane
 
@@ -49,7 +51,7 @@ open class TaskPrompter(val task: Task) {
         val form = Form()
 
         task.taskD.root.forEach() {
-            val field: Field = it.createField()
+            val field: Field = it.createField(values)
             field.getStyleClass().add("field-${it.name}")
             form.addField(field)
         }
@@ -74,13 +76,18 @@ open class TaskPrompter(val task: Task) {
     }
 
     open protected fun run() {
-        if (task.checkAndRun()) {
-            close()
-        }
+        apply()
+        close()
     }
 
     open protected fun apply() {
-        task.checkAndRun()
+        try {
+            // TODO Copy the values
+            task.check(values)
+        } catch (e: ParameterException) {
+            // TODO Highlight the error
+        }
+        task.run(values)
     }
 
     fun placeOnStage(stage: Stage) {

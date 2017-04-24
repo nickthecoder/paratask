@@ -1,10 +1,9 @@
 package uk.co.nickthecoder.paratask.gui
 
-import org.junit.Test
-import org.junit.Before
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class StringFieldTest : StringFieldBase() {
 
@@ -16,23 +15,24 @@ class StringFieldTest : StringFieldBase() {
     @Test
     fun initialValues() {
         assertEquals("", findTextField("optional").text)
-        assertEquals("", optional.value)
+        assertEquals("", optional.valueFrom(values).value)
 
         assertEquals("", findTextField("required").text)
-        assertEquals("", required.value)
+        assertEquals("", required.valueFrom(values).value)
 
         assertEquals("A", findTextField("initialA").text)
-        assertEquals("A", initialA.value)
+        assertEquals("A", initialA.valueFrom(values).value)
     }
 
     @Test
     fun emptyOptionalValues() {
-        val field = findTextField("optional")
-        val parameter = optional
+        var field = findTextField("optional")
+        val paramter = optional
+        val value = paramter.valueFrom(values)
         val error = findError("optional")
 
         clickAndClear(field).type("x")
-        assertEquals("x", parameter.value)
+        assertEquals("x", value.value)
         assertEquals(false, error.isVisible)
 
         clickAndClear(field)
@@ -46,7 +46,7 @@ class StringFieldTest : StringFieldBase() {
         val error = findError("required")
 
         clickAndClear(field).type("x")
-        assertEquals("x", parameter.value)
+        assertEquals("x", parameter.valueFrom(values).value)
         assertEquals(false, error.isVisible)
 
         clickAndClear(field)

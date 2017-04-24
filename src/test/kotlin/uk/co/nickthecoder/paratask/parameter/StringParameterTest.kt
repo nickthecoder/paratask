@@ -8,8 +8,10 @@ import uk.co.nickthecoder.paratask.ParameterException
 class StringParameterTest {
 
     val optional = StringParameter("optional", required = false)
+    val optionalValue = optional.createValue()
 
     val required = StringParameter("required")
+    val requiredValue = required.createValue()
 
     fun expectParameterException(body: () -> Unit) {
         try {
@@ -21,33 +23,33 @@ class StringParameterTest {
 
     @Test
     fun setValueOptional() {
-        optional.value = "a"
-        assertEquals("a", optional.value)
+        optionalValue.value = "a"
+        assertEquals("a", optionalValue.value)
 
-        optional.value = ""
-        assertEquals("", optional.value)
-        assertNull(optional.errorMesssage())
+        optionalValue.value = ""
+        assertEquals("", optionalValue.value)
+        assertNull(optionalValue.errorMessage())
 
     }
 
     @Test
     fun setValueRequired() {
-        required.value = "a"
-        assertEquals("a", required.value)
+        requiredValue.value = "a"
+        assertEquals("a", requiredValue.value)
 
-        required.value = ""
-        assertEquals("Required", required.errorMesssage())
+        requiredValue.value = ""
+        assertEquals("Required", requiredValue.errorMessage())
 
-        required.value = "a"
-        assertNull(required.errorMesssage())
+        requiredValue.value = "a"
+        assertNull(requiredValue.errorMessage())
 
     }
 
     @Test
     fun getStringValue() {
-        required.value = "a"
-        assertEquals("a", required.getStringValue())
-        optional.value = ""
-        assertEquals("", optional.getStringValue())
+        requiredValue.value = "a"
+        assertEquals("a", requiredValue.stringValue)
+        optionalValue.value = ""
+        assertEquals("", optionalValue.stringValue)
     }
 }

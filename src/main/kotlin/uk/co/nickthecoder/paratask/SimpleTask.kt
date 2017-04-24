@@ -1,27 +1,10 @@
 package uk.co.nickthecoder.paratask
 
-abstract class SimpleTask() : Task, Runnable {
+import uk.co.nickthecoder.paratask.parameter.Values
 
-    override fun check() {
-        taskD.root.check()
+abstract class SimpleTask() : Task {
+
+    override fun check(values: Values) {
+        taskD.root.check(values)
     }
-
-    override fun checkAndRun(): Boolean {
-        taskD.root.lock()
-        try {
-            check() // May throw a ParameterExecption
-        } catch(e: Exception) {
-            taskD.root.unlock()
-            return false
-        }
-
-        try {
-            run()
-        } finally {
-            taskD.root.unlock()
-        }
-        return true
-    }
-
-    abstract override fun run() // From Runnable
 }

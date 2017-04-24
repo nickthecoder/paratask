@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.parameter.Values
+
 /**
  * How should a task check its parameters, and then run?
  * This is complex, because in a multi-threaded system, we must prevent a TaskDescriptions's parameters from changing
@@ -24,12 +26,11 @@ interface Task {
      * In most cases, this method doesn't need to be overridden.
      * </p>
      */
-    fun check()
+    fun check(values: Values)
 
     /**
-     * @return true if the check succeded, and the task was run.
      */
-    fun checkAndRun(): Boolean
+    fun run(values: Values)
 
     val taskD: TaskDescription
 }

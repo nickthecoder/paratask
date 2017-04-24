@@ -4,7 +4,7 @@ import javafx.scene.control.TextField
 import uk.co.nickthecoder.paratask.gui.Field
 import uk.co.nickthecoder.paratask.gui.Form
 
-abstract class TextParameter<T>(name: String, required: Boolean, var columns: Int = 0)
+abstract class TextParameter<T : Value<*>>(name: String, required: Boolean, var columns: Int = 0)
     : ValueParameter<T>(name = name, required = required) {
 
     protected fun adjustNode(node: TextField) {

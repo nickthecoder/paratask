@@ -112,8 +112,12 @@ open class Field : Region {
     }
 
 
-    fun showError(e: ParameterException) {
-        showError(e.message!!)
+    fun showOrClearError(message: String?) {
+        if (message == null) {
+            clearError()
+        } else {
+            showError(message)
+        }
     }
 
     fun showError(message: String) {

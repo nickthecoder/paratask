@@ -4,32 +4,30 @@ import uk.co.nickthecoder.paratask.gui.StringField
 
 class StringParameter(
         name: String,
-        value: String = "",
         required: Boolean = true,
         columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<String>(name = name, required = required, columns = columns) {
-
-    init {
-        this.value = value
-    }
-
-    override fun setStringValue(s: String) {
-        value = s
-    }
+    : TextParameter<StringValue>(name = name, required = required, columns = columns) {
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun errorMessage(v: String?): String? {
-        if (v == null) {
-            return "Null values not allowed"
+    override fun errorMessage(values: Values): String? = errorMessage( valueFrom(values).value )
+
+    fun errorMessage(v: String): String? {
+        if (required && v.length == 0) {
+            return "Required"
         }
-        if (v.length == 0) {
-            return super.errorMessage(null)
-        }
-        return null;
+        return null
     }
 
-    override fun createField() = StringField(this)
+    override fun createField(values: Values): StringField {
+        val value = values.get(name) as StringValue
+        return StringField(this, value)
+    }
+
+    override fun createValue() = StringValue(this)
+
+    fun valueFrom(values: Values) = values.get(name) as StringValue
+
 }

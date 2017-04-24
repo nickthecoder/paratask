@@ -1,26 +1,23 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.Field
 import uk.co.nickthecoder.paratask.gui.IntField
 
 open class IntParameter(
         name: String,
-        value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
 
-) : ValueParameter<Int?>(name = name, required = required) {
+) : ValueParameter<IntValue>(name = name, required = required) {
 
-    init {
-        this.value = value
-    }
+    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
 
-    val converter = IntStringConverter()
+    fun errorMessage(v: Int?): String? {
 
-    override fun errorMessage(v: Int?): String? {
-        if (v != null) {
+        if (v == null) {
+            if (required) return "Required"
+
+        } else {
             if (!range.contains(v)) {
                 if (range.start == Int.MIN_VALUE) {
                     return "Cannot be more than ${range.endInclusive}"
@@ -31,50 +28,18 @@ open class IntParameter(
                 }
             }
         }
-        return super.errorMessage(v)
+        return null
     }
 
     override fun isStretchy() = false
 
-    override fun setStringValue(s: String) {
-        value = converter.fromString(s)
+    override fun createField(values: Values): Field {
+        val value = values.get(name) as IntValue
+        return IntField(this, value)
     }
 
-    override fun getStringValue(): String {
-        return converter.toString(value)
-    }
+    override fun createValue() = IntValue(this)
 
-    override fun createField(): Field = IntField(this)
+    fun valueFrom(values: Values) = values.get(name) as IntValue
 
-    inner public class IntStringConverter() : StringConverter<Int?>() {
-
-        override fun fromString(str: String?): Int? {
-
-            try {
-                if (str == null) {
-                    check(null)
-                    return null
-                }
-                val trimmed = str.trim()
-
-                if (trimmed.length == 0) {
-                    check(null)
-                    return null
-                }
-                val v = Integer.parseInt(trimmed);
-                check(v)
-                return v
-            } catch (e: NumberFormatException) {
-                throw ParameterException(this@IntParameter, "Not an integer")
-            }
-        }
-
-        override fun toString(value: Int?): String {
-            if (value == null) {
-                return "";
-            }
-
-            return value.toString();
-        }
-    }
 }

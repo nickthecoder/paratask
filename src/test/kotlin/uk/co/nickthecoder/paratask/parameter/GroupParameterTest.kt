@@ -1,12 +1,13 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
 
-class GroupParameterTest : ParameterListener {
+class GroupParameterTest : ValueListener {
 
     var group = GroupParameter("group")
     var subGroup = GroupParameter("subGroup")
@@ -14,86 +15,88 @@ class GroupParameterTest : ParameterListener {
     val def = IntParameter("def")
     val hij = StringParameter("hij")
     val xyz = IntParameter("xyz")
+
     var count = 0 // Count the number of times the listener is notified.
-    var changedParameter: Parameter? = null
+    var changedValue: Value<*>? = null
+
+    init {
+        group.add(abc, def, subGroup)
+        subGroup.add(hij)
+    }
+
+
+    lateinit var groupValue: Values
+    //var subGroupValue = subGroup.createValue()
+    lateinit var abcValue: IntValue
+    lateinit var defValue: IntValue
+    lateinit var hijValue: StringValue
 
     @Before
     fun setUp() {
         count = 0
-        group = GroupParameter("group")
-        group.addListener(this)
+        changedValue = null
+
+        val values = group.createValue()
+
+        groupValue = values
+        //subGroupValue = values.get("subGroup") as Values
+        abcValue = values.get("abc") as IntValue
+        defValue = values.get("def") as IntValue
+        hijValue = values.get("hij") as StringValue
+
+        groupValue.valueListeners.add(this)
+
     }
 
     @After
     fun tearDown() {
-        group.removeListener(this)
+        groupValue.valueListeners.remove(this)
     }
 
-    override fun parameterChanged(parameter: Parameter) {
-        changedParameter = parameter
+    override fun valueChanged(value: Value<*>) {
+        changedValue = value
         count++
     }
 
     @Test
-    fun addAll() {
-        group.add(abc, def)
-
-        assertEquals(abc, group.find("abc"))
-        assertEquals(def, group.find("def"))
-        assertNull(group.find("xyz"))
-    }
-
-    @Test
     fun find() {
-        group.add(abc)
-        group.add(def)
-
-        assertEquals(abc, group.find("abc"))
-        assertEquals(def, group.find("def"))
+        assertSame(abc, group.find("abc"))
+        assertSame(def, group.find("def"))
         assertNull(group.find("xyz"))
     }
 
     @Test
     fun subFind() {
-        group.add(abc, def, subGroup)
-        subGroup.add(xyz)
-
-        assertEquals(xyz, group.find("xyz"))
+        assertSame(hij, group.find("hij"))
     }
 
     @Test
     fun childChanged() {
-        group.add(abc, def)
         assertEquals(0, count)
-        assertNull(changedParameter)
+        assertNull(changedValue)
 
-        abc.value = 5
+        abcValue.value = 5
         assertEquals(1, count)
-        assertSame(abc, changedParameter)
-        abc.value = 5 // Same value
-        assertEquals(1, count)
+        assertSame(abc, changedValue!!.parameter)
+        abcValue.value = 5 // Same value
+        assertEquals(1, count) // so the count shouldn't change
 
-        def.value = 10
+        defValue.value = 10
         assertEquals(2, count)
-        assertSame(def, changedParameter)
+        assertSame(def, changedValue!!.parameter)
 
-        xyz.value = 15
-        assertEquals(2, count)
     }
 
     @Test
     fun children() {
-        group.add(abc, def, subGroup)
-        subGroup.add(hij)
-
         assertEquals(listOf(abc, def, subGroup), group.children())
     }
 
     @Test
     fun descendants() {
-        group.add(abc, def, subGroup)
-        subGroup.add(hij)
-
-        assertEquals(listOf(abc, def, subGroup, hij), group.descendants())
+        assertEquals(4, group.descendants().size)
+        for (i in 0..3) {
+            assertEquals(listOf(abc, def, subGroup, hij)[i], group.descendants()[i])
+        }
     }
 }

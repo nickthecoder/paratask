@@ -1,8 +1,40 @@
+Consider putting "Value" on the end of each parameter type, and ALSO keeping the original
+    i.e. IntParameter and IntParameterDescription
+
+Build parameter descriptions as before.
+Plus a "createValue" method. The value has a link to its description.
+
+How do we build the TaskPrompter? It needs access to the values.
+    Create a class which contains a simple Map from the parameter name to its values.
+    GroupParameter and/or Task can build this map for us.
+
+    NOTE. The Parameter(Description) will have a DEFAULT value, which could be useful later!
+
+How does the Task get the values?
+    It could get a value using the parameter name : values.get( "directory" )
+    or via the parameter : values.get( directory )
+    Or the reverse way round : directory.value( values )
+
+How does Run work?
+    We already have a ParameterValues instance.
+        We get Group, and its children to COPY the values
+        We then check the values
+        Run the task against the copy
+
+How does Apply work?
+    Exactly the same as run, because the task is running on a copy ;-)    
+
+
+
+
 Test locking
     Lock a single parameter, try to alter a value
     Lock, then unlock and assert that you can change it
     Lock a Group try to change a child
     Lock, then unlock a group
+
+TaskPrompter to show running tasks, and allow them to be killed
+    "OK" button hides the parameters section, and ONLY shows the "Running" section
 
 Test RunStrategies
 
