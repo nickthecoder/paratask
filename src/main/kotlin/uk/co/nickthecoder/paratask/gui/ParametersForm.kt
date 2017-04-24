@@ -8,17 +8,25 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
+import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  */
-class ParametersForm() : Pane() {
+class ParametersForm(var groupParameter: GroupParameter, values: Values) : Pane() {
 
     internal val columns = mutableListOf<Column>()
 
     internal val fieldSet = mutableListOf<ParameterField>()
+
+    init {
+        groupParameter.forEach() { parameter ->
+            field(parameter, values)
+        }
+    }
+
 
     fun findField(parameter: Parameter): ParameterField? {
         fieldSet.forEach { field ->

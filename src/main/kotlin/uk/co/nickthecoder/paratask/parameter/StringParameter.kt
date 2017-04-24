@@ -1,14 +1,17 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.gui.StringField
+import uk.co.nickthecoder.paratask.util.uncamel
 
 class StringParameter(
         name: String,
+        label: String = name.uncamel(),
+        val value: String = "",
         required: Boolean = true,
         columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<StringValue>(name = name, required = required, columns = columns) {
+    : TextParameter<StringValue>(name = name, label = label, required = required, columns = columns) {
 
     override fun isStretchy(): Boolean = stretchy
 
@@ -23,13 +26,12 @@ class StringParameter(
 
     override fun createField(values: Values): StringField = StringField(this, values)
 
-    override fun createValue() = StringValue(this)
+    override fun createValue() = StringValue(this, value)
 
     fun valueFrom(values: Values) = values.get(name) as StringValue
 
     override fun copyValue(source: Values): StringValue {
-        val copy = StringValue(this)
-        copy.value = valueFrom(source).value
+        val copy = StringValue(this, valueFrom(source).value)
         return copy
     }
 }

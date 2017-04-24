@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.parameter
 
 import javafx.beans.property.SimpleObjectProperty
 
-class StringValue(override val parameter: StringParameter) : Value<String> {
+class StringValue(override val parameter: StringParameter, initialValue: String = "") : Value<String> {
 
     override val valueListeners = ValueListeners()
 
@@ -21,6 +21,10 @@ class StringValue(override val parameter: StringParameter) : Value<String> {
             property.set(v)
         }
         get() = property.get()
+
+    init {
+        value = initialValue
+    }
 
     override var stringValue: String
         get() = value

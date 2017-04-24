@@ -50,11 +50,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
         buttons.children.add(cancelButton)
         buttons.children.add(applyButton)
 
-        form = ParametersForm()
-
-        task.taskD.root.forEach() { parameter ->
-            form.field(parameter, values)
-        }
+        form = ParametersForm(task.taskD.root, values)
 
         root.getStyleClass().add("task-prompter")
 

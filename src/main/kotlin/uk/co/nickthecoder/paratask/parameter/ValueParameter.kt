@@ -14,7 +14,11 @@ import uk.co.nickthecoder.paratask.ParameterException
  * command line tool is multi-threaded when the Task is prompted. (The GUI will run in a separate thread from the Task's).
  * </p>
  */
-abstract class ValueParameter<T : Value<*>>(name: String, var required: Boolean = false)
-    : AbstractParameter(name) {
+abstract class ValueParameter<T : Value<*>>(
+        name: String,
+        label: String,
+        var required: Boolean = false)
+
+    : AbstractParameter(name, label = label) {
 
 }

@@ -11,11 +11,12 @@ class Example : SimpleTask() {
     override val taskD = TaskDescription()
 
     init {
-        val oneToTen = IntParameter("oneToTenRequired", range = 1..10)
-        val fromOne = IntParameter("fromOneOptional", range = 1..Int.MAX_VALUE, required = false)
         val greeting = StringParameter("Greeting")
+        val range = GroupParameter("Range")
+        val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
+        val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)
 
-        taskD.addParameters(oneToTen, fromOne, greeting)
+        taskD.addParameters(greeting, rangeFrom, rangeTo)
     }
 
     override fun run(values: Values) {

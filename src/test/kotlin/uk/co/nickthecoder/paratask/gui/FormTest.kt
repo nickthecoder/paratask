@@ -3,13 +3,13 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
-import javafx.scene.control.TextField
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.parameter.Values
 
 class FormTest : GuiTest() {
 
@@ -22,7 +22,6 @@ class FormTest : GuiTest() {
     lateinit var worldF: ParameterField
 
     override fun getRootNode(): Parent {
-        form = ParametersForm()
 
         val taskD = TaskDescription()
         val firstP = IntParameter("first")
@@ -32,6 +31,8 @@ class FormTest : GuiTest() {
         taskD.addParameters(firstP, helloP, worldP)
 
         val values = taskD.createValues()
+
+        form = ParametersForm(taskD.root, values)
 
         firstF = form.field(firstP, values)
         helloF = form.field(helloP, values)

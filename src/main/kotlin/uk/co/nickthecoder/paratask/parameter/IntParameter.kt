@@ -2,13 +2,16 @@ package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.gui.ParameterField
 import uk.co.nickthecoder.paratask.gui.IntField
+import uk.co.nickthecoder.paratask.util.uncamel
 
 open class IntParameter(
         name: String,
+        label: String = name.uncamel(),
+        val value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
 
-) : ValueParameter<IntValue>(name = name, required = required) {
+) : ValueParameter<IntValue>(name = name, label = label, required = required) {
 
     override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
 
@@ -35,13 +38,12 @@ open class IntParameter(
 
     override fun createField(values: Values): ParameterField = IntField(this, values)
 
-    override fun createValue() = IntValue(this)
+    override fun createValue() = IntValue(this, value)
 
     fun valueFrom(values: Values) = values.get(name) as IntValue
 
     override fun copyValue(source: Values): IntValue {
-        val copy = IntValue(this)
-        copy.value = valueFrom(source).value
+        val copy = IntValue(this, valueFrom(source).value)
         return copy
     }
 }

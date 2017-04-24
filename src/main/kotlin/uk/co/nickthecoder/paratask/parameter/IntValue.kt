@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 
-class IntValue(override val parameter: IntParameter) : StringConverter<Int?>(), Value<Int?> {
+class IntValue(override val parameter: IntParameter, initialValue: Int? = null) : StringConverter<Int?>(), Value<Int?> {
 
     override val valueListeners = ValueListeners()
 
@@ -23,6 +23,10 @@ class IntValue(override val parameter: IntParameter) : StringConverter<Int?>(), 
             property.set(v)
         }
         get() = property.get()
+
+    init {
+        value = initialValue
+    }
 
     override var stringValue: String
         get() = toString(value)
