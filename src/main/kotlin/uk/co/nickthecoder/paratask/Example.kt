@@ -11,7 +11,7 @@ class Example : SimpleTask() {
     override val taskD = TaskDescription()
 
     init {
-        val greeting = StringParameter("Greeting")
+        val greeting = StringParameter("Greeting", value="Hello")
         val range = GroupParameter("Range")
         val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
         val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)

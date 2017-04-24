@@ -1,5 +1,68 @@
-.form { -fx-padding: 10px 10px 30px 10px; -fx-spacing: 10px; }
-.task-prompter > .scroll-pane { padding: 50px; -fx-background-insets: 0; -fx-padding: 0; }
-.error { -fx-text-fill: #a00; -fx-padding: 5px 0 0 0; }
-.buttons { -fx-padding: 10px; -fx-hgap: 10px; -fx-vgap: 10px; -fx-alignment: top-right; }
-.buttons .button { -fx-min-width: 90px; }
+/****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.ParametersForm  *
+*   uk.co.nickthecoder.paratask.gui.LabelledField   *
+*                                                   *
+*****************************************************/
+
+.form {
+    -fx-padding: 10px 10px 30px 10px;
+    -fx-spacing: 10px;
+}
+
+.task-prompter > .scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.error {
+    -fx-text-fill: #a00;
+    -fx-padding: 5px 0 0 0;
+}
+
+/****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.TaskPrompter    *
+*                                                   *
+*****************************************************/
+
+.buttons {
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+    -fx-alignment: top-right;
+}
+
+.buttons > .button {
+    -fx-min-width: 90px;
+}
+
+/****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.Boxed           *
+*                                                   *
+*****************************************************/
+ 
+.boxed-title {
+    -fx-background-color:
+    -fx-background;
+    -fx-padding: 0 5 0 5;
+    -fx-translate-x: 8px;
+    -fx-translate-y: -8px;
+}
+
+.boxed-border {
+    -fx-border-insets: 10 5 5 5;
+    -fx-border-color: -fx-box-border;
+    -fx-border-width: 1;
+    -fx-border-radius: 3px;
+}
+
+.boxed-content {
+    -fx-padding: 18 13 13 13;
+}
+
+/****************************************************
+*   End :                                           *
+*****************************************************/
+ 

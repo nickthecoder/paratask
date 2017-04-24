@@ -24,7 +24,7 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
 
     init {
         groupParameter.forEach() { parameter ->
-            field(parameter, values)
+            addParameter(parameter, values)
         }
     }
 
@@ -64,14 +64,19 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
         getStyleClass().add("form");
     }
 
-    fun field(parameter: Parameter, values: Values): ParameterField {
-        val field = parameter.createField(values)
-        field.getStyleClass().add("field-${parameter.name}")
+    fun addParameter(parameter: Parameter, values: Values): Node {
 
-        field.form = this
-        children.add(field)
-        fieldSet.add(field)
-        return field
+        val node = parameter.createField(values)
+
+        children.add(node)
+
+        if (node is ParameterField) {
+            node.getStyleClass().add("field-${parameter.name}")
+            node.form = this
+            fieldSet.add(node)
+        }
+
+        return node
     }
 
     internal fun calculateColumnPreferences() {

@@ -9,7 +9,6 @@ import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 
 class FormTest : GuiTest() {
 
@@ -34,9 +33,9 @@ class FormTest : GuiTest() {
 
         form = ParametersForm(taskD.root, values)
 
-        firstF = form.field(firstP, values)
-        helloF = form.field(helloP, values)
-        worldF = form.field(worldP, values)
+        firstF = form.addParameter(firstP, values) as ParameterField
+        helloF = form.addParameter(helloP, values) as ParameterField
+        worldF = form.addParameter(worldP, values) as ParameterField
 
         return form
     }

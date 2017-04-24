@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import javafx.scene.Node
 
 interface Parameter {
 
@@ -8,7 +8,7 @@ interface Parameter {
 
     val label: String
 
-    fun createField(values: Values): ParameterField
+    fun createField(values: Values): Node
 
     fun isStretchy(): Boolean
 

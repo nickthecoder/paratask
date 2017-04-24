@@ -1,14 +1,17 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.scene.Node
+import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.gui.LabelledField
 import uk.co.nickthecoder.paratask.gui.ParametersForm
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class GroupParameter(
         name: String,
         override val label: String = name.uncamel(),
-        val isRoot: Boolean = false)
+        val isRoot: Boolean = false,
+        val collapsable: Boolean = true,
+        val expanded: Boolean = true)
 
     : AbstractParameter(name), Iterable<Parameter> {
 
@@ -68,14 +71,20 @@ class GroupParameter(
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(values: Values): ParametersForm {
+    override fun createField(values: Values): Node {
         val parametersForm = ParametersForm(this, values)
 
-        //if (isRoot) {
-        //    return BoxedField(this, parametersForm)
-        //} else {
-        return parametersForm
-        //}
+        if (isRoot) {
+            return parametersForm
+        } else {
+            val titledPane = TitledPane(label, parametersForm)
+            titledPane.setCollapsible(collapsable)
+            if (collapsable) {
+                titledPane.setExpanded(expanded)
+            }
+            return titledPane
+            //return Boxed(label, parametersForm)
+        }
     }
 
     override fun errorMessage(values: Values): String? = null
