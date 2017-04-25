@@ -56,11 +56,9 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
         val scrollPane = ScrollPane(form)
         scrollPane.fitToWidthProperty().set(true)
-        scrollPane.getStyleClass().add("scroll-pane")
 
-        root.bottom = buttons
         root.center = scrollPane
-
+        root.bottom = buttons
     }
 
     private fun onCancel() {
@@ -123,7 +121,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     fun placeOnStage(stage: Stage) {
         this.stage = stage
-        stage.title = task.taskD.name
+        stage.title = task.taskD.title
 
         cancelButton.visibleProperty().set(true)
 
@@ -133,7 +131,6 @@ open class TaskPrompter(val task: Task, val values: Values) {
         scene.getStylesheets().add(cssLocation)
 
         stage.setScene(scene)
-        println("Showing TaskPrompter")
         stage.show()
     }
 }

@@ -7,7 +7,10 @@ import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.layout.Pane
+import javafx.scene.text.Text
+import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
@@ -23,6 +26,9 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
     internal val fieldSet = mutableListOf<ParameterField>()
 
     init {
+        if (groupParameter.description.length > 0) {
+            children.add(TextFlow(Text(groupParameter.description)))
+        }
         groupParameter.forEach() { parameter ->
             addParameter(parameter, values)
         }
@@ -131,24 +137,27 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
     override fun computePrefWidth(height: Double): Double {
         calculateColumnPreferences()
 
-        var w = spacing
+        var w = -spacing
 
         columns.forEach {
-            w += it.prefWidth
+            w += it.prefWidth + spacing
         }
 
         return w + insets.left + insets.right
     }
 
     override fun computeMinHeight(width: Double): Double {
-        val sum = sum(getManagedChildren(), Node::minHeight, width)
-        return sum + (fieldSet.size - 1) * spacing + insets.top + insets.bottom
+        val mchildren: List<Node> = getManagedChildren()
+        val sum = sum(mchildren, Node::minHeight, width)
+        return sum + (mchildren.size - 1) * spacing + insets.top + insets.bottom
     }
 
-    override fun computePrefHeight(width: Double): Double {
-        val sum = sum(getManagedChildren(), Node::prefHeight, width)
+    override fun computePrefHeight(w: Double): Double {
+        val width = if (w == -1.0) computePrefWidth(1.0) else w
 
-        return sum + (fieldSet.size - 1) * spacing + insets.top + insets.bottom
+        val mchildren: List<Node> = getManagedChildren()
+        val sum = sum(mchildren, Node::prefHeight, width)
+        return sum + (mchildren.size - 1) * spacing + insets.top + insets.bottom
     }
 
     override fun layoutChildren() {

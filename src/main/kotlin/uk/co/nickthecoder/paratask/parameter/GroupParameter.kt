@@ -9,6 +9,7 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class GroupParameter(
         name: String,
         override val label: String = name.uncamel(),
+        val description: String = "",
         val isRoot: Boolean = false,
         val collapsable: Boolean = true,
         val expanded: Boolean = true)

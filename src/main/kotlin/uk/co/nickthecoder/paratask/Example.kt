@@ -8,15 +8,26 @@ import uk.co.nickthecoder.paratask.parameter.Values
 
 class Example : SimpleTask() {
 
-    override val taskD = TaskDescription()
+    override val taskD = TaskDescription(
+            name = "example",
+            description = """
+This is an example showing various types of parameters. You can look at the source code on git hub :
+
+https://github.com/nickthecoder/paratask/
+ 
+This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
+"""
+    )
+
+    val greeting = StringParameter("Greeting", value = "Hello")
+    val range = GroupParameter("Range", description = """
+Here we see GroupParameter in action
+""")
+    val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
+    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)
 
     init {
-        val greeting = StringParameter("Greeting", value="Hello")
-        val range = GroupParameter("Range")
-        val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
-        val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)
-
-        range.addParameters( rangeFrom, rangeTo)
+        range.addParameters(rangeFrom, rangeTo)
         taskD.addParameters(greeting, range)
     }
 
@@ -34,6 +45,14 @@ class Example : SimpleTask() {
         //println( "Example Task Sleeping")
         //Thread.sleep(1000)
         //println( "Example Task Ended")
+    }
+
+    override fun check(values: Values) {
+        val from = rangeFrom.valueFrom(values).value!!
+        val to = rangeTo.valueFrom(values).value!!
+        if (from > to) {
+            throw ParameterException(rangeTo, "Must be less than 'from'")
+        }
     }
 }
 

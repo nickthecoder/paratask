@@ -3,12 +3,14 @@ package uk.co.nickthecoder.paratask
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.util.uncamel
 
-class TaskDescription(var name: String = "") {
+class TaskDescription(
+        val name: String = "",
+        val title: String = name.uncamel(),
+        val description: String = "") {
 
-    var description: String = ""
-
-    val root: GroupParameter = GroupParameter("taskRoot", isRoot = true)
+    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description, isRoot = true)
 
     fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }

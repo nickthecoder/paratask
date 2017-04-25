@@ -9,16 +9,12 @@ import uk.co.nickthecoder.paratask.gui.ParametersForm.Column
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
-open class LabelledField(
-        override val parameter: Parameter)
-
-    : ParameterField(parameter) {
+open class LabelledField : ParameterField {
 
     val label: Label
 
-    init {
-        // Note we need "super" because parameter isn't defined yet.
-        this.label = Label(super.parameter.label)
+    constructor(parameter: Parameter) : super(parameter) {
+        this.label = Label(parameter.label)
 
         getStyleClass().add("field");
         error.setVisible(false)

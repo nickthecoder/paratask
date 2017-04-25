@@ -6,14 +6,15 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.StringValue
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class StringField(override val parameter: StringParameter,
-                  values: Values)
-    : LabelledField(parameter) {
+class StringField : LabelledField {
 
     val value: StringValue
 
-    init {
+    override val parameter : StringParameter
+
+    constructor (parameter: StringParameter, values: Values) : super(parameter) {
         this.value = parameter.valueFrom(values)
+        this.parameter = parameter
         control = createControl()
     }
 
