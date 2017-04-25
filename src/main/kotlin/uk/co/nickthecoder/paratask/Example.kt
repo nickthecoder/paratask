@@ -48,6 +48,9 @@ Here we see GroupParameter in action
     }
 
     override fun check(values: Values) {
+
+        super.check(values)
+
         val from = rangeFrom.valueFrom(values).value!!
         val to = rangeTo.valueFrom(values).value!!
         if (from > to) {

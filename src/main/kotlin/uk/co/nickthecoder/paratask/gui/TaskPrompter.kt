@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ScrollPane
@@ -16,6 +17,8 @@ open class TaskPrompter(val task: Task, val values: Values) {
     var root: BorderPane
 
     var form: ParametersForm
+
+    val scrollPane: ScrollPane
 
     var stage: Stage? = null
 
@@ -54,11 +57,30 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
         root.getStyleClass().add("task-prompter")
 
-        val scrollPane = ScrollPane(form)
+        scrollPane = ScrollPane(form)
         scrollPane.fitToWidthProperty().set(true)
 
         root.center = scrollPane
         root.bottom = buttons
+    }
+
+    private fun ensureVisible(pane: ScrollPane, node: Node) {
+        // Cut and pasted code from stack overflow. Seems to work, but haven't looked further!
+        val viewport = pane.viewportBounds
+        val contentHeight = pane.content.boundsInLocal.height
+
+        val bounds = pane.content.sceneToLocal(node.localToScene(node.getBoundsInLocal()));
+
+        val nodeMinY = bounds.minY
+        val nodeMaxY = bounds.maxY
+
+        val viewportMinY = (contentHeight - viewport.height) * pane.vvalue
+        val viewportMaxY = viewportMinY + viewport.height
+        if (nodeMinY < viewportMinY) {
+            pane.vvalue = nodeMinY / (contentHeight - viewport.height)
+        } else if (nodeMaxY > viewportMaxY) {
+            pane.vvalue = (nodeMaxY - viewport.height) / (contentHeight - viewport.height)
+        }
     }
 
     private fun onCancel() {
@@ -81,7 +103,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
         // For example, if a non-valid number is typed into a IntField
         form.descendants().forEach { field ->
             if (field.isDirty()) {
-                // TODO LATER ensure the field is visible
+                ensureVisible(scrollPane, field)
                 return false;
             }
         }
@@ -103,6 +125,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
             val field = form.findField(e.parameter)
             if (field != null) {
                 field.showError(e.message!!)
+                ensureVisible(scrollPane, field)
             }
             return false
         }

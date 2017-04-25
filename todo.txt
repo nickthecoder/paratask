@@ -1,8 +1,4 @@
 
-Instead of checking if a field has an error message showing,
-    set a "dirty" flag, when an input was not stored in the value
-    Clear it when it HAS been stored (either through the GUI or via an external change)
-
 
 Scroll to error messages, and uncollapse groups too
 
