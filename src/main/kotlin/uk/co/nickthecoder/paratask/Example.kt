@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
+import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
@@ -23,6 +24,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val greeting = StringParameter("greeting", value = "Hello")
     val freeBeer = BooleanParameter("freeBeer", label = "Do you want Free Beer?")
     val threeWay = BooleanParameter("threeWay", label = "Yes / No / Maybe", required = false)
+    val directory = FileParameter("directory")
 
     val range = GroupParameter("range", description = """
 Here we see GroupParameter in action
@@ -31,7 +33,7 @@ Here we see GroupParameter in action
     val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
     init {
-        taskD.addParameters(greeting, freeBeer, threeWay, range)
+        taskD.addParameters(greeting, freeBeer, threeWay, range, directory)
         range.addParameters(rangeFrom, rangeTo)
     }
 

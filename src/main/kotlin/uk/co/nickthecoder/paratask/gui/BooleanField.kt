@@ -5,6 +5,8 @@ import javafx.scene.control.CheckBox
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.BooleanValue
+import uk.co.nickthecoder.paratask.parameter.Value
+import uk.co.nickthecoder.paratask.parameter.ValueListener
 import uk.co.nickthecoder.paratask.parameter.Values
 
 class BooleanField : LabelledField {
@@ -38,9 +40,10 @@ class BooleanField : LabelledField {
                 true -> false
                 false -> if (parameter.required) true else null
             }
-            checkBox.setIndeterminate( value.value == null)
+            checkBox.setIndeterminate(value.value == null)
         })
 
         return checkBox
     }
+
 }
