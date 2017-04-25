@@ -13,8 +13,8 @@ open class LabelledField : ParameterField {
 
     val label: Label
 
-    constructor(parameter: Parameter) : super(parameter) {
-        this.label = Label(parameter.label)
+    constructor(parameter: Parameter, label: String = parameter.label) : super(parameter) {
+        this.label = Label(label)
 
         getStyleClass().add("field");
         error.setVisible(false)
