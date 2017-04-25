@@ -11,6 +11,10 @@ open class ParameterField(open val parameter: Parameter) : Region() {
 
     val error = Label()
 
+    init {
+        error.setVisible(false)
+    }
+
     var control: Node? = null
         set(v) {
             if (field != null) {
@@ -32,5 +36,5 @@ open class ParameterField(open val parameter: Parameter) : Region() {
         error.visibleProperty().value = false
     }
 
-    fun hasError(): Boolean = error.visibleProperty().value == true
+    open fun isDirty(): Boolean = false
 }

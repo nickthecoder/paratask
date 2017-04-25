@@ -22,6 +22,8 @@ class IntField : LabelledField {
 
     val value: IntValue
 
+    private var dirty = false
+
     constructor(parameter: IntParameter, values: Values) : super(parameter) {
         this.parameter = parameter
         this.value = parameter.valueFrom(values)
@@ -61,13 +63,17 @@ class IntField : LabelledField {
                 val v = value.fromString(newValue)
                 spinner.valueFactory.value = v
                 showOrClearError(value.errorMessage(v))
+                dirty = false
             } catch (e: Exception) {
                 showError("Not an integer")
+                dirty = true
             }
         })
 
         return spinner
     }
+
+    override fun isDirty(): Boolean = dirty
 
     /**
      * Spinners normally consume the ENTER key, which means the default button won't be run when ENTER is

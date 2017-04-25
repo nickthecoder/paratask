@@ -77,9 +77,10 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     fun checkAndRun(): Boolean {
 
-        // Are there any error messages outstanding
-        form.fieldSet.forEach { field ->
-            if (field.hasError()) {
+        // Are there any "dirty" fields, where the value in the GUI isn't in the Value.
+        // For example, if a non-valid number is typed into a IntField
+        form.descendants().forEach { field ->
+            if (field.isDirty()) {
                 // TODO LATER ensure the field is visible
                 return false;
             }

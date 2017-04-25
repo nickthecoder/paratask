@@ -46,4 +46,8 @@ open class IntParameter(
         val copy = IntValue(this, valueFrom(source).value)
         return copy
     }
+
+    override fun toString() : String {
+        return "IntParameter ${name}"
+    }
 }

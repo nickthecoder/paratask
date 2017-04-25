@@ -34,4 +34,9 @@ class StringParameter(
         val copy = StringValue(this, valueFrom(source).value)
         return copy
     }
+
+    override fun toString(): String {
+        return "StringParameter ${name}"
+    }
+
 }

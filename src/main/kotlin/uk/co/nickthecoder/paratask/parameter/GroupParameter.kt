@@ -4,6 +4,7 @@ import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.ParametersForm
+import uk.co.nickthecoder.paratask.gui.WrappedParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class GroupParameter(
@@ -78,12 +79,19 @@ class GroupParameter(
         if (isRoot) {
             return parametersForm
         } else {
-            val titledPane = TitledPane(label, parametersForm)
-            titledPane.setCollapsible(collapsable)
+            return GroupTitledPane(parametersForm)
+        }
+    }
+
+    inner class GroupTitledPane(val parametersForm: ParametersForm)
+        : TitledPane(label, parametersForm), WrappedParameterField {
+
+        override val parameterField = parametersForm
+        init {
+            setCollapsible(collapsable)
             if (collapsable) {
-                titledPane.setExpanded(expanded)
+                setExpanded(expanded)
             }
-            return titledPane
         }
     }
 

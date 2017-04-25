@@ -34,8 +34,24 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
         }
     }
 
+    fun descendants(): List<ParameterField> {
+        val list = mutableListOf<ParameterField>()
+
+        fun addThem(form: ParametersForm) {
+            form.fieldSet.forEach {
+                list.add(it)
+                if (it is ParametersForm) {
+                    addThem(it)
+                }
+            }
+
+        }
+        addThem(this)
+        return list
+    }
+
     fun findField(parameter: Parameter): ParameterField? {
-        fieldSet.forEach { field ->
+        descendants().forEach { field ->
             if (field.parameter === parameter) {
                 return field
             }
@@ -76,10 +92,18 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
 
         children.add(node)
 
-        if (node is ParameterField) {
-            node.getStyleClass().add("field-${parameter.name}")
-            node.form = this
-            fieldSet.add(node)
+        val parameterField = if (node is ParameterField) {
+            node
+        } else if (node is WrappedParameterField) {
+            node.parameterField
+        } else {
+            null
+        }
+
+        if (parameterField != null) {
+            parameterField.getStyleClass().add("field-${parameter.name}")
+            parameterField.form = this
+            fieldSet.add(parameterField)
         }
 
         return node

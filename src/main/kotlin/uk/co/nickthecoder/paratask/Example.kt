@@ -24,7 +24,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 Here we see GroupParameter in action
 """)
     val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
-    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 100)
+    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
     init {
         range.addParameters(rangeFrom, rangeTo)
