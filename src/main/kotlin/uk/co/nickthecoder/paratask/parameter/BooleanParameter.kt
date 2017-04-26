@@ -13,7 +13,7 @@ class BooleanParameter(
 
     : ValueParameter<IntValue>(name = name, label = label, required = required) {
 
-    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
+    override fun errorMessage(values: Values): String? = errorMessage(value(values))
 
     fun errorMessage(v: Boolean?): String? {
 
@@ -29,10 +29,12 @@ class BooleanParameter(
 
     override fun createValue() = BooleanValue(this, value)
 
-    fun valueFrom(values: Values) = values.get(name) as BooleanValue
+    fun parameterValue(values: Values) = values.get(name) as BooleanValue
+
+    fun value(values: Values) = parameterValue(values).value
 
     override fun copyValue(source: Values): BooleanValue {
-        val copy = BooleanValue(this, valueFrom(source).value)
+        val copy = BooleanValue(this, value(source))
         return copy
     }
 

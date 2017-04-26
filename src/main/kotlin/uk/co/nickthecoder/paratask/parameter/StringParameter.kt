@@ -15,7 +15,7 @@ class StringParameter(
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
+    override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
 
     fun errorMessage(v: String): String? {
         if (required && v.length == 0) {
@@ -28,10 +28,12 @@ class StringParameter(
 
     override fun createValue() = StringValue(this, value)
 
-    fun valueFrom(values: Values) = values.get(name) as StringValue
+    fun parameterValue(values: Values) = values.get(name) as StringValue
+
+    fun value(values: Values) = parameterValue(values).value
 
     override fun copyValue(source: Values): StringValue {
-        val copy = StringValue(this, valueFrom(source).value)
+        val copy = StringValue(this, parameterValue(source).value)
         return copy
     }
 

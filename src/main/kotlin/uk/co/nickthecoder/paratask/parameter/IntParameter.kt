@@ -13,7 +13,7 @@ open class IntParameter(
 
 ) : ValueParameter<IntValue>(name = name, label = label, required = required) {
 
-    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
+    override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
 
     fun errorMessage(v: Int?): String? {
 
@@ -40,14 +40,16 @@ open class IntParameter(
 
     override fun createValue() = IntValue(this, value)
 
-    fun valueFrom(values: Values) = values.get(name) as IntValue
+    fun parameterValue(values: Values) = values.get(name) as IntValue
+
+    fun value(values: Values) = parameterValue(values).value
 
     override fun copyValue(source: Values): IntValue {
-        val copy = IntValue(this, valueFrom(source).value)
+        val copy = IntValue(this, parameterValue(source).value)
         return copy
     }
 
-    override fun toString() : String {
+    override fun toString(): String {
         return "IntParameter ${name}"
     }
 }

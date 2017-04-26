@@ -1,11 +1,16 @@
-package uk.co.nickthecoder.paratask
+package uk.co.nickthecoder.paratask.tasks
 
+import javafx.scene.paint.Color
+import uk.co.nickthecoder.paratask.CommandTask
+import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.SimpleTask
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
+import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
 class Example : SimpleTask() {
@@ -32,33 +37,33 @@ Here we see GroupParameter in action
     val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
     val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
+    val color = ChoiceParameter("color", value = Color.BLUE)
+
     init {
-        taskD.addParameters(greeting, freeBeer, threeWay, range, directory)
+
+        color.choice("red", Color.RED)
+        color.choice("green", Color.GREEN)
+        color.choice("blue", Color.BLUE)
+        color.choice("white", Color.WHITE)
+        color.choice("white", Color.BLACK)
+
+        taskD.addParameters(greeting, color, freeBeer, threeWay, range, directory)
         range.addParameters(rangeFrom, rangeTo)
     }
+
 
     override fun run(values: Values) {
         println("Example Parameter values : ")
 
-        taskD.root.descendants().forEach { parameter ->
-            if (parameter is ValueParameter<*>) {
-                if (parameter !is GroupParameter) {
-                    val value = values.get(parameter.name)
-                    println("Parameter ${parameter.name} = ${value?.value} ('${value?.stringValue}')")
-                }
-            }
-        }
+        dumpValues(values)
         //println( "Example Task Sleeping")
         //Thread.sleep(1000)
         //println( "Example Task Ended")
     }
 
     override fun check(values: Values) {
-
-        super.check(values)
-
-        val from = rangeFrom.valueFrom(values).value!!
-        val to = rangeTo.valueFrom(values).value!!
+        val from = rangeFrom.value(values)!!
+        val to = rangeTo.value(values)!!
         if (from > to) {
             throw ParameterException(rangeTo, "Must be less than 'from'")
         }

@@ -18,7 +18,7 @@ class BooleanField : LabelledField {
     constructor (parameter: BooleanParameter, values: Values)
             : super(parameter, label = if (parameter.labelOnLeft) parameter.label else "") {
 
-        this.value = parameter.valueFrom(values)
+        this.value = parameter.parameterValue(values)
         this.parameter = parameter
         control = createControl()
     }

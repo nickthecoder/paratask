@@ -51,7 +51,6 @@ class IntValue(override val parameter: IntParameter, initialValue: Int? = null) 
         return obj?.toString() ?: ""
     }
 
-
     override fun errorMessage() = errorMessage(value)
 
     fun errorMessage(v: Int?) = parameter.errorMessage(v)

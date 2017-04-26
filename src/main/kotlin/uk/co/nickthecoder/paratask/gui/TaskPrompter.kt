@@ -118,12 +118,15 @@ open class TaskPrompter(val task: Task, val values: Values) {
     }
 
     fun check(values: Values): Boolean {
+
         form.descendants().forEach { field ->
             field.clearError()
         }
 
         try {
+            task.taskD.root.check(values)
             task.check(values)
+
         } catch (e: ParameterException) {
             val field = form.findField(e.parameter)
             if (field != null) {

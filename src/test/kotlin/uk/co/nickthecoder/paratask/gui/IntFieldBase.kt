@@ -28,7 +28,7 @@ open class IntFieldBase : MyGuiTest() {
         )
 
         values = task.taskD.createValues()
-        initial5.valueFrom(values).value = 5
+        initial5.parameterValue(values).value = 5
 
         val taskPrompter = TaskPrompter(task, values)
         return taskPrompter.root

@@ -17,7 +17,7 @@ class FileParameter(
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun errorMessage(values: Values): String? = errorMessage(valueFrom(values).value)
+    override fun errorMessage(values: Values): String? = errorMessage(value(values))
 
     fun errorMessage(v: File?): String? {
         if (required && v == null) {
@@ -30,10 +30,12 @@ class FileParameter(
 
     override fun createValue() = FileValue(this, value)
 
-    fun valueFrom(values: Values) = values.get(name) as FileValue
+    fun parameterValue(values: Values) = values.get(name) as FileValue
+
+    fun value(values: Values) = parameterValue(values).value
 
     override fun copyValue(source: Values): FileValue {
-        val copy = FileValue(this, valueFrom(source).value)
+        val copy = FileValue(this, value(source))
         return copy
     }
 
