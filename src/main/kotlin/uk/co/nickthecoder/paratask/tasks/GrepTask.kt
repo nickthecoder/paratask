@@ -4,6 +4,7 @@ import uk.co.nickthecoder.paratask.CommandTask
 import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
+import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
@@ -14,42 +15,52 @@ import java.util.concurrent.TimeUnit
 class GrepTask() : SimpleTask() {
 
     override val taskD = TaskDescription(
-            name = "example",
-            description = "Search in Files Recursively")
+            name = "grep",
+            description = "Search File Contents Recursively")
+
+    val fileP = FileParameter("file", label = "File or Directory")
 
     val regexP = StringParameter("regex")
 
-    val directoryP = FileParameter("directory")
+    val matchP = ChoiceParameter<String>("match", value = "")
+            .choice("any", "", "Anywhere")
+            .choice("word", "-w", "Word")
+            .choice("line", "-x", "Line")
 
-    /*
-    val type: StringChoiceParameter StringChoiceParameter("type")
-        .choice("G", "Regular"),
-        .choice("E", "Extended"),
-        .choice("F", "Fixed"),
-        .choice("P", "Perl")
-
-     */
+    val typeP = ChoiceParameter<String>("type", value = "-E")
+            .choice("regular", "-G", "Regular")
+            .choice("extended", "-E", "Extended")
+            .choice("fixed", "-F", "Fixed")
+            .choice("perl", "-P", "Perl")
 
     val matchCaseP = BooleanParameter("matchCase", value = false)
-
-    val matchWordsP = BooleanParameter("matchWords", value = false)
-    //description = "Force pattern to match only whole words")
-
-    val matchLinesP = BooleanParameter("matchLines", value = false)
-    //description = "Force pattern to match only whole lines")
 
     val invertResultsP = BooleanParameter("invertResults", value = false)
     //description = "List files NOT matching the pattern")
 
-    val maxMatchesP = IntParameter("maxMatches", value = 1, range = 1..100)
+    val followSymLinksP = BooleanParameter("followSymLinks", value = false)
+
+    val maxMatchesP = IntParameter("maxMatches", value = 100, range = 1..Int.MAX_VALUE)
+
+    val additionalOptionsP = StringParameter("additionalOptions", value = "Hsn")
 
     init {
-        taskD.addParameters(regexP, directoryP, matchCaseP, matchWordsP, matchLinesP, invertResultsP, maxMatchesP)
+        taskD.addParameters(
+                fileP, regexP, matchCaseP,
+                typeP, matchP, invertResultsP, followSymLinksP,
+                maxMatchesP, additionalOptionsP)
     }
 
     override fun run(values: Values) {
 
-        val command = Command("grep", "-rHsn") // + type)
+        val rOrR = if (followSymLinksP.value(values) == true) "-R" else "-r"
+
+        val command = Command("grep", typeP.value(values), rOrR)
+
+        val additionalOptions = additionalOptionsP.value(values)
+        if (additionalOptions != "") {
+            command.addArgument("-" + additionalOptions)
+        }
 
         if (invertResultsP.value(values) == true) {
             command.addArgument("-L")
@@ -60,17 +71,19 @@ class GrepTask() : SimpleTask() {
         if (matchCaseP.value(values) == false) {
             command.addArgument("-i")
         }
-        if (matchWordsP.value(values) == true) {
-            command.addArgument("-w")
+
+        val match = matchP.value(values)
+        if (match != "") {
+            command.addArgument(match)
         }
-        if (matchLinesP.value(values) == true) {
-            command.addArgument("-x")
-        }
+
+        command.addArgument("-e")
+        command.addArgument(regexP.value(values))
 
         command.addArgument("--")
-        command.addArgument(regexP.value(values))
-        command.addArgument(directoryP.value(values))
+        command.addArgument(fileP.value(values))
 
+        println(command)
         command.createExec().inheritOut().inheritErr().start().waitFor(5, TimeUnit.MINUTES)
     }
 

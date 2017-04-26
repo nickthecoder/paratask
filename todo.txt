@@ -7,7 +7,11 @@ Create a Grep tool, where the ouput is part of the GUI
         Attached Tabbed ( as above, but keep multiple copies of the command output )
             Could use accordian, with the command line as the "tab".
 
+GrepTask to allow for multiple -e values, using a MultipleParameter
+
 Create tests for BooleanParameter and BooleanField
+
+Create tests for ChoiceParameter
 
 Unfurl groups if the child has an error
 

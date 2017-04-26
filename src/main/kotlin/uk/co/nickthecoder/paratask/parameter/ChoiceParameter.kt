@@ -6,7 +6,7 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
-        value: T,
+        value: T? = null,
         required: Boolean = true)
     : ValueParameter<ChoiceValue<T?>>(name = name, label = label, required = required) {
 
@@ -14,8 +14,9 @@ class ChoiceParameter<T>(
 
     val choiceValue = ChoiceValue<T>(this, value)
 
-    fun choice(key: String, value: T?, label: String = key.uncamel()) {
+    fun choice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
         choiceValue.addChoice(key, value, label)
+        return this
     }
 
     fun errorMessage(v: T?): String? {
