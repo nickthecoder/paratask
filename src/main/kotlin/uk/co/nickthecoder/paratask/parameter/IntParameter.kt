@@ -7,11 +7,16 @@ import uk.co.nickthecoder.paratask.util.uncamel
 open class IntParameter(
         name: String,
         label: String = name.uncamel(),
+        description: String = "",
         val value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
 
-) : ValueParameter<IntValue>(name = name, label = label, required = required) {
+) : ValueParameter<IntValue>(
+        name = name,
+        label = label,
+        description = description,
+        required = required) {
 
     override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
 

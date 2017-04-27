@@ -4,10 +4,9 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
-import javafx.scene.layout.Region
+import javafx.scene.control.Tooltip
 import uk.co.nickthecoder.paratask.gui.ParametersForm.Column
 import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.Values
 
 open class LabelledField : ParameterField {
 
@@ -15,6 +14,9 @@ open class LabelledField : ParameterField {
 
     constructor(parameter: Parameter, label: String = parameter.label) : super(parameter) {
         this.label = Label(label)
+        if (parameter.description != "") {
+            this.label.tooltip = Tooltip(parameter.description)
+        }
 
         getStyleClass().add("field");
         error.setVisible(false)

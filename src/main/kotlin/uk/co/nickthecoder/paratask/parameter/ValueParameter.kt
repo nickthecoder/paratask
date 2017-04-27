@@ -17,8 +17,9 @@ import uk.co.nickthecoder.paratask.ParameterException
 abstract class ValueParameter<T : Value<*>>(
         name: String,
         label: String,
+        description: String,
         var required: Boolean = false)
 
-    : AbstractParameter(name, label = label) {
+    : AbstractParameter(name, label = label, description = description) {
 
 }

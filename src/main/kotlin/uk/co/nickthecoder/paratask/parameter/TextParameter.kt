@@ -7,9 +7,10 @@ import uk.co.nickthecoder.paratask.gui.ParametersForm
 abstract class TextParameter<T : Value<*>>(
         name: String,
         label: String,
+        description: String,
         required: Boolean,
         var columns: Int = 0)
-    : ValueParameter<T>(name = name, label = label, required = required) {
+    : ValueParameter<T>(name = name, label = label, description = description, required = required) {
 
     protected fun adjustNode(node: TextField) {
         if (columns != 0) {

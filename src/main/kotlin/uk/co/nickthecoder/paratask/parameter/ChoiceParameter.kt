@@ -6,9 +6,15 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
+        description: String = "",
         value: T? = null,
         required: Boolean = true)
-    : ValueParameter<ChoiceValue<T?>>(name = name, label = label, required = required) {
+
+    : ValueParameter<ChoiceValue<T?>>(
+        name = name,
+        label = label,
+        description = description,
+        required = required) {
 
     override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
 

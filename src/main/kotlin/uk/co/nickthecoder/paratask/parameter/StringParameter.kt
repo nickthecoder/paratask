@@ -6,12 +6,18 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class StringParameter(
         name: String,
         label: String = name.uncamel(),
+        description: String = "",
         val value: String = "",
         required: Boolean = true,
         columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<StringValue>(name = name, label = label, required = required, columns = columns) {
+    : TextParameter<StringValue>(
+        name = name,
+        label = label,
+        description = description,
+        required = required,
+        columns = columns) {
 
     override fun isStretchy(): Boolean = stretchy
 

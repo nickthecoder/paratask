@@ -18,16 +18,20 @@ class GrepTask() : SimpleTask() {
             name = "grep",
             description = "Search File Contents Recursively")
 
-    val fileP = FileParameter("file", label = "File or Directory")
+    val fileP = FileParameter("file", label = "File or Directory",
+            description = "Search a single file, or a whole directory tree")
 
-    val regexP = StringParameter("regex")
+    val regexP = StringParameter("regex",
+            description = "The regular expression to search for")
 
-    val matchP = ChoiceParameter<String>("match", value = "")
-            .choice("any", "", "Anywhere")
+    val matchP = ChoiceParameter<String>("match", value = "",
+            description = "Match a word, a line or any part of the file")
+            .choice("any", "", "Any Part")
             .choice("word", "-w", "Word")
             .choice("line", "-x", "Line")
 
-    val typeP = ChoiceParameter<String>("type", value = "-E")
+    val typeP = ChoiceParameter<String>("type", value = "-E",
+            description = "The type of matching\nNote, Perl is still experimental")
             .choice("regular", "-G", "Regular")
             .choice("extended", "-E", "Extended")
             .choice("fixed", "-F", "Fixed")
@@ -35,12 +39,14 @@ class GrepTask() : SimpleTask() {
 
     val matchCaseP = BooleanParameter("matchCase", value = false)
 
-    val invertResultsP = BooleanParameter("invertResults", value = false)
-    //description = "List files NOT matching the pattern")
+    val invertResultsP = BooleanParameter("invertResults", value = false,
+            description = "List files NOT matching the regular expression")
 
-    val followSymLinksP = BooleanParameter("followSymLinks", value = false)
+    val followSymLinksP = BooleanParameter("followSymLinks", value = false,
+            description = "Follow symbolic links when searching recursively")
 
-    val maxMatchesP = IntParameter("maxMatches", value = 100, range = 1..Int.MAX_VALUE)
+    val maxMatchesP = IntParameter("maxMatches", value = null, range = 1..Int.MAX_VALUE, required = false,
+            description = "The maximum number of matches to show per file.\nLeave blank to show ALL matches.")
 
     val additionalOptionsP = StringParameter("additionalOptions", value = "Hsn")
 
@@ -65,8 +71,11 @@ class GrepTask() : SimpleTask() {
         if (invertResultsP.value(values) == true) {
             command.addArgument("-L")
 
-            command.addArgument("-m");
-            command.addArgument(maxMatchesP.value(values));
+            val maxMatches = maxMatchesP.value(values)
+            if (maxMatches != null) {
+                command.addArgument("-m");
+                command.addArgument(maxMatches);
+            }
         }
         if (matchCaseP.value(values) == false) {
             command.addArgument("-i")

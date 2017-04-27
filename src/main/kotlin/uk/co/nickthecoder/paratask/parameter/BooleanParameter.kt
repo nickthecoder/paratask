@@ -7,11 +7,12 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class BooleanParameter(
         name: String,
         label: String = name.uncamel(),
+        description: String = "",
         val value: Boolean? = null,
         required: Boolean = true,
         val labelOnLeft: Boolean = true)
 
-    : ValueParameter<IntValue>(name = name, label = label, required = required) {
+    : ValueParameter<IntValue>(name = name, label = label, description = description, required = required) {
 
     override fun errorMessage(values: Values): String? = errorMessage(value(values))
 

@@ -10,12 +10,12 @@ import uk.co.nickthecoder.paratask.util.uncamel
 class GroupParameter(
         name: String,
         override val label: String = name.uncamel(),
-        val description: String = "",
+        description: String = "",
         val isRoot: Boolean = false,
         val collapsable: Boolean = true,
         val expanded: Boolean = true)
 
-    : AbstractParameter(name), Iterable<Parameter> {
+    : AbstractParameter(name, description = description), Iterable<Parameter> {
 
     private val children = mutableListOf<Parameter>()
 
@@ -87,6 +87,7 @@ class GroupParameter(
         : TitledPane(label, parametersForm), WrappedParameterField {
 
         override val parameterField = parametersForm
+
         init {
             setCollapsible(collapsable)
             if (collapsable) {

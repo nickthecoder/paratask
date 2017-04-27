@@ -8,6 +8,8 @@ interface Parameter {
 
     val label: String
 
+    val description: String
+
     fun createField(values: Values): Node
 
     fun isStretchy(): Boolean
