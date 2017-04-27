@@ -8,35 +8,7 @@ class BooleanValue(
         override val parameter: BooleanParameter,
         initialValue: Boolean? = null)
 
-    : StringConverter<Boolean?>(), Value<Boolean?> {
-
-    override val valueListeners = ValueListeners()
-
-    var property = object : SimpleObjectProperty<Boolean?>() {
-        override fun set(v: Boolean?) {
-            val changed = v != get()
-            if (changed) {
-                valueListeners.fireChanged(this@BooleanValue)
-                super.set(v)
-            }
-        }
-    }
-
-    override var value: Boolean?
-        set(v: Boolean?) {
-            property.set(v)
-        }
-        get() = property.get()
-
-    init {
-        value = initialValue
-    }
-
-    override var stringValue: String
-        get() = toString(value)
-        set(v: String) {
-            value = fromString(v)
-        }
+    : AbstractValue<Boolean?>(initialValue) {
 
     override fun fromString(str: String): Boolean? {
         val trimmed = str.trim()
@@ -53,11 +25,7 @@ class BooleanValue(
         return obj?.toString() ?: ""
     }
 
+    override fun errorMessage(v: Boolean?) = parameter.errorMessage(v)
 
-    override fun errorMessage() = errorMessage(value)
-
-    fun errorMessage(v: Boolean?) = parameter.errorMessage(v)
-
-    override fun toString(): String = "BooleanValue name '${parameter.name}' = ${value}"
-
+    override fun toString(): String = "Boolean" + super.toString()
 }

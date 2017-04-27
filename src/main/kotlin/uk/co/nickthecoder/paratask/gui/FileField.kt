@@ -24,7 +24,7 @@ class FileField : LabelledField {
         if (parameter.columns > 0) {
             textField.prefColumnCount = parameter.columns
         }
-        textField.textProperty().bindBidirectional(value.stringProperty);
+        textField.textProperty().bindBidirectional(value.property, value);
         textField.textProperty().addListener({ _, _, _: String ->
             val error = parameter.errorMessage(value.value)
             if (error == null) {

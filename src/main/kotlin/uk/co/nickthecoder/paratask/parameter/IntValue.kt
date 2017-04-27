@@ -4,35 +4,11 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 
-class IntValue(override val parameter: IntParameter, initialValue: Int? = null) : StringConverter<Int?>(), Value<Int?> {
+class IntValue(
+        override val parameter: IntParameter,
+        initialValue: Int? = null)
 
-    override val valueListeners = ValueListeners()
-
-    var property = object : SimpleObjectProperty<Int?>() {
-        override fun set(v: Int?) {
-            val changed = v != get()
-            if (changed) {
-                valueListeners.fireChanged(this@IntValue)
-                super.set(v)
-            }
-        }
-    }
-
-    override var value: Int?
-        set(v: Int?) {
-            property.set(v)
-        }
-        get() = property.get()
-
-    init {
-        value = initialValue
-    }
-
-    override var stringValue: String
-        get() = toString(value)
-        set(v: String) {
-            value = fromString(v)
-        }
+    : AbstractValue<Int?>(initialValue) {
 
     override fun fromString(str: String): Int? {
         val trimmed = str.trim()
@@ -51,10 +27,8 @@ class IntValue(override val parameter: IntParameter, initialValue: Int? = null) 
         return obj?.toString() ?: ""
     }
 
-    override fun errorMessage() = errorMessage(value)
+    override fun errorMessage(v: Int?) = parameter.errorMessage(v)
 
-    fun errorMessage(v: Int?) = parameter.errorMessage(v)
-
-    override fun toString(): String = "IntValue name '${parameter.name}' = ${value}"
+    override fun toString(): String = "Int" + super.toString()
 
 }

@@ -5,30 +5,11 @@ import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class ChoiceValue<T>(override val parameter: ChoiceParameter<T>, initialValue: T?)
-    : StringConverter<T?>(), Value<T?> {
+class ChoiceValue<T>(
+        override val parameter: ChoiceParameter<T>,
+        initialValue: T?)
 
-    override val valueListeners = ValueListeners()
-
-    var property = object : SimpleObjectProperty<T>() {
-        override fun set(v: T) {
-            val changed = v != get()
-            if (changed) {
-                valueListeners.fireChanged(this@ChoiceValue)
-                super.set(v)
-            }
-        }
-    }
-
-    override var value: T?
-        set(v: T?) {
-            property.set(v)
-        }
-        get() = property.get()
-
-    init {
-        value = initialValue
-    }
+    : AbstractValue<T?>(initialValue) {
 
     val keyToValueMap = LinkedHashMap<String, T?>()
     val valueToLabelMap = LinkedHashMap<T?, String>()
@@ -70,9 +51,7 @@ class ChoiceValue<T>(override val parameter: ChoiceParameter<T>, initialValue: T
         return if (label == null) "<unknown>" else label
     }
 
-    override fun errorMessage() = errorMessage(value)
-
-    fun errorMessage(v: T?) = parameter.errorMessage(v)
+    override fun errorMessage(v: T?) = parameter.errorMessage(v)
 
     fun copy(): ChoiceValue<T> {
         val result = ChoiceValue<T>(parameter, value)
@@ -83,6 +62,6 @@ class ChoiceValue<T>(override val parameter: ChoiceParameter<T>, initialValue: T
         return result
     }
 
-    override fun toString(): String = "ChoiceValue name '${parameter.name}' = ${value}"
+    override fun toString(): String = "Choice" + super.toString()
 
 }
