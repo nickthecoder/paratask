@@ -11,6 +11,8 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.util.Exec
+import uk.co.nickthecoder.paratask.util.SimpleSink
 
 open class TaskPrompter(val task: Task, val values: Values) {
 
@@ -140,7 +142,10 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     open fun run() {
         Thread({
-            task.run(values)
+            val result = task.run(values)
+            if (result is Exec) {
+                processOutput(result)
+            }
         }).start()
     }
 
@@ -162,5 +167,14 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
         stage.setScene(scene)
         stage.show()
+    }
+
+    fun processOutput(exec: Exec) {
+        exec.outSink = object : SimpleSink() {
+            override fun sink(buffer: CharArray, len: Int) {
+                // TODO - dump the output into a TextArea (or similar)
+            }
+        }
+        exec.start()
     }
 }

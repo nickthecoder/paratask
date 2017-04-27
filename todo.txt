@@ -1,12 +1,3 @@
-Create a Grep tool, where the ouput is part of the GUI
-    Parameter option to choose what to do with the output of the command
-        Pass Through (will show in terminal calling GrepTask)
-        New Window
-        Tabbed ( in a window, but keep multiple copies of the command output)
-        Attached ( connected to the TaskPrompter window)
-        Attached Tabbed ( as above, but keep multiple copies of the command output )
-            Could use accordian, with the command line as the "tab".
-
 GrepTask to allow for multiple -e values, using a MultipleParameter
 
 Create tests for BooleanParameter and BooleanField

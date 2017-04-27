@@ -2,8 +2,9 @@ package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.gui.ChoiceField
 import uk.co.nickthecoder.paratask.util.uncamel
+import uk.co.nickthecoder.paratask.util.Labelled
 
-class ChoiceParameter<T>(
+open class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
@@ -39,4 +40,12 @@ class ChoiceParameter<T>(
 
     override fun toString(): String = "Choice" + super.toString()
 
+}
+
+inline fun <reified T : Enum<T>> ChoiceParameter<T>.enumChoices(): ChoiceParameter<T> {
+    enumValues<T>().forEach { item ->
+        val label = if (item is Labelled) item.label else item.name
+        this.choice(key = item.name, value = item, label = label)
+    }
+    return this
 }

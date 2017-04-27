@@ -21,5 +21,5 @@ interface Task {
      * @param values When running form a GUI, these are a COPY of the values, and therefore changing them will
      * have no effect on the values in the GUI.
      */
-    fun run(values: Values)
+    fun run(values: Values) : Any?
 }

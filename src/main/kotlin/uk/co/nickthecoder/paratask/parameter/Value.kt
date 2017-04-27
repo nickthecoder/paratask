@@ -4,9 +4,9 @@ import javafx.beans.property.ObjectProperty
 
 interface Value<T> {
 
-    val valueListeners: ValueListeners
-
     val parameter: Parameter
+
+    val valueListeners: ValueListeners
 
     var value: T
 

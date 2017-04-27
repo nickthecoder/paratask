@@ -24,8 +24,11 @@ open class SimpleSink(val bufferSize: Int = 200) : Sink {
         try {
             val buffer = CharArray(bufferSize)
 
-            var amount: Int = reader.read(buffer, 0, bufferSize)
-            while (amount != -1) {
+            while ( true ) {
+                var amount: Int = reader.read(buffer, 0, bufferSize)
+                if ( amount == -1 ) {
+                    break
+                }
                 sink(buffer, amount);
             }
         } catch (e: IOException) {

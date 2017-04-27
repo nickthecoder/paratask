@@ -1,19 +1,18 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.Node
+import uk.co.nickthecoder.paratask.util.Labelled
 
-interface Parameter {
+interface Parameter : Labelled {
 
     val name: String
 
-    val label: String
-
     val description: String
-
-    fun createField(values: Values): Node
 
     fun isStretchy(): Boolean
 
     fun errorMessage(values: Values): String?
+
+    fun createField(values: Values): Node
 
 }
