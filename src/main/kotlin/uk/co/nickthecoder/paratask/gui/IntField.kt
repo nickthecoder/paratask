@@ -6,8 +6,8 @@ import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
+import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.IntValue
 import uk.co.nickthecoder.paratask.parameter.Values
 
 val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
@@ -20,7 +20,7 @@ class IntField : LabelledField {
 
     override val parameter: IntParameter
 
-    val value: IntValue
+    val value: AbstractValue<Int?>
 
     private var dirty = false
 

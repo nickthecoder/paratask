@@ -4,7 +4,7 @@ import javafx.scene.control.TextField
 import uk.co.nickthecoder.paratask.gui.LabelledField
 import uk.co.nickthecoder.paratask.gui.ParametersForm
 
-abstract class TextParameter<T : Value<*>>(
+abstract class TextParameter<T>(
         name: String,
         label: String,
         description: String,

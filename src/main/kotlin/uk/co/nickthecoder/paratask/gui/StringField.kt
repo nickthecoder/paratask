@@ -2,13 +2,13 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
 import javafx.scene.control.TextField
+import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.StringValue
 import uk.co.nickthecoder.paratask.parameter.Values
 
 class StringField : LabelledField {
 
-    val value: StringValue
+    val value: AbstractValue<String>
 
     override val parameter : StringParameter
 

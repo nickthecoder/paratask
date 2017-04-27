@@ -12,17 +12,11 @@ class BooleanParameter(
         required: Boolean = true,
         val labelOnLeft: Boolean = true)
 
-    : ValueParameter<IntValue>(name = name, label = label, description = description, required = required) {
-
-    override fun errorMessage(values: Values): String? = errorMessage(value(values))
-
-    fun errorMessage(v: Boolean?): String? {
-
-        if (v == null) {
-            if (required) return "Required"
-        }
-        return null
-    }
+    : ValueParameter<Boolean?>(
+        name = name,
+        label = label,
+        description = description,
+        required = required) {
 
     override fun isStretchy() = false
 
@@ -30,16 +24,12 @@ class BooleanParameter(
 
     override fun createValue() = BooleanValue(this, value)
 
-    fun parameterValue(values: Values) = values.get(name) as BooleanValue
-
-    fun value(values: Values) = parameterValue(values).value
-
     override fun copyValue(source: Values): BooleanValue {
         val copy = BooleanValue(this, value(source))
         return copy
     }
 
-    override fun toString(): String {
-        return "BooleanParameter ${name}"
-    }
+    override fun parameterValue(values: Values) = super.parameterValue(values) as BooleanValue
+
+    override fun toString(): String = "Boolean" + super.toString()
 }

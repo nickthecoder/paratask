@@ -15,24 +15,23 @@ class StringFieldTest : StringFieldBase() {
     @Test
     fun initialValues() {
         assertEquals("", findTextField("optional").text)
-        assertEquals("", optional.parameterValue(values).value)
+        assertEquals("", optional.value(values))
 
         assertEquals("", findTextField("required").text)
-        assertEquals("", required.parameterValue(values).value)
+        assertEquals("", required.value(values))
 
         assertEquals("A", findTextField("initialA").text)
-        assertEquals("A", initialA.parameterValue(values).value)
+        assertEquals("A", initialA.value(values))
     }
 
     @Test
     fun emptyOptionalValues() {
         var field = findTextField("optional")
         val paramter = optional
-        val value = paramter.parameterValue(values)
         val error = findError("optional")
 
         clickAndClear(field).type("x")
-        assertEquals("x", value.value)
+        assertEquals("x", paramter.value(values))
         assertEquals(false, error.isVisible)
 
         clickAndClear(field)
@@ -46,7 +45,7 @@ class StringFieldTest : StringFieldBase() {
         val error = findError("required")
 
         clickAndClear(field).type("x")
-        assertEquals("x", parameter.parameterValue(values).value)
+        assertEquals("x", parameter.value(values))
         assertEquals(false, error.isVisible)
 
         clickAndClear(field)

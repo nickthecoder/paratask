@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.ObjectProperty
+
 interface Value<T> {
 
     val valueListeners: ValueListeners

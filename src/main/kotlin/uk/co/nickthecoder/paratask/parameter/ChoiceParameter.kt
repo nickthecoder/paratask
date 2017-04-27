@@ -10,13 +10,12 @@ class ChoiceParameter<T>(
         value: T? = null,
         required: Boolean = true)
 
-    : ValueParameter<ChoiceValue<T?>>(
+    : ValueParameter<T>(
         name = name,
         label = label,
         description = description,
         required = required) {
 
-    override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
 
     val choiceValue = ChoiceValue<T>(this, value)
 
@@ -25,27 +24,19 @@ class ChoiceParameter<T>(
         return this
     }
 
-    fun errorMessage(v: T?): String? {
-        return if (v == null && required) "Required" else null
-    }
-
     override fun isStretchy() = false
 
     override fun createField(values: Values): ChoiceField<T> = ChoiceField<T>(this, values)
 
     override fun createValue() = choiceValue.copy()
 
-    fun parameterValue(values: Values): ChoiceValue<T> = values.get(name) as ChoiceValue<T>
-
-    fun value(values: Values) = parameterValue(values).value
-
     override fun copyValue(source: Values): ChoiceValue<T> {
-        val copy = ChoiceValue<T>(this, parameterValue(source).value)
+        val copy = ChoiceValue<T>(this, value(source))
         return copy
     }
 
-    override fun toString(): String {
-        return "ChoiceParameter ${name}"
-    }
+    override fun parameterValue(values: Values) = super.parameterValue(values) as ChoiceValue<T>
+
+    override fun toString(): String = "Choice" + super.toString()
 
 }

@@ -8,4 +8,5 @@ abstract class AbstractParameter(
         override val description: String = "")
     : Parameter {
 
+    override fun toString() = "Parmaeter ${name}"
 }

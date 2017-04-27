@@ -2,13 +2,14 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
 import javafx.scene.control.TextField
+import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.FileParameter
-import uk.co.nickthecoder.paratask.parameter.FileValue
 import uk.co.nickthecoder.paratask.parameter.Values
+import java.io.File
 
 class FileField : LabelledField {
 
-    val value: FileValue
+    val value: AbstractValue<File?>
 
     override val parameter: FileParameter
 

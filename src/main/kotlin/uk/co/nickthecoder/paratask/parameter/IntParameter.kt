@@ -10,32 +10,30 @@ open class IntParameter(
         description: String = "",
         val value: Int? = null,
         required: Boolean = true,
-        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
+        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE))
 
-) : ValueParameter<IntValue>(
+    : ValueParameter<Int?>(
         name = name,
         label = label,
         description = description,
         required = required) {
 
-    override fun errorMessage(values: Values): String? = errorMessage(parameterValue(values).value)
-
-    fun errorMessage(v: Int?): String? {
+    override fun errorMessage(v: Int?): String? {
 
         if (v == null) {
-            if (required) return "Required"
+            return super.errorMessage(v)
+        }
 
-        } else {
-            if (!range.contains(v)) {
-                if (range.start == Int.MIN_VALUE) {
-                    return "Cannot be more than ${range.endInclusive}"
-                } else if (range.endInclusive == Int.MAX_VALUE) {
-                    return "Cannot be less than ${range.start}"
-                } else {
-                    return "Must be in the range ${range.start}..${range.endInclusive}"
-                }
+        if (!range.contains(v)) {
+            if (range.start == Int.MIN_VALUE) {
+                return "Cannot be more than ${range.endInclusive}"
+            } else if (range.endInclusive == Int.MAX_VALUE) {
+                return "Cannot be less than ${range.start}"
+            } else {
+                return "Must be in the range ${range.start}..${range.endInclusive}"
             }
         }
+
         return null
     }
 
@@ -45,16 +43,13 @@ open class IntParameter(
 
     override fun createValue() = IntValue(this, value)
 
-    fun parameterValue(values: Values) = values.get(name) as IntValue
-
-    fun value(values: Values) = parameterValue(values).value
-
     override fun copyValue(source: Values): IntValue {
-        val copy = IntValue(this, parameterValue(source).value)
+        val v: Int? = value(source)
+        val copy = IntValue(this, v)
         return copy
     }
 
-    override fun toString(): String {
-        return "IntParameter ${name}"
-    }
+    override fun parameterValue(values: Values) = super.parameterValue(values) as IntValue
+
+    override fun toString(): String = "Int" + super.toString()
 }

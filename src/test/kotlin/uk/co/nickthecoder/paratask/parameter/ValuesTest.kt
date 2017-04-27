@@ -31,8 +31,8 @@ class ValuesTest {
         val source = taskD.createValues()
 
         // Set some default values
-        intP.parameterValue(source).value = 5
-        innerP.parameterValue(source).value = "unchanged"
+        intP.set(source, 5)
+        innerP.set(source, "unchanged")
 
         // Copy the values
         val copy = taskD.copyValues(source)

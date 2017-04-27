@@ -14,7 +14,7 @@ class FileParameter(
         columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<StringValue>(
+    : TextParameter<File?>(
         name = name,
         label = label,
         description = description,
@@ -23,30 +23,17 @@ class FileParameter(
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun errorMessage(values: Values): String? = errorMessage(value(values))
-
-    fun errorMessage(v: File?): String? {
-        if (required && v == null) {
-            return "Required"
-        }
-        return null
-    }
-
     override fun createField(values: Values): FileField = FileField(this, values)
 
     override fun createValue() = FileValue(this, value)
-
-    fun parameterValue(values: Values) = values.get(name) as FileValue
-
-    fun value(values: Values) = parameterValue(values).value
 
     override fun copyValue(source: Values): FileValue {
         val copy = FileValue(this, value(source))
         return copy
     }
 
-    override fun toString(): String {
-        return "FileParameter ${name}"
-    }
+    override fun parameterValue(values: Values) = super.parameterValue(values) as FileValue
+
+    override fun toString() = "File" + super.toString()
 
 }
