@@ -99,7 +99,6 @@ class GrepTask() : ExecTask() {
         command.addArgument("--")
         command.addArgument(fileP.value(values))
 
-        println(command)
         return command
     }
 }

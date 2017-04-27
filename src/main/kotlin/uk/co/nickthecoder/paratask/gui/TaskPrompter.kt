@@ -8,11 +8,11 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameter.Values
-import uk.co.nickthecoder.paratask.util.Exec
-import uk.co.nickthecoder.paratask.util.SimpleSink
+import uk.co.nickthecoder.paratask.util.AutoExit
 
 open class TaskPrompter(val task: Task, val values: Values) {
 
@@ -31,7 +31,6 @@ open class TaskPrompter(val task: Task, val values: Values) {
     val applyButton: Button
 
     init {
-
         root = BorderPane()
 
         okButton = Button("OK")
@@ -141,12 +140,7 @@ open class TaskPrompter(val task: Task, val values: Values) {
     }
 
     open fun run() {
-        Thread({
-            val result = task.run(values)
-            if (result is Exec) {
-                processOutput(result)
-            }
-        }).start()
+        NewWindowTaskRunner( task.taskD.label + " Output").run(task, values)
     }
 
     open protected fun close() {
@@ -156,25 +150,16 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     fun placeOnStage(stage: Stage) {
         this.stage = stage
-        stage.title = task.taskD.title
+        stage.title = task.taskD.label
 
         cancelButton.visibleProperty().set(true)
 
         val scene = Scene(root)
 
-        val cssLocation = javaClass.getResource("paratask.css").toExternalForm()
-        scene.getStylesheets().add(cssLocation)
+        ParaTaskApp.style(scene)
 
         stage.setScene(scene)
-        stage.show()
+        AutoExit.show(stage)
     }
 
-    fun processOutput(exec: Exec) {
-        exec.outSink = object : SimpleSink() {
-            override fun sink(buffer: CharArray, len: Int) {
-                // TODO - dump the output into a TextArea (or similar)
-            }
-        }
-        exec.start()
-    }
 }

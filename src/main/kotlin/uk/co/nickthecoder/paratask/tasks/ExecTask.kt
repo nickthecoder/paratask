@@ -17,21 +17,15 @@ abstract class ExecTask() : SimpleTask() {
 
     abstract fun command(values: Values): Command
 
-    fun createExec(values: Values): Exec {
-        return command(values).createExec()
-    }
+    override fun run(values: Values): Command? {
 
-    override fun run(values: Values): Exec? {
+        val cmd = command(values)
 
-        val exec = createExec(values)
-
-        val passThrough = outputP.value(values) == Output.PASSTHROUGH
-        if (passThrough) {
-            exec.inheritOut().inheritErr().start()
+        if (outputP.value(values) == Output.PASSTHROUGH) {
+            Exec(cmd).inheritOut().inheritErr().start()
             return null
         } else {
-            exec.mergeErrWithOut()
-            return exec
+            return cmd
         }
     }
 

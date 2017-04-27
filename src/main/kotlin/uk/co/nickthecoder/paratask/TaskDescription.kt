@@ -3,12 +3,13 @@ package uk.co.nickthecoder.paratask
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class TaskDescription(
         val name: String = "",
-        val title: String = name.uncamel(),
-        val description: String = "") {
+        override val label: String = name.uncamel(),
+        val description: String = "") : Labelled {
 
     val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description, isRoot = true)
 

@@ -6,9 +6,9 @@ val NOT_STARTED = -1000
 
 val INTERRUPTED = -10001
 
-class Exec(command: List<String>) {
+class Exec(val command: Command) {
 
-    private val builder = ProcessBuilder(command)
+    private val builder = ProcessBuilder(command.command)
 
     var process: Process? = null
 

@@ -38,6 +38,25 @@
 }
 
 /****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.SimpleTerminal  *
+*                                                   *
+*****************************************************/
+
+.terminal .output {
+    -fx-font-family: monospace;
+    -fx-text-fill: #fff;
+}
+
+.terminal .output .content {
+    -fx-background-color: #000;
+}
+
+.terminal .input {
+    -fx-font-family: monospace;
+}
+
+/****************************************************
 *   End :                                           *
 *****************************************************/
  

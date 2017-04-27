@@ -1,21 +1,25 @@
+Create an output window for Exec
+    Maybe ExecTask should return a Command, because then I could use a REAL terminal emulator to execute it,
+        and fall back to a simple TextPane if the terminal emulator isn't available
+
+Process listener
+
 GrepTask to allow for multiple -e values, using a MultipleParameter
 
 Create tests for BooleanParameter and BooleanField
 
 Create tests for ChoiceParameter
+    Enum tests
 
-Unfurl groups if the child has an error
-
-TaskPrompter to show running tasks, and allow them to be killed
-    "OK" button hides the parameters section, and ONLY shows the "Running" section
+Beep when run/apply clicked, but there's an error?
 
 Bugs
 ====
 
+A collapsed groups must unfurl when a child has an error
+    Add a listener in GroupField
+    That won't handle custom errors, only Parameter's built in validation
+
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace ;-(
-
-Ending a form with a GroupParameter, the scrollbars don't kick in soon enough.
-    May be due to "padding" merging? and the box doesn't count as content.
-
 
     
