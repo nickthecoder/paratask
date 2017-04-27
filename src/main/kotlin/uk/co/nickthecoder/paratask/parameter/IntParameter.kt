@@ -49,7 +49,7 @@ open class IntParameter(
         return copy
     }
 
-    override fun parameterValue(values: Values) = super.parameterValue(values) as IntValue
+    override fun getValue(values: Values) = super.getValue(values) as IntValue
 
     override fun toString(): String = "Int" + super.toString()
 }

@@ -14,7 +14,7 @@ class FileField : LabelledField {
     override val parameter: FileParameter
 
     constructor (parameter: FileParameter, values: Values) : super(parameter) {
-        this.value = parameter.parameterValue(values)
+        this.value = parameter.getValue(values)
         this.parameter = parameter
         control = createControl()
     }

@@ -4,9 +4,9 @@ import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractParameter(
         override val name: String,
-        override val label: String = name.uncamel(),
-        override val description: String = "")
+        override val label: String,
+        override val description: String)
     : Parameter {
 
-    override fun toString() = "Parmaeter ${name}"
+    override fun toString() = "Parameter ${name}"
 }

@@ -15,7 +15,7 @@ class GroupParameter(
         val collapsable: Boolean = true,
         val expanded: Boolean = true)
 
-    : AbstractParameter(name, description = description), Iterable<Parameter> {
+    : AbstractParameter(name, description = description, label = label), Iterable<Parameter> {
 
     private val children = mutableListOf<Parameter>()
 
@@ -109,38 +109,46 @@ class GroupParameter(
 
     override fun isStretchy(): Boolean = true
 
-    override fun createValue(): Values {
+    fun createValues(): Values {
         val values = Values(this)
-        children().forEach { parameter ->
 
-            val value = parameter.createValue()
-            values.put(parameter.name, value)
+        fun createFromGroup(group: GroupParameter) {
+            group.children().forEach { parameter ->
 
-            if (parameter is GroupParameter) {
-                (value as Values).values.forEach { (name, value) ->
-                    values.put(name, value)
+                if (parameter is ValueParameter<*>) {
+                    val value = parameter.createValue()
+                    values.put(parameter.name, value)
+                }
+
+                if (parameter is GroupParameter) {
+                    createFromGroup(parameter)
                 }
             }
         }
+        createFromGroup(this)
         return values
     }
 
-    fun copyValues(source: Values) = copyValue(source)
+    fun copyValues(source: Values): Values {
 
-    override fun copyValue(source: Values): Values {
         val copy = Values(this)
 
-        children().forEach { parameter ->
-            val copySingleValue = parameter.copyValue(source)
+        fun copyGroup(source: Values, group: GroupParameter) {
+            group.children().forEach { parameter ->
+                if (parameter is ValueParameter<*>) {
+                    val copySingleValue = parameter.copyValue(source)
 
-            if (parameter is GroupParameter) {
-                (copySingleValue as Values).values.forEach { (subName, subValue) ->
-                    copy.put(subName, subValue)
+                    copy.put(parameter.name, copySingleValue)
+                }
+                if (parameter is GroupParameter) {
+                    copyGroup(source, parameter)
                 }
             }
 
-            copy.put(parameter.name, copySingleValue)
         }
+
+        copyGroup(source, this)
         return copy
+
     }
 }

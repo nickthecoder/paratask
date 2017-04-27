@@ -16,8 +16,4 @@ interface Parameter {
 
     fun errorMessage(values: Values): String?
 
-    fun createValue(): Value<*>
-
-    fun copyValue(source: Values): Value<*>
-
 }

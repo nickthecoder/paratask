@@ -26,7 +26,7 @@ class IntField : LabelledField {
 
     constructor(parameter: IntParameter, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = parameter.parameterValue(values)
+        this.value = parameter.getValue(values)
         this.control = createControl()
     }
 

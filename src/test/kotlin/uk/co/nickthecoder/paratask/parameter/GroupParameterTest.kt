@@ -36,7 +36,7 @@ class GroupParameterTest : ValueListener {
         count = 0
         changedValue = null
 
-        val values = group.createValue()
+        val values = group.createValues()
 
         groupValue = values
         //subGroupValue = values.get("subGroup") as Values

@@ -24,7 +24,7 @@ class TaskDescription(
         root.remove(parameter)
     }
 
-    fun createValues(): Values = root.createValue()
+    fun createValues(): Values = root.createValues()
 
     fun copyValues(source: Values): Values = root.copyValues(source)
 }

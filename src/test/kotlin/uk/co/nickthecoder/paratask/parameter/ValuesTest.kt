@@ -29,7 +29,6 @@ class ValuesTest {
     fun copy() {
 
         val source = taskD.createValues()
-
         // Set some default values
         intP.set(source, 5)
         innerP.set(source, "unchanged")
