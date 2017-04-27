@@ -1,9 +1,5 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleObjectProperty
-import uk.co.nickthecoder.paratask.ParameterException
-
 /**
  * The base class for all Parameters, which can hold a value.
  */
@@ -31,4 +27,5 @@ abstract class ValueParameter<T>(
     override fun errorMessage(values: Values): String? = errorMessage(value(values))
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
+
 }

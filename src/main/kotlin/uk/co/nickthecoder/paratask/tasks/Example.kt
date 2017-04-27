@@ -38,25 +38,23 @@ Here we see GroupParameter in action
     val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
     val color = ChoiceParameter("color", value = Color.BLUE)
-        .choice("red", Color.RED)
-        .choice("green", Color.GREEN)
-        .choice("blue", Color.BLUE)
-        .choice("white", Color.WHITE)
-        .choice("white", Color.BLACK)
+            .choice("red", Color.RED)
+            .choice("green", Color.GREEN)
+            .choice("blue", Color.BLUE)
+            .choice("white", Color.WHITE)
+            .choice("white", Color.BLACK)
+
+    val multiple = IntParameter("multiple", value = 5).multiple()
 
     init {
-        taskD.addParameters(greeting, color, freeBeer, threeWay, range, directory)
+        taskD.addParameters(multiple, greeting, color, freeBeer, threeWay, range, directory)
         range.addParameters(rangeFrom, rangeTo)
     }
-
 
     override fun run(values: Values) {
         println("Example Parameter values : ")
 
         dumpValues(values)
-        //println( "Example Task Sleeping")
-        //Thread.sleep(1000)
-        //println( "Example Task Ended")
     }
 
     override fun check(values: Values) {

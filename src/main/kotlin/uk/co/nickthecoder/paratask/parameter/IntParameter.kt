@@ -43,6 +43,9 @@ open class IntParameter(
 
     override fun createValue() = IntValue(this, value)
 
+    fun multiple(): MultipleParameter<Int?, IntParameter> =
+            MultipleParameter(this, name = name, label = label, description = description, value = value)
+
     override fun copyValue(source: Values): IntValue {
         val v: Int? = value(source)
         val copy = IntValue(this, v)
@@ -50,6 +53,7 @@ open class IntParameter(
     }
 
     override fun getValue(values: Values) = super.getValue(values) as IntValue
+
 
     override fun toString(): String = "Int" + super.toString()
 }
