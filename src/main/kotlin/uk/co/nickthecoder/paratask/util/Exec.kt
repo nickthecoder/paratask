@@ -20,6 +20,8 @@ class Exec(val command: Command) {
 
     var errThread: Thread? = null
 
+    val listeners = ProcessNotifier()
+
     fun inheritOut(): Exec {
         builder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
         outSink = null
@@ -40,8 +42,14 @@ class Exec(val command: Command) {
 
     fun start(): Exec {
 
+        if (process != null) {
+            throw RuntimeException("Process already started")
+        }
+
         val process = builder.start()
         this.process = process
+
+        listeners.start(process)
 
         outSink?.let {
             it.setStream(process.inputStream)

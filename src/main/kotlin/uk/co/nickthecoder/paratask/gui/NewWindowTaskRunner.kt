@@ -14,7 +14,6 @@ class NewWindowTaskRunner(val title: String) : TaskRunner() {
 
             PlainWindow("${title}", terminal)
             terminal.inputField.requestFocus()
-            exec.start()
         }
     }
 }

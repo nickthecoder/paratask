@@ -1,9 +1,3 @@
-Create an output window for Exec
-    Maybe ExecTask should return a Command, because then I could use a REAL terminal emulator to execute it,
-        and fall back to a simple TextPane if the terminal emulator isn't available
-
-Process listener
-
 GrepTask to allow for multiple -e values, using a MultipleParameter
 
 Create tests for BooleanParameter and BooleanField
