@@ -8,13 +8,14 @@ open class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: T? = null,
+        value: T,
         required: Boolean = true)
 
     : ValueParameter<T>(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = required) {
 
 

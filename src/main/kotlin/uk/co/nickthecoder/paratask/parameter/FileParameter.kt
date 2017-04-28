@@ -9,7 +9,7 @@ class FileParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        val value: File? = homeDirectory,
+        value: File? = homeDirectory,
         required: Boolean = true,
         columns: Int = 30,
         val stretchy: Boolean = true)
@@ -18,6 +18,7 @@ class FileParameter(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = required,
         columns = columns) {
 

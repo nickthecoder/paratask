@@ -7,6 +7,7 @@ abstract class ValueParameter<T>(
         name: String,
         label: String,
         description: String,
+        val value: T,
         var required: Boolean = false)
 
     : AbstractParameter(name, label = label, description = description) {
@@ -27,5 +28,8 @@ abstract class ValueParameter<T>(
     override fun errorMessage(values: Values): String? = errorMessage(value(values))
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
+
+    fun multiple(): MultipleParameter<T> =
+            MultipleParameter(this, name = name, label = label, description = description, value = listOf<T>(value))
 
 }

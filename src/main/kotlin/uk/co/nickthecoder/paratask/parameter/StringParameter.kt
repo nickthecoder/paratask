@@ -7,7 +7,7 @@ class StringParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        val value: String = "",
+        value: String = "",
         required: Boolean = true,
         columns: Int = 30,
         val stretchy: Boolean = true)
@@ -16,6 +16,7 @@ class StringParameter(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = required,
         columns = columns) {
 

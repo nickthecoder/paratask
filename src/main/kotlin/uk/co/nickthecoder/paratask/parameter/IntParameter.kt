@@ -8,7 +8,7 @@ open class IntParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        val value: Int? = null,
+        value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE))
 
@@ -16,6 +16,7 @@ open class IntParameter(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = required) {
 
     override fun errorMessage(v: Int?): String? {
@@ -42,9 +43,6 @@ open class IntParameter(
     override fun createField(values: Values): LabelledField = IntField(this, values)
 
     override fun createValue() = IntValue(this, value)
-
-    fun multiple(): MultipleParameter<Int?> =
-            MultipleParameter(this, name = name, label = label, description = description, value = value)
 
     override fun copyValue(source: Values): IntValue {
         val v: Int? = value(source)

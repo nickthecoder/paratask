@@ -8,12 +8,13 @@ class MultipleParameter<T>(
         name: String,
         label: String,
         description: String,
-        val value: T?)
+        value: List<T>)
 
     : ValueParameter<List<T>>(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = true) {
 
     override fun isStretchy() = true
@@ -23,8 +24,8 @@ class MultipleParameter<T>(
     override fun createValue(): MultipleValue<T> {
         val result = MultipleValue<T>(this)
 
-        if (value != null) {
-            result.addItem(value)
+        value.forEach { item ->
+            result.addItem(item)
         }
         return result
     }

@@ -8,7 +8,7 @@ class BooleanParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        val value: Boolean? = null,
+        value: Boolean? = null,
         required: Boolean = true,
         val labelOnLeft: Boolean = true)
 
@@ -16,6 +16,7 @@ class BooleanParameter(
         name = name,
         label = label,
         description = description,
+        value = value,
         required = required) {
 
     override fun isStretchy() = false
