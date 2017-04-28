@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
-class MultipleValue<T, P : ValueParameter<T>>(
-        override val parameter: MultipleParameter<T, P>)
+class MultipleValue<T>(
+        override val parameter: MultipleParameter<T>)
 
     : AbstractValue<MutableList<Value<T>>>(mutableListOf<Value<T>>()) {
 

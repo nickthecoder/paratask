@@ -43,7 +43,7 @@ open class IntParameter(
 
     override fun createValue() = IntValue(this, value)
 
-    fun multiple(): MultipleParameter<Int?, IntParameter> =
+    fun multiple(): MultipleParameter<Int?> =
             MultipleParameter(this, name = name, label = label, description = description, value = value)
 
     override fun copyValue(source: Values): IntValue {

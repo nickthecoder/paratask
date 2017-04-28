@@ -10,18 +10,18 @@ import uk.co.nickthecoder.paratask.parameter.MultipleValue
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class MultipleField<T, P : ValueParameter<T>> : ParametersForm {
+class MultipleField<T> : ParametersForm {
 
-    override val parameter: MultipleParameter<T, P>
+    override val parameter: MultipleParameter<T>
 
-    val value: MultipleValue<T, P>
+    val value: MultipleValue<T>
 
     private var dirty = false
 
     val whole = BorderPane()
     val list = VBox()
 
-    constructor(parameter: MultipleParameter<T, P>, values: Values) : super(parameter) {
+    constructor(parameter: MultipleParameter<T>, values: Values) : super(parameter) {
         this.parameter = parameter
         this.value = parameter.getValue(values)
 
