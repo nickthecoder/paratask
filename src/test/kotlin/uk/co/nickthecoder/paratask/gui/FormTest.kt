@@ -12,7 +12,7 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class FormTest : GuiTest() {
 
-    lateinit var form: ParametersForm
+    lateinit var form: GroupParametersForm
 
     lateinit var scene: Scene
 
@@ -31,7 +31,7 @@ class FormTest : GuiTest() {
 
         val values = taskD.createValues()
 
-        form = ParametersForm(taskD.root, values)
+        form = GroupParametersForm(taskD.root, values)
 
         firstF = form.addParameter(firstP, values) as ParameterField
         helloF = form.addParameter(helloP, values) as ParameterField

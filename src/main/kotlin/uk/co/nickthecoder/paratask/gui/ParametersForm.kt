@@ -18,21 +18,12 @@ import uk.co.nickthecoder.paratask.parameter.Values
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  */
-class ParametersForm(var groupParameter: GroupParameter, values: Values)
-    : ParameterField(groupParameter) {
+open class ParametersForm(parameter: Parameter)
+    : ParameterField(parameter) {
 
     internal val columns = mutableListOf<Column>()
 
     internal val fieldSet = mutableListOf<ParameterField>()
-
-    init {
-        if (groupParameter.description.length > 0) {
-            children.add(TextFlow(Text(groupParameter.description)))
-        }
-        groupParameter.forEach() { parameter ->
-            addParameter(parameter, values)
-        }
-    }
 
     fun descendants(): List<ParameterField> {
         val list = mutableListOf<ParameterField>()
@@ -84,29 +75,6 @@ class ParametersForm(var groupParameter: GroupParameter, values: Values)
         columns.add(Column(0.0))
         columns.add(Column())
         getStyleClass().add("form");
-    }
-
-    fun addParameter(parameter: Parameter, values: Values): Node {
-
-        val node = parameter.createField(values)
-
-        children.add(node)
-
-        val parameterField = if (node is ParameterField) {
-            node
-        } else if (node is WrappedParameterField) {
-            node.parameterField
-        } else {
-            null
-        }
-
-        if (parameterField != null) {
-            parameterField.getStyleClass().add("field-${parameter.name}")
-            parameterField.form = this
-            fieldSet.add(parameterField)
-        }
-
-        return node
     }
 
     internal fun calculateColumnPreferences() {

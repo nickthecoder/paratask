@@ -10,7 +10,7 @@ import uk.co.nickthecoder.paratask.parameter.MultipleValue
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class MultipleField<T, P : ValueParameter<T>> : ParameterField {
+class MultipleField<T, P : ValueParameter<T>> : ParametersForm {
 
     override val parameter: MultipleParameter<T, P>
 
@@ -47,9 +47,9 @@ class MultipleField<T, P : ValueParameter<T>> : ParameterField {
             println("Creating inner parameter")
             values.put(parameter.name, item)
             val field = parameter.prototype.createField(values) as ParameterField
-            //field.form = this
-            // TODO Need to create a new kind of FORM, which this extends
-            //list.children.add(field)
+            field.form = this
+
+            list.children.add(field)
         }
     }
 

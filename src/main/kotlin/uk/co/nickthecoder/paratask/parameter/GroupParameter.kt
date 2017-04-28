@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.gui.GroupParametersForm
 import uk.co.nickthecoder.paratask.gui.ParametersForm
 import uk.co.nickthecoder.paratask.gui.WrappedParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -74,7 +75,7 @@ class GroupParameter(
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
     override fun createField(values: Values): Node {
-        val parametersForm = ParametersForm(this, values)
+        val parametersForm = GroupParametersForm(this, values)
 
         if (isRoot) {
             return parametersForm
