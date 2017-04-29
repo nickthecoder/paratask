@@ -38,6 +38,16 @@ open class IntParameter(
         return null
     }
 
+    fun min(minimum: Int): IntParameter {
+        range = minimum..range.endInclusive
+        return this
+    }
+
+    fun max(maximum: Int): IntParameter {
+        range = range.start..maximum
+        return this
+    }
+
     override fun isStretchy() = false
 
     override fun createField(values: Values): LabelledField = IntField(this, values)
