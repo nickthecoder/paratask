@@ -11,7 +11,7 @@ class TaskDescription(
         override val label: String = name.uncamel(),
         val description: String = "") : Labelled {
 
-    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description, isRoot = true)
+    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description)
 
     fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }

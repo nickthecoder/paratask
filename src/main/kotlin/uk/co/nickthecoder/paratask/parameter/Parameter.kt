@@ -9,10 +9,16 @@ interface Parameter : Labelled {
 
     val description: String
 
+    var parent: GroupParameter?
+
     fun isStretchy(): Boolean
 
     fun errorMessage(values: Values): String?
 
     fun createField(values: Values): ParameterField
+
+    fun findRoot(): GroupParameter? {
+        return parent?.findRoot()
+    }
 
 }

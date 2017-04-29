@@ -5,21 +5,13 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 import uk.co.nickthecoder.paratask.ParameterException
 
-class StringParameterTest {
+class StringParameterTest : MyTest() {
 
     val optional = StringParameter("optional", required = false)
     val optionalValue = optional.createValue()
 
     val required = StringParameter("required")
     val requiredValue = required.createValue()
-
-    fun expectParameterException(body: () -> Unit) {
-        try {
-            body()
-            assertNull("Expected a ParameterException to be thrown")
-        } catch (e: ParameterException) {
-        }
-    }
 
     @Test
     fun setValueOptional() {

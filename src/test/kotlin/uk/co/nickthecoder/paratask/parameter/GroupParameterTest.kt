@@ -7,7 +7,7 @@ import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 
-class GroupParameterTest : ValueListener {
+class GroupParameterTest : MyTest(), ValueListener {
 
     var group = GroupParameter("group")
     var subGroup = GroupParameter("subGroup")
@@ -99,4 +99,72 @@ class GroupParameterTest : ValueListener {
             assertEquals(listOf(abc, def, subGroup, hij)[i], group.descendants()[i])
         }
     }
+
+    @Test
+    fun duplicateChild() {
+        val param1 = IntParameter("one")
+        val param2 = StringParameter("one")
+
+        val group = GroupParameter("group")
+        group.add(param1)
+        expectParameterException { group.add(param2) }
+    }
+
+    @Test
+    fun duplicateAncestor() {
+        val param1 = IntParameter("one")
+        val param2 = StringParameter("one")
+
+        val group1 = GroupParameter("group1")
+        group1.add(param1)
+        val group2 = GroupParameter("group2")
+        group2.add(param2)
+
+        expectParameterException { group2.add(param2) }
+    }
+
+    @Test
+    fun duplicateAncestor2() {
+        val param1 = IntParameter("one")
+        val param2 = StringParameter("one")
+
+        val group1 = GroupParameter("group1")
+        group1.add(param1)
+
+        val group2 = GroupParameter("group2")
+        group2.add(param2)
+
+        expectParameterException { group1.add(group2) }
+    }
+
+    @Test
+    fun duplicateAncestor3() {
+        val param1 = IntParameter("one")
+        val param2 = StringParameter("one")
+
+        val group1 = GroupParameter("group1")
+        group1.add(param1)
+
+        val group2 = GroupParameter("group2")
+        group1.add(group2)
+
+        expectParameterException { group2.add(param2) }
+    }
+
+    @Test
+    fun addToTwice() {
+        val group1 = GroupParameter("group1")
+        val group2 = GroupParameter("group2")
+        val param1 = IntParameter("one")
+        group1.add(param1)
+        expectParameterException { group1.add(param1) }
+        expectParameterException { group2.add(param1) }
+    }
+
+    @Test
+    fun addToIteself() {
+        val group = GroupParameter("group")
+        expectParameterException { group.add(group) }
+    }
+
 }

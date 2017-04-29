@@ -1,5 +1,8 @@
 Create tests for BooleanParameter and BooleanField
 
+Implement tests for GroupParameter duplicates.
+    Also need to ensure all existing parameters aren't in an added GroupParameter.
+
 Create tests for ChoiceParameter
     Enum tests
 
