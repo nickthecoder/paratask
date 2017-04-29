@@ -52,7 +52,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
         list.children.clear()
         fieldSet.clear()
 
-        val values = Values(GroupParameter("dummy"))
+        val values = Values()
 
         var index = 0
         multipleValue.value.forEach { item ->

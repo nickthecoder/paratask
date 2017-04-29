@@ -104,7 +104,7 @@ class GroupParameter(
     override fun isStretchy(): Boolean = true
 
     fun createValues(): Values {
-        val values = Values(this)
+        val values = Values()
 
         fun createFromGroup(group: GroupParameter) {
             group.children().forEach { parameter ->
@@ -125,7 +125,7 @@ class GroupParameter(
 
     fun copyValues(source: Values): Values {
 
-        val copy = Values(this)
+        val copy = Values()
 
         fun copyGroup(source: Values, group: GroupParameter) {
             group.children().forEach { parameter ->
