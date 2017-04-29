@@ -26,7 +26,7 @@ class MultipleParameter<T>(
     override fun parameterValue(values: Values) = super.parameterValue(values) as MultipleValue<T>
 
     fun values(values: Values): List<T> {
-        val mvalue = parameterValue( values )
+        val mvalue = parameterValue(values)
         return mvalue.values()
     }
 
@@ -53,7 +53,7 @@ class MultipleParameter<T>(
         return copy
     }
 
-    override fun createField(values: Values) = MultipleField(this, values)
+    override fun createField(values: Values) = MultipleField(this, parameterValue(values))
 
     override fun wrap(parameterField: ParameterField): Node {
         val titledPane = TitledPane(label, parameterField)

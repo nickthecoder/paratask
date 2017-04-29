@@ -21,7 +21,7 @@ class BooleanParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(values: Values): LabelledField = BooleanField(this, values)
+    override fun createField(values: Values): LabelledField = BooleanField(this, parameterValue(values))
 
     override fun createValue() = BooleanValue(this, value)
 

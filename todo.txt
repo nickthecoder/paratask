@@ -1,11 +1,4 @@
-Change * to T
-    abstract fun createValue(): ParameterValue<*>
-    abstract fun copyValue(source: Values): ParameterValue<*>
-
 Create tests for BooleanParameter and BooleanField
-
-XXXField should be given a SINGLE value rather than a Values
-    MultipleField wont need the "dummy" group parameter bodge
 
 Create tests for ChoiceParameter
     Enum tests

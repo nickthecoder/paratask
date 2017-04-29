@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.parameter.IntValue
 
 val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
 
@@ -24,9 +24,9 @@ class IntField : LabelledField {
 
     private var dirty = false
 
-    constructor(parameter: IntParameter, values: Values) : super(parameter) {
+    constructor(parameter: IntParameter, intValue : IntValue) : super(parameter) {
         this.parameter = parameter
-        this.intValue = parameter.parameterValue(values)
+        this.intValue = intValue
         this.control = createControl()
     }
 

@@ -24,7 +24,7 @@ class FileParameter(
 
     override fun isStretchy(): Boolean = stretchy
 
-    override fun createField(values: Values): FileField = FileField(this, values)
+    override fun createField(values: Values): FileField = FileField(this, parameterValue(values))
 
     override fun createValue() = FileValue(this, value)
 

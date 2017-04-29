@@ -50,7 +50,7 @@ open class IntParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(values: Values): LabelledField = IntField(this, values)
+    override fun createField(values: Values): LabelledField = IntField(this, parameterValue(values))
 
     override fun createValue() = IntValue(this, value)
 

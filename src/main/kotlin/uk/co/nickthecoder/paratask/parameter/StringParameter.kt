@@ -29,7 +29,7 @@ class StringParameter(
         return null
     }
 
-    override fun createField(values: Values): StringField = StringField(this, values)
+    override fun createField(values: Values): StringField = StringField(this, parameterValue(values))
 
     override fun createValue() = StringValue(this, value)
 

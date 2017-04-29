@@ -4,7 +4,7 @@ import javafx.scene.Node
 import javafx.scene.control.TextField
 import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.FileParameter
-import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.parameter.FileValue
 import java.io.File
 
 class FileField : LabelledField {
@@ -13,8 +13,8 @@ class FileField : LabelledField {
 
     override val parameter: FileParameter
 
-    constructor (parameter: FileParameter, values: Values) : super(parameter) {
-        this.parameterValue = parameter.parameterValue(values)
+    constructor (parameter: FileParameter, fileValue : FileValue) : super(parameter) {
+        this.parameterValue = fileValue
         this.parameter = parameter
         control = createControl()
     }

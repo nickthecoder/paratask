@@ -15,10 +15,10 @@ class BooleanField : LabelledField {
 
     override val parameter: BooleanParameter
 
-    constructor (parameter: BooleanParameter, values: Values)
+    constructor (parameter: BooleanParameter, booleanValue: BooleanValue)
             : super(parameter, label = if (parameter.labelOnLeft) parameter.label else "") {
 
-        this.booleanValue = parameter.parameterValue(values)
+        this.booleanValue = booleanValue
         this.parameter = parameter
         control = createControl()
     }
