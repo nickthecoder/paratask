@@ -53,8 +53,12 @@ class GrepTask() : ExecTask() {
     val followSymLinksP = BooleanParameter("followSymLinks", value = false,
             description = "Follow symbolic links when searching recursively")
 
-    val maxMatchesP = IntParameter("maxMatches", value = null, range = 1..Int.MAX_VALUE, required = false,
+    val maxMatchesP = IntParameter("maxMatches", value = null, required = false,
             description = "The maximum number of matches to show per file.\nLeave blank to show ALL matches.")
+            .min(1)
+
+    val contextLinesP = IntParameter("contextLines", required = false,
+            description = "Output number of lines of context surrounding the matched line").min(1)
 
     val additionalOptionsP = StringParameter("additionalOptions", value = "Hsn")
 
@@ -62,7 +66,7 @@ class GrepTask() : ExecTask() {
         taskD.addParameters(
                 fileP, regexP, matchCaseP,
                 typeP, matchP, invertResultsP, followSymLinksP,
-                maxMatchesP, additionalOptionsP, outputP)
+                maxMatchesP, contextLinesP, additionalOptionsP, outputP)
     }
 
     override fun command(values: Values): Command {
@@ -92,6 +96,12 @@ class GrepTask() : ExecTask() {
         val match = matchP.value(values)
         if (match != "") {
             command.addArgument(match)
+        }
+
+        val contextLines: Int? = contextLinesP.value(values)
+        if (contextLines != null) {
+            command.addArgument("-C")
+            command.addArgument(contextLines)
         }
 
         regexP.values(values).forEach { value ->
