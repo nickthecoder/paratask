@@ -34,7 +34,7 @@ abstract class ValueParameter<T>(
                     this, name = name,
                     label = label,
                     description = description,
-                    value = listOf<T>(value),
+                    value = mutableListOf<T>(value),
                     allowInsert = allowInsert)
 
 }

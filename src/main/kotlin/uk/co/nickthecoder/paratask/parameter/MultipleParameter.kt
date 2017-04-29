@@ -10,10 +10,10 @@ class MultipleParameter<T>(
         name: String,
         label: String,
         description: String,
-        value: List<T>,
+        value: MutableList<T>,
         val allowInsert: Boolean = false)
 
-    : ValueParameter<List<T>>(
+    : ValueParameter<MutableList<T>>(
         name = name,
         label = label,
         description = description,

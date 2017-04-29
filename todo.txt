@@ -1,8 +1,6 @@
-The word "value" is used for TWO different things.
-    A Value and the value that a Value contains!
-    Rename Value to ParameterValue and prefix all usage with "parameterValue", or the specific type e.g. intValue
-
-Does Values need to implement ParameterValue?
+Change * to T
+    abstract fun createValue(): ParameterValue<*>
+    abstract fun copyValue(source: Values): ParameterValue<*>
 
 Create tests for BooleanParameter and BooleanField
 
