@@ -16,7 +16,7 @@ class ChoiceField<T> : LabelledField {
 
     constructor(parameter: ChoiceParameter<T>, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.choiceValue = parameter.getParameterValue(values)
+        this.choiceValue = parameter.parameterValue(values)
         this.control = createControl()
     }
 

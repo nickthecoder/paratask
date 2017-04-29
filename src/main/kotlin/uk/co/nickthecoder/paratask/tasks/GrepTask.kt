@@ -94,12 +94,11 @@ class GrepTask() : ExecTask() {
             command.addArgument(match)
         }
 
-        val regexValues = regexP.values(values)
-        regexValues.forEach{ value ->
+        regexP.values(values).forEach { value ->
             command.addArgument("-e")
             command.addArgument(value)
         }
-        
+
         command.addArgument("--")
         command.addArgument(fileP.value(values))
 

@@ -13,7 +13,7 @@ class StringField : LabelledField {
     override val parameter : StringParameter
 
     constructor (parameter: StringParameter, values: Values) : super(parameter) {
-        this.parameterValue = parameter.getParameterValue(values)
+        this.parameterValue = parameter.parameterValue(values)
         this.parameter = parameter
         control = createControl()
     }

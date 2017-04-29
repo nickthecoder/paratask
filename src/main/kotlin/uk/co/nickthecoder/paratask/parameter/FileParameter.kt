@@ -33,7 +33,7 @@ class FileParameter(
         return copy
     }
 
-    override fun getParameterValue(values: Values) = super.getParameterValue(values) as FileValue
+    override fun parameterValue(values: Values) = super.parameterValue(values) as FileValue
 
     override fun toString() = "File" + super.toString()
 

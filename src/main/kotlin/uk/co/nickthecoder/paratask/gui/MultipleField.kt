@@ -28,7 +28,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
 
     constructor(parameter: MultipleParameter<T>, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.multipleValue = parameter.getParameterValue(values)
+        this.multipleValue = parameter.parameterValue(values)
 
         val addButton = Button("+")
         addButton.onAction = EventHandler {
