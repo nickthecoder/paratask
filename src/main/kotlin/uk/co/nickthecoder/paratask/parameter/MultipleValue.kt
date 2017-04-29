@@ -5,6 +5,15 @@ class MultipleValue<T>(
 
     : AbstractValue<MutableList<Value<T>>>(mutableListOf<Value<T>>()) {
 
+    fun values(): List<T> {
+        val result = mutableListOf<T>()
+
+        value.forEach {
+            result.add(it.value)
+        }
+        return result
+    }
+
     override fun fromString(str: String): MutableList<Value<T>> {
         val result = mutableListOf<Value<T>>()
         // TODO Create from string
@@ -28,21 +37,26 @@ class MultipleValue<T>(
         return singleValue
     }
 
-    fun newValue(): Value<T> {
+    fun newValue(index: Int = value.size): Value<T> {
         val singleValue = parameter.prototype.createValue() as Value<T>
-        addValue(singleValue)
+        addValue(singleValue, index)
 
         return singleValue
     }
 
-    fun addValue(singleValue: Value<T>) {
-        value.add(singleValue)
-        // TODO fire a change event
+    fun addValue(singleValue: Value<T>, index: Int = value.size) {
+        value.add(index, singleValue)
+        valueListeners.fireChanged(this)
     }
 
     fun removeValue(singleValue: Value<T>) {
         value.remove(singleValue)
-        // TODO fire a change event
+        valueListeners.fireChanged(this)
+    }
+
+    fun removeAt(index: Int) {
+        value.removeAt(index)
+        valueListeners.fireChanged(this)
     }
 
     override fun toString(): String = "Multiple" + super.toString()

@@ -1,5 +1,4 @@
 MultipleParameter
-    Remove the labels
     Add "+" and "x" buttons
     Fire events
 

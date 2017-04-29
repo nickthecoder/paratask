@@ -10,7 +10,8 @@ class MultipleParameter<T>(
         name: String,
         label: String,
         description: String,
-        value: List<T>)
+        value: List<T>,
+        val allowInsert: Boolean = false)
 
     : ValueParameter<List<T>>(
         name = name,
@@ -23,6 +24,11 @@ class MultipleParameter<T>(
     override fun isStretchy() = true
 
     override fun getValue(values: Values) = super.getValue(values) as MultipleValue<T>
+
+    fun values(values: Values): List<T> {
+        val mvalue = getValue( values )
+        return mvalue.values()
+    }
 
     override fun createValue(): MultipleValue<T> {
         val result = MultipleValue<T>(this)

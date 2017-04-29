@@ -1,16 +1,21 @@
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.event.EventHandler
+import javafx.scene.Node
+import javafx.scene.control.Button
 import javafx.scene.control.Label
-import javafx.scene.control.TitledPane
+import javafx.scene.control.Tooltip
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleValue
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.parameter.Value
+import uk.co.nickthecoder.paratask.parameter.ValueListener
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class MultipleField<T> : ParametersForm {
+class MultipleField<T> : ParametersForm, ValueListener {
 
     override val parameter: MultipleParameter<T>
 
@@ -25,25 +30,32 @@ class MultipleField<T> : ParametersForm {
         this.parameter = parameter
         this.value = parameter.getValue(values)
 
-        whole.top = Label("Hello world")
-        whole.bottom = Label("Add button goes here, which will be nice")
+        val addButton = Button("+")
+        addButton.onAction = EventHandler {
+            newValue()
+        }
+        addButton.setTooltip(Tooltip("Add"))
+
         whole.center = list
+        whole.bottom = addButton
 
         buildList()
 
-        control = whole
-    }
+        whole.getStyleClass().add("multiple-field")
+        list.getStyleClass().add("multiple-list")
 
-    // TODO listen for change events and rebuild the list.
-    // Need to ignore the event when it is ME that caused it
+        control = whole
+        value.valueListeners.add(this)
+    }
 
     private fun buildList() {
         list.children.clear()
+        fieldSet.clear()
 
         val values = Values(GroupParameter("dummy"))
 
+        var index = 0
         value.value.forEach { item ->
-            println("Creating inner parameter")
             values.put(parameter.name, item)
             val field = parameter.prototype.createField(values)
             if (field is LabelledField) {
@@ -51,8 +63,51 @@ class MultipleField<T> : ParametersForm {
             }
             field.form = this
 
-            list.children.add(field)
+            fieldSet.add(field)
+            list.children.add(createLine(field, index))
+
+            index++
         }
     }
 
+    private fun createLine(field: ParameterField, index: Int): Node {
+        val line = HBox()
+        val buttons = HBox()
+
+        line.children.add(buttons)
+        line.children.add(field)
+
+        buttons.getStyleClass().add("multiple-line-buttons")
+        line.getStyleClass().add("multiple-line")
+
+        if (parameter.allowInsert) {
+            val addButton = Button("+")
+            addButton.onAction = EventHandler {
+                newValue(index)
+            }
+            addButton.setTooltip(Tooltip("Insert Before"))
+        }
+
+        val removeButton = Button("-")
+        removeButton.onAction = EventHandler {
+            removeAt(index)
+        }
+        removeButton.setTooltip(Tooltip("Remove"))
+        buttons.children.add(removeButton)
+
+        return line
+    }
+
+    fun newValue(index: Int = value.value.size) {
+        value.addValue(parameter.prototype.createValue() as Value<T>, index)
+    }
+
+    fun removeAt(index: Int) {
+        value.removeAt(index)
+    }
+
+    override fun valueChanged(value: Value<*>) {
+        buildList()
+    }
 }
+

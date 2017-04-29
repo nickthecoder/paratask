@@ -29,7 +29,12 @@ abstract class ValueParameter<T>(
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
-    fun multiple(): MultipleParameter<T> =
-            MultipleParameter(this, name = name, label = label, description = description, value = listOf<T>(value))
+    fun multiple(allowInsert: Boolean = false): MultipleParameter<T> =
+            MultipleParameter(
+                    this, name = name,
+                    label = label,
+                    description = description,
+                    value = listOf<T>(value),
+                    allowInsert = allowInsert)
 
 }

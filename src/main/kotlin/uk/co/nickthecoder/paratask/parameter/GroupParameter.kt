@@ -5,8 +5,6 @@ import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.GroupParametersForm
 import uk.co.nickthecoder.paratask.gui.ParameterField
-import uk.co.nickthecoder.paratask.gui.ParametersForm
-import uk.co.nickthecoder.paratask.gui.WrappedParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class GroupParameter(

@@ -37,6 +37,27 @@
     -fx-min-width: 90px;
 }
 
+
+/****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.MultipleField   *
+*                                                   *
+*****************************************************/
+
+.multiple-list {
+    -fx-spacing: 6px;
+    -fx-padding: 0 0 6px 0;
+}
+
+.multiple-line-buttons {
+    -fx-padding: 0 16px 0 0;
+    -fx-spacing: 4px;
+}
+
+.multiple-line-buttons > .button {
+    -fx-min-width: 30px;
+}
+
 /****************************************************
 * See :                                             *
 *   uk.co.nickthecoder.paratask.gui.SimpleTerminal  *

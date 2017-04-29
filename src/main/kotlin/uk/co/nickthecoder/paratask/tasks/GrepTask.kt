@@ -30,6 +30,7 @@ class GrepTask() : ExecTask() {
 
     val regexP = StringParameter("regex",
             description = "The regular expression to search for")
+            .multiple()
 
     val matchP = ChoiceParameter<String>("match", value = "",
             description = "Match a word, a line or any part of the file")
@@ -93,9 +94,12 @@ class GrepTask() : ExecTask() {
             command.addArgument(match)
         }
 
-        command.addArgument("-e")
-        command.addArgument(regexP.value(values))
-
+        val regexValues = regexP.values(values)
+        regexValues.forEach{ value ->
+            command.addArgument("-e")
+            command.addArgument(value)
+        }
+        
         command.addArgument("--")
         command.addArgument(fileP.value(values))
 
