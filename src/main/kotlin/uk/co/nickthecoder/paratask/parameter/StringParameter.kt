@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.StringField
+import uk.co.nickthecoder.paratask.gui.field.StringField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class StringParameter(

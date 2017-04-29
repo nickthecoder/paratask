@@ -2,8 +2,8 @@ package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
-import uk.co.nickthecoder.paratask.gui.MultipleField
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.MultipleField
+import uk.co.nickthecoder.paratask.gui.field.ParameterField
 
 class MultipleParameter<T>(
         val prototype: ValueParameter<T>,

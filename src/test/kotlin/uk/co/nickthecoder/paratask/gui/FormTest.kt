@@ -7,6 +7,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
+import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 

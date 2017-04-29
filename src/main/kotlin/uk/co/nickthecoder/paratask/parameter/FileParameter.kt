@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.FileField
+import uk.co.nickthecoder.paratask.gui.field.FileField
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File

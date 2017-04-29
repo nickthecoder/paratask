@@ -3,8 +3,8 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.gui.GroupParametersForm
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
+import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class GroupParameter(

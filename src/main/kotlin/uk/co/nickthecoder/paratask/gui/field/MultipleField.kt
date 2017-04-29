@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.gui
+package uk.co.nickthecoder.paratask.gui.field
 
 import javafx.event.EventHandler
 import javafx.scene.Node

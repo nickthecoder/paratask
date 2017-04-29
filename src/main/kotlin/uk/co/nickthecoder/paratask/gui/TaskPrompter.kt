@@ -11,6 +11,8 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
+import uk.co.nickthecoder.paratask.gui.field.ParametersForm
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.AutoExit
 

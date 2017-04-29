@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.ChoiceField
+import uk.co.nickthecoder.paratask.gui.field.ChoiceField
 import uk.co.nickthecoder.paratask.util.uncamel
 import uk.co.nickthecoder.paratask.util.Labelled
 

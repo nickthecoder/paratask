@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.LabelledField
-import uk.co.nickthecoder.paratask.gui.IntField
+import uk.co.nickthecoder.paratask.gui.field.LabelledField
+import uk.co.nickthecoder.paratask.gui.field.IntField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 open class IntParameter(

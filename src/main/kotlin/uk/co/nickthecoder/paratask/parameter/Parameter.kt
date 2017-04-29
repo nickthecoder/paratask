@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
 
 interface Parameter : Labelled {

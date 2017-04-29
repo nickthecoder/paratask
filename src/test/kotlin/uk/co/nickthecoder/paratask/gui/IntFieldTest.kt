@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
-import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.input.KeyCode
 import org.junit.Assert.assertEquals
@@ -9,6 +8,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import uk.co.nickthecoder.paratask.gui.field.LabelledField
 
 open class IntFieldTest : IntFieldBase() {
 

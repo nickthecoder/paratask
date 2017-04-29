@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.BooleanField
-import uk.co.nickthecoder.paratask.gui.LabelledField
+import uk.co.nickthecoder.paratask.gui.field.BooleanField
+import uk.co.nickthecoder.paratask.gui.field.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class BooleanParameter(

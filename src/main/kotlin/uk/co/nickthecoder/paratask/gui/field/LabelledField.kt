@@ -1,11 +1,11 @@
-package uk.co.nickthecoder.paratask.gui
+package uk.co.nickthecoder.paratask.gui.field
 
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
-import uk.co.nickthecoder.paratask.gui.ParametersForm.Column
+import uk.co.nickthecoder.paratask.gui.field.ParametersForm.Column
 import uk.co.nickthecoder.paratask.parameter.Parameter
 
 open class LabelledField : ParameterField {
