@@ -15,7 +15,7 @@ class GroupParametersForm(var groupParameter: GroupParameter, values: Values)
         if (groupParameter.description.length > 0) {
             children.add(TextFlow(Text(groupParameter.description)))
         }
-        groupParameter.forEach() { parameter ->
+        groupParameter.children().forEach() { parameter ->
             addParameter(parameter, values)
         }
     }

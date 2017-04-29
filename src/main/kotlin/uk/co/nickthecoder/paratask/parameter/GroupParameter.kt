@@ -16,12 +16,14 @@ class GroupParameter(
         val expanded: Boolean = true)
 
     : AbstractParameter(name, description = description, label = label),
-        Iterable<Parameter>,
         WrappableField {
 
     private val children = mutableListOf<Parameter>()
 
     fun add(child: Parameter) {
+        if (find(child.name) != null) {
+            throw RuntimeException("Parameter with name '${name}' is already in this GroupParameter")
+        }
         children.add(child)
     }
 
@@ -31,10 +33,6 @@ class GroupParameter(
 
     fun remove(child: Parameter) {
         children.remove(child)
-    }
-
-    override fun iterator(): Iterator<Parameter> {
-        return children.iterator()
     }
 
     fun find(name: String): Parameter? {
