@@ -12,29 +12,33 @@ abstract class ValueParameter<T>(
 
     : AbstractParameter(name, label = label, description = description) {
 
-    open fun parameterValue(values: Values) = values.get(name)
+    open fun parameterValue(values: Values) : ParameterValue<T> = values.get(name) as ParameterValue<T>
 
-    abstract fun createValue(): ParameterValue<*>
+    abstract fun createValue(): ParameterValue<T>
 
-    abstract fun copyValue(source: Values): ParameterValue<*>
+    abstract fun copyValue(source: Values): ParameterValue<T>
 
-    fun value(values: Values): T? = parameterValue(values)?.value as T?
+    fun value(values: Values): T = parameterValue(values).value
 
     fun set(values: Values, v: T) {
-        val value: ParameterValue<T>? = parameterValue(values) as ParameterValue<T>
-        value!!.value = v
+        val parameterValue: ParameterValue<T> = parameterValue(values)
+        parameterValue.value = v
     }
 
     override fun errorMessage(values: Values): String? = errorMessage(value(values))
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
-    fun multiple(allowInsert: Boolean = false): MultipleParameter<T> =
-            MultipleParameter(
-                    this, name = name,
-                    label = label,
-                    description = description,
-                    value = mutableListOf<T>(value),
-                    allowInsert = allowInsert)
+    fun multiple(allowInsert: Boolean = false): MultipleParameter<T> {
+        val singleParameterValue = createValue()
+        singleParameterValue.value = value;
+
+        return MultipleParameter(
+                this, name = name,
+                label = label,
+                description = description,
+                value = mutableListOf<ParameterValue<T>>(singleParameterValue),
+                allowInsert = allowInsert)
+    }
 
 }

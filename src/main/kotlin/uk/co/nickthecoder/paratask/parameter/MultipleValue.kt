@@ -38,7 +38,7 @@ class MultipleValue<T>(
     }
 
     fun newValue(index: Int = value.size): ParameterValue<T> {
-        val singleValue = parameter.prototype.createValue() as ParameterValue<T>
+        val singleValue = parameter.prototype.createValue()
         addValue(singleValue, index)
 
         return singleValue

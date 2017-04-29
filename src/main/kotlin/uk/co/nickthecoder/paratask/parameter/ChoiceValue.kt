@@ -7,9 +7,9 @@ import uk.co.nickthecoder.paratask.util.uncamel
 
 class ChoiceValue<T>(
         override val parameter: ChoiceParameter<T>,
-        initialValue: T?)
+        initialValue: T)
 
-    : AbstractValue<T?>(initialValue) {
+    : AbstractValue<T>(initialValue) {
 
     val keyToValueMap = LinkedHashMap<String, T?>()
     val valueToLabelMap = LinkedHashMap<T?, String>()
@@ -42,8 +42,8 @@ class ChoiceValue<T>(
             value = fromString(v)
         }
 
-    override fun fromString(label: String): T? {
-        return labelToValueMap.get(label)
+    override fun fromString(label: String): T {
+        return labelToValueMap.get(label)!!
     }
 
     override fun toString(obj: T?): String {
@@ -51,7 +51,7 @@ class ChoiceValue<T>(
         return if (label == null) "<unknown>" else label
     }
 
-    override fun errorMessage(v: T?) = parameter.errorMessage(v)
+    override fun errorMessage(v: T) = parameter.errorMessage(v)
 
     fun copy(): ChoiceValue<T> {
         val result = ChoiceValue<T>(parameter, value)

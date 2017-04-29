@@ -34,7 +34,7 @@ class StringParameter(
     override fun createValue() = StringValue(this, value)
 
     override fun copyValue(source: Values): StringValue {
-        val copy = StringValue(this, value(source) ?: "")
+        val copy = StringValue(this, value(source))
         return copy
     }
 

@@ -99,7 +99,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
     }
 
     fun newValue(index: Int = multipleValue.value.size) {
-        multipleValue.addValue(parameter.prototype.createValue() as ParameterValue<T>, index)
+        multipleValue.addValue(parameter.prototype.createValue(), index)
     }
 
     fun removeAt(index: Int) {
