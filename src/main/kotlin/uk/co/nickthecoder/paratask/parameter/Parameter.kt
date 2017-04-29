@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.scene.Node
+import uk.co.nickthecoder.paratask.gui.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
 
 interface Parameter : Labelled {
@@ -13,6 +13,6 @@ interface Parameter : Labelled {
 
     fun errorMessage(values: Values): String?
 
-    fun createField(values: Values): Node
+    fun createField(values: Values): ParameterField
 
 }

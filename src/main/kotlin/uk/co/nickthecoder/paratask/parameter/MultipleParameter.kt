@@ -1,7 +1,9 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.Node
+import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.gui.MultipleField
+import uk.co.nickthecoder.paratask.gui.ParameterField
 
 class MultipleParameter<T>(
         val prototype: ValueParameter<T>,
@@ -15,7 +17,8 @@ class MultipleParameter<T>(
         label = label,
         description = description,
         value = value,
-        required = true) {
+        required = true),
+        WrappableField {
 
     override fun isStretchy() = true
 
@@ -44,5 +47,12 @@ class MultipleParameter<T>(
         return copy
     }
 
-    override fun createField(values: Values): Node = MultipleField(this, values)
+    override fun createField(values: Values) = MultipleField(this, values)
+
+    override fun wrap(parameterField: ParameterField): Node {
+        val titledPane = TitledPane(label, parameterField)
+        titledPane.setCollapsible(false)
+        return titledPane
+    }
+
 }

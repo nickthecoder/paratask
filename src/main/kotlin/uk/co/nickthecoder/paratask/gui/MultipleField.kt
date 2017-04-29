@@ -31,8 +31,7 @@ class MultipleField<T> : ParametersForm {
 
         buildList()
 
-        val titledPane = TitledPane(parameter.label, whole)
-        control = titledPane
+        control = whole
     }
 
     // TODO listen for change events and rebuild the list.
@@ -46,7 +45,10 @@ class MultipleField<T> : ParametersForm {
         value.value.forEach { item ->
             println("Creating inner parameter")
             values.put(parameter.name, item)
-            val field = parameter.prototype.createField(values) as ParameterField
+            val field = parameter.prototype.createField(values)
+            if (field is LabelledField) {
+                field.label.setVisible(false)
+            }
             field.form = this
 
             list.children.add(field)

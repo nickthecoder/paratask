@@ -1,4 +1,7 @@
-Can we remove the P generic from MultipleParameter, so that ValueParameter can have the "multiple" factory method.
+MultipleParameter
+    Remove the labels
+    Add "+" and "x" buttons
+    Fire events
 
 GrepTask to allow for multiple -e values, using a MultipleParameter
 

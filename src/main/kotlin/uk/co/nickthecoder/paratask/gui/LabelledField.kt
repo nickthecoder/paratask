@@ -41,7 +41,8 @@ open class LabelledField : ParameterField {
     }
 
     override fun computeMinWidth(height: Double): Double {
-        val both = label.minWidth(height) + form.spacing + (control?.minWidth(height) ?: 0.0)
+        val lab = if (label.isVisible) label.minWidth(height) + form.spacing else 0.0
+        val both = lab + (control?.minWidth(height) ?: 0.0)
         val err = if (error.isVisible) error.minWidth(height) else 0.0
 
         return Math.max(both, err)
@@ -54,13 +55,17 @@ open class LabelledField : ParameterField {
         var x = insets.left
         var y = insets.top
 
-        // Label
         var h = Math.max(label.prefHeight(-1.0), control?.prefHeight(-1.0) ?: 0.0)
-        var w = form.columns[0].width
-        layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
+        var w: Double
+
+        // Label
+        if (label.isVisible) {
+            w = form.columns[0].width
+            layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
+            x += w + form.spacing
+        }
 
         // Control
-        x += w + form.spacing
         w = if (parameter.isStretchy()) form.columns[1].width else control?.prefWidth(h) ?: 0.0
         layoutInArea(control, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 

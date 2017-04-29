@@ -4,6 +4,7 @@ import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.GroupParametersForm
+import uk.co.nickthecoder.paratask.gui.ParameterField
 import uk.co.nickthecoder.paratask.gui.ParametersForm
 import uk.co.nickthecoder.paratask.gui.WrappedParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -16,7 +17,9 @@ class GroupParameter(
         val collapsable: Boolean = true,
         val expanded: Boolean = true)
 
-    : AbstractParameter(name, description = description, label = label), Iterable<Parameter> {
+    : AbstractParameter(name, description = description, label = label),
+        Iterable<Parameter>,
+        WrappableField {
 
     private val children = mutableListOf<Parameter>()
 
@@ -74,26 +77,18 @@ class GroupParameter(
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(values: Values): Node {
-        val parametersForm = GroupParametersForm(this, values)
+    override fun createField(values: Values) = GroupParametersForm(this, values)
 
+    override fun wrap(parameterField: ParameterField): Node {
         if (isRoot) {
-            return parametersForm
+            return parameterField
         } else {
-            return GroupTitledPane(parametersForm)
-        }
-    }
-
-    inner class GroupTitledPane(val parametersForm: ParametersForm)
-        : TitledPane(label, parametersForm), WrappedParameterField {
-
-        override val parameterField = parametersForm
-
-        init {
-            setCollapsible(collapsable)
+            val titledPane = TitledPane(label, parameterField)
+            titledPane.setCollapsible(collapsable)
             if (collapsable) {
-                setExpanded(expanded)
+                titledPane.setExpanded(expanded)
             }
+            return titledPane
         }
     }
 
