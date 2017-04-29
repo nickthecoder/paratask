@@ -5,20 +5,20 @@ import javafx.scene.control.CheckBox
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.BooleanValue
-import uk.co.nickthecoder.paratask.parameter.Value
+import uk.co.nickthecoder.paratask.parameter.ParameterValue
 import uk.co.nickthecoder.paratask.parameter.ValueListener
 import uk.co.nickthecoder.paratask.parameter.Values
 
 class BooleanField : LabelledField {
 
-    val value: BooleanValue
+    val booleanValue: BooleanValue
 
     override val parameter: BooleanParameter
 
     constructor (parameter: BooleanParameter, values: Values)
             : super(parameter, label = if (parameter.labelOnLeft) parameter.label else "") {
 
-        this.value = parameter.getValue(values)
+        this.booleanValue = parameter.getParameterValue(values)
         this.parameter = parameter
         control = createControl()
     }
@@ -26,21 +26,21 @@ class BooleanField : LabelledField {
     private fun createControl(): Node {
         val checkBox = CheckBox(if (parameter.labelOnLeft) "" else parameter.label)
         checkBox.setAllowIndeterminate(!parameter.required)
-        if (value.value == null) {
+        if (booleanValue.value == null) {
             checkBox.setIndeterminate(true)
         } else {
-            checkBox.setSelected(value.value == true)
+            checkBox.setSelected(booleanValue.value == true)
         }
-        checkBox.selectedProperty().bindBidirectional(value.property);
+        checkBox.selectedProperty().bindBidirectional(booleanValue.property);
 
         label.addEventHandler(MouseEvent.MOUSE_CLICKED, {
             checkBox.requestFocus()
-            value.value = when (value.value) {
+            booleanValue.value = when (booleanValue.value) {
                 null -> true
                 true -> false
                 false -> if (parameter.required) true else null
             }
-            checkBox.setIndeterminate(value.value == null)
+            checkBox.setIndeterminate(booleanValue.value == null)
         })
 
         return checkBox

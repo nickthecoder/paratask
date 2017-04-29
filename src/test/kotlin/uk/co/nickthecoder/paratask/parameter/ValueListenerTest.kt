@@ -14,7 +14,7 @@ class ValueListenerTest : ValueListener {
         var notListeningValue = notListening.createValue()
     var listeningValue = listening.createValue()
 
-    override fun valueChanged(value: Value<*>) {
+    override fun valueChanged(parameterValue: ParameterValue<*>) {
         count++
     }
 

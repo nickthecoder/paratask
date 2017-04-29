@@ -37,10 +37,10 @@ class ValuesTest {
         val copy = taskD.copyValues(source)
 
         // Check all the values are equal, but don't share the same instance
-        assertEquals(source.values.size, copy.values.size)
-        source.values.forEach { (name, sourceItem) ->
+        assertEquals(source.parameterValues.size, copy.parameterValues.size)
+        source.parameterValues.forEach { (name, sourceItem) ->
 
-            assertTrue(copy.values.containsKey(name))
+            assertTrue(copy.parameterValues.containsKey(name))
             assertNotNull(copy.get(name))
 
             val copyItem = copy.get(name)!!

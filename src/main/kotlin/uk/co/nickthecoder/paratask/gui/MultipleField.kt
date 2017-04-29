@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleValue
-import uk.co.nickthecoder.paratask.parameter.Value
+import uk.co.nickthecoder.paratask.parameter.ParameterValue
 import uk.co.nickthecoder.paratask.parameter.ValueListener
 import uk.co.nickthecoder.paratask.parameter.Values
 
@@ -19,7 +19,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
 
     override val parameter: MultipleParameter<T>
 
-    val value: MultipleValue<T>
+    val multipleValue: MultipleValue<T>
 
     private var dirty = false
 
@@ -28,7 +28,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
 
     constructor(parameter: MultipleParameter<T>, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = parameter.getValue(values)
+        this.multipleValue = parameter.getParameterValue(values)
 
         val addButton = Button("+")
         addButton.onAction = EventHandler {
@@ -45,7 +45,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
         list.getStyleClass().add("multiple-list")
 
         control = whole
-        value.valueListeners.add(this)
+        multipleValue.valueListeners.add(this)
     }
 
     private fun buildList() {
@@ -55,7 +55,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
         val values = Values(GroupParameter("dummy"))
 
         var index = 0
-        value.value.forEach { item ->
+        multipleValue.value.forEach { item ->
             values.put(parameter.name, item)
             val field = parameter.prototype.createField(values)
             if (field is LabelledField) {
@@ -98,15 +98,15 @@ class MultipleField<T> : ParametersForm, ValueListener {
         return line
     }
 
-    fun newValue(index: Int = value.value.size) {
-        value.addValue(parameter.prototype.createValue() as Value<T>, index)
+    fun newValue(index: Int = multipleValue.value.size) {
+        multipleValue.addValue(parameter.prototype.createValue() as ParameterValue<T>, index)
     }
 
     fun removeAt(index: Int) {
-        value.removeAt(index)
+        multipleValue.removeAt(index)
     }
 
-    override fun valueChanged(value: Value<*>) {
+    override fun valueChanged(parameterValue: ParameterValue<*>) {
         buildList()
     }
 }

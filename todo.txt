@@ -1,8 +1,8 @@
-MultipleParameter
-    Add "+" and "x" buttons
-    Fire events
+The word "value" is used for TWO different things.
+    A Value and the value that a Value contains!
+    Rename Value to ParameterValue and prefix all usage with "parameterValue", or the specific type e.g. intValue
 
-GrepTask to allow for multiple -e values, using a MultipleParameter
+Does Values need to implement ParameterValue?
 
 Create tests for BooleanParameter and BooleanField
 

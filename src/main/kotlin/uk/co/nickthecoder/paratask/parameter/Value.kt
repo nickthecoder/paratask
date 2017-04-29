@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.parameter
 
 import javafx.beans.property.ObjectProperty
 
-interface Value<T> {
+interface ParameterValue<T> {
 
     val parameter: Parameter
 

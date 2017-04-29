@@ -10,25 +10,25 @@ class ChoiceField<T> : LabelledField {
 
     override val parameter: ChoiceParameter<T>
 
-    val value: ChoiceValue<T>
+    val choiceValue: ChoiceValue<T>
 
     private var dirty = false
 
     constructor(parameter: ChoiceParameter<T>, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = parameter.getValue(values)
+        this.choiceValue = parameter.getParameterValue(values)
         this.control = createControl()
     }
 
     private fun createControl(): Node {
 
-        val initialValue = value.value
+        val initialValue = choiceValue.value
 
         val comboBox = ComboBox<T>()
-        comboBox.converter = value
-        comboBox.valueProperty().bindBidirectional(value.property)
+        comboBox.converter = choiceValue
+        comboBox.valueProperty().bindBidirectional(choiceValue.property)
 
-        value.keyToValueMap.forEach { (_, value) ->
+        choiceValue.keyToValueMap.forEach { (_, value) ->
             comboBox.getItems().add(value)
         }
         comboBox.setValue(initialValue)

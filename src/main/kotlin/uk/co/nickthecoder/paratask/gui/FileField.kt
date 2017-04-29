@@ -9,25 +9,25 @@ import java.io.File
 
 class FileField : LabelledField {
 
-    val value: AbstractValue<File?>
+    val parameterValue: AbstractValue<File?>
 
     override val parameter: FileParameter
 
     constructor (parameter: FileParameter, values: Values) : super(parameter) {
-        this.value = parameter.getValue(values)
+        this.parameterValue = parameter.getParameterValue(values)
         this.parameter = parameter
         control = createControl()
     }
 
     private fun createControl(): Node {
         val textField = TextField()
-        textField.text = value.stringValue
+        textField.text = parameterValue.stringValue
         if (parameter.columns > 0) {
             textField.prefColumnCount = parameter.columns
         }
-        textField.textProperty().bindBidirectional(value.property, value);
+        textField.textProperty().bindBidirectional(parameterValue.property, parameterValue);
         textField.textProperty().addListener({ _, _, _: String ->
-            val error = parameter.errorMessage(value.value)
+            val error = parameter.errorMessage(parameterValue.value)
             if (error == null) {
                 clearError()
             } else {

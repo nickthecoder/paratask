@@ -7,7 +7,7 @@ import uk.co.nickthecoder.paratask.ParameterException
 abstract class AbstractValue<T>(
         initialValue: T)
 
-    : StringConverter<T>(), Value<T> {
+    : StringConverter<T>(), ParameterValue<T> {
 
     override val valueListeners = ValueListeners()
 

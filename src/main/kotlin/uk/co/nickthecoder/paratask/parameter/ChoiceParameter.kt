@@ -37,7 +37,7 @@ open class ChoiceParameter<T>(
         return copy
     }
 
-    override fun getValue(values: Values) = super.getValue(values) as ChoiceValue<T>
+    override fun getParameterValue(values: Values) = super.getParameterValue(values) as ChoiceValue<T>
 
     override fun toString(): String = "Choice" + super.toString()
 

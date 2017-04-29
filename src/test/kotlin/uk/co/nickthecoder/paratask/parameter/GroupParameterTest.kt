@@ -17,7 +17,7 @@ class GroupParameterTest : ValueListener {
     val xyz = IntParameter("xyz")
 
     var count = 0 // Count the number of times the listener is notified.
-    var changedValue: Value<*>? = null
+    var changedParameterValue: ParameterValue<*>? = null
 
     init {
         group.addParameters(abc, def, subGroup)
@@ -34,7 +34,7 @@ class GroupParameterTest : ValueListener {
     @Before
     fun setUp() {
         count = 0
-        changedValue = null
+        changedParameterValue = null
 
         val values = group.createValues()
 
@@ -53,8 +53,8 @@ class GroupParameterTest : ValueListener {
         groupValue.valueListeners.remove(this)
     }
 
-    override fun valueChanged(value: Value<*>) {
-        changedValue = value
+    override fun valueChanged(parameterValue: ParameterValue<*>) {
+        changedParameterValue = parameterValue
         count++
     }
 
@@ -73,17 +73,17 @@ class GroupParameterTest : ValueListener {
     @Test
     fun childChanged() {
         assertEquals(0, count)
-        assertNull(changedValue)
+        assertNull(changedParameterValue)
 
         abcValue.value = 5
         assertEquals(1, count)
-        assertSame(abc, changedValue!!.parameter)
+        assertSame(abc, changedParameterValue!!.parameter)
         abcValue.value = 5 // Same value
         assertEquals(1, count) // so the count shouldn't change
 
         defValue.value = 10
         assertEquals(2, count)
-        assertSame(def, changedValue!!.parameter)
+        assertSame(def, changedParameterValue!!.parameter)
 
     }
 

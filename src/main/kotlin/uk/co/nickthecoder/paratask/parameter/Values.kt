@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
-class Values(override val parameter: GroupParameter) : Value<Unit>, ValueListener {
+class Values(override val parameter: GroupParameter) : ParameterValue<Unit>, ValueListener {
 
     override val valueListeners = ValueListeners()
 
@@ -12,12 +12,12 @@ class Values(override val parameter: GroupParameter) : Value<Unit>, ValueListene
         get() = ""
         set(U: String) {}
 
-    val values = mutableMapOf<String, Value<*>>()
+    val parameterValues = mutableMapOf<String, ParameterValue<*>>()
 
-    fun get(name: String) = values.get(name)
+    fun get(name: String) = parameterValues.get(name)
 
-    fun put(name: String, value: Value<*>) {
-        values.put(name, value)
+    fun put(name: String, value: ParameterValue<*>) {
+        parameterValues.put(name, value)
         value.valueListeners.add(this)
     }
 
@@ -25,15 +25,15 @@ class Values(override val parameter: GroupParameter) : Value<Unit>, ValueListene
         return parameter.errorMessage(this)
     }
 
-    override fun valueChanged(value: Value<*>) {
-        valueListeners.fireChanged(value)
+    override fun valueChanged(parameterValue: ParameterValue<*>) {
+        valueListeners.fireChanged(parameterValue)
     }
 
     override fun toString(): String {
         val builder = StringBuilder()
         builder.append("Values name '${parameter.name}' =\n")
-        values.forEach { (name, value) ->
-            builder.append("'${name}' = ${value}")
+        parameterValues.forEach { (name, parameterValue) ->
+            builder.append("'${name}' = ${parameterValue}")
             builder.append("\n")
         }
         return builder.toString()

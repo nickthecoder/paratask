@@ -38,7 +38,7 @@ class StringParameter(
         return copy
     }
 
-    override fun getValue(values: Values) = super.getValue(values) as StringValue
+    override fun getParameterValue(values: Values) = super.getParameterValue(values) as StringValue
 
     override fun toString() = "String" + super.toString()
 

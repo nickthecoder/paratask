@@ -23,10 +23,10 @@ class MultipleParameter<T>(
 
     override fun isStretchy() = true
 
-    override fun getValue(values: Values) = super.getValue(values) as MultipleValue<T>
+    override fun getParameterValue(values: Values) = super.getParameterValue(values) as MultipleValue<T>
 
     fun values(values: Values): List<T> {
-        val mvalue = getValue( values )
+        val mvalue = getParameterValue( values )
         return mvalue.values()
     }
 
@@ -41,10 +41,10 @@ class MultipleParameter<T>(
 
     override fun copyValue(source: Values): MultipleValue<T> {
         val copy = MultipleValue<T>(this)
-        val from = getValue(source)
+        val from = getParameterValue(source)
 
-        val fromList: MutableList<Value<T>> = from.value
-        val copyList: MutableList<Value<T>> = copy.value
+        val fromList: MutableList<ParameterValue<T>> = from.value
+        val copyList: MutableList<ParameterValue<T>> = copy.value
 
         fromList.forEach { item ->
             copyList.add(item)

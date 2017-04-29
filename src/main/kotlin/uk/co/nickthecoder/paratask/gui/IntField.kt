@@ -20,13 +20,13 @@ class IntField : LabelledField {
 
     override val parameter: IntParameter
 
-    val value: AbstractValue<Int?>
+    val intValue: AbstractValue<Int?>
 
     private var dirty = false
 
     constructor(parameter: IntParameter, values: Values) : super(parameter) {
         this.parameter = parameter
-        this.value = parameter.getValue(values)
+        this.intValue = parameter.getParameterValue(values)
         this.control = createControl()
     }
 
@@ -34,7 +34,7 @@ class IntField : LabelledField {
 
         val spinner = createSpinner()
 
-        spinner.valueFactory.converter = value;
+        spinner.valueFactory.converter = intValue;
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -60,9 +60,9 @@ class IntField : LabelledField {
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = value.fromString(newValue)
+                val v = intValue.fromString(newValue)
                 spinner.valueFactory.value = v
-                showOrClearError(value.errorMessage(v))
+                showOrClearError(intValue.errorMessage(v))
                 dirty = false
             } catch (e: Exception) {
                 showError("Not an integer")
@@ -86,7 +86,7 @@ class IntField : LabelledField {
     }
 
     private fun createSpinner(): Spinner<*> {
-        val initialValue = if (value.value == null && parameter.required) {
+        val initialValue = if (intValue.value == null && parameter.required) {
             if (parameter.range.start > 0) {
                 parameter.range.start
             } else if (parameter.range.endInclusive < 0) {
@@ -96,12 +96,12 @@ class IntField : LabelledField {
             }
 
         } else {
-            value.value
+            intValue.value
         }
 
         val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
-        value.value = spinner.valueFactory.value
-        spinner.valueFactory.valueProperty().bindBidirectional(value.property);
+        intValue.value = spinner.valueFactory.value
+        spinner.valueFactory.valueProperty().bindBidirectional(intValue.property);
         return spinner
     }
 

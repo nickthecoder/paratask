@@ -8,25 +8,25 @@ import uk.co.nickthecoder.paratask.parameter.Values
 
 class StringField : LabelledField {
 
-    val value: AbstractValue<String>
+    val parameterValue: AbstractValue<String>
 
     override val parameter : StringParameter
 
     constructor (parameter: StringParameter, values: Values) : super(parameter) {
-        this.value = parameter.getValue(values)
+        this.parameterValue = parameter.getParameterValue(values)
         this.parameter = parameter
         control = createControl()
     }
 
     private fun createControl(): Node {
         val textField = TextField()
-        textField.text = value.value
+        textField.text = parameterValue.value
         if (parameter.columns > 0) {
             textField.prefColumnCount = parameter.columns
         }
-        textField.textProperty().bindBidirectional(value.property);
+        textField.textProperty().bindBidirectional(parameterValue.property);
         textField.textProperty().addListener({ _, _, _: String ->
-            val error = parameter.errorMessage(value.value)
+            val error = parameter.errorMessage(parameterValue.value)
             if (error == null) {
                 clearError()
             } else {

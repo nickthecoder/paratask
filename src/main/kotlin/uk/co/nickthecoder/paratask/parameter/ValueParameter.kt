@@ -12,16 +12,16 @@ abstract class ValueParameter<T>(
 
     : AbstractParameter(name, label = label, description = description) {
 
-    open fun getValue(values: Values) = values.get(name)
+    open fun getParameterValue(values: Values) = values.get(name)
 
-    abstract fun createValue(): Value<*>
+    abstract fun createValue(): ParameterValue<*>
 
-    abstract fun copyValue(source: Values): Value<*>
+    abstract fun copyValue(source: Values): ParameterValue<*>
 
-    fun value(values: Values): T? = getValue(values)?.value as T?
+    fun value(values: Values): T? = getParameterValue(values)?.value as T?
 
     fun set(values: Values, v: T) {
-        val value: Value<T>? = getValue(values) as Value<T>
+        val value: ParameterValue<T>? = getParameterValue(values) as ParameterValue<T>
         value!!.value = v
     }
 

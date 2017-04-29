@@ -30,7 +30,7 @@ class BooleanParameter(
         return copy
     }
 
-    override fun getValue(values: Values) = super.getValue(values) as BooleanValue
+    override fun getParameterValue(values: Values) = super.getParameterValue(values) as BooleanValue
 
     override fun toString(): String = "Boolean" + super.toString()
 }
