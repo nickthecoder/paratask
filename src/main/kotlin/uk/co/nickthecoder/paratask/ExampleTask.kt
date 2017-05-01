@@ -1,7 +1,7 @@
-package uk.co.nickthecoder.paratask.tasks
+package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
-import uk.co.nickthecoder.paratask.CommandTask
+import uk.co.nickthecoder.paratask.CommandLineTask
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -13,7 +13,7 @@ import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class Example : SimpleTask() {
+class ExampleTask : SimpleTask() {
 
     override val taskD = TaskDescription(
             name = "example",
@@ -21,7 +21,7 @@ class Example : SimpleTask() {
 This is an example showing various types of parameters. You can look at the source code on git hub :
 
 https://github.com/nickthecoder/paratask/
- 
+
 This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
@@ -67,5 +67,5 @@ Here we see GroupParameter in action
 }
 
 fun main(args: Array<String>) {
-    CommandTask(Example()).go(args)
+    CommandLineTask(ExampleTask()).go(args)
 }

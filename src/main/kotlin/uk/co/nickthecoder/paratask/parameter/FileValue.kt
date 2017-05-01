@@ -14,7 +14,9 @@ class FileValue(
 
     override fun toString(obj: File?): String = value?.toString() ?: ""
 
-    override fun errorMessage(v: File?) = parameter.errorMessage(v)
+    override fun errorMessage(v: File?): String? {
+        return parameter.errorMessage(v)
+    }
 
     override fun toString(): String = "File" + super.toString()
 

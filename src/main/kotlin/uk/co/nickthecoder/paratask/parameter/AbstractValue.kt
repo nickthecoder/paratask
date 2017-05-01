@@ -37,8 +37,13 @@ abstract class AbstractValue<T>(
             value = fromString(v)
         }
 
-    override fun errorMessage(): String? = errorMessage(value)
+    final fun errorMessage(): String? {
+        return errorMessage(value)
+    }
 
+    /**
+     * This is a convenience method, call the corresponding Parameter to do all of the error checking.
+     */
     abstract fun errorMessage(v: T): String?
 
     override fun toString(): String = "Value name '${parameter.name}' = ${value}"

@@ -10,7 +10,7 @@ import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.ProcessListener
 
-class SimpleTerminal(val exec: Exec, showCommand: Boolean = true)
+class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Boolean = false)
 
     : BorderPane(), ProcessListener {
 
@@ -42,27 +42,41 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true)
         }
 
         center = textArea
-        bottom = inputPane
+        if (allowInput) {
+            bottom = inputPane
+        } else {
+            message("Running...")
+        }
 
-        inputPane.center = inputField
-        inputPane.left = terminateButton
-        inputPane.right = submitButton
+        with(inputPane) {
+            center = inputField
+            left = terminateButton
+            right = submitButton
+        }
 
         // TODO Could show stderr in a different font/style
-        exec.mergeErrWithOut()
-        exec.outSink = TerminalSink()
+        with(exec) {
+            mergeErrWithOut()
+            outSink = TerminalSink()
 
-        exec.start()
-        exec.listeners.add(this)
+            start()
+            listeners.add(this@SimpleTerminal)
+        }
     }
 
     override fun finished(process: Process) {
         Platform.runLater {
-            val finished = TextField("Finished : Exit status ${process.waitFor()}")
-            finished.setEditable(false)
-            finished.getStyleClass().add("finished")
-            bottom = finished
-            finished.requestFocus()
+            message("Finished : Exit status ${process.waitFor()}")
+        }
+    }
+
+    fun message(message: String) {
+        val textField = TextField(message)
+        with(textField) {
+            setEditable(false)
+            getStyleClass().add("message")
+            requestFocus()
+            bottom = this
         }
     }
 

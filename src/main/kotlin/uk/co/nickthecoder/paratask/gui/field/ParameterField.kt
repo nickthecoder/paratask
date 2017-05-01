@@ -13,6 +13,9 @@ open class ParameterField(open val parameter: Parameter) : Region() {
 
     init {
         error.setVisible(false)
+        error.getStyleClass().add("error");
+
+        children.add(error)
     }
 
     var control: Node? = null

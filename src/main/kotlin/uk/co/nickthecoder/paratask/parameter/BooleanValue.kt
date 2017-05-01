@@ -25,7 +25,9 @@ class BooleanValue(
         return obj?.toString() ?: ""
     }
 
-    override fun errorMessage(v: Boolean?) = parameter.errorMessage(v)
+    override fun errorMessage(v: Boolean?): String? {
+        return parameter.errorMessage(v)
+    }
 
     override fun toString(): String = "Boolean" + super.toString()
 }

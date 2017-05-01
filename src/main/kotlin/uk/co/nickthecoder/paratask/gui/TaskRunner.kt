@@ -6,22 +6,8 @@ import uk.co.nickthecoder.paratask.util.AutoExit
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.runAndWait
 
-abstract class TaskRunner {
+interface TaskRunner {
 
-    fun run(task: Task, values: Values) {
-        AutoExit.inc()
-        Thread({
+    fun run(task: Task, values: Values)
 
-            try {
-                val result = task.run(values)
-                if (result is Command) {
-                    processCommand(result)
-                }
-            } finally {
-                AutoExit.dec()
-            }
-        }).start()
-    }
-
-    abstract fun processCommand(command: Command)
 }

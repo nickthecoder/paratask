@@ -10,10 +10,11 @@ class StringValue(
 
     override fun toString(v: String) = v
 
+    override fun errorMessage(v: String): String? {
+        return parameter.errorMessage(v
+        )
+    }
+
     override fun fromString(v: String) = v
-
-    override fun errorMessage(v: String) = parameter.errorMessage(v)
-
-    override fun toString(): String = "StringValue name '${parameter.name}' = '${value}'"
 
 }

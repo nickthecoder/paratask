@@ -30,6 +30,18 @@ class MultipleParameter<T>(
         return mvalue.values()
     }
 
+    override fun errorMessage(v: MutableList<ParameterValue<T>>?): String? {
+
+        var index = 0
+        v?.forEach { singleParameterValue ->
+
+            prototype.errorMessage(singleParameterValue.value)?.let { return "Item #${index + 1} : ${it}" }
+            index++
+        }
+
+        return null
+    }
+
     override fun createValue(): MultipleValue<T> {
         val result = MultipleValue<T>(this)
 

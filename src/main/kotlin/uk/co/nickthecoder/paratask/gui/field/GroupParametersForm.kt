@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.parameter.WrappableField
 
-class GroupParametersForm(var groupParameter: GroupParameter, values: Values)
+open class GroupParametersForm(var groupParameter: GroupParameter, values: Values)
     : ParametersForm(groupParameter) {
 
     init {

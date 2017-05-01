@@ -1,6 +1,7 @@
-package uk.co.nickthecoder.paratask.tasks
+package uk.co.nickthecoder.paratask.project.tasks
 
-import uk.co.nickthecoder.paratask.CommandTask
+import uk.co.nickthecoder.paratask.CommandLineTask
+import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
@@ -8,18 +9,11 @@ import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.Values
-import uk.co.nickthecoder.paratask.parameter.enumChoices
+import uk.co.nickthecoder.paratask.project.task.CommandTask
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.Duration
-import uk.co.nickthecoder.paratask.util.Labelled
-import java.io.OutputStream
-import java.util.concurrent.TimeUnit
 
-enum class Output(override val label: String) : Labelled {
-    PASSTHROUGH("Terminal"), GUI("GUI")
-}
 
-class GrepTask() : ExecTask() {
+class GrepTask() : SimpleTask(), CommandTask {
 
     override val taskD = TaskDescription(
             name = "grep",
@@ -66,10 +60,10 @@ class GrepTask() : ExecTask() {
         taskD.addParameters(
                 fileP, regexP, matchCaseP,
                 typeP, matchP, invertResultsP, followSymLinksP,
-                maxMatchesP, contextLinesP, additionalOptionsP, outputP)
+                maxMatchesP, contextLinesP, additionalOptionsP)
     }
 
-    override fun command(values: Values): Command {
+    override fun run(values: Values): Command {
 
         val rOrR = if (followSymLinksP.value(values) == true) "-R" else "-r"
 
@@ -117,5 +111,5 @@ class GrepTask() : ExecTask() {
 }
 
 fun main(args: Array<String>) {
-    CommandTask(GrepTask()).go(args)
+    CommandLineTask(GrepTask()).go(args)
 }

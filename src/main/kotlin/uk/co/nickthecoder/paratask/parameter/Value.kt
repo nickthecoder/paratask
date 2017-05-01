@@ -12,6 +12,4 @@ interface ParameterValue<T> {
 
     var stringValue: String
 
-    fun errorMessage(): String?
-
 }

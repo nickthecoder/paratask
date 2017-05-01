@@ -1,6 +1,6 @@
 Create tests for BooleanParameter and BooleanField
 
-Implement tests for GroupParameter duplicates.
+Create tests for GroupParameter duplicates.
     Also need to ensure all existing parameters aren't in an added GroupParameter.
 
 Create tests for ChoiceParameter
@@ -8,6 +8,47 @@ Create tests for ChoiceParameter
 
 Beep when run/apply clicked, but there's an error?
 
+Begin wrkfoo style Tools
+    Package paratask.project
+        Tool
+    Package paratask.project.gui
+        ProjectWindow
+        Results
+        ExecResults
+    Package paratask.project.tool
+        GrepTool
+        GrepTask
+
+Are there many tasks which return text output AND parsed output for a Tool?
+    Have an interface to inidicate that a Task produces text output (maybe just return an OutputStream/PrintStream
+    Do NOT have a parameter to specify the output. Instead have a meta-parameter similar to --prompt
+
+Tasks which produce output can do three things :
+    Create structured output suitable for a Tool
+    Output to stdout/stderr
+    Output to a TextArea
+
+So it is either parsed or not
+    GrepTask produces TEXT output - Just return a Command ALWAYS, let the caller decide what to do with it.
+    
+    GrepParser converts the Text to structured output
+        GrepParser has a GrepTask, and returns its TaskDescription
+            .run calls GrepTask's run, parses the output and returns a List of GrepRow s
+            
+Tasks can implement a Toolable interface, which allows the command line to run as a Tool.
+    So GrepTask is Toolable, and can return a TerminalTool for itself.
+    Also GrepParser is Toolable and returns a GrepTool, which is a ListTool
+
+Do I want to split the project into two pieces, Task and Tools?
+    GrepTask can be run as a Task AND as a Tool
+    So will CodeCounter
+    GitStatus probably won't have a separate GitStatusTask and GitStatusParser, because GitStatusTask on its own is trivial.
+        However, other Git tools may be nice to be Task and Tool
+    To list files (recursively) as text and structured may be useful, but in this case, the text version derives from
+        the structured version.
+        So what is the return type of the text version? Just a String?
+    DiskUsage ?
+    
 Bugs
 ====
 

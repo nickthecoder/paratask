@@ -9,80 +9,57 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
-import uk.co.nickthecoder.paratask.gui.field.ParametersForm
+import uk.co.nickthecoder.paratask.gui.field.TaskForm
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.AutoExit
 
 open class TaskPrompter(val task: Task, val values: Values) {
 
-    var root: BorderPane
+    var root = BorderPane()
 
-    var form: ParametersForm
-
-    val scrollPane: ScrollPane
+    var taskForm = TaskForm(task, values)
 
     var stage: Stage? = null
 
-    val okButton: Button
+    val okButton = Button("OK")
 
-    val cancelButton: Button
+    val cancelButton = Button( "Cancel")
 
-    val applyButton: Button
+    val applyButton = Button("Apply")
 
     init {
-        root = BorderPane()
 
-        okButton = Button("OK")
-        okButton.onAction = EventHandler {
-            onOk()
+        with(okButton) {
+            onAction = EventHandler {
+                onOk()
+            }
+            defaultButtonProperty().set(true)
         }
-        okButton.defaultButtonProperty().set(true)
 
-        cancelButton = Button("Cancel")
-        cancelButton.onAction = EventHandler { onCancel() }
-        cancelButton.visibleProperty().set(false)
-        cancelButton.cancelButtonProperty().set(true)
+        with(cancelButton) {
+            onAction = EventHandler { onCancel() }
+            visibleProperty().set(false)
+            cancelButtonProperty().set(true)
+        }
 
-        applyButton = Button("Apply")
-        applyButton.onAction = EventHandler { onApply() }
-        //applyButton.visibleProperty().set(false)
+        with(applyButton) {
+            onAction = EventHandler { onApply() }
+            //visibleProperty().set(false)
+        }
 
         val buttons = FlowPane()
-        buttons.styleClass.add("buttons")
-        buttons.children.add(okButton)
-        buttons.children.add(cancelButton)
-        buttons.children.add(applyButton)
+        with(buttons) {
+            styleClass.add("buttons")
+            children.add(okButton)
+            children.add(cancelButton)
+            children.add(applyButton)
+        }
 
-        form = GroupParametersForm(task.taskD.root, values)
-
-        root.getStyleClass().add("task-prompter")
-
-        scrollPane = ScrollPane(form)
-        scrollPane.fitToWidthProperty().set(true)
-
-        root.center = scrollPane
-        root.bottom = buttons
-    }
-
-    private fun ensureVisible(pane: ScrollPane, node: Node) {
-        // Cut and pasted code from stack overflow. Seems to work, but haven't looked further!
-        val viewport = pane.viewportBounds
-        val contentHeight = pane.content.boundsInLocal.height
-
-        val bounds = pane.content.sceneToLocal(node.localToScene(node.getBoundsInLocal()));
-
-        val nodeMinY = bounds.minY
-        val nodeMaxY = bounds.maxY
-
-        val viewportMinY = (contentHeight - viewport.height) * pane.vvalue
-        val viewportMaxY = viewportMinY + viewport.height
-        if (nodeMinY < viewportMinY) {
-            pane.vvalue = nodeMinY / (contentHeight - viewport.height)
-        } else if (nodeMaxY > viewportMaxY) {
-            pane.vvalue = (nodeMaxY - viewport.height) / (contentHeight - viewport.height)
+        with(root) {
+            getStyleClass().add("task-prompter")
+            center = taskForm.scrollPane
+            bottom = buttons
         }
     }
 
@@ -102,53 +79,22 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     fun checkAndRun(): Boolean {
 
-        // Are there any "dirty" fields, where the value in the GUI isn't in the Value.
-        // For example, if a non-valid number is typed into a IntField
-        form.descendants().forEach { field ->
-            if (field.isDirty()) {
-                ensureVisible(scrollPane, field)
-                return false;
-            }
-        }
+        val copiedValues = taskForm.check()
 
-        val values = task.taskD.copyValues(values)
-
-        if (check(values)) {
-            run()
+        if (copiedValues != null) {
+            run(values)
             return true
         }
         return false
     }
 
-    fun check(values: Values): Boolean {
-
-        form.descendants().forEach { field ->
-            field.clearError()
-        }
-
-        try {
-            task.taskD.root.check(values)
-            task.check(values)
-
-        } catch (e: ParameterException) {
-            val field = form.findField(e.parameter)
-            if (field != null) {
-                field.showError(e.message!!)
-                ensureVisible(scrollPane, field)
-            }
-            return false
-        }
-        return true
-    }
-
-    open fun run() {
-        NewWindowTaskRunner( task.taskD.label + " Output").run(task, values)
+    open fun run(values: Values) {
+        TerminalWindowTaskRunner(task.taskD.label + " Output").run(task, values)
     }
 
     open protected fun close() {
         stage?.let { it.hide() }
     }
-
 
     fun placeOnStage(stage: Stage) {
         this.stage = stage

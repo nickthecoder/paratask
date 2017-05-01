@@ -19,11 +19,8 @@ open class LabelledField : ParameterField {
         }
 
         getStyleClass().add("field");
-        error.setVisible(false)
-        error.getStyleClass().add("error");
 
         children.add(this.label)
-        children.add(error)
     }
 
     override fun computeMinHeight(width: Double): Double {

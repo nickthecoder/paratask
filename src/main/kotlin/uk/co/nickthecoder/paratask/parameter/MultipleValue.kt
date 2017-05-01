@@ -25,11 +25,6 @@ class MultipleValue<T>(
         // TODO Create string
     }
 
-    override fun errorMessage(v: MutableList<ParameterValue<T>>): String? {
-        // TODO Check if the number of items given is in the allowed range
-        return null
-    }
-
     fun addItem(item: T): ParameterValue<T> {
         val singleValue = newValue()
         singleValue.value = item
@@ -57,6 +52,10 @@ class MultipleValue<T>(
     fun removeAt(index: Int) {
         value.removeAt(index)
         valueListeners.fireChanged(this)
+    }
+
+    override fun errorMessage(v: MutableList<ParameterValue<T>>): String? {
+        return parameter.errorMessage(v)
     }
 
     override fun toString(): String = "Multiple" + super.toString()

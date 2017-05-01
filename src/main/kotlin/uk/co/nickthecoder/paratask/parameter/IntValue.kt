@@ -27,7 +27,9 @@ class IntValue(
         return obj?.toString() ?: ""
     }
 
-    override fun errorMessage(v: Int?) = parameter.errorMessage(v)
+    override fun errorMessage(v: Int?): String? {
+        return parameter.errorMessage(v)
+    }
 
     override fun toString(): String = "Int" + super.toString()
 

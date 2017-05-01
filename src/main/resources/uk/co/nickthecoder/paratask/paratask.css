@@ -20,11 +20,12 @@
     -fx-padding: 5px 0 0 0;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.TaskPrompter    *
-*                                                   *
-*****************************************************/
+/***********************************************************
+* See :                                                    *
+*   uk.co.nickthecoder.paratask.gui.TaskPrompter           *
+*   uk.co.nickthecoder.paratask.gui.project.ParametersPane *
+*                                                          *
+************************************************************/
 
 .buttons {
     -fx-padding: 10px;
@@ -77,7 +78,7 @@
     -fx-font-family: monospace;
 }
 
-.terminal .finished {
+.terminal .message {
     -fx-padding : 5px;
 }
 

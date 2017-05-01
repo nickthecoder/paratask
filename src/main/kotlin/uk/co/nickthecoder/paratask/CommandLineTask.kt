@@ -6,7 +6,7 @@ import javafx.application.Application
  * Use to process command line arguments, and then either run the Task directly, or start up the
  * GUI to prompt the parameters.
  */
-class CommandTask(val task: Task) {
+class CommandLineTask(val task: Task) {
     fun go(args: Array<String>) {
 
         args.size // To prevent compiler warning
