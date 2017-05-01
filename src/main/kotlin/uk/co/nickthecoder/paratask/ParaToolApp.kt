@@ -18,8 +18,10 @@ class ParaToolApp : Application() {
         val projectWindow = ProjectWindow()
         projectWindow.placeOnStage(stage)
 
-        println("ParaToolApp placedOnStage scene : ${stage.getScene()}")
-        startTool?.let { projectWindow.addTool(it) }
+        startTool?.let { tool ->
+            projectWindow.addTool(tool)
+            tool.toolRunner.run(tool.task.taskD.createValues())
+        }
     }
 
     companion object {

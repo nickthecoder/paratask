@@ -5,7 +5,7 @@ import javafx.scene.Node
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
-import uk.co.nickthecoder.paratask.gui.FocusListener
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ToolPane(var tool: Tool) {
@@ -26,16 +26,13 @@ class ToolPane(var tool: Tool) {
         with(splitPane) {
             setOrientation(Orientation.VERTICAL)
             getItems().add(resultsHolder)
-            println("ToolPane adding parametersPane Node = ${parametersPane.node}")
             val stackPane = StackPane()
             stackPane.children.add(parametersPane.node)
             getItems().add(stackPane)
-            println("ToolPane : ParametersPane parent = ${parametersPane.node.parent} gp = ${parametersPane.node?.parent?.parent}")
         }
     }
 
     fun updateResults(results: Results) {
-        println("ToolPane updateResults ${results}")
         resultsHolder.children.clear()
         resultsHolder.children.add(results.node)
     }
@@ -43,19 +40,19 @@ class ToolPane(var tool: Tool) {
     fun attached(projectTab: ProjectTab) {
         this.projectTab = projectTab
 
-        println("ToolPane.attaching ParametersPane scene = ${splitPane.getScene()} and ${parametersPane.node.getScene()}")
+        ParaTaskApp.logAttach("ToolPane.attaching")
         parametersPane.attached(this)
-        println("ToolPane.attached ParametersPane")
 
-        println("ToolPane.attaching Tool")
         tool.attached(this)
-        println("ToolPane.attached Tool")
+        ParaTaskApp.logAttach("ToolPane.attached")
     }
 
     fun detatching() {
+        ParaTaskApp.logAttach( "ToolPane detaching")
         parametersPane.detaching()
         tool.detaching()
         parametersPane.detaching()
+        ParaTaskApp.logAttach( "ToolPane detached")
     }
 
 }

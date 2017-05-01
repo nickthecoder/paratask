@@ -11,7 +11,7 @@ class ProcessNotifier() {
     fun start(process: Process) {
         this.process = process
 
-        Thread() {
+        val thread = Thread() {
             process.waitFor()
             ended = true;
             listeners.forEach {
@@ -23,7 +23,10 @@ class ProcessNotifier() {
                 }
             }
 
-        }.start();
+        }
+        thread.name = "ProcessNotifier"
+        thread.setDaemon(true)
+        thread.start();
     }
 
     fun add(listener: ProcessListener) {

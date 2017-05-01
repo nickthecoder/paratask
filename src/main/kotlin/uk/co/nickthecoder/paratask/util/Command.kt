@@ -26,7 +26,10 @@ class Command(vararg args: Any?) {
         }
     }
 
-    override fun toString(): String
-            = command[0] + command.slice(1..command.size-1).joinToString(prefix = " '", postfix = "'", separator = "' '")
-
+    override fun toString(): String =
+            if (command.size > 1) {
+                command[0] + command.slice(1..command.size - 1).joinToString(prefix = " '", postfix = "'", separator = "' '")
+            } else {
+                command[0]
+            }
 }

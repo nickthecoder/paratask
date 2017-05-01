@@ -9,26 +9,28 @@ class ThreadedToolRunner(val tool: Tool) : ToolRunner {
 
     private var finished: Boolean = false
 
+    private var thread: Thread? = null
+
     override fun run(values: Values) {
         started = true
         finished = false
-        object : Thread() {
+        thread = object : Thread() {
             override fun run() {
-                println("ThreadedToolRunner running tool")
                 tool.run(values);
-                println("ThreadedToolRunner run complete")
                 Platform.runLater {
-                    val results = tool.createResults()
+                    tool.updateResults()
 
-                    tool.toolPane?.let { it.updateResults(results) }
-                    println("ThreadedToolRunner updated results")
                     finished = true
+                    thread = null
                 }
             }
-        }.start()
+        }
+        thread?.start()
     }
 
     override fun hasStarted() = started
 
     override fun hasFinished() = finished
+
+    override fun isRunning() = thread != null
 }

@@ -5,7 +5,7 @@ class MultipleValue<T>(
 
     : AbstractValue<MutableList<ParameterValue<T>>>(mutableListOf<ParameterValue<T>>()) {
 
-    fun values(): List<T> {
+    fun list(): List<T> {
         val result = mutableListOf<T>()
 
         value.forEach {

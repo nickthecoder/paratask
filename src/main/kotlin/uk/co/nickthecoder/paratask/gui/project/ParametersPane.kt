@@ -42,8 +42,6 @@ class ParametersPane(val tool: Tool) {
     }
 
     private fun onRun() {
-        println("ParametersPane ${whole.getScene()} ${whole.parent}")
-
         val copiedValues = taskForm.check()
         if (copiedValues != null) {
             tool.toolRunner.run(copiedValues)

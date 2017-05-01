@@ -1,24 +1,36 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.application.Platform
+import javafx.event.EventHandler
 import javafx.scene.control.Button
-import javafx.scene.control.Label
+import javafx.scene.control.ScrollPane
+import javafx.scene.control.ScrollPane.ScrollBarPolicy
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.ProcessListener
+import java.io.PrintStream
 
 class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Boolean = false)
 
-    : BorderPane(), ProcessListener {
+    : BorderPane(), Stoppable, ProcessListener {
 
-    val textArea = TextArea()
+    private val textArea = TextArea()
 
-    val inputPane = BorderPane()
+    private val inputPane = BorderPane()
 
-    val inputField = TextField()
+    private val inputField = TextField()
+
+    private val out: PrintStream by lazy {
+        PrintStream(exec.process?.outputStream)
+    }
+
+    private val submitButton: Button
+
+    private var killed = false
 
     init {
         getStyleClass().add("terminal")
@@ -26,13 +38,15 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         inputPane.getStyleClass().add("inputArea")
         inputField.getStyleClass().add("input")
 
-        textArea.setEditable(false);
-
-        val submitButton = Button("Submit")
-        // TODO Implement Submit button
+        submitButton = Button("Submit")
+        submitButton.onAction = EventHandler {
+            submit()
+        }
 
         val terminateButton = Button("Terminate")
-        // TODO Implement Terminate button
+        terminateButton.onAction = EventHandler {
+            exec.kill()
+        }
 
         if (showCommand) {
             val commandLine = TextField(exec.command.toString())
@@ -44,18 +58,22 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         center = textArea
         if (allowInput) {
             bottom = inputPane
+            inputField.requestFocus()
+
         } else {
             message("Running...")
         }
 
-        with(inputPane) {
+        with(inputPane)
+        {
             center = inputField
             left = terminateButton
             right = submitButton
         }
 
-        // TODO Could show stderr in a different font/style
-        with(exec) {
+        with(exec)
+        {
+            // TODO Could show stderr in a different font/style
             mergeErrWithOut()
             outSink = TerminalSink()
 
@@ -64,13 +82,48 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         }
     }
 
-    override fun finished(process: Process) {
-        Platform.runLater {
-            message("Finished : Exit status ${process.waitFor()}")
+    private fun submit() {
+        out.println(inputField.text)
+        out.flush()
+        inputField.text = ""
+        textArea.selectPositionCaret(textArea.text.length)
+        textArea.deselect()
+        //textArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+    }
+
+    private var focusListener: FocusListener? = null
+
+    public fun attached() {
+        println("SimpleTerminal attaching focus listener")
+        focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
+            submitButton.setDefaultButton(hasFocus)
         }
     }
 
-    fun message(message: String) {
+    public fun detaching() {
+        println("SimpleTerminal detaching focus listener")
+        focusListener?.remove()
+        stop()
+    }
+
+
+    private fun kill() {
+        exec.kill(forcibly = killed) // If kill button is pressed twice, forcibly kill the second time 
+        killed = true
+    }
+
+    override fun stop() {
+        kill()
+    }
+
+    override fun finished(process: Process) {
+        Platform.runLater {
+            message("Finished : Exit status ${process.waitFor()}")
+            focusListener?.remove()
+        }
+    }
+
+    private fun message(message: String) {
         val textField = TextField(message)
         with(textField) {
             setEditable(false)

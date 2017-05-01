@@ -8,4 +8,6 @@ interface ToolRunner {
     fun hasStarted(): Boolean
 
     fun hasFinished(): Boolean
+
+    fun isRunning(): Boolean
 }

@@ -13,7 +13,6 @@ class TerminalWindowTaskRunner(val title: String) : CommandTaskRunner() {
             val terminal = SimpleTerminal(exec)
 
             PlainWindow("${title}", terminal)
-            terminal.inputField.requestFocus()
         }
     }
 }

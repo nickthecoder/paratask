@@ -51,13 +51,19 @@ class Exec(val command: Command) {
 
         listeners.start(process)
 
-        outSink?.let {
-            it.setStream(process.inputStream)
-            outThread = Thread(it).apply { start() }
+        outSink?.let { sink ->
+            sink.setStream(process.inputStream)
+            outThread = Thread(sink)
+            outThread?.setDaemon(true)
+            outThread?.setName("Exec.OutputSink")
+            outThread?.start()
         }
-        errSink?.let {
-            it.setStream(process.errorStream)
-            errThread = Thread(it).apply { start() }
+        errSink?.let { sink ->
+            sink.setStream(process.errorStream)
+            errThread = Thread(sink)
+            errThread?.setDaemon(true)
+            errThread?.setName("Exec.ErrorSink")
+            errThread?.start()
         }
 
         return this
@@ -100,6 +106,11 @@ class Exec(val command: Command) {
     }
 
     class Timeout(val timeoutMillis: Long) : Thread() {
+        init {
+            this.name = "Exec.Timeout"
+            this.setDaemon(true)
+        }
+
         var done: Boolean = false
 
         val calling = Thread.currentThread()

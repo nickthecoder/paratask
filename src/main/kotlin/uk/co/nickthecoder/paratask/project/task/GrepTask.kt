@@ -98,7 +98,7 @@ class GrepTask() : SimpleTask(), CommandTask {
             command.addArgument(contextLines)
         }
 
-        regexP.values(values).forEach { value ->
+        regexP.list(values).forEach { value ->
             command.addArgument("-e")
             command.addArgument(value)
         }

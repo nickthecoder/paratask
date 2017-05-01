@@ -25,9 +25,9 @@ class MultipleParameter<T>(
 
     override fun parameterValue(values: Values) = super.parameterValue(values) as MultipleValue<T>
 
-    fun values(values: Values): List<T> {
+    fun list(values: Values): List<T> {
         val mvalue = parameterValue(values)
-        return mvalue.values()
+        return mvalue.list()
     }
 
     override fun errorMessage(v: MutableList<ParameterValue<T>>?): String? {
