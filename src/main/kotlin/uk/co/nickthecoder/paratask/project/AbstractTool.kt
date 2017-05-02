@@ -29,7 +29,9 @@ abstract class AbstractTool(override val task: Task) : Tool {
     open fun iconName(): String = "${task.taskD.name}"
 
     override fun copy(): Tool {
-        // TODO Implement Tool.copy 
-        return this
+
+        val copy = this::class.java.newInstance()
+
+        return copy
     }
 }

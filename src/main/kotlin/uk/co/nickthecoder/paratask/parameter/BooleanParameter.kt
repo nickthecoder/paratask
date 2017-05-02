@@ -25,11 +25,6 @@ class BooleanParameter(
 
     override fun createValue() = BooleanValue(this, value)
 
-    override fun copyValue(source: Values): BooleanValue {
-        val copy = BooleanValue(this, value(source))
-        return copy
-    }
-
     override fun parameterValue(values: Values) = super.parameterValue(values) as BooleanValue
 
     override fun toString(): String = "Boolean" + super.toString()

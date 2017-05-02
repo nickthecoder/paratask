@@ -4,7 +4,8 @@ Implement duplicate in Tool and Task
 
     TerminalTool current has arguments in its constructor
     
-    
+GroupParameter has its own copyValues method. I thinks its wrong!
+    At the very least it is duplicating work.
 
 Create a ListTool
 

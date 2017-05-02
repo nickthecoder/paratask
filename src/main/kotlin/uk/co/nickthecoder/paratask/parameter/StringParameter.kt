@@ -33,11 +33,6 @@ class StringParameter(
 
     override fun createValue() = StringValue(this, value)
 
-    override fun copyValue(source: Values): StringValue {
-        val copy = StringValue(this, value(source))
-        return copy
-    }
-
     override fun parameterValue(values: Values) = super.parameterValue(values) as StringValue
 
     override fun toString() = "String" + super.toString()

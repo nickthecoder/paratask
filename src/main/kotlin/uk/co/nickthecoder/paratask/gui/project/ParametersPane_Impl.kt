@@ -13,7 +13,7 @@ class ParametersPane_Impl(override val tool: Tool)
 
     : ParametersPane, BorderPane() {
 
-    private val taskForm = TaskForm(tool.task)
+    override val taskForm = TaskForm(tool.task)
 
     private val buttons = FlowPane()
 

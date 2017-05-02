@@ -28,11 +28,6 @@ class FileParameter(
 
     override fun createValue() = FileValue(this, value)
 
-    override fun copyValue(source: Values): FileValue {
-        val copy = FileValue(this, value(source))
-        return copy
-    }
-
     override fun parameterValue(values: Values) = super.parameterValue(values) as FileValue
 
     override fun toString() = "File" + super.toString()

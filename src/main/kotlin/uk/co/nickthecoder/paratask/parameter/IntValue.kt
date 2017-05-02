@@ -31,6 +31,8 @@ class IntValue(
         return parameter.errorMessage(v)
     }
 
+    override fun copy(): IntValue = IntValue(parameter, value)
+
     override fun toString(): String = "Int" + super.toString()
 
 }

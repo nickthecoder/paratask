@@ -26,6 +26,4 @@ class TaskDescription(
     }
 
     fun createValues(): Values = root.createValues()
-
-    fun copyValues(source: Values): Values = root.copyValues(source)
 }

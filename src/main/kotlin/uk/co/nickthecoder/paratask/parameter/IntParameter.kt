@@ -54,14 +54,7 @@ open class IntParameter(
 
     override fun createValue() = IntValue(this, value)
 
-    override fun copyValue(source: Values): IntValue {
-        val v: Int? = value(source)
-        val copy = IntValue(this, v)
-        return copy
-    }
-
     override fun parameterValue(values: Values) = super.parameterValue(values) as IntValue
-
 
     override fun toString(): String = "Int" + super.toString()
 }

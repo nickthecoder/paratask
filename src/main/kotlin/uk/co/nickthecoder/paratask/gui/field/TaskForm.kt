@@ -27,7 +27,7 @@ class TaskForm(val task: Task, val values: Values = task.taskD.createValues()) {
             }
         }
 
-        val copiedValues = task.taskD.copyValues(values)
+        val copiedValues = values.copy()
 
         form.descendants().forEach { field ->
             field.clearError()

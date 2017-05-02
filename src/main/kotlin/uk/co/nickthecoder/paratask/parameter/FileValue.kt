@@ -18,6 +18,8 @@ class FileValue(
         return parameter.errorMessage(v)
     }
 
+    override fun copy(): FileValue = FileValue(parameter, value)
+
     override fun toString(): String = "File" + super.toString()
 
 }

@@ -64,20 +64,6 @@ class MultipleParameter<T>(
         return result
     }
 
-    override fun copyValue(source: Values): MultipleValue<T> {
-        val copy = MultipleValue<T>(this)
-        val from = parameterValue(source)
-
-        val fromList: MutableList<ParameterValue<T>> = from.value
-        val copyList: MutableList<ParameterValue<T>> = copy.value
-
-        fromList.forEach { item ->
-            copyList.add(item)
-        }
-
-        return copy
-    }
-
     override fun createField(values: Values) = MultipleField(this, parameterValue(values))
 
     override fun wrap(parameterField: ParameterField): Node {

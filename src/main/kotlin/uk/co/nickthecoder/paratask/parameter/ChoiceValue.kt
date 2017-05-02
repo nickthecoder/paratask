@@ -51,17 +51,17 @@ class ChoiceValue<T>(
         return if (label == null) "<unknown>" else label
     }
 
-    fun copy(): ChoiceValue<T> {
+    override fun errorMessage(v: T): String? {
+        return parameter.errorMessage(v)
+    }
+
+    override fun copy(): ChoiceValue<T> {
         val result = ChoiceValue<T>(parameter, value)
         keyToValueMap.forEach { (key, value) ->
             val label = valueToLabelMap.get(value) ?: ""
             result.addChoice(key, value, label)
         }
         return result
-    }
-
-    override fun errorMessage(v: T): String? {
-        return parameter.errorMessage(v)
     }
 
     override fun toString(): String = "Choice" + super.toString()

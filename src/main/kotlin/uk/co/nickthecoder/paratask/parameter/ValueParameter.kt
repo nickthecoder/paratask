@@ -16,8 +16,6 @@ abstract class ValueParameter<T>(
 
     abstract fun createValue(): ParameterValue<T>
 
-    abstract fun copyValue(source: Values): ParameterValue<T>
-
     fun value(values: Values): T = parameterValue(values).value
 
     fun set(values: Values, v: T) {

@@ -32,11 +32,6 @@ open class ChoiceParameter<T>(
 
     override fun createValue() = choiceValue.copy()
 
-    override fun copyValue(source: Values): ChoiceValue<T> {
-        val copy = ChoiceValue<T>(this, value(source))
-        return copy
-    }
-
     override fun parameterValue(values: Values) = super.parameterValue(values) as ChoiceValue<T>
 
     override fun toString(): String = "Choice" + super.toString()

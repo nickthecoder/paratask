@@ -15,6 +15,8 @@ class StringValue(
         )
     }
 
+    override fun copy() = StringValue(parameter, value)
+
     override fun fromString(v: String) = v
 
 }

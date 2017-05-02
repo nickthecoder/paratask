@@ -154,27 +154,4 @@ class GroupParameter(
         createFromGroup(this)
         return values
     }
-
-    fun copyValues(source: Values): Values {
-
-        val copy = Values()
-
-        fun copyGroup(source: Values, group: GroupParameter) {
-            group.children().forEach { parameter ->
-                if (parameter is ValueParameter<*>) {
-                    val copySingleValue = parameter.copyValue(source)
-
-                    copy.put(parameter.name, copySingleValue)
-                }
-                if (parameter is GroupParameter) {
-                    copyGroup(source, parameter)
-                }
-            }
-
-        }
-
-        copyGroup(source, this)
-        return copy
-
-    }
 }

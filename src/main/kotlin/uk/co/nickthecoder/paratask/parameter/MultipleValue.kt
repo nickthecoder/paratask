@@ -58,5 +58,19 @@ class MultipleValue<T>(
         return parameter.errorMessage(v)
     }
 
+    override fun copy(): MultipleValue<T> {
+        val copy = MultipleValue(parameter)
+        copy.value = copyValue()
+        return copy
+    }
+
+    override fun copyValue(): MutableList<ParameterValue<T>> {
+        val copyValue = mutableListOf<ParameterValue<T>>()
+        value.forEach { singlePV ->
+            copyValue.add(singlePV.copy())
+        }
+        return copyValue
+    }
+
     override fun toString(): String = "Multiple" + super.toString()
 }

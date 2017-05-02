@@ -34,7 +34,7 @@ class ValuesTest {
         innerP.set(source, "unchanged")
 
         // Copy the values
-        val copy = taskD.copyValues(source)
+        val copy = source.copy()
 
         // Check all the values are equal, but don't share the same instance
         assertEquals(source.parameterValues.size, copy.parameterValues.size)

@@ -29,5 +29,7 @@ class BooleanValue(
         return parameter.errorMessage(v)
     }
 
+    override fun copy(): BooleanValue = BooleanValue(parameter, value)
+
     override fun toString(): String = "Boolean" + super.toString()
 }
