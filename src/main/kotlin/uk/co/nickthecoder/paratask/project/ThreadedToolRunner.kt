@@ -3,7 +3,9 @@ package uk.co.nickthecoder.paratask.project
 import javafx.application.Platform
 import uk.co.nickthecoder.paratask.parameter.Values
 
-class ThreadedToolRunner(val tool: Tool) : ToolRunner {
+class ThreadedToolRunner(val tool: Tool)
+
+    : ToolRunner {
 
     private var started: Boolean = false
 
@@ -14,9 +16,11 @@ class ThreadedToolRunner(val tool: Tool) : ToolRunner {
     override fun run(values: Values) {
         started = true
         finished = false
+
         thread = object : Thread() {
             override fun run() {
                 tool.run(values);
+
                 Platform.runLater {
                     tool.updateResults()
 

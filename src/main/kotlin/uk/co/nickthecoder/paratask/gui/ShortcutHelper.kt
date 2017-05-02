@@ -3,12 +3,12 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.Node
 import javafx.scene.input.KeyEvent
 
-class ShortcutHelper(val node: Node) {
+class ShortcutHelper(val name: String, val node: Node) {
 
     val actions = mutableListOf<Pair<Action, () -> Unit>>()
 
     init {
-        node.addEventHandler(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+        node.addEventFilter(KeyEvent.KEY_PRESSED, { keyPressed(it) })
     }
 
     fun add(action: Action, func: () -> Unit) {
@@ -18,6 +18,8 @@ class ShortcutHelper(val node: Node) {
     fun keyPressed(event: KeyEvent) {
         actions.forEach { (action, func) ->
             if (action.keyCodeCombination?.match(event) == true) {
+                //println("Shortcut helper '$name' consumed key : '${action.keyCodeCombination.displayText}'")
+                event.consume()
                 func()
             }
         }

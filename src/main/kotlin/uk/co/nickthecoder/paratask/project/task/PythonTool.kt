@@ -7,21 +7,20 @@ import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.Command
 
 class PythonTool : AbstractTerminalTool(PythonTask(), allowInput = true, showCommand = true) {
+}
 
-    class PythonTask : SimpleTask(), CommandTask {
+class PythonTask : AbstractTerminalTask() {
 
-        override val taskD = TaskDescription("python")
+    override val taskD = TaskDescription("python")
 
-        val versionP = StringParameter("version", required = false)
+    val versionP = StringParameter("version", required = false)
 
-        init {
-            taskD.addParameters(versionP)
-        }
+    init {
+        taskD.addParameters(versionP)
+    }
 
-        override fun run(values: Values): Command {
-            val command = Command("python" + versionP.value(values), "-i")
-
-            return command
-        }
+    override fun command(values: Values): Command {
+        return Command("python" + versionP.value(values), "-i")
     }
 }
+

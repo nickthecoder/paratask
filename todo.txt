@@ -1,12 +1,10 @@
-Implement duplicate in Tool and Task
-    Use it when splitting
-    Add duplicate tab feature
+Add Stop button to HalfTab
 
-    TerminalTool current has arguments in its constructor
+StatusUpdater - Update button states in a background thread.
+
+Create a WebTool
+    Add a Help button to the main toolbar
     
-GroupParameter has its own copyValues method. I thinks its wrong!
-    At the very least it is duplicating work.
-
 Create a ListTool
 
 Task and Tool are in two different packages. Should they be?
@@ -24,7 +22,6 @@ Use ButtonBar for TaskPrompter (orders the buttons in an OS specific manner)
     https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonBar.html
     
 Create a toolbar
-    Duplicate Tab
     Save Project, Load Project
     Settings
 Per Half-Tab toolbar :
@@ -38,17 +35,8 @@ Create tests for GroupParameter duplicates.
 Create tests for ChoiceParameter
     Enum tests
 
-Beep when run/apply clicked, but there's an error?
-            
-Tasks can implement a Toolable interface, which allows the command line to run as a Tool.
-    So GrepTask is Toolable, and can return a TerminalTool for itself.
-    Also GrepParser is Toolable and returns a GrepTool, which is a ListTool
-
 FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
 
-JavaFX Standard CSS :
-    https://pastebin.com/0PebD9nR
-    https://gist.github.com/maxd/63691840fc372f22f470
 
 Bugs
 ====
@@ -59,4 +47,12 @@ A collapsed groups must unfurl when a child has an error
 
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace ;-(
 
+
+Notes
+=====
     
+JavaFX Standard CSS :
+    https://pastebin.com/0PebD9nR
+    https://gist.github.com/maxd/63691840fc372f22f470
+JavaFX Shortcuts :
+    https://wiki.openjdk.java.net/display/OpenJFX/Keyboard+Navigation

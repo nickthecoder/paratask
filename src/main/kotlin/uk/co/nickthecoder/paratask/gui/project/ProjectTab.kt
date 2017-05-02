@@ -25,11 +25,11 @@ interface ProjectTab {
 
     fun remove(toolPane: ToolPane)
 
-    fun orientation(horizontal: Boolean)
-
-    fun split(horizontal: Boolean? = null)
+    fun split()
 
     fun splitToggle()
+
+    fun duplicateTab()
 
     fun changed()
 }

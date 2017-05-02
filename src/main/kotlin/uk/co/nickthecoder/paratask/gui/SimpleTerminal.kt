@@ -2,9 +2,8 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.application.Platform
 import javafx.event.EventHandler
+import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.ScrollPane
-import javafx.scene.control.ScrollPane.ScrollBarPolicy
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
@@ -78,9 +77,12 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
             mergeErrWithOut()
             outSink = TerminalSink()
 
-            start()
             listeners.add(this@SimpleTerminal)
         }
+    }
+
+    fun start() {
+        exec.start()
     }
 
     private fun submit() {
@@ -108,7 +110,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         focusListener?.remove()
         stop()
     }
-
 
     private fun kill() {
         exec.kill(forcibly = killed) // If kill button is pressed twice, forcibly kill the second time 
@@ -143,5 +144,9 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
                 textArea.appendText("\n")
             }
         }
+    }
+
+    fun chooseFocus(): Node? {
+        return if (inputPane == null) null else inputField
     }
 }

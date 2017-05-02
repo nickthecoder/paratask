@@ -8,13 +8,17 @@ interface ProjectTabs {
 
     val projectWindow: ProjectWindow
 
-    fun addTool(tool: Tool)
+    fun addTool(tool: Tool): ProjectTab
+
+    fun addToolPane(toolPane: ToolPane): ProjectTab
 
     fun currentTab(): ProjectTab?
 
-    fun split(horizontal: Boolean)
+    fun split()
 
     fun splitToggle()
+
+    fun duplicateTab()
 
     fun getScene(): Scene
 }

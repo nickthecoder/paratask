@@ -65,7 +65,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         val r = HalfTab_Impl(toolPane)
 
         r.attached(this)
-        splitPane.getItems().add(toolPane as Node)
+        splitPane.getItems().add(r)
         right = r
     }
 
@@ -83,20 +83,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         splitPane.getItems().removeAt(index)
     }
 
-    override fun orientation(horizontal: Boolean) {
-        splitPane.setOrientation(if (horizontal) Orientation.HORIZONTAL else Orientation.VERTICAL)
-    }
-
-    override fun split(horizontal: Boolean?) {
-        horizontal?.let { orientation(it) }
+    override fun split() {
         if (right == null) {
-
-            val existingToolPane = left.toolPane
-            val newTool = existingToolPane.tool.copy()
-            val newToolPane = ToolPane_Impl(newTool)
-            newToolPane.values = existingToolPane.values
-
-            add(newToolPane)
+            add(left.toolPane.copy())
         }
     }
 
@@ -109,6 +98,12 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
             splitPane.getItems().removeAt(1)
         }
+    }
+
+    override fun duplicateTab() {
+        val newTab = tabs.addToolPane(left.toolPane.copy())
+
+        right?.let { newTab.add(it.toolPane.copy()) }
     }
 
     override fun changed() {

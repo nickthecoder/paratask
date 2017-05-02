@@ -11,25 +11,34 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     : ProjectTabs, TabPane() {
 
-    override fun addTool(tool: Tool) {
-        val toolPane = ToolPane_Impl(tool)
+    override fun addToolPane(toolPane: ToolPane): ProjectTab {
         val newProjectTab = ProjectTab_Impl(this, toolPane)
         getTabs().add(newProjectTab)
 
         ParaTaskApp.logAttach("ProjectTabs.attaching ProjectTab")
         newProjectTab.attached(this)
         ParaTaskApp.logAttach("ProjectTabs.attached ProjectTab")
+
+        return newProjectTab
+    }
+
+    override fun addTool(tool: Tool): ProjectTab {
+        return addToolPane(ToolPane_Impl(tool))
     }
 
     override fun currentTab(): ProjectTab? {
         return selectionModel.getSelectedItem() as ProjectTab
     }
 
-    override fun split(horizontal: Boolean) {
-        currentTab()?.split(horizontal)
+    override fun split() {
+        currentTab()?.split()
     }
 
     override fun splitToggle() {
         currentTab()?.splitToggle()
+    }
+
+    override fun duplicateTab() {
+        currentTab()?.duplicateTab()
     }
 }

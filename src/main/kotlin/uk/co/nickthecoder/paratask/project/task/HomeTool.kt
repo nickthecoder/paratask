@@ -1,13 +1,15 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import javafx.event.EventHandler
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.project.Results
+import uk.co.nickthecoder.paratask.gui.project.EmptyResults
+import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
@@ -51,9 +53,17 @@ class HomeTool() : AbstractTool(HomeTask()) {
         toolPane?.updateResults(results)
     }
 
-    class HomeResults : Results {
+    class HomeResults : EmptyResults() {
 
         override val node = FlowPane()
+
+        override fun chooseFocus(toolPane: ToolPane): Node {
+            if (node.children.count() > 0) {
+                return node.children.get(0)
+            } else {
+                return super.chooseFocus(toolPane)
+            }
+        }
     }
 }
 

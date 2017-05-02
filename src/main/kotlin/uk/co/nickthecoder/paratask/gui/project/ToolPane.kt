@@ -17,4 +17,17 @@ interface ToolPane {
 
     fun detaching()
 
+    fun copy(): ToolPane
+
+    fun showJustResults()
+
+    fun showJustParameters()
+
+    fun showBoth()
+
+    fun toggleParameters()
+
+    fun notBoth()
+
+    fun cycle()
 }

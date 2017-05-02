@@ -22,7 +22,7 @@ class ProjectWindow() {
 
     private val toolBar = ToolBar()
 
-    private val shortcuts = ShortcutHelper(borderPane)
+    private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
     init {
         with(borderPane) {
@@ -31,19 +31,15 @@ class ProjectWindow() {
             setPrefSize(800.0, 600.0)
         }
 
-        val splitGroup = ButtonGroup()
-        with(splitGroup) {
-            add(Actions.SPLIT_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
-            add(Actions.SPLIT_VERTICAL.createButton(shortcuts) { tabs.split(horizontal = false) })
-            add(Actions.SPLIT_HORIZONTAL.createButton(shortcuts) { tabs.split(horizontal = true) })
-        }
+        //shortcuts.add(Actions.SPLIT_TOOL_TOGGLE) { tabs.currentTab()?.left?.toolPane?.toggleParameters() }
+        //shortcuts.add(Actions.SPLIT_TOOL_CYCLE) { tabs.currentTab()?.left?.toolPane?.cycle() }
 
         with(toolBar.getItems()) {
             add(Actions.QUIT.createButton(shortcuts) { onQuit() })
             add(Actions.NEW_WINDOW.createToolButton(shortcuts) { tool -> onNewWindow(tool) })
             add(Actions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
-
-            add(splitGroup)
+            add(Actions.DUPLICATE_TAB.createButton(shortcuts) { tabs.duplicateTab() })
+            add(Actions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
         }
     }
 

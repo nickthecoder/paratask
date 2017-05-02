@@ -21,11 +21,13 @@ object Actions {
     val QUIT = Action("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, label = "New Window", tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
-    val CLOSE_TAB = Action("tab.close", KeyCode.T, control = true, shift = true)
+    val CLOSE_TAB = Action("tab.close", KeyCode.W, control = true, tooltip = "Close Tab")
+    val DUPLICATE_TAB = Action("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
 
-    val SPLIT_TOGGLE = Action("split.toggle", KeyCode.F3, tooltip="Split/Unsplit")
-    val SPLIT_HORIZONTAL = Action("split.horizontal", KeyCode.F3, shift = true, tooltip="Split Horizontally")
-    val SPLIT_VERTICAL = Action("split.vertical", KeyCode.F3, control = true, tooltip="Split Vertically")
+    val SPLIT_TAB_TOGGLE = Action("split.tab.toggle", KeyCode.F3, tooltip = "Split/Unsplit")
+
+    val SPLIT_TOOL_TOGGLE = Action("split.tool.toggle", KeyCode.F6, tooltip = "Show/Hide Parameters")
+    val SPLIT_TOOL_CYCLE = Action("split.tool.cycle", KeyCode.F7, tooltip = "Cycle through Views")
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
