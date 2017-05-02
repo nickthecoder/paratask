@@ -8,51 +8,16 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
 
-class ToolPane(var tool: Tool) {
+interface ToolPane {
 
-    private val splitPane = SplitPane()
+    var tool: Tool
 
-    val node: Node = splitPane
+    val halfTab: HalfTab
 
-    private var results: Node = HBox()
+    fun updateResults(results: Results)
 
-    private var parametersPane = ParametersPane(tool)
+    fun attached(halfTab: HalfTab)
 
-    private val resultsHolder = StackPane()
-
-    lateinit var halfTab: HalfTab
-
-    init {
-        with(splitPane) {
-            setOrientation(Orientation.VERTICAL)
-            getItems().add(resultsHolder)
-            val stackPane = StackPane()
-            stackPane.children.add(parametersPane.node)
-            getItems().add(stackPane)
-        }
-    }
-
-    fun updateResults(results: Results) {
-        resultsHolder.children.clear()
-        resultsHolder.children.add(results.node)
-    }
-
-    fun attached(halfTab: HalfTab) {
-        this.halfTab = halfTab
-
-        ParaTaskApp.logAttach("ToolPane.attaching")
-        parametersPane.attached(this)
-
-        tool.attached(this)
-        ParaTaskApp.logAttach("ToolPane.attached")
-    }
-
-    fun detaching() {
-        ParaTaskApp.logAttach( "ToolPane detaching")
-        parametersPane.detaching()
-        tool.detaching()
-        parametersPane.detaching()
-        ParaTaskApp.logAttach( "ToolPane detached")
-    }
+    fun detaching()
 
 }

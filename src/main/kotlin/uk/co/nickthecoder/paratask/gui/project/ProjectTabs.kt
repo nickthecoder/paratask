@@ -1,38 +1,20 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.scene.Node
-import javafx.scene.control.SingleSelectionModel
-import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
-import uk.co.nickthecoder.paratask.ParaTaskApp
+import javafx.scene.Scene
 import uk.co.nickthecoder.paratask.project.Tool
 
-class ProjectTabs(val projectWindow: ProjectWindow) {
+interface ProjectTabs {
 
-    private val tabPane = TabPane()
+    val projectWindow: ProjectWindow
 
-    val node: Node = tabPane
+    fun addTool(tool: Tool)
 
-    fun addTool(tool: Tool) {
-        val toolPane = ToolPane(tool)
-        val newProjectTab = ProjectTab(this, toolPane)
-        tabPane.getTabs().add(newProjectTab)
+    fun currentTab(): ProjectTab?
 
-        ParaTaskApp.logAttach("ProjectTabs.attaching ProjectTab")
-        newProjectTab.attached(this)
-        ParaTaskApp.logAttach("ProjectTabs.attached ProjectTab")
-    }
+    fun split(horizontal: Boolean)
 
-    fun currentTab(): ProjectTab? {
-        val selection: SingleSelectionModel<Tab> = tabPane.selectionModel
-        return selection.getSelectedItem() as ProjectTab
-    }
+    fun splitToggle()
 
-    fun split(horizontal: Boolean) {
-        currentTab()?.split(horizontal)
-    }
-
-    fun splitToggle() {
-        currentTab()?.splitToggle()
-    }
+    fun getScene(): Scene
 }

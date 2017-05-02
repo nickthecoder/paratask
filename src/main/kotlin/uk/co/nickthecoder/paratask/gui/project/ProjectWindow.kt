@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
@@ -17,17 +18,15 @@ class ProjectWindow() {
 
     private val borderPane = BorderPane()
 
-    val node: Parent = borderPane
-
-    private val tabs = ProjectTabs(this)
+    val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
     private val toolBar = ToolBar()
 
-    private val shortcuts = ShortcutHelper(node)
+    private val shortcuts = ShortcutHelper(borderPane)
 
     init {
         with(borderPane) {
-            center = tabs.node
+            center = tabs as Node
             top = toolBar
             setPrefSize(800.0, 600.0)
         }
@@ -67,7 +66,7 @@ class ProjectWindow() {
 
     fun placeOnStage(stage: Stage) {
 
-        val scene = Scene(node)
+        val scene = Scene(borderPane)
 
         ParaTaskApp.style(scene)
 
