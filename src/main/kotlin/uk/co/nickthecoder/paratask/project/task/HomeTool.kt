@@ -2,17 +2,13 @@ package uk.co.nickthecoder.paratask.project.task
 
 import javafx.event.EventHandler
 import javafx.scene.control.Button
-import javafx.scene.control.MenuItem
-import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.Tooltip
-import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.project.tasks.GrepTask
 
 class HomeTool() : AbstractTool(NullTask()) {
 
@@ -20,9 +16,7 @@ class HomeTool() : AbstractTool(NullTask()) {
         val toolList = mutableListOf<Tool>()
 
         init {
-            add(HomeTool(), TerminalTool(GrepTask()))
-
-            add(TerminalTool(TerminalTask(), allowInput = true))
+            add(HomeTool(), GrepTool(), TerminalTool())
         }
 
         fun add(vararg tools: Tool) {

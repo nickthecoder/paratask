@@ -1,3 +1,11 @@
+Implement duplicate in Tool and Task
+    Use it when splitting
+    Add duplicate tab feature
+
+    TerminalTool current has arguments in its constructor
+    
+    
+
 Create a ListTool
 
 Task and Tool are in two different packages. Should they be?
@@ -13,15 +21,9 @@ SimpleTerminal to close the input before killing the process
 
 Use ButtonBar for TaskPrompter (orders the buttons in an OS specific manner)
     https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonBar.html
-
-Any classes which HAVE a node, should subclass that node.
-    Create interfaces for each, and return those interfaces from key methods that don't need the node
-    Add "Impl" to the implementing classes
-    Add Impl to the (internal) vals and keep another val for the interface
     
 Create a toolbar
     Duplicate Tab
-    Split V, Split H, Unsplit
     Save Project, Load Project
     Settings
 Per Half-Tab toolbar :

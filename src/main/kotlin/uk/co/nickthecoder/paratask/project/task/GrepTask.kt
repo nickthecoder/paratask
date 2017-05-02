@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.project.tasks
+package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.CommandLineTask
 import uk.co.nickthecoder.paratask.SimpleTask
