@@ -20,8 +20,6 @@ interface Tool {
 
     val icon: Image?
 
-    fun createIcon(): ImageView? = icon?.let { ImageView(it) }
-
     /**
      * Note, this is separate from run because this must be done in JavaFX's thread, whereas run
      * will typically be done in its own thread.

@@ -20,8 +20,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
     private val textArea = TextArea()
 
-    private val inputPane = BorderPane()
-
+    private val inputPane: BorderPane?
     private val inputField = TextField()
 
     private val out: PrintStream by lazy {
@@ -35,7 +34,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     init {
         getStyleClass().add("terminal")
         textArea.getStyleClass().add("output")
-        inputPane.getStyleClass().add("inputArea")
         inputField.getStyleClass().add("input")
 
         submitButton = Button("Submit")
@@ -57,18 +55,21 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
         center = textArea
         if (allowInput) {
+            inputPane = BorderPane()
             bottom = inputPane
             inputField.requestFocus()
+            inputPane.getStyleClass().add("inputArea")
+
+            with(inputPane)
+            {
+                center = inputField
+                left = terminateButton
+                right = submitButton
+            }
 
         } else {
+            inputPane = null
             message("Running...")
-        }
-
-        with(inputPane)
-        {
-            center = inputField
-            left = terminateButton
-            right = submitButton
         }
 
         with(exec)
@@ -86,7 +87,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         out.println(inputField.text)
         out.flush()
         // TODO Color the input text differently?
-        textArea.appendText( "> " + inputField.text + "\n" )
+        textArea.appendText("> " + inputField.text + "\n")
         textArea.selectPositionCaret(textArea.text.length)
         textArea.deselect()
         inputField.text = ""
@@ -96,8 +97,10 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     private var focusListener: FocusListener? = null
 
     public fun attached() {
-        focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
-            submitButton.setDefaultButton(hasFocus)
+        if (inputPane != null) {
+            focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
+                submitButton.setDefaultButton(hasFocus)
+            }
         }
     }
 

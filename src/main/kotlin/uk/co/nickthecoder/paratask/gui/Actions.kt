@@ -118,7 +118,8 @@ class Action(
         init {
 
             HomeTool.toolList.forEach { tool ->
-                val item = MenuItem(tool.shortTitle(), tool.createIcon())
+                val imageView = tool.icon?.let { ImageView(it) }
+                val item = MenuItem(tool.shortTitle(), imageView)
 
                 item.onAction = EventHandler {
                     action(tool)

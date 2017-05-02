@@ -38,14 +38,10 @@ class TaskForm(val task: Task, val values: Values = task.taskD.createValues()) {
             task.check(copiedValues)
 
         } catch (e: ParameterException) {
-            println("TaskForm caught a check error ${e}")
             val field = form.findField(e.parameter)
             if (field != null) {
                 field.showError(e.message!!)
                 ensureVisible(field)
-
-            } else {
-                println("Didn't find field in error ${e}")
             }
 
             return null

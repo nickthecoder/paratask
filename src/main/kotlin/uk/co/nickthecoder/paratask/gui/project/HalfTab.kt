@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-import javafx.scene.Node
+import uk.co.nickthecoder.paratask.project.Tool
 
 interface HalfTab {
 
@@ -11,5 +11,7 @@ interface HalfTab {
     fun attached(projectTab: ProjectTab)
 
     fun detaching()
+
+    fun changeTool( tool : Tool )
 
 }

@@ -4,9 +4,9 @@ import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.SplitPane
 import javafx.scene.control.Tab
+import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.project.task.HomeTool
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
@@ -22,10 +22,14 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     init {
         setContent(splitPane)
-        setText(toolPane.tool.shortTitle())
-        setGraphic(toolPane.tool.createIcon())
+        updateTab()
+        splitPane.getItems().add(left as Node)
+    }
 
-        splitPane.getItems().add(left.toolPane as Node)
+    private fun updateTab() {
+        setText(left.toolPane.tool.shortTitle())
+        val imageView = left.toolPane.tool.icon?.let { ImageView(it) }
+        setGraphic(imageView)
     }
 
     override fun attached(projectTabs: ProjectTabs) {
@@ -101,11 +105,13 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             split()
         } else {
             right = null
-            setText(left.toolPane.tool.shortTitle())
-            setGraphic(left.toolPane.tool.createIcon())
+            updateTab()
 
             splitPane.getItems().removeAt(1)
         }
+    }
 
+    override fun changed() {
+        updateTab()
     }
 }

@@ -3,21 +3,22 @@ package uk.co.nickthecoder.paratask.project.task
 import javafx.event.EventHandler
 import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
+import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
+import uk.co.nickthecoder.paratask.SimpleTask
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
 
-class HomeTool() : AbstractTool(NullTask()) {
+class HomeTool() : AbstractTool(HomeTask()) {
 
     companion object {
-        val toolList = mutableListOf<Tool>()
-
-        init {
-            add(HomeTool(), GrepTool(), TerminalTool())
-        }
+        val toolList = mutableListOf<Tool>(
+                HomeTool(), GrepTool(), TerminalTool(), PythonTool()
+        )
 
         fun add(vararg tools: Tool) {
             tools.forEach { tool ->
@@ -26,12 +27,7 @@ class HomeTool() : AbstractTool(NullTask()) {
         }
     }
 
-    override fun shortTitle() = "Home"
-
-    override fun iconName() = "home"
-
     override fun run(values: Values) {
-
     }
 
     override fun updateResults() {
@@ -39,9 +35,10 @@ class HomeTool() : AbstractTool(NullTask()) {
         val results = HomeResults()
 
         toolList.forEach { tool ->
-            val button = Button(tool.shortTitle(), tool.createIcon())
+            val imageView = tool.icon?.let { ImageView(it) }
+            val button = Button(tool.shortTitle(), imageView)
             button.onAction = EventHandler {
-                toolPane?.halfTab?.projectTab?.projectTabs?.addTool(tool.copy())
+                toolPane?.halfTab?.changeTool(tool.copy())
             }
 
             val description = tool.task.taskD.description
@@ -60,6 +57,12 @@ class HomeTool() : AbstractTool(NullTask()) {
     }
 }
 
+class HomeTask : SimpleTask() {
+
+    override val taskD = TaskDescription("home")
+
+    override fun run(value: Values) {}
+}
 
 // TODO Remove this once we can test Grep as a tool using GrepTask as the entry point.
 fun main(args: Array<String>) {

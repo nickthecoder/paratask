@@ -30,4 +30,6 @@ interface ProjectTab {
     fun split(horizontal: Boolean? = null)
 
     fun splitToggle()
+
+    fun changed()
 }
