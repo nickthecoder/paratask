@@ -15,7 +15,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     private var results: Results = EmptyResults()
 
-    private var parametersPane: ParametersPane = ParametersPane_Impl(tool)
+    override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
     private val resultsHolder = StackPane()
 

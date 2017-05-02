@@ -8,6 +8,7 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.project.Tool
 
 class HalfTab_Impl(override var toolPane: ToolPane)
@@ -36,6 +37,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         with(toolbar.getItems()) {
             add(optionsField)
+            add(Actions.TOOL_STOP.createButton(shortcuts) { onStop() })
+            add(Actions.TOOL_RUN.createButton(shortcuts) { onRun() })
             add(splitGroup)
         }
     }
@@ -63,5 +66,16 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         toolPane.attached(this)
 
         projectTab.changed()
+    }
+
+    private fun onStop() {
+        val tool = toolPane.tool
+        if (tool is Stoppable) {
+            tool.stop()
+        }
+    }
+
+    public fun onRun() {
+        toolPane.parametersPane.run()
     }
 }

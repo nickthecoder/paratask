@@ -2,6 +2,8 @@ Add Stop button to HalfTab
 
 StatusUpdater - Update button states in a background thread.
 
+History on HalfTab
+
 Create a WebTool
     Add a Help button to the main toolbar
     

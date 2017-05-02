@@ -39,7 +39,7 @@ class ParametersPane_Impl(override val tool: Tool)
         buttons.getStyleClass().add("buttons")
     }
 
-    private fun run(): Boolean {
+    override fun run(): Boolean {
         val copiedValues = taskForm.check()
         if (copiedValues != null) {
             tool.toolRunner.run(copiedValues)

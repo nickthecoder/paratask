@@ -9,6 +9,8 @@ interface ToolPane {
 
     val halfTab: HalfTab
 
+    val parametersPane: ParametersPane
+
     var values: Values
 
     fun updateResults(results: Results)

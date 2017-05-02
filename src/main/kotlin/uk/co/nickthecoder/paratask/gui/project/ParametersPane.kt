@@ -15,6 +15,8 @@ interface ParametersPane {
 
     val taskForm: TaskForm
 
+    fun run() : Boolean
+
     fun attached(toolPane: ToolPane)
 
     fun detaching()
