@@ -86,8 +86,13 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     override fun split(horizontal: Boolean?) {
         horizontal?.let { orientation(it) }
         if (right == null) {
-            // TODO Copy the existing tool
-            add(HomeTool())
+
+            val existingToolPane = left.toolPane
+            val newTool = existingToolPane.tool.copy()
+            val newToolPane = ToolPane_Impl(newTool)
+            newToolPane.values = existingToolPane.values
+
+            add(newToolPane)
         }
     }
 
