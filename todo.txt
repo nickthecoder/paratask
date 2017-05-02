@@ -5,14 +5,27 @@ Task and Tool are in two different packages. Should they be?
 ProjectWindow to detach all tabs when it is closed
     (so that terminals and other tools can clean up)
 
+Use a Property for the tab's text
+    Editor adds a "*" without having firing events to listeners
+    Ditto for window's title
+
+SimpleTerminal to close the input before killing the process
+
+Use ButtonBar for TaskPrompter (orders the buttons in an OS specific manner)
+    https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonBar.html
+
+Any classes which HAVE a node, should subclass that node.
+    Create interfaces for each, and return those interfaces from key methods that don't need the node
+    Add "Impl" to the implementing classes
+    Add Impl to the (internal) vals and keep another val for the interface
+    
 Create a toolbar
-    Quit, New Window, Duplicate Tab
+    Duplicate Tab
     Split V, Split H, Unsplit
-    New Tab
     Save Project, Load Project
     Settings
 Per Half-Tab toolbar :
-    Re-run/stop, Home, Back Forwards, Close
+    Re-run/stop, ToolMenu, Back Forwards, Close
 
 Create tests for BooleanParameter and BooleanField
 
@@ -28,7 +41,12 @@ Tasks can implement a Toolable interface, which allows the command line to run a
     So GrepTask is Toolable, and can return a TerminalTool for itself.
     Also GrepParser is Toolable and returns a GrepTool, which is a ListTool
 
-    
+FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
+
+JavaFX Standard CSS :
+    https://pastebin.com/0PebD9nR
+    https://gist.github.com/maxd/63691840fc372f22f470
+
 Bugs
 ====
 

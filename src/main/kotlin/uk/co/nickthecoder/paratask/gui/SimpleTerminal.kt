@@ -85,23 +85,23 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     private fun submit() {
         out.println(inputField.text)
         out.flush()
-        inputField.text = ""
+        // TODO Color the input text differently?
+        textArea.appendText( "> " + inputField.text + "\n" )
         textArea.selectPositionCaret(textArea.text.length)
         textArea.deselect()
+        inputField.text = ""
         //textArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
     }
 
     private var focusListener: FocusListener? = null
 
     public fun attached() {
-        println("SimpleTerminal attaching focus listener")
         focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
             submitButton.setDefaultButton(hasFocus)
         }
     }
 
     public fun detaching() {
-        println("SimpleTerminal detaching focus listener")
         focusListener?.remove()
         stop()
     }

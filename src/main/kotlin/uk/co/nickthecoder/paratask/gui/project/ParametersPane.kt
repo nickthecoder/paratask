@@ -53,7 +53,7 @@ class ParametersPane(val tool: Tool) {
 
         // Note, we must get the scene in a weird way because node.getScene() is still null at this point.
         // SplitPane doesn't set the parent of its items straight away. SplitPane.getItems().add() is WEIRD!
-        val scene = toolPane.projectTab.projectTabs.node.getScene()
+        val scene = toolPane.halfTab.projectTab.projectTabs.node.getScene()
         focusListener = FocusListener(node, scene = scene) { hasFocus: Boolean ->
             runButton.setDefaultButton(hasFocus)
         }

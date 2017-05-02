@@ -24,7 +24,7 @@ class GrepTask() : SimpleTask(), CommandTask {
 
     val regexP = StringParameter("regex",
             description = "The regular expression to search for")
-            .multiple()
+            .multiple(minItems = 1)
 
     val matchP = ChoiceParameter<String>("match", value = "",
             description = "Match a word, a line or any part of the file")

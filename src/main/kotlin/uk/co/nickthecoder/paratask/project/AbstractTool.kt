@@ -23,8 +23,10 @@ abstract class AbstractTool(override val task: Task) : Tool {
     }
 
     override val icon: Image? by lazy {
-        ParaTaskApp.imageResource("tools/${task.taskD.name}.png")
+        ParaTaskApp.imageResource("tools/${iconName()}.png")
     }
+
+    open fun iconName(): String = "${task.taskD.name}"
 
     override fun copy(): Tool {
         // TODO Implement Tool.copy 

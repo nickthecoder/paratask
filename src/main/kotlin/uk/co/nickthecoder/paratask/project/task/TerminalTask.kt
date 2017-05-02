@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class TerminalTask : CommandTask {
 
-    override val taskD = TaskDescription("Terminal")
+    override val taskD = TaskDescription("terminal")
 
     val commandP = StringParameter("command", value="bash")
 

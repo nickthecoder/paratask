@@ -20,7 +20,7 @@ class ToolPane(var tool: Tool) {
 
     private val resultsHolder = StackPane()
 
-    lateinit var projectTab: ProjectTab
+    lateinit var halfTab: HalfTab
 
     init {
         with(splitPane) {
@@ -37,8 +37,8 @@ class ToolPane(var tool: Tool) {
         resultsHolder.children.add(results.node)
     }
 
-    fun attached(projectTab: ProjectTab) {
-        this.projectTab = projectTab
+    fun attached(halfTab: HalfTab) {
+        this.halfTab = halfTab
 
         ParaTaskApp.logAttach("ToolPane.attaching")
         parametersPane.attached(this)
@@ -47,7 +47,7 @@ class ToolPane(var tool: Tool) {
         ParaTaskApp.logAttach("ToolPane.attached")
     }
 
-    fun detatching() {
+    fun detaching() {
         ParaTaskApp.logAttach( "ToolPane detaching")
         parametersPane.detaching()
         tool.detaching()

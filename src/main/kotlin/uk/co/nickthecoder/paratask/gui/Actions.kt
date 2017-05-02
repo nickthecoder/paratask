@@ -2,6 +2,8 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.control.MenuItem
+import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -9,6 +11,8 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.task.HomeTool
 
 object Actions {
 
@@ -18,6 +22,10 @@ object Actions {
     val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, label = "New Window", tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
     val CLOSE_TAB = Action("tab.close", KeyCode.T, control = true, shift = true)
+
+    val SPLIT_TOGGLE = Action("split.toggle", KeyCode.F3, tooltip="Split/Unsplit")
+    val SPLIT_HORIZONTAL = Action("split.horizontal", KeyCode.F3, shift = true, tooltip="Split Horizontally")
+    val SPLIT_VERTICAL = Action("split.vertical", KeyCode.F3, control = true, tooltip="Split Vertically")
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
@@ -88,4 +96,37 @@ class Action(
         button.tooltip = createTooltip()
         return button
     }
+
+    fun createToolButton(shortcuts: ShortcutHelper? = null, action: (Tool) -> Unit): ToolSplitMenuButton {
+        shortcuts?.let { it.add(this) { action(HomeTool()) } }
+
+        val split = ToolSplitMenuButton(label ?: "", image, action)
+        split.tooltip = createTooltip()
+
+        return split
+    }
+
+    class ToolSplitMenuButton(label: String, icon: Image?, val action: (Tool) -> Unit)
+        : SplitMenuButton() {
+
+        init {
+            text = label
+            graphic = ImageView(icon)
+            onAction = EventHandler { action(HomeTool()) }
+        }
+
+        init {
+
+            HomeTool.toolList.forEach { tool ->
+                val item = MenuItem(tool.shortTitle(), tool.createIcon())
+
+                item.onAction = EventHandler {
+                    action(tool)
+                }
+                getItems().add(item)
+            }
+
+        }
+    }
+
 }

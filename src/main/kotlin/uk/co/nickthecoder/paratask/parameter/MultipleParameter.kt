@@ -11,7 +11,9 @@ class MultipleParameter<T>(
         label: String,
         description: String,
         value: MutableList<ParameterValue<T>>,
-        val allowInsert: Boolean = false)
+        val allowInsert: Boolean = false,
+        val minItems: Int = 0,
+        val maxItems: Int = Int.MAX_VALUE)
 
     : ValueParameter<MutableList<ParameterValue<T>>>(
         name = name,
@@ -32,8 +34,19 @@ class MultipleParameter<T>(
 
     override fun errorMessage(v: MutableList<ParameterValue<T>>?): String? {
 
+        if (v == null) {
+            return "Expected a list of items"
+        }
+
+        if (v.size < minItems) {
+            return "Must have at least ${minItems} items"
+        }
+        if (v.size > maxItems) {
+            return "Cannot have more than ${maxItems} items"
+        }
+
         var index = 0
-        v?.forEach { singleParameterValue ->
+        v.forEach { singleParameterValue ->
 
             prototype.errorMessage(singleParameterValue.value)?.let { return "Item #${index + 1} : ${it}" }
             index++

@@ -12,7 +12,7 @@ abstract class ValueParameter<T>(
 
     : AbstractParameter(name, label = label, description = description) {
 
-    open fun parameterValue(values: Values) : ParameterValue<T> = values.get(name) as ParameterValue<T>
+    open fun parameterValue(values: Values): ParameterValue<T> = values.get(name) as ParameterValue<T>
 
     abstract fun createValue(): ParameterValue<T>
 
@@ -29,16 +29,26 @@ abstract class ValueParameter<T>(
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
-    fun multiple(allowInsert: Boolean = false): MultipleParameter<T> {
-        val singleParameterValue = createValue()
-        singleParameterValue.value = value;
+    fun multiple(
+            allowInsert: Boolean = false,
+            minItems: Int = 0,
+            maxItems: Int = Int.MAX_VALUE): MultipleParameter<T> {
 
+        val list = mutableListOf<ParameterValue<T>>()
+
+        if (minItems > 0) {
+            val singleParameterValue = createValue()
+            singleParameterValue.value = value;
+            list.add(singleParameterValue)
+        }
         return MultipleParameter(
                 this, name = name,
                 label = label,
                 description = description,
-                value = mutableListOf<ParameterValue<T>>(singleParameterValue),
-                allowInsert = allowInsert)
+                value = list,
+                allowInsert = allowInsert,
+                minItems = minItems,
+                maxItems = maxItems)
     }
 
 }

@@ -7,10 +7,10 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
+import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.project.task.TerminalTool
-import uk.co.nickthecoder.paratask.project.tasks.GrepTask
+import uk.co.nickthecoder.paratask.project.task.HomeTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 
 class ProjectWindow() {
@@ -32,10 +32,19 @@ class ProjectWindow() {
             setPrefSize(800.0, 600.0)
         }
 
+        val splitGroup = ButtonGroup()
+        with(splitGroup) {
+            add(Actions.SPLIT_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
+            add(Actions.SPLIT_VERTICAL.createButton(shortcuts) { tabs.split(horizontal = false) })
+            add(Actions.SPLIT_HORIZONTAL.createButton(shortcuts) { tabs.split(horizontal = true) })
+        }
+
         with(toolBar.getItems()) {
             add(Actions.QUIT.createButton(shortcuts) { onQuit() })
-            add(Actions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
-            add(Actions.NEW_TAB.createButton(shortcuts) { onNewTab() })
+            add(Actions.NEW_WINDOW.createToolButton(shortcuts) { tool -> onNewWindow(tool) })
+            add(Actions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
+
+            add(splitGroup)
         }
     }
 
@@ -43,14 +52,17 @@ class ProjectWindow() {
         System.exit(0)
     }
 
-    fun onNewWindow() {
+    fun onNewWindow(tool: Tool) {
         println("New window")
         // TODO Implement new window
     }
 
-    fun onNewTab() {
-        // TODO Replace with the home tool when its written
-        addTool(TerminalTool(GrepTask()))
+    fun onNewTab(tool: Tool = HomeTool()) {
+        addTool(tool.copy())
+    }
+
+    fun onChangeTool(tool: Tool) {
+        // TODO Replace current tool
     }
 
     fun placeOnStage(stage: Stage) {
@@ -66,4 +78,5 @@ class ProjectWindow() {
     fun addTool(tool: Tool) {
         tabs.addTool(tool)
     }
+
 }

@@ -2,6 +2,9 @@ package uk.co.nickthecoder.paratask.project.task
 
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.control.MenuItem
+import javafx.scene.control.SplitMenuButton
+import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import uk.co.nickthecoder.paratask.gui.project.Results
@@ -29,6 +32,10 @@ class HomeTool() : AbstractTool(NullTask()) {
         }
     }
 
+    override fun shortTitle() = "Home"
+
+    override fun iconName() = "home"
+
     override fun run(values: Values) {
 
     }
@@ -38,12 +45,15 @@ class HomeTool() : AbstractTool(NullTask()) {
         val results = HomeResults()
 
         toolList.forEach { tool ->
-            val button = Button(tool.shortTitle())
-            tool.icon?.let { button.graphic = ImageView(it) }
+            val button = Button(tool.shortTitle(), tool.createIcon())
             button.onAction = EventHandler {
-                toolPane?.projectTab?.projectTabs?.addTool(tool.copy())
+                toolPane?.halfTab?.projectTab?.projectTabs?.addTool(tool.copy())
             }
 
+            val description = tool.task.taskD.description
+            if (description != "") {
+                button.tooltip = Tooltip(description)
+            }
             results.node.children.add(button)
         }
 

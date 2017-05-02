@@ -23,6 +23,8 @@ class TerminalTool(
         command = task.run(values)
     }
 
+    override fun iconName() = if (task.taskD.name == "") "terminal" else task.taskD.name
+
     override fun updateResults() {
         val results = TerminalResults(
                 command,

@@ -83,6 +83,53 @@
 }
 
 /****************************************************
+* See :                                             *
+*   uk.co.nickthecoder.paratask.gui.ButtonGroup     *
+*                                                   *
+*****************************************************/
+// This section is probably not pixel perfect, because I'm not sure how it works!
+ 
+.button-group {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border;
+    -fx-background-insets: 0 0 -1 0, 0;
+    -fx-background-radius: 3, 3;
+    -fx-padding: 0;
+}
+
+.button-group > .first {
+    -fx-background-color: -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 1 0 1 1, 2 1 2 2;
+    -fx-background-radius: 2 0 0 2, 1 0 0 1;
+}
+
+.button-group > .middle {
+    -fx-background-color: -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 1 0 1 1, 2 1 2 2;
+    -fx-background-radius: 0, 0;
+}
+.button-group > .last {
+    -fx-background-color: -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 1 1 1 1, 2 2 2 2;
+    -fx-background-radius: 0 2 2 0, 0 1 1 0;
+}
+
+.button-group > .button:focused {
+    -fx-background-color: -fx-focus-color, -fx-inner-border, -fx-body-color, -fx-faint-focus-color, -fx-body-color;
+    -fx-background-insets: -0.2, 1, 2, -1.4, 2.6;
+}
+
+.button-group > .first:focused {
+    -fx-background-radius: 3 1 1 3, 2 0 0 2, 1 0 0 1, 4 3 3 4, 1 0 0 1;
+}
+
+.button-group > .middle:focused {
+    -fx-background-radius: 2, 1, 0, 3, 0;
+}
+
+.button-group > .last:focused {
+    -fx-background-radius: 1 3 3 1, 0 2 2 0, 0 1 1 0, 3 4 4 3, 0 1 1 0;
+}
+/****************************************************
 *   End :                                           *
 *****************************************************/
  
