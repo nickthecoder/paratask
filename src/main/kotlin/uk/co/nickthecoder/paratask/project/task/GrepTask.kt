@@ -16,7 +16,7 @@ class GrepTask() : SimpleTask(), CommandTask {
 
     override val taskD = TaskDescription(
             name = "grep",
-            description = "Search File Contents Recursively")
+            description = "Search a file or recursively through a directory tree")
 
     val fileP = FileParameter("file", label = "File or Directory",
             description = "Search a single file, or a whole directory tree")

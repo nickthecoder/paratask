@@ -49,6 +49,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val historyGroup = ButtonGroup()
         val backButton = Actions.HISTORY_BACK.createButton(shortcuts) { history.undo() }
         val forwardButton = Actions.HISTORY_FORWARD.createButton(shortcuts) { history.redo() }
+        backButton.disableProperty().bind(history.canUndoProperty.not())
+        forwardButton.disableProperty().bind(history.canRedoProperty.not())
         historyGroup.children.addAll(backButton, forwardButton)
 
         val runStopStack = StackPane()
@@ -96,6 +98,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton.disableProperty().bind(tool.toolRunner.disableRunProperty)
         runButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
         stopButton.visibleProperty().bind(tool.toolRunner.showStopProperty)
+
+        history.push(tool, toolPane.values)
     }
 
     fun onStop() {

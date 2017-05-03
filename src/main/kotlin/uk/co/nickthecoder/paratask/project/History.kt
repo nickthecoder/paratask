@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.gui.project.HalfTab
 import uk.co.nickthecoder.paratask.parameter.Values
 
@@ -21,8 +22,17 @@ class History(val halfTab: HalfTab) {
 
     private var using = false
 
+    val canUndoProperty = SimpleBooleanProperty(false)
+
+    val canRedoProperty = SimpleBooleanProperty(false)
+
+    fun update() {
+        canUndoProperty.set(canUndo())
+        canRedoProperty.set(canRedo())
+        //dumpNames()   
+    }
+
     private fun use(moment: Moment) {
-        //println("History.using")
         using = true
         val tool = moment.tool
         tool.autoRun = true
@@ -40,7 +50,7 @@ class History(val halfTab: HalfTab) {
             use(moments[index])
         }
 
-        dumpNames()
+        update()
     }
 
     fun redo() {
@@ -51,26 +61,20 @@ class History(val halfTab: HalfTab) {
             use(moments[index])
         }
 
-        //dumpNames()
+        update()
     }
 
     fun push(tool: Tool, values: Values) {
         if (using) {
-            //println("Ignoring, as this is ME using an item in history")
             return
         }
-
-        //println("History push")
 
         val newMoment = Moment(tool, values)
         if (index >= 0) {
             if (moments[index] == newMoment) {
-                // Same tool and values, so no need to remember
-                //println("History. Ignoring duplicate moment")
                 return
             }
         }
-        //println("History. Not the same moment")
 
         if (canRedo()) {
             for (i in moments.size - 1 downTo index + 1) {
@@ -78,12 +82,11 @@ class History(val halfTab: HalfTab) {
                 moments.removeAt(i)
             }
         }
-        //println("History. adding moment")
 
         moments.add(newMoment)
         index = moments.size - 1
 
-        //dumpNames()
+        update()
     }
 
     fun dumpNames() {

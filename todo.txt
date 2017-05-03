@@ -3,12 +3,6 @@ History enabled/disable buttons
 Add a Help/About button to the main toolbar
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
 
-
-Thread [Thread-24] (Running)    
-
-
-    
-
 Task and Tool are in two different packages. Should they be?
 
 ProjectWindow to detach all tabs when it is closed
