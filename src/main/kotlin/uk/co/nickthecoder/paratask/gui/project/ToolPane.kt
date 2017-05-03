@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import uk.co.nickthecoder.paratask.gui.HidingSplitPane
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.Tool
 
@@ -12,6 +13,8 @@ interface ToolPane {
     val parametersPane: ParametersPane
 
     var values: Values
+
+    val hidingSplitPane: HidingSplitPane
 
     fun updateResults(results: Results)
 

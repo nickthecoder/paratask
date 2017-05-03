@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.scene.Node
+import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
@@ -9,6 +10,7 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
+import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.History
@@ -17,7 +19,7 @@ import uk.co.nickthecoder.paratask.project.Tool
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
-    : BorderPane(), HalfTab {
+    : BorderPane(), HalfTab, ParentBodge {
 
     private val toolbar = ToolBar()
 
@@ -79,11 +81,14 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
-    override fun changeTool(tool: Tool) {
+    override fun changeTool(tool: Tool, values: Values?) {
         toolPane.detaching()
         children.remove(toolPane as Node)
 
         toolPane = ToolPane_Impl(tool)
+        if (values != null) {
+            toolPane.values = values
+        }
         center = toolPane as Node
         toolPane.attached(this)
 
@@ -112,4 +117,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     override fun pushHistory(tool: Tool, values: Values) {
         history.push(tool, values)
     }
+
+    override fun parentBodge(): Parent? = projectTab.projectTabs as Parent
 }

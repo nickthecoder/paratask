@@ -1,18 +1,20 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.event.EventHandler
+import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.gui.FocusListener
+import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.gui.field.TaskForm
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ParametersPane_Impl(override val tool: Tool)
 
-    : ParametersPane, BorderPane() {
+    : ParametersPane, BorderPane(), ParentBodge {
 
     override val taskForm = TaskForm(tool)
 
@@ -80,15 +82,16 @@ class ParametersPane_Impl(override val tool: Tool)
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
 
-        // Note, we must get the scene in a weird way because node.getScene() is still null at this point.
-        // SplitPane doesn't set the parent of its items straight away. SplitPane.getItems().add() is WEIRD!
-        val scene = toolPane.halfTab.projectTab.projectTabs.getScene()
-        focusListener = FocusListener(this, scene = scene) { hasFocus: Boolean ->
+        focusListener = FocusListener(this) { hasFocus: Boolean ->
             runButton.setDefaultButton(hasFocus)
         }
     }
 
     override fun detaching() {
         focusListener.remove()
+    }
+
+    override fun parentBodge(): Parent? {
+        return toolPane as Parent
     }
 }

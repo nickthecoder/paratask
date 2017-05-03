@@ -16,7 +16,7 @@ interface HalfTab {
 
     fun detaching()
 
-    fun changeTool(tool: Tool)
+    fun changeTool(tool: Tool, values: Values? = null)
 
     fun pushHistory(tool: Tool, values: Values)
 }

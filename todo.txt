@@ -1,13 +1,13 @@
-Update button states using bound properties rather than UpdateManager
-
-StatusUpdater - Update button states in a background thread.
-
-History on HalfTab
+History enabled/disable buttons
 
 Add a Help/About button to the main toolbar
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
+
+
+Thread [Thread-24] (Running)    
+
+
     
-Create a ListTool
 
 Task and Tool are in two different packages. Should they be?
 
@@ -20,9 +20,8 @@ Use a Property for the tab's text
 
 SimpleTerminal to close the input before killing the process
 
-Use ButtonBar for TaskPrompter (orders the buttons in an OS specific manner)
-    https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonBar.html
-    
+Create a ListTool
+
 Create a toolbar
     Save Project, Load Project
     Settings

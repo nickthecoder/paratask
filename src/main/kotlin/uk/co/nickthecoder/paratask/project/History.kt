@@ -22,11 +22,13 @@ class History(val halfTab: HalfTab) {
     private var using = false
 
     private fun use(moment: Moment) {
-        println("History.using")
+        //println("History.using")
         using = true
-        halfTab.changeTool(moment.tool)
-        halfTab.toolPane.values = moment.values
-        halfTab.toolPane.parametersPane.run()
+        val tool = moment.tool
+        tool.autoRun = true
+
+        halfTab.changeTool(tool, moment.values)
+
         using = false
     }
 
@@ -42,33 +44,33 @@ class History(val halfTab: HalfTab) {
     }
 
     fun redo() {
-        println("History.redo")
+        //println("History.redo")
 
         if (canRedo()) {
             index++
             use(moments[index])
         }
 
-        dumpNames()
+        //dumpNames()
     }
 
     fun push(tool: Tool, values: Values) {
         if (using) {
-            println("Ignoring, as this is ME using an item in history")
+            //println("Ignoring, as this is ME using an item in history")
             return
         }
 
-        println("History push")
+        //println("History push")
 
         val newMoment = Moment(tool, values)
         if (index >= 0) {
             if (moments[index] == newMoment) {
                 // Same tool and values, so no need to remember
-                println("History. Ignoring duplicate moment")
+                //println("History. Ignoring duplicate moment")
                 return
             }
         }
-        println("History. Not the same moment")
+        //println("History. Not the same moment")
 
         if (canRedo()) {
             for (i in moments.size - 1 downTo index + 1) {
@@ -76,12 +78,12 @@ class History(val halfTab: HalfTab) {
                 moments.removeAt(i)
             }
         }
-        println("History. adding moment")
+        //println("History. adding moment")
 
         moments.add(newMoment)
         index = moments.size - 1
 
-        dumpNames()
+        //dumpNames()
     }
 
     fun dumpNames() {
@@ -104,10 +106,8 @@ class History(val halfTab: HalfTab) {
 
         override fun equals(other: Any?): Boolean {
             if (other is Moment) {
-                println("Moments same ? ${creationString} vs ${other.creationString}")
                 return creationString == other.creationString && values == other.values
             }
-            println( "Not a moment")
             return false
         }
     }

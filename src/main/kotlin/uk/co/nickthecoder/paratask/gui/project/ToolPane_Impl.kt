@@ -1,10 +1,11 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-import javafx.geometry.Orientation
 import javafx.scene.Node
-import javafx.scene.control.SplitPane
+import javafx.scene.Parent
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.gui.HidingSplitPane
+import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.Tool
 
@@ -12,28 +13,15 @@ class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, StackPane() {
 
-    private val splitPane = SplitPane()
-
     private var results: Results = EmptyResults()
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
-    private val resultsHolder = StackPane()
+    private val resultsHolder = ResultsHolder()
 
-    private var dividerPosition: Double = 0.0
+    override val hidingSplitPane = HidingSplitPane(this, resultsHolder, parametersPane as Node)
 
     override lateinit var halfTab: HalfTab
-
-    init {
-        with(splitPane) {
-
-            setOrientation(Orientation.VERTICAL)
-            getItems().add(resultsHolder)
-            getItems().add(parametersPane as Node)
-            dividerPosition = dividerPositions[0]
-        }
-        this.children.add(splitPane)
-    }
 
     override var values: Values
         get() {
@@ -81,73 +69,39 @@ class ToolPane_Impl(override var tool: Tool)
         return newToolPane
     }
 
-    fun myRemoveAt(i: Int) {
-        val node = splitPane.getItems().get(i)
-        splitPane.getItems().removeAt(i)
-
-        // Hide the node, and keep it in the scene graph, so that nodes can still perform getScene(),
-        // even though it is not in the split pane any more.
-        node.setVisible(false)
-        this.children.add(node)
-        println("Hiden ${node} but still in ${node.getScene()}")
-    }
 
     override fun showJustResults() {
-        if (splitPane.getItems().count() == 1) {
-            myRemoveAt(0)
-            splitPane.getItems().add(resultsHolder)
-        } else if (splitPane.getItems().count() == 2) {
-            dividerPosition = splitPane.dividerPositions[0]
-            myRemoveAt(1)
-        }
-        results.chooseFocus(this).requestFocus()
+        hidingSplitPane.showJustTop()
     }
 
     override fun showJustParameters() {
-        if (splitPane.getItems().count() == 1) {
-            myRemoveAt(0)
-            splitPane.getItems().add(parametersPane as Node)
-        } else if (splitPane.getItems().count() == 2) {
-            dividerPosition = splitPane.dividerPositions[0]
-            myRemoveAt(0)
-        }
-        (parametersPane as Node).requestFocus()
+        hidingSplitPane.showJustBottom()
     }
 
     override fun showBoth() {
-        if (splitPane.getItems().count() != 2) {
-            splitPane.getItems().clear()
-            splitPane.getItems().add(resultsHolder)
-            splitPane.getItems().add(parametersPane as Node)
-            splitPane.setDividerPosition(0, dividerPosition)
-        }
+        hidingSplitPane.showBoth()
     }
 
     override fun toggleParameters() {
-        if (splitPane.getItems().count() == 2) {
-            showJustResults()
-        } else {
-            showBoth()
-        }
+        hidingSplitPane.toggleBottom()
     }
 
     override fun notBoth() {
-        if (splitPane.getItems().count() == 2) {
+        if (hidingSplitPane.splitPane.getItems().count() == 2) {
             if (tool.toolRunner.hasStarted()) {
-                showJustResults()
+                hidingSplitPane.showJustTop()
             } else {
-                showJustParameters()
+                hidingSplitPane.showJustBottom()
             }
         }
     }
 
     override fun cycle() {
-        if (splitPane.getItems().count() == 2) {
-            showJustResults()
-        } else if (splitPane.getItems().get(0) == resultsHolder) {
-            showJustParameters()
-        } else {
-            showBoth()
-        }
+        hidingSplitPane.cycle()
+    }
+
+    inner class ResultsHolder : StackPane(), ParentBodge {
+        override fun parentBodge(): Parent? = this@ToolPane_Impl
     }
 }
+

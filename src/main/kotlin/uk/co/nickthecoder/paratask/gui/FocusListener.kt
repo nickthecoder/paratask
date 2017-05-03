@@ -4,10 +4,13 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.Node
 import javafx.scene.Scene
+import uk.co.nickthecoder.paratask.util.getScene
+import uk.co.nickthecoder.paratask.util.getParentBodge
 
-
-class FocusListener(val parent: Node, val scene: Scene? = parent.getScene(), val callback: (Boolean) -> Unit)
+class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
     : ChangeListener<Node> {
+
+    val scene = getScene(parent)
 
     init {
         scene?.focusOwnerProperty()?.addListener(this)
@@ -18,11 +21,12 @@ class FocusListener(val parent: Node, val scene: Scene? = parent.getScene(), val
     }
 
     fun debugAncestors() {
-        println("Focus Listener could find the Scene. Ancestors :")
+        Thread.dumpStack()
+        println("*** Focus Listener could not find the Scene. Ancestors :")
         var node: Node? = parent
         while (node != null) {
             println(node)
-            node = node.parent
+            node = node.getParentBodge()
         }
         println()
     }

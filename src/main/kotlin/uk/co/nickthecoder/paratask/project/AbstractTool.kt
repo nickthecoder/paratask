@@ -20,15 +20,9 @@ abstract class AbstractTool() : Tool {
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
+
         if (autoRun) {
-            println("Autorunning. Scene = ${(toolPane as Node).getScene()}")
-            // I run later, because of a bug in SplitPane, whereby it does NOT set the parent of its children
-            // straight away, and therefore getScene can return null when it shouldn't. Hopefully the runLater
-            // will give the parent SplitPanes the time to get their act together!
-            Platform.runLater {
-                println("Autorunning. (later) Scene = ${(toolPane as Node).getScene()}")
-                toolPane.parametersPane.run()
-            }
+            toolPane.parametersPane.run()
         }
     }
 
