@@ -29,13 +29,13 @@ class WebTool : AbstractTool() {
     }
 
     override fun updateResults() {
-        val results = WebResults(address)
+        val results = WebResults(this, address)
 
         toolPane?.updateResults(results)
     }
 }
 
-class WebResults(var address: String) : EmptyResults() {
+class WebResults(val webTool: WebTool, var address: String) : EmptyResults() {
 
     override val node = WebView()
 
@@ -65,7 +65,10 @@ class WebResults(var address: String) : EmptyResults() {
     }
 
     fun changedAddress(address: String) {
-        // Change the parameter value, and add to the History when implemented
+        webTool.toolPane?.let { toolPane ->
+            webTool.addressP.set(toolPane.values, address)
+            toolPane.halfTab.pushHistory()
+        }
     }
 
 

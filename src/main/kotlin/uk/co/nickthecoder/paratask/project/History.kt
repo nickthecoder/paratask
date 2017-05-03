@@ -29,7 +29,7 @@ class History(val halfTab: HalfTab) {
     fun update() {
         canUndoProperty.set(canUndo())
         canRedoProperty.set(canRedo())
-        //dumpNames()   
+        //dumpNamesAndValues()
     }
 
     private fun use(moment: Moment) {
@@ -43,8 +43,6 @@ class History(val halfTab: HalfTab) {
     }
 
     fun undo() {
-        println("History.undo")
-
         if (canUndo()) {
             index--
             use(moments[index])
@@ -54,8 +52,6 @@ class History(val halfTab: HalfTab) {
     }
 
     fun redo() {
-        //println("History.redo")
-
         if (canRedo()) {
             index++
             use(moments[index])
@@ -78,7 +74,6 @@ class History(val halfTab: HalfTab) {
 
         if (canRedo()) {
             for (i in moments.size - 1 downTo index + 1) {
-                println("History. Removing moment")
                 moments.removeAt(i)
             }
         }
@@ -93,6 +88,17 @@ class History(val halfTab: HalfTab) {
         println()
         moments.forEach { moment ->
             println("M : ${moment.creationString}")
+        }
+        println("Index = ${index}")
+        println()
+    }
+
+    fun dumpNamesAndValues() {
+        println()
+        moments.forEach { moment ->
+            println("M : ${moment.creationString}")
+            val values = moment.values
+            println(values)
         }
         println("Index = ${index}")
         println()

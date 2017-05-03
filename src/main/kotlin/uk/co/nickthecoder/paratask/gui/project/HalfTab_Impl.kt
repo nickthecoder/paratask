@@ -117,6 +117,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         changeTool(tool.copy())
     }
 
+    override fun pushHistory() {
+        history.push(toolPane.tool, toolPane.values)
+    }
+
     override fun pushHistory(tool: Tool, values: Values) {
         history.push(tool, values)
     }

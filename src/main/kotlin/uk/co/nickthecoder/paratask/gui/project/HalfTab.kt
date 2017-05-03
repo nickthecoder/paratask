@@ -18,5 +18,7 @@ interface HalfTab {
 
     fun changeTool(tool: Tool, values: Values? = null)
 
+    fun pushHistory()
+
     fun pushHistory(tool: Tool, values: Values)
 }

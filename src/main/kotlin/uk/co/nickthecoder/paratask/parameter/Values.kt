@@ -70,11 +70,12 @@ class Values() : ValueListener {
 
     override fun toString(): String {
         val builder = StringBuilder()
-        builder.append("Values ' =\n")
+        builder.append("BeginValues\n")
         parameterValues.forEach { (name, parameterValue) ->
-            builder.append("'${name}' = ${parameterValue}")
+            builder.append("    '${name}' = ${parameterValue}")
             builder.append("\n")
         }
+        builder.append("End Values\n")
         return builder.toString()
     }
 }
