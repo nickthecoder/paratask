@@ -6,15 +6,11 @@ import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.Values
 
-interface Tool {
-
-    val task: Task
+interface Tool : Task {
 
     val toolRunner: ToolRunner
 
     var toolPane: ToolPane?
-
-    fun run(values: Values)
 
     fun shortTitle(): String
 

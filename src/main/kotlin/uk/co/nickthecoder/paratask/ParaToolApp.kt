@@ -20,7 +20,7 @@ class ParaToolApp : Application() {
 
         startTool?.let { tool ->
             projectWindow.addTool(tool)
-            tool.toolRunner.run(tool.task.taskD.createValues())
+            tool.toolRunner.run(tool.taskD.createValues())
         }
     }
 

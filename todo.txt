@@ -1,8 +1,16 @@
-Add Stop button to HalfTab
+Update button states using bound properties rather than UpdateManager
+
+Broke GrepTool when Task/Tool merged.
+
+Put a ToolButtonMenu?? on HalfTab
 
 StatusUpdater - Update button states in a background thread.
 
 History on HalfTab
+
+Should Tool use Tasks?
+    They can still have a TaskDescription.
+    Maybe they should sub-class Task!
 
 Create a WebTool
     Add a Help button to the main toolbar

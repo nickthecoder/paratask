@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.CommandLineTask
+import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
@@ -11,7 +12,7 @@ import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.Command
 
 
-class GrepTask() : AbstractTerminalTask() {
+class GrepTask() : SimpleTask(), CommandTask {
 
     override val taskD = TaskDescription(
             name = "grep",
@@ -61,7 +62,7 @@ class GrepTask() : AbstractTerminalTask() {
                 maxMatchesP, contextLinesP, additionalOptionsP)
     }
 
-    override fun command(values: Values): Command {
+    override fun run(values: Values): Command {
 
         val rOrR = if (followSymLinksP.value(values) == true) "-R" else "-r"
 

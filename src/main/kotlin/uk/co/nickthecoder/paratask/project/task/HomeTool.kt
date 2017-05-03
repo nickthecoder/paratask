@@ -15,11 +15,13 @@ import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
 
-class HomeTool() : AbstractTool(HomeTask()) {
+class HomeTool() : AbstractTool() {
+
+    override val taskD = TaskDescription("home")
 
     companion object {
         val toolList = mutableListOf<Tool>(
-                HomeTool(), GrepTool(), TerminalTool(), PythonTool(), GroovyTool()
+                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool()
         )
 
         fun add(vararg tools: Tool) {
@@ -43,7 +45,7 @@ class HomeTool() : AbstractTool(HomeTask()) {
                 toolPane?.halfTab?.changeTool(tool.copy())
             }
 
-            val description = tool.task.taskD.description
+            val description = tool.taskD.description
             if (description != "") {
                 button.tooltip = Tooltip(description)
             }
@@ -65,13 +67,6 @@ class HomeTool() : AbstractTool(HomeTask()) {
             }
         }
     }
-}
-
-class HomeTask : SimpleTask() {
-
-    override val taskD = TaskDescription("home")
-
-    override fun run(value: Values) {}
 }
 
 // TODO Remove this once we can test Grep as a tool using GrepTask as the entry point.

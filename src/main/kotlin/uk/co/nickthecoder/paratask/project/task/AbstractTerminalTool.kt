@@ -10,22 +10,22 @@ import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.runAndWait
 
 abstract class AbstractTerminalTool(
-        override val task: AbstractTerminalTask,
         val showCommand: Boolean = true,
         val allowInput: Boolean = false)
 
-    : AbstractTool(task), Stoppable {
+    : AbstractTool(), Stoppable {
 
     private lateinit var command: Command
 
     private var results: TerminalResults? = null
 
-    override fun iconName() = if (task.taskD.name == "") "terminal" else task.taskD.name
+    override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 
+    abstract fun createCommand(values: Values) : Command
 
     override fun run(values: Values) {
         stop()
-        val command = task.command(values)
+        val command = createCommand(values)
 
         runAndWait {
             val results = TerminalResults(command, showCommand = showCommand, allowInput = allowInput)

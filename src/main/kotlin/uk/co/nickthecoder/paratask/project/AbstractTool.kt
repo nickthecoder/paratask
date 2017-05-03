@@ -4,19 +4,22 @@ import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
+import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.uncamel
 
-abstract class AbstractTool(override val task: Task) : Tool {
+abstract class AbstractTool() : Tool {
 
     override val toolRunner = ThreadedToolRunner(this)
 
     override var toolPane: ToolPane? = null
 
-    override fun shortTitle() = task.taskD.name.uncamel()
+    override fun shortTitle() = taskD.name.uncamel()
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
     }
+
+    override fun check(values: Values) {}
 
     override fun detaching() {
         this.toolPane = null
@@ -26,7 +29,7 @@ abstract class AbstractTool(override val task: Task) : Tool {
         ParaTaskApp.imageResource("tools/${iconName()}.png")
     }
 
-    open fun iconName(): String = "${task.taskD.name}"
+    open fun iconName(): String = "${taskD.name}"
 
     override fun copy(): Tool {
 
