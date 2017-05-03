@@ -1,7 +1,5 @@
 Update button states using bound properties rather than UpdateManager
 
-Broke GrepTool when Task/Tool merged.
-
 Put a ToolButtonMenu?? on HalfTab
 
 StatusUpdater - Update button states in a background thread.
@@ -35,7 +33,7 @@ Create a toolbar
     Save Project, Load Project
     Settings
 Per Half-Tab toolbar :
-    Re-run/stop, ToolMenu, Back Forwards, Close
+    ToolMenu, Back Forwards, Close
 
 Create tests for BooleanParameter and BooleanField
 

@@ -54,6 +54,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         with(toolbar.getItems()) {
             add(optionsField)
             add(runStopStack)
+            add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
             add(splitGroup)
         }
 
@@ -97,14 +98,18 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         projectTab.changed()
     }
 
-    private fun onStop() {
+    fun onStop() {
         val tool = toolPane.tool
         if (tool is Stoppable) {
             tool.stop()
         }
     }
 
-    public fun onRun() {
+    fun onRun() {
         toolPane.parametersPane.run()
+    }
+
+    fun onSelectTool(tool: Tool) {
+        changeTool(tool.copy())
     }
 }

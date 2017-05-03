@@ -30,7 +30,9 @@ object Actions {
     val SPLIT_TOOL_CYCLE = Action("split.tool.cycle", KeyCode.F7, tooltip = "Cycle through Views")
 
     val TOOL_STOP = Action("tool.stop", KeyCode.ESCAPE, tooltip = "Stop the Tool")
-    val TOOL_RUN = Action("tool.run", KeyCode.ESCAPE, tooltip = "(Re) Run the Tool")
+    val TOOL_RUN = Action("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
+
+    val TOOL_SELECT = Action("tool.select", KeyCode.DEAD_ABOVEDOT, control=true, shift=true , tooltip = "Select a Tool")
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
