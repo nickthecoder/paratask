@@ -27,8 +27,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     override lateinit var projectTab: ProjectTab
 
-    val autoUpdater: AutoUpdater
-
     val stopButton: Button
 
     val runButton: Button
@@ -57,20 +55,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
             add(splitGroup)
         }
-
-        autoUpdater = AutoUpdater("HalfTab") { updateButtons() }
-    }
-
-    fun updateButtons() {
-        Platform.runLater {
-            val tool = toolPane.tool
-
-            val stoppable = tool is Stoppable
-            val showStop = tool.toolRunner.isRunning() && stoppable
-            stopButton.setVisible(showStop)
-            runButton.setVisible(!showStop)
-            runButton.setDisable(tool.toolRunner.isRunning())
-        }
     }
 
     override fun attached(projectTab: ProjectTab) {
@@ -96,6 +80,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         toolPane.attached(this)
 
         projectTab.changed()
+
+        runButton.disableProperty().bind(tool.toolRunner.disableRunProperty)
+        runButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
+        stopButton.visibleProperty().bind(tool.toolRunner.showStopProperty)
     }
 
     fun onStop() {

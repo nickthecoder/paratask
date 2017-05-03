@@ -32,7 +32,7 @@ object Actions {
     val TOOL_STOP = Action("tool.stop", KeyCode.ESCAPE, tooltip = "Stop the Tool")
     val TOOL_RUN = Action("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
-    val TOOL_SELECT = Action("tool.select", KeyCode.DEAD_ABOVEDOT, control=true, shift=true , tooltip = "Select a Tool")
+    val TOOL_SELECT = Action("tool.select", KeyCode.HOME, control = true, tooltip = "Select a Tool")
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)

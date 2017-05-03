@@ -1,17 +1,11 @@
 Update button states using bound properties rather than UpdateManager
 
-Put a ToolButtonMenu?? on HalfTab
-
 StatusUpdater - Update button states in a background thread.
 
 History on HalfTab
 
-Should Tool use Tasks?
-    They can still have a TaskDescription.
-    Maybe they should sub-class Task!
-
-Create a WebTool
-    Add a Help button to the main toolbar
+Add a Help/About button to the main toolbar
+Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
     
 Create a ListTool
 
