@@ -47,6 +47,27 @@ class Values() : ValueListener {
         return copy
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other is Values) {
+
+            if (parameterValues.size != other.parameterValues.size) {
+                return false
+            }
+
+            parameterValues.forEach { (name, pv) ->
+                val otherPV = other.get(name)
+                if (otherPV == null) {
+                    return false
+                }
+                if (pv != otherPV) {
+                    return false
+                }
+            }
+            return true
+        }
+        return false
+    }
+
     override fun toString(): String {
         val builder = StringBuilder()
         builder.append("Values ' =\n")

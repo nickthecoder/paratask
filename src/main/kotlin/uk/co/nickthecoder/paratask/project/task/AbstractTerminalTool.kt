@@ -1,7 +1,5 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import javafx.application.Platform
-import uk.co.nickthecoder.paratask.gui.project.TerminalResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool

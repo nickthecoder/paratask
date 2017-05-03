@@ -56,10 +56,6 @@ class ProjectWindow() {
         addTool(tool.copy())
     }
 
-    fun onChangeTool(tool: Tool) {
-        // TODO Replace current tool
-    }
-
     fun placeOnStage(stage: Stage) {
 
         val scene = Scene(borderPane)

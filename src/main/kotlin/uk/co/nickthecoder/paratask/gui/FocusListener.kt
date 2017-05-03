@@ -5,11 +5,26 @@ import javafx.beans.value.ObservableValue
 import javafx.scene.Node
 import javafx.scene.Scene
 
-class FocusListener(val parent: Node, val scene: Scene = parent.getScene(), val callback: (Boolean) -> Unit)
+
+class FocusListener(val parent: Node, val scene: Scene? = parent.getScene(), val callback: (Boolean) -> Unit)
     : ChangeListener<Node> {
 
     init {
-        scene.focusOwnerProperty().addListener(this)
+        scene?.focusOwnerProperty()?.addListener(this)
+
+        if (scene == null) {
+            debugAncestors()
+        }
+    }
+
+    fun debugAncestors() {
+        println("Focus Listener could find the Scene. Ancestors :")
+        var node: Node? = parent
+        while (node != null) {
+            println(node)
+            node = node.parent
+        }
+        println()
     }
 
     override fun changed(observable: ObservableValue<out Node>?, oldValue: Node?, newValue: Node?) {
@@ -26,7 +41,6 @@ class FocusListener(val parent: Node, val scene: Scene = parent.getScene(), val 
     }
 
     fun remove() {
-        scene.focusOwnerProperty().removeListener(this)
+        scene?.focusOwnerProperty()?.removeListener(this)
     }
-
 }

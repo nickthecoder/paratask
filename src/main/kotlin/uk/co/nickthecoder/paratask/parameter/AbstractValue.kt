@@ -46,6 +46,13 @@ abstract class AbstractValue<T>(
      */
     abstract fun errorMessage(v: T): String?
 
+    override fun equals(other: Any?): Boolean {
+        if (other is AbstractValue<*>) {
+            return value == other.value
+        }
+        return false
+    }
+
     override fun toString(): String = "Value name '${parameter.name}' = ${value}"
 
 }

@@ -34,6 +34,9 @@ object Actions {
 
     val TOOL_SELECT = Action("tool.select", KeyCode.HOME, control = true, tooltip = "Select a Tool")
 
+    val HISTORY_BACK = Action("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
+    val HISTORY_FORWARD = Action("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
+
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
     }

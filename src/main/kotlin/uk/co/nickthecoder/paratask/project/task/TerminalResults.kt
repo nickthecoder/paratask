@@ -1,7 +1,10 @@
-package uk.co.nickthecoder.paratask.gui.project
+package uk.co.nickthecoder.paratask.project.task
 
 import javafx.scene.Node
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.SimpleTerminal
+import uk.co.nickthecoder.paratask.gui.project.EmptyResults
+import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
@@ -37,12 +40,16 @@ class TerminalResults(
     }
 
     override fun attached(toolPane: ToolPane) {
+        ParaTaskApp.logAttach("TerminalResults.attaching")
         super.attached(toolPane)
         node.attached()
+        ParaTaskApp.logAttach("TerminalResults.attached")
     }
 
     override fun detaching() {
+        ParaTaskApp.logAttach("TerminalResults.detaching")
+        super.detaching()
         node.detaching()
-        node.detaching()
+        ParaTaskApp.logAttach("TerminalResults.detached")
     }
 }

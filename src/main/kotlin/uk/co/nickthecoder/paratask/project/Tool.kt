@@ -16,6 +16,8 @@ interface Tool : Task {
 
     val icon: Image?
 
+    var autoRun: Boolean
+
     /**
      * Note, this is separate from run because this must be done in JavaFX's thread, whereas run
      * will typically be done in its own thread.
@@ -27,4 +29,12 @@ interface Tool : Task {
     fun detaching()
 
     fun copy(): Tool
+
+    fun creationString(): String
+
+    companion object {
+        fun create(creationString: String): Tool {
+            return Class.forName(creationString).newInstance() as Tool
+        }
+    }
 }

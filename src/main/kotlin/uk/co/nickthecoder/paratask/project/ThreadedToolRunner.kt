@@ -13,7 +13,7 @@ class ThreadedToolRunner(tool: Tool)
 
         runState = RunState.RUNNING
 
-        thread = object : Thread() {
+        thread = object : Thread("ThreadedToolRunner") {
             override fun run() {
                 tool.run(values);
 
@@ -24,6 +24,7 @@ class ThreadedToolRunner(tool: Tool)
                 }
             }
         }
+        thread?.setDaemon(true)
         thread?.start()
     }
 
