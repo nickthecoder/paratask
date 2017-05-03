@@ -41,7 +41,7 @@ open class BufferedSink() : Sink {
     }
 
     protected fun sinkError(e: IOException) {
-        e.printStackTrace();
+        // Do nothing
     }
 
 }

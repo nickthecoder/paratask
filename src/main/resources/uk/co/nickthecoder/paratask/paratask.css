@@ -34,10 +34,9 @@
     -fx-alignment: top-right;
 }
 
-.buttons > .button {
+.buttons .button {
     -fx-min-width: 90px;
 }
-
 
 /****************************************************
 * See :                                             *

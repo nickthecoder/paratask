@@ -71,6 +71,12 @@ class Exec(val command: Command) {
 
     fun kill(forcibly: Boolean = false) {
         process?.let {
+            try {
+                it.outputStream.close()
+                it.inputStream.close()
+                it.errorStream.close()
+            } catch (e: Exception) {
+            }
             if (forcibly) {
                 it.destroyForcibly()
             } else {

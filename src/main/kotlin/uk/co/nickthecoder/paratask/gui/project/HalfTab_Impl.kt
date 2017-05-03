@@ -13,7 +13,6 @@ import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.util.AutoUpdater
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
