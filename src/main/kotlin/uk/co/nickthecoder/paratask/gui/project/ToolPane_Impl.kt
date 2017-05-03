@@ -5,7 +5,6 @@ import javafx.scene.Parent
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.HidingSplitPane
-import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.Tool
 
@@ -17,7 +16,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
-    private val resultsHolder = ResultsHolder()
+    private val resultsHolder = StackPane()
 
     override val hidingSplitPane = HidingSplitPane(this, resultsHolder, parametersPane as Node)
 
@@ -98,10 +97,6 @@ class ToolPane_Impl(override var tool: Tool)
 
     override fun cycle() {
         hidingSplitPane.cycle()
-    }
-
-    inner class ResultsHolder : StackPane(), ParentBodge {
-        override fun parentBodge(): Parent? = this@ToolPane_Impl
     }
 }
 

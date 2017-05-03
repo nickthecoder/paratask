@@ -3,14 +3,11 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.Node
-import javafx.scene.Scene
-import uk.co.nickthecoder.paratask.util.getScene
-import uk.co.nickthecoder.paratask.util.getParentBodge
 
 class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
     : ChangeListener<Node> {
 
-    val scene = getScene(parent)
+    val scene = parent.scene
 
     init {
         scene?.focusOwnerProperty()?.addListener(this)
@@ -26,7 +23,7 @@ class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
         var node: Node? = parent
         while (node != null) {
             println(node)
-            node = node.getParentBodge()
+            node = node.parent
         }
         println()
     }

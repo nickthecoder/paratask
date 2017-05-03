@@ -21,11 +21,36 @@ import javafx.scene.layout.StackPane
  */
 class HidingSplitPane(
         val stack: StackPane,
-        val top: Node,
-        val bottom: Node,
+        top: Node,
+        bottom: Node,
         orientation: Orientation = Orientation.VERTICAL) {
 
     val splitPane = SplitPane()
+
+    var top: Node = top
+        set(value) {
+            replace(field, value)
+            field = value
+
+        }
+
+    var bottom: Node = bottom
+        set(value) {
+            replace(field, value)
+            field = value
+        }
+
+    var left: Node
+        get() = top
+        set(value) {
+            top = value
+        }
+
+    var right: Node
+        get() = bottom
+        set(value) {
+            bottom = value
+        }
 
     private var dividerPosition: Double = 0.0
 
@@ -39,7 +64,19 @@ class HidingSplitPane(
             splitPane.getItems().addAll(top, bottom)
             dividerPosition = dividerPositions[0]
         }
-        //println("*** top parent = ${top.parent} bottom parent = ${bottom.parent}")
+    }
+
+    private fun replace(oldNode: Node, newNode: Node) {
+        if (stack.children.contains(oldNode)) {
+            newNode.setVisible(false)
+            stack.children.remove(oldNode)
+            stack.children.add(newNode)
+        } else {
+            stack.children.add(newNode)
+            val index = splitPane.getItems().indexOf(oldNode)
+            splitPane.getItems().remove(oldNode)
+            splitPane.getItems().add(index, newNode)
+        }
     }
 
     private fun myRemoveAt(i: Int) {
@@ -49,12 +86,17 @@ class HidingSplitPane(
         // Hide the node, and keep it in the scene graph, so that nodes can still perform getScene(),
         // even though it is not in the split pane any more.
         node.setVisible(false)
+        stack.children.remove(node)
         stack.children.add(node)
     }
 
     private fun myAdd(node: Node) {
         node.setVisible(true)
         splitPane.getItems().add(node)
+    }
+
+    fun showJustLeft() {
+        showJustTop()
     }
 
     fun showJustTop() {
@@ -65,6 +107,10 @@ class HidingSplitPane(
             dividerPosition = splitPane.dividerPositions[0]
             myRemoveAt(1)
         }
+    }
+
+    fun showJustRight() {
+        showJustBottom()
     }
 
     fun showJustBottom() {

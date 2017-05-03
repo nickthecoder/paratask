@@ -2,17 +2,17 @@ package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.geometry.Orientation
 import javafx.scene.Node
-import javafx.scene.control.SplitPane
+import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.image.ImageView
+import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.gui.HidingSplitPane
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     : ProjectTab, Tab() {
-
-    val splitPane = SplitPane()
 
     override lateinit var projectTabs: ProjectTabs
 
@@ -20,10 +20,16 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
+    val empty: Node = Label("")
+
+    val stackPane = StackPane()
+
+    val hidingSplitPane = HidingSplitPane(stackPane, left as Node, empty, Orientation.HORIZONTAL)
+
     init {
-        setContent(splitPane)
+        hidingSplitPane.showJustLeft()
+        setContent(stackPane)
         updateTab()
-        splitPane.getItems().add(left as Node)
     }
 
     private fun updateTab() {
@@ -64,8 +70,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val r = HalfTab_Impl(toolPane)
 
+        hidingSplitPane.right = r
+        hidingSplitPane.showBoth()
         r.attached(this)
-        splitPane.getItems().add(r)
         right = r
     }
 
@@ -80,7 +87,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             }
         }
         right = null
-        splitPane.getItems().removeAt(index)
+        hidingSplitPane.left = left as Node
+        hidingSplitPane.right = empty
     }
 
     override fun split() {
@@ -96,7 +104,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             right = null
             updateTab()
 
-            splitPane.getItems().removeAt(1)
+            hidingSplitPane.showJustLeft()
         }
     }
 

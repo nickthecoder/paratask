@@ -7,14 +7,13 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.gui.FocusListener
-import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.gui.field.TaskForm
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ParametersPane_Impl(override val tool: Tool)
 
-    : ParametersPane, BorderPane(), ParentBodge {
+    : ParametersPane, BorderPane() {
 
     override val taskForm = TaskForm(tool)
 
@@ -91,7 +90,4 @@ class ParametersPane_Impl(override val tool: Tool)
         focusListener.remove()
     }
 
-    override fun parentBodge(): Parent? {
-        return toolPane as Parent
-    }
 }

@@ -4,7 +4,6 @@ import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
-import uk.co.nickthecoder.paratask.gui.ParentBodge
 import java.util.concurrent.CountDownLatch
 
 fun runAndWait(action: () -> Unit) {
@@ -32,22 +31,3 @@ fun runAndWait(action: () -> Unit) {
     }
 }
 
-fun Node.getParentBodge(): Parent? {
-    return this.parent ?: if (this is ParentBodge) this.parentBodge() else null
-}
-
-fun getScene(node: Node): Scene? {
-
-    fun tryHarder(): Scene? {
-        var n: Node = node
-        while (true) {
-            val parent = n.getParentBodge()
-            if (parent == null) {
-                return n.getScene()
-            }
-            n = parent
-        }
-    }
-
-    return node.getScene() ?: tryHarder()
-}

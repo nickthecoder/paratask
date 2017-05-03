@@ -10,7 +10,6 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
-import uk.co.nickthecoder.paratask.gui.ParentBodge
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.History
@@ -19,7 +18,7 @@ import uk.co.nickthecoder.paratask.project.Tool
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
-    : BorderPane(), HalfTab, ParentBodge {
+    : BorderPane(), HalfTab {
 
     private val toolbar = ToolBar()
 
@@ -117,6 +116,4 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     override fun pushHistory(tool: Tool, values: Values) {
         history.push(tool, values)
     }
-
-    override fun parentBodge(): Parent? = projectTab.projectTabs as Parent
 }
