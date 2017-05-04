@@ -20,7 +20,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
-    val empty: Node = Label("")
+    val empty: Node = Label("<empty>")
 
     val stackPane = StackPane()
 
@@ -77,18 +77,24 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun remove(toolPane: ToolPane) {
-        val index = if (toolPane === left.toolPane) 0 else 1
-        if (index == 1) {
-            if (right == null) {
-                throw RuntimeException("Attempted to remove a toolPane not belonging to this tab")
-            }
-            if (index == 1) {
+        when (toolPane) {
+
+            left.toolPane -> {
                 left = right!! // Must be in the JavaFX thread, so this can never fail
+            }
+            right?.toolPane -> {
+                if (right == null) {
+                    throw RuntimeException("Attempted to remove a toolPane not belonging to this tab")
+                }
+            }
+            else -> {
+                throw RuntimeException("Attempt to remove a toolPane not belonging to this tab.")
             }
         }
         right = null
-        hidingSplitPane.left = left as Node
         hidingSplitPane.right = empty
+        hidingSplitPane.left = left as Node
+        hidingSplitPane.showJustLeft()
     }
 
     override fun split() {

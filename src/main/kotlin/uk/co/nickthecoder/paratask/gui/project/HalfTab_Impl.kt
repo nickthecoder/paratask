@@ -64,6 +64,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
             add(splitGroup)
             add(historyGroup)
+            add(Actions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
         }
 
     }
@@ -115,6 +116,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     fun onSelectTool(tool: Tool) {
         changeTool(tool.copy())
+    }
+
+    fun onClose() {
+        projectTab.remove(toolPane)
     }
 
     override fun pushHistory() {

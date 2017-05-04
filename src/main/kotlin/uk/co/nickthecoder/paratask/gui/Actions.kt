@@ -36,6 +36,7 @@ object Actions {
     val TOOL_RUN = Action("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
     val TOOL_SELECT = Action("tool.select", KeyCode.HOME, control = true, tooltip = "Select a Tool")
+    val TOOL_CLOSE = Action("tool.close", KeyCode.W, control = true, tooltip = "Close Tool")
 
     val HISTORY_BACK = Action("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
     val HISTORY_FORWARD = Action("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
