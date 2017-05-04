@@ -35,10 +35,6 @@ class TerminalResults(
         exec.kill(false)
     }
 
-    override fun chooseFocus(toolPane: ToolPane): Node {
-        return node.chooseFocus() ?: super.chooseFocus(toolPane)
-    }
-
     override fun attached(toolPane: ToolPane) {
         ParaTaskApp.logAttach("TerminalResults.attaching")
         super.attached(toolPane)

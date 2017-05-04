@@ -2,20 +2,24 @@ Create a ListTool
 
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
 
+Remove Results.chooseFocus
+
+WebTool opten in new tab (right click says "Open in new window)
+
 Task and Tool are in two different packages. Should they be?
 
 ProjectWindow to detach all tabs when it is closed
     (so that terminals and other tools can clean up)
 
+Simple Text Editor
+
 Use a Property for the tab's text
     Editor adds a "*" without having firing events to listeners
     Ditto for window's title
 
-Create a toolbar
+New toolbar buttons
     Save Project, Load Project
     Settings
-Per Half-Tab toolbar :
-    Close
 
 Create tests for BooleanParameter and BooleanField
 
@@ -27,6 +31,7 @@ Create tests for ChoiceParameter
 
 FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
 
+Real terminal emulator
 
 Bugs
 ====

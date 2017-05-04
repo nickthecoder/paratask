@@ -8,7 +8,4 @@ interface Results {
     fun attached(toolPane: ToolPane)
 
     fun detaching()
-
-    fun chooseFocus(toolPane: ToolPane): Node
-
 }

@@ -1,19 +1,17 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import javafx.event.EventHandler
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
-import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.EmptyResults
-import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.table.TableHomeTool
 
 class HomeTool() : AbstractTool() {
 
@@ -21,7 +19,7 @@ class HomeTool() : AbstractTool() {
 
     companion object {
         val toolList = mutableListOf<Tool>(
-                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool()
+                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool(), TableHomeTool()
         )
 
         fun add(vararg tools: Tool) {
@@ -54,19 +52,11 @@ class HomeTool() : AbstractTool() {
 
         toolPane?.updateResults(results)
     }
+}
 
-    class HomeResults : EmptyResults() {
+class HomeResults : EmptyResults() {
 
-        override val node = FlowPane()
-
-        override fun chooseFocus(toolPane: ToolPane): Node {
-            if (node.children.count() > 0) {
-                return node.children.get(0)
-            } else {
-                return super.chooseFocus(toolPane)
-            }
-        }
-    }
+    override val node = FlowPane()
 }
 
 // TODO Remove this once we can test Grep as a tool using GrepTask as the entry point.
