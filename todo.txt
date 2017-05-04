@@ -1,5 +1,3 @@
-History enabled/disable buttons
-
 Add a Help/About button to the main toolbar
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
 
@@ -41,6 +39,14 @@ A collapsed groups must unfurl when a child has an error
     That won't handle custom errors, only Parameter's built in validation
 
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace ;-(
+
+Hard Bugs
+=========
+I've tried to fix them, but have not found a solution.
+
+WebTool does not detect when a redirect occurs.
+    This puts TWO moments in the history (one for the address requested and another for the redirected address).
+    When in the middle of History this second one wipes out the future history.
 
 
 Notes

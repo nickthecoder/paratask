@@ -18,6 +18,7 @@ object Actions {
 
     private val nameToActionMap = mutableMapOf<String, Action>()
 
+    // ProjectWindow
     val QUIT = Action("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, label = "New Window", tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
@@ -25,7 +26,9 @@ object Actions {
     val DUPLICATE_TAB = Action("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
 
     val SPLIT_TAB_TOGGLE = Action("split.tab.toggle", KeyCode.F3, tooltip = "Split/Unsplit")
+    val APPLICATION_ABOUT = Action("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
+    // HalfTab
     val SPLIT_TOOL_TOGGLE = Action("split.tool.toggle", KeyCode.F6, tooltip = "Show/Hide Parameters")
     val SPLIT_TOOL_CYCLE = Action("split.tool.cycle", KeyCode.F7, tooltip = "Cycle through Views")
 
