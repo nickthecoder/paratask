@@ -14,6 +14,7 @@ class Column<R, T>(
 
     init {
         setCellValueFactory { p -> p.getValue().observable(name, getter) }
+        setEditable(false)
     }
 
 }
