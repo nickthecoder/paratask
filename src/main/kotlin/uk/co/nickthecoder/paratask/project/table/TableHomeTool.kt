@@ -7,7 +7,7 @@ import uk.co.nickthecoder.paratask.project.task.HomeTool
 
 class TableHomeTool : AbstractTool() {
 
-    override val taskD = TaskDescription("home")
+    override val taskD = TaskDescription("home", description="Lists available Tools")
 
     override fun run(value: Values) {
     }

@@ -15,7 +15,7 @@ import uk.co.nickthecoder.paratask.project.table.TableHomeTool
 
 class HomeTool() : AbstractTool() {
 
-    override val taskD = TaskDescription("home")
+    override val taskD = TaskDescription("home", description="Lists available Tools")
 
     companion object {
         val toolList = mutableListOf<Tool>(

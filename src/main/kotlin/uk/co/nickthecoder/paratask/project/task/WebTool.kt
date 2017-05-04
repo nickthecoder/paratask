@@ -14,7 +14,7 @@ import uk.co.nickthecoder.paratask.project.AbstractTool
 
 class WebTool : AbstractTool() {
 
-    override val taskD = TaskDescription("web")
+    override val taskD = TaskDescription("web", description="A Simple Web Browser")
 
     val addressP = StringParameter("address")
 

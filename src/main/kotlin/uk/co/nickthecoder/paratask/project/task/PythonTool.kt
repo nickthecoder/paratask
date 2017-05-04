@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class PythonTool : AbstractTerminalTool(allowInput = true, showCommand = true) {
 
-    override val taskD = TaskDescription("python")
+    override val taskD = TaskDescription("python", description="Interactive Python Shell")
 
     val versionP = StringParameter("version", required = false)
 

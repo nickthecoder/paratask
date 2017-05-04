@@ -6,7 +6,7 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class GroovyTool : AbstractTerminalTool(allowInput = true, showCommand = true) {
 
-    override val taskD = TaskDescription("groovy")
+    override val taskD = TaskDescription("groovy", description="Interactive Groovy Shell")
 
     override fun createCommand(values: Values): Command {
         return Command("groovysh")

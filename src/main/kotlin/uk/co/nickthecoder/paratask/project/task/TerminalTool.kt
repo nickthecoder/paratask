@@ -7,7 +7,7 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = true) {
 
-    override val taskD = TaskDescription("terminal")
+    override val taskD = TaskDescription("terminal", description="A simple terminal emulator")
 
     val commandP = StringParameter("command", value = "bash")
 
