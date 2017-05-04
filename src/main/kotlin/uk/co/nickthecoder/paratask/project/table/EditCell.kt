@@ -42,7 +42,8 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
 
         textField.addEventFilter(KeyEvent.KEY_PRESSED) { event ->
             if (event.getCode() == KeyCode.ESCAPE) {
-                println("EditCell Escape")
+                //println("EditCell Escape")
+                // I don't think this EVER gets called. Hmmm.
                 textField.setText(converter.toString(getItem()))
                 cancelEdit()
                 event.consume()
