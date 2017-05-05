@@ -6,12 +6,12 @@ import javafx.beans.value.ObservableValueBase
 
 class WrappedRow<R>(val row: R) {
 
-    val optionProperty = SimpleStringProperty("")
+    val codeProperty = SimpleStringProperty("")
 
-    var option: String
-        get() = optionProperty.get()
+    var code: String
+        get() = codeProperty.get()
         set(value) {
-            optionProperty.set(value)
+            codeProperty.set(value)
         }
 
 

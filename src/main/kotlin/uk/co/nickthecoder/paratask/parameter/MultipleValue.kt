@@ -25,6 +25,11 @@ class MultipleValue<T>(
         // TODO Create string
     }
 
+    fun clear() {
+        value.clear()
+        valueListeners.fireChanged(this)
+    }
+
     fun addItem(item: T): ParameterValue<T> {
         val singleValue = newValue()
         singleValue.value = item

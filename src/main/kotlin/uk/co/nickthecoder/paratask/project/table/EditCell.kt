@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn.CellEditEvent
 import javafx.scene.control.TablePosition
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import javafx.util.StringConverter
 
@@ -16,7 +17,6 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
 
     // Text field for editing
     private val textField = TextField()
-
 
     init {
         textField.styleClass.add("edit-cell")
@@ -40,24 +40,26 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
             }
         }
 
-        textField.addEventFilter(KeyEvent.KEY_PRESSED) { event ->
-            if (event.getCode() == KeyCode.ESCAPE) {
+        textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
+            //println("EditCell key event") // TODO Remove
+            if (acceleratorEscape.match(event)) {
                 //println("EditCell Escape")
                 // I don't think this EVER gets called. Hmmm.
                 textField.setText(converter.toString(getItem()))
                 cancelEdit()
                 event.consume()
-            } else if (event.getCode() == KeyCode.UP) {
+            } else if (acceleratorUp.match(event)) {
+                event.consume()
                 move(-1)
+            } else if (acceleratorDown.match(event)) {
                 event.consume()
-            } else if (event.getCode() == KeyCode.DOWN) {
                 move(1)
-                event.consume()
             }
         }
     }
 
     fun move(delta: Int) {
+        //println("EditCell.moving") // TODO Remove
         commitEdit(converter.fromString(textField.getText()))
 
         val row = tableView.selectionModel.focusedIndex + delta

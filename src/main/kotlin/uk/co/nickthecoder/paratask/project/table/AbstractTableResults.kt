@@ -7,17 +7,23 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination.ModifierValue
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
+import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.option.OptionRunner
 
-val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
+// TODO Get the shortcuts from Shortcuts
+val acceleratorRun = KeyCodeCombination(KeyCode.ENTER)
+//val acceleratorRunNewTab = KeyCodeCombination(KeyCode.ENTER, control = ModifierValue.DOWN)
+
 val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
 
-abstract class AbstractTableResults<R>(val list: List<R>) : TableResults<R> {
+abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : TableResults<R> {
 
     val data = WrappedList<R>(list)
 
@@ -29,10 +35,12 @@ abstract class AbstractTableResults<R>(val list: List<R>) : TableResults<R> {
 
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn<WrappedRow<R>, String>("")
 
+    val runner = OptionRunner(tool)
+
     override fun attached(toolPane: ToolPane) {
 
         with(codeColumn) {
-            setCellValueFactory { p -> p.getValue().optionProperty }
+            setCellValueFactory { p -> p.getValue().codeProperty }
             setEditable(true)
             setCellFactory({ EditCell(IdentityConverter()) })
         }
@@ -61,13 +69,15 @@ abstract class AbstractTableResults<R>(val list: List<R>) : TableResults<R> {
 
     open fun onMouseClick(event: MouseEvent) {
         if (event.button == MouseButton.PRIMARY) {
-            when (event.clickCount) {
-                1 -> { // Edit the row's option field
-                    val row = tableView.selectionModel.focusedIndex
-                    tableView.edit(row, codeColumn)
-                }
-                2 -> {
-                    println("Double click")
+            val rowIndex = tableView.selectionModel.focusedIndex
+            if (rowIndex >= 0) {
+                when (event.clickCount) {
+                    1 -> { // Edit the row's option field
+                        tableView.edit(rowIndex, codeColumn)
+                    }
+                    2 -> {
+                        runner.runDefault(tableView.items[rowIndex])
+                    }
                 }
             }
         }
@@ -75,15 +85,16 @@ abstract class AbstractTableResults<R>(val list: List<R>) : TableResults<R> {
 
     open fun onKeyPressed(event: KeyEvent) {
         if (acceleratorUp.match(event)) {
-            event.consume()
+            // If we consume then EditCell doesn't get this event. Hmmm.
+            //event.consume()
             move(-1)
 
         } else if (acceleratorDown.match(event)) {
-            event.consume()
+            //event.consume()
             move(1)
 
         } else if (acceleratorEnter.match(event)) {
-            //println("ATR Enter")
+            runTableOptions()
             event.consume()
 
         } else if (acceleratorEscape.match(event)) {
@@ -95,10 +106,31 @@ abstract class AbstractTableResults<R>(val list: List<R>) : TableResults<R> {
     fun move(delta: Int) {
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
+            //println("ATR. out of bounds. ignoring") // TODO Remove
             return
         }
         //tableView.selectionModel.focus(row)
+        //println("ATR. editing a different row") // TODO Remove
         Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
+    }
+
+    fun runTableOptions() {
+        for (wrappedRow in tableView.items) {
+            val code = wrappedRow.code
+            if (code != "") {
+                val row = wrappedRow.row!!
+                // TODO Complete.
+                // Build a list of things to run
+                // Later I'll also have a map? of isMultiple options, and add rows as we find them
+                // Check if a new tab is requested twice. 
+            }
+        }
+
+        // If no options were typed, then run the default option for the current row
+        val rowIndex = tableView.selectionModel.focusedIndex
+        if (rowIndex >= 0) {
+            runner.runDefault(tableView.items[rowIndex])
+        }
     }
 }
 

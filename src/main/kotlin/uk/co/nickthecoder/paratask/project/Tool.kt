@@ -8,6 +8,8 @@ import uk.co.nickthecoder.paratask.parameter.Values
 
 interface Tool : Task {
 
+    val values: Values
+
     val toolRunner: ToolRunner
 
     var toolPane: ToolPane?
@@ -15,6 +17,8 @@ interface Tool : Task {
     fun shortTitle(): String
 
     val icon: Image?
+
+    val optionsName: String
 
     var autoRun: Boolean
 

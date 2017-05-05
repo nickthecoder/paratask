@@ -1,10 +1,9 @@
 package uk.co.nickthecoder.paratask.project
 
-import javafx.application.Platform
-import javafx.scene.Node
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
+import uk.co.nickthecoder.paratask.gui.project.ToolPane_Impl
 import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -16,6 +15,8 @@ abstract class AbstractTool() : Tool {
 
     override fun shortTitle() = taskD.name.uncamel()
 
+    override val optionsName: String by lazy { taskD.name }
+
     override var autoRun: Boolean = true
 
     override fun attached(toolPane: ToolPane) {
@@ -24,6 +25,12 @@ abstract class AbstractTool() : Tool {
         if (autoRun) {
             toolPane.parametersPane.run(showJustResults = true)
         }
+    }
+
+    override val values: Values get() = ensureToolPane().values
+
+    fun ensureToolPane(): ToolPane {
+        return toolPane ?: ToolPane_Impl(this)
     }
 
     override fun check(values: Values) {}

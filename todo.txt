@@ -1,5 +1,15 @@
-Create a ListTool
 
+We have two Column classes. Rename one!
+        
+StringListParameter
+    trim : Boolean
+    removeBlanks : Boolean
+    
+    Renderes as a TextArea
+
+    Will use this for includes as well as command line options
+
+    
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
 
 Remove Results.chooseFocus
