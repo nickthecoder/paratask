@@ -3,13 +3,14 @@ package uk.co.nickthecoder.paratask.project.option
 import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
+import uk.co.nickthecoder.paratask.util.HasFile
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
-class FileOptions(val file: File) {
+class FileOptions(override val file: File) : HasFile {
 
     val includes = mutableListOf<String>()
 
@@ -88,7 +89,7 @@ class FileOptions(val file: File) {
                                 isMultiple = joption.getBoolean("isMultiple", false),
                                 newTab = joption.getBoolean("newTab", false),
                                 prompt = joption.getBoolean("prompt", false),
-                                refresh= joption.getBoolean("refresh", false)
+                                refresh = joption.getBoolean("refresh", false)
                         )
                         addOption(option)
                         println(option)

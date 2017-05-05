@@ -1,6 +1,22 @@
+AllOptionsTool
+    Lists all option files in all paths
+    Can filter by a single path
+    
+OptionsTool
+    also has :
+        IncluesTool
+
+Either way, how will Tool.toolPane be handled?
+    Create a SharedToolPane implementation, which forwards method calls to the 'parent'
+
+Port FileLister to Kotlin
+
+ToolRunner to prevent a Tool being run while it is already running
+
+OptionsRunner should only refresh the results ONCE when many options are run at once.
 
 We have two Column classes. Rename one!
-        
+
 StringListParameter
     trim : Boolean
     removeBlanks : Boolean

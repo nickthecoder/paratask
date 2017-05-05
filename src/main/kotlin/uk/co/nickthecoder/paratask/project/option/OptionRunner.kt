@@ -32,7 +32,7 @@ class OptionRunner(val tool: Tool) {
     }
 
 
-    private fun getOption(code: String): Option? = OptionsManager.find(code, tool.optionsName)
+    private fun getOption(code: String): Option? = OptionsManager.findOption(code, tool.optionsName)
 
     private fun doit(code: String, row: Any, prompt: Boolean, newTab: Boolean) {
         val option = getOption(code)

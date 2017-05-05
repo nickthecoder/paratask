@@ -8,6 +8,7 @@ import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
 import uk.co.nickthecoder.paratask.project.table.Column
+import uk.co.nickthecoder.paratask.util.uncamel
 
 class HomeTool() : AbstractTool() {
 
@@ -15,7 +16,7 @@ class HomeTool() : AbstractTool() {
 
     companion object {
         val toolList = mutableListOf<Tool>(
-                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool()
+                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool(), AllOptionsTool()
         )
 
         fun add(vararg tools: Tool) {
@@ -37,7 +38,7 @@ class HomeResults(tool: Tool, list: List<Tool>) : AbstractTableResults<Tool>(too
 
     init {
         columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })
-        columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name })
+        columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name.uncamel() })
         columns.add(Column<Tool, String>("description") { tool -> tool.taskD.description })
     }
 }

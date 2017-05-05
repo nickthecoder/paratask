@@ -7,7 +7,7 @@ object OptionsManager {
 
     private val topLevelMap = mutableMapOf<String, TopLevelOptions>()
 
-    private fun getTopLevelOptions(optionsName: String): TopLevelOptions {
+    internal fun getTopLevelOptions(optionsName: String): TopLevelOptions {
         val found = topLevelMap.get(optionsName)
         if (found == null) {
             val newTL = TopLevelOptions(optionsName)
@@ -18,7 +18,7 @@ object OptionsManager {
         }
     }
 
-    fun find(code: String, optionsName: String): Option? {
+    fun findOption(code: String, optionsName: String): Option? {
         return getTopLevelOptions(optionsName).find(code)
     }
 
