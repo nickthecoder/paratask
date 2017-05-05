@@ -41,6 +41,11 @@ object Actions {
     val HISTORY_BACK = Action("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
     val HISTORY_FORWARD = Action("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
 
+    // AbstractTableResults
+    val OPTIONS_RUN = Action("actions.run", KeyCode.ENTER)
+    val OPTIONS_RUN_NEW_TAB = Action("actions.run.newTab", KeyCode.ENTER, control = true)
+    val OPTIONS_RUN_PROMPT = Action("actions.run.newWindow", KeyCode.F4)
+
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
     }

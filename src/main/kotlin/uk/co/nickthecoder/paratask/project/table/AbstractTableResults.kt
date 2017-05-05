@@ -7,17 +7,17 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination.ModifierValue
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.option.OptionRunner
 
 // TODO Get the shortcuts from Shortcuts
-val acceleratorRun = KeyCodeCombination(KeyCode.ENTER)
-//val acceleratorRunNewTab = KeyCodeCombination(KeyCode.ENTER, control = ModifierValue.DOWN)
+val acceleratorRun = Actions.OPTIONS_RUN.keyCodeCombination
+val acceleratorRunNewTab = Actions.OPTIONS_RUN_NEW_TAB.keyCodeCombination
 
 val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
@@ -93,8 +93,12 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
             //event.consume()
             move(1)
 
-        } else if (acceleratorEnter.match(event)) {
+        } else if (acceleratorRun?.match(event) == true) {
             runTableOptions()
+            event.consume()
+
+        } else if (acceleratorRunNewTab?.match(event) == true) {
+            runTableOptions(newTab = true)
             event.consume()
 
         } else if (acceleratorEscape.match(event)) {
@@ -114,7 +118,7 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
         Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
     }
 
-    fun runTableOptions() {
+    fun runTableOptions(newTab: Boolean = false) {
         for (wrappedRow in tableView.items) {
             val code = wrappedRow.code
             if (code != "") {
@@ -129,7 +133,7 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
         // If no options were typed, then run the default option for the current row
         val rowIndex = tableView.selectionModel.focusedIndex
         if (rowIndex >= 0) {
-            runner.runDefault(tableView.items[rowIndex])
+            runner.runDefault(tableView.items[rowIndex], newTab = newTab)
         }
     }
 }
