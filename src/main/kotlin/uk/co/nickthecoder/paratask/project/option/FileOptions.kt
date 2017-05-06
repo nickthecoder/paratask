@@ -14,7 +14,7 @@ class FileOptions(override val file: File) : HasFile {
 
     val name = file.nameWithoutExtension
 
-    val includes = mutableListOf<String>()
+    private val includes = mutableListOf<String>()
 
     // TODO When I implement "if" clauses, this will be a map of <String, List<Options>>
     private val optionsMap = mutableMapOf<String, Option>()
@@ -27,6 +27,11 @@ class FileOptions(override val file: File) : HasFile {
 
     fun listOptions(): Collection<Option> {
         return optionsMap.values
+    }
+
+
+    fun listIncludes(): Collection<String> {
+        return includes
     }
 
     fun find(code: String): Option? {

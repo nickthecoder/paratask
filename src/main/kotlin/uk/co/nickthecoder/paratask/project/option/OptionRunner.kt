@@ -11,34 +11,38 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class OptionRunner(val tool: Tool) {
 
-    fun rowOptions(list: WrappedList<*>, prompt: Boolean = false, newTab: Boolean = false) {
-        for (wrappedRow in list) {
-            val code = wrappedRow.code
-            if (code != "") {
-                val row = wrappedRow.row
-            }
-        }
-        //
+    fun runRow(option: Option, wrappedRow: WrappedRow<*>, prompt: Boolean = false, newTab: Boolean = false) {
+        val row = wrappedRow.row!!
+
+        doit(option, row, prompt = prompt, newTab = newTab)
     }
 
     fun runDefault(wrappedRow: WrappedRow<*>, prompt: Boolean = false, newTab: Boolean = false) {
         val row = wrappedRow.row!!
-
-        doit(".", row, prompt = prompt, newTab = newTab)
+        val option = getOption(".")
+        if (option == null) {
+            return
+        }
+        doit(option, row, prompt = prompt, newTab = newTab)
     }
 
-    fun nonRowOption(code: String, prompt: Boolean = false, newTab: Boolean = false) {
+    fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
+        doit(option, prompt = prompt, newTab = newTab)
     }
 
 
     private fun getOption(code: String): Option? = OptionsManager.findOption(code, tool.optionsName)
 
-    private fun doit(code: String, row: Any, prompt: Boolean, newTab: Boolean) {
-        val option = getOption(code)
-        if (option == null) {
-            return
-        }
+    private fun doit(option: Option, prompt: Boolean, newTab: Boolean) {
+        val result = option.runNonRow(tool)
 
+        process(result,
+                newTab = newTab || option.newTab,
+                prompt = prompt || option.prompt,
+                refresh = option.refresh)
+    }
+
+    private fun doit(option: Option, row: Any, prompt: Boolean, newTab: Boolean) {
         val result = option.run(tool, row = row)
 
         process(result,
@@ -101,7 +105,7 @@ class OptionRunner(val tool: Tool) {
         if (prompt) {
             TaskPrompter(task).placeOnStage(Stage())
         } else {
-            
+
         }
         // TODO Implement running tasks
 

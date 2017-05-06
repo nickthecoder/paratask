@@ -1,9 +1,6 @@
 
 ListTask - does it do anything?
 
-AllOptionsTool
-    Can filter by a single path
-    
 OptionsTool
     also has :
         IncluesTool

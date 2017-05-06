@@ -17,6 +17,10 @@ class WrappedRow<R>(val row: R) {
 
     val observables = mutableMapOf<String, ObservableValue<Any?>>()
 
+    fun clearOption() {
+        code = ""
+    }
+
     fun observable(name: String, getter: (R) -> Any?): ObservableValue<Any?> {
         return observables.get(name) ?: cache(name, getter)
     }

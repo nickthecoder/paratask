@@ -13,7 +13,9 @@ import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.option.Option
 import uk.co.nickthecoder.paratask.project.option.OptionRunner
+import uk.co.nickthecoder.paratask.project.option.OptionsManager
 
 // TODO Get the shortcuts from Shortcuts
 val acceleratorRun = Actions.OPTIONS_RUN.keyCodeCombination
@@ -114,24 +116,60 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
         Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
     }
 
-    fun runTableOptions(newTab: Boolean = false) {
-        for (wrappedRow in tableView.items) {
-            val code = wrappedRow.code
-            if (code != "") {
-                val row = wrappedRow.row!!
-                // TODO Complete.
-                // Build a list of things to run
-                // Later I'll also have a map? of isMultiple options, and add rows as we find them
-                // Check if a new tab is requested twice. 
+    fun runTableOptions(newTab: Boolean = false, prompt: Boolean = false) {
+
+        // Unfocus from the cell being edited allows it to be committed
+        tableView.requestFocus()
+        Platform.runLater {
+
+            val singleOptions = mutableListOf<SingleRowOption>()
+            var foundCode: Boolean = false
+
+            for (wrappedRow in tableView.items) {
+                val code = wrappedRow.code
+                if (code != "") {
+                    foundCode = true
+
+                    val option = OptionsManager.findOption(code, tool.optionsName)
+                    if (option != null) {
+                        // TODO Handle multiple row options.
+                        singleOptions.add(SingleRowOption(option, wrappedRow))
+                        wrappedRow.clearOption()
+                    } else {
+                        println("Didn't find code $code in $tool.optionsName")
+                    }
+                }
+            }
+
+            // If no options were typed, then run the default option for the current row
+            // TODO And multipleOptions.size == 0
+            if (foundCode) {
+                for (sr in singleOptions) {
+                    if (sr.option.isRow) {
+                        println("Running row option ${sr.option}")
+                        runner.runRow(sr.option, sr.wrappedRow, newTab = newTab, prompt = prompt)
+                    } else {
+                        println("Running non-row option  ${sr.option}")
+                        runner.runNonRow(sr.option, newTab = newTab, prompt = prompt)
+                    }
+                }
+            } else {
+                println("No codes found, running default option on current row")
+                val rowIndex = tableView.selectionModel.focusedIndex
+                if (rowIndex >= 0) {
+                    runner.runDefault(tableView.items[rowIndex], newTab = newTab)
+                }
+
+                // TODO Run the multi-rows 
             }
         }
-
-        // If no options were typed, then run the default option for the current row
-        val rowIndex = tableView.selectionModel.focusedIndex
-        if (rowIndex >= 0) {
-            runner.runDefault(tableView.items[rowIndex], newTab = newTab)
-        }
     }
+
+
+}
+
+
+private data class SingleRowOption(val option: Option, val wrappedRow: WrappedRow<*>) {
 }
 
 class WrappedList<R>(list: List<R>) :

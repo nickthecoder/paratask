@@ -23,7 +23,7 @@ class TopLevelOptions(val optionsName: String) {
                 val fileOptions: FileOptions = OptionsManager.getFileOptions(optionsName, directory)
                 fileOptionsList.add(fileOptions)
 
-                for (include in fileOptions.includes) {
+                for (include in fileOptions.listIncludes()) {
                     add(include)
                 }
             }

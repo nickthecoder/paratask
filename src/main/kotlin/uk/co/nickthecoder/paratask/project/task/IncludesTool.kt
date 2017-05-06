@@ -13,11 +13,11 @@ import uk.co.nickthecoder.paratask.project.option.OptionsManager
 import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
 import uk.co.nickthecoder.paratask.project.table.Column
 
-class OptionsTool() : AbstractTool() {
+class IncludesTool() : AbstractTool() {
 
-    private val results = mutableListOf<Option>()
+    private val results = mutableListOf<String>()
 
-    override val taskD = TaskDescription("options", description = "Work with Options")
+    override val taskD = TaskDescription("includes", description = "Work with Included Options")
 
     val optionsNameP = StringParameter("optionsName")
 
@@ -38,14 +38,14 @@ class OptionsTool() : AbstractTool() {
         results.clear()
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
-        for (option in optionsFile.listOptions()) {
-            results.add(option)
+        for (include in optionsFile.listIncludes()) {
+            results.add(include)
         }
     }
 
 
     override fun updateResults() {
-        toolPane?.updateResults(OptionsResults(this))
+        toolPane?.updateResults(IncludesResults(this))
     }
 
     fun editTask(option: Option): EditOption {
@@ -56,22 +56,15 @@ class OptionsTool() : AbstractTool() {
         return NewOption(getFileOptions())
     }
 
-    class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results) {
+    class IncludesResults(tool: IncludesTool) : AbstractTableResults<String>(tool, tool.results) {
 
         init {
-            columns.add(Column<Option, String>("code") { it.code })
-            columns.add(Column<Option, String>("label") { it.label })
-            columns.add(Column<Option, Boolean>("isRow") { it.isRow })
-            columns.add(Column<Option, Boolean>("isMultiple") { it.isMultiple })
-            columns.add(Column<Option, Boolean>("refresh") { it.refresh })
-            columns.add(Column<Option, Boolean>("newTab") { it.newTab })
-            columns.add(Column<Option, Boolean>("prompt") { it.prompt })
-            columns.add(Column<Option, String>("script") { if (it is GroovyOption) it.script else "" })
+            columns.add(Column<String, String>("include") { it })
         }
     }
 }
 
-open class EditOption(val fileOptions: FileOptions, val option: Option, name: String = "editOption") : SimpleTask() {
+open class EditInclude(val fileOptions: FileOptions, val option: Option, name: String = "editOption") : SimpleTask() {
 
     override val taskD = TaskDescription(name)
 
@@ -121,14 +114,14 @@ open class EditOption(val fileOptions: FileOptions, val option: Option, name: St
     }
 }
 
-open class NewOption(fileOptions: FileOptions) : EditOption(fileOptions, GroovyOption(""), name = "newOption") {
+open class NewInclude(fileOptions: FileOptions) : EditOption(fileOptions, GroovyOption(""), name = "newOption") {
 
     override open fun addOrRename() {
         fileOptions.addOption(option)
     }
 }
 
-open class DeleteOption(val fileOptions: FileOptions, val option: Option) : SimpleTask() {
+open class DeleteInclude(val fileOptions: FileOptions, val option: Option) : SimpleTask() {
 
     override val taskD = TaskDescription("deleteOption", description = "Delete option : ${option.code} - ${option.label}")
 
