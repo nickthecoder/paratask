@@ -13,11 +13,11 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 import java.io.File
 
-class AllOptionsTool() : AbstractTool() {
+class OptionsFilesTool() : AbstractTool() {
 
     private val fileOptionsList = mutableListOf<FileOptions>()
 
-    override val taskD = TaskDescription("allOptions", description = "Lists all Option Files")
+    override val taskD = TaskDescription("optionsFiles", description = "Work with all Option Files")
 
     override fun run(values: Values) {
         fileOptionsList.clear()
@@ -36,10 +36,10 @@ class AllOptionsTool() : AbstractTool() {
     }
 
     override fun updateResults() {
-        toolPane?.updateResults(AllOptionsResults(this))
+        toolPane?.updateResults(OptionsFilesResults(this))
     }
 
-    class AllOptionsResults(tool: AllOptionsTool) : AbstractTableResults<FileOptions>(tool, tool.fileOptionsList) {
+    class OptionsFilesResults(tool: OptionsFilesTool) : AbstractTableResults<FileOptions>(tool, tool.fileOptionsList) {
 
         init {
             columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension() })
@@ -49,5 +49,5 @@ class AllOptionsTool() : AbstractTool() {
 }
 
 fun main(args: Array<String>) {
-    CommandLineTool(HomeTool()).go(args)
+    CommandLineTool(OptionsFilesTool()).go(args)
 }

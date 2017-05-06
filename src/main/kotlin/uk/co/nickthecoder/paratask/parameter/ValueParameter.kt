@@ -7,7 +7,7 @@ abstract class ValueParameter<T>(
         name: String,
         label: String,
         description: String,
-        val value: T,
+        var value: T,
         var required: Boolean = false)
 
     : AbstractParameter(name, label = label, description = description) {

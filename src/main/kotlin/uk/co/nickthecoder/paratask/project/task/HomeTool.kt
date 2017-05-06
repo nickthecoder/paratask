@@ -16,7 +16,7 @@ class HomeTool() : AbstractTool() {
 
     companion object {
         val toolList = mutableListOf<Tool>(
-                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool(), AllOptionsTool()
+                HomeTool(), TerminalTool(), PythonTool(), GroovyTool(), WebTool(), GrepTool(), OptionsFilesTool()
         )
 
         fun add(vararg tools: Tool) {

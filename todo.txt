@@ -1,13 +1,14 @@
 AllOptionsTool
-    Lists all option files in all paths
     Can filter by a single path
     
 OptionsTool
     also has :
         IncluesTool
+    Mybe use a TabPane, with tabs at the bottom "Options", "Includes"
 
-Either way, how will Tool.toolPane be handled?
     Create a SharedToolPane implementation, which forwards method calls to the 'parent'
+
+Implement FileParameter properly
 
 Port FileLister to Kotlin
 

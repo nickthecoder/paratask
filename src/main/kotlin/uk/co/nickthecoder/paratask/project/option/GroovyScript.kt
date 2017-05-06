@@ -13,12 +13,11 @@ class GroovyScript(val source: String) {
     private fun createShell(): GroovyShell {
         val importCustomizer = ImportCustomizer()
         importCustomizer.addStarImports(
-                "uk.co.nickthecoder.wrkfoo",
-                "uk.co.nickthecoder.wrkfoo.tool",
-                "uk.co.nickthecoder.wrkfoo.util",
-                "uk.co.nickthecoder.wrkfoo.editor",
-                "uk.co.nickthecoder.jguifier",
-                "uk.co.nickthecoder.jguifier.util")
+                "uk.co.nickthecoder.paratask",
+                "uk.co.nickthecoder.paratask.parameter",
+                "uk.co.nickthecoder.paratask.project",
+                "uk.co.nickthecoder.paratask.project.task",
+                "uk.co.nickthecoder.paratask.util")
 
         val configuration = CompilerConfiguration()
         configuration.addCompilationCustomizers(importCustomizer)

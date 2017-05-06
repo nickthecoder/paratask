@@ -12,6 +12,8 @@ import java.io.OutputStreamWriter
 
 class FileOptions(override val file: File) : HasFile {
 
+    val name = file.nameWithoutExtension
+
     val includes = mutableListOf<String>()
 
     // TODO When I implement "if" clauses, this will be a map of <String, List<Options>>
