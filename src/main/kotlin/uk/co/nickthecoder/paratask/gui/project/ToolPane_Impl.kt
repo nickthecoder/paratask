@@ -76,7 +76,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     override fun notBoth() {
         if (hidingSplitPane.splitPane.getItems().count() == 2) {
-            if (tool.toolRunner.hasStarted()) {
+            if (tool.taskRunner.hasStarted()) {
                 hidingSplitPane.showJustTop()
             } else {
                 hidingSplitPane.showJustBottom()

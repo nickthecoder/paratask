@@ -21,7 +21,7 @@ open class TaskPrompter(val task: Task) {
 
     val okButton = Button("OK")
 
-    val cancelButton = Button( "Cancel")
+    val cancelButton = Button("Cancel")
 
     val applyButton = Button("Apply")
 
@@ -84,7 +84,7 @@ open class TaskPrompter(val task: Task) {
     }
 
     open fun run() {
-        TerminalWindowTaskRunner(task.taskD.label + " Output").run(task)
+        TerminalWindowTaskRunner(task, task.taskD.label + " Output").run()
     }
 
     open protected fun close() {

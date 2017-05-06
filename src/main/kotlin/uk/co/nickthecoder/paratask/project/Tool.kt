@@ -6,7 +6,7 @@ import uk.co.nickthecoder.paratask.gui.project.ToolPane
 
 interface Tool : Task {
 
-    val toolRunner: ToolRunner
+    val taskRunner: TaskRunner
 
     var toolPane: ToolPane?
 

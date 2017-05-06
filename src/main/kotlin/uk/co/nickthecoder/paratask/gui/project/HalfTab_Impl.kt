@@ -92,9 +92,9 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         projectTab.changed()
 
-        runButton.disableProperty().bind(tool.toolRunner.disableRunProperty)
-        runButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
-        stopButton.visibleProperty().bind(tool.toolRunner.showStopProperty)
+        runButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
+        runButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
+        stopButton.visibleProperty().bind(tool.taskRunner.showStopProperty)
 
         history.push(tool)
     }

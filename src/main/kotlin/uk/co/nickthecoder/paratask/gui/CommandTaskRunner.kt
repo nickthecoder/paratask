@@ -1,12 +1,13 @@
 package uk.co.nickthecoder.paratask.gui
 
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.project.ThreadedTaskRunner
 import uk.co.nickthecoder.paratask.util.AutoExit
 import uk.co.nickthecoder.paratask.util.Command
 
-abstract class CommandTaskRunner : TaskRunner {
+abstract class CommandTaskRunner(task: Task) : ThreadedTaskRunner(task) {
 
-    override fun run(task: Task) {
+    override fun run() {
         AutoExit.inc()
         Thread({
 

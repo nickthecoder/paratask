@@ -1,6 +1,8 @@
 package uk.co.nickthecoder.paratask.project.option
 
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.table.WrappedList
 import uk.co.nickthecoder.paratask.project.table.WrappedRow
@@ -55,43 +57,61 @@ class OptionRunner(val tool: Tool) {
             prompt: Boolean,
             refresh: Boolean) {
 
-        if (result is Command) {
-            val terminal = TerminalTool()
-            terminal.changeCommand(result)
-            return process(terminal, newTab = newTab, prompt = prompt, refresh = refresh)
+        when (result) {
+            is Command -> {
+                val terminal = TerminalTool()
+                terminal.changeCommand(result)
+                return process(terminal, newTab = newTab, prompt = prompt, refresh = refresh)
+            }
+            is Tool -> {
+                processTool(result, newTab, prompt, refresh)
+            }
+            is Task -> {
+                processTask(result, prompt, refresh)
+            }
+            is Runnable -> {
+                processRunnable(result, refresh)
+            }
+            else -> {
+                // Do nthing
+            }
         }
+    }
 
+    private fun processTool(returnedTool: Tool, newTab: Boolean, prompt: Boolean, refresh: Boolean) {
         val halfTab = tool.toolPane?.halfTab
         val projectTabs = halfTab?.projectTab?.projectTabs
 
-        if (result is Tool) {
-            // Reuse the current tool where possible, otherwise copy the tool
-            var newTool = if (result !== tool || newTab) result.copy() else tool
+        // Reuse the current tool where possible, otherwise copy the tool
+        var newTool = if (returnedTool !== tool || newTab) returnedTool.copy() else tool
 
-            if (newTab) {
+        if (newTab) {
 
-                // TODO Insert after current tab
-                projectTabs?.addTool(newTool)
+            // TODO Insert after current tab
+            projectTabs?.addTool(newTool)
 
-            } else {
-                halfTab?.changeTool(newTool)
-            }
-
-        } else if (result is Task) {
-
-            val task = result
-
-            // TODO Add a listener is refresh
-            //listen(currentTool, task);
-
-            // Either prompt the Task, or run it straight away
-            // TODO Implement running tasks
-
-        } else if (result is Runnable) {
-
-            // TODO Implement running arbitrary Runnables
-            // TODO If refresh, refresh the list when it finishes
+        } else {
+            halfTab?.changeTool(newTool)
         }
+
+    }
+
+    private fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
+
+        // TODO Add a listener is refresh
+        //listen(currentTool, task);
+
+        // Either prompt the Task, or run it straight away
+        if (prompt) {
+            TaskPrompter(task).placeOnStage(Stage())
+        } else {
+            
+        }
+        // TODO Implement running tasks
+
+    }
+
+    private fun processRunnable(runnable: Runnable, refresh: Boolean) {
 
     }
 }

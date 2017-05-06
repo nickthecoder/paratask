@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.BooleanProperty
 
-interface ToolRunner {
+interface TaskRunner {
 
     val disableRunProperty: BooleanProperty
     val showRunProperty: BooleanProperty

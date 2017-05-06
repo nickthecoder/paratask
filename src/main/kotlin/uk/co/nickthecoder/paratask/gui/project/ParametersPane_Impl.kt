@@ -40,11 +40,11 @@ class ParametersPane_Impl(override val tool: Tool)
         val runStop = StackPane()
         runStop.children.addAll(stopButton, runButton)
 
-        stopButton.visibleProperty().bind(tool.toolRunner.showStopProperty)
-        runButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
-        applyButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
-        runButton.disableProperty().bind(tool.toolRunner.disableRunProperty)
-        applyButton.disableProperty().bind(tool.toolRunner.disableRunProperty)
+        stopButton.visibleProperty().bind(tool.taskRunner.showStopProperty)
+        runButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
+        applyButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
+        runButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
+        applyButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
 
         buttons.children.addAll(applyButton, runStop)
         buttons.getStyleClass().add("buttons")
@@ -56,7 +56,7 @@ class ParametersPane_Impl(override val tool: Tool)
 
             toolPane.halfTab.pushHistory(tool)
 
-            tool.toolRunner.run()
+            tool.taskRunner.run()
 
             if (showJustResults) {
                 toolPane.showJustResults()

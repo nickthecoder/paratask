@@ -2,29 +2,16 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
 
-class ThreadedToolRunner(tool: Tool)
+open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
 
-    : AbstractToolRunner(tool) {
+    override open fun runTask() {
+        super.runTask()
 
-    private var thread: Thread? = null
+        println("**TTR.runTask")
+        Platform.runLater {
+            tool.updateResults()
 
-    override fun run() {
-
-        runState = RunState.RUNNING
-
-        thread = object : Thread("ThreadedToolRunner") {
-            override fun run() {
-                tool.run();
-
-                Platform.runLater {
-                    tool.updateResults()
-
-                    runState = RunState.FINISHED
-                }
-            }
+            runState = RunState.FINISHED
         }
-        thread?.setDaemon(true)
-        thread?.start()
     }
-
 }

@@ -4,9 +4,9 @@ import uk.co.nickthecoder.paratask.project.Tool
 
 interface Option {
 
-    val code: String
+    var code: String
 
-    val label: String
+    var label: String
 
     var isRow: Boolean
 
@@ -17,6 +17,8 @@ interface Option {
     var newTab: Boolean
 
     var prompt: Boolean
+
+    var script: String
 
     fun run(tool: Tool, row: Any): Any?
 

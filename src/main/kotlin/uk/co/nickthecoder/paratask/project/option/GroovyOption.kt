@@ -7,14 +7,14 @@ import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.util.Command
 
 data class GroovyOption(
-        override val code: String,
-        override val label: String,
+        override var code: String,
+        override var label: String = "",
         override var isRow: Boolean = true,
         override var isMultiple: Boolean = false,
         override var newTab: Boolean = false,
         override var prompt: Boolean = false,
         override var refresh: Boolean = false,
-        var script: String)
+        override var script: String = "")
 
     : Option {
 

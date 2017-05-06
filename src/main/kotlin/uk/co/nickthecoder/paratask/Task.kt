@@ -1,7 +1,5 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.gui.TaskRunner
-
 interface Task {
 
     val taskD: TaskDescription
