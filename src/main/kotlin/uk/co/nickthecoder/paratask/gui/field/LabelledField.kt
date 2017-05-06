@@ -5,7 +5,7 @@ import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
-import uk.co.nickthecoder.paratask.gui.field.ParametersForm.Column
+import uk.co.nickthecoder.paratask.gui.field.ParametersForm.FormColumn
 import uk.co.nickthecoder.paratask.parameter.Parameter
 
 open class LabelledField : ParameterField {
@@ -77,7 +77,7 @@ open class LabelledField : ParameterField {
         }
     }
 
-    protected fun adjustColumnWidth(column: Column, node: Node) {
+    protected fun adjustColumnWidth(column: ParametersForm.FormColumn, node: Node) {
         val prefW = node.prefWidth(-1.0)
         val minW = node.minWidth(-1.0)
         if (column.prefWidth < prefW) {
@@ -88,7 +88,7 @@ open class LabelledField : ParameterField {
         }
     }
 
-    internal fun adjustColumnWidths(columns: List<ParametersForm.Column>) {
+    internal fun adjustColumnWidths(columns: List<ParametersForm.FormColumn>) {
         adjustColumnWidth(columns[0], label)
         control?.let { adjustColumnWidth(columns[1], it) }
     }

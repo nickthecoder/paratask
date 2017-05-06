@@ -16,7 +16,7 @@ import uk.co.nickthecoder.paratask.parameter.Parameter
 open class ParametersForm(parameter: Parameter)
     : ParameterField(parameter) {
 
-    internal val columns = mutableListOf<Column>()
+    internal val columns = mutableListOf<FormColumn>()
 
     internal val fieldSet = mutableListOf<ParameterField>()
 
@@ -67,8 +67,8 @@ open class ParametersForm(parameter: Parameter)
     }
 
     init {
-        columns.add(Column(0.0))
-        columns.add(Column())
+        columns.add(FormColumn(0.0))
+        columns.add(FormColumn())
         getStyleClass().add("form");
     }
 
@@ -199,7 +199,7 @@ open class ParametersForm(parameter: Parameter)
     }
 
 
-    class Column(var stretch: Double = 1.0) {
+    class FormColumn(var stretch: Double = 1.0) {
         var prefWidth: Double = 0.0
         var minWidth: Double = 0.0
         var width: Double = 0.0
