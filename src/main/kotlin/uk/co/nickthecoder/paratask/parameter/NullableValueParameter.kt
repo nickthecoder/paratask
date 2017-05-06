@@ -6,7 +6,7 @@ abstract class NullableValueParameter<T>(
         name: String,
         label: String,
         description: String,
-        value: T,
+        value: T?,
         required: Boolean)
 
     : ValueParameter<T?>(
@@ -19,11 +19,11 @@ abstract class NullableValueParameter<T>(
     /**
      * A conienince method for required parameters, which avoids putting !! in you code.
      */
-    fun requiredValueX(): T =
+    fun requiredValue(): T =
             if (!required) {
                 throw ParameterException(this, "Not a required parameter")
             } else {
-                value!!
+                value!! // Requied values should never be null
             }
 
 }

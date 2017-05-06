@@ -114,7 +114,7 @@ class History(val halfTab: HalfTab) {
                 val result = Tool.create(creationString)
                 for (parameter in result.taskD.root.descendants()) {
                     if (parameter is ValueParameter<*>) {
-                        parameter.stringValue = values.get(parameter.name)!!
+                        parameter.stringValue = values.get(parameter.name)!! // Safe
                     }
                 }
                 return result

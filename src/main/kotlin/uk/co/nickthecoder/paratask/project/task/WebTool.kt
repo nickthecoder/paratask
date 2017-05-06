@@ -72,7 +72,7 @@ class WebResults(val webTool: WebTool, var address: String) : EmptyResults() {
 
 
     fun pageLoaded() {
-        val docTitle = node.getEngine().getTitle()
+        //val docTitle = node.getEngine().getTitle()
         // TODO Update the long title when implemented
     }
 }

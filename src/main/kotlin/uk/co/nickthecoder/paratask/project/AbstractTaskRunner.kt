@@ -11,6 +11,8 @@ abstract class AbstractTaskRunner(val task: Task)
 
     : TaskRunner {
 
+    override val listeners = mutableListOf<TaskListener>()
+
     override val disableRunProperty = SimpleBooleanProperty(false)
 
     override val showRunProperty = SimpleBooleanProperty(true)

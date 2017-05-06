@@ -15,7 +15,7 @@ class GrepParser : Task {
     override fun run(): List<GrepRow> {
         val result = mutableListOf<GrepRow>()
 
-        val exec = grepTask.run()
+        grepTask.run()
         // TODO Parse the output of the Exec
 
         return result

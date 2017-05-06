@@ -40,7 +40,7 @@ open class BufferedSink() : Sink {
         // Does nothing - throws away the output
     }
 
-    protected fun sinkError(e: IOException) {
+    protected open fun sinkError(e: IOException) {
         // Do nothing
     }
 

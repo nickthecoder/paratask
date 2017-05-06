@@ -32,17 +32,16 @@ class OptionsTool() : AbstractTool() {
         taskD.addParameters(optionsNameP, directoryP)
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
     override fun run() {
         results.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
         for (option in optionsFile.listOptions()) {
             results.add(option)
         }
     }
-
 
     override fun updateResults() {
         toolPane?.updateResults(OptionsResults(this))

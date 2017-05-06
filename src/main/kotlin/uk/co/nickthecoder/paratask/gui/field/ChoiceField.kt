@@ -24,6 +24,7 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
         }
 
         override fun toString(obj: Any?): String {
+            @Suppress("UNCHECKED_CAST")
             val lab = parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T)
             return if (lab == null) "<unknown>" else lab
         }

@@ -14,7 +14,7 @@ class FileParameter(
         required: Boolean = true,
         val stretchy: Boolean = true)
 
-    : NullableValueParameter<File?>(
+    : NullableValueParameter<File>(
         name = name,
         label = label,
         description = description,

@@ -9,6 +9,7 @@ open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
 
     override fun run() {
 
+        task.check()
         runState = RunState.RUNNING
 
         thread = object : Thread("ThreadedToolRunner") {
@@ -21,6 +22,9 @@ open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
     }
 
     open fun runTask() {
-        task.run();
+        task.run()
+        for (listener in listeners) {
+            listener.ended()
+        }
     }
 }

@@ -53,7 +53,7 @@ Here we see GroupParameter in action
     }
 
     override fun check() {
-        if (rangeFrom.value!! > rangeTo.value!!) {
+        if (rangeFrom.requiredValue() > rangeTo.requiredValue()) {
             throw ParameterException(rangeTo, "Must be less than 'from'")
         }
     }

@@ -49,6 +49,7 @@ class ProjectWindow() {
 
     fun onNewWindow(tool: Tool) {
         // TODO Implement new window
+        println("TODO New Window for $tool}")
     }
 
     fun onNewTab(tool: Tool = HomeTool()) {

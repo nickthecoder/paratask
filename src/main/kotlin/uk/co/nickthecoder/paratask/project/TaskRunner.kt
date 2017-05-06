@@ -4,6 +4,8 @@ import javafx.beans.property.BooleanProperty
 
 interface TaskRunner {
 
+    val listeners: List<TaskListener>
+
     val disableRunProperty: BooleanProperty
     val showRunProperty: BooleanProperty
     val showStopProperty: BooleanProperty

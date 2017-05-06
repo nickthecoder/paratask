@@ -25,7 +25,7 @@ val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
 
-abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : TableResults<R> {
+abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>) : TableResults<R> {
 
     val data = WrappedList<R>(list)
 
@@ -37,7 +37,7 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
 
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn<WrappedRow<R>, String>("")
 
-    val runner = OptionRunner(tool)
+    val runner = OptionRunner<R>(tool)
 
     override fun attached(toolPane: ToolPane) {
 
@@ -166,11 +166,11 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
     }
 
 
+    private inner class SingleRowOption(val option: Option, val wrappedRow: WrappedRow<R>) {
+    }
 }
 
 
-private data class SingleRowOption(val option: Option, val wrappedRow: WrappedRow<*>) {
-}
 
 class WrappedList<R>(list: List<R>) :
         ImmutableObservableList<WrappedRow<R>>() {

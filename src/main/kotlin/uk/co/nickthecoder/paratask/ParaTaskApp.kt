@@ -28,7 +28,7 @@ class ParaTaskApp() : Application() {
 
         }
 
-        fun logAttach(string: String) {
+        fun logAttach(@Suppress("UNUSED_PARAMETER") string: String) {
             // println( string )
         }
     }

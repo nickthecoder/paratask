@@ -14,7 +14,7 @@ open class IntParameter(
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE))
 
-    : NullableValueParameter<Int?>(
+    : NullableValueParameter<Int>(
         name = name,
         label = label,
         description = description,

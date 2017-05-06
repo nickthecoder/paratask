@@ -38,7 +38,7 @@ class TaskForm(val task: Task) {
         } catch (e: ParameterException) {
             val field = form.findField(e.parameter)
             if (field != null) {
-                field.showError(e.message!!)
+                field.showError(e.message)
                 ensureVisible(field)
             }
 
