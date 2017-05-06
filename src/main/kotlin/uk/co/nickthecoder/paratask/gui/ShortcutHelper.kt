@@ -18,7 +18,6 @@ class ShortcutHelper(val name: String, val node: Node) {
     fun keyPressed(event: KeyEvent) {
         actions.forEach { (action, func) ->
             if (action.keyCodeCombination?.match(event) == true) {
-                //println("Shortcut helper '$name' consumed key : '${action.keyCodeCombination.displayText}'")
                 event.consume()
                 func()
             }

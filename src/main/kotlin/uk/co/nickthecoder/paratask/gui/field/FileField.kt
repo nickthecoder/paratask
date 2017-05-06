@@ -17,9 +17,7 @@ class FileField : LabelledField {
     private fun createControl(): Node {
         val textField = TextField()
         textField.text = parameter.stringValue
-        if (parameter.columns > 0) {
-            textField.prefColumnCount = parameter.columns
-        }
+
         textField.textProperty().bindBidirectional(parameter.property, parameter.converter);
         textField.textProperty().addListener({ _, _, _: String ->
             val error = parameter.errorMessage()

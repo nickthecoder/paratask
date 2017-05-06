@@ -19,7 +19,7 @@ class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
 
     fun debugAncestors() {
         Thread.dumpStack()
-        println("*** Focus Listener could not find the Scene. Ancestors :")
+        println("Focus Listener could not find the Scene. Ancestors :")
         var node: Node? = parent
         while (node != null) {
             println(node)

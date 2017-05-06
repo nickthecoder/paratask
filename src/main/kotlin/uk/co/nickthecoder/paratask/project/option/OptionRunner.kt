@@ -16,7 +16,6 @@ class OptionRunner(val tool: Tool) {
             val code = wrappedRow.code
             if (code != "") {
                 val row = wrappedRow.row
-                println("Running code '${code}' on row '${row}'")
             }
         }
         //
@@ -25,12 +24,10 @@ class OptionRunner(val tool: Tool) {
     fun runDefault(wrappedRow: WrappedRow<*>, prompt: Boolean = false, newTab: Boolean = false) {
         val row = wrappedRow.row!!
 
-        println("Running default option on row '${row}'")
         doit(".", row, prompt = prompt, newTab = newTab)
     }
 
     fun nonRowOption(code: String, prompt: Boolean = false, newTab: Boolean = false) {
-        println("Running non-row code '${code}'")
     }
 
 
@@ -39,7 +36,6 @@ class OptionRunner(val tool: Tool) {
     private fun doit(code: String, row: Any, prompt: Boolean, newTab: Boolean) {
         val option = getOption(code)
         if (option == null) {
-            println("Option '${code}' not found")
             return
         }
 

@@ -1,17 +1,47 @@
 package uk.co.nickthecoder.paratask.gui.field
 
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
+import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 
-class ChoiceField<T> : LabelledField {
+// Note. JavaFX cannot handle null values in Combobox correctly
+// See : http://stackoverflow.com/questions/25877323/no-select-item-on-javafx-combobox
+// So I've added a "special" value, and made the generic type "ANY?"
+// and added a bodgeProperty, which forwards get/sets to the parameter's property
 
-    override val parameter: ChoiceParameter<T>
+private val FAKE_NULL = "FAKE_NULL"
+
+class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField(parameter) {
 
     private var dirty = false
 
-    constructor(parameter: ChoiceParameter<T>) : super(parameter) {
-        this.parameter = parameter
+    val converter = object : StringConverter<Any?>() {
+
+        override fun fromString(label: String): Any? {
+            return parameter.getValueForLabel(label) ?: FAKE_NULL
+        }
+
+        override fun toString(obj: Any?): String {
+            val lab = parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T)
+            return if (lab == null) "<unknown>" else lab
+        }
+    }
+
+    val bodgeProperty = object : SimpleObjectProperty <Any?>(FAKE_NULL) {
+        override fun get(): Any? = parameter.value ?: FAKE_NULL
+        override fun set(value: Any?) {
+            if (value === FAKE_NULL) {
+                parameter.value = null
+
+            } else {
+                parameter.value
+            }
+        }
+    }
+
+    init {
         this.control = createControl()
     }
 
@@ -19,14 +49,14 @@ class ChoiceField<T> : LabelledField {
 
         val initialValue = parameter.value
 
-        val comboBox = ComboBox<T>()
-        comboBox.converter = parameter.converter
-        comboBox.valueProperty().bindBidirectional(parameter.property)
+        val comboBox = ComboBox<Any?>()
+        comboBox.converter = converter
+        comboBox.valueProperty().bindBidirectional(bodgeProperty)
 
-        parameter.keyToValueMap.forEach { (_, value) ->
-            comboBox.getItems().add(value)
+        for (value in parameter.choiceValues()) {
+            comboBox.getItems().add(value ?: FAKE_NULL)
         }
-        comboBox.setValue(initialValue)
+        comboBox.setValue(initialValue ?: FAKE_NULL)
 
         return comboBox
     }

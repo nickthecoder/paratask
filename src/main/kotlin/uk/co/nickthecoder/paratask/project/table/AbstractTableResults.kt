@@ -102,7 +102,6 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
             event.consume()
 
         } else if (acceleratorEscape.match(event)) {
-            //println("ATR Escape")
             event.consume()
         }
     }
@@ -110,11 +109,8 @@ abstract class AbstractTableResults<R>(val tool: Tool, val list: List<R>) : Tabl
     fun move(delta: Int) {
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
-            //println("ATR. out of bounds. ignoring") // TODO Remove
             return
         }
-        //tableView.selectionModel.focus(row)
-        //println("ATR. editing a different row") // TODO Remove
         Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
     }
 

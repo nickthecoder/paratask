@@ -10,16 +10,15 @@ class StringParameter(
         description: String = "",
         value: String = "",
         required: Boolean = true,
-        columns: Int = 30,
+        val columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<String>(
+    : ValueParameter<String>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        columns = columns) {
+        required = required) {
 
     override val converter = object : StringConverter<String>() {
         override fun fromString(str: String): String? = str

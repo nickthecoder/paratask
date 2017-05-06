@@ -12,16 +12,14 @@ class FileParameter(
         description: String = "",
         value: File? = homeDirectory,
         required: Boolean = true,
-        columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : TextParameter<File?>(
+    : NullableValueParameter<File?>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        columns = columns) {
+        required = required) {
 
     override val converter = object : StringConverter<File?>() {
 

@@ -41,9 +41,7 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
         }
 
         textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
-            //println("EditCell key event") // TODO Remove
             if (acceleratorEscape.match(event)) {
-                //println("EditCell Escape")
                 // I don't think this EVER gets called. Hmmm.
                 textField.setText(converter.toString(getItem()))
                 cancelEdit()
@@ -59,7 +57,6 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
     }
 
     fun move(delta: Int) {
-        //println("EditCell.moving") // TODO Remove
         commitEdit(converter.fromString(textField.getText()))
 
         val row = tableView.selectionModel.focusedIndex + delta

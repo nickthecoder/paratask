@@ -7,7 +7,6 @@ open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
     override open fun runTask() {
         super.runTask()
 
-        println("**TTR.runTask")
         Platform.runLater {
             tool.updateResults()
 

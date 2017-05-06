@@ -33,7 +33,6 @@ abstract class ValueParameter<T>(
         }
         get() = property.get()
 
-
     var stringValue: String
         get() = converter.toString(value)
         set(v: String) {

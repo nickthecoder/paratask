@@ -57,7 +57,7 @@ class FileOptions(override val file: File) : HasFile {
                 "type" : "groovy",
                 "code" : "2",
                 "label" : "Two",
-                "script" : "println(1+1)",
+                "script" : "",
                 "isRow" : false,
                 "isMultiple" : false,
                 "newTab" : false,
@@ -68,7 +68,7 @@ class FileOptions(override val file: File) : HasFile {
                 "type" : "groovy",
                 "code" : "5",
                 "label" : "Five",
-                "script" : "println(4+1)",
+                "script" : "",
                 "isRow" : false,
                 "isMultiple" : false,
                 "newTab" : false,
@@ -81,7 +81,6 @@ class FileOptions(override val file: File) : HasFile {
      */
     // https://github.com/ralfstx/minimal-json
     fun load() {
-        println("Loading options : $file")
 
         val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
 
@@ -112,7 +111,6 @@ class FileOptions(override val file: File) : HasFile {
                                 refresh = joption.getBoolean("refresh", false)
                         )
                         addOption(option)
-                        println(option)
                     }
 
                     else -> {

@@ -1,9 +1,11 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.ChoiceField
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
+
 
 open class ChoiceParameter<T>(
         name: String,
@@ -12,7 +14,7 @@ open class ChoiceParameter<T>(
         value: T,
         required: Boolean = true)
 
-    : ValueParameter<T>(
+    : NullableValueParameter<T?>(
         name = name,
         label = label,
         description = description,
@@ -20,19 +22,16 @@ open class ChoiceParameter<T>(
         required = required) {
 
 
-    // TODO I think we need two converters, one for the GUI (which uses the labels)
-    // and another for the command line, which uses the keys.
-    override val converter = object : StringConverter<T>() {
+    override val converter = object : StringConverter<T?>() {
 
-        override fun fromString(label: String): T {
-            return labelToValueMap.get(label)!!
+        override fun fromString(label: String): T? {
+            return keyToValueMap.get(label)
         }
 
         override fun toString(obj: T?): String {
-            val lab = valueToLabelMap.get(obj)
-            return if (lab == null) "<unknown>" else label
+            val lab = valueToKeyMap.get(obj)
+            return if (lab == null) "<unknown>" else lab
         }
-
     }
 
     fun choice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
@@ -46,12 +45,26 @@ open class ChoiceParameter<T>(
 
     override fun toString(): String = "Choice" + super.toString()
 
-    val keyToValueMap = LinkedHashMap<String, T?>()
-    val valueToLabelMap = LinkedHashMap<T?, String>()
-    val labelToValueMap = LinkedHashMap<String, T?>()
+    private val valueToKeyMap = LinkedHashMap<T?, String>()
+    private val keyToValueMap = LinkedHashMap<String, T?>()
+    private val valueToLabelMap = LinkedHashMap<T?, String>()
+    private val labelToValueMap = LinkedHashMap<String, T?>()
+
+    fun choiceValues(): Collection<T?> {
+        return keyToValueMap.values
+    }
+
+    fun getLabelForValue(value: T?): String? {
+        return valueToLabelMap.get(value)
+    }
+
+    fun getValueForLabel(label: String?): T? {
+        return labelToValueMap.get(label)
+    }
 
     fun addChoice(key: String, value: T?, label: String = key.uncamel()) {
         keyToValueMap.put(key, value)
+        valueToKeyMap.put(value, key)
         valueToLabelMap.put(value, label)
         labelToValueMap.put(label, value)
     }
@@ -61,6 +74,7 @@ open class ChoiceParameter<T>(
         val label = valueToLabelMap.get(value)
 
         keyToValueMap.remove(key)
+        valueToKeyMap.remove(value)
         valueToLabelMap.remove(value)
         labelToValueMap.remove(label)
     }

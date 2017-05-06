@@ -14,14 +14,25 @@ import java.io.File
 
 class OptionsFilesTool() : AbstractTool() {
 
-    private val fileOptionsList = mutableListOf<FileOptions>()
-
     override val taskD = TaskDescription("optionsFiles", description = "Work with all Option Files")
 
+    val directory = Preferences.createOptionsDirectoryParameter()
+
+    private val results = mutableListOf<FileOptions>()
+
+    init {
+        taskD.addParameters(directory)
+    }
+
     override fun run() {
-        fileOptionsList.clear()
-        for (directory in Preferences.optionsPath) {
-            add(directory)
+        results.clear()
+        val chosenDirectory = directory.value
+        if (chosenDirectory == null) {
+            for (dir in Preferences.optionsPath) {
+                add(dir)
+            }
+        } else {
+            add(chosenDirectory)
         }
     }
 
@@ -30,7 +41,7 @@ class OptionsFilesTool() : AbstractTool() {
         val files = fileLister.listFiles(directory)
         for (file in files) {
             val name = file.nameWithoutExtension()
-            fileOptionsList.add(OptionsManager.getFileOptions(name, directory))
+            results.add(OptionsManager.getFileOptions(name, directory))
         }
     }
 
@@ -38,7 +49,7 @@ class OptionsFilesTool() : AbstractTool() {
         toolPane?.updateResults(OptionsFilesResults(this))
     }
 
-    class OptionsFilesResults(tool: OptionsFilesTool) : AbstractTableResults<FileOptions>(tool, tool.fileOptionsList) {
+    class OptionsFilesResults(tool: OptionsFilesTool) : AbstractTableResults<FileOptions>(tool, tool.results) {
 
         init {
             columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension() })

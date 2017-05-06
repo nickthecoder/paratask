@@ -1,6 +1,3 @@
-TaskRunner and ToolRunner are the same - Subclass?
-
-Rename valueListener(s) to parameterListener(s)
 
 ListTask - does it do anything?
 

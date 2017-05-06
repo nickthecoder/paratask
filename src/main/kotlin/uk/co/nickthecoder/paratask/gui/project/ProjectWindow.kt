@@ -48,7 +48,6 @@ class ProjectWindow() {
     }
 
     fun onNewWindow(tool: Tool) {
-        println("New window")
         // TODO Implement new window
     }
 

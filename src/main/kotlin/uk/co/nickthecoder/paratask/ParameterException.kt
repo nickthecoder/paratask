@@ -6,6 +6,6 @@ class ParameterException(val parameter: Parameter, message: String)
     : RuntimeException(message) {
 
     override fun toString(): String {
-        return "ParameterException '${parameter.name}' : message"
+        return "ParameterException '${parameter.name}' : $message"
     }
 }

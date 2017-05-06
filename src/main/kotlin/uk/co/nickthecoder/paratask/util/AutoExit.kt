@@ -20,12 +20,12 @@ class AutoExit {
 
         fun inc() {
             resourceCounter++
-            if (log) println( "inc ${resourceCounter}")
+            if (log) printLog( "inc ${resourceCounter}")
         }
 
         fun dec() {
             resourceCounter--
-            if (log) println( "dec ${resourceCounter}")
+            if (log) printLog( "dec ${resourceCounter}")
             if (resourceCounter == 0) {
                 Platform.exit()
             }
@@ -34,11 +34,15 @@ class AutoExit {
         fun show(stage: Stage) {
             inc()
             stage.show()
-            if (log) println( "Show ${resourceCounter}")
+            if (log) printLog( "Show ${resourceCounter}")
             stage.setOnHiding {
                 dec()
-                if (log) println( "Hide ${resourceCounter}")
+                if (log) printLog( "Hide ${resourceCounter}")
             }
+        }
+        
+        fun printLog( message : String) {
+            println( message)
         }
     }
 }

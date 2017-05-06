@@ -14,7 +14,7 @@ class BooleanParameter(
         required: Boolean = true,
         val labelOnLeft: Boolean = true)
 
-    : ValueParameter<Boolean?>(
+    : NullableValueParameter<Boolean?>(
         name = name,
         label = label,
         description = description,
