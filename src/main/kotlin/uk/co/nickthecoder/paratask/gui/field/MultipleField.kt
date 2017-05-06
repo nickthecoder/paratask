@@ -9,9 +9,9 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.ValueListener
+import uk.co.nickthecoder.paratask.parameter.ParameterListener
 
-class MultipleField<T> : ParametersForm, ValueListener {
+class MultipleField<T> : ParametersForm, ParameterListener {
 
     override val parameter: MultipleParameter<T>
 
@@ -38,7 +38,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
         list.getStyleClass().add("multiple-list")
 
         control = whole
-        parameter.valueListeners.add(this)
+        parameter.parameterListeners.add(this)
     }
 
     private fun buildList() {
@@ -98,7 +98,7 @@ class MultipleField<T> : ParametersForm, ValueListener {
         parameter.removeAt(index)
     }
 
-    override fun valueChanged(parameter: Parameter) {
+    override fun parameterChanged(parameter: Parameter) {
         buildList()
     }
 }

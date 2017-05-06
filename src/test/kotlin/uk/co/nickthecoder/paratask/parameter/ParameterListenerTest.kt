@@ -5,13 +5,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ValueListenerTest : ValueListener {
+class ParameterListenerTest : ParameterListener {
     var count = 0
 
     var notListening = IntParameter("notListening")
     var listening = IntParameter("listening")
 
-    override fun valueChanged(parameter: Parameter) {
+    override fun parameterChanged(parameter: Parameter) {
         count++
     }
 
@@ -22,7 +22,7 @@ class ValueListenerTest : ValueListener {
 
     @After
     fun tearDown() {
-        listening.valueListeners.remove(this)
+        listening.parameterListeners.remove(this)
     }
 
     @Test
@@ -47,7 +47,7 @@ class ValueListenerTest : ValueListener {
     @Test
     fun doubleChangeWithRemove() {
         listening.value = 1
-        listening.valueListeners.remove(this)
+        listening.parameterListeners.remove(this)
         listening.value = 0
         assertEquals(1, count)
     }

@@ -8,7 +8,7 @@ abstract class AbstractParameter(
         override val description: String)
     : Parameter {
 
-    val valueListeners = ValueListeners()
+    val parameterListeners = ParameterListeners()
 
     override var parent: GroupParameter? = null
 

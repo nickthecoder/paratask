@@ -7,7 +7,7 @@ import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 
-class GroupParameterTest : MyTest(), ValueListener {
+class GroupParameterTest : MyTest(), ParameterListener {
 
     var group = GroupParameter("group")
     var subGroup = GroupParameter("subGroup")
@@ -29,16 +29,16 @@ class GroupParameterTest : MyTest(), ValueListener {
         count = 0
         changedParameter = null
 
-        group.valueListeners.add(this)
+        group.parameterListeners.add(this)
 
     }
 
     @After
     fun tearDown() {
-        group.valueListeners.remove(this)
+        group.parameterListeners.remove(this)
     }
 
-    override fun valueChanged(parameter: Parameter) {
+    override fun parameterChanged(parameter: Parameter) {
         changedParameter = parameter
         count++
     }

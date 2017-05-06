@@ -76,22 +76,22 @@ class MultipleParameter<T>(
 
     fun clear() {
         value.clear()
-        valueListeners.fireChanged(this)
+        parameterListeners.fireChanged(this)
     }
 
     fun addValue(item: T, index: Int = value.size) {
         value.add(index, item)
-        valueListeners.fireChanged(this)
+        parameterListeners.fireChanged(this)
     }
 
     fun removeValue(item: T) {
         value.remove(item)
-        valueListeners.fireChanged(this)
+        parameterListeners.fireChanged(this)
     }
 
     fun removeAt(index: Int) {
         value.removeAt(index)
-        valueListeners.fireChanged(this)
+        parameterListeners.fireChanged(this)
     }
 
 }

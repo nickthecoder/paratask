@@ -4,7 +4,7 @@ import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
-import uk.co.nickthecoder.paratask.parameter.ValueListener
+import uk.co.nickthecoder.paratask.parameter.ParameterListener
 
 class BooleanField : LabelledField {
 

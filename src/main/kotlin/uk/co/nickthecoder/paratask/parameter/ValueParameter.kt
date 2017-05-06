@@ -21,7 +21,7 @@ abstract class ValueParameter<T>(
         override fun set(v: T) {
             val changed = v != get()
             if (changed) {
-                valueListeners.fireChanged(this@ValueParameter)
+                parameterListeners.fireChanged(this@ValueParameter)
                 super.set(v)
             }
         }
