@@ -5,31 +5,30 @@ import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
 import javafx.concurrent.Worker.State
 import javafx.scene.web.WebView
-import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.EmptyResults
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 
-class WebTool : AbstractTool() {
+class WebTool() : AbstractTool() {
 
-    override val taskD = TaskDescription("web", description="A Simple Web Browser")
+    constructor(address: String) : this() {
+        addressP.value = address
+    }
+
+    override val taskD = TaskDescription("web", description = "A Simple Web Browser")
 
     val addressP = StringParameter("address")
-
-    private lateinit var address: String
 
     init {
         taskD.addParameters(addressP)
     }
 
-    override fun run(values: Values) {
-        address = addressP.value(values)
+    override fun run() {
     }
 
     override fun updateResults() {
-        val results = WebResults(this, address)
+        val results = WebResults(this, addressP.value)
 
         toolPane?.updateResults(results)
     }
@@ -66,7 +65,7 @@ class WebResults(val webTool: WebTool, var address: String) : EmptyResults() {
 
     fun changedAddress(address: String) {
         webTool.toolPane?.let { toolPane ->
-            webTool.addressP.set(toolPane.values, address)
+            webTool.addressP.value = address
             toolPane.halfTab.pushHistory()
         }
     }

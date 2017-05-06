@@ -13,9 +13,9 @@ interface Parameter : Labelled {
 
     fun isStretchy(): Boolean
 
-    fun errorMessage(values: Values): String?
+    fun errorMessage(): String?
 
-    fun createField(values: Values): ParameterField
+    fun createField(): ParameterField
 
     fun findRoot(): GroupParameter? {
         return parent?.findRoot()

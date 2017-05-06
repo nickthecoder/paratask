@@ -2,6 +2,6 @@ package uk.co.nickthecoder.paratask.parameter
 
 interface ValueListener {
 
-    fun valueChanged(parameterValue: ParameterValue<*>)
+    fun valueChanged(parameter: Parameter)
 
 }

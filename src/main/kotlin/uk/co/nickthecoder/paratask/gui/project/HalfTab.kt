@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.scene.control.TextField
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.Tool
 
 interface HalfTab {
@@ -16,9 +15,9 @@ interface HalfTab {
 
     fun detaching()
 
-    fun changeTool(tool: Tool, values: Values? = null)
+    fun changeTool(tool: Tool)
 
     fun pushHistory()
 
-    fun pushHistory(tool: Tool, values: Values)
+    fun pushHistory(tool: Tool)
 }

@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Preferences
@@ -19,7 +18,7 @@ class OptionsFilesTool() : AbstractTool() {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with all Option Files")
 
-    override fun run(values: Values) {
+    override fun run() {
         fileOptionsList.clear()
         for (directory in Preferences.optionsPath) {
             add(directory)

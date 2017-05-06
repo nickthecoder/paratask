@@ -3,32 +3,27 @@ package uk.co.nickthecoder.paratask.gui.field
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameter.ChoiceValue
-import uk.co.nickthecoder.paratask.parameter.Values
 
 class ChoiceField<T> : LabelledField {
 
     override val parameter: ChoiceParameter<T>
 
-    val choiceValue: ChoiceValue<T>
-
     private var dirty = false
 
-    constructor(parameter: ChoiceParameter<T>, values: Values) : super(parameter) {
+    constructor(parameter: ChoiceParameter<T>) : super(parameter) {
         this.parameter = parameter
-        this.choiceValue = parameter.parameterValue(values)
         this.control = createControl()
     }
 
     private fun createControl(): Node {
 
-        val initialValue = choiceValue.value
+        val initialValue = parameter.value
 
         val comboBox = ComboBox<T>()
-        comboBox.converter = choiceValue
-        comboBox.valueProperty().bindBidirectional(choiceValue.property)
+        comboBox.converter = parameter.converter
+        comboBox.valueProperty().bindBidirectional(parameter.property)
 
-        choiceValue.keyToValueMap.forEach { (_, value) ->
+        parameter.keyToValueMap.forEach { (_, value) ->
             comboBox.getItems().add(value)
         }
         comboBox.setValue(initialValue)

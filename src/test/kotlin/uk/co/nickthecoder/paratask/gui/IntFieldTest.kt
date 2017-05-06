@@ -35,10 +35,10 @@ open class IntFieldTest : IntFieldBase() {
     @Test
     fun initialValues() {
         assertNull(findSpinner("optional").value)
-        assertNull(optional.value(values))
+        assertNull(optional.value)
 
         assertEquals(0, findSpinner("required").value)
-        assertEquals(0, required.value(values))
+        assertEquals(0, required.value)
 
         assertNull(findSpinner("oneToTenOptional").value)
         assertEquals(1, findSpinner("oneToTenRequired").value)
@@ -46,7 +46,7 @@ open class IntFieldTest : IntFieldBase() {
         assertNull(findSpinner("tenToTenOptional").value)
         assertEquals(0, findSpinner("tenToTenRequired").value)
 
-        assertEquals(5, initial5.value(values))
+        assertEquals(5, initial5.value)
         assertEquals(5, findSpinner("initial5").value)
     }
 

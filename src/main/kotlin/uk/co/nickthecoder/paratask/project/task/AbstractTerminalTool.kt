@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.util.Command
@@ -19,11 +18,11 @@ abstract class AbstractTerminalTool(
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 
-    abstract fun createCommand(values: Values) : Command
+    abstract fun createCommand() : Command
 
-    override fun run(values: Values) {
+    override fun run() {
         stop()
-        val command = createCommand(values)
+        val command = createCommand()
 
         runAndWait {
             val results = TerminalResults(command, showCommand = showCommand, allowInput = allowInput)

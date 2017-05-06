@@ -1,3 +1,12 @@
+Remove Values
+    History is broken - it doesn't store the parameter values.
+
+TaskRunner and ToolRunner are the same - Subclass?
+
+Rename valueListener(s) to parameterListener(s)
+
+ListTask - does it do anything?
+
 AllOptionsTool
     Can filter by a single path
     

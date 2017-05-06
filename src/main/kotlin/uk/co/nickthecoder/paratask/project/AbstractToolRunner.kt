@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
-import uk.co.nickthecoder.paratask.parameter.Values
 
 enum class RunState {
     IDLE, RUNNING, FINISHED;
@@ -26,7 +25,7 @@ abstract class AbstractToolRunner(val tool: Tool)
             showRunProperty.set(!showStop)
         }
 
-    abstract override fun run(values: Values)
+    abstract override fun run()
 
     override fun hasStarted() = runState != RunState.IDLE
 

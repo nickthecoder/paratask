@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.parameter
+package uk.co.nickthecoder.paratask.gui.field
 
 import javafx.scene.Node
 import uk.co.nickthecoder.paratask.gui.field.ParameterField

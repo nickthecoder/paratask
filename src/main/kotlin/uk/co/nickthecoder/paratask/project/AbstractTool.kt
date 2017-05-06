@@ -4,7 +4,6 @@ import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.gui.project.ToolPane_Impl
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractTool() : Tool {
@@ -27,13 +26,11 @@ abstract class AbstractTool() : Tool {
         }
     }
 
-    override val values: Values get() = ensureToolPane().values
-
     fun ensureToolPane(): ToolPane {
         return toolPane ?: ToolPane_Impl(this)
     }
 
-    override fun check(values: Values) {}
+    override fun check() {}
 
     override fun detaching() {
         this.toolPane = null
@@ -48,7 +45,7 @@ abstract class AbstractTool() : Tool {
     override fun copy(): Tool {
 
         val copy = this::class.java.newInstance()
-
+        copy.taskD.copyValuesFrom(taskD)
         return copy
     }
 

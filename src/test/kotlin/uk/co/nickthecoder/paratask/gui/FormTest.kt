@@ -31,13 +31,11 @@ class FormTest : GuiTest() {
 
         taskD.addParameters(firstP, helloP, worldP)
 
-        val values = taskD.createValues()
+        form = GroupParametersForm(taskD.root)
 
-        form = GroupParametersForm(taskD.root, values)
-
-        firstF = form.addParameter(firstP, values) as ParameterField
-        helloF = form.addParameter(helloP, values) as ParameterField
-        worldF = form.addParameter(worldP, values) as ParameterField
+        firstF = form.addParameter(firstP) as ParameterField
+        helloF = form.addParameter(helloP) as ParameterField
+        worldF = form.addParameter(worldP) as ParameterField
 
         return form
     }

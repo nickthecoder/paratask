@@ -8,6 +8,8 @@ abstract class AbstractParameter(
         override val description: String)
     : Parameter {
 
+    val valueListeners = ValueListeners()
+
     override var parent: GroupParameter? = null
 
     override fun toString() = "Parameter ${name}"

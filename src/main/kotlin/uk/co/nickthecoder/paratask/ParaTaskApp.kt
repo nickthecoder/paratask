@@ -11,7 +11,7 @@ class ParaTaskApp() : Application() {
         if (stage == null) {
             return;
         }
-        TaskPrompter(task, task.taskD.createValues()).placeOnStage(stage)
+        TaskPrompter(task).placeOnStage(stage)
     }
 
     companion object {

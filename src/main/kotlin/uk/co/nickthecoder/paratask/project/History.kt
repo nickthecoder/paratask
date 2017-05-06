@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.gui.project.HalfTab
-import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
 class History(val halfTab: HalfTab) {
 
@@ -37,7 +37,7 @@ class History(val halfTab: HalfTab) {
         val tool = moment.tool
         tool.autoRun = true
 
-        halfTab.changeTool(tool, moment.values)
+        halfTab.changeTool(tool)
 
         using = false
     }
@@ -60,12 +60,12 @@ class History(val halfTab: HalfTab) {
         update()
     }
 
-    fun push(tool: Tool, values: Values) {
+    fun push(tool: Tool) {
         if (using) {
             return
         }
 
-        val newMoment = Moment(tool, values)
+        val newMoment = Moment(tool)
         if (index >= 0) {
             if (moments[index] == newMoment) {
                 return
@@ -97,21 +97,36 @@ class History(val halfTab: HalfTab) {
         println()
         moments.forEach { moment ->
             println("M : ${moment.creationString}")
-            val values = moment.values
-            println(values)
+            println(moment.tool.taskD)
         }
         println("Index = ${index}")
         println()
     }
 
-    class Moment(tool: Tool, values: Values) {
+    class Moment(tool: Tool) {
 
         val creationString = tool.creationString()
 
-        val tool: Tool
-            get() = Tool.create(creationString)
+        val values = mutableMapOf<String, String>()
 
-        val values: Values = values.copy()
+        val tool: Tool
+            get() {
+                val result = Tool.create(creationString)
+                for (parameter in result.taskD.root.descendants()) {
+                    if (parameter is ValueParameter<*>) {
+                        parameter.stringValue = values.get(parameter.name)!!
+                    }
+                }
+                return result
+            }
+
+        init {
+            for (parameter in tool.taskD.root.descendants()) {
+                if (parameter is ValueParameter<*>) {
+                    values.put(parameter.name, parameter.stringValue)
+                }
+            }
+        }
 
         override fun equals(other: Any?): Boolean {
             if (other is Moment) {

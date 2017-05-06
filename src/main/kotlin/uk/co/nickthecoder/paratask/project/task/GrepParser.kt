@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.parameter.Values
 import java.io.File
 
 /**
@@ -13,17 +12,17 @@ class GrepParser : Task {
 
     override val taskD = grepTask.taskD
 
-    override fun run(values: Values): List<GrepRow> {
+    override fun run(): List<GrepRow> {
         val result = mutableListOf<GrepRow>()
 
-        val exec = grepTask.run(values)
+        val exec = grepTask.run()
         // TODO Parse the output of the Exec
 
         return result
     }
 
-    override fun check(values: Values) {
-        grepTask.check(values)
+    override fun check() {
+        grepTask.check()
     }
 
     // TODO GrepRow will probably inherit from HasFile later on

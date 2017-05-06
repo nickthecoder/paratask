@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.field.FileField
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -22,13 +23,16 @@ class FileParameter(
         required = required,
         columns = columns) {
 
+    override val converter = object : StringConverter<File?>() {
+
+        override fun fromString(str: String): File? = if (str == "") null else File(str)
+
+        override fun toString(file: File?): String = file?.getPath() ?: ""
+    }
+
     override fun isStretchy(): Boolean = stretchy
 
-    override fun createField(values: Values): FileField = FileField(this, parameterValue(values))
-
-    override fun createValue() = FileValue(this, value)
-
-    override fun parameterValue(values: Values) = super.parameterValue(values) as FileValue
+    override fun createField(): FileField = FileField(this)
 
     override fun toString() = "File" + super.toString()
 

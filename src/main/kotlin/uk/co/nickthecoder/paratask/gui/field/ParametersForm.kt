@@ -7,13 +7,8 @@ import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
-import javafx.scene.control.Label
 import javafx.scene.layout.Pane
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
-import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.Values
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).

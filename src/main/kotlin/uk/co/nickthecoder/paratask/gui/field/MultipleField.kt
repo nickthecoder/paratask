@@ -3,32 +3,25 @@ package uk.co.nickthecoder.paratask.gui.field
 import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
-import uk.co.nickthecoder.paratask.parameter.MultipleValue
-import uk.co.nickthecoder.paratask.parameter.ParameterValue
+import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.ValueListener
-import uk.co.nickthecoder.paratask.parameter.Values
 
 class MultipleField<T> : ParametersForm, ValueListener {
 
     override val parameter: MultipleParameter<T>
-
-    val multipleValue: MultipleValue<T>
 
     private var dirty = false
 
     val whole = BorderPane()
     val list = VBox()
 
-    constructor(parameter: MultipleParameter<T>, multiplValue : MultipleValue<T>) : super(parameter) {
+    constructor(parameter: MultipleParameter<T>) : super(parameter) {
         this.parameter = parameter
-        this.multipleValue = multiplValue
 
         val addButton = Button("+")
         addButton.onAction = EventHandler {
@@ -45,19 +38,17 @@ class MultipleField<T> : ParametersForm, ValueListener {
         list.getStyleClass().add("multiple-list")
 
         control = whole
-        multipleValue.valueListeners.add(this)
+        parameter.valueListeners.add(this)
     }
 
     private fun buildList() {
         list.children.clear()
         fieldSet.clear()
 
-        val values = Values()
-
         var index = 0
-        multipleValue.value.forEach { item ->
-            values.put(parameter.name, item)
-            val field = parameter.prototype.createField(values)
+        parameter.value.forEach { item ->
+            parameter.prototype.value = item
+            val field = parameter.prototype.createField()
             if (field is LabelledField) {
                 field.label.setVisible(false)
             }
@@ -98,15 +89,16 @@ class MultipleField<T> : ParametersForm, ValueListener {
         return line
     }
 
-    fun newValue(index: Int = multipleValue.value.size) {
-        multipleValue.addValue(parameter.prototype.createValue(), index)
+    fun newValue(index: Int = parameter.value.size) {
+        // TODO How to create a new value?
+        // parameter.addValue(parameter.prototype.createValue(), index)
     }
 
     fun removeAt(index: Int) {
-        multipleValue.removeAt(index)
+        parameter.removeAt(index)
     }
 
-    override fun valueChanged(parameterValue: ParameterValue<*>) {
+    override fun valueChanged(parameter: Parameter) {
         buildList()
     }
 }

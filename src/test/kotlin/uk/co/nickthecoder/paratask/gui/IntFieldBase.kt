@@ -2,7 +2,6 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Parent
 import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 
 open class IntFieldBase : MyGuiTest() {
 
@@ -16,8 +15,6 @@ open class IntFieldBase : MyGuiTest() {
     val tenToTenOptional = IntParameter("tenToTenOptional", range = -10..10, required = false)
     val initial5 = IntParameter("initial5")
 
-    lateinit var values: Values
-
     override fun getRootNode(): Parent {
 
         task.taskD.addParameters(
@@ -27,10 +24,9 @@ open class IntFieldBase : MyGuiTest() {
                 initial5
         )
 
-        values = task.taskD.createValues()
-        initial5.set(values, 5)
+        initial5.value = 5
 
-        val taskPrompter = TaskPrompter(task, values)
+        val taskPrompter = TaskPrompter(task)
         return taskPrompter.root
     }
 }

@@ -1,11 +1,9 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.HidingSplitPane
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ToolPane_Impl(override var tool: Tool)
@@ -21,14 +19,6 @@ class ToolPane_Impl(override var tool: Tool)
     override val hidingSplitPane = HidingSplitPane(this, resultsHolder, parametersPane as Node)
 
     override lateinit var halfTab: HalfTab
-
-    override var values: Values
-        get() {
-            return parametersPane.taskForm.values
-        }
-        set(v) {
-            parametersPane.taskForm.values.copyValuesFrom(v)
-        }
 
     override fun updateResults(results: Results) {
         if (results !== this.results) {
@@ -63,7 +53,6 @@ class ToolPane_Impl(override var tool: Tool)
     override fun copy(): ToolPane {
         val newTool = tool.copy()
         val newToolPane = ToolPane_Impl(newTool)
-        newToolPane.values = values
 
         return newToolPane
     }

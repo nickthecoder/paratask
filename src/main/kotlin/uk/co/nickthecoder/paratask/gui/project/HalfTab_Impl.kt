@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
@@ -11,7 +10,6 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.History
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.project.Tool
@@ -83,14 +81,12 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
-    override fun changeTool(tool: Tool, values: Values?) {
+    override fun changeTool(tool: Tool) {
         toolPane.detaching()
         children.remove(toolPane as Node)
 
         toolPane = ToolPane_Impl(tool)
-        if (values != null) {
-            toolPane.values = values
-        }
+
         center = toolPane as Node
         toolPane.attached(this)
 
@@ -100,7 +96,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton.visibleProperty().bind(tool.toolRunner.showRunProperty)
         stopButton.visibleProperty().bind(tool.toolRunner.showStopProperty)
 
-        history.push(tool, toolPane.values)
+        history.push(tool)
     }
 
     fun onStop() {
@@ -123,10 +119,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     }
 
     override fun pushHistory() {
-        history.push(toolPane.tool, toolPane.values)
+        history.push(toolPane.tool)
     }
 
-    override fun pushHistory(tool: Tool, values: Values) {
-        history.push(tool, values)
+    override fun pushHistory(tool: Tool) {
+        history.push(tool)
     }
 }

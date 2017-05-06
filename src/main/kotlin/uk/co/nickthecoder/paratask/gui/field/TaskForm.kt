@@ -4,11 +4,10 @@ import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.parameter.Values
 
-class TaskForm(val task: Task, val values: Values = task.taskD.createValues()) {
+class TaskForm(val task: Task) {
 
-    val form = GroupParametersForm(task.taskD.root, values)
+    val form = GroupParametersForm(task.taskD.root)
 
     val scrollPane = ScrollPane(form)
 
@@ -16,26 +15,25 @@ class TaskForm(val task: Task, val values: Values = task.taskD.createValues()) {
         scrollPane.fitToWidthProperty().set(true)
     }
 
-    fun check(): Values? {
+    fun check(): Boolean {
 
         // Are there any "dirty" fields, where the value in the GUI isn't in the Value.
         // For example, if a non-valid number is typed into a IntField
         form.descendants().forEach { field ->
             if (field.isDirty()) {
                 ensureVisible(field)
-                return null;
+                return false;
             }
         }
 
-        val copiedValues = values.copy()
 
         form.descendants().forEach { field ->
             field.clearError()
         }
 
         try {
-            task.taskD.root.check(copiedValues)
-            task.check(copiedValues)
+            task.taskD.root.check()
+            task.check()
 
         } catch (e: ParameterException) {
             val field = form.findField(e.parameter)
@@ -44,9 +42,9 @@ class TaskForm(val task: Task, val values: Values = task.taskD.createValues()) {
                 ensureVisible(field)
             }
 
-            return null
+            return false
         }
-        return copiedValues
+        return true
     }
 
     private fun ensureVisible(node: Node) {

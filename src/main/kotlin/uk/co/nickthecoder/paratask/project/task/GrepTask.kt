@@ -8,7 +8,6 @@ import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.Command
 
 
@@ -62,48 +61,48 @@ class GrepTask() : SimpleTask(), CommandTask {
                 maxMatchesP, contextLinesP, additionalOptionsP)
     }
 
-    override fun run(values: Values): Command {
+    override fun run(): Command {
 
-        val rOrR = if (followSymLinksP.value(values) == true) "-R" else "-r"
+        val rOrR = if (followSymLinksP.value == true) "-R" else "-r"
 
-        val command = Command("grep", typeP.value(values), rOrR)
+        val command = Command("grep", typeP.value, rOrR)
 
-        val additionalOptions = additionalOptionsP.value(values)
+        val additionalOptions = additionalOptionsP.value
         if (additionalOptions != "") {
             command.addArgument("-" + additionalOptions)
         }
 
-        if (invertResultsP.value(values) == true) {
+        if (invertResultsP.value == true) {
             command.addArgument("-L")
 
-            val maxMatches = maxMatchesP.value(values)
+            val maxMatches = maxMatchesP.value
             if (maxMatches != null) {
                 command.addArgument("-m");
                 command.addArgument(maxMatches);
             }
         }
-        if (matchCaseP.value(values) == false) {
+        if (matchCaseP.value == false) {
             command.addArgument("-i")
         }
 
-        val match = matchP.value(values)
+        val match = matchP.value
         if (match != "") {
             command.addArgument(match)
         }
 
-        val contextLines: Int? = contextLinesP.value(values)
+        val contextLines: Int? = contextLinesP.value
         if (contextLines != null) {
             command.addArgument("-C")
             command.addArgument(contextLines)
         }
 
-        regexP.list(values).forEach { value ->
+        regexP.value.forEach { value ->
             command.addArgument("-e")
             command.addArgument(value)
         }
 
         command.addArgument("--")
-        command.addArgument(fileP.value(values))
+        command.addArgument(fileP.value)
 
         return command
     }

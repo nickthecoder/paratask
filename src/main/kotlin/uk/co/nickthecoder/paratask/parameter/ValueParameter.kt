@@ -1,5 +1,8 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.SimpleObjectProperty
+import javafx.util.StringConverter
+
 /**
  * The base class for all Parameters, which can hold a value.
  */
@@ -7,23 +10,41 @@ abstract class ValueParameter<T>(
         name: String,
         label: String,
         description: String,
-        var value: T,
+        value: T,
         var required: Boolean = false)
 
     : AbstractParameter(name, label = label, description = description) {
 
-    open fun parameterValue(values: Values): ParameterValue<T> = values.get(name) as ParameterValue<T>
+    abstract val converter: StringConverter<T>
 
-    abstract fun createValue(): ParameterValue<T>
-
-    fun value(values: Values): T = parameterValue(values).value
-
-    fun set(values: Values, v: T) {
-        val parameterValue: ParameterValue<T> = parameterValue(values)
-        parameterValue.value = v
+    var property = object : SimpleObjectProperty<T>() {
+        override fun set(v: T) {
+            val changed = v != get()
+            if (changed) {
+                valueListeners.fireChanged(this@ValueParameter)
+                super.set(v)
+            }
+        }
     }
 
-    override fun errorMessage(values: Values): String? = errorMessage(value(values))
+    var value: T
+        set(v: T) {
+            property.set(v)
+        }
+        get() = property.get()
+
+
+    var stringValue: String
+        get() = converter.toString(value)
+        set(v: String) {
+            value = converter.fromString(v)
+        }
+
+    init {
+        this.value = value
+    }
+
+    override fun errorMessage(): String? = errorMessage(value)
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
@@ -32,12 +53,10 @@ abstract class ValueParameter<T>(
             minItems: Int = 0,
             maxItems: Int = Int.MAX_VALUE): MultipleParameter<T> {
 
-        val list = mutableListOf<ParameterValue<T>>()
+        val list = mutableListOf<T>()
 
         if (minItems > 0) {
-            val singleParameterValue = createValue()
-            singleParameterValue.value = value;
-            list.add(singleParameterValue)
+            list.add(value)
         }
         return MultipleParameter(
                 this, name = name,

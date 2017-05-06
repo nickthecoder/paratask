@@ -71,9 +71,8 @@ class ProjectWindow() {
     }
 
     fun onAbout() {
-        val about = WebTool()
+        val about = WebTool("http://nickthecoder.co.uk/wiki/view/software/ParaTask")
         val toolPane = ToolPane_Impl(about)
-        about.addressP.set(toolPane.values, "http://nickthecoder.co.uk/wiki/view/software/ParaTask")
         tabs.addToolPane(toolPane)
     }
 }

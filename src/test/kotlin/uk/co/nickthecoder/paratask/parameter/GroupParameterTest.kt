@@ -17,44 +17,29 @@ class GroupParameterTest : MyTest(), ValueListener {
     val xyz = IntParameter("xyz")
 
     var count = 0 // Count the number of times the listener is notified.
-    var changedParameterValue: ParameterValue<*>? = null
+    var changedParameter: Parameter? = null
 
     init {
         group.addParameters(abc, def, subGroup)
         subGroup.add(hij)
     }
 
-
-    lateinit var groupValue: Values
-    //var subGroupValue = subGroup.createValue()
-    lateinit var abcValue: IntValue
-    lateinit var defValue: IntValue
-    lateinit var hijValue: StringValue
-
     @Before
     fun setUp() {
         count = 0
-        changedParameterValue = null
+        changedParameter = null
 
-        val values = group.createValues()
-
-        groupValue = values
-        //subGroupValue = values.get("subGroup") as Values
-        abcValue = values.get("abc") as IntValue
-        defValue = values.get("def") as IntValue
-        hijValue = values.get("hij") as StringValue
-
-        groupValue.valueListeners.add(this)
+        group.valueListeners.add(this)
 
     }
 
     @After
     fun tearDown() {
-        groupValue.valueListeners.remove(this)
+        group.valueListeners.remove(this)
     }
 
-    override fun valueChanged(parameterValue: ParameterValue<*>) {
-        changedParameterValue = parameterValue
+    override fun valueChanged(parameter: Parameter) {
+        changedParameter = parameter
         count++
     }
 
@@ -73,17 +58,17 @@ class GroupParameterTest : MyTest(), ValueListener {
     @Test
     fun childChanged() {
         assertEquals(0, count)
-        assertNull(changedParameterValue)
+        assertNull(changedParameter)
 
-        abcValue.value = 5
+        abc.value = 5
         assertEquals(1, count)
-        assertSame(abc, changedParameterValue!!.parameter)
-        abcValue.value = 5 // Same value
+        assertSame(abc, changedParameter)
+        abc.value = 5 // Same value
         assertEquals(1, count) // so the count shouldn't change
 
-        defValue.value = 10
+        def.value = 10
         assertEquals(2, count)
-        assertSame(def, changedParameterValue!!.parameter)
+        assertSame(def, changedParameter)
 
     }
 

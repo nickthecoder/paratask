@@ -12,7 +12,7 @@ class ValueListeners {
         listeners.remove(listener)
     }
 
-    fun fireChanged(value: ParameterValue<*>) {
+    fun fireChanged(value: ValueParameter<*>) {
         listeners.forEach {
             it.valueChanged(value)
         }

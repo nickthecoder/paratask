@@ -1,7 +1,9 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import uk.co.nickthecoder.paratask.gui.field.LabelledField
+import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.IntField
+import uk.co.nickthecoder.paratask.gui.field.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 open class IntParameter(
@@ -18,6 +20,26 @@ open class IntParameter(
         description = description,
         value = value,
         required = required) {
+
+    override val converter = object : StringConverter<Int?>() {
+        override fun fromString(str: String): Int? {
+            val trimmed = str.trim()
+
+            if (trimmed.length == 0) {
+                return null
+            }
+            try {
+                return Integer.parseInt(trimmed);
+            } catch (e: Exception) {
+                throw ParameterException(this@IntParameter, "Not an integer")
+            }
+        }
+
+        override fun toString(obj: Int?): String {
+            return obj?.toString() ?: ""
+        }
+
+    }
 
     override fun errorMessage(v: Int?): String? {
 
@@ -50,11 +72,7 @@ open class IntParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(values: Values): LabelledField = IntField(this, parameterValue(values))
-
-    override fun createValue() = IntValue(this, value)
-
-    override fun parameterValue(values: Values) = super.parameterValue(values) as IntValue
+    override fun createField(): LabelledField = IntField(this)
 
     override fun toString(): String = "Int" + super.toString()
 }

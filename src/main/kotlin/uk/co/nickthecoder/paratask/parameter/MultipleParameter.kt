@@ -2,20 +2,22 @@ package uk.co.nickthecoder.paratask.parameter
 
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
+import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.WrappableField
 
 class MultipleParameter<T>(
         val prototype: ValueParameter<T>,
         name: String,
         label: String,
         description: String,
-        value: MutableList<ParameterValue<T>>,
+        value: MutableList<T>,
         val allowInsert: Boolean = false,
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE)
 
-    : ValueParameter<MutableList<ParameterValue<T>>>(
+    : ValueParameter<MutableList<T>>(
         name = name,
         label = label,
         description = description,
@@ -23,16 +25,24 @@ class MultipleParameter<T>(
         required = true),
         WrappableField {
 
-    override fun isStretchy() = true
+    // TODO Prevent the list from being altered from outside.
+    // Declare as a List, and have a private reference to the MutableList?
+    override val converter = object : StringConverter<MutableList<T>>() {
 
-    override fun parameterValue(values: Values) = super.parameterValue(values) as MultipleValue<T>
+        override fun fromString(str: String): MutableList<T>? {
+            // TODO Create from string
+            return mutableListOf<T>()
+        }
 
-    fun list(values: Values): List<T> {
-        val mvalue = parameterValue(values)
-        return mvalue.list()
+        override fun toString(obj: MutableList<T>?): String {
+            return ""
+            // TODO Create string
+        }
     }
 
-    override fun errorMessage(v: MutableList<ParameterValue<T>>?): String? {
+    override fun isStretchy() = true
+
+    override fun errorMessage(v: MutableList<T>?): String? {
 
         if (v == null) {
             return "Expected a list of items"
@@ -46,30 +56,42 @@ class MultipleParameter<T>(
         }
 
         var index = 0
-        v.forEach { singleParameterValue ->
+        v.forEach { singleValue ->
 
-            prototype.errorMessage(singleParameterValue.value)?.let { return "Item #${index + 1} : ${it}" }
+            prototype.errorMessage(singleValue)?.let { return "Item #${index + 1} : ${it}" }
             index++
         }
 
         return null
     }
 
-    override fun createValue(): MultipleValue<T> {
-        val result = MultipleValue<T>(this)
-
-        value.forEach { item ->
-            result.addItem(item.value)
-        }
-        return result
-    }
-
-    override fun createField(values: Values) = MultipleField(this, parameterValue(values))
+    override fun createField() = MultipleField(this)
 
     override fun wrap(parameterField: ParameterField): Node {
         val titledPane = TitledPane(label, parameterField)
         titledPane.setCollapsible(false)
         return titledPane
+    }
+
+
+    fun clear() {
+        value.clear()
+        valueListeners.fireChanged(this)
+    }
+
+    fun addValue(item: T, index: Int = value.size) {
+        value.add(index, item)
+        valueListeners.fireChanged(this)
+    }
+
+    fun removeValue(item: T) {
+        value.remove(item)
+        valueListeners.fireChanged(this)
+    }
+
+    fun removeAt(index: Int) {
+        value.removeAt(index)
+        valueListeners.fireChanged(this)
     }
 
 }

@@ -1,17 +1,12 @@
 package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
-import uk.co.nickthecoder.paratask.CommandLineTask
-import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.SimpleTask
-import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 
 class ExampleTask : SimpleTask() {
 
@@ -51,16 +46,14 @@ Here we see GroupParameter in action
         range.addParameters(rangeFrom, rangeTo)
     }
 
-    override fun run(values: Values) {
+    override fun run() {
         println("Example Parameter values : ")
 
-        dumpValues(values)
+        dumpValues()
     }
 
-    override fun check(values: Values) {
-        val from = rangeFrom.value(values)!!
-        val to = rangeTo.value(values)!!
-        if (from > to) {
+    override fun check() {
+        if (rangeFrom.value!! > rangeTo.value!!) {
             throw ParameterException(rangeTo, "Must be less than 'from'")
         }
     }

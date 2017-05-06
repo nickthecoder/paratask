@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.parameter
 
 import uk.co.nickthecoder.paratask.gui.field.StringField
 import uk.co.nickthecoder.paratask.util.uncamel
+import javafx.util.StringConverter
 
 class StringParameter(
         name: String,
@@ -20,6 +21,11 @@ class StringParameter(
         required = required,
         columns = columns) {
 
+    override val converter = object : StringConverter<String>() {
+        override fun fromString(str: String): String? = str
+        override fun toString(obj: String?): String = obj ?: ""
+    }
+
     override fun isStretchy(): Boolean = stretchy
 
     override fun errorMessage(v: String?): String? {
@@ -29,11 +35,7 @@ class StringParameter(
         return null
     }
 
-    override fun createField(values: Values): StringField = StringField(this, parameterValue(values))
-
-    override fun createValue() = StringValue(this, value)
-
-    override fun parameterValue(values: Values) = super.parameterValue(values) as StringValue
+    override fun createField(): StringField = StringField(this)
 
     override fun toString() = "String" + super.toString()
 

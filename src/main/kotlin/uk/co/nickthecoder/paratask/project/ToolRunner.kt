@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.BooleanProperty
-import uk.co.nickthecoder.paratask.parameter.Values
 
 interface ToolRunner {
 
@@ -9,7 +8,7 @@ interface ToolRunner {
     val showRunProperty: BooleanProperty
     val showStopProperty: BooleanProperty
 
-    fun run(values: Values)
+    fun run()
 
     fun hasStarted(): Boolean
 

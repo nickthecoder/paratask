@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.Command
+
 
 abstract class CommandTaskTerminalTool(
         val commandTask: CommandTask,
@@ -12,8 +12,8 @@ abstract class CommandTaskTerminalTool(
 
     override val taskD = commandTask.taskD
 
-    override fun createCommand(values: Values): Command {
+    override fun createCommand(): Command {
 
-        return commandTask.run(values)
+        return commandTask.run()
     }
 }

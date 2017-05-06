@@ -51,12 +51,12 @@ class ParametersPane_Impl(override val tool: Tool)
     }
 
     override fun run(showJustResults: Boolean): Boolean {
-        val copiedValues = taskForm.check()
-        if (copiedValues != null) {
 
-            toolPane.halfTab.pushHistory(tool, copiedValues)
+        if (taskForm.check()) {
 
-            tool.toolRunner.run(copiedValues)
+            toolPane.halfTab.pushHistory(tool)
+
+            tool.toolRunner.run()
 
             if (showJustResults) {
                 toolPane.showJustResults()

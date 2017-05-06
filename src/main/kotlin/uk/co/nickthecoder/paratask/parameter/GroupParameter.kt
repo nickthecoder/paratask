@@ -5,6 +5,7 @@ import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.WrappableField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class GroupParameter(
@@ -105,7 +106,7 @@ class GroupParameter(
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField(values: Values) = GroupParametersForm(this, values)
+    override fun createField() = GroupParametersForm(this)
 
     fun isRoot(): Boolean = parent == null
 
@@ -122,11 +123,11 @@ class GroupParameter(
         }
     }
 
-    override fun errorMessage(values: Values): String? = null
+    override fun errorMessage(): String? = null
 
-    fun check(values: Values) {
+    fun check() {
         descendants().forEach { parameter ->
-            val error = parameter.errorMessage(values)
+            val error = parameter.errorMessage()
             if (error != null) {
                 throw ParameterException(parameter, error)
             }
@@ -135,23 +136,4 @@ class GroupParameter(
 
     override fun isStretchy(): Boolean = true
 
-    fun createValues(): Values {
-        val values = Values()
-
-        fun createFromGroup(group: GroupParameter) {
-            group.children().forEach { parameter ->
-
-                if (parameter is ValueParameter<*>) {
-                    val value = parameter.createValue()
-                    values.put(parameter.name, value)
-                }
-
-                if (parameter is GroupParameter) {
-                    createFromGroup(parameter)
-                }
-            }
-        }
-        createFromGroup(this)
-        return values
-    }
 }

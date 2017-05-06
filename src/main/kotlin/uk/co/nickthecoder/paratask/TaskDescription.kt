@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.Values
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -25,5 +25,16 @@ class TaskDescription(
         root.remove(parameter)
     }
 
-    fun createValues(): Values = root.createValues()
+    fun copyValuesFrom(source: TaskDescription) {
+        for (sourceParameter in source.root.descendants()) {
+            if (sourceParameter is ValueParameter<*>) {
+                val stringValue = sourceParameter.stringValue
+                val destParameter = root.find(sourceParameter.name)
+                if (destParameter is ValueParameter<*>) {
+                    destParameter.stringValue = stringValue
+                }
+            }
+        }
+    }
+
 }

@@ -1,24 +1,21 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
-import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.ScrollPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.field.TaskForm
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.util.AutoExit
 
-open class TaskPrompter(val task: Task, val values: Values) {
+open class TaskPrompter(val task: Task) {
 
     var root = BorderPane()
 
-    var taskForm = TaskForm(task, values)
+    var taskForm = TaskForm(task)
 
     var stage: Stage? = null
 
@@ -79,17 +76,15 @@ open class TaskPrompter(val task: Task, val values: Values) {
 
     fun checkAndRun(): Boolean {
 
-        val copiedValues = taskForm.check()
-
-        if (copiedValues != null) {
-            run(values)
+        if (taskForm.check()) {
+            run()
             return true
         }
         return false
     }
 
-    open fun run(values: Values) {
-        TerminalWindowTaskRunner(task.taskD.label + " Output").run(task, values)
+    open fun run() {
+        TerminalWindowTaskRunner(task.taskD.label + " Output").run(task)
     }
 
     open protected fun close() {

@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.gui.TaskRunner
-import uk.co.nickthecoder.paratask.parameter.Values
 
 interface Task {
 
@@ -15,12 +14,12 @@ interface Task {
      * In most cases, this method does nothing.
      * </p>
      */
-    fun check(values: Values)
+    fun check()
 
     /**
      * Runs the task.
      * @param values When running form a GUI, these are a COPY of the values, and therefore changing them will
      * have no effect on the values in the GUI.
      */
-    fun run(values: Values): Any?
+    fun run(): Any?
 }

@@ -3,9 +3,7 @@ package uk.co.nickthecoder.paratask.project.task
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.Values
 import uk.co.nickthecoder.paratask.project.AbstractTool
-import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
@@ -28,16 +26,16 @@ class OptionsTool : AbstractTool {
     constructor(fileOptions: FileOptions) : super() {
         optionsNameP.value = fileOptions.name
         directoryP.value = fileOptions.file.getParentFile()
-
+        println("OptionsTool directory = ${directoryP.stringValue}, ${fileOptions.file}")
     }
 
     init {
         taskD.addParameters(optionsNameP, directoryP)
     }
 
-    override fun run(values: Values) {
+    override fun run() {
         results.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value(values), directoryP.value(values)!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
         for ((_, option) in optionsFile.optionsMap) {
             results.add(option)

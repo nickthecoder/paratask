@@ -5,10 +5,9 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.Values
-import uk.co.nickthecoder.paratask.parameter.WrappableField
+import uk.co.nickthecoder.paratask.gui.field.WrappableField
 
-open class GroupParametersForm(var groupParameter: GroupParameter, values: Values)
+open class GroupParametersForm(var groupParameter: GroupParameter)
     : ParametersForm(groupParameter) {
 
     init {
@@ -16,13 +15,13 @@ open class GroupParametersForm(var groupParameter: GroupParameter, values: Value
             children.add(TextFlow(Text(groupParameter.description)))
         }
         groupParameter.children().forEach() { parameter ->
-            addParameter(parameter, values)
+            addParameter(parameter)
         }
     }
 
-    fun addParameter(parameter: Parameter, values: Values): Node {
+    fun addParameter(parameter: Parameter): Node {
 
-        val parameterField = parameter.createField(values)
+        val parameterField = parameter.createField()
 
         val node = if (parameter is WrappableField) {
             parameter.wrap(parameterField)

@@ -6,9 +6,7 @@ import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
-import uk.co.nickthecoder.paratask.parameter.AbstractValue
 import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.IntValue
 
 val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
 
@@ -20,13 +18,10 @@ class IntField : LabelledField {
 
     override val parameter: IntParameter
 
-    val intValue: AbstractValue<Int?>
-
     private var dirty = false
 
-    constructor(parameter: IntParameter, intValue : IntValue) : super(parameter) {
+    constructor(parameter: IntParameter) : super(parameter) {
         this.parameter = parameter
-        this.intValue = intValue
         this.control = createControl()
     }
 
@@ -34,7 +29,7 @@ class IntField : LabelledField {
 
         val spinner = createSpinner()
 
-        spinner.valueFactory.converter = intValue;
+        spinner.valueFactory.converter = parameter.converter;
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -60,9 +55,9 @@ class IntField : LabelledField {
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = intValue.fromString(newValue)
+                val v = parameter.converter.fromString(newValue)
                 spinner.valueFactory.value = v
-                showOrClearError(intValue.errorMessage(v))
+                showOrClearError(parameter.errorMessage(v))
                 dirty = false
             } catch (e: Exception) {
                 showError("Not an integer")
@@ -86,7 +81,7 @@ class IntField : LabelledField {
     }
 
     private fun createSpinner(): Spinner<*> {
-        val initialValue = if (intValue.value == null && parameter.required) {
+        val initialValue = if (parameter.value == null && parameter.required) {
             if (parameter.range.start > 0) {
                 parameter.range.start
             } else if (parameter.range.endInclusive < 0) {
@@ -96,12 +91,12 @@ class IntField : LabelledField {
             }
 
         } else {
-            intValue.value
+            parameter.value
         }
 
         val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
-        intValue.value = spinner.valueFactory.value
-        spinner.valueFactory.valueProperty().bindBidirectional(intValue.property);
+        parameter.value = spinner.valueFactory.value
+        spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
         return spinner
     }
 
