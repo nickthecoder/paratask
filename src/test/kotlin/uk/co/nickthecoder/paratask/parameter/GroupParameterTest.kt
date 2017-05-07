@@ -18,6 +18,7 @@ class GroupParameterTest : MyTest(), ParameterListener {
 
     var count = 0 // Count the number of times the listener is notified.
     var changedParameter: Parameter? = null
+    var innerParameter: Parameter? = null
 
     init {
         group.addParameters(abc, def, subGroup)
@@ -28,6 +29,7 @@ class GroupParameterTest : MyTest(), ParameterListener {
     fun setUp() {
         count = 0
         changedParameter = null
+        innerParameter = null
 
         group.parameterListeners.add(this)
 
@@ -40,6 +42,7 @@ class GroupParameterTest : MyTest(), ParameterListener {
 
     override fun parameterChanged(event: ParameterEvent) {
         changedParameter = event.parameter
+        innerParameter = event.innerParameter
         count++
     }
 
@@ -62,13 +65,18 @@ class GroupParameterTest : MyTest(), ParameterListener {
 
         abc.value = 5
         assertEquals(1, count)
-        assertSame(abc, changedParameter)
+        assertSame(abc, innerParameter)
+        assertSame(group, changedParameter)
         abc.value = 5 // Same value
         assertEquals(1, count) // so the count shouldn't change
 
+        innerParameter = null
+        changedParameter = null
+
         def.value = 10
         assertEquals(2, count)
-        assertSame(def, changedParameter)
+        assertSame(def, innerParameter)
+        assertSame(group, changedParameter)
 
     }
 

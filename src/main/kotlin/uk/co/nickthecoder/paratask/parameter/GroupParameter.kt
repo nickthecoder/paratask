@@ -58,6 +58,17 @@ class GroupParameter(
 
         children.add(child)
         child.parent = this
+
+        child.parameterListeners.add(innerListener)
+    }
+
+    /**
+     * Forwards change events for the children to the group's listeners
+     */
+    val innerListener = object : ParameterListener {
+        override fun parameterChanged(event: ParameterEvent) {
+            parameterListeners.fireInnerParameterChanged(this@GroupParameter, event.parameter)
+        }
     }
 
     fun addParameters(vararg parameters: Parameter) {
