@@ -65,6 +65,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             add(Actions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
         }
 
+        bindButtons()
     }
 
     override fun attached(projectTab: ProjectTab) {
@@ -81,6 +82,12 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
+    fun bindButtons() {
+        runButton.disableProperty().bind(toolPane.tool.taskRunner.disableRunProperty)
+        runButton.visibleProperty().bind(toolPane.tool.taskRunner.showRunProperty)
+        stopButton.visibleProperty().bind(toolPane.tool.taskRunner.showStopProperty)
+    }
+
     override fun changeTool(tool: Tool) {
         toolPane.detaching()
         children.remove(toolPane as Node)
@@ -92,10 +99,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         projectTab.changed()
 
-        runButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
-        runButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
-        stopButton.visibleProperty().bind(tool.taskRunner.showStopProperty)
-
+        bindButtons()
         history.push(tool)
     }
 
