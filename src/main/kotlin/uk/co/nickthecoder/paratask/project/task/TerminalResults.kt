@@ -1,9 +1,8 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import javafx.scene.Node
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.SimpleTerminal
-import uk.co.nickthecoder.paratask.gui.project.EmptyResults
+import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Stoppable
 import uk.co.nickthecoder.paratask.util.Command
@@ -14,7 +13,7 @@ class TerminalResults(
         val showCommand: Boolean = true,
         val allowInput: Boolean = false)
 
-    : EmptyResults(), Stoppable {
+    : AbstractResults("Terminal"), Stoppable {
 
     val exec = Exec(command)
 

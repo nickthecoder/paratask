@@ -11,9 +11,7 @@ interface ToolPane {
 
     val parametersPane: ParametersPane
 
-    val hidingSplitPane: HidingSplitPane
-
-    fun updateResults(results: Results)
+    fun updateResults( vararg allResults: Results)
 
     fun attached(halfTab: HalfTab)
 
@@ -21,15 +19,5 @@ interface ToolPane {
 
     fun copy(): ToolPane
 
-    fun showJustResults()
-
-    fun showJustParameters()
-
-    fun showBoth()
-
     fun toggleParameters()
-
-    fun notBoth()
-
-    fun cycle()
 }

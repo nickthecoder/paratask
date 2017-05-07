@@ -6,7 +6,7 @@ import javafx.concurrent.Worker
 import javafx.concurrent.Worker.State
 import javafx.scene.web.WebView
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.project.EmptyResults
+import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 
@@ -34,7 +34,7 @@ class WebTool() : AbstractTool() {
     }
 }
 
-class WebResults(val webTool: WebTool, var address: String) : EmptyResults() {
+class WebResults(val webTool: WebTool, var address: String) : AbstractResults("Web Page") {
 
     override val node = WebView()
 

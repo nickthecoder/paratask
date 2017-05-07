@@ -22,7 +22,7 @@ abstract class AbstractTool() : Tool {
         this.toolPane = toolPane
 
         if (autoRun) {
-            toolPane.parametersPane.run(showJustResults = true)
+            toolPane.parametersPane.run()
         }
     }
 

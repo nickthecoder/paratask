@@ -41,7 +41,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val splitGroup = ButtonGroup()
         with(splitGroup) {
             add(Actions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
-            add(Actions.SPLIT_TOOL_CYCLE.createButton(shortcuts) { toolPane.cycle() })
         }
 
         val historyGroup = ButtonGroup()

@@ -23,8 +23,6 @@ class ParametersPane_Impl(override val tool: Tool)
 
     private val stopButton = Button("Stop")
 
-    private val applyButton = Button("Apply")
-
     private lateinit var toolPane: ToolPane
 
     private lateinit var focusListener: FocusListener
@@ -35,32 +33,25 @@ class ParametersPane_Impl(override val tool: Tool)
 
         stopButton.onAction = EventHandler { onStop() }
         runButton.onAction = EventHandler { onRun() }
-        applyButton.onAction = EventHandler { onApply() }
 
         val runStop = StackPane()
         runStop.children.addAll(stopButton, runButton)
 
         stopButton.visibleProperty().bind(tool.taskRunner.showStopProperty)
         runButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
-        applyButton.visibleProperty().bind(tool.taskRunner.showRunProperty)
         runButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
-        applyButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
 
-        buttons.children.addAll(applyButton, runStop)
+        buttons.children.addAll(runStop)
         buttons.getStyleClass().add("buttons")
     }
 
-    override fun run(showJustResults: Boolean): Boolean {
+    override fun run(): Boolean {
 
         if (taskForm.check()) {
 
             toolPane.halfTab.pushHistory(tool)
 
             tool.taskRunner.run()
-
-            if (showJustResults) {
-                toolPane.showJustResults()
-            }
 
             return true
         }
@@ -74,10 +65,6 @@ class ParametersPane_Impl(override val tool: Tool)
     }
 
     private fun onRun() {
-        run(showJustResults = true)
-    }
-
-    private fun onApply() {
         run()
     }
 

@@ -29,8 +29,7 @@ object Actions {
     val APPLICATION_ABOUT = Action("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
     // HalfTab
-    val SPLIT_TOOL_TOGGLE = Action("split.tool.toggle", KeyCode.F9, control = true, tooltip = "Show/Hide Parameters")
-    val SPLIT_TOOL_CYCLE = Action("split.tool.cycle", KeyCode.F9, tooltip = "Cycle through Views")
+    val SPLIT_TOOL_TOGGLE = Action("tool.toggleParameters", KeyCode.F9, tooltip = "Show/Hide Parameters")
 
     val TOOL_STOP = Action("tool.stop", KeyCode.ESCAPE, tooltip = "Stop the Tool")
     val TOOL_RUN = Action("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")

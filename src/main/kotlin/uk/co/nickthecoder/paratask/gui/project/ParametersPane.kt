@@ -15,7 +15,7 @@ interface ParametersPane {
 
     val taskForm: TaskForm
 
-    fun run(showJustResults: Boolean = false): Boolean
+    fun run(): Boolean
 
     fun attached(toolPane: ToolPane)
 

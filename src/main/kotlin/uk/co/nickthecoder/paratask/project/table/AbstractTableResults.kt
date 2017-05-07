@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.gui.Actions
+import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.option.Option
@@ -25,7 +26,9 @@ val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
 
-abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>) : TableResults<R> {
+abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, label: String = "Results") :
+
+        AbstractResults(label), TableResults<R> {
 
     val data = WrappedList<R>(list)
 
@@ -169,7 +172,6 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>) 
     private inner class SingleRowOption(val option: Option, val wrappedRow: WrappedRow<R>) {
     }
 }
-
 
 
 class WrappedList<R>(list: List<R>) :

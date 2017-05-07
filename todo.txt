@@ -1,8 +1,7 @@
-Maybe use TABS instead of a split pane for parameters and results.
-    Then allow a tool to add ADDITIONAL tabs
-        e.g. OptionsTool has "1) Results", "2) Includes" and "0) Parameters" (showing the ctrl+n shortcuts)
 
 Try out adding/deleting options
+
+WebTool to allow for multiple web pages.
 
 Create a "file" options files, and include it in FileOptions
     e - Text editor
