@@ -1,18 +1,10 @@
 
+Handle exceptions from running options
+
 Try out adding/deleting options
-
-WebTool to allow for multiple web pages.
-
-Create a "file" options files, and include it in FileOptions
-    e - Text editor
 
 
 Embed a "real" terminal
-
-GrepTool uses 100% CPU
-    
-
-Stop button in HalfTab not showing (Go not hidden)
 
 OptionsTool
     Combine the "include" in the results.
@@ -43,7 +35,8 @@ Add optional help button to TaskPrompter and ParametersPane (if TaskDescription 
 
 Remove Results.chooseFocus
 
-WebTool opten in new tab (right click says "Open in new window)
+WebTool open in new tab (right click says "Open in new window) - top level and tool tab!
+WebTool to allow for multiple web pages.
 
 Task and Tool are in two different packages. Should they be?
 
@@ -51,6 +44,8 @@ ProjectWindow to detach all tabs when it is closed
     (so that terminals and other tools can clean up)
 
 Simple Text Editor
+
+WebTool to allow for multiple web pages.
 
 Use a Property for the tab's text
     Editor adds a "*" without having firing events to listeners

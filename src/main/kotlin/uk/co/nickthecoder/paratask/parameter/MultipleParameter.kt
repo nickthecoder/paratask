@@ -28,27 +28,39 @@ class MultipleParameter<T>(
 
     override var value: List<T>
         get() = innerParameters.map { it.value }
-        set(value) {
+        set(newValue) {
             innerParameters.clear()
-            for (item in value) {
+            for (item in newValue) {
                 val innerParameter = factory()
                 innerParameters.add(innerParameter)
+                innerParameter.value = item
             }
             parameterListeners.fireStructureChanged(this)
         }
 
-    // TODO Prevent the list from being altered from outside.
-    // Declare as a List, and have a private reference to the MutableList?
     override val converter = object : StringConverter<List<T>>() {
 
         override fun fromString(str: String): List<T>? {
-            // TODO Create from string
-            return mutableListOf<T>()
+            if (str == "") {
+                return listOf<T>()
+            }
+            val lines = str.split('\n')
+            val result = lines.map {
+                val innerParameter = factory()
+                innerParameter.converter.fromString(it)
+            }
+            return result
         }
 
         override fun toString(obj: List<T>?): String {
-            return ""
-            // TODO Create string
+            if (obj == null) {
+                return ""
+            }
+            val strings = obj.map {
+                val innerParameter = factory()
+                innerParameter.converter.toString(it)
+            }
+            return strings.joinToString(separator = "\n")
         }
     }
 
@@ -122,5 +134,6 @@ class MultipleParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
+    override fun toString(): String = "Multiple" + super.toString() + " = " + value
 }
 

@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.SharedToolPane
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
@@ -23,6 +24,8 @@ class OptionsTool() : AbstractTool() {
 
     val directoryP = FileParameter("directory")
 
+    lateinit var includesTool: IncludesTool
+
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
         directoryP.value = fileOptions.file.getParentFile()
@@ -41,10 +44,14 @@ class OptionsTool() : AbstractTool() {
         for (option in optionsFile.listOptions()) {
             results.add(option)
         }
+
+        includesTool = IncludesTool(optionsFile)
+        includesTool.toolPane = SharedToolPane(this)
+        includesTool.run()
     }
 
     override fun updateResults() {
-        toolPane?.updateResults(OptionsResults(this))
+        toolPane?.updateResults(OptionsResults(this), includesTool.createResults())
     }
 
     fun editTask(option: Option): EditOption {
@@ -55,7 +62,7 @@ class OptionsTool() : AbstractTool() {
         return NewOption(getFileOptions())
     }
 
-    class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results) {
+    class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results, "Options") {
 
         init {
             columns.add(Column<Option, String>("code") { it.code })

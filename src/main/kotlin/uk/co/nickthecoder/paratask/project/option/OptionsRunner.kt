@@ -10,7 +10,7 @@ import uk.co.nickthecoder.paratask.project.table.WrappedRow
 import uk.co.nickthecoder.paratask.project.task.TerminalTool
 import uk.co.nickthecoder.paratask.util.Command
 
-class OptionRunner<R : Any>(val tool: Tool) {
+class OptionsRunner<R : Any>(val tool: Tool) {
 
     fun runRow(option: Option, wrappedRow: WrappedRow<R>, prompt: Boolean = false, newTab: Boolean = false) {
         val row = wrappedRow.row

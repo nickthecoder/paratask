@@ -47,11 +47,8 @@ class MultipleField<T>(parameter: MultipleParameter<T>)
         list.children.clear()
         fieldSet.clear()
 
-        println("Building MF list ${parameter.innerParameters.size}")
         var index = 0
         for (innerParameter in parameter.innerParameters) {
-
-            println("MF Adding ${innerParameter.value}")
 
             val field = innerParameter.createField()
             if (field is LabelledField) {

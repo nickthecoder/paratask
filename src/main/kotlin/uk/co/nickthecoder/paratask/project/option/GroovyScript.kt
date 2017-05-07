@@ -17,6 +17,7 @@ class GroovyScript(val source: String) {
                 "uk.co.nickthecoder.paratask.parameter",
                 "uk.co.nickthecoder.paratask.project",
                 "uk.co.nickthecoder.paratask.project.task",
+                "uk.co.nickthecoder.paratask.project.editor",
                 "uk.co.nickthecoder.paratask.util")
 
         val configuration = CompilerConfiguration()

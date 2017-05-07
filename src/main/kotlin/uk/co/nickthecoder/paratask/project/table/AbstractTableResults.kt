@@ -15,7 +15,7 @@ import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.option.Option
-import uk.co.nickthecoder.paratask.project.option.OptionRunner
+import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
 
 // TODO Get the shortcuts from Shortcuts
@@ -40,7 +40,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn<WrappedRow<R>, String>("")
 
-    val runner = OptionRunner<R>(tool)
+    val runner = OptionsRunner<R>(tool)
 
     override fun attached(toolPane: ToolPane) {
 
@@ -149,15 +149,12 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             if (foundCode) {
                 for (sr in singleOptions) {
                     if (sr.option.isRow) {
-                        println("Running row option ${sr.option}")
                         runner.runRow(sr.option, sr.wrappedRow, newTab = newTab, prompt = prompt)
                     } else {
-                        println("Running non-row option  ${sr.option}")
                         runner.runNonRow(sr.option, newTab = newTab, prompt = prompt)
                     }
                 }
             } else {
-                println("No codes found, running default option on current row")
                 val rowIndex = tableView.selectionModel.focusedIndex
                 if (rowIndex >= 0) {
                     runner.runDefault(tableView.items[rowIndex], newTab = newTab)

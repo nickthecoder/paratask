@@ -27,6 +27,7 @@ object OptionsManager {
     private fun getOptionsPath(directory: File): OptionsPath {
         val found = pathMap.get(directory)
         if (found == null) {
+            println("Creating OptionsPath")
             val newOP = OptionsPath(directory)
             pathMap.put(directory, newOP)
             return newOP
@@ -45,6 +46,13 @@ data class OptionsPath(val directory: File) {
     val fileOptionsMap = mutableMapOf<String, FileOptions>()
 
     fun getFileOptions(optionsName: String): FileOptions {
-        return FileOptions(File(directory, optionsName + ".json"))
+        val found = fileOptionsMap.get(optionsName)
+        if (found == null) {
+            val result = FileOptions(File(directory, optionsName + ".json"))
+            fileOptionsMap.put(optionsName, result)
+            return result
+        } else {
+            return found
+        }
     }
 }

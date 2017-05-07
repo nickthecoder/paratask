@@ -43,9 +43,11 @@ class IncludesTool() : AbstractTool() {
         }
     }
 
+    fun createResults(): IncludesResults = IncludesResults(this)
+
 
     override fun updateResults() {
-        toolPane?.updateResults(IncludesResults(this))
+        toolPane?.updateResults(createResults())
     }
 
     fun editTask(option: Option): EditOption {
@@ -56,7 +58,7 @@ class IncludesTool() : AbstractTool() {
         return NewOption(getFileOptions())
     }
 
-    class IncludesResults(tool: IncludesTool) : AbstractTableResults<String>(tool, tool.results) {
+    class IncludesResults(tool: IncludesTool) : AbstractTableResults<String>(tool, tool.results, "Includes") {
 
         init {
             columns.add(Column<String, String>("include") { it })
