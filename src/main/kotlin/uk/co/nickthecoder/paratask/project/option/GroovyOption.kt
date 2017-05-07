@@ -24,6 +24,10 @@ data class GroovyOption(
         return runScript(gscript, tool, isMultiple, row)
     }
 
+    override fun runMultiple(tool: Tool, list: List<Any>): Any? {
+        return runScript(gscript, tool, isMultiple, list)
+    }
+
     override fun runNonRow(tool: Tool): Any? {
         return runScript(gscript, tool, false, null)
     }

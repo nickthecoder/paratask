@@ -14,8 +14,16 @@ class EditorTool() : AbstractTool() {
 
     val filename = MultipleParameter("filename") { FileParameter.factory() }
 
-    constructor(file: File) : this() {
-        filename.addValue(file)
+    constructor(vararg files: File) : this() {
+        for (file in files) {
+            filename.addValue(file)
+        }
+    }
+
+    constructor(files: List<File>) : this() {
+        for (file in files) {
+            filename.addValue(file)
+        }
     }
 
     init {

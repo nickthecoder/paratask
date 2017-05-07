@@ -12,30 +12,18 @@ import uk.co.nickthecoder.paratask.util.Command
 
 class OptionsRunner<R : Any>(val tool: Tool) {
 
-    fun runRow(option: Option, wrappedRow: WrappedRow<R>, prompt: Boolean = false, newTab: Boolean = false) {
-        val row = wrappedRow.row
 
-        doit(option, row, prompt = prompt, newTab = newTab)
-    }
+    fun runDefault( row: R, prompt: Boolean = false, newTab: Boolean = false) {
+        val option = OptionsManager.findOption(".", tool.optionsName)
 
-    fun runDefault(wrappedRow: WrappedRow<R>, prompt: Boolean = false, newTab: Boolean = false) {
-        val row = wrappedRow.row
-        val option = getOption(".")
         if (option == null) {
             return
         }
-        doit(option, row, prompt = prompt, newTab = newTab)
+        runRow(option, row, prompt = prompt, newTab = newTab)
     }
 
-    fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
-        doit(option, prompt = prompt, newTab = newTab)
-    }
-
-
-    private fun getOption(code: String): Option? = OptionsManager.findOption(code, tool.optionsName)
-
-    private fun doit(option: Option, prompt: Boolean, newTab: Boolean) {
-        val result = option.runNonRow(tool)
+    fun runRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
+        val result = option.run(tool, row = row)
 
         process(result,
                 newTab = newTab || option.newTab,
@@ -43,8 +31,16 @@ class OptionsRunner<R : Any>(val tool: Tool) {
                 refresh = option.refresh)
     }
 
-    private fun doit(option: Option, row: R, prompt: Boolean, newTab: Boolean) {
-        val result = option.run(tool, row = row)
+    fun runMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
+        val result = option.runMultiple(tool, rows )
+        process(result,
+                newTab = newTab || option.newTab,
+                prompt = prompt || option.prompt,
+                refresh = option.refresh)
+    }
+
+    fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
+        val result = option.runNonRow(tool)
 
         process(result,
                 newTab = newTab || option.newTab,

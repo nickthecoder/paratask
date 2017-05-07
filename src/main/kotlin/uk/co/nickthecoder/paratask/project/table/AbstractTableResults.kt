@@ -81,7 +81,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
                         tableView.edit(rowIndex, codeColumn)
                     }
                     2 -> {
-                        runner.runDefault(tableView.items[rowIndex])
+                        runner.runDefault(tableView.items[rowIndex].row)
                     }
                 }
             }
@@ -126,6 +126,8 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
         Platform.runLater {
 
             val singleOptions = mutableListOf<SingleRowOption>()
+            val multipleOptions = mutableMapOf<Option, MutableList<R>>()
+
             var foundCode: Boolean = false
 
             for (wrappedRow in tableView.items) {
@@ -135,21 +137,33 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
                     val option = OptionsManager.findOption(code, tool.optionsName)
                     if (option != null) {
-                        // TODO Handle multiple row options.
-                        singleOptions.add(SingleRowOption(option, wrappedRow))
+
+                        if (option.isMultiple) {
+                            var list = multipleOptions.get(option)
+                            if (list == null) {
+                                list = mutableListOf<R>()
+                                multipleOptions.put(option, list)
+                            }
+                            list.add(wrappedRow.row)
+
+                        } else {
+                            singleOptions.add(SingleRowOption(option, wrappedRow.row))
+                        }
                         wrappedRow.clearOption()
+
                     } else {
                         println("Didn't find code $code in $tool.optionsName")
                     }
                 }
             }
 
-            // If no options were typed, then run the default option for the current row
-            // TODO And multipleOptions.size == 0
             if (foundCode) {
+                for ((option, list) in multipleOptions) {
+                    runner.runMultiple(option, list, newTab = newTab, prompt = prompt)
+                }
                 for (sr in singleOptions) {
                     if (sr.option.isRow) {
-                        runner.runRow(sr.option, sr.wrappedRow, newTab = newTab, prompt = prompt)
+                        runner.runRow(sr.option, sr.row, newTab = newTab, prompt = prompt)
                     } else {
                         runner.runNonRow(sr.option, newTab = newTab, prompt = prompt)
                     }
@@ -157,16 +171,15 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             } else {
                 val rowIndex = tableView.selectionModel.focusedIndex
                 if (rowIndex >= 0) {
-                    runner.runDefault(tableView.items[rowIndex], newTab = newTab)
+                    runner.runDefault(tableView.items[rowIndex].row, newTab = newTab)
                 }
 
-                // TODO Run the multi-rows 
             }
         }
     }
 
 
-    private inner class SingleRowOption(val option: Option, val wrappedRow: WrappedRow<R>) {
+    private inner class SingleRowOption(val option: Option, val row: R) {
     }
 }
 
