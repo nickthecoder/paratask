@@ -10,8 +10,10 @@ import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.ParameterListener
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
-class MultipleField<T> : ParametersForm, ParameterListener {
+class MultipleField<T>(parameter: MultipleParameter<T>)
+    : ParametersForm(parameter), ParameterListener {
 
     override val parameter: MultipleParameter<T>
 
@@ -20,12 +22,12 @@ class MultipleField<T> : ParametersForm, ParameterListener {
     val whole = BorderPane()
     val list = VBox()
 
-    constructor(parameter: MultipleParameter<T>) : super(parameter) {
+    init {
         this.parameter = parameter
 
         val addButton = Button("+")
         addButton.onAction = EventHandler {
-            newValue()
+            newValue(parameter.value.size)
         }
         addButton.setTooltip(Tooltip("Add"))
 
@@ -45,10 +47,13 @@ class MultipleField<T> : ParametersForm, ParameterListener {
         list.children.clear()
         fieldSet.clear()
 
+        println( "Building MF list ${parameter.innerParameters.size}")
         var index = 0
-        parameter.value.forEach { item ->
-            parameter.prototype.value = item
-            val field = parameter.prototype.createField()
+        for (innerParameter in parameter.innerParameters) {
+
+            println( "MF Adding ${innerParameter.value}")
+
+            val field = innerParameter.createField()
             if (field is LabelledField) {
                 field.label.setVisible(false)
             }
@@ -74,7 +79,7 @@ class MultipleField<T> : ParametersForm, ParameterListener {
         if (parameter.allowInsert) {
             val addButton = Button("+")
             addButton.onAction = EventHandler {
-                newValue(index)
+                newValue(index + 1)
             }
             addButton.setTooltip(Tooltip("Insert Before"))
         }
@@ -89,9 +94,8 @@ class MultipleField<T> : ParametersForm, ParameterListener {
         return line
     }
 
-    fun newValue(index: Int = parameter.value.size) {
-        // TODO How to create a new value?
-        // parameter.addValue(parameter.prototype.createValue(), index)
+    private fun newValue(index: Int) {
+        parameter.newValue(index)
     }
 
     fun removeAt(index: Int) {

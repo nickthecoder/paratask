@@ -6,6 +6,7 @@ import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class ExampleTask : SimpleTask() {
@@ -39,7 +40,7 @@ Here we see GroupParameter in action
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val multiple = IntParameter("multiple", value = 5).multiple()
+    val multiple = MultipleParameter("multiple") { IntParameter.factory() }
 
     init {
         taskD.addParameters(multiple, greeting, color, freeBeer, threeWay, range, directory)

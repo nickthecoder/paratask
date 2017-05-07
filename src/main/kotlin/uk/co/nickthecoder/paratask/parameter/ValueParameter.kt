@@ -47,24 +47,4 @@ abstract class ValueParameter<T>(
 
     open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
-    fun multiple(
-            allowInsert: Boolean = false,
-            minItems: Int = 0,
-            maxItems: Int = Int.MAX_VALUE): MultipleParameter<T> {
-
-        val list = mutableListOf<T>()
-
-        if (minItems > 0) {
-            list.add(value)
-        }
-        return MultipleParameter(
-                this, name = name,
-                label = label,
-                description = description,
-                value = list,
-                allowInsert = allowInsert,
-                minItems = minItems,
-                maxItems = maxItems)
-    }
-
 }

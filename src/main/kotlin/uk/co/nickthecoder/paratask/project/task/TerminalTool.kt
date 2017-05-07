@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.util.Command
 
@@ -10,7 +11,7 @@ class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = tru
 
     val commandP = StringParameter("command", value = "bash")
 
-    val argumentsP = StringParameter("arguments", required = false).multiple()
+    val argumentsP = MultipleParameter<String>("arguments") { StringParameter.factory(required = false) }
 
     init {
         taskD.addParameters(commandP, argumentsP)

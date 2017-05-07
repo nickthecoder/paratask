@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.util.Command
 
@@ -20,9 +21,9 @@ class GrepTask() : SimpleTask(), CommandTask {
     val fileP = FileParameter("file", label = "File or Directory",
             description = "Search a single file, or a whole directory tree")
 
-    val regexP = StringParameter("regex",
-            description = "The regular expression to search for")
-            .multiple(minItems = 1)
+    val regexP = MultipleParameter<String>("regex",
+            description = "The regular expression to search for"
+    ) { StringParameter.factory() }
 
     val matchP = ChoiceParameter<String>("match", value = "",
             description = "Match a word, a line or any part of the file")

@@ -6,24 +6,26 @@ import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
+import uk.co.nickthecoder.paratask.util.uncamel
 
 class MultipleParameter<T>(
-        val prototype: ValueParameter<T>,
         name: String,
-        label: String,
-        description: String,
-        value: MutableList<T>,
+        label: String = name.uncamel(),
+        description: String = "",
         val allowInsert: Boolean = false,
         val minItems: Int = 0,
-        val maxItems: Int = Int.MAX_VALUE)
+        val maxItems: Int = Int.MAX_VALUE,
+        val factory: () -> ValueParameter<T>)
 
     : ValueParameter<MutableList<T>>(
         name = name,
         label = label,
         description = description,
-        value = value,
+        value = mutableListOf<T>(),
         required = true),
         WrappableField {
+
+    internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
     // TODO Prevent the list from being altered from outside.
     // Declare as a List, and have a private reference to the MutableList?
@@ -56,9 +58,9 @@ class MultipleParameter<T>(
         }
 
         var index = 0
-        v.forEach { singleValue ->
+        for (innerParameter in innerParameters) {
 
-            prototype.errorMessage(singleValue)?.let { return "Item #${index + 1} : ${it}" }
+            innerParameter.errorMessage()?.let { return "Item #${index + 1} : ${it}" }
             index++
         }
 
@@ -79,18 +81,40 @@ class MultipleParameter<T>(
         parameterListeners.fireChanged(this)
     }
 
-    fun addValue(item: T, index: Int = value.size) {
-        value.add(index, item)
+    val innerListener = object : ParameterListener {
+        override fun parameterChanged(parameter: Parameter) {
+            for (i in innerParameters.indices) {
+                if (innerParameters[i] === parameter) {
+                    value[i] = innerParameters[i].value
+                    break
+                }
+            }
+        }
+    }
+
+    fun newValue(index: Int = value.size) {
+        val innerParameter = factory()
+        innerParameter.parameterListeners.add(innerListener)
+
+        innerParameters.add(index, innerParameter)
+        value.add(innerParameter.value)
         parameterListeners.fireChanged(this)
     }
 
-    fun removeValue(item: T) {
-        value.remove(item)
+    fun addValue(item: T, index: Int = value.size) {
+        val innerParameter = factory()
+        innerParameter.parameterListeners.add(innerListener)
+        innerParameter.value = item
+
+        innerParameters.add(index, innerParameter)
+        value[index] = item
         parameterListeners.fireChanged(this)
+
     }
 
     fun removeAt(index: Int) {
         value.removeAt(index)
+        innerParameters.removeAt(index)
         parameterListeners.fireChanged(this)
     }
 

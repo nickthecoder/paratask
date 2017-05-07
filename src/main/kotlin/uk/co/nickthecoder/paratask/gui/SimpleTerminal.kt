@@ -138,14 +138,59 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     }
 
     private inner class TerminalSink : BufferedSink() {
+        var appendText = StringBuilder()
+        //var count = 0
+        //var lines = 0
+        var pendingLines = 0
+
         override fun sink(line: String) {
-            Platform.runLater {
-                textArea.appendText(line)
-                textArea.appendText("\n")
+            sinkSynch(line)
+            if (pendingLines > 50) {
+                Thread.sleep(100)
             }
+        }
+
+        /**
+         * We cannot append every line to the textarea directly, because that would flood JavaFX's thread
+         * and cause the app to become unresponsive. So instead, remember what has come in, and let
+         * a Platform.runLater consume a batch of lines in one go. This thread should sleep on occasion, to
+         * allow the JavaFX thread to have a fair share (again, to keep the application responsive).
+         */
+        @Synchronized
+        fun sinkSynch(line: String) {
+
+            val empty = appendText.length == 0
+
+            appendText.appendln(line)
+            //lines++
+            pendingLines++
+
+            if (empty) {
+                //println("Calling later $count, $lines")
+                Platform.runLater {
+                    appendText()
+                }
+            }
+        }
+
+        @Synchronized
+        fun appendText() {
+            //println("In later $count, $lines")
+
+            val len = textArea.length
+            if (len > maxSize) {
+                textArea.deleteText(0, len - maxSize)
+            }
+            pendingLines = 0
+            val text = appendText.toString()
+            appendText = StringBuilder()
+            textArea.appendText(text)
+            //println("Appended ${count} ${lines}")
+            //count++
         }
     }
 
+    var maxSize = 10000
     fun chooseFocus(): Node? {
         return if (inputPane == null) null else inputField
     }

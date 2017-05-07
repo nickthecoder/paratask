@@ -38,4 +38,15 @@ class StringParameter(
 
     override fun toString() = "String" + super.toString()
 
+
+    companion object {
+        fun factory(
+                required: Boolean = true
+        )
+                = StringParameter(
+                name = "inner",
+                label = "",
+                required = required
+        )
+    }
 }

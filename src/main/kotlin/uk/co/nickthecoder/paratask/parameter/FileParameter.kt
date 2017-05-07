@@ -10,7 +10,7 @@ class FileParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: File? = homeDirectory,
+        value: File? = null,
         required: Boolean = true,
         val stretchy: Boolean = true)
 

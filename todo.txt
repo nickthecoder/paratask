@@ -1,10 +1,16 @@
-Fix MultipleParameter - Need to create a Parameter for each value?
-ListTask - does it do anything?
+Try out adding/deleting options
+
+Create a "file" options files, and include it in FileOptions
+    e - Text editor
+
+GrepTool uses 100% CPU
+    
+
+Stop button in HalfTab not showing (Go not hidden)
 
 OptionsTool
-    also has :
-        IncluesTool
-    Mybe use a TabPane, with tabs at the bottom "Options", "Includes"
+    Combine the "include" in the results.
+    Maybe use a TabPane, with tabs at the bottom "Options", "Includes"
 
     Create a SharedToolPane implementation, which forwards method calls to the 'parent'
 
