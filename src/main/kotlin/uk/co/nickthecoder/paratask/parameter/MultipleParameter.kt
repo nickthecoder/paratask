@@ -17,26 +17,36 @@ class MultipleParameter<T>(
         val maxItems: Int = Int.MAX_VALUE,
         val factory: () -> ValueParameter<T>)
 
-    : ValueParameter<MutableList<T>>(
+    : ValueParameter<List<T>>, AbstractParameter(
         name = name,
         label = label,
-        description = description,
-        value = mutableListOf<T>(),
-        required = true),
+        description = description),
         WrappableField {
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
+    override var value: List<T>
+        get() = innerParameters.map { it.value }
+        set(value) {
+            innerParameters.clear()
+            for (item in value) {
+                val innerParameter = factory()
+                innerParameters.add(innerParameter)
+            }
+            parameterListeners.fireChanged(this)
+
+        }
+
     // TODO Prevent the list from being altered from outside.
     // Declare as a List, and have a private reference to the MutableList?
-    override val converter = object : StringConverter<MutableList<T>>() {
+    override val converter = object : StringConverter<List<T>>() {
 
-        override fun fromString(str: String): MutableList<T>? {
+        override fun fromString(str: String): List<T>? {
             // TODO Create from string
             return mutableListOf<T>()
         }
 
-        override fun toString(obj: MutableList<T>?): String {
+        override fun toString(obj: List<T>?): String {
             return ""
             // TODO Create string
         }
@@ -44,7 +54,7 @@ class MultipleParameter<T>(
 
     override fun isStretchy() = true
 
-    override fun errorMessage(v: MutableList<T>?): String? {
+    override fun errorMessage(v: List<T>?): String? {
 
         if (v == null) {
             return "Expected a list of items"
@@ -77,45 +87,30 @@ class MultipleParameter<T>(
 
 
     fun clear() {
-        value.clear()
+        innerParameters.clear()
         parameterListeners.fireChanged(this)
-    }
-
-    val innerListener = object : ParameterListener {
-        override fun parameterChanged(parameter: Parameter) {
-            for (i in innerParameters.indices) {
-                if (innerParameters[i] === parameter) {
-                    value[i] = innerParameters[i].value
-                    break
-                }
-            }
-        }
     }
 
     fun newValue(index: Int = value.size) {
         val innerParameter = factory()
-        innerParameter.parameterListeners.add(innerListener)
 
         innerParameters.add(index, innerParameter)
-        value.add(innerParameter.value)
         parameterListeners.fireChanged(this)
     }
 
     fun addValue(item: T, index: Int = value.size) {
         val innerParameter = factory()
-        innerParameter.parameterListeners.add(innerListener)
         innerParameter.value = item
 
         innerParameters.add(index, innerParameter)
-        value[index] = item
         parameterListeners.fireChanged(this)
 
     }
 
     fun removeAt(index: Int) {
-        value.removeAt(index)
         innerParameters.removeAt(index)
         parameterListeners.fireChanged(this)
     }
 
 }
+

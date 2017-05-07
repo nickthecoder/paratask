@@ -9,7 +9,7 @@ abstract class NullableValueParameter<T>(
         value: T?,
         required: Boolean)
 
-    : ValueParameter<T?>(
+    : AbstractValueParameter<T?>(
         name = name,
         label = label,
         description = description,

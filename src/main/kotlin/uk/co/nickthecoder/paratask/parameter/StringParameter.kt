@@ -13,7 +13,7 @@ class StringParameter(
         val columns: Int = 30,
         val stretchy: Boolean = true)
 
-    : ValueParameter<String>(
+    : AbstractValueParameter<String>(
         name = name,
         label = label,
         description = description,

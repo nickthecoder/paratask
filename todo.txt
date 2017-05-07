@@ -1,7 +1,24 @@
+Multiple Parameter
+    Don't have a "realy" values list, instead, have it backed by the innerparameters list.
+    Each innerparam change should fire a change of the multip
+        - beware that this doesn't rebuild the whole list though!
+        Perhaps ParameterListener should have an event, which has the parameter and the type :
+            value (for simple value changes)
+            list (addition/removal of list items)
+            item (single item list value changes)
+            Can supply the index for "item" type events.
+
+Maybe use TABS instead of a split pane for parameters and results.
+    Then allow a tool to add ADDITIONAL tabs
+        e.g. OptionsTool has "1) Results", "2) Includes" and "0) Parameters" (showing the ctrl+n shortcuts)
+
 Try out adding/deleting options
 
 Create a "file" options files, and include it in FileOptions
     e - Text editor
+
+
+Embed a "real" terminal
 
 GrepTool uses 100% CPU
     

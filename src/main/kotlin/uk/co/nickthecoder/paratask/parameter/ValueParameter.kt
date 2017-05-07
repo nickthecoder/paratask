@@ -4,34 +4,14 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.util.StringConverter
 
 /**
- * The base class for all Parameters, which can hold a value.
+ * Parameters, which can hold a value.
  */
-abstract class ValueParameter<T>(
-        name: String,
-        label: String,
-        description: String,
-        value: T,
-        var required: Boolean = false)
+interface ValueParameter<T>
+    : Parameter {
 
-    : AbstractParameter(name, label = label, description = description) {
-
-    abstract val converter: StringConverter<T>
-
-    var property = object : SimpleObjectProperty<T>() {
-        override fun set(v: T) {
-            val changed = v != get()
-            if (changed) {
-                parameterListeners.fireChanged(this@ValueParameter)
-                super.set(v)
-            }
-        }
-    }
+    val converter: StringConverter<T>
 
     var value: T
-        set(v: T) {
-            property.set(v)
-        }
-        get() = property.get()
 
     var stringValue: String
         get() = converter.toString(value)
@@ -39,12 +19,7 @@ abstract class ValueParameter<T>(
             value = converter.fromString(v)
         }
 
-    init {
-        this.value = value
-    }
-
     override fun errorMessage(): String? = errorMessage(value)
 
-    open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
-
+    fun errorMessage(v: T?): String?
 }

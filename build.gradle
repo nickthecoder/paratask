@@ -24,6 +24,12 @@ repositories {
     mavenCentral()
     mavenLocal()
     jcenter()
+    maven {
+        url "https://github.com/rahmanusta/terminalfx/raw/master/releases"
+    }
+    flatDir {
+       dirs 'libs'
+   }
 }
 
 dependencies {
