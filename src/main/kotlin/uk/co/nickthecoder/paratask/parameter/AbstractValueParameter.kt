@@ -21,7 +21,7 @@ abstract class AbstractValueParameter<T>(
         override fun set(v: T) {
             val changed = v != get()
             if (changed) {
-                parameterListeners.fireChanged(this@AbstractValueParameter)
+                parameterListeners.fireValueChanged(this@AbstractValueParameter)
                 super.set(v)
             }
         }

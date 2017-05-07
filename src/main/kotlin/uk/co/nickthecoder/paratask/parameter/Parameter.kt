@@ -11,6 +11,8 @@ interface Parameter : Labelled {
 
     var parent: GroupParameter?
 
+    val parameterListeners: ParameterListeners
+
     fun isStretchy(): Boolean
 
     fun errorMessage(): String?

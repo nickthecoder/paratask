@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
@@ -33,8 +34,7 @@ class MultipleParameter<T>(
                 val innerParameter = factory()
                 innerParameters.add(innerParameter)
             }
-            parameterListeners.fireChanged(this)
-
+            parameterListeners.fireStructureChanged(this)
         }
 
     // TODO Prevent the list from being altered from outside.
@@ -88,14 +88,25 @@ class MultipleParameter<T>(
 
     fun clear() {
         innerParameters.clear()
-        parameterListeners.fireChanged(this)
+        parameterListeners.fireStructureChanged(this)
+    }
+
+    val innerListener = object : ParameterListener {
+        override fun parameterChanged(event: ParameterEvent) {
+            parameterListeners.fireInnerParameterChanged(this@MultipleParameter, event.parameter)
+        }
+    }
+
+    private fun createInnerParameter() {
+        val innerParameter = factory()
+        innerParameter.parameterListeners.add(innerListener)
     }
 
     fun newValue(index: Int = value.size) {
         val innerParameter = factory()
 
         innerParameters.add(index, innerParameter)
-        parameterListeners.fireChanged(this)
+        parameterListeners.fireStructureChanged(this)
     }
 
     fun addValue(item: T, index: Int = value.size) {
@@ -103,13 +114,12 @@ class MultipleParameter<T>(
         innerParameter.value = item
 
         innerParameters.add(index, innerParameter)
-        parameterListeners.fireChanged(this)
-
+        parameterListeners.fireStructureChanged(this)
     }
 
     fun removeAt(index: Int) {
         innerParameters.removeAt(index)
-        parameterListeners.fireChanged(this)
+        parameterListeners.fireStructureChanged(this)
     }
 
 }

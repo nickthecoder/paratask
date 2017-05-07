@@ -38,8 +38,8 @@ class GroupParameterTest : MyTest(), ParameterListener {
         group.parameterListeners.remove(this)
     }
 
-    override fun parameterChanged(parameter: Parameter) {
-        changedParameter = parameter
+    override fun parameterChanged(event: ParameterEvent) {
+        changedParameter = event.parameter
         count++
     }
 

@@ -11,7 +11,7 @@ class ParameterListenerTest : ParameterListener {
     var notListening = IntParameter("notListening")
     var listening = IntParameter("listening")
 
-    override fun parameterChanged(parameter: Parameter) {
+    override fun parameterChanged(event: ParameterEvent) {
         count++
     }
 

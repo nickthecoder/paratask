@@ -8,9 +8,9 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
-import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.ParameterEvent
+import uk.co.nickthecoder.paratask.parameter.ParameterEventType
 import uk.co.nickthecoder.paratask.parameter.ParameterListener
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
 class MultipleField<T>(parameter: MultipleParameter<T>)
     : ParametersForm(parameter), ParameterListener {
@@ -47,11 +47,11 @@ class MultipleField<T>(parameter: MultipleParameter<T>)
         list.children.clear()
         fieldSet.clear()
 
-        println( "Building MF list ${parameter.innerParameters.size}")
+        println("Building MF list ${parameter.innerParameters.size}")
         var index = 0
         for (innerParameter in parameter.innerParameters) {
 
-            println( "MF Adding ${innerParameter.value}")
+            println("MF Adding ${innerParameter.value}")
 
             val field = innerParameter.createField()
             if (field is LabelledField) {
@@ -102,8 +102,10 @@ class MultipleField<T>(parameter: MultipleParameter<T>)
         parameter.removeAt(index)
     }
 
-    override fun parameterChanged(parameter: Parameter) {
-        buildList()
+    override fun parameterChanged(event: ParameterEvent) {
+        if (event.type == ParameterEventType.STRUCTURAL) {
+            buildList()
+        }
     }
 }
 
