@@ -1,10 +1,6 @@
 Try out adding/deleting options
 
-Table sorting
-
-Ticks for boolean in tables
-
-implement aliaases, and use it for "e" as well as "." on options.json
+implement aliases, and use it for "e" as well as "." on options.json
 
 Handle exceptions from running options
 

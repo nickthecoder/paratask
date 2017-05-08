@@ -151,6 +151,13 @@
     -fx-background-radius: 0;
 }
 
+.boolean.table-cell  {
+    -fx-alignment: center;
+    -fx-font-size: 15pt;
+    -fx-text-fill: #080;
+    -fx-padding: -4px 0 0 0;
+}
+
 /****************************************************
 *   End :                                           *
 *****************************************************/

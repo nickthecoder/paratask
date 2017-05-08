@@ -14,6 +14,7 @@ import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
 import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.BooleanColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 
 class OptionsTool() : AbstractTool() {
@@ -78,11 +79,11 @@ class OptionsTool() : AbstractTool() {
         init {
             columns.add(Column<Option, String>("code") { it.code })
             columns.add(Column<Option, String>("label") { it.label })
-            columns.add(Column<Option, Boolean>("isRow") { it.isRow })
-            columns.add(Column<Option, Boolean>("isMultiple") { it.isMultiple })
-            columns.add(Column<Option, Boolean>("refresh") { it.refresh })
-            columns.add(Column<Option, Boolean>("newTab") { it.newTab })
-            columns.add(Column<Option, Boolean>("prompt") { it.prompt })
+            columns.add(BooleanColumn<Option>("isRow") { it.isRow })
+            columns.add(BooleanColumn<Option>("isMultiple") { it.isMultiple })
+            columns.add(BooleanColumn<Option>("refresh") { it.refresh })
+            columns.add(BooleanColumn<Option>("newTab") { it.newTab })
+            columns.add(BooleanColumn<Option>("prompt") { it.prompt })
             columns.add(Column<Option, String>("script") { if (it is GroovyOption) it.script else "" })
         }
     }
