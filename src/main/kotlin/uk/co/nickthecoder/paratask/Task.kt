@@ -4,7 +4,7 @@ import uk.co.nickthecoder.paratask.project.TaskRunner
 
 interface Task {
 
-    val taskRunner: TaskRunner
+    var taskRunner: TaskRunner
 
     val taskD: TaskDescription
 

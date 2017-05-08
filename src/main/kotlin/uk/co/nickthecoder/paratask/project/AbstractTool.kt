@@ -9,7 +9,7 @@ import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractTool() : Tool {
 
-    override val taskRunner = ThreadedToolRunner(this)
+    override var   taskRunner : TaskRunner = ThreadedToolRunner(this)
 
     override var toolPane: ToolPane? = null
 

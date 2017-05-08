@@ -12,8 +12,6 @@ abstract class AbstractTerminalTool(
 
     : AbstractTool(), Stoppable {
 
-    private lateinit var command: Command
-
     private var results: TerminalResults? = null
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name

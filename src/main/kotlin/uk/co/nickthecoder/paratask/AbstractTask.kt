@@ -1,11 +1,12 @@
 package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.project.TaskRunner
 import uk.co.nickthecoder.paratask.project.ThreadedTaskRunner
 
 abstract class AbstractTask() : Task {
 
-    override open val taskRunner = ThreadedTaskRunner(this)
+    override open var taskRunner: TaskRunner = ThreadedTaskRunner(this)
 
     override fun check() {
     }

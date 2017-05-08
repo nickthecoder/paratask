@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
+import uk.co.nickthecoder.paratask.project.UnthreadedTaskRunner
 import uk.co.nickthecoder.paratask.util.Command
 
 
@@ -9,6 +10,10 @@ abstract class CommandTaskTerminalTool(
         allowInput: Boolean = false)
 
     : AbstractTerminalTool(showCommand, allowInput) {
+
+    init {
+        commandTask.taskRunner = UnthreadedTaskRunner(commandTask)
+    }
 
     override val taskD = commandTask.taskD
 
