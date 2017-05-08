@@ -1,6 +1,3 @@
-BackupFolder
-    EmailBackupFolder
-
 RegexTask is not showing an empty pattern list (should show an empty one).
 
 Try out adding/deleting options

@@ -23,6 +23,10 @@ class MultipleField<T>(parameter: MultipleParameter<T>)
     val list = VBox()
 
     init {
+        if (parameter.minItems > 0 && parameter.innerParameters.size == 0) {
+            parameter.newValue()
+        }
+
         this.parameter = parameter
 
         val addButton = Button("+")
