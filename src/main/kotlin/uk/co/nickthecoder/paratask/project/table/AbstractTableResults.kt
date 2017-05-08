@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project.table
 
 import com.sun.javafx.collections.ImmutableObservableList
 import javafx.application.Platform
+import javafx.collections.transformation.SortedList
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -45,8 +46,11 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             tableView.getColumns().add(column)
         }
 
+        val sortedList = SortedList(data)
+        sortedList.comparatorProperty().bind(tableView.comparatorProperty())
+
         with(tableView) {
-            setItems(data)
+            setItems(sortedList)
             setEditable(true)
             selectionModel.selectionMode = SelectionMode.MULTIPLE
 

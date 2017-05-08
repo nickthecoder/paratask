@@ -1,11 +1,4 @@
-RegexTask is not showing an empty pattern list (should show an empty one).
-
 Try out adding/deleting options
-    Refresh not working
-
-Fix GrepTask
-
-Maybe use Processor interface as part of OptionsRunner?
 
 Table sorting
 
