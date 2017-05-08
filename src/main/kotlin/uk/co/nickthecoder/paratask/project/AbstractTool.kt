@@ -4,6 +4,7 @@ import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.gui.project.ToolPane_Impl
+import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractTool() : Tool {
@@ -17,6 +18,8 @@ abstract class AbstractTool() : Tool {
     override val optionsName: String by lazy { taskD.name }
 
     override var autoRun: Boolean = true
+
+    override val optionsRunner = OptionsRunner(this)
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane

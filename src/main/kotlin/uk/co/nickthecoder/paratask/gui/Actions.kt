@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.task.HomeTool
@@ -41,25 +42,48 @@ object Actions {
     val HISTORY_FORWARD = Action("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
 
     // AbstractTableResults
-    val OPTIONS_RUN = Action("actions.run", KeyCode.ENTER)
-    val OPTIONS_RUN_NEW_TAB = Action("actions.run.newTab", KeyCode.ENTER, control = true)
-    val OPTIONS_RUN_PROMPT = Action("actions.run.newWindow", KeyCode.F4)
+    val OPTION_RUN = Action("actions.run", KeyCode.ENTER, shift = null)
+    val OPTION_PROMPT = Action("actions.run.newWindow", KeyCode.F4, shift = null)
+
+    val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
+    val acceleratorUp = KeyCodeCombination(KeyCode.UP)
+    val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)
     }
 }
 
-private fun modifier(down: Boolean) = if (down) KeyCombination.ModifierValue.DOWN else KeyCombination.ModifierValue.UP
+private fun modifier(down: Boolean?) =
+        if (down == null) {
+            KeyCombination.ModifierValue.ANY
+        } else if (down) {
+            KeyCombination.ModifierValue.DOWN
+        } else {
+            KeyCombination.ModifierValue.UP
+        }
+
+fun createKeyCodeCombination(
+        keyCode: KeyCode,
+        shift: Boolean? = false,
+        control: Boolean? = false,
+        alt: Boolean? = false,
+        meta: Boolean? = false,
+        shortcut: Boolean? = false): KeyCodeCombination {
+
+    return KeyCodeCombination(
+            keyCode,
+            modifier(shift), modifier(control), modifier(alt), modifier(meta), modifier(shortcut))
+}
 
 class Action(
         val name: String,
         keyCode: KeyCode?,
-        shift: Boolean = false,
-        control: Boolean = false,
-        alt: Boolean = false,
-        meta: Boolean = false,
-        shortcut: Boolean = false,
+        shift: Boolean? = false,
+        control: Boolean? = false,
+        alt: Boolean? = false,
+        meta: Boolean? = false,
+        shortcut: Boolean? = false,
         val tooltip: String? = null,
         val label: String? = null
 ) {
@@ -70,13 +94,15 @@ class Action(
 
     init {
         keyCodeCombination = if (keyCode == null) null else
-            KeyCodeCombination(
-                    keyCode,
-                    modifier(shift), modifier(control), modifier(alt), modifier(meta), modifier(shortcut))
+            createKeyCodeCombination(keyCode, shift, control, alt, meta, shortcut)
 
         image = ParaTaskApp.imageResource("buttons/${name}.png")
 
         Actions.add(this)
+    }
+
+    fun match(event: KeyEvent): Boolean {
+        return keyCodeCombination?.match(event) == true
     }
 
     fun createTooltip(): Tooltip? {

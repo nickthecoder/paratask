@@ -4,6 +4,7 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -37,6 +38,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         bottom = toolbar
 
         optionsField.prefColumnCount = 6
+        optionsField.addEventHandler(KeyEvent.KEY_PRESSED, { optionsFieldKeyPressed(it) })
+
 
         val splitGroup = ButtonGroup()
         with(splitGroup) {
@@ -127,5 +130,19 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     override fun pushHistory(tool: Tool) {
         history.push(tool)
+    }
+
+    fun optionsFieldKeyPressed(event: KeyEvent) {
+        var done = false
+        val runner = toolPane.tool.optionsRunner
+
+        if (Actions.OPTION_RUN.match(event)) {
+            done = runner.runNonRow(optionsField.text, prompt = false, newTab = event.isShiftDown)
+        } else if (Actions.OPTION_PROMPT.match(event)) {
+            done = runner.runNonRow(optionsField.text, prompt = true, newTab = event.isShiftDown)
+        }
+        if (done) {
+            optionsField.text = ""
+        }
     }
 }

@@ -10,33 +10,15 @@ import uk.co.nickthecoder.paratask.project.table.WrappedRow
 import uk.co.nickthecoder.paratask.project.task.TerminalTool
 import uk.co.nickthecoder.paratask.util.Command
 
-class OptionsRunner<R : Any>(val tool: Tool) {
+open class OptionsRunner(val tool: Tool) {
 
-
-    fun runDefault( row: R, prompt: Boolean = false, newTab: Boolean = false) {
-        val option = OptionsManager.findOption(".", tool.optionsName)
-
-        if (option == null) {
-            return
+    fun runNonRow(code: String, prompt: Boolean = false, newTab: Boolean = false): Boolean {
+        val option = OptionsManager.findOption(code, tool.optionsName)
+        if (option == null || option.isRow) {
+            return false
         }
-        runRow(option, row, prompt = prompt, newTab = newTab)
-    }
-
-    fun runRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
-        val result = option.run(tool, row = row)
-
-        process(result,
-                newTab = newTab || option.newTab,
-                prompt = prompt || option.prompt,
-                refresh = option.refresh)
-    }
-
-    fun runMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
-        val result = option.runMultiple(tool, rows )
-        process(result,
-                newTab = newTab || option.newTab,
-                prompt = prompt || option.prompt,
-                refresh = option.refresh)
+        runNonRow(option, prompt = prompt, newTab = newTab)
+        return true
     }
 
     fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
@@ -48,7 +30,7 @@ class OptionsRunner<R : Any>(val tool: Tool) {
                 refresh = option.refresh)
     }
 
-    private fun process(
+    protected fun process(
             result: Any?,
             newTab: Boolean,
             prompt: Boolean,
@@ -72,7 +54,7 @@ class OptionsRunner<R : Any>(val tool: Tool) {
         }
     }
 
-    private fun processTool(returnedTool: Tool, newTab: Boolean, prompt: Boolean) {
+    protected fun processTool(returnedTool: Tool, newTab: Boolean, prompt: Boolean) {
         val halfTab = tool.toolPane?.halfTab
         val projectTabs = halfTab?.projectTab?.projectTabs
 
@@ -92,7 +74,7 @@ class OptionsRunner<R : Any>(val tool: Tool) {
         }
     }
 
-    private fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
+    protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
         // Either prompt the Task, or run it straight away
         if (prompt) {

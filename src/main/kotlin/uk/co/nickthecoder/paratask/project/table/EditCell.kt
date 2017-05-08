@@ -8,10 +8,9 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableColumn.CellEditEvent
 import javafx.scene.control.TablePosition
 import javafx.scene.control.TextField
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.gui.Actions
 
 public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>() {
 
@@ -41,15 +40,15 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
         }
 
         textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
-            if (acceleratorEscape.match(event)) {
+            if (Actions.acceleratorEscape.match(event)) {
                 // I don't think this EVER gets called. Hmmm.
                 textField.setText(converter.toString(getItem()))
                 cancelEdit()
                 event.consume()
-            } else if (acceleratorUp.match(event)) {
+            } else if (Actions.acceleratorUp.match(event)) {
                 event.consume()
                 move(-1)
-            } else if (acceleratorDown.match(event)) {
+            } else if (Actions.acceleratorDown.match(event)) {
                 event.consume()
                 move(1)
             }

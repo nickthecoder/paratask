@@ -22,11 +22,27 @@ ToolRunner to prevent a Tool being run while it is already running
 
 OptionsRunner should only refresh the results ONCE when many options are run at once.
 
+Tables to be full width
+    Set up column widths
+
+Tooltips for table columns
+
+Right click on options field and table row for a popup menu of the options
+
+Delete HidingSplitPane (use regular SplitPane) and just use the bodge to ensure parentage
+
+Code column must be wider
+
 New Tools :
     FolderTool
-    FoldersTool (recursive)
+    FolderTreeTool (recursive) - As a tree structure would be good!
     PlacesTool
     GitTool
+        Include a GitCommitTask, which prompts for the commit comment, then runs git commit
+            -all or regular can be one of the parameters
+
+Git tools
+    
 
 StringListParameter
     trim : Boolean
@@ -85,11 +101,13 @@ Real terminal emulator
 Bugs
 ====
 
+Full width Inner parameters of a MultipleParameter are not layed out correctly
+
 A collapsed groups must unfurl when a child has an error
     Add a listener in GroupField
     That won't handle custom errors, only Parameter's built in validation
 
-Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace ;-(
+Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace :-(
 
 Hard Bugs
 =========

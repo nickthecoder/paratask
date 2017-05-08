@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
+import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
@@ -29,6 +30,11 @@ class OptionsTool() : AbstractTool() {
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
         directoryP.value = fileOptions.file.getParentFile()
+    }
+
+    constructor(optionsName: String) : this() {
+        optionsNameP.value = optionsName
+        directoryP.value = Preferences.optionsPath[0]
     }
 
     init {

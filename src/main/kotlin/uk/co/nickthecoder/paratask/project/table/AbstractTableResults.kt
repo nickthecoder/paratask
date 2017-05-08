@@ -5,8 +5,6 @@ import javafx.application.Platform
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
@@ -15,16 +13,8 @@ import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.option.Option
-import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
-
-// TODO Get the shortcuts from Shortcuts
-val acceleratorRun = Actions.OPTIONS_RUN.keyCodeCombination
-val acceleratorRunNewTab = Actions.OPTIONS_RUN_NEW_TAB.keyCodeCombination
-
-val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
-val acceleratorUp = KeyCodeCombination(KeyCode.UP)
-val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
+import uk.co.nickthecoder.paratask.project.option.RowOptionsRunner
 
 abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, label: String = "Results") :
 
@@ -40,7 +30,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn<WrappedRow<R>, String>("")
 
-    val runner = OptionsRunner<R>(tool)
+    val runner = RowOptionsRunner<R>(tool)
 
     override fun attached(toolPane: ToolPane) {
 
@@ -89,24 +79,24 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
     }
 
     open fun onKeyPressed(event: KeyEvent) {
-        if (acceleratorUp.match(event)) {
+        if (Actions.acceleratorUp.match(event)) {
             // If we consume then EditCell doesn't get this event. Hmmm.
             //event.consume()
             move(-1)
 
-        } else if (acceleratorDown.match(event)) {
+        } else if (Actions.acceleratorDown.match(event)) {
             //event.consume()
             move(1)
 
-        } else if (acceleratorRun?.match(event) == true) {
-            runTableOptions()
+        } else if (Actions.OPTION_RUN.match(event)) {
+            runTableOptions(newTab = event.isShiftDown)
             event.consume()
 
-        } else if (acceleratorRunNewTab?.match(event) == true) {
-            runTableOptions(newTab = true)
+        } else if (Actions.OPTION_PROMPT.match(event)) {
+            runTableOptions(newTab = event.isShiftDown)
             event.consume()
 
-        } else if (acceleratorEscape.match(event)) {
+        } else if (Actions.acceleratorEscape.match(event)) {
             event.consume()
         }
     }
