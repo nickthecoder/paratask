@@ -76,21 +76,21 @@ open class OptionsRunner(val tool: Tool) {
 
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
+        val taskRunner = ThreadedTaskRunner(task)
+        if (refresh) {
+            taskRunner.listeners.add(object : TaskListener {
+                override fun ended() {
+                    tool.taskRunner.run()
+                }
+            })
+        }
+
         // Either prompt the Task, or run it straight away
         if (prompt) {
             TaskPrompter(task).placeOnStage(Stage())
         } else {
-            val taskRunner = ThreadedTaskRunner(task)
-            if (refresh) {
-                taskRunner.listeners.add(object : TaskListener {
-                    override fun ended() {
-                        tool.taskRunner.run()
-                    }
-                })
-            }
             taskRunner.run()
         }
-        // TODO Implement running tasks
 
     }
 

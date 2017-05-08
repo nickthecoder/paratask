@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
 
-open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
+open class UnthreadedToolRunner(val tool: Tool) : UnthreadedTaskRunner(tool) {
 
     override open fun runTask() {
         super.runTask()

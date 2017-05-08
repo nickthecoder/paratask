@@ -1,30 +1,26 @@
 package uk.co.nickthecoder.paratask.project
 
-import javafx.application.Platform
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.util.AutoExit
 
 open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
 
-    private var thread: Thread? = null
-
     override fun run() {
+        AutoExit.inc()
 
-        task.check()
-        runState = RunState.RUNNING
+        pre()
 
-        thread = object : Thread("ThreadedToolRunner") {
+        val thread = object : Thread("ThreadedTaskRunner") {
             override fun run() {
-                runTask()
+                try {
+                    runTask()
+                } finally {
+                    post()
+                    AutoExit.dec()
+                }
             }
         }
-        thread?.setDaemon(true)
-        thread?.start()
-    }
-
-    open fun runTask() {
-        task.run()
-        for (listener in listeners) {
-            listener.ended()
-        }
+        thread.setDaemon(true)
+        thread.start()
     }
 }

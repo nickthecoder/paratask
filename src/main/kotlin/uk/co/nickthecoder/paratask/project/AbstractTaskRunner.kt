@@ -13,6 +13,8 @@ abstract class AbstractTaskRunner(val task: Task)
 
     override val listeners = mutableListOf<TaskListener>()
 
+    override val processors = mutableListOf<ResultProcessor>()
+
     override val disableRunProperty = SimpleBooleanProperty(false)
 
     override val showRunProperty = SimpleBooleanProperty(true)
@@ -29,6 +31,29 @@ abstract class AbstractTaskRunner(val task: Task)
         }
 
     abstract override fun run()
+
+    open protected fun pre() {
+        task.check()
+        runState = RunState.RUNNING
+    }
+
+    open protected fun post() {
+        runState = RunState.FINISHED
+
+        for (listener in listeners) {
+            listener.ended()
+        }
+    }
+
+    open protected fun runTask() {
+        val result = task.run()
+
+        for (processor in processors) {
+            if (processor.process(result)) {
+                break
+            }
+        }
+    }
 
     override fun hasStarted() = runState != RunState.IDLE
 

@@ -9,7 +9,7 @@ import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 
-class ExampleTask : SimpleTask() {
+class ExampleTask : AbstractTask() {
 
     override val taskD = TaskDescription(
             name = "example",

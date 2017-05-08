@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
+import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.CommandLineTask
-import uk.co.nickthecoder.paratask.SimpleTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
@@ -12,7 +12,7 @@ import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.util.Command
 
 
-class GrepTask() : SimpleTask(), CommandTask {
+class GrepTask() : AbstractTask(), CommandTask {
 
     override val taskD = TaskDescription(
             name = "grep",

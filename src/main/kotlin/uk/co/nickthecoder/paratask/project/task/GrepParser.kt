@@ -1,12 +1,12 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.AbstractTask
 import java.io.File
 
 /**
  * Converts the text output from GrepTask's into a List, so that the results can be displayed as a table.
  */
-class GrepParser : Task {
+class GrepParser : AbstractTask() {
 
     val grepTask = GrepTask()
 

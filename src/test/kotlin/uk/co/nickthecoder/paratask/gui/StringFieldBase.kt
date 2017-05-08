@@ -2,10 +2,11 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Parent
 import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.project.task.NullTask
 
 open class StringFieldBase : MyGuiTest() {
 
-    val task = EmptySimpleTask()
+    val task = NullTask()
 
     val required = StringParameter("required")
     val optional = StringParameter("optional", required = false)

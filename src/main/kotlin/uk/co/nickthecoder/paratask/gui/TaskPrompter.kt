@@ -26,6 +26,7 @@ open class TaskPrompter(val task: Task) {
     val applyButton = Button("Apply")
 
     init {
+        task.taskRunner.processors.add(CommandInTerminalWindow(task.taskD.label))
 
         with(okButton) {
             onAction = EventHandler {
@@ -84,7 +85,7 @@ open class TaskPrompter(val task: Task) {
     }
 
     open fun run() {
-        TerminalWindowTaskRunner(task, task.taskD.label + " Output").run()
+        task.taskRunner.run()
     }
 
     open protected fun close() {

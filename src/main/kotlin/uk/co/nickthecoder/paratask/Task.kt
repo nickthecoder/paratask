@@ -1,6 +1,10 @@
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.project.TaskRunner
+
 interface Task {
+
+    val taskRunner: TaskRunner
 
     val taskD: TaskDescription
 

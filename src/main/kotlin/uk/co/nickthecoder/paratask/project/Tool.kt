@@ -7,8 +7,6 @@ import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 
 interface Tool : Task {
 
-    val taskRunner: TaskRunner
-
     var toolPane: ToolPane?
 
     fun shortTitle(): String

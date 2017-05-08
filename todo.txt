@@ -1,15 +1,30 @@
-Implement multiple options, and use it for the "e" file code.
+BackupFolder
+    EmailBackupFolder
 
-Editor must not re-load existing files when re-running the tool.
+RegexTask is not showing an empty pattern list (should show an empty one).
+
+Try out adding/deleting options
+    Refresh not working
+
+Fix GrepTask
+
+Maybe use Processor interface as part of OptionsRunner?
+
+Table sorting
+
+Ticks for boolean in tables
+
+implement aliaases, and use it for "e" as well as "." on options.json
 
 Handle exceptions from running options
 
-Try out adding/deleting options
+Listen to the directories on the options path, and clear any cache when a file changes.
 
 Embed a "real" terminal
 
 Implement FileParameter properly (file/directory/either, must/must not exist)
 
+FileParameter to have a menu, shorcuts to got up a directory, shortcut to auto-complete
 Port FileLister to Kotlin
 
 Run non-row options from the option field
@@ -24,7 +39,6 @@ OptionsRunner should only refresh the results ONCE when many options are run at 
 
 Tables to be full width
     Set up column widths
-
 Tooltips for table columns
 
 Right click on options field and table row for a popup menu of the options
@@ -100,6 +114,8 @@ Real terminal emulator
 
 Bugs
 ====
+
+Editor must not re-load existing files when re-running the tool.
 
 Full width Inner parameters of a MultipleParameter are not layed out correctly
 

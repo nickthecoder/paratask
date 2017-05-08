@@ -2,10 +2,11 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Parent
 import uk.co.nickthecoder.paratask.parameter.IntParameter
+import uk.co.nickthecoder.paratask.project.task.NullTask
 
 open class IntFieldBase : MyGuiTest() {
 
-    val task = EmptySimpleTask()
+    val task = NullTask()
 
     val required = IntParameter("required", required = true)
     val optional = IntParameter("optional", required = false)

@@ -3,7 +3,9 @@ package uk.co.nickthecoder.paratask.project.option
 import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
+import com.eclipsesource.json.PrettyPrint
 import uk.co.nickthecoder.paratask.util.HasFile
+import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -14,9 +16,8 @@ class FileOptions(override val file: File) : HasFile {
 
     val name = file.nameWithoutExtension
 
-    private val includes = mutableListOf<String>()
+    val includes = mutableListOf<String>()
 
-    // TODO When I implement "if" clauses, this will be a map of <String, List<Options>>
     private val optionsMap = mutableMapOf<String, Option>()
 
     init {
@@ -156,9 +157,10 @@ class FileOptions(override val file: File) : HasFile {
                     throw RuntimeException("Unknown Option : ${option.javaClass}")
                 }
             }
-            jroot.add("options", joptions)
-
-            jroot.writeTo(OutputStreamWriter(FileOutputStream(file)))
+        }
+        jroot.add("options", joptions)
+        BufferedWriter(OutputStreamWriter(FileOutputStream(file))).use {
+            jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
         }
 
     }
