@@ -1,4 +1,12 @@
-Try out adding/deleting options
+GitTool
+    Implement "FileColumn", which renders the file using a "base" directory
+        row has a "base" file implements HasBaseFile
+        Or subclass HasFile to HasBaseFile
+            But this doesn't help if a class has TWO files (which git line does!)
+
+Colour rows and use it to colour GitTool
+
+Create a BufferedSink which takes a function to process the line, and use it on GitTool : LineSink
 
 Remove "Apply" from most prompted Tasks
 
