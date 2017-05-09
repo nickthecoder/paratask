@@ -1,0 +1,15 @@
+{
+         "options" : [
+             {
+                "type" : "groovy",
+                "code" : "eo",
+                "label" : "Edit Options",
+                "script" : "new OptionsTool(tool.optionsName)",
+                "newTab" : true,
+                "isRow" : false,
+                "isMultiple" : false,
+                "refresh" : false
+             }
+          ] 
+
+    }

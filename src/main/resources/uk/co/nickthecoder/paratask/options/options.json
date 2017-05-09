@@ -1,0 +1,40 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Edit Option",
+            "script": "tool.taskEdit(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "-",
+            "label": "Delete Option",
+            "script": "tool.taskDelete()",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "+",
+            "label": "New Option",
+            "script": "tool.taskNew()",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
+    ]
+}

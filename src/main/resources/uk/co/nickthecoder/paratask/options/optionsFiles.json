@@ -1,0 +1,46 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Work with Options",
+            "script": "new OptionsTool( row )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "e"
+            ]
+        },
+        {
+            "type": "groovy",
+            "code": "inc",
+            "label": "Work with Included Options",
+            "script": "new IncludesTool( row )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Work with Options",
+            "script": "new OptionsTool( row )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "e"
+            ]
+        }
+    ]
+}

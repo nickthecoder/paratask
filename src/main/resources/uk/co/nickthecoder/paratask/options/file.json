@@ -1,0 +1,15 @@
+{
+         "options" : [
+             {
+                "type" : "groovy",
+                "code" : "te",
+                "label" : "Edit Text File",
+                "script" : "new EditorTool(rows.collect {it.file})",
+                "newTab" : true,
+                "isRow" : true,
+                "isMultiple" : true,
+                "refresh" : false
+             }
+          ] 
+
+    }

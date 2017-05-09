@@ -1,0 +1,45 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": "QQ",
+            "label": "q",
+            "script": "q",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "C",
+            "label": "c",
+            "script": "CC",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": true,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "X",
+            "label": "Edit Text File",
+            "script": "new EditorTool(rows.collect {it.file})",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": true,
+            "refresh": true,
+            "aliases": [
+                "XX",
+                "ZZ",
+                "yy"
+            ]
+        }
+    ]
+}
