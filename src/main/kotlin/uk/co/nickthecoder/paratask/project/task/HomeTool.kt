@@ -19,7 +19,7 @@ class HomeTool() : AbstractTool() {
                 HomeTool(),
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
-                GrepTool(),
+                GrepTool(), GitTool(),
                 OptionsFilesTool()
         )
 
