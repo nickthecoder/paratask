@@ -6,6 +6,8 @@ interface Option {
 
     var code: String
 
+    var aliases: MutableList<String>
+
     var label: String
 
     var isRow: Boolean

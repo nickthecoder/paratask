@@ -16,6 +16,7 @@ class MultipleParameter<T>(
         val allowInsert: Boolean = false,
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE,
+        value: List<T>? = null,
         val factory: () -> ValueParameter<T>)
 
     : ValueParameter<List<T>>, AbstractParameter(
@@ -37,6 +38,10 @@ class MultipleParameter<T>(
             }
             parameterListeners.fireStructureChanged(this)
         }
+
+    init {
+        value?.let { this.value = value }
+    }
 
     override val converter = object : StringConverter<List<T>>() {
 

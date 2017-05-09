@@ -7,7 +7,8 @@ import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.util.Command
 
 data class GroovyOption(
-        override var code: String,
+        override var code: String = "",
+        override var aliases: MutableList<String> = mutableListOf<String>(),
         override var label: String = "",
         override var isRow: Boolean = true,
         override var isMultiple: Boolean = false,
@@ -18,18 +19,26 @@ data class GroovyOption(
 
     : Option {
 
-    val gscript = GroovyScript(script)
+    private var gscript: GroovyScript? = null
+
+    fun getScript(): GroovyScript {
+        var gs = gscript
+        if (gs == null || gs.source !== script) {
+            gscript = GroovyScript(script)
+        }
+        return gscript!!
+    }
 
     override fun run(tool: Tool, row: Any): Any? {
-        return runScript(gscript, tool, isMultiple, row)
+        return runScript(getScript(), tool, isMultiple, row)
     }
 
     override fun runMultiple(tool: Tool, list: List<Any>): Any? {
-        return runScript(gscript, tool, isMultiple, list)
+        return runScript(getScript(), tool, isMultiple, list)
     }
 
     override fun runNonRow(tool: Tool): Any? {
-        return runScript(gscript, tool, false, null)
+        return runScript(getScript(), tool, false, null)
     }
 
     private fun runScript(gscript: GroovyScript, tool: Tool, isMultiple: Boolean, rowOrRows: Any?): Any? {

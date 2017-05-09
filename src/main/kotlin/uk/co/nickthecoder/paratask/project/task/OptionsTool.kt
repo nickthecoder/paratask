@@ -96,6 +96,8 @@ class OptionsTool() : AbstractTool() {
 
         val code = StringParameter("code", value = option.code)
 
+        val aliases = MultipleParameter("aliases", value = option.aliases) { StringParameter.factory() }
+
         val label = StringParameter("label", value = option.label)
 
         var isRow = BooleanParameter("isRow", value = option.isRow)
@@ -111,21 +113,18 @@ class OptionsTool() : AbstractTool() {
         var script = StringParameter("script", value = option.script)
 
         init {
-            taskD.addParameters(code, label, isRow, isMultiple, refresh, newTab, prompt, script)
+            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, script)
         }
 
         override fun run() {
             update()
-            addOrRename()
             save()
-        }
-
-        open fun addOrRename() {
-            fileOptions.renameOption(option, code.value)
         }
 
         open fun update() {
 
+            option.code = code.value
+            option.aliases = aliases.value.toMutableList()
             option.label = label.value
             option.isRow = isRow.value == true
             option.isMultiple = isMultiple.value == true
@@ -133,6 +132,7 @@ class OptionsTool() : AbstractTool() {
             option.newTab = newTab.value == true
             option.prompt = prompt.value == true
             option.script = script.value
+            fileOptions.update(option)
         }
 
         open fun save() {
@@ -143,8 +143,8 @@ class OptionsTool() : AbstractTool() {
     open class NewOptionTask(fileOptions: FileOptions)
         : EditOptionTask(fileOptions, GroovyOption(""), name = "newOption") {
 
-        override open fun addOrRename() {
-            option.code = code.value
+        override open fun update() {
+            super.update()
             fileOptions.addOption(option)
         }
     }

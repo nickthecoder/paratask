@@ -1,6 +1,6 @@
 Try out adding/deleting options
 
-implement aliases, and use it for "e" as well as "." on options.json
+Remove "Apply" from most prompted Tasks
 
 Handle exceptions from running options
 

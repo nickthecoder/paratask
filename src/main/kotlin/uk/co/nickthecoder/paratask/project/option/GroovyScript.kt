@@ -39,4 +39,6 @@ class GroovyScript(val source: String) {
             throw ScriptException(this, e)
         }
     }
+
+    override fun toString() = "GroovyScript : ${source}"
 }

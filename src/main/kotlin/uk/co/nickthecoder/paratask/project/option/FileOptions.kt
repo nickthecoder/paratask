@@ -39,18 +39,25 @@ class FileOptions(override val file: File) : HasFile {
         return optionsMap.get(code)
     }
 
-    fun renameOption(option: Option, newCode: String) {
+    fun renameOption(option: Option, newCode: String, newAliases: List<String>) {
         removeOption(option)
         option.code = newCode
+        option.aliases = newAliases.toMutableList()
         addOption(option)
     }
 
     fun addOption(option: Option) {
         optionsMap.put(option.code, option)
+        option.aliases.forEach { optionsMap.put(it, option) }
     }
 
     fun removeOption(option: Option) {
-        optionsMap.remove(option.code)
+        optionsMap.filterValues { it !== option }
+    }
+
+    fun update(option: Option) {
+        removeOption(option)
+        addOption(option)
     }
 
     /*
@@ -103,26 +110,32 @@ class FileOptions(override val file: File) : HasFile {
                 val joption = joption1.asObject()
                 val type = joption.getString("type", "groovy")
 
+                val option: Option
                 when (type) {
-
                     "groovy" -> {
-                        val option = GroovyOption(
-                                code = joption.getString("code", "?"),
-                                label = joption.getString("label", "<no label>"),
-                                script = joption.getString("script", ""),
-                                isRow = joption.getBoolean("isRow", false),
-                                isMultiple = joption.getBoolean("isMultiple", false),
-                                newTab = joption.getBoolean("newTab", false),
-                                prompt = joption.getBoolean("prompt", false),
-                                refresh = joption.getBoolean("refresh", false)
-                        )
-                        addOption(option)
+                        option = GroovyOption()
                     }
-
                     else -> {
                         throw RuntimeException("Unknown option type : " + type)
                     }
                 }
+
+                with(option) {
+                    code = joption.getString("code", "?")
+                    label = joption.getString("label", "")
+                    script = joption.getString("script", "")
+                    isRow = joption.getBoolean("isRow", false)
+                    isMultiple = joption.getBoolean("isMultiple", false)
+                    newTab = joption.getBoolean("newTab", false)
+                    prompt = joption.getBoolean("prompt", false)
+                    refresh = joption.getBoolean("refresh", false)
+                }
+                val jaliases = joption.get("aliases")
+                jaliases?.let {
+                    option.aliases = jaliases.asArray().map { it.asString() }.toMutableList()
+                }
+                addOption(option)
+                println("Added option ${option}")
             }
         }
     }
@@ -138,25 +151,36 @@ class FileOptions(override val file: File) : HasFile {
 
         val joptions = JsonArray()
         for ((_, option) in optionsMap) {
+            val joption = JsonObject()
+
             when (option) {
                 is GroovyOption -> {
-                    val joption = JsonObject()
                     joption.set("type", "groovy")
-                    joption.set("code", option.code)
-                    joption.set("label", option.label)
-                    joption.set("script", option.script)
-                    joption.set("isRow", option.isRow)
-                    joption.set("isMultiple", option.isMultiple)
-                    joption.set("prompt", option.prompt)
-                    joption.set("newTab", option.newTab)
-                    joption.set("refresh", option.refresh)
-
-                    joptions.add(joption)
                 }
                 else -> {
                     throw RuntimeException("Unknown Option : ${option.javaClass}")
                 }
             }
+            with(joption) {
+                set("code", option.code)
+                set("label", option.label)
+                set("script", option.script)
+                set("isRow", option.isRow)
+                set("isMultiple", option.isMultiple)
+                set("prompt", option.prompt)
+                set("newTab", option.newTab)
+                set("refresh", option.refresh)
+            }
+            if (option.aliases.size > 0) {
+                val jaliases = JsonArray()
+                for (alias in option.aliases) {
+                    jaliases.add(alias)
+                }
+                joption.add("aliases", jaliases)
+            }
+
+            joptions.add(joption)
+
         }
         jroot.add("options", joptions)
         BufferedWriter(OutputStreamWriter(FileOutputStream(file))).use {
