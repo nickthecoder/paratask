@@ -1,8 +1,3 @@
-GitTool
-    Create options
-
-Create a BufferedSink which takes a function to process the line, and use it on GitTool : LineSink
-
 Remove "Apply" from most prompted Tasks
 
 Handle exceptions from running options

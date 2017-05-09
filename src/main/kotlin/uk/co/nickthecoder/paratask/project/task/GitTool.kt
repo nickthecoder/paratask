@@ -4,10 +4,10 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
-import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
+import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.FileLister
@@ -36,30 +36,29 @@ class GitTool : AbstractTool() {
 
         val command = Command("git", "status", "--porcelain").dir(directory.value!!)
         val exec = Exec(command)
-        val listSink = ListSink()
-        exec.outSink = listSink
+        exec.outSink = BufferedSink { processLine(it) }
         exec.start().waitFor()
+    }
 
-        for (line in listSink.list) {
-            if (line.length < 4) {
-                continue;
-            }
+    fun processLine(line: String) {
 
-            val index = line[0]
-            val work = line[1]
-            var path = line.substring(3)
-            var renamed: String? = null
-            val arrow = path.indexOf(" -> ")
-            if (arrow >= 0) {
-                renamed = path.substring(0, arrow)
-                path = path.substring(arrow + 4)
-            }
-            val file = File(directory.value, path)
-
-            val gsl = GitStatusLine(file, index = index, work = work, renamed = renamed)
-            list.add(gsl)
+        if (line.length < 4) {
+            return
         }
 
+        val index = line[0]
+        val work = line[1]
+        var path = line.substring(3)
+        var renamed: String? = null
+        val arrow = path.indexOf(" -> ")
+        if (arrow >= 0) {
+            renamed = path.substring(0, arrow)
+            path = path.substring(arrow + 4)
+        }
+        val file = File(directory.value, path)
+
+        val gsl = GitStatusLine(file, index = index, work = work, renamed = renamed)
+        list.add(gsl)
     }
 
     fun addDirectory(directory: File, index: Char, work: Char) {

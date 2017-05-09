@@ -46,6 +46,28 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "d",
+            "label": "Git Diff",
+            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory.value )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "push",
+            "label": "Git Push",
+            "script": "new Command( \"git\", \"push\", \"origin\", \"master\" ).dir( tool.directory.value )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

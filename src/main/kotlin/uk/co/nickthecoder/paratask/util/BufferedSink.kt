@@ -9,6 +9,12 @@ open class BufferedSink() : Sink {
 
     var reader: BufferedReader? = null
 
+    var handler: ((String) -> Unit)? = null
+
+    constructor(handler: (String) -> Unit) : this() {
+        this.handler = handler
+    }
+
     override fun setStream(stream: InputStream) {
         reader = BufferedReader(InputStreamReader(stream))
     }
@@ -37,7 +43,7 @@ open class BufferedSink() : Sink {
     }
 
     protected open fun sink(line: String) {
-        // Does nothing - throws away the output
+        handler?.let { it(line) }
     }
 
     protected open fun sinkError(e: IOException) {
