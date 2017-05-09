@@ -1,11 +1,12 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.util.Command
 
-class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = true) {
+class TerminalTool : AbstractTerminalTool {
 
     override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
 
@@ -13,8 +14,26 @@ class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = tru
 
     val argumentsP = MultipleParameter<String>("arguments") { StringParameter.factory(required = false) }
 
+    constructor() : super(showCommand = true, allowInput = true) {
+    }
+
+    constructor(program: String, vararg arguments: Any?) : this() {
+        commandP.value = program
+        argumentsP.value = arguments.filter { it != null }.map { it.toString() }
+    }
+
     init {
         taskD.addParameters(commandP, argumentsP)
+    }
+
+    fun input(value: Boolean): TerminalTool {
+        allowInput = value
+        return this
+    }
+
+    fun showCommand(value: Boolean): TerminalTool {
+        showCommand = value
+        return this
     }
 
     fun changeCommand(command: Command) {

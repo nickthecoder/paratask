@@ -1,14 +1,28 @@
 package uk.co.nickthecoder.paratask.util
 
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 val NOT_STARTED = -1000
 
 val INTERRUPTED = -10001
 
-class Exec(val command: Command) {
+class Exec {
 
-    private val builder = ProcessBuilder(command.command)
+    private val builder: ProcessBuilder
+
+    val command: Command
+
+    constructor(command: Command) {
+        this.command = command
+        builder = ProcessBuilder(command.command)
+        command.directory?.let { builder.directory(it) }
+    }
+
+    constructor(command: String, vararg arguments: Any?) {
+        this.command = Command(command, *arguments)
+        builder = ProcessBuilder(this.command.command)
+    }
 
     var process: Process? = null
 
@@ -21,6 +35,11 @@ class Exec(val command: Command) {
     var errThread: Thread? = null
 
     val listeners = ProcessNotifier()
+
+    fun dir(dir: File?): Exec {
+        builder.directory(dir)
+        return this
+    }
 
     fun inheritOut(): Exec {
         builder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
@@ -38,6 +57,14 @@ class Exec(val command: Command) {
         builder.redirectErrorStream(true)
         errSink = null
         return this
+    }
+
+    fun listen(listener: () -> Unit) {
+        listeners.add(object : ProcessListener {
+            override fun finished(process: Process) {
+                listener()
+            }
+        })
     }
 
     fun start(): Exec {

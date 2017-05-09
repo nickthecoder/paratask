@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-import javafx.scene.Node
-import javafx.scene.control.SingleSelectionModel
+import javafx.collections.ObservableList
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -28,6 +27,11 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     override fun currentTab(): ProjectTab? {
         return selectionModel.getSelectedItem() as ProjectTab
+    }
+
+    override fun removeTab(projectTab: ProjectTab) {
+        projectTab.detaching()
+        tabs.remove<Tab>(projectTab as Tab)
     }
 
     override fun split() {

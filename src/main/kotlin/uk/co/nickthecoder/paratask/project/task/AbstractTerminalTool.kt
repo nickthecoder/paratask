@@ -7,8 +7,8 @@ import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.runAndWait
 
 abstract class AbstractTerminalTool(
-        val showCommand: Boolean = true,
-        val allowInput: Boolean = false)
+        var showCommand: Boolean = true,
+        var allowInput: Boolean = false)
 
     : AbstractTool(), Stoppable {
 
@@ -16,7 +16,7 @@ abstract class AbstractTerminalTool(
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 
-    abstract fun createCommand() : Command
+    abstract fun createCommand(): Command
 
     override fun run() {
         stop()

@@ -80,7 +80,12 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         when (toolPane) {
 
             left.toolPane -> {
-                left = right!! // Must be in the JavaFX thread, so this can never fail
+                if (right == null) {
+                    projectTabs.removeTab( this )
+                    return
+                } else {
+                    left = right!! // Must be in the JavaFX thread, so this can never fail
+                }
             }
             right?.toolPane -> {
                 if (right == null) {

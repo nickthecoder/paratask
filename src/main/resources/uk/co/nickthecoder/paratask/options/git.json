@@ -1,0 +1,51 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": "co",
+            "label": "Check Out",
+            "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory.value )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "a",
+            "label": "Git Add",
+            "script": "new Command( 'git', 'add', row.path ).dir( tool.directory.value )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "c",
+            "label": "Git Commit",
+            "script": "new GitCommitTask( tool.directory.value, false )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "ca",
+            "label": "Git Commit All",
+            "script": "new GitCommitTask( tool.directory.value, true )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
+    ]
+}

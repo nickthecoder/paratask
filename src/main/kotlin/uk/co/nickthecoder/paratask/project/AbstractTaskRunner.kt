@@ -30,6 +30,14 @@ abstract class AbstractTaskRunner(val task: Task)
             showRunProperty.set(!showStop)
         }
 
+    override fun listen(listener: () -> Unit) {
+        listeners.add(object : TaskListener {
+            override fun ended() {
+                listener()
+            }
+        })
+    }
+
     abstract override fun run()
 
     open protected fun pre() {

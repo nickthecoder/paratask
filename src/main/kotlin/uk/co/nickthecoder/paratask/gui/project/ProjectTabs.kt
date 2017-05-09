@@ -12,6 +12,8 @@ interface ProjectTabs {
 
     fun addToolPane(toolPane: ToolPane): ProjectTab
 
+    fun removeTab(projectTab: ProjectTab)
+
     fun currentTab(): ProjectTab?
 
     fun split()

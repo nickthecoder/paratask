@@ -22,7 +22,7 @@ class GitTool : AbstractTool() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
-    val directory = FileParameter("directory", value = File("/home/nick/projects/paratask"))
+    val directory = FileParameter("directory", value = File("/home/nick/tmp/test"))
 
     private var list = mutableListOf<GitStatusLine>()
 
@@ -34,7 +34,7 @@ class GitTool : AbstractTool() {
 
         list.clear()
 
-        val command = Command("git", "status", "--porcelain")
+        val command = Command("git", "status", "--porcelain").dir(directory.value!!)
         val exec = Exec(command)
         val listSink = ListSink()
         exec.outSink = listSink
@@ -74,42 +74,53 @@ class GitTool : AbstractTool() {
         toolPane?.updateResults(GitStatusResults(this, list))
     }
 
-}
 
+    inner class GitStatusLine(
+            override val file: File,
+            val index: Char,
+            val work: Char,
+            val renamed: String? = null)
+        : HasFile {
 
-class GitStatusResults(tool: GitTool, list: List<GitStatusLine>) : AbstractTableResults<GitStatusLine>(tool, list) {
+        val path: String
 
-    init {
-        columns.add(Column<GitStatusLine, Char>("index") { it.index })
-        columns.add(Column<GitStatusLine, Char>("work") { it.work })
-        columns.add(Column<GitStatusLine, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<GitStatusLine>("path", base = tool.directory.value!!) { it.file })
-        columns.add(Column<GitStatusLine, String?>("renamedFrom") { it.renamed })
-    }
-
-    override fun updateRow(tableRow: CustomTableRow, row: GitStatusLine) {
-        val style = if (row.index == '?') {
-            "untracked"
-        } else if (row.work == 'M') {
-            "not-updated"
-        } else if (row.index == 'R') {
-            "renamed"
-        } else if (row.index == 'M') {
-            "updated"
-        } else {
-            "normal"
+        init {
+            val filePath = file.path
+            val prefix = directory.value!!.path + File.separatorChar
+            if (filePath.startsWith(prefix)) {
+                path = filePath.substring(prefix.length)
+            } else {
+                path = filePath
+            }
         }
-        tableRow.getStyleClass().add("git-" + style)
     }
-}
 
-data class GitStatusLine(
-        override val file: File,
-        val index: Char,
-        val work: Char,
-        val renamed: String? = null)
-    : HasFile {
 
+    class GitStatusResults(tool: GitTool, list: List<GitStatusLine>) : AbstractTableResults<GitStatusLine>(tool, list) {
+
+        init {
+            columns.add(Column<GitStatusLine, Char>("index") { it.index })
+            columns.add(Column<GitStatusLine, Char>("work") { it.work })
+            columns.add(Column<GitStatusLine, String>("name") { it.file.name })
+            columns.add(BaseFileColumn<GitStatusLine>("path", base = tool.directory.value!!) { it.file })
+            columns.add(Column<GitStatusLine, String?>("renamedFrom") { it.renamed })
+        }
+
+        override fun updateRow(tableRow: CustomTableRow, row: GitStatusLine) {
+            val style = if (row.index == '?') {
+                "untracked"
+            } else if (row.work == 'M') {
+                "not-updated"
+            } else if (row.index == 'R') {
+                "renamed"
+            } else if (row.index == 'M') {
+                "updated"
+            } else {
+                "normal"
+            }
+            tableRow.getStyleClass().add("git-" + style)
+        }
+    }
 }
 
 fun main(args: Array<String>) {

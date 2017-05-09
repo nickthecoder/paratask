@@ -6,9 +6,8 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.project.TaskListener
 import uk.co.nickthecoder.paratask.project.ThreadedTaskRunner
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.project.table.WrappedRow
-import uk.co.nickthecoder.paratask.project.task.TerminalTool
 import uk.co.nickthecoder.paratask.util.Command
+import uk.co.nickthecoder.paratask.util.Exec
 
 open class OptionsRunner(val tool: Tool) {
 
@@ -37,16 +36,20 @@ open class OptionsRunner(val tool: Tool) {
             refresh: Boolean) {
 
         when (result) {
+            is Exec -> {
+                processExec(result, refresh)
+            }
             is Command -> {
-                val terminal = TerminalTool()
-                terminal.changeCommand(result)
-                return process(terminal, newTab = newTab, prompt = prompt, refresh = refresh)
+                processExec(Exec(result), refresh)
             }
             is Tool -> {
                 processTool(result, newTab, prompt)
             }
             is Task -> {
                 processTask(result, prompt, refresh)
+            }
+            is String -> {
+                println(result)
             }
             else -> {
                 // Do nthing
@@ -74,22 +77,26 @@ open class OptionsRunner(val tool: Tool) {
         }
     }
 
+    protected fun processExec(exec: Exec, refresh: Boolean) {
+        if (refresh) {
+            exec.listen { tool.taskRunner.run() }
+        }
+        exec.start()
+    }
+
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
-        val taskRunner = ThreadedTaskRunner(task)
         if (refresh) {
-            taskRunner.listeners.add(object : TaskListener {
-                override fun ended() {
-                    tool.taskRunner.run()
-                }
-            })
+            task.taskRunner.listen {
+                tool.taskRunner.run()
+            }
         }
 
         // Either prompt the Task, or run it straight away
         if (prompt) {
             TaskPrompter(task).placeOnStage(Stage())
         } else {
-            taskRunner.run()
+            task.taskRunner.run()
         }
 
     }

@@ -1,10 +1,15 @@
 package uk.co.nickthecoder.paratask.util
 
-class Command(vararg args: Any?) {
+import java.io.File
+
+class Command(program: String, vararg args: Any?) {
 
     val command = mutableListOf<String>()
 
+    var directory: File? = null
+
     init {
+        command.add(program)
         for (arg: Any? in args) {
             if (arg != null) {
                 if (arg is List<*>) {
@@ -18,6 +23,11 @@ class Command(vararg args: Any?) {
                 }
             }
         }
+    }
+
+    fun dir(dir: File): Command {
+        directory = dir
+        return this
     }
 
     fun addArgument(arg: Any?) {
