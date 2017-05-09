@@ -1,10 +1,4 @@
-Bug Fix : FileOptions show no results
-
 GitTool
-    Implement "FileColumn", which renders the file using a "base" directory
-        row has a "base" file implements HasBaseFile
-        Or subclass HasFile to HasBaseFile
-            But this doesn't help if a class has TWO files (which git line does!)
     Add to HomeTool
     
 Colour rows and use it to colour GitTool

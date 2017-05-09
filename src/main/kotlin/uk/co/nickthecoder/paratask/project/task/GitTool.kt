@@ -6,6 +6,7 @@ import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
@@ -76,13 +77,13 @@ class GitTool : AbstractTool() {
 }
 
 
-class GitStatusResults(tool: Tool, list: List<GitStatusLine>) : AbstractTableResults<GitStatusLine>(tool, list) {
+class GitStatusResults(tool: GitTool, list: List<GitStatusLine>) : AbstractTableResults<GitStatusLine>(tool, list) {
 
     init {
         columns.add(Column<GitStatusLine, Char>("index") { it.index })
         columns.add(Column<GitStatusLine, Char>("work") { it.work })
         columns.add(Column<GitStatusLine, String>("name") { it.file.name })
-        columns.add(Column<GitStatusLine, String>("path") { it.file.path })
+        columns.add(BaseFileColumn<GitStatusLine>("path", base = tool.directory.value!!) { it.file })
         columns.add(Column<GitStatusLine, String?>("renamedFrom") { it.renamed })
     }
 }
