@@ -86,6 +86,21 @@ class GitStatusResults(tool: GitTool, list: List<GitStatusLine>) : AbstractTable
         columns.add(BaseFileColumn<GitStatusLine>("path", base = tool.directory.value!!) { it.file })
         columns.add(Column<GitStatusLine, String?>("renamedFrom") { it.renamed })
     }
+
+    override fun updateRow(tableRow: CustomTableRow, row: GitStatusLine) {
+        val style = if (row.index == '?') {
+            "untracked"
+        } else if (row.work == 'M') {
+            "not-updated"
+        } else if (row.index == 'R') {
+            "renamed"
+        } else if (row.index == 'M') {
+            "updated"
+        } else {
+            "normal"
+        }
+        tableRow.getStyleClass().add("git-" + style)
+    }
 }
 
 data class GitStatusLine(

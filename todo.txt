@@ -1,5 +1,5 @@
 GitTool
-    Add to HomeTool
+    Create options
     
 Colour rows and use it to colour GitTool
 

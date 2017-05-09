@@ -5,10 +5,12 @@ import javafx.application.Platform
 import javafx.collections.transformation.SortedList
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
+import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.util.Callback
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
@@ -60,8 +62,22 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             tableView.addEventFilter(KeyEvent.KEY_PRESSED, { event ->
                 onKeyPressed(event)
             })
-
+            rowFactory = Callback { createRow() }
         }
+    }
+
+    fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
+
+    inner class CustomTableRow() : TableRow<WrappedRow<R>>() {
+        override fun updateItem(wrappedRow: WrappedRow<R>?, empty: Boolean) {
+            super.updateItem(wrappedRow, empty)
+            if (!empty && wrappedRow != null) {
+                updateRow(this, wrappedRow.row)
+            }
+        }
+    }
+
+    open fun updateRow(tableRow: CustomTableRow, row: R) {
     }
 
     override fun detaching() {}

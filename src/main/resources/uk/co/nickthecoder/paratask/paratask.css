@@ -151,13 +151,26 @@
     -fx-background-radius: 0;
 }
 
-.boolean.table-cell  {
+.boolean.table-cell {
     -fx-alignment: center;
     -fx-font-size: 15pt;
     -fx-text-fill: #080;
     -fx-padding: -4px 0 0 0;
 }
 
+.table-row-cell.git-untracked > .table-cell {
+    -fx-text-fill: #800;
+}
+.table-row-cell.git-not-updated > .table-cell {
+    -fx-text-fill: #008;
+}
+.table-row-cell.git-renamed > .table-cell {
+    -fx-text-fill: #088;
+}
+.table-row-cell.git-updated > .table-cell {
+    -fx-text-fill: #080;
+}
+            
 /****************************************************
 *   End :                                           *
 *****************************************************/
