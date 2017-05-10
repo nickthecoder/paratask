@@ -11,18 +11,32 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     : ProjectTabs, TabPane() {
 
     override fun addToolPane(toolPane: ToolPane): ProjectTab {
+        return addToolPane(tabs.size, toolPane)
+    }
+
+    override fun addToolPane(index: Int, toolPane: ToolPane): ProjectTab {
         val newProjectTab = ProjectTab_Impl(this, toolPane)
-        getTabs().add(newProjectTab)
+        getTabs().add(index, newProjectTab)
 
         ParaTaskApp.logAttach("ProjectTabs.attaching ProjectTab")
         newProjectTab.attached(this)
         ParaTaskApp.logAttach("ProjectTabs.attached ProjectTab")
 
+        selectionModel.clearAndSelect(index)
         return newProjectTab
     }
 
     override fun addTool(tool: Tool): ProjectTab {
-        return addToolPane(ToolPane_Impl(tool))
+        return addTool(tabs.size, tool)
+    }
+
+    override fun addTool(index: Int, tool: Tool): ProjectTab {
+        return addToolPane(index, ToolPane_Impl(tool))
+    }
+
+    override fun addAfter(after: ProjectTab, tool: Tool): ProjectTab {
+        val index = tabs.indexOf(after as Tab)
+        return addTool(index + 1, tool)
     }
 
     override fun currentTab(): ProjectTab? {
