@@ -32,18 +32,19 @@ open class TaskPrompter(val task: Task) {
             onAction = EventHandler {
                 onOk()
             }
+            visibleProperty().bind(task.taskRunner.showRunProperty)
+            disableProperty().bind(task.taskRunner.disableRunProperty)
             defaultButtonProperty().set(true)
         }
 
         with(cancelButton) {
             onAction = EventHandler { onCancel() }
-            visibleProperty().set(false)
             cancelButtonProperty().set(true)
         }
 
         with(applyButton) {
             onAction = EventHandler { onApply() }
-            //visibleProperty().set(false)
+            visibleProperty().bind(task.taskRunner.showRunProperty)
         }
 
         val buttons = FlowPane()

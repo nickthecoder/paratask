@@ -17,8 +17,7 @@ class CommandInTerminalWindow(val title: String) : ResultProcessor {
             // (When this method ends, ThreadedTaskRunner will decrement AutoExit's counter). 
             runAndWait {
                 val terminal = SimpleTerminal(exec)
-
-                PlainWindow("${title}", terminal)
+                PlainWindow(title, terminal)
             }
             exec.start()
             return true
