@@ -1,21 +1,9 @@
-Select the tab when a new tab is added
-
-Remove "Apply" from most prompted Tasks
-
-ToolRunner to prevent a Tool being run while it is already running
-
-Options column should be wider
-
-Handle exceptions from running options
-
-Listen to the directories on the options path, and clear any cache when a file changes.
-
-A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
-
 Implement FileParameter properly (file/directory/either, must/must not exist)
 
 FileParameter to have a menu, shorcuts to got up a directory, shortcut to auto-complete
 Port FileLister to Kotlin
+
+Handle exceptions from running options
 
 Position focus when a tab (both kinds) is selected
 
@@ -30,7 +18,15 @@ Delete HidingSplitPane (use regular SplitPane) and just use the bodge to ensure 
 New Tools :
     FolderTool
     FolderTreeTool (recursive) - As a tree structure would be good!
-    PlacesTool    
+    PlacesTool
+    PlacesChoices
+    Disk usage
+    Mount
+    Groovy Tools - Lists groovy scripts in a directory, and allows them to be run.
+    
+Listen to the directories on the options path, and clear any cache when a file changes.
+
+A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 
 StringListParameter
     trim : Boolean

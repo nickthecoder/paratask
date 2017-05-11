@@ -37,7 +37,7 @@ class OptionsFilesTool() : AbstractTool() {
     }
 
     private fun add(directory: File) {
-        val fileLister = FileLister().extension("json")
+        val fileLister = FileLister(extensions = listOf<String>("json"))
         val files = fileLister.listFiles(directory)
         for (file in files) {
             val name = file.nameWithoutExtension()

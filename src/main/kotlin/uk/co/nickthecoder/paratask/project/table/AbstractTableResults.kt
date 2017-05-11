@@ -41,6 +41,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             setCellValueFactory { p -> p.getValue().codeProperty }
             setEditable(true)
             setCellFactory({ EditCell(IdentityConverter()) })
+            prefWidth = 50.0
         }
         tableView.getColumns().add(codeColumn)
 
@@ -68,6 +69,9 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
     fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
 
+    /**
+     * Allows rows to be styled. For example, GitTool colours the row based on the state of the file
+     */
     inner class CustomTableRow() : TableRow<WrappedRow<R>>() {
         override fun updateItem(wrappedRow: WrappedRow<R>?, empty: Boolean) {
             super.updateItem(wrappedRow, empty)

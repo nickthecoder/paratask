@@ -22,7 +22,7 @@ class GitTool : AbstractTool() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
-    val directory = FileParameter("directory", value = File("/home/nick/tmp/test"))
+    val directory = FileParameter("directory", value = File("/home/nick/tmp/test"), expectFile = false)
 
     private var list = mutableListOf<GitStatusLine>()
 
@@ -62,7 +62,7 @@ class GitTool : AbstractTool() {
     }
 
     fun addDirectory(directory: File, index: Char, work: Char) {
-        val fileLister = FileLister().depth(10).includeHidden()
+        val fileLister = FileLister(depth = 10, includeHidden = true)
         val listing = fileLister.listFiles(directory)
         for (file in listing) {
             list.add(GitStatusLine(file, index = index, work = work))

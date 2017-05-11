@@ -19,9 +19,9 @@ class GrepTask() : AbstractTask(), CommandTask {
             description = "Search a file or recursively through a directory tree")
 
     val fileP = FileParameter("file", label = "File or Directory",
-            description = "Search a single file, or a whole directory tree")
+            description = "Search a single file, or a whole directory tree", expectFile = null)
 
-    val regexP = MultipleParameter<String>("regex", minItems=1,
+    val regexP = MultipleParameter<String>("regex", minItems = 1,
             description = "The regular expression to search for"
     ) { StringParameter.factory() }
 

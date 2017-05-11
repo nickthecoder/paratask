@@ -41,6 +41,10 @@ abstract class AbstractTaskRunner(val task: Task)
     abstract override fun run()
 
     open protected fun pre() {
+        if (runState == RunState.RUNNING) {
+            // As a Task has state, it cannot safely be run more than once concurrently.
+            throw RuntimeException("Already running.")
+        }
         task.check()
         runState = RunState.RUNNING
     }
