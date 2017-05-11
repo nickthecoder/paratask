@@ -45,9 +45,17 @@ object Actions {
     val OPTION_RUN = Action("actions.run", KeyCode.ENTER, shift = null)
     val OPTION_PROMPT = Action("actions.run.newWindow", KeyCode.F4, shift = null)
 
+    // FileField
+    val UP_DIRECTORY = Action("directory.up", KeyCode.UP, alt = true)
+    val COMPLETE_FILE = Action("file.complete", KeyCode.RIGHT, alt = true)
+
+    // General
+    val CONTEXT_MENU = Action("context.menu", KeyCode.CONTEXT_MENU)
+
     val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)
     val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
+
 
     fun add(action: Action) {
         nameToActionMap.put(action.name, action)

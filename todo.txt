@@ -1,7 +1,4 @@
-Implement FileParameter properly (file/directory/either, must/must not exist)
-
 FileParameter to have a menu, shorcuts to got up a directory, shortcut to auto-complete
-Port FileLister to Kotlin
 
 Handle exceptions from running options
 
