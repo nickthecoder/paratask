@@ -1,15 +1,18 @@
 {
-         "options" : [
-             {
-                "type" : "groovy",
-                "code" : "te",
-                "label" : "Edit Text File",
-                "script" : "new EditorTool(rows.collect {it.file})",
-                "newTab" : true,
-                "isRow" : true,
-                "isMultiple" : true,
-                "refresh" : false
-             }
-          ] 
-
-    }
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": "e",
+            "label": "Edit Text File",
+            "script": "new EditorTool(rows.collect {it.file})",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        }
+    ]
+}

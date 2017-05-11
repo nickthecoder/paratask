@@ -18,7 +18,7 @@
             "type": "groovy",
             "code": "-",
             "label": "Delete Option",
-            "script": "tool.taskDelete()",
+            "script": "tool.taskDelete(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,

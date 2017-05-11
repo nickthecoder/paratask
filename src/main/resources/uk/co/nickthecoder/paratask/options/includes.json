@@ -7,7 +7,7 @@
             "type": "groovy",
             "code": ".",
             "label": "Work with Options",
-            "script": "OptionsTool(row)",
+            "script": "new OptionsTool(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,

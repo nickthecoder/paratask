@@ -1,8 +1,51 @@
 {
     "includes": [
-        
+        "file"
     ],
     "options": [
-        
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Edit Place",
+            "script": "row.taskEdit()",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "+",
+            "label": "New Place",
+            "script": "tool.taskNew()",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "-",
+            "label": "Remove Place",
+            "script": "row.taskRemove()",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "++",
+            "label": "Copy Place",
+            "script": "row.taskCopy()",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
     ]
 }

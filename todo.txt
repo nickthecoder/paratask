@@ -1,10 +1,32 @@
 PlacesTool
-    Add, edit
-    Handle relative files - relative to the places file
+    Add, Edit, Remove tasks, Edit as text (in EditorTool)
+        Have a FileParameter and a StringParameter for the URL
+        Changing one blanks the other
+        Changing either updates the lable if it is blank
+        check method must ensure ONE is set
+        
+    Handle relative files - relative to the places file (so it can be used for project specific places)
+        Must handle spaces in files correctly
+        File must be resolved, i.e. does NOT start with "./"
+
+    Add an icon - either file, directory or web page
+    Options :
+        open folder in paratask
+        open folder in file manager
+        edit text file in EditorTool
+        Open file (in default OS specific way)
+        open url in WebTool
+
+Editor - Allow listeners when saving the file
+    Use it in PlacesTool to refresh the list when editing.
 
 Get ParaTask so that it can replace wrkfoo
     DirectoryTool
     Editor - find (simple non-regex will be good enough to begin with)
+
+    Load/Save project files
+
+    Run the install task, and run from ~/bin using installed paths.
 
 OptionsTool is clunky...
     Cannot edit IncludesTool's options when there are no includes
