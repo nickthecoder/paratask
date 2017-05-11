@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.gui.field
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.ContextMenu
+import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.control.TextField
@@ -55,11 +56,11 @@ class FileField : LabelledField {
     }
 
     private fun buildContextMenu() {
-        val browse = MenuItem("Browse")
-        browse.setOnAction { onBrowse() }
 
         contextMenu.getItems().clear()
-        contextMenu.getItems().addAll(browse)
+        //val browse = MenuItem("Browse")
+        //browse.setOnAction { onBrowse() }
+        //contextMenu.getItems().addAll(browse)
 
         val file = parameter.value
 
@@ -67,15 +68,20 @@ class FileField : LabelledField {
             return
         }
 
-        // List siblings of current file
         val parent = file.parentFile
         if (parent != null) {
+            // If the current value is a directory, then it will be confusing to list TWO directories.
+            // in the top-level menu. So instead, we create a sub-menu
+            val subMenu: Menu? = if (file.isDirectory) Menu("In ${parent.name}${File.separatorChar}") else null
+            // List siblings of current file
             val lister = createLister()
             val children = lister.listFiles(parent)
             if (children.size > 0) {
-                contextMenu.getItems().add(SeparatorMenuItem())
+                if (subMenu != null) {
+                    contextMenu.getItems().add(subMenu)
+                }
                 for (child in children) {
-                    addMenuItem(child)
+                    addMenuItem(child, subMenu)
                 }
             }
         }
@@ -85,7 +91,6 @@ class FileField : LabelledField {
             val lister = createLister()
             val children = lister.listFiles(file)
             if (children.size > 0) {
-                contextMenu.getItems().add(SeparatorMenuItem())
                 for (child in children) {
                     addMenuItem(child)
                 }
@@ -95,10 +100,16 @@ class FileField : LabelledField {
 
     private fun createLister(): FileLister = FileLister(onlyFiles = null)
 
-    private fun addMenuItem(file: File) {
+    private fun addMenuItem(file: File, subMenu: Menu? = null) {
         val menuItem = MenuItem(file.name)
         menuItem.setOnAction { setValue(file) }
-        contextMenu.getItems().add(menuItem)
+        menuItem.getStyleClass().add(if (file.isDirectory()) "directory" else "file")
+
+        if (subMenu != null) {
+            subMenu.getItems().add(menuItem)
+        } else {
+            contextMenu.getItems().add(menuItem)
+        }
     }
 
     private fun onKeyPressed(event: KeyEvent) {
@@ -164,7 +175,8 @@ class FileField : LabelledField {
     }
 
     private fun setValue(file: File?) {
-        textField.text = file?.path ?: ""
+        val suffix = if (file?.isDirectory() ?: false) File.separator else ""
+        textField.text = file?.path + suffix
         textField.positionCaret(textField.text.length)
     }
 }

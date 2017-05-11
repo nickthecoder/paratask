@@ -20,6 +20,8 @@ class FileOptions(override val file: File) : HasFile {
 
     private val optionsMap = mutableMapOf<String, Option>()
 
+    private val primaryOptionsMap = mutableMapOf<String, Option>()
+
     init {
         if (file.exists()) {
             load()
@@ -27,9 +29,8 @@ class FileOptions(override val file: File) : HasFile {
     }
 
     fun listOptions(): Collection<Option> {
-        return optionsMap.values
+        return primaryOptionsMap.values
     }
-
 
     fun listIncludes(): Collection<String> {
         return includes
@@ -47,11 +48,13 @@ class FileOptions(override val file: File) : HasFile {
     }
 
     fun addOption(option: Option) {
+        primaryOptionsMap.put(option.code, option)
         optionsMap.put(option.code, option)
         option.aliases.forEach { optionsMap.put(it, option) }
     }
 
     fun removeOption(option: Option) {
+        primaryOptionsMap.filterValues { it !== option }
         optionsMap.filterValues { it !== option }
     }
 

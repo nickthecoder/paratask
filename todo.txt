@@ -1,4 +1,19 @@
-FileParameter to have a menu, shorcuts to got up a directory, shortcut to auto-complete
+PlacesTool
+    Add, edit
+    Handle relative files - relative to the places file
+
+Get ParaTask so that it can replace wrkfoo
+    DirectoryTool
+    Editor - find (simple non-regex will be good enough to begin with)
+
+OptionsTool is clunky...
+    Cannot edit IncludesTool's options when there are no includes
+        Cannot run ANY non-row options on the IncludesTool
+    When the IncludesTool is refreshed, it does nothing???
+        SharedToolPane.updateResults() does nothing.
+        
+
+Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Handle exceptions from running options
 
@@ -13,8 +28,8 @@ Right click on options field and table row for a popup menu of the options
 Delete HidingSplitPane (use regular SplitPane) and just use the bodge to ensure parentage
 
 New Tools :
-    FolderTool
-    FolderTreeTool (recursive) - As a tree structure would be good!
+    DirectoryTool
+    DirectoryTreeTool (recursive) - As a tree structure would be good!
     PlacesTool
     PlacesChoices
     Disk usage

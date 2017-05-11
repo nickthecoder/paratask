@@ -25,7 +25,7 @@ class OptionsTool() : AbstractTool() {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val directoryP = FileParameter("directory")
+    val directoryP = FileParameter("directory", expectFile = false)
 
     lateinit var includesTool: IncludesTool
 
@@ -72,6 +72,10 @@ class OptionsTool() : AbstractTool() {
 
     fun taskDelete(option: Option): DeleteOptionTask {
         return DeleteOptionTask(getFileOptions(), option)
+    }
+
+    fun taskEditIncludes(): EditIncludesTask {
+        return EditIncludesTask(getFileOptions())
     }
 
     class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results, "Options") {
@@ -173,11 +177,8 @@ class OptionsTool() : AbstractTool() {
         }
 
         override fun run() {
-            save()
-        }
-
-
-        open fun save() {
+            fileOptions.includes.clear()
+            fileOptions.includes.addAll(includes.value)
             fileOptions.save()
         }
     }

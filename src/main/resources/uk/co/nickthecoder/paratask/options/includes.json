@@ -1,35 +1,40 @@
 {
-         "options" : [
-             {
-                "type" : "groovy",
-                "code" : ".",
-                "label" : "Work with Options",
-                "script" : "OptionsTool(row)",
-                "isRow" : true,
-                "isMultiple" : false,
-                "prompt" : true,
-                "refresh" : false
-             },
-             {
-                "type" : "groovy",
-                "code" : "-",
-                "label" : "Remove Incude",
-                "script" : "tool.removeTask()",
-                "isRow" : true,
-                "isMultiple" : false,
-                "prompt" : true,
-                "refresh" : true
-             },
-             {
-                "type" : "groovy",
-                "code" : "+",
-                "label" : "Add Incude",
-                "script" : "tool.addTask()",
-                "isRow" : false,
-                "isMultiple" : false,
-                "prompt" : true,
-                "refresh" : true
-             }
-         ] 
-
-    }
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Work with Options",
+            "script": "OptionsTool(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "-",
+            "label": "Remove Incude",
+            "script": "tool.removeInclude(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "+",
+            "label": "Add Incude",
+            "script": "tool.addTask()",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
+    ]
+}
