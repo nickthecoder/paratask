@@ -13,6 +13,8 @@ interface Parameter : Labelled {
 
     val parameterListeners: ParameterListeners
 
+    fun listen(listener: (event: ParameterEvent) -> Unit)
+
     fun isStretchy(): Boolean
 
     fun errorMessage(): String?

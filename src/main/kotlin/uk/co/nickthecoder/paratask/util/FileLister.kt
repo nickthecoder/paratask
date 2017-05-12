@@ -76,7 +76,13 @@ class FileLister(
     fun listFiles(directory: File): List<File> {
 
         stopping = false
+
         val result = mutableListOf<File>()
+        if (includeBase) result.add(directory)
+
+        if (!directory.exists() || !directory.isDirectory) {
+            return result
+        }
 
         fun listSingle(directory: File, level: Int) {
             if (stopping || depth < level) return
@@ -113,8 +119,6 @@ class FileLister(
                 errorHandler(e)
             }
         }
-
-        if (includeBase) result.add(directory)
 
         listSingle(directory, level = 1)
         return result

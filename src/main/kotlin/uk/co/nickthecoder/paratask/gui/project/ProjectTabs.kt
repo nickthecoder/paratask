@@ -29,4 +29,7 @@ interface ProjectTabs {
     fun duplicateTab()
 
     fun getScene(): Scene
+
+    fun listTabs(): List<ProjectTab>
+
 }

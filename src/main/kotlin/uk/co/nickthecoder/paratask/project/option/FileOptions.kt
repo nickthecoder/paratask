@@ -99,7 +99,6 @@ class FileOptions(override val file: File) : HasFile {
      */
     // https://github.com/ralfstx/minimal-json
     fun load() {
-        println("Loading ${file}")
         val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
 
         val jincludes = jroot.get("includes")

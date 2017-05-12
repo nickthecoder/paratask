@@ -10,6 +10,14 @@ abstract class AbstractParameter(
 
     override val parameterListeners = ParameterListeners()
 
+    override fun listen(listener: (event: ParameterEvent) -> Unit) {
+        parameterListeners.add(object : ParameterListener {
+            override fun parameterChanged(event: ParameterEvent) {
+                listener(event)
+            }
+        })
+    }
+
     override var parent: GroupParameter? = null
 
     override fun toString() = "Parameter ${name}"

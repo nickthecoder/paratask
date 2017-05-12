@@ -19,11 +19,13 @@ interface ProjectTab {
 
     fun attached(projectTabs: ProjectTabs)
 
-    fun detaching()fun add(tool: Tool)
+    fun detaching()
 
-    fun add(toolPane: ToolPane)
+    fun add(tool: Tool)
 
     fun remove(toolPane: ToolPane)
+
+    fun split(tool: Tool)
 
     fun split()
 

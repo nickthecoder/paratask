@@ -5,6 +5,7 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameter.ParameterEventType
 
 // Note. JavaFX cannot handle null values in Combobox correctly
 // See : http://stackoverflow.com/questions/25877323/no-select-item-on-javafx-combobox
@@ -17,6 +18,8 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
 
     private var dirty = false
 
+    val comboBox = ComboBox<Any?>()
+
     val converter = object : StringConverter<Any?>() {
 
         override fun fromString(label: String): Any? {
@@ -26,7 +29,7 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
         override fun toString(obj: Any?): String {
             @Suppress("UNCHECKED_CAST")
             val lab = parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T)
-            return if (lab == null) "<unknown>" else lab
+            return if (lab == null) "" else lab
         }
     }
 
@@ -37,7 +40,8 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
                 parameter.value = null
 
             } else {
-                parameter.value
+                @Suppress("UNCHECKED_CAST")
+                parameter.value = value as T?
             }
         }
     }
@@ -48,27 +52,31 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
 
     private fun createControl(): Node {
 
-        val initialValue = parameter.value
-
-        val comboBox = ComboBox<Any?>()
         comboBox.converter = converter
         comboBox.valueProperty().bindBidirectional(bodgeProperty)
 
-        for (value in parameter.choiceValues()) {
+        updateChoices()
+
+        parameter.listen { event ->
+            if (event.type == ParameterEventType.STRUCTURAL) {
+                updateChoices()
+            }
+        }
+        return comboBox
+    }
+
+    private fun updateChoices() {
+        comboBox.getItems().clear()
+        for (value: T? in parameter.choiceValues()) {
             comboBox.getItems().add(value ?: FAKE_NULL)
         }
-        comboBox.setValue(initialValue ?: FAKE_NULL)
+        comboBox.setValue(parameter.value ?: FAKE_NULL)
 
-        return comboBox
     }
 
     override fun isDirty(): Boolean = dirty
 
-    /**
-     * Spinners normally consume the ENTER key, which means the default button won't be run when ENTER is
-     * pressed in a Spinner. My Spinner doesn't need to handle the ENTER key, and therefore, this code
-     * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
-     */
+    // Is this needed ? Does Combobox eat Enter key presses?
     private fun processEnter() {
         val defaultRunnable = scene?.accelerators?.get(acceleratorEnter)
         defaultRunnable?.let { defaultRunnable.run() }

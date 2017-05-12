@@ -18,8 +18,6 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
 
     override fun detaching() {}
 
-    override fun copy(): ToolPane = SharedToolPane(tool)
-
     override fun toggleParameters() {
         shared.toggleParameters()
     }

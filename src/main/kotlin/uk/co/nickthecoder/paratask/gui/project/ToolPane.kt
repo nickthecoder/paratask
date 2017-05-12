@@ -17,7 +17,5 @@ interface ToolPane {
 
     fun detaching()
 
-    fun copy(): ToolPane
-
     fun toggleParameters()
 }

@@ -59,4 +59,8 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     override fun duplicateTab() {
         currentTab()?.duplicateTab()
     }
+
+    override fun listTabs(): List<ProjectTab> {
+        return tabs.map { it as ProjectTab }
+    }
 }

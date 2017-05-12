@@ -8,14 +8,21 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.task.HomeTool
 import uk.co.nickthecoder.paratask.project.task.WebTool
 import uk.co.nickthecoder.paratask.util.AutoExit
+import java.io.File
 
 class ProjectWindow() {
 
+    var projectFile: File = Preferences.projectsDirectory
+
     private val borderPane = BorderPane()
+
+    val scene = Scene(borderPane)
 
     val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
@@ -30,10 +37,9 @@ class ProjectWindow() {
             setPrefSize(800.0, 600.0)
         }
 
-        //shortcuts.add(Actions.SPLIT_TOOL_TOGGLE) { tabs.currentTab()?.left?.toolPane?.toggleParameters() }
-        //shortcuts.add(Actions.SPLIT_TOOL_CYCLE) { tabs.currentTab()?.left?.toolPane?.cycle() }
-
         with(toolBar.getItems()) {
+            add(Actions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
+            add(Actions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
             add(Actions.QUIT.createButton(shortcuts) { onQuit() })
             add(Actions.NEW_WINDOW.createToolButton(shortcuts) { tool -> onNewWindow(tool) })
             add(Actions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
@@ -58,7 +64,6 @@ class ProjectWindow() {
 
     fun placeOnStage(stage: Stage) {
 
-        val scene = Scene(borderPane)
 
         ParaTaskApp.style(scene)
 
@@ -66,8 +71,8 @@ class ProjectWindow() {
         AutoExit.show(stage)
     }
 
-    fun addTool(tool: Tool) {
-        tabs.addTool(tool)
+    fun addTool(tool: Tool): ProjectTab {
+        return tabs.addTool(tool)
     }
 
     fun onAbout() {
@@ -75,4 +80,14 @@ class ProjectWindow() {
         val toolPane = ToolPane_Impl(about)
         tabs.addToolPane(toolPane)
     }
+
+    fun onOpenProject() {
+        TaskPrompter(OpenProjectTask()).placeOnStage(Stage())
+    }
+
+    fun onSaveProject() {
+        TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
+    }
+
+
 }

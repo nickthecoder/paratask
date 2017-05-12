@@ -67,6 +67,8 @@ open class ChoiceParameter<T>(
         valueToKeyMap.put(value, key)
         valueToLabelMap.put(value, label)
         labelToValueMap.put(label, value)
+
+        parameterListeners.fireStructureChanged(this)
     }
 
     fun removeKey(key: String) {
@@ -77,12 +79,16 @@ open class ChoiceParameter<T>(
         valueToKeyMap.remove(value)
         valueToLabelMap.remove(value)
         labelToValueMap.remove(label)
+
+        parameterListeners.fireStructureChanged(this)
     }
 
     fun clearChoices() {
         keyToValueMap.clear()
         valueToLabelMap.clear()
         labelToValueMap.clear()
+
+        parameterListeners.fireStructureChanged(this)
     }
 }
 

@@ -9,6 +9,8 @@ object Preferences {
 
     val optionsPath = mutableListOf<File>()
 
+    var projectsDirectory = homeDirectory.child(".config", "paratask", "projects")
+
     init {
         optionsPath.add(homeDirectory.child(".config", "paratask", "options"))
     }

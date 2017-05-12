@@ -61,14 +61,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun add(tool: Tool) {
-        val toolPane = ToolPane_Impl(tool)
-        add(toolPane)
-    }
-
-    override fun add(toolPane: ToolPane) {
         assert(right == null)
 
-        val r = HalfTab_Impl(toolPane)
+        val r = HalfTab_Impl(ToolPane_Impl(tool))
 
         hidingSplitPane.right = r
         hidingSplitPane.showBoth()
@@ -81,7 +76,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
             left.toolPane -> {
                 if (right == null) {
-                    projectTabs.removeTab( this )
+                    projectTabs.removeTab(this)
                     return
                 } else {
                     left = right!! // Must be in the JavaFX thread, so this can never fail
@@ -102,10 +97,14 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         hidingSplitPane.showJustLeft()
     }
 
-    override fun split() {
+    override fun split(tool: Tool) {
         if (right == null) {
-            add(left.toolPane.copy())
+            add(tool)
         }
+    }
+
+    override fun split() {
+        split(left.toolPane.tool.copy())
     }
 
     override fun splitToggle() {
@@ -120,9 +119,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun duplicateTab() {
-        val newTab = tabs.addToolPane(left.toolPane.copy())
+        val newTab = tabs.addTool(left.toolPane.tool.copy())
 
-        right?.let { newTab.add(it.toolPane.copy()) }
+        right?.let { newTab.add(it.toolPane.tool.copy()) }
     }
 
     override fun changed() {

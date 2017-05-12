@@ -82,13 +82,6 @@ class ToolPane_Impl(override var tool: Tool)
         ParaTaskApp.logAttach("ToolPane detached")
     }
 
-    override fun copy(): ToolPane {
-        val newTool = tool.copy()
-        val newToolPane = ToolPane_Impl(newTool)
-
-        return newToolPane
-    }
-
     override fun toggleParameters() {
         if (parametersTab.isSelected()) {
             tabPane.getSelectionModel().select(0)
