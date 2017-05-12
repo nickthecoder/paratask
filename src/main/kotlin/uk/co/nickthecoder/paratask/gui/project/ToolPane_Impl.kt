@@ -7,6 +7,7 @@ import javafx.scene.control.TabPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
+import javax.swing.FocusManager
 
 class ToolPane_Impl(override var tool: Tool)
 
@@ -57,6 +58,9 @@ class ToolPane_Impl(override var tool: Tool)
             results.attached(this)
         }
         tabPane.selectionModel.select(0)
+        if (allResults.size > 0) {
+            allResults[0].focus()
+        }
     }
 
     override fun attached(halfTab: HalfTab) {

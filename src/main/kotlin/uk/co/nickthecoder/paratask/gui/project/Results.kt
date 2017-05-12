@@ -10,4 +10,6 @@ interface Results : Labelled {
     fun attached(toolPane: ToolPane)
 
     fun detaching()
+
+    fun focus()
 }

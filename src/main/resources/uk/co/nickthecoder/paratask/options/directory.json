@@ -1,0 +1,18 @@
+{
+    "includes": [
+        "file"
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Work with Directory",
+            "script": "tool.directory.value = row.file; tool",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        }
+    ]
+}

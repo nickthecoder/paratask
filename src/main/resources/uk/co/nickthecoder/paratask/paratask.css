@@ -168,6 +168,11 @@
     -fx-padding: -4px 0 0 0;
 }
 
+.modified.table-cell,
+.size.table-cell {
+    -fx-alignment: center-right;
+}
+
 .table-row-cell.git-untracked > .table-cell {
     -fx-text-fill: #800;
 }

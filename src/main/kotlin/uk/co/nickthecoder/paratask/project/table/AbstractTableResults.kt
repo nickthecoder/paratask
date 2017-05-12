@@ -84,20 +84,27 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
     open fun updateRow(tableRow: CustomTableRow, row: R) {
     }
 
+    override fun focus() {
+        tableView.requestFocus()
+    }
+
     override fun detaching() {}
 
     open fun onMouseClick(event: MouseEvent) {
-        if (event.button == MouseButton.PRIMARY) {
-            val rowIndex = tableView.selectionModel.focusedIndex
-            if (rowIndex >= 0) {
+        val rowIndex = tableView.selectionModel.focusedIndex
+        if (rowIndex >= 0) {
+            if (event.button == MouseButton.PRIMARY) {
                 when (event.clickCount) {
                     1 -> { // Edit the row's option field
                         tableView.edit(rowIndex, codeColumn)
                     }
                     2 -> {
-                        runner.runDefault(tableView.items[rowIndex].row)
+                        runner.runDefault(tableView.items[rowIndex].row, newTab = event.isShiftDown)
                     }
                 }
+
+            } else if (event.button == MouseButton.MIDDLE) {
+                runner.runDefault(tableView.items[rowIndex].row, newTab = true)
             }
         }
     }
