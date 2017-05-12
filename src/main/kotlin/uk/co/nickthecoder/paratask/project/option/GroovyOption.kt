@@ -1,10 +1,8 @@
 package uk.co.nickthecoder.paratask.project.option
 
-import com.sun.javafx.tk.Toolkit.Task
 import groovy.lang.Binding
-import uk.co.nickthecoder.paratask.gui.SimpleTerminal
 import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.util.Command
+import uk.co.nickthecoder.paratask.util.ThreadedDesktop
 
 data class GroovyOption(
         override var code: String = "",
@@ -46,7 +44,7 @@ data class GroovyOption(
         val bindings = Binding()
         bindings.setProperty("tool", tool)
         // TODO Add helper functions
-        //bindings.setProperty("os", OSHelper.instance)
+        bindings.setProperty("desktop", ThreadedDesktop.instance)
 
         if (rowOrRows != null) {
             bindings.setProperty(if (isMultiple) "rows" else "row", rowOrRows)

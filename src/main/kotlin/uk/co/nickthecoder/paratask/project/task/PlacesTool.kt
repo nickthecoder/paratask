@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import uk.co.nickthecoder.paratask.AbstractTask
+import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
@@ -11,7 +11,6 @@ import uk.co.nickthecoder.paratask.util.PlacesFile
 import uk.co.nickthecoder.paratask.util.PlacesFile.Place
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
-import java.net.URL
 
 class PlacesTool : AbstractTool() {
 
@@ -35,6 +34,7 @@ class PlacesTool : AbstractTool() {
     inner class PlacesResults() : AbstractTableResults<Place>(this@PlacesTool, placesFile.places) {
 
         init {
+            columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.icon) })
             columns.add(Column<Place, String>("label") { it.label })
             columns.add(Column<Place, String>("url") { it.urlString })
         }

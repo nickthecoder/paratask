@@ -5,17 +5,6 @@
     "options": [
         {
             "type": "groovy",
-            "code": ".",
-            "label": "Edit Place",
-            "script": "row.taskEdit()",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
             "code": "+",
             "label": "New Place",
             "script": "tool.taskNew()",
@@ -46,6 +35,28 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "edit",
+            "label": "Edit in Text Editor",
+            "script": "new EditorTool( tool.file.value )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Open Place",
+            "script": "if ( row instanceof PlacesFile.FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
         }
     ]
 }

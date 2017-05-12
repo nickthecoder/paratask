@@ -54,8 +54,10 @@ class FileOptions(override val file: File) : HasFile {
     }
 
     fun removeOption(option: Option) {
-        primaryOptionsMap.filterValues { it !== option }
-        optionsMap.filterValues { it !== option }
+        primaryOptionsMap.values.remove(option)
+
+        while (optionsMap.values.remove(option)) {
+        }
     }
 
     fun update(option: Option) {
@@ -100,7 +102,7 @@ class FileOptions(override val file: File) : HasFile {
         println("Loading ${file}")
         val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
 
-        val jincludes = jroot.get("include")
+        val jincludes = jroot.get("includes")
         jincludes?.let {
             for (jinclude in jincludes.asArray()) {
                 includes.add(jinclude.asString())
@@ -153,7 +155,7 @@ class FileOptions(override val file: File) : HasFile {
         jroot.add("includes", jincludes)
 
         val joptions = JsonArray()
-        for ((_, option) in optionsMap) {
+        for (option in listOptions()) {
             val joption = JsonObject()
 
             when (option) {

@@ -1,6 +1,8 @@
 package uk.co.nickthecoder.paratask.util
 
+import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
@@ -8,6 +10,7 @@ import uk.co.nickthecoder.paratask.parameter.ParameterEvent
 import uk.co.nickthecoder.paratask.parameter.ParameterListener
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import java.io.File
+import java.net.URI
 import java.net.URL
 
 class PlacesFile(override val file: File) : HasFile {
@@ -45,20 +48,17 @@ class PlacesFile(override val file: File) : HasFile {
             val file = File(url.toURI())
             return FilePlace(file, label)
         } else {
-            return Place(urlString, label)
+            return URLPlace(urlString, label)
         }
     }
 
     fun taskNew(): EditPlaceTask = NewPlaceTask()
 
+    abstract inner class Place() {
 
-    inner open class Place(
-            var urlString: String,
-            override var label: String
+        abstract val urlString: String
+        abstract val label: String
 
-    ) : Labelled {
-
-        fun isFile(): Boolean = false
 
         fun taskEdit() = EditPlaceTask(this)
 
@@ -66,16 +66,49 @@ class PlacesFile(override val file: File) : HasFile {
 
         fun taskRemove() = RemovePlaceTask(this)
 
-        open fun copy() = Place(urlString, label)
+        override fun toString() = "${urlString} ${label}"
 
-        override fun toString(): String {
-            return "${urlString} ${label}"
-        }
+        abstract val icon: Image?
+
+        abstract fun copy(): Place
     }
 
+    inner open class URLPlace(override val urlString: String, override var label: String)
+        : Place(), Labelled {
 
-    inner class FilePlace(override val file: File, label: String)
-        : Place(file.toURI().toURL().toString(), label), HasFile {
+        init {
+            if (label == "") {
+                try {
+                    label = URL(urlString).getHost()
+                } catch (e: Exception) {
+                }
+            }
+        }
+
+        val uri by lazy { URI(urlString) }
+
+        override val icon: Image? by lazy { ParaTaskApp.imageResource("filetypes/web.png") }
+
+        override open fun copy() = URLPlace(urlString, label)
+    }
+
+    inner class FilePlace(override val file: File, override var label: String)
+        : Place(), HasFile {
+
+        init {
+            if (label == "") {
+                try {
+                    label = file.name
+                } catch (e: Exception) {
+                }
+            }
+        }
+
+        override val urlString = file.toURI().toURL().toString()
+
+        override val icon: Image? by lazy {
+            ParaTaskApp.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
+        }
 
         override fun copy() = FilePlace(file, label)
     }
@@ -90,7 +123,7 @@ class PlacesFile(override val file: File) : HasFile {
 
         val url = StringParameter("url", required = false)
 
-        val label = StringParameter("label")
+        val label = StringParameter("label", required = false)
 
         init {
             taskD.addParameters(file, url, label)
@@ -110,17 +143,19 @@ class PlacesFile(override val file: File) : HasFile {
             if (event.parameter === file) {
                 if (file.value != null) {
                     url.value = ""
-                } else {
-                    if (url.value != "") {
-                        file.value = null
-                    }
+                }
+            }
+            if (event.parameter === url) {
+                if (url.value != "") {
+                    file.value = null
                 }
             }
         }
 
+
         private fun createPlace(): Place {
             return if (file.value == null) {
-                Place(url.value, label.value)
+                URLPlace(url.value, label.value)
             } else {
                 FilePlace(file.value!!, label.value)
             }
@@ -163,7 +198,7 @@ class PlacesFile(override val file: File) : HasFile {
     }
 
 
-    inner class NewPlaceTask() : EditPlaceTask(Place("", ""), name = "newPlace") {
+    inner class NewPlaceTask() : EditPlaceTask(URLPlace("", ""), name = "newPlace") {
 
         override fun run() {
             places.add(place)
@@ -182,3 +217,4 @@ class PlacesFile(override val file: File) : HasFile {
     }
 
 }
+

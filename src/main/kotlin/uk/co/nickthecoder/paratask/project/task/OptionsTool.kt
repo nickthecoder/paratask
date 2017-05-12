@@ -157,11 +157,9 @@ class OptionsTool() : AbstractTool() {
 
         override val taskD = TaskDescription("deleteOption", description = "Delete option : ${option.code} - ${option.label}")
 
-
         override fun run() {
             fileOptions.removeOption(option)
             fileOptions.save()
-
         }
     }
 

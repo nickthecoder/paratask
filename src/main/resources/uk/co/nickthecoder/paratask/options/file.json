@@ -5,13 +5,49 @@
     "options": [
         {
             "type": "groovy",
+            "code": "edit",
+            "label": "Edit File",
+            "script": "desktop.edit( row.file )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "o",
+            "label": "Open File",
+            "script": "desktop.open( row.file )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "open"
+            ]
+        },
+        {
+            "type": "groovy",
             "code": "e",
-            "label": "Edit Text File",
+            "label": "Edit with built-in Text Editor",
             "script": "new EditorTool(rows.collect {it.file})",
             "isRow": true,
             "isMultiple": true,
             "prompt": false,
             "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "wb",
+            "label": "Open with Web Browser",
+            "script": "desktop.browse( row.file )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
             "refresh": false
         }
     ]
