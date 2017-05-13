@@ -13,6 +13,8 @@ interface Parameter : Labelled {
 
     val parameterListeners: ParameterListeners
 
+    var hidden: Boolean
+
     fun listen(listener: (event: ParameterEvent) -> Unit)
 
     fun isStretchy(): Boolean
@@ -24,5 +26,6 @@ interface Parameter : Labelled {
     fun findRoot(): GroupParameter? {
         return parent?.findRoot()
     }
+
 
 }

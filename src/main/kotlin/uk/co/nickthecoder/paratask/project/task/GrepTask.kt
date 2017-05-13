@@ -53,7 +53,7 @@ class GrepTask() : AbstractTask(), CommandTask {
     val contextLinesP = IntParameter("contextLines", required = false,
             description = "Output number of lines of context surrounding the matched line").min(1)
 
-    val additionalOptionsP = StringParameter("additionalOptions", value = "Hsn")
+    val additionalOptionsP = StringParameter("additionalOptions", value = "IHsn")
 
     init {
         taskD.addParameters(
@@ -86,15 +86,13 @@ class GrepTask() : AbstractTask(), CommandTask {
             command.addArgument("-i")
         }
 
-        val match = matchP.value
-        if (match != "") {
-            command.addArgument(match)
-        }
+        matchP.value?.let { command.addArgument(it) }
 
-        val contextLines: Int? = contextLinesP.value
-        if (contextLines != null) {
+        maxMatchesP.value?.let { command.addArgument("--max-count=${it}") }
+
+        contextLinesP.value?.let {
             command.addArgument("-C")
-            command.addArgument(contextLines)
+            command.addArgument(it)
         }
 
         regexP.value.forEach { value ->

@@ -18,6 +18,8 @@ abstract class AbstractParameter(
         })
     }
 
+    override var hidden: Boolean = false
+
     override var parent: GroupParameter? = null
 
     override fun toString() = "Parameter ${name}"

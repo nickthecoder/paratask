@@ -15,7 +15,7 @@ open class SizeColumn<R>(
     init {
         setCellFactory { SizeTableCell() }
         getStyleClass().add("size")
-
+        getStyleClass().add("number")
     }
 
     class SizeTableCell<R>() : TextFieldTableCell<R, Long>() {
@@ -44,7 +44,7 @@ open class SizeColumn<R>(
                 value = value / scale
                 i++
             }
-            return format.format(value) + units[i]
+            return format.format(value) + " " + units[i]
         }
     }
 }

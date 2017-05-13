@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.util
 
 import java.io.File
+import java.util.regex.Pattern
 
 class Command(program: String, vararg args: Any?) {
 
@@ -36,10 +37,17 @@ class Command(program: String, vararg args: Any?) {
         }
     }
 
-    override fun toString(): String =
-            if (command.size > 1) {
-                command[0] + command.slice(1..command.size - 1).joinToString(prefix = " '", postfix = "'", separator = "' '")
-            } else {
-                command[0]
+    override fun toString(): String = command.map { escapeArg(it) }.joinToString(separator = " ")
+
+    companion object {
+
+        fun escapeArg(arg: String): String {
+            for (c in " *()%!&<>&|'\"") {
+                if (arg.contains(c)) {
+                    return "'" + arg.replace(Regex("//"), "////").replace(Regex("'"), "//'") + "'"
+                }
             }
+            return arg
+        }
+    }
 }

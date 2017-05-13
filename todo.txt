@@ -1,7 +1,9 @@
-Project to save the name of the project (to appear in the title bar)
-    as well as the window size
-
 Table based GrepTool
+
+Load/Save GroupParameter sub-class, which has a directory and a name.
+    Use on OpenProjectTask and SaveProjectTask
+    Later can have a list of file types
+    sub-params use the group's name as a suffix e.g. file-directory and file-name
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?

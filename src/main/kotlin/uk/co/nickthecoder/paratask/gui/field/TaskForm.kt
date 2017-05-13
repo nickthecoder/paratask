@@ -26,7 +26,6 @@ class TaskForm(val task: Task) {
             }
         }
 
-
         form.descendants().forEach { field ->
             field.clearError()
         }

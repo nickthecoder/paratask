@@ -15,7 +15,9 @@ open class GroupParametersForm(var groupParameter: GroupParameter)
             children.add(TextFlow(Text(groupParameter.description)))
         }
         groupParameter.children().forEach() { parameter ->
-            addParameter(parameter)
+            if (!parameter.hidden) {
+                addParameter(parameter)
+            }
         }
     }
 
