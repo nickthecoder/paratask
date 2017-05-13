@@ -6,7 +6,7 @@ class TopLevelOptions(val optionsName: String) {
 
     // NOTE, we could cache this list, and whenever a FileOptions is saved, throw the cache away
     // 
-    private fun buildIncludeList(): List<FileOptions> {
+    fun listFileOptions(): List<FileOptions> {
 
         val fileOptionsList = mutableListOf<FileOptions>()
 
@@ -38,7 +38,7 @@ class TopLevelOptions(val optionsName: String) {
     fun find(code: String): Option? {
 
         // First we build a list of all the FileOptions and then iterate over the list to find the Option
-        val fileOptionsList = buildIncludeList()
+        val fileOptionsList = listFileOptions()
 
 
         for (fileOptions in fileOptionsList) {

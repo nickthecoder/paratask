@@ -7,7 +7,7 @@ object OptionsManager {
 
     private val topLevelMap = mutableMapOf<String, TopLevelOptions>()
 
-    internal fun getTopLevelOptions(optionsName: String): TopLevelOptions {
+    fun getTopLevelOptions(optionsName: String): TopLevelOptions {
         val found = topLevelMap.get(optionsName)
         if (found == null) {
             val newTL = TopLevelOptions(optionsName)
@@ -27,7 +27,6 @@ object OptionsManager {
     private fun getOptionsPath(directory: File): OptionsPath {
         val found = pathMap.get(directory)
         if (found == null) {
-            println("Creating OptionsPath")
             val newOP = OptionsPath(directory)
             pathMap.put(directory, newOP)
             return newOP

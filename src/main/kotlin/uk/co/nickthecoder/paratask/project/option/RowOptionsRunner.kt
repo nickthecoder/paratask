@@ -1,8 +1,41 @@
 package uk.co.nickthecoder.paratask.project.option
 
+import javafx.event.ActionEvent
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
+import javafx.scene.control.SeparatorMenuItem
 import uk.co.nickthecoder.paratask.project.Tool
 
 class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
+
+    fun buildContextMenu(contextMenu: ContextMenu, rows : List<R>) {
+
+        contextMenu.getItems().clear()
+
+        val optionsName = tool.optionsName
+        val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
+
+        var needSep = false
+
+        for (fileOptions in topLevelOptions.listFileOptions()) {
+            var added = false
+            for (option in fileOptions.listOptions()) {
+                if (option.isRow) {
+                    if (needSep) {
+                        needSep = false
+                        contextMenu.getItems().add(SeparatorMenuItem())
+                    }
+                    val menuItem = MenuItem(option.label)
+                    menuItem.addEventHandler(ActionEvent.ACTION) {
+                        runRows(option, rows)
+                    }
+                    contextMenu.getItems().add(menuItem)
+                    added = true
+                }
+            }
+            needSep = needSep || added
+        }
+    }
 
     fun runDefault(row: R, prompt: Boolean = false, newTab: Boolean = false) {
         val option = OptionsManager.findOption(".", tool.optionsName)
@@ -10,6 +43,16 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
             return
         }
         runRow(option, row, prompt = prompt, newTab = newTab)
+    }
+
+    fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+        if (option.isMultiple) {
+            runMultiple(option, rows, prompt = prompt, newTab = newTab)
+        } else {
+            for (row in rows) {
+                runRow(option, row, prompt = prompt, newTab = newTab)
+            }
+        }
     }
 
     fun runRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {

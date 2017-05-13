@@ -1,10 +1,13 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.TextField
 import javafx.scene.control.ToolBar
 import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -33,13 +36,19 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     private val history = History(this)
 
+    val optionsContextMenu = ContextMenu()
+
     init {
         center = toolPane as Node
         bottom = toolbar
 
-        optionsField.prefColumnCount = 6
-        optionsField.addEventHandler(KeyEvent.KEY_PRESSED, { optionsFieldKeyPressed(it) })
-
+        with(optionsField) {
+            prefColumnCount = 6
+            addEventHandler(KeyEvent.KEY_PRESSED, { optionsFieldKeyPressed(it) })
+            addEventHandler(MouseEvent.MOUSE_PRESSED, { optionFieldMouse(it) })
+            addEventHandler(MouseEvent.MOUSE_RELEASED, { optionFieldMouse(it) })
+            setContextMenu(optionsContextMenu)
+        }
 
         val splitGroup = ButtonGroup()
         with(splitGroup) {
@@ -140,9 +149,25 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             done = runner.runNonRow(optionsField.text, prompt = false, newTab = event.isShiftDown)
         } else if (Actions.OPTION_PROMPT.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = true, newTab = event.isShiftDown)
+        } else if (Actions.CONTEXT_MENU.match(event)) {
+            onOptionsContextMenu()
+            event.consume()
         }
+
         if (done) {
             optionsField.text = ""
         }
+    }
+
+    fun optionFieldMouse(event: MouseEvent) {
+        if (event.isPopupTrigger) {
+            onOptionsContextMenu()
+            event.consume()
+        }
+    }
+
+    private fun onOptionsContextMenu() {
+        toolPane.tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
+        optionsContextMenu.show(optionsField, Side.BOTTOM, 0.0, 0.0)
     }
 }

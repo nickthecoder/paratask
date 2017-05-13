@@ -1,15 +1,44 @@
 package uk.co.nickthecoder.paratask.project.option
 
+import javafx.event.ActionEvent
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
+import javafx.scene.control.SeparatorMenuItem
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
-import uk.co.nickthecoder.paratask.project.TaskListener
-import uk.co.nickthecoder.paratask.project.ThreadedTaskRunner
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
 
 open class OptionsRunner(val tool: Tool) {
+
+    fun createNonRowOptionsMenu(contextMenu: ContextMenu) {
+
+        contextMenu.getItems().clear()
+
+        val optionsName = tool.optionsName
+        val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
+
+        var needSep = false
+
+        for (fileOptions in topLevelOptions.listFileOptions()) {
+            var added = false
+            for (option in fileOptions.listOptions()) {
+                if (!option.isRow) {
+                    if (needSep) {
+                        needSep = false
+                        contextMenu.getItems().add(SeparatorMenuItem())
+                    }
+                    val menuItem = MenuItem(option.label)
+                    menuItem.addEventHandler(ActionEvent.ACTION) { tool.optionsRunner.runNonRow(option) }
+                    contextMenu.getItems().add(menuItem)
+                    added = true
+                }
+            }
+            needSep = needSep || added
+        }
+    }
 
     fun runNonRow(code: String, prompt: Boolean = false, newTab: Boolean = false): Boolean {
         val option = OptionsManager.findOption(code, tool.optionsName)
@@ -67,7 +96,7 @@ open class OptionsRunner(val tool: Tool) {
         if (newTab) {
 
             // TODO Insert after current tab
-            projectTabs?.addAfter( tool.toolPane!!.halfTab.projectTab, newTool)
+            projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool)
 
         } else {
             halfTab?.changeTool(newTool)

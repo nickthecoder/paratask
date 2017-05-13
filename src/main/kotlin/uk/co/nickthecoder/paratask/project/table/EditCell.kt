@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project.table
 
 import javafx.application.Platform
 import javafx.event.Event
+import javafx.geometry.Side
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
@@ -9,15 +10,21 @@ import javafx.scene.control.TableColumn.CellEditEvent
 import javafx.scene.control.TablePosition
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.Actions
 
-public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>() {
+public class EditCell<S, T>(
+        val tableResults: AbstractTableResults<*>,
+        val converter: StringConverter<T>)
+
+    : TableCell<S, T>() {
 
     // Text field for editing
     private val textField = TextField()
 
     init {
+        textField.setContextMenu(tableResults.contextMenu)
         textField.styleClass.add("edit-cell")
         itemProperty().addListener { _, _, newItem ->
             if (newItem == null) {
@@ -51,7 +58,22 @@ public class EditCell<S, T>(val converter: StringConverter<T>) : TableCell<S, T>
             } else if (Actions.acceleratorDown.match(event)) {
                 event.consume()
                 move(1)
+            } else if (Actions.CONTEXT_MENU.match(event)) {
+                tableResults.showContextMenu( textField, event )
+                event.consume()
             }
+        }
+
+        textField.addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
+        textField.addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
+
+    }
+
+    fun onMouse(event: MouseEvent) {
+        if (event.isPopupTrigger) {
+            tableResults.showContextMenu( textField, event )
+            tableResults.contextMenu.show(textField, Side.LEFT, event.x, event.y)
+            event.consume()
         }
     }
 

@@ -3,6 +3,9 @@ package uk.co.nickthecoder.paratask.project.table
 import com.sun.javafx.collections.ImmutableObservableList
 import javafx.application.Platform
 import javafx.collections.transformation.SortedList
+import javafx.geometry.Side
+import javafx.scene.Node
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
@@ -40,7 +43,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
         with(codeColumn) {
             setCellValueFactory { p -> p.getValue().codeProperty }
             setEditable(true)
-            setCellFactory({ EditCell(IdentityConverter()) })
+            setCellFactory({ EditCell(this@AbstractTableResults, IdentityConverter()) })
             prefWidth = 50.0
         }
         tableView.getColumns().add(codeColumn)
@@ -57,12 +60,9 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
             setEditable(true)
             selectionModel.selectionMode = SelectionMode.MULTIPLE
 
-            tableView.addEventFilter(MouseEvent.MOUSE_CLICKED, { event ->
-                onMouseClick(event)
-            })
-            tableView.addEventFilter(KeyEvent.KEY_PRESSED, { event ->
-                onKeyPressed(event)
-            })
+            tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
+
+            tableView.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
             rowFactory = Callback { createRow() }
         }
     }
@@ -90,7 +90,10 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
     override fun detaching() {}
 
-    open fun onMouseClick(event: MouseEvent) {
+    open fun onMouseClicked(event: MouseEvent) {
+
+        contextMenu.hide()
+
         val rowIndex = tableView.selectionModel.focusedIndex
         if (rowIndex >= 0) {
             if (event.button == MouseButton.PRIMARY) {
@@ -105,9 +108,24 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
 
             } else if (event.button == MouseButton.MIDDLE) {
                 runner.runDefault(tableView.items[rowIndex].row, newTab = true)
+
+            } else if (event.button == MouseButton.SECONDARY) {
+                showContextMenu(tableView, event)
             }
         }
     }
+
+    fun showContextMenu(node: Node, event: Any) {
+        val rows = tableView.selectionModel.selectedItems.map { it.row }
+        runner.buildContextMenu(contextMenu, rows)
+        if (event is MouseEvent) {
+            contextMenu.show(node, Side.LEFT, event.x, event.y)
+        } else {
+            contextMenu.show(node, Side.BOTTOM, 0.0, 0.0)
+        }
+    }
+
+    val contextMenu = ContextMenu()
 
     open fun onKeyPressed(event: KeyEvent) {
         if (Actions.acceleratorUp.match(event)) {
@@ -139,6 +157,7 @@ abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, 
         }
         Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
     }
+
 
     fun runTableOptions(newTab: Boolean = false, prompt: Boolean = false) {
 

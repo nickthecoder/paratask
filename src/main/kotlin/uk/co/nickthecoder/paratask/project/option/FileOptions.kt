@@ -139,7 +139,6 @@ class FileOptions(override val file: File) : HasFile {
                     option.aliases = jaliases.asArray().map { it.asString() }.toMutableList()
                 }
                 addOption(option)
-                println("Added option ${option}")
             }
         }
     }
