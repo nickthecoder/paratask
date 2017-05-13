@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project.task
 
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.Stoppable
@@ -12,7 +13,7 @@ abstract class AbstractTerminalTool(
 
     : AbstractTool(), Stoppable {
 
-    private var results: TerminalResults? = null
+    private var terminalResults: TerminalResults? = null
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 
@@ -23,31 +24,22 @@ abstract class AbstractTerminalTool(
         val command = createCommand()
 
         runAndWait {
-            val results = TerminalResults(this, command, showCommand = showCommand, allowInput = allowInput)
+            terminalResults = TerminalResults(this, command, showCommand = showCommand, allowInput = allowInput)
 
-            toolPane?.updateResults(results)
+            toolPane?.replaceResults(createResults(),resultsList)
 
-            this.results = results
         }
-        results?.start()
-        results?.waitFor()
+        terminalResults?.start()
+        terminalResults?.waitFor()
     }
 
     override fun updateResults() {
         // We updated the results in run, because run will block till the command ends
     }
 
+    override fun createResults(): List<Results> = singleResults(terminalResults!!)
+
     override fun stop() {
-        results?.let { it.stop() }
+        terminalResults?.stop()
     }
-
-    override fun attached(toolPane: ToolPane) {
-        super.attached(toolPane)
-    }
-
-    override fun detaching() {
-        super.detaching()
-        results?.node?.detaching()
-    }
-
 }

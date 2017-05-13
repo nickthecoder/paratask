@@ -14,7 +14,9 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
 
     override fun resultsTool(): Tool = shared.resultsTool()
 
-    override fun updateResults(vararg allResults: Results) {}
+    override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
+        shared.replaceResults(resultsList, oldResultsList)
+    }
 
     override fun attached(halfTab: HalfTab) {}
 

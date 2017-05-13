@@ -1,14 +1,9 @@
-OptionsTool is clunky...
-    Cannot edit IncludesTool's options when there are no includes
-        Cannot run ANY non-row options on the IncludesTool
-    Solution :
-        Results to have a Tool
-        Options field to use the tool of the current results tab.
 
-    When the IncludesTool is refreshed, it does nothing???
-        SharedToolPane.updateResults() does nothing.
-        
-    
+IncludesTool - "+" option isn't implemented
+
+Editor - Open a file in a new lower tab
+    Can we remove a single lower tab?
+        When removing the last editor tab, remove the whole toolPane
         
 Editor - find (simple non-regex will be good enough to begin with)
 

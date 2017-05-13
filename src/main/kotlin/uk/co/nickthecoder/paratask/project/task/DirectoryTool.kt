@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.project.task
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
@@ -36,9 +37,7 @@ class DirectoryTool() : AbstractTool() {
         results.addAll(lister.listFiles(directory.value!!).map { WrappedFile(it) })
     }
 
-    override fun updateResults() {
-        toolPane!!.updateResults(DirectoryResults())
-    }
+    override fun createResults(): List<Results> = singleResults(DirectoryResults())
 
     class WrappedFile(val file: File) {
         val icon by lazy {

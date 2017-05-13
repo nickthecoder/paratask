@@ -29,7 +29,7 @@
             "type": "groovy",
             "code": "+",
             "label": "Add Incude",
-            "script": "tool.addTask()",
+            "script": "tool.taskEditIncludes()",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,

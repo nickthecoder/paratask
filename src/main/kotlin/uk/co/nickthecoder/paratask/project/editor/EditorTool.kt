@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.project.editor
 import javafx.scene.control.TextArea
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.AbstractResults
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
@@ -34,12 +35,11 @@ class EditorTool() : AbstractTool() {
     override fun run() {
     }
 
-    override fun updateResults() {
+    override fun createResults(): List<Results> {
         if (filename.value.size == 0) {
-            toolPane?.updateResults(EditorResults(this, null))
+            return singleResults(EditorResults(this, null))
         } else {
-            val all = filename.value.map { EditorResults(this, it) }
-            toolPane?.updateResults(*all.toTypedArray())
+            return filename.value.map { EditorResults(this, it) }
         }
     }
 

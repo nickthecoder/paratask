@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project.task
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Tool
@@ -34,9 +35,8 @@ class HomeTool() : AbstractTool() {
     override fun run() {
     }
 
-    override fun updateResults() {
-        toolPane?.updateResults(HomeResults(this, toolList))
-    }
+    override fun createResults(): List<Results> = singleResults(HomeResults(this, toolList))
+
 }
 
 class HomeResults(tool: Tool, list: List<Tool>) : AbstractTableResults<Tool>(tool, list) {

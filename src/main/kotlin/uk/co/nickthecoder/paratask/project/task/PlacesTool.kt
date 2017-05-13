@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project.task
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
@@ -24,10 +25,7 @@ class PlacesTool : AbstractTool() {
         placesFile = PlacesFile(file.value!!)
     }
 
-    override fun updateResults() {
-
-        toolPane?.updateResults(PlacesResults())
-    }
+    override fun createResults(): List<Results> = singleResults(PlacesResults())
 
     fun taskNew() = placesFile.taskNew()
 

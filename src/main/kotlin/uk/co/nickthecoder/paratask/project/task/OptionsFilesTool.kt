@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Preferences
@@ -45,9 +46,7 @@ class OptionsFilesTool() : AbstractTool() {
         }
     }
 
-    override fun updateResults() {
-        toolPane?.updateResults(OptionsFilesResults(this))
-    }
+    override fun createResults(): List<Results> = singleResults(OptionsFilesResults(this))
 
     class OptionsFilesResults(tool: OptionsFilesTool) : AbstractTableResults<FileOptions>(tool, tool.results) {
 

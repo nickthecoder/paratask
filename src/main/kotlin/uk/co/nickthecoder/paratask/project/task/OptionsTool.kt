@@ -2,7 +2,9 @@ package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.gui.project.SharedToolPane
+import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
@@ -27,7 +29,7 @@ class OptionsTool() : AbstractTool() {
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    lateinit var includesTool: IncludesTool
+    var includesTool: IncludesTool
 
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
@@ -41,6 +43,13 @@ class OptionsTool() : AbstractTool() {
 
     init {
         taskD.addParameters(optionsNameP, directoryP)
+
+        includesTool = IncludesTool()
+    }
+
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        includesTool.toolPane = SharedToolPane(this)
     }
 
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
@@ -53,13 +62,20 @@ class OptionsTool() : AbstractTool() {
             results.add(option)
         }
 
-        includesTool = IncludesTool(optionsFile)
-        includesTool.toolPane = SharedToolPane(this)
+        includesTool.optionsNameP.value = optionsNameP.value
+        includesTool.directoryP.value = directoryP.value
         includesTool.run()
     }
 
+    override fun createResults(): List<Results> {
+        val result = mutableListOf<Results>(OptionsResults(this))
+        //result.addAll(includesTool.createResults())
+        return result
+    }
+
     override fun updateResults() {
-        toolPane?.updateResults(OptionsResults(this), includesTool.createResults())
+        includesTool.updateResults()
+        super.updateResults()
     }
 
     fun taskEdit(option: Option): EditOptionTask {
@@ -72,10 +88,6 @@ class OptionsTool() : AbstractTool() {
 
     fun taskDelete(option: Option): DeleteOptionTask {
         return DeleteOptionTask(getFileOptions(), option)
-    }
-
-    fun taskEditIncludes(): EditIncludesTask {
-        return EditIncludesTask(getFileOptions())
     }
 
     class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results, "Options") {
@@ -159,24 +171,6 @@ class OptionsTool() : AbstractTool() {
 
         override fun run() {
             fileOptions.removeOption(option)
-            fileOptions.save()
-        }
-    }
-
-    open class EditIncludesTask(val fileOptions: FileOptions)
-        : AbstractTask() {
-
-        override val taskD = TaskDescription("Edit Includes")
-
-        val includes = MultipleParameter("includes") { StringParameter.factory() }
-
-        init {
-            taskD.addParameters(includes)
-        }
-
-        override fun run() {
-            fileOptions.includes.clear()
-            fileOptions.includes.addAll(includes.value)
             fileOptions.save()
         }
     }

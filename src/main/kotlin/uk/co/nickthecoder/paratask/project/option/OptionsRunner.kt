@@ -77,11 +77,10 @@ open class OptionsRunner(val tool: Tool) {
             is Task -> {
                 processTask(result, prompt, refresh)
             }
-            is String -> {
-                println(result)
-            }
             else -> {
-                // Do nthing
+                if (refresh) {
+                    tool.taskRunner.run()
+                }
             }
         }
     }

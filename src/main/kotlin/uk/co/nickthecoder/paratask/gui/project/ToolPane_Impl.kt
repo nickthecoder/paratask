@@ -13,7 +13,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, StackPane() {
 
-    private val resultsTabs = mutableListOf<ResultsTab>()
+    //private val resultsTabs = mutableListOf<ResultsTab>()
 
     private val tabPane = TabPane()
 
@@ -39,36 +39,61 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun resultsTool(): Tool {
-        val index = tabPane.selectionModel.selectedIndex
-        if (index < 0 || index >= resultsTabs.size) {
-            return tool
+        val tab = tabPane.selectionModel.selectedItem
+        if (tab is ResultsTab) {
+            return tab.results.tool
         } else {
-            return resultsTabs[index].results.tool
+            return tool
         }
     }
 
-    private fun removeOldResults() {
-        for (resultsTab in resultsTabs) {
-            resultsTab.results.detaching()
-            tabPane.tabs.remove(resultsTab)
+    private fun removeOldResults(oldResultsList: List<Results>): Int {
+        var index = 0
+
+        println("Removing some results ${oldResultsList.size}")
+
+        // This is Order n squared, but n is small, so I won't bother optimising it!
+        for (oldResults in oldResultsList) {
+            val oldIndex = removeResults(oldResults)
+            if (oldIndex >= 0) {
+                index = oldIndex
+            }
         }
+        return index
     }
 
-    override fun updateResults(vararg allResults: Results) {
-        removeOldResults()
+    private fun removeResults(results: Results): Int {
+        var i: Int = 0
+        for (tab in tabPane.tabs) {
+            if (tab is ResultsTab && tab.results === results) {
+                tabPane.tabs.removeAt(i)
+                return i
+            }
+            i++
+        }
+        return -1
+    }
 
-        var i = 0
-        for (results in allResults) {
+    override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
+        val replaceIndex = removeOldResults(oldResultsList)
+
+        var index = replaceIndex
+        for (results in resultsList) {
             children.add(results.node) // Temporarily add to StackPane. A bodge to ensure parent is set
             val resultsTab = ResultsTab(results)
-            resultsTabs.add(resultsTab)
-            tabPane.tabs.add(i, resultsTab)
-            i++
+            tabPane.tabs.add(index, resultsTab)
+            index++
             results.attached(this)
         }
         tabPane.selectionModel.select(0)
-        if (allResults.size > 0) {
-            allResults[0].focus()
+        println("New tab index ${replaceIndex}")
+        if (replaceIndex >= 0 && replaceIndex < tabPane.tabs.size) {
+            val tab = tabPane.tabs[replaceIndex]
+            if (tab is ResultsTab) {
+                tabPane.selectionModel.select(replaceIndex)
+                println("Focusing on ${tab.results}")
+                tab.results.focus()
+            }
         }
     }
 
@@ -87,7 +112,7 @@ class ToolPane_Impl(override var tool: Tool)
         parametersPane.detaching()
         tool.detaching()
         parametersPane.detaching()
-        removeOldResults()
+        removeOldResults(tool.resultsList)
         ParaTaskApp.logAttach("ToolPane detached")
     }
 

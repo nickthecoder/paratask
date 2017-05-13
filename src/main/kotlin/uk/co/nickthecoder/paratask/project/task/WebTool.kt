@@ -7,6 +7,7 @@ import javafx.concurrent.Worker.State
 import javafx.scene.web.WebView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.AbstractResults
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 
@@ -27,11 +28,8 @@ class WebTool() : AbstractTool() {
     override fun run() {
     }
 
-    override fun updateResults() {
-        val results = WebResults(this, addressP.value)
+    override fun createResults(): List<Results> = singleResults(WebResults(this, addressP.value))
 
-        toolPane?.updateResults(results)
-    }
 }
 
 class WebResults(override val tool: WebTool, var address: String) : AbstractResults(tool, "Web Page") {

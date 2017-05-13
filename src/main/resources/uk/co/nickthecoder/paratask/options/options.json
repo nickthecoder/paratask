@@ -35,34 +35,6 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
-        },
-        {
-            "type": "groovy",
-            "code": "inc",
-            "label": "Edit Includes",
-            "script": "tool.taskEditIncludes()",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "aliases": [
-                "+inc"
-            ]
-        },
-        {
-            "type": "groovy",
-            "code": "inc",
-            "label": "Edit Includes",
-            "script": "tool.taskEditIncludes()",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "aliases": [
-                "+inc"
-            ]
         }
     ]
 }

@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
@@ -12,7 +13,6 @@ import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasFile
-import uk.co.nickthecoder.paratask.util.ListSink
 import java.io.File
 
 // TODO Allow results to be filtered based on index and work?
@@ -69,9 +69,7 @@ class GitTool : AbstractTool() {
         }
     }
 
-    override fun updateResults() {
-        toolPane?.updateResults(GitStatusResults(this, list))
-    }
+    override fun createResults(): List<Results> = singleResults(GitStatusResults(this, list))
 
 
     inner class GitStatusLine(

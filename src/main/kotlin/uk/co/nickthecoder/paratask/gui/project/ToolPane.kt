@@ -13,7 +13,7 @@ interface ToolPane {
 
     fun resultsTool(): Tool
 
-    fun updateResults(vararg allResults: Results)
+    fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>)
 
     fun attached(halfTab: HalfTab)
 
