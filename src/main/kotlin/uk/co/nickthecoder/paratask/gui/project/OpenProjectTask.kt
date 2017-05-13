@@ -54,10 +54,16 @@ class OpenProjectTask() : AbstractTask() {
 
     private fun load(projectFile: File) {
 
-        val projectWindow = ProjectWindow()
-        projectWindow.placeOnStage(Stage())
-
         val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
+
+        val title = jroot.getString("title", "")
+        val width = jroot.getDouble("width", 600.0)
+        val height = jroot.getDouble("height", 600.0)
+
+        val projectWindow = ProjectWindow(title, width, height)
+        projectWindow.projectFile = projectFile
+        projectWindow.title = jroot.getString("title", "")
+        projectWindow.placeOnStage(Stage())
 
         val jtabs = jroot.get("tabs")
         jtabs?.let {

@@ -1,5 +1,7 @@
+Project to save the name of the project (to appear in the title bar)
+    as well as the window size
 
-IncludesTool - "+" option isn't implemented
+Table based GrepTool
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?

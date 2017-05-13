@@ -8,20 +8,27 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.project.Preferences
+import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 
 class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
-    override val taskD = TaskDescription("Open Project")
+    override val taskD = TaskDescription("Save Project")
 
-    val directory = FileParameter("projectsDirectory", mustExist = null, expectFile = false, value = projectWindow.projectFile)
+    val directory = FileParameter("projectsDirectory", mustExist = null, expectFile = false)
 
     val name = StringParameter("name")
 
+    val title = StringParameter("title")
+
     init {
-        taskD.addParameters(directory, name)
+        taskD.addParameters(directory, name, title)
+        directory.value = projectWindow.projectFile?.parentFile ?: Preferences.projectsDirectory
+        name.value = projectWindow.projectFile?.nameWithoutExtension() ?: ""
+        title.value = projectWindow.title
     }
 
     override fun run() {
@@ -34,6 +41,7 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
 /*
  Example JSON file :
 {
+     "title" : "My Project",
      "tabs" : [
          {
              "left" = {
@@ -51,6 +59,10 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
 
     fun save(projectFile: File) {
         val jroot = JsonObject()
+
+        jroot.set("title", title.value)
+        jroot.set("width", projectWindow.scene.width)
+        jroot.set("height", projectWindow.scene.height)
 
         val jtabs = JsonArray()
         for (tab in projectWindow.tabs.listTabs()) {

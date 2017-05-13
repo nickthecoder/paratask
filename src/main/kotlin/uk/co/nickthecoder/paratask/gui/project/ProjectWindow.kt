@@ -16,13 +16,15 @@ import uk.co.nickthecoder.paratask.project.task.WebTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.io.File
 
-class ProjectWindow() {
+class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 600.0) {
 
-    var projectFile: File = Preferences.projectsDirectory
+    var projectFile: File? = null
 
     private val borderPane = BorderPane()
 
-    val scene = Scene(borderPane)
+    val scene = Scene(borderPane, width, height)
+
+    private var stage: Stage? = null
 
     val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
@@ -30,7 +32,11 @@ class ProjectWindow() {
 
     private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
+    var title: String = ""
+
     init {
+        this.title = title
+
         with(borderPane) {
             center = tabs as Node
             top = toolBar
@@ -63,12 +69,12 @@ class ProjectWindow() {
     }
 
     fun placeOnStage(stage: Stage) {
-
-
         ParaTaskApp.style(scene)
 
+        stage.title = title
         stage.setScene(scene)
         AutoExit.show(stage)
+        this.stage = stage
     }
 
     fun addTool(tool: Tool): ProjectTab {
@@ -84,6 +90,7 @@ class ProjectWindow() {
     fun onOpenProject() {
         TaskPrompter(OpenProjectTask()).placeOnStage(Stage())
     }
+
 
     fun onSaveProject() {
         TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
