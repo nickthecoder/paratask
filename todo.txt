@@ -1,15 +1,22 @@
-    Editor - find (simple non-regex will be good enough to begin with)
-
-    Load/Save project files
-
-    Run the install task, and run from ~/bin using installed paths.
-
 OptionsTool is clunky...
     Cannot edit IncludesTool's options when there are no includes
         Cannot run ANY non-row options on the IncludesTool
+    Solution :
+        Results to have a Tool
+        Options field to use the tool of the current results tab.
+
     When the IncludesTool is refreshed, it does nothing???
         SharedToolPane.updateResults() does nothing.
         
+    
+        
+Editor - find (simple non-regex will be good enough to begin with)
+
+Run the install task, and run from ~/bin using installed paths.
+
+Table Options Menu
+    Don't show row options when selection is empty
+    Show non-row option (in sub-menu when there are row options)
 
 Editor to work with grep to highlight matches (using regex and fixed patterns)
 

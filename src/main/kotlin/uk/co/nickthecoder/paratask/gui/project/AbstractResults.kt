@@ -1,6 +1,12 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-abstract class AbstractResults(override val label: String = "Results") : Results {
+import uk.co.nickthecoder.paratask.project.Tool
+
+abstract class AbstractResults(
+        override val tool: Tool,
+        override val label: String = "Results")
+
+    : Results {
 
     open override fun attached(toolPane: ToolPane) {}
 

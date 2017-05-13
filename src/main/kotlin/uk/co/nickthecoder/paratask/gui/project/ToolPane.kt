@@ -11,7 +11,9 @@ interface ToolPane {
 
     val parametersPane: ParametersPane
 
-    fun updateResults( vararg allResults: Results)
+    fun resultsTool(): Tool
+
+    fun updateResults(vararg allResults: Results)
 
     fun attached(halfTab: HalfTab)
 

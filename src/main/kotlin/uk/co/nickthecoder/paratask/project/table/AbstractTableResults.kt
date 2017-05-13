@@ -22,9 +22,9 @@ import uk.co.nickthecoder.paratask.project.option.Option
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
 import uk.co.nickthecoder.paratask.project.option.RowOptionsRunner
 
-abstract class AbstractTableResults<R : Any>(val tool: Tool, val list: List<R>, label: String = "Results") :
+abstract class AbstractTableResults<R : Any>(tool: Tool, val list: List<R>, label: String = "Results") :
 
-        AbstractResults(label), TableResults<R> {
+        AbstractResults(tool, label), TableResults<R> {
 
     val data = WrappedList<R>(list)
 

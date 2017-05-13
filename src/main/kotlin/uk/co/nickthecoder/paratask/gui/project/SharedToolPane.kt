@@ -12,6 +12,8 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
     override val parametersPane: ParametersPane
         get() = shared.parametersPane
 
+    override fun resultsTool(): Tool = shared.resultsTool()
+
     override fun updateResults(vararg allResults: Results) {}
 
     override fun attached(halfTab: HalfTab) {}

@@ -23,7 +23,7 @@ abstract class AbstractTerminalTool(
         val command = createCommand()
 
         runAndWait {
-            val results = TerminalResults(command, showCommand = showCommand, allowInput = allowInput)
+            val results = TerminalResults(this, command, showCommand = showCommand, allowInput = allowInput)
 
             toolPane?.updateResults(results)
 

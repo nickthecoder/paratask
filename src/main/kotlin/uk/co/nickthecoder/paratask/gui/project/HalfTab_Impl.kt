@@ -143,7 +143,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     fun optionsFieldKeyPressed(event: KeyEvent) {
         var done = false
-        val runner = toolPane.tool.optionsRunner
+        val tool = toolPane.resultsTool()
+        val runner = tool.optionsRunner
 
         if (Actions.OPTION_RUN.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = false, newTab = event.isShiftDown)
@@ -167,7 +168,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     }
 
     private fun onOptionsContextMenu() {
-        toolPane.tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
+        val tool = toolPane.resultsTool()
+        tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
         optionsContextMenu.show(optionsField, Side.BOTTOM, 0.0, 0.0)
     }
 }

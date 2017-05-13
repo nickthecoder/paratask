@@ -43,7 +43,9 @@ class EditorTool() : AbstractTool() {
         }
     }
 
-    class EditorResults(val tool: EditorTool, val filename: File?) : AbstractResults(filename?.name ?: "New File") {
+    class EditorResults(override val tool: EditorTool, val filename: File?)
+
+        : AbstractResults(tool, filename?.name ?: "New File") {
 
         override val node = TextArea()
 

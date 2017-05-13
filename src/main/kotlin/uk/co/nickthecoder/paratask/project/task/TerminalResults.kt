@@ -5,15 +5,17 @@ import uk.co.nickthecoder.paratask.gui.SimpleTerminal
 import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.Stoppable
+import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
 
 class TerminalResults(
+        tool: Tool,
         val command: Command,
         val showCommand: Boolean = true,
         val allowInput: Boolean = false)
 
-    : AbstractResults("Terminal"), Stoppable {
+    : AbstractResults(tool, "Terminal"), Stoppable {
 
     val exec = Exec(command)
 

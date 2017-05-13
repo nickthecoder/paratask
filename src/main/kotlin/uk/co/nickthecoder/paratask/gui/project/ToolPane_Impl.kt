@@ -38,6 +38,15 @@ class ToolPane_Impl(override var tool: Tool)
         tabPane.getTabs().addAll(parametersTab)
     }
 
+    override fun resultsTool(): Tool {
+        val index = tabPane.selectionModel.selectedIndex
+        if (index < 0 || index >= resultsTabs.size) {
+            return tool
+        } else {
+            return resultsTabs[index].results.tool
+        }
+    }
+
     private fun removeOldResults() {
         for (resultsTab in resultsTabs) {
             resultsTab.results.detaching()
