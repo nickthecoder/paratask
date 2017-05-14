@@ -22,7 +22,7 @@ class GitTool : AbstractTool() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
-    val directory = FileParameter("directory", value = File("/home/nick/tmp/test"), expectFile = false)
+    val directory = FileParameter("directory", expectFile = false)
 
     private var list = mutableListOf<GitStatusLine>()
 

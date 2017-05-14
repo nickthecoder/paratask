@@ -2,7 +2,6 @@ package uk.co.nickthecoder.paratask.project.table
 
 import javafx.scene.control.cell.TextFieldTableCell
 import uk.co.nickthecoder.paratask.util.uncamel
-import java.math.BigDecimal
 import java.text.DecimalFormat
 
 open class SizeColumn<R>(
@@ -35,13 +34,13 @@ open class SizeColumn<R>(
 
         private val format1 = DecimalFormat("#,###.0")
         private val format2 = DecimalFormat("#,###")
-        private val maxNoDecimals = BigDecimal(100.0)
+        private val maxNoDecimals = 100.0
 
         fun format(size: Long): String {
-            val limit = BigDecimal(999)
-            val scale = BigDecimal(1000)
+            val limit = 999.0
+            val scale = 1000.0
             var i = 0
-            var value = BigDecimal(size)
+            var value: Double = size.toDouble()
             while (value > limit) {
                 value = value / scale
                 i++

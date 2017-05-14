@@ -42,7 +42,7 @@ class FileField : LabelledField {
             }
         })
 
-        textField.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
+        textField.addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
         textField.addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
         textField.addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
 

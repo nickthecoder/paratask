@@ -50,7 +50,7 @@ object Actions {
 
     // FileField
     val UP_DIRECTORY = Action("directory.up", KeyCode.UP, alt = true)
-    val COMPLETE_FILE = Action("file.complete", KeyCode.RIGHT, alt = true)
+    val COMPLETE_FILE = Action("file.complete", KeyCode.DOWN, alt = true)
 
     // General
     val CONTEXT_MENU = Action("context.menu", KeyCode.CONTEXT_MENU)
