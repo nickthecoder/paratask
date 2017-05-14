@@ -2,8 +2,11 @@ package uk.co.nickthecoder.paratask.project.option
 
 import javafx.event.ActionEvent
 import javafx.scene.control.ContextMenu
+import javafx.scene.control.CustomMenuItem
+import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
+import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
@@ -30,7 +33,7 @@ open class OptionsRunner(val tool: Tool) {
                         needSep = false
                         contextMenu.getItems().add(SeparatorMenuItem())
                     }
-                    val menuItem = MenuItem(option.label)
+                    val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { tool.optionsRunner.runNonRow(option) }
                     contextMenu.getItems().add(menuItem)
                     added = true
@@ -38,6 +41,17 @@ open class OptionsRunner(val tool: Tool) {
             }
             needSep = needSep || added
         }
+
+    }
+
+    protected fun createMenuItem(option: Option): MenuItem {
+        val box = BorderPane()
+        val label = Label(option.label)
+        label.minWidth = 250.0
+        box.center = label
+        box.right = Label("  " + option.code)
+        val item = CustomMenuItem(box, true)
+        return item
     }
 
     fun runNonRow(code: String, prompt: Boolean = false, newTab: Boolean = false): Boolean {

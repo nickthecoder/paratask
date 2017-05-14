@@ -2,13 +2,14 @@ package uk.co.nickthecoder.paratask.project.option
 
 import javafx.event.ActionEvent
 import javafx.scene.control.ContextMenu
+import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import uk.co.nickthecoder.paratask.project.Tool
 
 class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
 
-    fun buildContextMenu(contextMenu: ContextMenu, rows : List<R>) {
+    fun buildContextMenu(contextMenu: ContextMenu, rows: List<R>) {
 
         contextMenu.getItems().clear()
 
@@ -25,7 +26,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
                         needSep = false
                         contextMenu.getItems().add(SeparatorMenuItem())
                     }
-                    val menuItem = MenuItem(option.label)
+                    val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) {
                         runRows(option, rows)
                     }
@@ -34,6 +35,16 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
                 }
             }
             needSep = needSep || added
+        }
+
+        if (contextMenu.getItems().count() > 0) {
+            val menu = Menu("Non-Row Options")
+            val temp = ContextMenu()
+            createNonRowOptionsMenu(temp)
+            menu.getItems().addAll(temp.getItems())
+            contextMenu.getItems().add(0, menu)
+        } else {
+            createNonRowOptionsMenu(contextMenu)
         }
     }
 
