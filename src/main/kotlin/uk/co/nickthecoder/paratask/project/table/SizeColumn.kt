@@ -31,9 +31,11 @@ open class SizeColumn<R>(
     }
 
     companion object {
-        val units = listOf<String>("bytes", "kB", "MB", "GB", "TB", "PB")
+        private val units = listOf<String>("bytes", "kB", "MB", "GB", "TB", "PB")
 
-        val format = DecimalFormat("#,###.0")
+        private val format1 = DecimalFormat("#,###.0")
+        private val format2 = DecimalFormat("#,###")
+        private val maxNoDecimals = BigDecimal(100.0)
 
         fun format(size: Long): String {
             val limit = BigDecimal(999)
@@ -44,6 +46,7 @@ open class SizeColumn<R>(
                 value = value / scale
                 i++
             }
+            val format = if (i == 0 || value > maxNoDecimals) format2 else format1
             return format.format(value) + " " + units[i]
         }
     }

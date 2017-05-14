@@ -8,15 +8,19 @@ import uk.co.nickthecoder.paratask.util.uncamel
 
 open class Column<R, T>(
         val name: String,
+        width: Double? = null,
         override val label: String = name.uncamel(),
-        val getter: (R) -> T)
+        val getter: (R) -> T
 
-    : TableColumn<WrappedRow<R>, T>(label), Labelled {
+) : TableColumn<WrappedRow<R>, T>(label), Labelled {
 
     init {
         @Suppress("UNCHECKED_CAST")
         setCellValueFactory { p -> p.getValue().observable(name, getter) as ObservableValue<T> }
         setEditable(false)
+        if (width != null) {
+            prefWidth = width
+        }
     }
 }
 

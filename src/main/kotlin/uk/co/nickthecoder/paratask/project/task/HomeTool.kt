@@ -18,7 +18,7 @@ class HomeTool() : AbstractTool() {
     companion object {
         val toolList = mutableListOf<Tool>(
                 HomeTool(),
-                DirectoryTool(), PlacesTool(),
+                DirectoryTool(), DirectoryTreeTool(), PlacesTool(),
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),

@@ -17,15 +17,22 @@ class ParaTaskApp() : Application() {
     companion object {
         lateinit var task: Task
 
+        private val imageMap = mutableMapOf<String, Image?>()
+
         fun style(scene: Scene) {
             val resource = ParaTaskApp::class.java.getResource("paratask.css")
             scene.getStylesheets().add(resource.toExternalForm())
         }
 
         fun imageResource(name: String): Image? {
-            val imageStream = ParaTaskApp::class.java.getResourceAsStream(name)
-            return if (imageStream == null) null else Image(imageStream)
-
+            val image = imageMap.get(name)
+            if (image == null) {
+                val imageStream = ParaTaskApp::class.java.getResourceAsStream(name)
+                val newImage = if (imageStream == null) null else Image(imageStream)
+                imageMap.put(name, newImage)
+                return newImage
+            }
+            return image
         }
 
         fun logAttach(@Suppress("UNUSED_PARAMETER") string: String) {

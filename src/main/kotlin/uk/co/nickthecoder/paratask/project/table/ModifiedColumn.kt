@@ -15,7 +15,7 @@ open class ModifiedColumn<R>(
         label: String = name.uncamel(),
         getter: (R) -> Long) :
 
-        Column<R, Long>(name = name, label = label, getter = getter) {
+        Column<R, Long>(name = name, label = label, getter = getter, width = 100.0) {
 
     init {
         setCellFactory { DateTableCell() }

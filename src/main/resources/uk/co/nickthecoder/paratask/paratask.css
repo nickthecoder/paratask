@@ -168,11 +168,14 @@
     -fx-padding: -4px 0 0 0;
 }
 
-.number.table-cell {
-    -fx-alignment: center-right;
+.path.table-cell {
+    -fx-text-overrun: leading-ellipsis;
 }
 
 .modified.table-cell,
+.number.table-cell {
+    -fx-alignment: center-right;
+}
 
 .table-row-cell.git-untracked > .table-cell {
     -fx-text-fill: #800;

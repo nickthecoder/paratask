@@ -7,17 +7,19 @@ import java.io.File
 
 class BaseFileColumn<R>(
         name: String,
-        label: String = name.uncamel(),
         base: File,
-        val maxLength: Int = Int.MAX_VALUE,
+        width: Double? = null,
+        label: String = name.uncamel(),
         getter: (R) -> File) :
 
-        Column<R, File>(name = name, label = label, getter = getter) {
+        Column<R, File>(name = name, label = label, width = width, getter = getter) {
 
     val prefix = base.path + File.separatorChar
 
     init {
         setCellFactory { BaseFileTableCell() }
+        getStyleClass().add("path")
+
     }
 
     inner class BaseFileTableCell<R>() : TextFieldTableCell<R, File>() {
@@ -27,15 +29,13 @@ class BaseFileColumn<R>(
             if (empty || item == null) {
                 setText(null)
             } else {
-                var path = item.path
+                val path = item.path
                 if (path.startsWith(prefix)) {
                     setText(path.substring(prefix.length))
+                } else {
+                    setText(path)
                 }
-                if (path.length > maxLength) {
-                    path = "…" + path.substring(path.length - maxLength)
-                }
-                setText(path)
-                setTooltip(Tooltip(item.path))
+                setTooltip(Tooltip(path))
             }
         }
     }

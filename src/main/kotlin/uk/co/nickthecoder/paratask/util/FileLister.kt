@@ -107,7 +107,7 @@ class FileLister(
                     if (onlyFiles != true && (includeHidden || !subDirectory.isHidden)) {
                         result.add(subDirectory)
                     }
-                    listSingle(directory, level + 1)
+                    listSingle(subDirectory, level + 1)
                 }
                 for (file in sortedFiles) {
                     if (onlyFiles != false) {
@@ -148,7 +148,7 @@ class FileLister(
 
         }
 
-        if (extensions != null) {
+        if (extensions != null && extensions.size > 0) {
             if (!matchesExtensions(file, extensions)) {
                 return false
             }
