@@ -1,44 +1,26 @@
-Table based GrepTool
-
-Load/Save GroupParameter sub-class, which has a directory and a name.
-    Use on OpenProjectTask and SaveProjectTask
-    Later can have a list of file types
-    sub-params use the group's name as a suffix e.g. file-directory and file-name
+Run the install task, and run from ~/bin using installed paths.
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?
         When removing the last editor tab, remove the whole toolPane
         
 Editor - find (simple non-regex will be good enough to begin with)
-
-Run the install task, and run from ~/bin using installed paths.
-
-Table Options Menu
-    Don't show row options when selection is empty
-    Show non-row option (in sub-menu when there are row options)
-
-Editor to work with grep to highlight matches (using regex and fixed patterns)
+    Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Handle exceptions from running options
 
 Position focus when a tab (both kinds) is selected
 
-Tables to be full width
-    Set up column widths
-Tooltips for table columns
-
-Right click on options field and table row for a popup menu of the options
-
 Delete HidingSplitPane (use regular SplitPane) and just use the bodge to ensure parentage
 
 New Tools :
-    DirectoryTool
-    DirectoryTreeTool (recursive) - As a tree structure would be good!
-    PlacesTool
     PlacesChoices
     Disk usage
     Mount
     Groovy Tools - Lists groovy scripts in a directory, and allows them to be run.
+
+Table Column selection
+    http://stackoverflow.com/questions/27739833/adapt-tableview-menu-button
 
 Editor - Allow listeners when saving the file
     Use it in PlacesTool to refresh the list when editing.

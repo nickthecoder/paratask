@@ -3,11 +3,11 @@ package uk.co.nickthecoder.paratask.gui.project
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.SplitPane
 import javafx.scene.control.Tab
 import javafx.scene.image.ImageView
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.HidingSplitPane
 import uk.co.nickthecoder.paratask.project.Tool
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
@@ -20,14 +20,12 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
-    val empty: Node = Label("<empty>")
+    val splitPane = SplitPane(left as Node)
 
-    val stackPane = StackPane()
-
-    val hidingSplitPane = HidingSplitPane(stackPane, left as Node, empty, Orientation.HORIZONTAL)
+    val stackPane = StackPane(splitPane)
 
     init {
-        hidingSplitPane.showJustLeft()
+        splitPane.orientation = Orientation.HORIZONTAL
         setContent(stackPane)
         updateTab()
     }
@@ -65,8 +63,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val r = HalfTab_Impl(ToolPane_Impl(tool))
 
-        hidingSplitPane.right = r
-        hidingSplitPane.showBoth()
+        stackPane.children.add(r)
+        splitPane.items.add(r)
         r.attached(this)
         right = r
     }
@@ -91,10 +89,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
                 throw RuntimeException("Attempt to remove a toolPane not belonging to this tab.")
             }
         }
+        splitPane.items.clear()
         right = null
-        hidingSplitPane.right = empty
-        hidingSplitPane.left = left as Node
-        hidingSplitPane.showJustLeft()
+        splitPane.items.add(left as Node)
     }
 
     override fun split(tool: Tool) {
@@ -108,14 +105,13 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun splitToggle() {
-        if (right == null) {
-            split()
-        } else {
-            right = null
-            updateTab()
 
-            hidingSplitPane.showJustLeft()
+        right?.let {
+            remove(it.toolPane)
+            return
         }
+
+        split()
     }
 
     override fun duplicateTab() {

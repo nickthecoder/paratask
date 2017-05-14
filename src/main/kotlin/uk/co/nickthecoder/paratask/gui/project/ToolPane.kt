@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-import uk.co.nickthecoder.paratask.gui.HidingSplitPane
 import uk.co.nickthecoder.paratask.project.Tool
 
 interface ToolPane {
