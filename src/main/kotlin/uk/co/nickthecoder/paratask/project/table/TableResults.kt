@@ -61,25 +61,8 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
             tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
 
             tableView.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
-            rowFactory = Callback { createRow() }
+            rowFactory = Callback { tool.createRow() }
         }
-    }
-
-    fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
-
-    /**
-     * Allows rows to be styled. For example, GitTool colours the row based on the state of the file
-     */
-    inner class CustomTableRow() : TableRow<WrappedRow<R>>() {
-        override fun updateItem(wrappedRow: WrappedRow<R>?, empty: Boolean) {
-            super.updateItem(wrappedRow, empty)
-            if (!empty && wrappedRow != null) {
-                updateRow(this, wrappedRow.row)
-            }
-        }
-    }
-
-    open fun updateRow(tableRow: CustomTableRow, row: R) {
     }
 
     override fun focus() {

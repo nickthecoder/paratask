@@ -1,13 +1,13 @@
 package uk.co.nickthecoder.paratask.project.task
 
+import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
-import uk.co.nickthecoder.paratask.project.table.TableResults
+import uk.co.nickthecoder.paratask.project.table.WrappedRow
 import uk.co.nickthecoder.paratask.project.task.GitTool.GitStatusRow
 import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
@@ -76,10 +76,19 @@ class GitTool : AbstractTableTool<GitStatusRow>() {
         }
     }
 
-    override fun createResults(): List<Results> {
-        columns.clear()
-        createColumns()
-        return singleResults(GitStatusResults(this, list))
+    override fun updateRow(tableRow: TableRow<WrappedRow<GitStatusRow>>, row: GitStatusRow) {
+        val style = if (row.index == '?') {
+            "untracked"
+        } else if (row.work == 'M') {
+            "not-updated"
+        } else if (row.index == 'R') {
+            "renamed"
+        } else if (row.index == 'M') {
+            "updated"
+        } else {
+            "normal"
+        }
+        tableRow.getStyleClass().add("git-" + style)
     }
 
 
@@ -100,25 +109,6 @@ class GitTool : AbstractTableTool<GitStatusRow>() {
             } else {
                 path = filePath
             }
-        }
-    }
-
-
-    class GitStatusResults(tool: GitTool, list: List<GitStatusRow>) : TableResults<GitStatusRow>(tool, list) {
-
-        override fun updateRow(tableRow: CustomTableRow, row: GitStatusRow) {
-            val style = if (row.index == '?') {
-                "untracked"
-            } else if (row.work == 'M') {
-                "not-updated"
-            } else if (row.index == 'R') {
-                "renamed"
-            } else if (row.index == 'M') {
-                "updated"
-            } else {
-                "normal"
-            }
-            tableRow.getStyleClass().add("git-" + style)
         }
     }
 }
