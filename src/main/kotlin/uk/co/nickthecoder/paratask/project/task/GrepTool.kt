@@ -1,13 +1,12 @@
 package uk.co.nickthecoder.paratask.project.task
 
-import uk.co.nickthecoder.paratask.gui.project.Results
-import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.Stoppable
-import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.project.table.FileNameColumn
 import uk.co.nickthecoder.paratask.project.table.NumberColumn
+import uk.co.nickthecoder.paratask.project.task.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.HasFile
@@ -16,11 +15,9 @@ import java.io.File
 /**
  * Converts the text output from GrepTask's into a List, so that the results can be displayed as a table.
  */
-class GrepTool : AbstractTool(), Stoppable {
+class GrepTool : AbstractTableTool<GrepRow>(), Stoppable {
 
     val grepTask = GrepTask()
-
-    val list = mutableListOf<GrepRow>()
 
     private var exec: Exec? = null
 
@@ -29,6 +26,13 @@ class GrepTool : AbstractTool(), Stoppable {
     init {
         grepTask.contextLinesP.hidden = true
         grepTask.additionalOptionsP.hidden = true
+    }
+
+    override fun createColumns() {
+        columns.add(FileNameColumn<GrepRow>("name") { it.file })
+        columns.add(NumberColumn<GrepRow, Int>("lineNumber", label = "#") { it.lineNumber })
+        columns.add(Column<GrepRow, String>("line") { it.line })
+
     }
 
     override fun run() {
@@ -61,7 +65,6 @@ class GrepTool : AbstractTool(), Stoppable {
         exec?.kill()
     }
 
-    override fun createResults(): List<Results> = singleResults(GrepToolResults())
 
     override fun check() {
         grepTask.check()
@@ -71,14 +74,6 @@ class GrepTool : AbstractTool(), Stoppable {
 
     }
 
-    inner class GrepToolResults : AbstractTableResults<GrepRow>(this@GrepTool, list) {
-
-        init {
-            columns.add(FileNameColumn<GrepRow>("name") { it.file })
-            columns.add(NumberColumn<GrepRow, Int>("lineNumber", label = "#") { it.lineNumber })
-            columns.add(Column<GrepRow, String>("line") { it.line })
-        }
-    }
 }
 
 fun main(args: Array<String>) {

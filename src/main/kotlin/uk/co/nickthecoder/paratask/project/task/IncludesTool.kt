@@ -6,15 +6,12 @@ import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
-import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.Column
 
-class IncludesTool() : AbstractTool() {
-
-    private val list = mutableListOf<String>()
+class IncludesTool() : AbstractTableTool<String>() {
 
     override val taskD = TaskDescription("includes", description = "Work with Included Options")
 
@@ -24,6 +21,10 @@ class IncludesTool() : AbstractTool() {
 
     init {
         taskD.addParameters(optionsNameP, directoryP)
+    }
+
+    override fun createColumns() {
+        columns.add(Column<String, String>("include") { it })
     }
 
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
@@ -43,8 +44,6 @@ class IncludesTool() : AbstractTool() {
         println("Updated IncludesTool ${resultsList}")
     }
 
-    override fun createResults(): List<Results> = singleResults(IncludesResults(this))
-
     fun taskEditIncludes(): EditIncludesTask {
         return EditIncludesTask(getFileOptions())
     }
@@ -56,12 +55,6 @@ class IncludesTool() : AbstractTool() {
         fileOptions.save()
     }
 
-    class IncludesResults(tool: IncludesTool) : AbstractTableResults<String>(tool, tool.list, "Includes") {
-
-        init {
-            columns.add(Column<String, String>("include") { it })
-        }
-    }
 
     open class EditIncludesTask(val fileOptions: FileOptions)
         : AbstractTask() {

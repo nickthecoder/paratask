@@ -6,8 +6,8 @@
         {
             "type": "groovy",
             "code": ".",
-            "label": "Work with Directory",
-            "script": "tool.directory.value = row.file; tool",
+            "label": "Open File / Directory",
+            "script": "if ( row.file.isDirectory() ) { tool.directoryP.value = row.file; tool } else { desktop.open( row.file ) }",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,

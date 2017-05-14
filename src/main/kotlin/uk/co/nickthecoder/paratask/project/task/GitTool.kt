@@ -3,11 +3,12 @@ package uk.co.nickthecoder.paratask.project.task
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
-import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.CommandLineTool
-import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
+import uk.co.nickthecoder.paratask.project.table.TableResults
+import uk.co.nickthecoder.paratask.project.task.GitTool.GitStatusRow
 import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
@@ -18,16 +19,22 @@ import java.io.File
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool : AbstractTool() {
+class GitTool : AbstractTableTool<GitStatusRow>() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
     val directory = FileParameter("directory", expectFile = false)
 
-    private var list = mutableListOf<GitStatusLine>()
-
     init {
         taskD.addParameters(directory)
+    }
+
+    override fun createColumns() {
+        columns.add(Column<GitStatusRow, Char>("index") { it.index })
+        columns.add(Column<GitStatusRow, Char>("work") { it.work })
+        columns.add(Column<GitStatusRow, String>("name") { it.file.name })
+        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory.value!!) { it.file })
+        columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
     }
 
     override fun run() {
@@ -57,22 +64,26 @@ class GitTool : AbstractTool() {
         }
         val file = File(directory.value, path)
 
-        val gsl = GitStatusLine(file, index = index, work = work, renamed = renamed)
-        list.add(gsl)
+        val gsr = GitStatusRow(file, index = index, work = work, renamed = renamed)
+        list.add(gsr)
     }
 
     fun addDirectory(directory: File, index: Char, work: Char) {
         val fileLister = FileLister(depth = 10, includeHidden = true)
         val listing = fileLister.listFiles(directory)
         for (file in listing) {
-            list.add(GitStatusLine(file, index = index, work = work))
+            list.add(GitStatusRow(file, index = index, work = work))
         }
     }
 
-    override fun createResults(): List<Results> = singleResults(GitStatusResults(this, list))
+    override fun createResults(): List<Results> {
+        columns.clear()
+        createColumns()
+        return singleResults(GitStatusResults(this, list))
+    }
 
 
-    inner class GitStatusLine(
+    inner class GitStatusRow(
             override val file: File,
             val index: Char,
             val work: Char,
@@ -93,17 +104,9 @@ class GitTool : AbstractTool() {
     }
 
 
-    class GitStatusResults(tool: GitTool, list: List<GitStatusLine>) : AbstractTableResults<GitStatusLine>(tool, list) {
+    class GitStatusResults(tool: GitTool, list: List<GitStatusRow>) : TableResults<GitStatusRow>(tool, list) {
 
-        init {
-            columns.add(Column<GitStatusLine, Char>("index") { it.index })
-            columns.add(Column<GitStatusLine, Char>("work") { it.work })
-            columns.add(Column<GitStatusLine, String>("name") { it.file.name })
-            columns.add(BaseFileColumn<GitStatusLine>("path", base = tool.directory.value!!) { it.file })
-            columns.add(Column<GitStatusLine, String?>("renamedFrom") { it.renamed })
-        }
-
-        override fun updateRow(tableRow: CustomTableRow, row: GitStatusLine) {
+        override fun updateRow(tableRow: CustomTableRow, row: GitStatusRow) {
             val style = if (row.index == '?') {
                 "untracked"
             } else if (row.work == 'M') {

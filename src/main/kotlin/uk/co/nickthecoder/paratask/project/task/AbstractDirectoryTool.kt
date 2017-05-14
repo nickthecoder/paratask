@@ -7,8 +7,7 @@ import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.project.AbstractTool
-import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.project.table.FileNameColumn
@@ -21,7 +20,7 @@ import uk.co.nickthecoder.paratask.util.homeDirectory
 
 abstract class AbstractDirectoryTool(name: String, description: String)
 
-    : AbstractTool(), HasDirectory {
+    : AbstractTableTool<WrappedFile>(), HasDirectory {
 
 
     override val taskD = TaskDescription(name = name, description = description)
@@ -40,15 +39,23 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val includeBaseP = BooleanParameter("includeBase", value = false)
 
-
-    var list = mutableListOf<WrappedFile>()
-
     override val directory
         get() = directoryP.value!!
 
 
     init {
         taskD.addParameters(directoryP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP)
+    }
+
+    override fun createColumns() {
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
+        if (isTree()) {
+            columns.add(BaseFileColumn<WrappedFile>("path", base = directoryP.value!!) { it.file })
+        } else {
+            columns.add(FileNameColumn<WrappedFile>("name") { it.file })
+        }
+        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
+        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
 
     override fun run() {
@@ -65,21 +72,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         list.addAll(lister.listFiles(directoryP.value!!).map { WrappedFile(it) })
     }
 
-    override fun createResults(): List<DirectoryResults> = listOf<DirectoryResults>(DirectoryResults())
 
     abstract fun isTree(): Boolean
 
-    inner class DirectoryResults() : AbstractTableResults<WrappedFile>(this@AbstractDirectoryTool, list) {
-
-        init {
-            columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
-            if (isTree()) {
-                columns.add(BaseFileColumn<WrappedFile>("path", base = directoryP.value!!) { it.file })
-            } else {
-                columns.add(FileNameColumn<WrappedFile>("name") { it.file })
-            }
-            columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
-            columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
-        }
-    }
 }

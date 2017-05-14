@@ -9,19 +9,16 @@ import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.project.AbstractTool
 import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
-import uk.co.nickthecoder.paratask.project.table.AbstractTableResults
+import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BooleanColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 
-class OptionsTool() : AbstractTool() {
-
-    private val results = mutableListOf<Option>()
+class OptionsTool() : AbstractTableTool<Option>() {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -47,6 +44,18 @@ class OptionsTool() : AbstractTool() {
         includesTool = IncludesTool()
     }
 
+    override fun createColumns() {
+        columns.add(Column<Option, String>("code") { it.code })
+        columns.add(Column<Option, String>("label") { it.label })
+        columns.add(BooleanColumn<Option>("isRow") { it.isRow })
+        columns.add(BooleanColumn<Option>("isMultiple") { it.isMultiple })
+        columns.add(BooleanColumn<Option>("refresh") { it.refresh })
+        columns.add(BooleanColumn<Option>("newTab") { it.newTab })
+        columns.add(BooleanColumn<Option>("prompt") { it.prompt })
+        columns.add(Column<Option, String>("script") { if (it is GroovyOption) it.script else "" })
+
+    }
+
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
@@ -55,22 +64,16 @@ class OptionsTool() : AbstractTool() {
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
     override fun run() {
-        results.clear()
+        list.clear()
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
         for (option in optionsFile.listOptions()) {
-            results.add(option)
+            list.add(option)
         }
 
         includesTool.optionsNameP.value = optionsNameP.value
         includesTool.directoryP.value = directoryP.value
         includesTool.run()
-    }
-
-    override fun createResults(): List<Results> {
-        val result = mutableListOf<Results>(OptionsResults(this))
-        //result.addAll(includesTool.createResults())
-        return result
     }
 
     override fun updateResults() {
@@ -88,20 +91,6 @@ class OptionsTool() : AbstractTool() {
 
     fun taskDelete(option: Option): DeleteOptionTask {
         return DeleteOptionTask(getFileOptions(), option)
-    }
-
-    class OptionsResults(tool: OptionsTool) : AbstractTableResults<Option>(tool, tool.results, "Options") {
-
-        init {
-            columns.add(Column<Option, String>("code") { it.code })
-            columns.add(Column<Option, String>("label") { it.label })
-            columns.add(BooleanColumn<Option>("isRow") { it.isRow })
-            columns.add(BooleanColumn<Option>("isMultiple") { it.isMultiple })
-            columns.add(BooleanColumn<Option>("refresh") { it.refresh })
-            columns.add(BooleanColumn<Option>("newTab") { it.newTab })
-            columns.add(BooleanColumn<Option>("prompt") { it.prompt })
-            columns.add(Column<Option, String>("script") { if (it is GroovyOption) it.script else "" })
-        }
     }
 
 

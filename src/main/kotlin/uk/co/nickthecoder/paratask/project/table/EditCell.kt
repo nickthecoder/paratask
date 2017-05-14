@@ -15,7 +15,7 @@ import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.Actions
 
 public class EditCell<S, T>(
-        val tableResults: AbstractTableResults<*>,
+        val tableResults: TableResults<*>,
         val converter: StringConverter<T>)
 
     : TableCell<S, T>() {
