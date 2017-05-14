@@ -20,11 +20,13 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
-    val splitPane = SplitPane(left as Node)
+    val splitPane = SplitPane()
 
     val stackPane = StackPane(splitPane)
 
     init {
+        stackPane.children.add( left as Node)
+        splitPane.items.add(left as Node)
         splitPane.orientation = Orientation.HORIZONTAL
         setContent(stackPane)
         updateTab()

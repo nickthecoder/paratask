@@ -25,10 +25,9 @@ Table Column selection
 Editor - Allow listeners when saving the file
     Use it in PlacesTool to refresh the list when editing.
 
-    
-Listen to the directories on the options path, and clear any cache when a file changes.
 
-A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
+
+
 
 StringListParameter
     trim : Boolean
@@ -36,7 +35,14 @@ StringListParameter
     
     Renderes as a TextArea
 
-    Will use this for includes as well as command line options
+    Can use this for includes as well as command line options
+
+
+
+
+Listen to the directories on the options path, and clear any cache when a file changes.
+
+A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 
 Options which work in the editor
     e.g. remove trailing spaces, convert tabs to spaces
@@ -60,8 +66,6 @@ Task and Tool are in two different packages. Should they be?
 
 ProjectWindow to detach all tabs when it is closed
     (so that terminals and other tools can clean up)
-
-Simple Text Editor
 
 WebTool to allow for multiple web pages.
 

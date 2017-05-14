@@ -5,12 +5,15 @@ import javafx.scene.Node
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.control.TextField
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
+import uk.co.nickthecoder.paratask.gui.DragFiles
+import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.util.FileLister
 import java.io.File
@@ -26,31 +29,43 @@ class FileField : LabelledField {
 
     val textField = TextField()
 
+    val icon = ImageView(ParaTaskApp.imageResource("filetypes/file.png"))
+
     val contextMenu = ContextMenu()
 
     private fun createControl(): Node {
 
-        textField.text = parameter.stringValue
+        with(textField) {
+            text = parameter.stringValue
+            textProperty().bindBidirectional(parameter.property, parameter.converter);
+            textProperty().addListener({ _, _, _: String ->
+                val error = parameter.errorMessage()
+                if (error == null) {
+                    clearError()
+                } else {
+                    showError(error)
+                }
+            })
 
-        textField.textProperty().bindBidirectional(parameter.property, parameter.converter);
-        textField.textProperty().addListener({ _, _, _: String ->
-            val error = parameter.errorMessage()
-            if (error == null) {
-                clearError()
-            } else {
-                showError(error)
+            addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
+            addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
+            addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
+
+            setContextMenu(contextMenu)
+        }
+
+        DragFiles(icon) { parameter.value?.let { listOf<File>(it) } }
+        DropFiles(textField, icon) { list ->
+            for (file in list) {
+                textField.text = file.path
+                break
             }
-        })
-
-        textField.addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
-        textField.addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
-        textField.addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
-
-        textField.setContextMenu(contextMenu)
+            true
+        }
 
         val borderPane = BorderPane()
         borderPane.center = textField
-        // TODO add the file icon, which allows dragging of the file.
+        borderPane.right = icon
 
         return borderPane
     }
