@@ -27,6 +27,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         get() = dirtyProperty.get()
         set(value) {
             dirtyProperty.set(value)
+            label = (if (value) "*" else "") + (file?.name ?: "New File")
         }
 
     init {

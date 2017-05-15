@@ -133,6 +133,10 @@ class ToolPane_Impl(override var tool: Tool)
         }
     }
 
-    private class ResultsTab(val results: Results) : Tab(results.label, results.node) {}
+    private class ResultsTab(val results: Results) : Tab(results.label, results.node) {
+        init {
+            this.textProperty().bind(results.labelProperty)
+        }
+    }
 }
 

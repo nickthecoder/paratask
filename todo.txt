@@ -1,4 +1,4 @@
-CommandLineTask parses command line parameters
+Create Properties for labels, so that Editor can add a "*", and the top tabs will pick up that change.
 
 Implement tab completion
 
