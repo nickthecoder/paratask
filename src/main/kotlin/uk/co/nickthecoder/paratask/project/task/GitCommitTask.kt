@@ -12,7 +12,7 @@ class GitCommitTask() : AbstractTask() {
 
     override val taskD = TaskDescription("gitCommit")
 
-    val directory = FileParameter("directory")
+    val directory = FileParameter("directory", expectFile = false)
 
     val message = StringParameter("message")
 

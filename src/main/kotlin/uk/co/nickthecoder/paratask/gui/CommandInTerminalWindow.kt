@@ -12,9 +12,6 @@ class CommandInTerminalWindow(val title: String) : ResultProcessor {
 
             val exec = Exec(result)
 
-            // We must do this in the JavaFX Thread, but must wait to ensure that AutoExit doesn't
-            // end the program before the window appears.
-            // (When this method ends, ThreadedTaskRunner will decrement AutoExit's counter). 
             runAndWait {
                 val terminal = SimpleTerminal(exec)
                 PlainWindow(title, terminal)

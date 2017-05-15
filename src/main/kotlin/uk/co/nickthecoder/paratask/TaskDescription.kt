@@ -13,6 +13,13 @@ class TaskDescription(
 
     val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description)
 
+    /**
+     * When used on a command line, this parameter can be used without using its parameter name.
+     * It is good practice to place a "--" argument before the unnamed arguments to avoid
+     * unnamed arguments beginning with "--" being interpreted as regular (named) arguments.
+     */
+    var unnamedParameter: ValueParameter<*>? = null
+
     fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }
     }

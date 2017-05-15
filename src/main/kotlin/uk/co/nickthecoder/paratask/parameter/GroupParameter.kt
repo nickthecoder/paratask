@@ -84,6 +84,9 @@ class GroupParameter(
             if (child.name == name) {
                 return child
             }
+            if (child is BooleanParameter && child.oppositeName == name) {
+                return child
+            }
             if (child is GroupParameter) {
                 child.find(name)?.let { return it }
             }

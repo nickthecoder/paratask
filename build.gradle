@@ -43,5 +43,5 @@ dependencies {
 }
 
 defaultTasks 'run'
-mainClassName = "uk.co.nickthecoder.paratask.ExampleKt"
+mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
 

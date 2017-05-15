@@ -67,6 +67,7 @@ open class TaskPrompter(val task: Task) {
     }
 
     private fun onOk() {
+        task.taskRunner.autoExit = true
         if (checkAndRun()) {
             close()
         }

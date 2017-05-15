@@ -12,6 +12,8 @@ interface TaskRunner {
     val showRunProperty: BooleanProperty
     val showStopProperty: BooleanProperty
 
+    var autoExit: Boolean
+
     fun listen(listener: () -> Unit)
 
     fun run()
@@ -21,4 +23,5 @@ interface TaskRunner {
     fun hasFinished(): Boolean
 
     fun isRunning(): Boolean
+
 }

@@ -5,6 +5,7 @@ import com.eclipsesource.json.JsonObject
 import javafx.application.Platform
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.CommandLineTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
@@ -38,8 +39,6 @@ class OpenProjectTask() : AbstractTask() {
         val dir = directory.value
         if (dir == null) return
 
-        println("Listing ${dir}")
-
         val lister = FileLister(extensions = listOf<String>("json"))
         for (file in lister.listFiles(dir)) {
             val label = file.nameWithoutExtension
@@ -49,55 +48,11 @@ class OpenProjectTask() : AbstractTask() {
 
     override fun run() {
         val file = File(directory.value, name.value + ".json")
-        Platform.runLater { load(file) }
+        Platform.runLater { ProjectWindow.load(file) }
     }
 
-    private fun load(projectFile: File) {
+}
 
-        val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
-
-        val title = jroot.getString("title", "")
-        val width = jroot.getDouble("width", 600.0)
-        val height = jroot.getDouble("height", 600.0)
-
-        val projectWindow = ProjectWindow(title, width, height)
-        projectWindow.projectFile = projectFile
-        projectWindow.title = jroot.getString("title", "")
-        projectWindow.placeOnStage(Stage())
-
-        val jtabs = jroot.get("tabs")
-        jtabs?.let {
-            for (jtab in jtabs.asArray().map { it.asObject() }) {
-
-                val jleft = jtab.get("left").asObject()
-                jleft?.let {
-                    val tool = loadTool(jleft)
-                    val projectTab = projectWindow.addTool(tool)
-
-                    val jright = jtab.get("right")
-                    if (jright != null) {
-                        val toolR = loadTool(jright.asObject())
-                        projectTab.split(toolR)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun loadTool(jhalfTab: JsonObject): Tool {
-        val creationString = jhalfTab.get("tool").asString()
-        val tool = Tool.create(creationString)
-
-        val jparameters = jhalfTab.get("parameters").asArray()
-        for (jparameter in jparameters.map { it.asObject() }) {
-            val name = jparameter.get("name").asString()
-            val value = jparameter.get("value").asString()
-            val parameter = tool.taskD.root.find(name)
-            if (parameter != null && parameter is ValueParameter<*>) {
-                parameter.stringValue = value
-            }
-        }
-        return tool
-    }
-
+fun main(args: Array<String>) {
+    CommandLineTask(OpenProjectTask()).go(args)
 }

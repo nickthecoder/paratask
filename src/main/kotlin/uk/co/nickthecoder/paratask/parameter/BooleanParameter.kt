@@ -12,6 +12,7 @@ class BooleanParameter(
         description: String = "",
         value: Boolean? = null,
         required: Boolean = true,
+        val oppositeName: String? = null,
         val labelOnLeft: Boolean = true)
 
     : NullableValueParameter<Boolean>(

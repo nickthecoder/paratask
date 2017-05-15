@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import com.eclipsesource.json.Json
+import com.eclipsesource.json.JsonObject
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
@@ -9,12 +11,14 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.Actions
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
-import uk.co.nickthecoder.paratask.project.Preferences
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.task.HomeTool
 import uk.co.nickthecoder.paratask.project.task.WebTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
 class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 600.0) {
 
@@ -96,5 +100,54 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
         TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
     }
 
+    companion object {
 
+        fun load(projectFile: File) {
+
+            val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
+
+            val title = jroot.getString("title", "")
+            val width = jroot.getDouble("width", 600.0)
+            val height = jroot.getDouble("height", 600.0)
+
+            val projectWindow = ProjectWindow(title, width, height)
+            projectWindow.projectFile = projectFile
+            projectWindow.title = jroot.getString("title", "")
+            projectWindow.placeOnStage(Stage())
+
+            val jtabs = jroot.get("tabs")
+            jtabs?.let {
+                for (jtab in jtabs.asArray().map { it.asObject() }) {
+
+                    val jleft = jtab.get("left").asObject()
+                    jleft?.let {
+                        val tool = loadTool(jleft)
+                        val projectTab = projectWindow.addTool(tool)
+
+                        val jright = jtab.get("right")
+                        if (jright != null) {
+                            val toolR = loadTool(jright.asObject())
+                            projectTab.split(toolR)
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun loadTool(jhalfTab: JsonObject): Tool {
+            val creationString = jhalfTab.get("tool").asString()
+            val tool = Tool.create(creationString)
+
+            val jparameters = jhalfTab.get("parameters").asArray()
+            for (jparameter in jparameters.map { it.asObject() }) {
+                val name = jparameter.get("name").asString()
+                val value = jparameter.get("value").asString()
+                val parameter = tool.taskD.root.find(name)
+                if (parameter != null && parameter is ValueParameter<*>) {
+                    parameter.stringValue = value
+                }
+            }
+            return tool
+        }
+    }
 }

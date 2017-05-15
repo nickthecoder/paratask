@@ -5,8 +5,8 @@ import uk.co.nickthecoder.paratask.util.AutoExit
 
 open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
 
+
     override fun run() {
-        AutoExit.inc()
 
         pre()
 
@@ -16,7 +16,6 @@ open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
                     runTask()
                 } finally {
                     post()
-                    AutoExit.dec()
                 }
             }
         }

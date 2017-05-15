@@ -62,6 +62,10 @@ open class ChoiceParameter<T>(
         return labelToValueMap.get(label)
     }
 
+    fun choiceKeys(): Collection<String> = valueToKeyMap.values
+
+    fun valueKey() = valueToKeyMap.get(value)
+
     fun addChoice(key: String, value: T?, label: String = key.uncamel()) {
         keyToValueMap.put(key, value)
         valueToKeyMap.put(value, key)

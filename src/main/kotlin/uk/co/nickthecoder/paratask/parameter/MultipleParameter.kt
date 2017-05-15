@@ -134,6 +134,14 @@ class MultipleParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
+    fun addStringValue(str: String, index: Int = value.size) {
+        val innerParameter = factory()
+        innerParameter.stringValue = str
+
+        innerParameters.add(index, innerParameter)
+        parameterListeners.fireStructureChanged(this)
+    }
+
     fun removeAt(index: Int) {
         innerParameters.removeAt(index)
         parameterListeners.fireStructureChanged(this)

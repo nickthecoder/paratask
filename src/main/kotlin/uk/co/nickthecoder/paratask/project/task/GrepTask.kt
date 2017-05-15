@@ -21,11 +21,11 @@ class GrepTask() : AbstractTask(), CommandTask {
     val fileP = FileParameter("file", label = "File or Directory",
             description = "Search a single file, or a whole directory tree", expectFile = null)
 
-    val regexP = MultipleParameter<String>("regex", minItems = 1,
+    val matchP = MultipleParameter<String>("match", minItems = 1,
             description = "The regular expression to search for"
     ) { StringParameter.factory() }
 
-    val matchP = ChoiceParameter<String>("match", value = "",
+    val partP = ChoiceParameter<String>("part", value = "",
             description = "Match a word, a line or any part of the file")
             .choice("any", "", "Any Part")
             .choice("word", "-w", "Word")
@@ -38,7 +38,9 @@ class GrepTask() : AbstractTask(), CommandTask {
             .choice("fixed", "-F", "Fixed")
             .choice("perl", "-P", "Perl")
 
-    val matchCaseP = BooleanParameter("matchCase", value = false)
+    val matchCaseP = BooleanParameter("matchCase", value = false,
+            oppositeName = "ignoreCase",
+            description = "Search is case sensitive")
 
     val invertResultsP = BooleanParameter("invertResults", value = false,
             description = "List files NOT matching the regular expression")
@@ -53,12 +55,13 @@ class GrepTask() : AbstractTask(), CommandTask {
     val contextLinesP = IntParameter("contextLines", required = false,
             description = "Output number of lines of context surrounding the matched line").min(1)
 
-    val additionalOptionsP = StringParameter("additionalOptions", value = "IHsn")
+    val additionalOptionsP = StringParameter("additionalOptions", value = "IHsn",
+            description = "Additional grep parameters (default=IHsn)")
 
     init {
         taskD.addParameters(
-                fileP, regexP, matchCaseP,
-                typeP, matchP, invertResultsP, followSymLinksP,
+                fileP, matchP, matchCaseP,
+                typeP, partP, invertResultsP, followSymLinksP,
                 maxMatchesP, contextLinesP, additionalOptionsP)
     }
 
@@ -86,7 +89,7 @@ class GrepTask() : AbstractTask(), CommandTask {
             command.addArgument("-i")
         }
 
-        matchP.value?.let { command.addArgument(it) }
+        partP.value?.let { command.addArgument(it) }
 
         maxMatchesP.value?.let { command.addArgument("--max-count=${it}") }
 
@@ -95,7 +98,7 @@ class GrepTask() : AbstractTask(), CommandTask {
             command.addArgument(it)
         }
 
-        regexP.value.forEach { value ->
+        matchP.value.forEach { value ->
             command.addArgument("-e")
             command.addArgument(value)
         }

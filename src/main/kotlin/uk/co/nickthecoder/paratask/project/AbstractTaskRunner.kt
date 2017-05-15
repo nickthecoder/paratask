@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.util.AutoExit
 
 enum class RunState {
     IDLE, RUNNING, FINISHED;
@@ -10,6 +11,8 @@ enum class RunState {
 abstract class AbstractTaskRunner(val task: Task)
 
     : TaskRunner {
+
+    override var autoExit = false
 
     override val listeners = mutableListOf<TaskListener>()
 
@@ -41,6 +44,8 @@ abstract class AbstractTaskRunner(val task: Task)
     abstract override fun run()
 
     open protected fun pre() {
+        if (autoExit) AutoExit.inc("ThreadedTaskTunner")
+
         if (runState == RunState.RUNNING) {
             // As a Task has state, it cannot safely be run more than once concurrently.
             throw RuntimeException("Already running.")
@@ -55,6 +60,8 @@ abstract class AbstractTaskRunner(val task: Task)
         for (listener in listeners) {
             listener.ended()
         }
+        if (autoExit) AutoExit.dec("ThreadedTaskTunner")
+
     }
 
     open protected fun runTask() {
@@ -72,4 +79,5 @@ abstract class AbstractTaskRunner(val task: Task)
     override fun hasFinished() = runState == RunState.FINISHED
 
     override fun isRunning() = runState == RunState.RUNNING
+
 }

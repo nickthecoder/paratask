@@ -1,9 +1,14 @@
-Run the install task, and run from ~/bin using installed paths.
+CommandLineTask parses command line parameters
+
+Implement tab completion
+
+Consider letting GrepTask have multiple files instead of just one
+    Will need to set the "base" only if there is ONE and it is a directory.
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?
         When removing the last editor tab, remove the whole toolPane
-        
+
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
