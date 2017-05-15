@@ -31,10 +31,8 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         }
 
     init {
-        //textArea.text = filename?.readText()
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea))
 
-        //node.center = swingNode
         node.bottom = toolBar
         node.center = codeArea
 
