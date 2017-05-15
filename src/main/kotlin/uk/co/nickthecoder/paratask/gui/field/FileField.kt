@@ -152,11 +152,6 @@ class FileField : LabelledField {
         contextMenu.show(textField, Side.BOTTOM, 0.0, 0.0)
     }
 
-    private fun onBrowse() {
-        println("Browse")
-        // TODO Implement Browse
-    }
-
     private fun onCompleteFile() {
         contextMenu.hide()
         contextMenu.getItems().clear()

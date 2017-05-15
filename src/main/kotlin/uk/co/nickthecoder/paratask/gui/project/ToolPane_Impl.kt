@@ -50,8 +50,6 @@ class ToolPane_Impl(override var tool: Tool)
     private fun removeOldResults(oldResultsList: List<Results>): Int {
         var index = 0
 
-        println("Removing some results ${oldResultsList.size}")
-
         // This is Order n squared, but n is small, so I won't bother optimising it!
         for (oldResults in oldResultsList) {
             val oldIndex = removeResults(oldResults)
@@ -86,12 +84,10 @@ class ToolPane_Impl(override var tool: Tool)
             results.attached(this)
         }
         tabPane.selectionModel.select(0)
-        println("New tab index ${replaceIndex}")
         if (replaceIndex >= 0 && replaceIndex < tabPane.tabs.size) {
             val tab = tabPane.tabs[replaceIndex]
             if (tab is ResultsTab) {
                 tabPane.selectionModel.select(replaceIndex)
-                println("Focusing on ${tab.results}")
                 tab.results.focus()
             }
         }

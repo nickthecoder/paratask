@@ -166,7 +166,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
             pendingLines++
 
             if (empty) {
-                //println("Calling later $count, $lines")
                 Platform.runLater {
                     appendText()
                 }
@@ -175,8 +174,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
         @Synchronized
         fun appendText() {
-            //println("In later $count, $lines")
-
             val len = textArea.length
             if (len > maxSize) {
                 textArea.deleteText(0, len - maxSize)
@@ -185,8 +182,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
             val text = appendText.toString()
             appendText = StringBuilder()
             textArea.appendText(text)
-            //println("Appended ${count} ${lines}")
-            //count++
         }
     }
 

@@ -39,9 +39,7 @@ class IncludesTool() : AbstractTableTool<String>() {
     }
 
     override fun updateResults() {
-        println("Updating IncludesTool ${resultsList}")
         super.updateResults()
-        println("Updated IncludesTool ${resultsList}")
     }
 
     fun taskEditIncludes(): EditIncludesTask {

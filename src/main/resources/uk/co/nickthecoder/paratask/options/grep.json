@@ -3,6 +3,16 @@
         "file"
     ],
     "options": [
-        
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Edit with Internal Text Editor",
+            "script": "new EditorTool( row.file )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        }
     ]
 }

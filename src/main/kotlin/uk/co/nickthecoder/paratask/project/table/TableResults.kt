@@ -173,7 +173,7 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
                         wrappedRow.clearOption()
 
                     } else {
-                        println("Didn't find code $code in $tool.optionsName")
+                        // Didn't find code
                     }
                 }
             }

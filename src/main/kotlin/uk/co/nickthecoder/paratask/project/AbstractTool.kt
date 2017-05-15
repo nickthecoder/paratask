@@ -65,7 +65,6 @@ abstract class AbstractTool() : Tool {
 
     override fun updateResults() {
         val newResults = createResults()
-        println("New results size ${newResults.size}, oldResults size ${resultsList.size}")
         toolPane?.replaceResults(newResults, resultsList)
         resultsList = newResults
     }
