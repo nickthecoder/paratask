@@ -1,8 +1,6 @@
 package uk.co.nickthecoder.paratask.project.editor
 
-import javafx.scene.control.TextArea
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.project.AbstractResults
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
@@ -40,18 +38,6 @@ class EditorTool() : AbstractTool() {
             return singleResults(EditorResults(this, null))
         } else {
             return filename.value.map { EditorResults(this, it) }
-        }
-    }
-
-    class EditorResults(override val tool: EditorTool, val filename: File?)
-
-        : AbstractResults(tool, filename?.name ?: "New File") {
-
-        override val node = TextArea()
-
-        init {
-            node.text = filename?.readText()
-            node.styleClass.add("editor")
         }
     }
 

@@ -51,7 +51,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
             add(Actions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
             add(Actions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
             add(Actions.QUIT.createButton(shortcuts) { onQuit() })
-            add(Actions.NEW_WINDOW.createToolButton(shortcuts) { tool -> onNewWindow(tool) })
+            add(Actions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
             add(Actions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
             add(Actions.DUPLICATE_TAB.createButton(shortcuts) { tabs.duplicateTab() })
             add(Actions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
@@ -63,9 +63,10 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
         System.exit(0)
     }
 
-    fun onNewWindow(tool: Tool) {
-        // TODO Implement new window
-        println("TODO New Window for $tool}")
+    fun onNewWindow() {
+        val newWindow = ProjectWindow("New Project")
+        newWindow.placeOnStage(Stage())
+        newWindow.addTool(HomeTool())
     }
 
     fun onNewTab(tool: Tool = HomeTool()) {

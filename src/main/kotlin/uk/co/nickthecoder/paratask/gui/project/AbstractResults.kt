@@ -12,8 +12,10 @@ abstract class AbstractResults(
 
     open override fun detaching() {}
 
-    override fun focus() {
+    override fun selected() {
         node.requestFocus()
     }
+
+    override fun deselected() {}
 
 }

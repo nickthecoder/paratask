@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.Tab
@@ -7,13 +9,10 @@ import javafx.scene.control.TabPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Tool
-import javax.swing.FocusManager
 
 class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, StackPane() {
-
-    //private val resultsTabs = mutableListOf<ResultsTab>()
 
     private val tabPane = TabPane()
 
@@ -36,6 +35,21 @@ class ToolPane_Impl(override var tool: Tool)
         parametersTab.setContent(parametersPane as Node)
 
         tabPane.getTabs().addAll(parametersTab)
+
+        tabPane.selectionModel.selectedItemProperty().addListener(object : ChangeListener<Tab> {
+            override fun changed(ov: ObservableValue<out Tab>, oldTab: Tab, newTab: Tab) {
+                onTabChanged(oldTab, newTab)
+            }
+        })
+    }
+
+    fun onTabChanged(oldTab: Tab, newTab: Tab) {
+        if (oldTab is ResultsTab) {
+            oldTab.results.deselected()
+        }
+        if (newTab is ResultsTab) {
+            newTab.results.selected()
+        }
     }
 
     override fun resultsTool(): Tool {
@@ -88,7 +102,6 @@ class ToolPane_Impl(override var tool: Tool)
             val tab = tabPane.tabs[replaceIndex]
             if (tab is ResultsTab) {
                 tabPane.selectionModel.select(replaceIndex)
-                tab.results.focus()
             }
         }
     }

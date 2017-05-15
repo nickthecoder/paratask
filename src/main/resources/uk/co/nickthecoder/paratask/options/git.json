@@ -38,17 +38,6 @@
         },
         {
             "type": "groovy",
-            "code": "ca",
-            "label": "Git Commit All",
-            "script": "new GitCommitTask( tool.directory.value, true )",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
             "code": "d",
             "label": "Git Diff",
             "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory.value )",
@@ -68,6 +57,31 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "rm",
+            "label": "Git Remove",
+            "script": "new Command( \"git\", \"rm\", row.file ).dir( tool.directory )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "ca",
+            "label": "Git Commit All",
+            "script": "new GitCommitTask( tool.directory.value, true )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "aliases": [
+                "all"
+            ]
         }
     ]
 }

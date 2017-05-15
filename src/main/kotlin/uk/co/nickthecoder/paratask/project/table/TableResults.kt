@@ -65,7 +65,7 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
         }
     }
 
-    override fun focus() {
+    override fun selected() {
         tableView.requestFocus()
     }
 

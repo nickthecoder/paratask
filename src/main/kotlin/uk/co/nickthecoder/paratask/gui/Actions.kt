@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
@@ -23,7 +24,7 @@ object Actions {
     val OPEN_PROJECT = Action("project.open", KeyCode.O, alt = true, tooltip = "Open Project")
     val SAVE_PROJECT = Action("project.save", KeyCode.S, alt = true, tooltip = "Save Project")
     val QUIT = Action("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
-    val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, label = "New Window", tooltip = "New Window")
+    val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
     val CLOSE_TAB = Action("tab.close", KeyCode.W, control = true, tooltip = "Close Tab")
     val DUPLICATE_TAB = Action("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
@@ -53,6 +54,13 @@ object Actions {
 
     // General
     val CONTEXT_MENU = Action("context.menu", KeyCode.CONTEXT_MENU)
+    val FILE_SAVE = Action("file.save", KeyCode.S, control = true, tooltip = "Save")
+    val EDIT_CUT = Action("edit.cut", KeyCode.X, control = true, tooltip = "Cut")
+    val EDIT_COPY = Action("edit.copy", KeyCode.C, control = true, tooltip = "Copy")
+    val EDIT_PASTE = Action("edit.paste", KeyCode.V, control = true, tooltip = "Paste")
+    val EDIT_UNDO = Action("edit.undo", KeyCode.Z, control = true, tooltip = "Undo")
+    val EDIT_REDO = Action("edit.redo", KeyCode.Z, shift = true, control = true, tooltip = "Redo")
+
 
     val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)

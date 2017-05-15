@@ -14,5 +14,7 @@ interface Results : Labelled {
 
     fun detaching()
 
-    fun focus()
+    fun selected()
+
+    fun deselected()
 }

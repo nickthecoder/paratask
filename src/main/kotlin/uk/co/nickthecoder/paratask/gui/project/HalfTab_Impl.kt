@@ -22,7 +22,9 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     : BorderPane(), HalfTab {
 
-    private val toolbar = ToolBar()
+    override val toolBars = BorderPane()
+
+    private val toolBar = ToolBar()
 
     private val shortcuts = ShortcutHelper("HalfTab", this)
 
@@ -39,8 +41,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     val optionsContextMenu = ContextMenu()
 
     init {
+        toolBars.center = toolBar
+
         center = toolPane as Node
-        bottom = toolbar
+        bottom = toolBars
 
         with(optionsField) {
             prefColumnCount = 6
@@ -48,11 +52,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             addEventHandler(MouseEvent.MOUSE_PRESSED, { optionFieldMouse(it) })
             addEventHandler(MouseEvent.MOUSE_RELEASED, { optionFieldMouse(it) })
             setContextMenu(optionsContextMenu)
-        }
-
-        val splitGroup = ButtonGroup()
-        with(splitGroup) {
-            add(Actions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
         }
 
         val historyGroup = ButtonGroup()
@@ -67,11 +66,11 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton = Actions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
 
-        with(toolbar.getItems()) {
+        with(toolBar.getItems()) {
             add(optionsField)
             add(runStopStack)
             add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
-            add(splitGroup)
+            add(Actions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
             add(historyGroup)
             add(Actions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
         }
