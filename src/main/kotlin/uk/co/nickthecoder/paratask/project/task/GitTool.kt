@@ -4,30 +4,26 @@ import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.project.CommandLineTool
-import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.project.table.WrappedRow
 import uk.co.nickthecoder.paratask.project.task.GitTool.GitStatusRow
-import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.HasFile
+import uk.co.nickthecoder.paratask.util.HasNullableDirectory
 import java.io.File
 
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
+class GitTool() : AbstractCommandTool<GitStatusRow>(), HasNullableDirectory {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    override val directory: File
-        get() = directoryP.value!!
+    override val directory: File? by directoryP
 
     constructor(directory: File) : this() {
         directoryP.value = directory
@@ -41,15 +37,15 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
         columns.add(Column<GitStatusRow, Char>("index") { it.index })
         columns.add(Column<GitStatusRow, Char>("work") { it.work })
         columns.add(Column<GitStatusRow, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory) { it.file })
+        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory!!) { it.file })
         columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
     }
 
 
-    override fun createCommand() : Command {
-        return Command("git", "status", "--porcelain").dir(directory)
+    override fun createCommand(): Command {
+        return Command("git", "status", "--porcelain").dir(directory!!)
     }
-    
+
     override fun processLine(line: String) {
 
         if (line.length < 4) {
@@ -106,7 +102,7 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
 
         init {
             val filePath = file.path
-            val prefix = directory.path + File.separatorChar
+            val prefix = directory!!.path + File.separatorChar
             if (filePath.startsWith(prefix)) {
                 path = filePath.substring(prefix.length)
             } else {

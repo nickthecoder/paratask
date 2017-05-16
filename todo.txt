@@ -1,8 +1,3 @@
-GitLog
-
-Create a base class for tools that run a command to form their results.
-	GrepTool, GitTool, GitLogTool, GitCommittedFilesTool
-
 ValueParameter has "get" (and set) method, which return the same as value, so it can be used as a "by"
 
 OptionsRunner - refreshing the list wth multiple options throws exception ("Already running"),

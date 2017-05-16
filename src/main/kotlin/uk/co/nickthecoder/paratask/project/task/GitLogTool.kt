@@ -10,17 +10,16 @@ import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.project.task.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.HasNullableDirectory
 import java.io.File
 
-class GitLogTool() : AbstractCommandTool<GitLogRow>(), HasDirectory {
+class GitLogTool() : AbstractCommandTool<GitLogRow>(), HasNullableDirectory {
 
     override val taskD = TaskDescription("gitLog", description = "Log of Commits/Merges")
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    override val directory: File
-        get() = directoryP.value!!
+    override val directory by directoryP
 
     val maxItemsP = IntParameter("maxItems", range = 1..Int.MAX_VALUE)
 
@@ -67,7 +66,7 @@ class GitLogTool() : AbstractCommandTool<GitLogRow>(), HasDirectory {
 
         list.clear()
 
-        val command = Command("git", "log", "--date=short").dir(directory)
+        val command = Command("git", "log", "--date=short").dir(directory!!)
 
         if (grepP.value != "") {
             command.addArguments(grepTypeP.value, "--grep=${grepP.value}")

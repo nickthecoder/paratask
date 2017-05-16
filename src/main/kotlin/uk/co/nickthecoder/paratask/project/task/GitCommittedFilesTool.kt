@@ -20,8 +20,7 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
 
     val commitP = StringParameter("commit")
 
-    val commit: String
-        get() = commitP.value
+    val commit by commitP
 
     constructor(directory: File, commit: String) : this() {
         directoryP.value = directory
