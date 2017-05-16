@@ -13,7 +13,7 @@ import java.io.File
 import java.net.URI
 import java.net.URL
 
-class PlacesFile(override val file: File) : HasFile {
+class PlacesFile(val file: File) {
 
     val places = file.readLines().map { parseLine(it) }.toMutableList()
 
@@ -92,8 +92,7 @@ class PlacesFile(override val file: File) : HasFile {
         override open fun copy() = URLPlace(urlString, label)
     }
 
-    inner class FilePlace(override val file: File, override var label: String)
-        : Place(), HasFile {
+    inner class FilePlace(val file: File, override var label: String) : Place() {
 
         init {
             if (label == "") {

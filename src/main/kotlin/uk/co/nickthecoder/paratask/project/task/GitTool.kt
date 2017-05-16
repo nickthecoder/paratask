@@ -10,20 +10,18 @@ import uk.co.nickthecoder.paratask.project.table.WrappedRow
 import uk.co.nickthecoder.paratask.project.task.GitTool.GitStatusRow
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasFile
-import uk.co.nickthecoder.paratask.util.HasNullableDirectory
 import java.io.File
 
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool() : AbstractCommandTool<GitStatusRow>(), HasNullableDirectory {
+class GitTool() : AbstractCommandTool<GitStatusRow>() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    override val directory: File? by directoryP
+    val directory: File? by directoryP
 
     constructor(directory: File) : this() {
         directoryP.value = directory
@@ -92,11 +90,10 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasNullableDirectory {
 
 
     inner class GitStatusRow(
-            override val file: File,
+            val file: File,
             val index: Char,
             val work: Char,
-            val renamed: String? = null)
-        : HasFile {
+            val renamed: String? = null) {
 
         val path: String
 

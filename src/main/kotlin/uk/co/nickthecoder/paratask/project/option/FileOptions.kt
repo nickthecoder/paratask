@@ -4,7 +4,6 @@ import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
-import uk.co.nickthecoder.paratask.util.HasFile
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
@@ -12,7 +11,7 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
-class FileOptions(override val file: File) : HasFile {
+class FileOptions(val file: File) {
 
     val name = file.nameWithoutExtension
 

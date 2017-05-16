@@ -7,7 +7,6 @@ import uk.co.nickthecoder.paratask.project.table.FileNameColumn
 import uk.co.nickthecoder.paratask.project.table.NumberColumn
 import uk.co.nickthecoder.paratask.project.task.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.HasFile
 import java.io.File
 
 /**
@@ -54,7 +53,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable {
         grepTask.check()
     }
 
-    data class GrepRow(override val file: File, var lineNumber: Int, var line: String) : HasFile {
+    data class GrepRow(val file: File, var lineNumber: Int, var line: String) {
 
     }
 

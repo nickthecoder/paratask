@@ -8,11 +8,10 @@ import uk.co.nickthecoder.paratask.project.CommandLineTool
 import uk.co.nickthecoder.paratask.project.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import java.io.File
 
-class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory {
+class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>() {
 
     override val taskD = TaskDescription("gitCommittedFiles", description = "List of File involved in a Git Commit")
 
@@ -31,7 +30,7 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
         taskD.addParameters(directoryP, commitP)
     }
 
-    override val directory: File
+    val directory: File
         get() = directoryP.value!!
 
 

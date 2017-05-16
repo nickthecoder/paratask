@@ -14,13 +14,12 @@ import uk.co.nickthecoder.paratask.project.table.FileNameColumn
 import uk.co.nickthecoder.paratask.project.table.ModifiedColumn
 import uk.co.nickthecoder.paratask.project.table.SizeColumn
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import uk.co.nickthecoder.paratask.util.homeDirectory
 
 abstract class AbstractDirectoryTool(name: String, description: String)
 
-    : AbstractTableTool<WrappedFile>(), HasDirectory {
+    : AbstractTableTool<WrappedFile>() {
 
 
     override val taskD = TaskDescription(name = name, description = description)
@@ -39,7 +38,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val includeBaseP = BooleanParameter("includeBase", value = false)
 
-    override val directory
+    val directory
         get() = directoryP.value!!
 
 
