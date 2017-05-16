@@ -7,17 +7,13 @@ import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.project.CommandLineTool
-import uk.co.nickthecoder.paratask.project.Stoppable
-import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.Column
 import uk.co.nickthecoder.paratask.project.task.GitLogTool.GitLogRow
-import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
-import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File
 
-class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
+class GitLogTool() : AbstractCommandTool<GitLogRow>(), HasDirectory {
 
     override val taskD = TaskDescription("gitLog", description = "Log of Commits/Merges")
 
@@ -46,11 +42,9 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
     val mergesP = BooleanParameter("merges", required = false)
 
     //TODO Replace with DateParameter
-    val untilP = StringParameter("until", required = false)
+    //val untilP = StringParameter("until", required = false)
 
-    val beforeP = StringParameter("before", required = false)
-
-    private var exec: Exec? = null
+    //val beforeP = StringParameter("before", required = false)
 
     constructor(directory: File) : this() {
         directoryP.value = directory
@@ -59,7 +53,7 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
     init {
         directoryP.hidden = true
 
-        taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, untilP, beforeP)
+        taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP) //, untilP, beforeP)
     }
 
     override fun createColumns() {
@@ -69,7 +63,7 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
 
     }
 
-    override fun run() {
+    override fun createCommand(): Command {
 
         list.clear()
 
@@ -90,13 +84,10 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
             command.addArgument("--no-merges")
         }
 
-        exec = Exec(command)
-        exec?.outSink = BufferedSink { processLine(it) }
-        exec?.start()?.waitFor()
-    }
+        //beforeP.value?.let { command.addArgument( "--before=${it}")}
+        //untilP.value?.let { command.addArgument( "--until=${it}")}
 
-    override fun stop() {
-        exec?.kill()
+        return command
     }
 
     private enum class ParseState { head, message }
@@ -107,7 +98,7 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
     private var message: String = ""
     private var date: String = ""
 
-    fun processLine(line: String) {
+    override fun processLine(line: String) {
         if (state == ParseState.head) {
             if (line == "") {
                 state = ParseState.message
@@ -138,5 +129,5 @@ class GitLogTool() : AbstractTableTool<GitLogRow>(), HasDirectory, Stoppable {
 
 
 fun main(args: Array<String>) {
-    CommandLineTool(GitLogTool(File("/home/nick/projects/paratask"))).go(args)
+    CommandLineTool(GitLogTool()).go(args)
 }

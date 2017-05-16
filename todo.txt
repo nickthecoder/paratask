@@ -1,10 +1,18 @@
 GitLog
 
+Create a base class for tools that run a command to form their results.
+	GrepTool, GitTool, GitLogTool, GitCommittedFilesTool
+
+ValueParameter has "get" (and set) method, which return the same as value, so it can be used as a "by"
+
 OptionsRunner - refreshing the list wth multiple options throws exception ("Already running"),
 	and some options don't run.
 	Ideally, only refresh the list once ALL refreshing options finish.
 	Batch the options, and the listener has a counter. When the options have all been run and/or the
 		counter reaches zero, THEN refresh the list.
+
+DateParameter
+	Use it on GitLogTool
 
 OptionsTool - copy Option option ;-)
 

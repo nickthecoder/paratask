@@ -20,7 +20,7 @@ import java.io.File
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool() : AbstractTableTool<GitStatusRow>(), HasDirectory {
+class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
@@ -45,17 +45,12 @@ class GitTool() : AbstractTableTool<GitStatusRow>(), HasDirectory {
         columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
     }
 
-    override fun run() {
 
-        list.clear()
-
-        val command = Command("git", "status", "--porcelain").dir(directory)
-        val exec = Exec(command)
-        exec.outSink = BufferedSink { processLine(it) }
-        exec.start().waitFor()
+    override fun createCommand() : Command {
+        return Command("git", "status", "--porcelain").dir(directory)
     }
-
-    fun processLine(line: String) {
+    
+    override fun processLine(line: String) {
 
         if (line.length < 4) {
             return

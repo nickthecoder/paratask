@@ -1,0 +1,32 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Git Diff Tool",
+            "script": "new Command( \"git\", \"difftool\", tool.commit+\"^\", tool.commit, row.file ).dir( tool.directory )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "dt"
+            ]
+        },
+        {
+            "type": "groovy",
+            "code": "d",
+            "label": "Git Diff",
+            "script": "new TerminalTool( new Command(\"git\", \"diff\", tool.commit+\"^\", tool.commit, row.file ).dir( tool.directory ) )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        }
+    ]
+}

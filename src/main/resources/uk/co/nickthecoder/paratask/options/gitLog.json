@@ -35,6 +35,20 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "List Committed Files",
+            "script": "new GitCommittedFilesTool( tool.directory, row.commit )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "aliases": [
+                "files"
+            ]
         }
     ]
 }
