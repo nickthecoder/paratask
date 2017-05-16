@@ -8,7 +8,7 @@ import java.io.File
 class BaseFileColumn<R>(
         name: String,
         base: File,
-        width: Double? = null,
+        width: Int? = null,
         label: String = name.uncamel(),
         getter: (R) -> File) :
 

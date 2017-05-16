@@ -1,0 +1,40 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": "gs",
+            "label": "Git Status",
+            "script": "new GitTool( tool.directory )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "d",
+            "label": "Git Diff",
+            "script": "new TerminalTool( new Command(\"git\", \"diff\", row.commit+\"^\", row.commit).dir( tool.directory ) )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "dt",
+            "label": "Git Diff Tool",
+            "script": "new Command( \"git\", \"difftool\", row.commit+\"^\", row.commit ).dir( tool.directory )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        }
+    ]
+}

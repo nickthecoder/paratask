@@ -12,19 +12,19 @@ class GitCommitTask() : AbstractTask() {
 
     override val taskD = TaskDescription("gitCommit")
 
-    val directory = FileParameter("directory", expectFile = false)
-
     val message = StringParameter("message")
 
     val all = BooleanParameter("all")
 
-    constructor(directory: File, all: Boolean = false) : this() {
+    val directory = FileParameter("directory", expectFile = false)
+
+        constructor(directory: File, all: Boolean = false) : this() {
         this.directory.value = directory
         this.all.value = all
     }
 
     init {
-        taskD.addParameters(directory, message, all)
+        taskD.addParameters(message, all, directory)
     }
 
     override fun run() {

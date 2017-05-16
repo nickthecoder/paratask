@@ -17,6 +17,8 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
     : BorderPane(), Stoppable, ProcessListener {
 
+    var maxSize = 100000
+
     private val textArea = TextArea()
 
     private val inputPane: BorderPane?
@@ -185,7 +187,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         }
     }
 
-    var maxSize = 10000
     fun chooseFocus(): Node? {
         return if (inputPane == null) null else inputField
     }

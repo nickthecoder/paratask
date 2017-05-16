@@ -5,9 +5,53 @@
     "options": [
         {
             "type": "groovy",
+            "code": "dt",
+            "label": "Git Diff",
+            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "d",
+            "label": "Git Diff",
+            "script": "new TerminalTool( \"git\", \"diff\", row.path ).dir( tool.directory )",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "log",
+            "label": "Git Log",
+            "script": "new GitLogTool( tool.directory )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "push",
+            "label": "Git Push",
+            "script": "new TerminalTool( \"git\", \"push\", \"origin\", \"master\" ).dir( tool.directory )",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
             "code": "co",
             "label": "Check Out",
-            "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory.value )",
+            "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -18,7 +62,7 @@
             "type": "groovy",
             "code": "a",
             "label": "Git Add",
-            "script": "new Command( 'git', 'add', row.path ).dir( tool.directory.value )",
+            "script": "new Command( 'git', 'add', row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -29,23 +73,12 @@
             "type": "groovy",
             "code": "c",
             "label": "Git Commit",
-            "script": "new GitCommitTask( tool.directory.value, false )",
+            "script": "new GitCommitTask( tool.directory, false )",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
             "newTab": false,
             "refresh": true
-        },
-        {
-            "type": "groovy",
-            "code": "d",
-            "label": "Git Diff",
-            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory.value )",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
         },
         {
             "type": "groovy",
@@ -62,7 +95,7 @@
             "type": "groovy",
             "code": "ca",
             "label": "Git Commit All",
-            "script": "new GitCommitTask( tool.directory.value, true )",
+            "script": "new GitCommitTask( tool.directory, true )",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
@@ -71,17 +104,6 @@
             "aliases": [
                 "all"
             ]
-        },
-        {
-            "type": "groovy",
-            "code": "push",
-            "label": "Git Push",
-            "script": "new TerminalTool( \"git\", \"push\", \"origin\", \"master\" )",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
         }
     ]
 }

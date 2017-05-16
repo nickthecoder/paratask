@@ -7,6 +7,12 @@ class Command(program: String, vararg args: Any?) {
 
     val command = mutableListOf<String>()
 
+    val program: String
+        get() = command[0]
+
+    val arguments: List<String>
+        get() = command.slice(1..command.size-1)
+
     var directory: File? = null
 
     init {
@@ -35,6 +41,10 @@ class Command(program: String, vararg args: Any?) {
         if (arg != null) {
             command.add(arg.toString())
         }
+    }
+
+    fun addArguments(vararg args: Any?) {
+        args.filter { it != null }.forEach { addArgument(it) }
     }
 
     override fun toString(): String = command.map { escapeArg(it) }.joinToString(separator = " ")

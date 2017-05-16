@@ -13,27 +13,35 @@ import uk.co.nickthecoder.paratask.util.BufferedSink
 import uk.co.nickthecoder.paratask.util.Command
 import uk.co.nickthecoder.paratask.util.Exec
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.HasFile
 import java.io.File
 
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool : AbstractTableTool<GitStatusRow>() {
+class GitTool() : AbstractTableTool<GitStatusRow>(), HasDirectory {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
-    val directory = FileParameter("directory", expectFile = false)
+    val directoryP = FileParameter("directory", expectFile = false)
+
+    override val directory: File
+        get() = directoryP.value!!
+
+    constructor(directory: File) : this() {
+        directoryP.value = directory
+    }
 
     init {
-        taskD.addParameters(directory)
+        taskD.addParameters(directoryP)
     }
 
     override fun createColumns() {
         columns.add(Column<GitStatusRow, Char>("index") { it.index })
         columns.add(Column<GitStatusRow, Char>("work") { it.work })
         columns.add(Column<GitStatusRow, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory.value!!) { it.file })
+        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory) { it.file })
         columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
     }
 
@@ -41,7 +49,7 @@ class GitTool : AbstractTableTool<GitStatusRow>() {
 
         list.clear()
 
-        val command = Command("git", "status", "--porcelain").dir(directory.value!!)
+        val command = Command("git", "status", "--porcelain").dir(directory)
         val exec = Exec(command)
         exec.outSink = BufferedSink { processLine(it) }
         exec.start().waitFor()
@@ -62,7 +70,7 @@ class GitTool : AbstractTableTool<GitStatusRow>() {
             renamed = path.substring(0, arrow)
             path = path.substring(arrow + 4)
         }
-        val file = File(directory.value, path)
+        val file = File(directory, path)
 
         val gsr = GitStatusRow(file, index = index, work = work, renamed = renamed)
         list.add(gsr)
@@ -103,7 +111,7 @@ class GitTool : AbstractTableTool<GitStatusRow>() {
 
         init {
             val filePath = file.path
-            val prefix = directory.value!!.path + File.separatorChar
+            val prefix = directory.path + File.separatorChar
             if (filePath.startsWith(prefix)) {
                 path = filePath.substring(prefix.length)
             } else {

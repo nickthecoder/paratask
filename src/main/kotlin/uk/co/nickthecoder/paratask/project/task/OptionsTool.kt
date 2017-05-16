@@ -17,6 +17,7 @@ import uk.co.nickthecoder.paratask.project.option.OptionsManager
 import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BooleanColumn
 import uk.co.nickthecoder.paratask.project.table.Column
+import uk.co.nickthecoder.paratask.util.uncamel
 
 class OptionsTool() : AbstractTableTool<Option>() {
 
@@ -46,7 +47,6 @@ class OptionsTool() : AbstractTableTool<Option>() {
         includesTool = IncludesTool()
     }
 
-
     override fun createColumns() {
         columns.add(Column<Option, String>("code") { it.code })
         columns.add(Column<Option, String>("label") { it.label })
@@ -67,7 +67,7 @@ class OptionsTool() : AbstractTableTool<Option>() {
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
     override fun run() {
-        shortTitle = super.shortTitle + " (${optionsNameP.value})"
+        shortTitle = "${defaultShortTitle()} (${optionsNameP.value})"
         list.clear()
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 

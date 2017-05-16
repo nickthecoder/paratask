@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameter.BooleanParameter
+import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.util.Command
@@ -14,7 +14,15 @@ class TerminalTool : AbstractTerminalTool {
 
     val argumentsP = MultipleParameter<String>("arguments") { StringParameter.factory(required = false) }
 
+    val directoryP = FileParameter("directory", expectFile = false, required = false)
+
     constructor() : super(showCommand = true, allowInput = true) {
+    }
+
+    constructor(command: Command) : this() {
+        commandP.value = command.program
+        argumentsP.value = command.arguments
+        directoryP.value = command.directory
     }
 
     constructor(program: String, vararg arguments: Any?) : this() {
@@ -23,7 +31,7 @@ class TerminalTool : AbstractTerminalTool {
     }
 
     init {
-        taskD.addParameters(commandP, argumentsP)
+        taskD.addParameters(commandP, argumentsP, directoryP)
     }
 
     fun input(value: Boolean): TerminalTool {
@@ -52,6 +60,7 @@ class TerminalTool : AbstractTerminalTool {
         argumentsP.value.forEach { arg ->
             command.addArgument(arg)
         }
+        command.directory = directoryP.value
         return command
     }
 

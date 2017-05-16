@@ -1,3 +1,17 @@
+GitLog
+
+OptionsRunner - refreshing the list wth multiple options throws exception ("Already running"),
+	and some options don't run.
+	Ideally, only refresh the list once ALL refreshing options finish.
+	Batch the options, and the listener has a counter. When the options have all been run and/or the
+		counter reaches zero, THEN refresh the list.
+
+OptionsTool - copy Option option ;-)
+
+SimpleTerminal
+    Add an option to PAUSE when buffer size is exceeded, and show a More button to continue
+        Make this the default, and change it for interactive tools, such as Python, Groovy, and plain terminal.
+
 Implement tab completion
 
 Consider letting GrepTask have multiple files instead of just one
