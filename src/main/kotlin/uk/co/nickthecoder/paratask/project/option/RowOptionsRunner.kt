@@ -126,7 +126,6 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
 
         override fun onFinished() {
             count--
-            println("Dec ${count} ${batchComplete}")
             if (count == 0 && batchComplete) {
                 tool.taskRunner.run()
             }

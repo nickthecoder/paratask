@@ -14,9 +14,11 @@ interface TaskRunner {
 
     var autoExit: Boolean
 
-    fun listen(listener: () -> Unit)
+    fun listen(listener: (Boolean) -> Unit)
 
     fun run()
+
+    fun cancel()
 
     fun hasStarted(): Boolean
 

@@ -28,7 +28,8 @@ abstract class AbstractTaskRunner(val task: Task)
     protected var runState: RunState = RunState.IDLE
         set(value) {
             field = value
-            Platform.runLater { // Must only change JavaFX properties in the application thread.
+            Platform.runLater {
+                // Must only change JavaFX properties in the application thread.
                 disableRunProperty.set(value == RunState.RUNNING)
                 val showStop = task is Stoppable && value == RunState.RUNNING
                 showStopProperty.set(showStop)
@@ -36,10 +37,10 @@ abstract class AbstractTaskRunner(val task: Task)
             }
         }
 
-    override fun listen(listener: () -> Unit) {
+    override fun listen(listener: (Boolean) -> Unit) {
         listeners.add(object : TaskListener {
-            override fun ended() {
-                listener()
+            override fun ended(cancelled: Boolean) {
+                listener(cancelled)
             }
         })
     }
@@ -61,10 +62,16 @@ abstract class AbstractTaskRunner(val task: Task)
         runState = RunState.FINISHED
 
         for (listener in listeners) {
-            listener.ended()
+            listener.ended(false)
         }
         if (autoExit) AutoExit.dec("ThreadedTaskTunner")
 
+    }
+
+    open override fun cancel() {
+        for (listener in listeners) {
+            listener.ended(true)
+        }
     }
 
     open protected fun runTask() {

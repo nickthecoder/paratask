@@ -63,6 +63,7 @@ open class TaskPrompter(val task: Task) {
     }
 
     private fun onCancel() {
+        task.taskRunner.cancel()
         close()
     }
 
