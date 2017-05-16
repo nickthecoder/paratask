@@ -16,6 +16,8 @@ import uk.co.nickthecoder.paratask.util.Exec
 
 open class OptionsRunner(val tool: Tool) {
 
+    protected var refresher: Refresher = Refresher()
+
     fun createNonRowOptionsMenu(contextMenu: ContextMenu) {
 
         contextMenu.getItems().clear()
@@ -34,7 +36,7 @@ open class OptionsRunner(val tool: Tool) {
                         contextMenu.getItems().add(SeparatorMenuItem())
                     }
                     val menuItem = createMenuItem(option)
-                    menuItem.addEventHandler(ActionEvent.ACTION) { tool.optionsRunner.runNonRow(option) }
+                    menuItem.addEventHandler(ActionEvent.ACTION) { runNonRow(option) }
                     contextMenu.getItems().add(menuItem)
                     added = true
                 }
@@ -54,16 +56,22 @@ open class OptionsRunner(val tool: Tool) {
         return item
     }
 
+    fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
+        refresher = Refresher()
+        doNonRow(option, prompt = prompt, newTab = newTab)
+    }
+
     fun runNonRow(code: String, prompt: Boolean = false, newTab: Boolean = false): Boolean {
+        refresher = Refresher()
         val option = OptionsManager.findOption(code, tool.optionsName)
         if (option == null || option.isRow) {
             return false
         }
-        runNonRow(option, prompt = prompt, newTab = newTab)
+        doNonRow(option, prompt = prompt, newTab = newTab)
         return true
     }
 
-    fun runNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
+    protected fun doNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
         val result = option.runNonRow(tool)
 
         process(result,
@@ -121,7 +129,8 @@ open class OptionsRunner(val tool: Tool) {
 
     protected fun processExec(exec: Exec, refresh: Boolean) {
         if (refresh) {
-            exec.listen { tool.taskRunner.run() }
+            refresher.add()
+            exec.listen { refresher.onFinished() }
         }
         exec.start()
     }
@@ -129,8 +138,9 @@ open class OptionsRunner(val tool: Tool) {
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
         if (refresh) {
+            refresher.add()
             task.taskRunner.listen {
-                tool.taskRunner.run()
+                refresher.onFinished()
             }
         }
 
@@ -141,6 +151,20 @@ open class OptionsRunner(val tool: Tool) {
             task.taskRunner.run()
         }
 
+    }
+
+
+    /**
+     * This is the "simple" version, but RowOptionsRunner has a more complex version, which handles
+     * batches.
+     */
+    open inner class Refresher {
+
+        open fun add() {}
+
+        open fun onFinished() {
+            tool.taskRunner.run()
+        }
     }
 
 }

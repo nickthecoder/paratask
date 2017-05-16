@@ -3,9 +3,9 @@ package uk.co.nickthecoder.paratask.project.option
 import javafx.event.ActionEvent
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.table.WrappedRow
 
 class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
 
@@ -27,9 +27,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
                         contextMenu.getItems().add(SeparatorMenuItem())
                     }
                     val menuItem = createMenuItem(option)
-                    menuItem.addEventHandler(ActionEvent.ACTION) {
-                        runRows(option, rows)
-                    }
+                    menuItem.addEventHandler(ActionEvent.ACTION) { runRows(option, rows) }
                     contextMenu.getItems().add(menuItem)
                     added = true
                 }
@@ -48,25 +46,56 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
         }
     }
 
+    fun runBatch(batch: Map<Option, List<WrappedRow<R>>>, newTab: Boolean, prompt: Boolean) {
+        val batchRefresher = BatchRefresher()
+        refresher = batchRefresher
+
+        for ((option, list) in batch) {
+            if (option.isMultiple) {
+                doMultiple(option, list.map { it.row }, newTab = newTab, prompt = prompt)
+            } else {
+                for (wrappedRow in list) {
+                    val row = wrappedRow.row
+                    if (option.isRow) {
+                        doRow(option, row, newTab = newTab, prompt = prompt)
+                    } else {
+                        doNonRow(option, newTab = newTab, prompt = prompt)
+                    }
+                }
+            }
+        }
+        batchRefresher.complete()
+    }
+
     fun runDefault(row: R, prompt: Boolean = false, newTab: Boolean = false) {
+        refresher = Refresher()
         val option = OptionsManager.findOption(".", tool.optionsName)
         if (option == null) {
             return
         }
-        runRow(option, row, prompt = prompt, newTab = newTab)
+        doRow(option, row, prompt = prompt, newTab = newTab)
     }
 
-    fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+    protected fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+        val batchRefresher = BatchRefresher()
+        refresher = batchRefresher
+
+        doRows(option, rows, prompt = prompt, newTab = newTab)
+
+        batchRefresher.complete()
+    }
+
+    protected fun doRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
         if (option.isMultiple) {
-            runMultiple(option, rows, prompt = prompt, newTab = newTab)
+            doMultiple(option, rows, prompt = prompt, newTab = newTab)
         } else {
             for (row in rows) {
-                runRow(option, row, prompt = prompt, newTab = newTab)
+                doRow(option, row, prompt = prompt, newTab = newTab)
             }
         }
     }
 
-    fun runRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
+    protected fun doRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
         val result = option.run(tool, row = row)
 
         process(result,
@@ -76,7 +105,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
     }
 
 
-    fun runMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
+    protected fun doMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
         val result = option.runMultiple(tool, rows)
         process(result,
                 newTab = newTab || option.newTab,
@@ -84,4 +113,31 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
                 refresh = option.refresh)
     }
 
+
+    inner class BatchRefresher() : Refresher() {
+
+        var count = 0
+
+        var batchComplete = false
+
+        override fun add() {
+            count++
+        }
+
+        override fun onFinished() {
+            count--
+            println("Dec ${count} ${batchComplete}")
+            if (count == 0 && batchComplete) {
+                tool.taskRunner.run()
+            }
+        }
+
+        fun complete() {
+            batchComplete = true
+            if (count == 0) {
+                tool.taskRunner.run()
+            }
+        }
+
+    }
 }

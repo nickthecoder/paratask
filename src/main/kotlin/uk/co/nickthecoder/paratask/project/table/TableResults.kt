@@ -146,49 +146,29 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
         tableView.requestFocus()
         Platform.runLater {
 
-            val singleOptions = mutableListOf<SingleRowOption>()
-            val multipleOptions = mutableMapOf<Option, MutableList<R>>()
-
-            var foundCode: Boolean = false
+            val batchOptions = mutableMapOf<Option, MutableList<WrappedRow<R>>>()
 
             for (wrappedRow in tableView.items) {
                 val code = wrappedRow.code
                 if (code != "") {
-                    foundCode = true
 
                     val option = OptionsManager.findOption(code, tool.optionsName)
                     if (option != null) {
 
-                        if (option.isMultiple) {
-                            var list = multipleOptions.get(option)
-                            if (list == null) {
-                                list = mutableListOf<R>()
-                                multipleOptions.put(option, list)
-                            }
-                            list.add(wrappedRow.row)
-
-                        } else {
-                            singleOptions.add(SingleRowOption(option, wrappedRow.row))
+                        var list = batchOptions.get(option)
+                        if (list == null) {
+                            list = mutableListOf<WrappedRow<R>>()
+                            batchOptions.put(option, list)
                         }
-                        wrappedRow.clearOption()
+                        list.add(wrappedRow)
 
-                    } else {
-                        // Didn't find code
+                        wrappedRow.clearOption()
                     }
                 }
             }
 
-            if (foundCode) {
-                for ((option, list) in multipleOptions) {
-                    runner.runMultiple(option, list, newTab = newTab, prompt = prompt)
-                }
-                for (sr in singleOptions) {
-                    if (sr.option.isRow) {
-                        runner.runRow(sr.option, sr.row, newTab = newTab, prompt = prompt)
-                    } else {
-                        runner.runNonRow(sr.option, newTab = newTab, prompt = prompt)
-                    }
-                }
+            if (batchOptions.size > 0) {
+                runner.runBatch(batchOptions, newTab = newTab, prompt = prompt)
             } else {
                 val rowIndex = tableView.selectionModel.focusedIndex
                 if (rowIndex >= 0) {

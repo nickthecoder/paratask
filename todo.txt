@@ -1,5 +1,3 @@
-ValueParameter has "get" (and set) method, which return the same as value, so it can be used as a "by"
-
 OptionsRunner - refreshing the list wth multiple options throws exception ("Already running"),
 	and some options don't run.
 	Ideally, only refresh the list once ALL refreshing options finish.
@@ -11,11 +9,14 @@ DateParameter
 
 OptionsTool - copy Option option ;-)
 
+Port the directory listening code from wrkfoo, so that DirectoryTool and DirectoryTreeTool can update
+
 SimpleTerminal
     Add an option to PAUSE when buffer size is exceeded, and show a More button to continue
+	Hmm, this would only make sense if it pause per-screenful, like the more command.
         Make this the default, and change it for interactive tools, such as Python, Groovy, and plain terminal.
 
-Implement tab completion
+Implement command line tab completion
 
 Consider letting GrepTask have multiple files instead of just one
     Will need to set the "base" only if there is ONE and it is a directory.
@@ -33,8 +34,6 @@ Position focus when a tab (both kinds) is selected
 
 New Tools :
     PlacesChoices
-    Disk usage
-    Mount
     Groovy Tools - Lists groovy scripts in a directory, and allows them to be run.
 
 Table Column selection

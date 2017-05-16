@@ -20,7 +20,6 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     private fun onTabChanged(oldTab: ProjectTab_Impl?, newTab: ProjectTab_Impl?) {
-        println("Changed tab ${oldTab} to ${newTab}")
         oldTab?.deselected()
         newTab?.selected()
     }
