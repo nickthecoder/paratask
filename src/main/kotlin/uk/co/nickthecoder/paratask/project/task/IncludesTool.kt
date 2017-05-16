@@ -19,6 +19,8 @@ class IncludesTool() : AbstractTableTool<String>() {
 
     val directoryP = FileParameter("directory")
 
+    override val resultsName = "Includes"
+
     init {
         taskD.addParameters(optionsNameP, directoryP)
     }

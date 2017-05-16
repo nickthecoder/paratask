@@ -28,6 +28,8 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
     var includesTool: IncludesTool
 
+    override val resultsName = "Options"
+
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
         directoryP.value = fileOptions.file.getParentFile()
@@ -43,6 +45,7 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
         includesTool = IncludesTool()
     }
+
 
     override fun createColumns() {
         columns.add(Column<Option, String>("code") { it.code })
@@ -64,6 +67,7 @@ class OptionsTool() : AbstractTableTool<Option>() {
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 
     override fun run() {
+        shortTitle = super.shortTitle + " (${optionsNameP.value})"
         list.clear()
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
 

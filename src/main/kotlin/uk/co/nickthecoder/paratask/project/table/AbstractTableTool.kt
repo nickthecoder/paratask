@@ -10,14 +10,14 @@ abstract class AbstractTableTool<R : Any>() : AbstractTool(), TableTool<R> {
 
     var list = mutableListOf<R>()
 
-    fun resultsName(): String = "Results"
+    open val resultsName = "Results"
 
     abstract fun createColumns()
 
     override open fun createResults(): List<Results> {
         columns.clear()
         createColumns()
-        return listOf<TableResults<R>>(TableResults<R>(this, list, resultsName()))
+        return listOf<TableResults<R>>(TableResults<R>(this, list, resultsName))
     }
 
     open fun updateRow(tableRow: TableRow<WrappedRow<R>>, row: R) {

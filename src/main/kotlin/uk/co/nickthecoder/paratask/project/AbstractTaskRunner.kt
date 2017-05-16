@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.application.Platform
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.util.AutoExit
@@ -27,10 +28,12 @@ abstract class AbstractTaskRunner(val task: Task)
     protected var runState: RunState = RunState.IDLE
         set(value) {
             field = value
-            disableRunProperty.set(value == RunState.RUNNING)
-            val showStop = task is Stoppable && value == RunState.RUNNING
-            showStopProperty.set(showStop)
-            showRunProperty.set(!showStop)
+            Platform.runLater { // Must only change JavaFX properties in the application thread.
+                disableRunProperty.set(value == RunState.RUNNING)
+                val showStop = task is Stoppable && value == RunState.RUNNING
+                showStopProperty.set(showStop)
+                showRunProperty.set(!showStop)
+            }
         }
 
     override fun listen(listener: () -> Unit) {

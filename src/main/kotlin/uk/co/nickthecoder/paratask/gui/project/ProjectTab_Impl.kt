@@ -25,7 +25,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     val stackPane = StackPane(splitPane)
 
     init {
-        stackPane.children.add( left as Node)
+        stackPane.children.add(left as Node)
         splitPane.items.add(left as Node)
         splitPane.orientation = Orientation.HORIZONTAL
         setContent(stackPane)
@@ -33,7 +33,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     private fun updateTab() {
-        setText(left.toolPane.tool.shortTitle())
+        textProperty().bind(left.toolPane.tool.shortTitleProperty)
         val imageView = left.toolPane.tool.icon?.let { ImageView(it) }
         setGraphic(imageView)
     }

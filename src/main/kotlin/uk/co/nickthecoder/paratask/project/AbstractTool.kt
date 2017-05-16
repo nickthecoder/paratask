@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.application.Platform
+import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.project.Results
@@ -14,7 +16,13 @@ abstract class AbstractTool() : Tool {
 
     override var toolPane: ToolPane? = null
 
-    override fun shortTitle() = taskD.name.uncamel()
+    override val shortTitleProperty by lazy { SimpleStringProperty(taskD.name.uncamel()) }
+
+    override var shortTitle: String
+        get() = shortTitleProperty.get()
+        set(value) {
+            Platform.runLater { shortTitleProperty.set(value) }
+        }
 
     override val optionsName: String by lazy { taskD.name }
 

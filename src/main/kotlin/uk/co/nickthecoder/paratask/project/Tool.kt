@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.beans.property.StringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.project.Results
@@ -10,7 +11,9 @@ interface Tool : Task {
 
     var toolPane: ToolPane?
 
-    fun shortTitle(): String
+    val shortTitleProperty: StringProperty
+
+    val shortTitle: String
 
     val icon: Image?
 
