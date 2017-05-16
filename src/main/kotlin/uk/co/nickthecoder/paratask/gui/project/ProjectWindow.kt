@@ -13,6 +13,7 @@ import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.project.Tool
+import uk.co.nickthecoder.paratask.project.editor.ExceptionTool
 import uk.co.nickthecoder.paratask.project.task.HomeTool
 import uk.co.nickthecoder.paratask.project.task.WebTool
 import uk.co.nickthecoder.paratask.util.AutoExit
@@ -149,6 +150,14 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
                 }
             }
             return tool
+        }
+    }
+
+    fun handleException(e: Exception) {
+        try {
+            val tool = ExceptionTool(e)
+            addTool(tool)
+        } catch(e: Exception) {
         }
     }
 }

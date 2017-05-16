@@ -1,7 +1,12 @@
+Handle exceptions from running options
+
+
+Editor - find (simple non-regex will be good enough to begin with)
+    Editor to work with grep to highlight matches (using regex and fixed patterns)
+
+
 DateParameter
 	Use it on GitLogTool
-
-OptionsTool - copy Option option ;-)
 
 Port the directory listening code from wrkfoo, so that DirectoryTool and DirectoryTreeTool can update
 
@@ -18,13 +23,6 @@ Consider letting GrepTask have multiple files instead of just one
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?
         When removing the last editor tab, remove the whole toolPane
-
-Editor - find (simple non-regex will be good enough to begin with)
-    Editor to work with grep to highlight matches (using regex and fixed patterns)
-
-Handle exceptions from running options
-
-Position focus when a tab (both kinds) is selected
 
 New Tools :
     PlacesChoices
@@ -55,17 +53,6 @@ Listen to the directories on the options path, and clear any cache when a file c
 
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 
-Options which work in the editor
-    e.g. remove trailing spaces, convert tabs to spaces
-    Expose features throught the "tool", which is in the bindings.
-
-A groovy shell, which has access to the current tool.
-    Input may need to be a TextArea to allow for structured code, rather than one liners
-        help( object ) gives a list of available properties and methods
-        api( object ) opens the javadoc page for that object's class
-    Can be a regular HalfTab, but with its own button and shortcut
-        If more than one scripting language is available, then use a menubutton thingy (like new tab, new window)
-
 Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
 
 Embed a "real" terminal
@@ -80,25 +67,7 @@ ProjectWindow to detach all tabs when it is closed
 
 WebTool to allow for multiple web pages.
 
-Use a Property for the tab's text
-    Editor adds a "*" without having firing events to listeners
-    Ditto for window's title
-
-New toolbar buttons
-    Save Project, Load Project
-    Settings
-
-Create tests for BooleanParameter and BooleanField
-
-Create tests for GroupParameter duplicates.
-    Also need to ensure all existing parameters aren't in an added GroupParameter.
-
-Create tests for ChoiceParameter
-    Enum tests
-
 FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
-
-Real terminal emulator
 
 Bugs
 ====
@@ -115,6 +84,7 @@ Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace :-
 
 Hard Bugs
 =========
+
 I've tried to fix them, but have not found a solution.
 
 WebTool does not detect when a redirect occurs.

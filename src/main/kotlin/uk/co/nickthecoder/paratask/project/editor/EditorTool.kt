@@ -9,6 +9,7 @@ import uk.co.nickthecoder.paratask.project.CommandLineTool
 import java.io.File
 
 class EditorTool() : AbstractTool() {
+
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
     val filename = MultipleParameter("filename") { FileParameter.factory() }

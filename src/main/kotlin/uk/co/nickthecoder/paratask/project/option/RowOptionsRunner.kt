@@ -86,31 +86,44 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
     }
 
     protected fun doRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
-        if (option.isMultiple) {
-            doMultiple(option, rows, prompt = prompt, newTab = newTab)
-        } else {
-            for (row in rows) {
-                doRow(option, row, prompt = prompt, newTab = newTab)
+        try {
+            if (option.isMultiple) {
+                doMultiple(option, rows, prompt = prompt, newTab = newTab)
+            } else {
+                for (row in rows) {
+                    doRow(option, row, prompt = prompt, newTab = newTab)
+                }
             }
+        } catch(e: Exception) {
+            handleException(e)
         }
+
     }
 
     protected fun doRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
-        val result = option.run(tool, row = row)
+        try {
+            val result = option.run(tool, row = row)
 
-        process(result,
-                newTab = newTab || option.newTab,
-                prompt = prompt || option.prompt,
-                refresh = option.refresh)
+            process(result,
+                    newTab = newTab || option.newTab,
+                    prompt = prompt || option.prompt,
+                    refresh = option.refresh)
+        } catch(e: Exception) {
+            handleException(e)
+        }
     }
 
 
     protected fun doMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
-        val result = option.runMultiple(tool, rows)
-        process(result,
-                newTab = newTab || option.newTab,
-                prompt = prompt || option.prompt,
-                refresh = option.refresh)
+        try {
+            val result = option.runMultiple(tool, rows)
+            process(result,
+                    newTab = newTab || option.newTab,
+                    prompt = prompt || option.prompt,
+                    refresh = option.refresh)
+        } catch(e: Exception) {
+            handleException(e)
+        }
     }
 
 

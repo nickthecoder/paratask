@@ -72,12 +72,20 @@ open class OptionsRunner(val tool: Tool) {
     }
 
     protected fun doNonRow(option: Option, prompt: Boolean = false, newTab: Boolean = false) {
-        val result = option.runNonRow(tool)
+        try {
+            val result = option.runNonRow(tool)
 
-        process(result,
-                newTab = newTab || option.newTab,
-                prompt = prompt || option.prompt,
-                refresh = option.refresh)
+            process(result,
+                    newTab = newTab || option.newTab,
+                    prompt = prompt || option.prompt,
+                    refresh = option.refresh)
+        } catch(e: Exception) {
+            handleException(e)
+        }
+    }
+
+    protected fun handleException(e: Exception) {
+        tool.toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow?.handleException(e)
     }
 
     protected fun process(
@@ -101,7 +109,8 @@ open class OptionsRunner(val tool: Tool) {
             }
             else -> {
                 if (refresh) {
-                    tool.taskRunner.run()
+                    refresher.add()
+                    refresher.onFinished()
                 }
             }
         }

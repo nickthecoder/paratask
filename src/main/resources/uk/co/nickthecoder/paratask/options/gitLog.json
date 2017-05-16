@@ -49,6 +49,17 @@
             "aliases": [
                 "files"
             ]
+        },
+        {
+            "type": "groovy",
+            "code": "test",
+            "label": "test",
+            "script": "x",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }
