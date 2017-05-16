@@ -53,4 +53,16 @@ data class GroovyOption(
         return gscript.run(bindings)
     }
 
+    override fun copy() : GroovyOption {
+        return GroovyOption(
+                code = code,
+                aliases = ArrayList<String>(aliases),
+                label = label,
+                isRow = isRow,
+                isMultiple = isMultiple,
+                newTab = newTab,
+                prompt = prompt,
+                refresh = refresh,
+                script = script)
+    }
 }

@@ -27,4 +27,6 @@ interface Option {
     fun runNonRow(tool: Tool): Any?
 
     fun runMultiple(tool: Tool, list: List<Any>): Any?
+
+    fun copy(): Option
 }

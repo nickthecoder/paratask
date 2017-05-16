@@ -35,6 +35,17 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "++",
+            "label": "Copy",
+            "script": "tool.taskCopy(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
         }
     ]
 }

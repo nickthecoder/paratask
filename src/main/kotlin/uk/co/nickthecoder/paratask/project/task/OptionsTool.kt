@@ -89,6 +89,10 @@ class OptionsTool() : AbstractTableTool<Option>() {
         return EditOptionTask(getFileOptions(), option)
     }
 
+    fun taskCopy(option: Option): CopyOptionTask {
+        return CopyOptionTask(getFileOptions(), option)
+    }
+
     fun taskNew(): NewOptionTask {
         return NewOptionTask(getFileOptions())
     }
@@ -151,6 +155,15 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
     open class NewOptionTask(fileOptions: FileOptions)
         : EditOptionTask(fileOptions, GroovyOption(""), name = "newOption") {
+
+        override open fun update() {
+            super.update()
+            fileOptions.addOption(option)
+        }
+    }
+
+    open class CopyOptionTask(fileOptions: FileOptions, option: Option)
+        : EditOptionTask(fileOptions, option.copy(), name = "copyOption") {
 
         override open fun update() {
             super.update()
