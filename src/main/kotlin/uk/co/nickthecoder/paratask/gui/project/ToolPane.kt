@@ -18,5 +18,7 @@ interface ToolPane {
 
     fun detaching()
 
+    fun selected()
+
     fun toggleParameters()
 }

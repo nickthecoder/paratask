@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.gui.project
 
-import javafx.collections.ObservableList
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -9,6 +10,20 @@ import uk.co.nickthecoder.paratask.project.Tool
 class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     : ProjectTabs, TabPane() {
+
+    init {
+        selectionModel.selectedItemProperty().addListener(object : ChangeListener<Tab> {
+            override fun changed(ov: ObservableValue<out Tab>?, oldTab: Tab?, newTab: Tab?) {
+                onTabChanged(oldTab as ProjectTab_Impl?, newTab as ProjectTab_Impl?)
+            }
+        })
+    }
+
+    private fun onTabChanged(oldTab: ProjectTab_Impl?, newTab: ProjectTab_Impl?) {
+        println("Changed tab ${oldTab} to ${newTab}")
+        oldTab?.deselected()
+        newTab?.selected()
+    }
 
     override fun addToolPane(toolPane: ToolPane): ProjectTab {
         return addToolPane(tabs.size, toolPane)

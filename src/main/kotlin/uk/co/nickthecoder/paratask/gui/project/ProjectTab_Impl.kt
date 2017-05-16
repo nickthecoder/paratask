@@ -60,6 +60,14 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         }
     }
 
+    internal fun selected() {
+        left.toolPane.selected()
+    }
+
+    internal fun deselected() {
+
+    }
+
     override fun add(tool: Tool) {
         assert(right == null)
 

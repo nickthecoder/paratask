@@ -64,6 +64,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     override fun selected() {
+        codeArea.requestFocus()
         tool.toolPane?.halfTab?.toolBars?.left = toolBar
     }
 

@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.gui.project
 
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.geometry.Side
@@ -37,13 +38,24 @@ class ToolPane_Impl(override var tool: Tool)
         tabPane.getTabs().addAll(parametersTab)
 
         tabPane.selectionModel.selectedItemProperty().addListener(object : ChangeListener<Tab> {
-            override fun changed(ov: ObservableValue<out Tab>, oldTab: Tab, newTab: Tab) {
+            override fun changed(ov: ObservableValue<out Tab>, oldTab: Tab?, newTab: Tab?) {
                 onTabChanged(oldTab, newTab)
             }
         })
     }
 
-    fun onTabChanged(oldTab: Tab, newTab: Tab) {
+    override fun selected() {
+        val tab = tabPane.selectionModel.selectedItem
+        // TODO ResultsTab and parameters tab should be handled the same
+        println()
+        if (tab is ResultsTab) {
+            Platform.runLater() {
+                tab.results.selected()
+            }
+        }
+    }
+
+    fun onTabChanged(oldTab: Tab?, newTab: Tab?) {
         if (oldTab is ResultsTab) {
             oldTab.results.deselected()
         }
