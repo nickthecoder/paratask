@@ -2,8 +2,10 @@ package uk.co.nickthecoder.paratask.project.editor
 
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.scene.Node
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.StackPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.gui.Actions
@@ -21,6 +23,10 @@ class EditorResults(override val tool: EditorTool, val file: File?)
 
     val codeArea = CodeArea()
 
+    val searcher = Searcher(codeArea)
+
+    val findBar = FindBar(searcher, codeArea)
+
     val dirtyProperty = SimpleBooleanProperty()
 
     var dirty: Boolean
@@ -29,6 +35,8 @@ class EditorResults(override val tool: EditorTool, val file: File?)
             dirtyProperty.set(value)
             label = (if (value) "*" else "") + (file?.name ?: "New File")
         }
+
+    val dummyParent = StackPane()
 
     init {
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea))
@@ -41,20 +49,20 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         shortcuts.add(Actions.EDIT_CUT, { onCut() })
         shortcuts.add(Actions.EDIT_COPY, { onCopy() })
         shortcuts.add(Actions.EDIT_PASTE, { onPaste() })
+        shortcuts.add(Actions.ESCAPE, { onEscape() })
 
         with(toolBar.getItems())
         {
             val save = Actions.FILE_SAVE.createButton(shortcuts) { onSave() }
             val undo = Actions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
             val redo = Actions.EDIT_REDO.createButton(shortcuts) { onRedo() }
+            val find = Actions.EDIT_FIND.createButton(shortcuts) { onFind() }
 
             undo.disableProperty().bind(Bindings.not(codeArea.undoAvailableProperty()))
             redo.disableProperty().bind(Bindings.not(codeArea.redoAvailableProperty()))
             save.disableProperty().bind(Bindings.not(dirtyProperty))
 
-            add(save)
-            add(undo)
-            add(redo)
+            addAll(save, undo, redo, find)
         }
 
         file?.let { load(it) }
@@ -69,7 +77,15 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     override fun deselected() {
-        tool.toolPane?.halfTab?.toolBars?.left = null
+        hide(toolBar, findBar)
+    }
+
+    fun hide(vararg nodes: Node) {
+        nodes.forEach { dummyParent.children.add(it) }
+    }
+
+    fun showFindBar() {
+        tool.toolPane?.halfTab?.toolBars?.bottom = findBar
     }
 
     fun load(file: File) {
@@ -105,5 +121,14 @@ class EditorResults(override val tool: EditorTool, val file: File?)
 
     fun onCut() {
         codeArea.cut()
+    }
+
+    fun onEscape() {
+        hide(findBar)
+    }
+
+    fun onFind() {
+        showFindBar()
+        findBar.textField.requestFocus()
     }
 }

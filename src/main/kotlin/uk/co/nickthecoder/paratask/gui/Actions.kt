@@ -52,6 +52,12 @@ object Actions {
     val UP_DIRECTORY = Action("directory.up", KeyCode.UP, alt = true)
     val COMPLETE_FILE = Action("file.complete", KeyCode.DOWN, alt = true)
 
+    // EditorTool
+
+    val EDIT_FIND = Action("edit.find", KeyCode.F, control = true, tooltip = "Find")
+    val EDIT_FIND_NEXT = Action("edit.find.next", KeyCode.G, control = true, tooltip = "Find Next")
+    val EDIT_FIND_PREV = Action("edit.find.prev", KeyCode.G, control = true, shift = true, tooltip = "Find Next")
+
     // General
     val CONTEXT_MENU = Action("context.menu", KeyCode.CONTEXT_MENU)
     val FILE_SAVE = Action("file.save", KeyCode.S, control = true, tooltip = "Save")
@@ -60,7 +66,7 @@ object Actions {
     val EDIT_PASTE = Action("edit.paste", KeyCode.V, control = true, tooltip = "Paste")
     val EDIT_UNDO = Action("edit.undo", KeyCode.Z, control = true, tooltip = "Undo")
     val EDIT_REDO = Action("edit.redo", KeyCode.Z, shift = true, control = true, tooltip = "Redo")
-
+    val ESCAPE = Action("escape", KeyCode.ESCAPE)
 
     val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)
