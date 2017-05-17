@@ -20,6 +20,8 @@ class TaskDescription(
      */
     var unnamedParameter: ValueParameter<*>? = null
 
+    fun valueParameters(): List<ValueParameter<*>> = root.valueParameters()
+
     fun addParameters(vararg parameters: Parameter) {
         parameters.forEach { root.add(it) }
     }

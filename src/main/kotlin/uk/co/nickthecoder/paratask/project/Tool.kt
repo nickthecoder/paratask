@@ -2,12 +2,12 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.StringProperty
 import javafx.scene.image.Image
-import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.CopyableTask
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 
-interface Tool : Task {
+interface Tool : CopyableTask {
 
     var toolPane: ToolPane?
 
@@ -37,13 +37,11 @@ interface Tool : Task {
 
     fun detaching()
 
-    fun copy(): Tool
-
-    fun creationString(): String
+    override fun copy(): Tool = super.copy() as Tool
 
     companion object {
         fun create(creationString: String): Tool {
-            return Class.forName(creationString).newInstance() as Tool
+            return CopyableTask.create(creationString) as Tool
         }
     }
 }

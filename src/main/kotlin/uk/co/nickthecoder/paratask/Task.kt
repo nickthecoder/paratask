@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.project.TaskRunner
 
 interface Task {
@@ -24,4 +26,8 @@ interface Task {
      * have no effect on the values in the GUI.
      */
     fun run(): Any?
+
+    fun valueParameters(): List<ValueParameter<*>> = taskD.root.valueParameters()
+
+    fun parameters(): List<Parameter> = taskD.root.descendants()
 }

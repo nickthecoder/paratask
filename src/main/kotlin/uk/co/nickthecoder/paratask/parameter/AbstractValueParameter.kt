@@ -27,9 +27,12 @@ abstract class AbstractValueParameter<T>(
         }
     }
 
+    override var expression: String? = null
+
     override var value: T
         set(v: T) {
             property.set(v)
+            expression = null
         }
         get() = property.get()
 

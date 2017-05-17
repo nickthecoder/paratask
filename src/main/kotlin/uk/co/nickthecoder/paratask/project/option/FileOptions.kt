@@ -4,6 +4,7 @@ import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
@@ -72,9 +73,9 @@ class FileOptions(val file: File) {
          "options" : [
              {
                 "type" : "groovy",
+                "script" : "println( 1 + 1 ) // Any groovy code!",
                 "code" : "2",
                 "label" : "Two",
-                "script" : "",
                 "isRow" : false,
                 "isMultiple" : false,
                 "newTab" : false,
@@ -82,7 +83,8 @@ class FileOptions(val file: File) {
                 "refreshResults" : true
              },
              {
-                "type" : "groovy",
+                "type" : "task",
+                "task" : "uk.co.nickthecoder.paratask.MyTask",
                 "code" : "5",
                 "label" : "Five",
                 "script" : "",
@@ -90,7 +92,11 @@ class FileOptions(val file: File) {
                 "isMultiple" : false,
                 "newTab" : false,
                 "prompt" : false,
-                "refreshResults" : true
+                "refreshResults" : true,
+                "parameters" : [
+                    "parameter" : { "name" : "foo", value="Hello" },
+                    "parameter" : { "name" : "bar", expression="1+1" }
+                ]
              }
          ] 
 
@@ -116,7 +122,10 @@ class FileOptions(val file: File) {
                 val option: Option
                 when (type) {
                     "groovy" -> {
-                        option = GroovyOption()
+                        option = GroovyOption(joption.getString("script", ""))
+                    }
+                    "task" -> {
+                        option = TaskOption(joption.getString("task", ""))
                     }
                     else -> {
                         throw RuntimeException("Unknown option type : " + type)
@@ -126,7 +135,6 @@ class FileOptions(val file: File) {
                 with(option) {
                     code = joption.getString("code", "?")
                     label = joption.getString("label", "")
-                    script = joption.getString("script", "")
                     isRow = joption.getBoolean("isRow", false)
                     isMultiple = joption.getBoolean("isMultiple", false)
                     newTab = joption.getBoolean("newTab", false)
@@ -137,6 +145,25 @@ class FileOptions(val file: File) {
                 jaliases?.let {
                     option.aliases = jaliases.asArray().map { it.asString() }.toMutableList()
                 }
+
+                // Load parameter values/expressions for TaskOption
+                if (option is TaskOption) {
+                    val jparameters = joption.get("parameters").asArray()
+                    for (jp in jparameters) {
+                        val jparameter = jp.asObject()
+                        val name = jparameter.getString("name", "")
+                        val parameter = option.task.taskD.root.find(name)
+                        if (parameter is ValueParameter<*>) {
+                            val jvalue = jparameter.get("value")
+                            if (jvalue == null) {
+                                parameter.expression = jparameter.getString("expression", "")
+                            } else {
+                                parameter.stringValue = jvalue.asString()
+                            }
+                        }
+                    }
+                }
+
                 addOption(option)
             }
         }
@@ -158,6 +185,11 @@ class FileOptions(val file: File) {
             when (option) {
                 is GroovyOption -> {
                     joption.set("type", "groovy")
+                    joption.set("script", option.script)
+                }
+                is TaskOption -> {
+                    joption.set("type", "task")
+                    joption.set("task", option.task.creationString())
                 }
                 else -> {
                     throw RuntimeException("Unknown Option : ${option.javaClass}")
@@ -166,7 +198,6 @@ class FileOptions(val file: File) {
             with(joption) {
                 set("code", option.code)
                 set("label", option.label)
-                set("script", option.script)
                 set("isRow", option.isRow)
                 set("isMultiple", option.isMultiple)
                 set("prompt", option.prompt)
@@ -179,6 +210,20 @@ class FileOptions(val file: File) {
                     jaliases.add(alias)
                 }
                 joption.add("aliases", jaliases)
+            }
+            if (option is TaskOption) {
+                val jparameters = JsonArray()
+                for (parameter in option.task.valueParameters()) {
+                    val jparameter = JsonObject()
+                    jparameter.add("name", parameter.name)
+                    if (parameter.expression == null) {
+                        jparameter.add("value", parameter.stringValue)
+                    } else {
+                        jparameter.add("expression", parameter.expression ?: "")
+                    }
+                    jparameters.add(jparameter)
+                }
+                joption.add("parameters", jparameters)
             }
 
             joptions.add(joption)

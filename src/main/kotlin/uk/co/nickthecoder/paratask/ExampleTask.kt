@@ -8,6 +8,7 @@ import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.parameter.TaskParameter
 
 class ExampleTask : AbstractTask() {
 
@@ -42,8 +43,10 @@ Here we see GroupParameter in action
 
     val multiple = MultipleParameter("multiple") { IntParameter.factory() }
 
+    val task = TaskParameter("task")
+
     init {
-        taskD.addParameters(multiple, greeting, color, freeBeer, threeWay, range, directory)
+        taskD.addParameters(task, multiple, greeting, color, freeBeer, threeWay, range, directory)
         range.addParameters(rangeFrom, rangeTo)
     }
 

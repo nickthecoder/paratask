@@ -27,6 +27,8 @@ class MultipleParameter<T>(
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
+    override var expression: String? = null
+
     override var value: List<T>
         get() = innerParameters.map { it.value }
         set(newValue) {
@@ -36,6 +38,7 @@ class MultipleParameter<T>(
                 innerParameters.add(innerParameter)
                 innerParameter.value = item
             }
+            expression = null
             parameterListeners.fireStructureChanged(this)
         }
 

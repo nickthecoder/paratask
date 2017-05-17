@@ -4,18 +4,8 @@ import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.util.ThreadedDesktop
 
-data class GroovyOption(
-        override var code: String = "",
-        override var aliases: MutableList<String> = mutableListOf<String>(),
-        override var label: String = "",
-        override var isRow: Boolean = true,
-        override var isMultiple: Boolean = false,
-        override var newTab: Boolean = false,
-        override var prompt: Boolean = false,
-        override var refresh: Boolean = false,
-        override var script: String = "")
-
-    : Option {
+class GroovyOption(var script: String)
+    : AbstractOption() {
 
     private var gscript: GroovyScript? = null
 
@@ -31,8 +21,8 @@ data class GroovyOption(
         return runScript(getScript(), tool, isMultiple, row)
     }
 
-    override fun runMultiple(tool: Tool, list: List<Any>): Any? {
-        return runScript(getScript(), tool, isMultiple, list)
+    override fun runMultiple(tool: Tool, rows: List<Any>): Any? {
+        return runScript(getScript(), tool, isMultiple, rows)
     }
 
     override fun runNonRow(tool: Tool): Any? {
@@ -43,7 +33,6 @@ data class GroovyOption(
 
         val bindings = Binding()
         bindings.setProperty("tool", tool)
-        // TODO Add helper functions
         bindings.setProperty("desktop", ThreadedDesktop.instance)
 
         if (rowOrRows != null) {
@@ -53,16 +42,9 @@ data class GroovyOption(
         return gscript.run(bindings)
     }
 
-    override fun copy() : GroovyOption {
-        return GroovyOption(
-                code = code,
-                aliases = ArrayList<String>(aliases),
-                label = label,
-                isRow = isRow,
-                isMultiple = isMultiple,
-                newTab = newTab,
-                prompt = prompt,
-                refresh = refresh,
-                script = script)
+    override fun copy(): GroovyOption {
+        val result = GroovyOption(script)
+        copyTo(result)
+        return result
     }
 }

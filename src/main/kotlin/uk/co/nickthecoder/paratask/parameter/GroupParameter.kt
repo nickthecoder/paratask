@@ -115,6 +115,23 @@ class GroupParameter(
         return result
     }
 
+    fun valueParameters(): List<ValueParameter<*>> {
+        val result = mutableListOf<ValueParameter<*>>()
+
+        fun addAll(group: GroupParameter) {
+            group.children.forEach { child ->
+                if (child is ValueParameter<*>) {
+                    result.add(child)
+                } else if (child is GroupParameter) {
+                    addAll(child)
+                }
+            }
+        }
+
+        addAll(this)
+        return result
+    }
+
     /**
      * Creates a box with the name of the group at the top, and all of the child parameters' Nodes
      * inside the box.
@@ -140,10 +157,14 @@ class GroupParameter(
     override fun errorMessage(): String? = null
 
     fun check() {
-        descendants().forEach { parameter ->
-            val error = parameter.errorMessage()
-            if (error != null) {
-                throw ParameterException(parameter, error)
+        for (parameter in descendants()) {
+            if (parameter is GroupParameter) {
+                parameter.check()
+            } else {
+                val error = parameter.errorMessage()
+                if (error != null) {
+                    throw ParameterException(parameter, error)
+                }
             }
         }
     }

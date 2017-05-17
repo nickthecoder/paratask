@@ -20,13 +20,11 @@ interface Option {
 
     var prompt: Boolean
 
-    var script: String
-
     fun run(tool: Tool, row: Any): Any?
 
     fun runNonRow(tool: Tool): Any?
 
-    fun runMultiple(tool: Tool, list: List<Any>): Any?
+    fun runMultiple(tool: Tool, rows: List<Any>): Any?
 
     fun copy(): Option
 }

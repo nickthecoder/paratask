@@ -2,22 +2,22 @@ package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.gui.project.SharedToolPane
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.parameter.TaskParameter
 import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
 import uk.co.nickthecoder.paratask.project.option.OptionsManager
+import uk.co.nickthecoder.paratask.project.option.TaskOption
 import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BooleanColumn
 import uk.co.nickthecoder.paratask.project.table.Column
-import uk.co.nickthecoder.paratask.util.uncamel
 
 class OptionsTool() : AbstractTableTool<Option>() {
 
@@ -123,7 +123,9 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
         var prompt = BooleanParameter("prompt", value = option.prompt)
 
-        var script = StringParameter("script", value = option.script)
+        var script = StringParameter("script", value = if (option is GroovyOption) option.script else "")
+
+        var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null)
 
         init {
             taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, script)
@@ -144,7 +146,9 @@ class OptionsTool() : AbstractTableTool<Option>() {
             option.refresh = refresh.value == true
             option.newTab = newTab.value == true
             option.prompt = prompt.value == true
-            option.script = script.value
+            if (option is GroovyOption) {
+                option.script = script.value
+            }
             fileOptions.update(option)
         }
 

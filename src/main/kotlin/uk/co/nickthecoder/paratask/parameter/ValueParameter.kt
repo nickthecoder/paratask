@@ -19,6 +19,18 @@ interface ValueParameter<T>
             value = converter.fromString(v)
         }
 
+    var expression: String?
+
+    /**
+     * Set the value based on an evaluated expression, and therefore the type T isn't known by the
+     * caller.
+     * Throws an exception if the type is not correct.
+     */
+    fun evaluated(v: Any?) {
+        @Suppress("UNCHECKED_CAST")
+        value = v as T
+    }
+
     override fun errorMessage(): String? = errorMessage(value)
 
     fun errorMessage(v: T?): String?

@@ -1,34 +1,36 @@
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
-OMG, I screwed up!
-	The scripts should be promptable Tasks / Tools
-	How do I allow variables to be embedded into parameters' values?
+Options aren't like AS/400 commands (yet)
 	Sub-task? of TaskPrompter has a box with a toggle button on the left, and the field on the right.
-		When the toggle is pressed, the field is replaced by controls allowing values to be entered programatically
-		For now, just have a textfield, but later maybe an editable Combobox with options containing tool and row values
-	ValueParameter to have an extra "script-value" property
-
-	Edit Option to have a ComboBox with a list of available Tasks/Tools, and "custom script" as the default.
-	If a Task/Tool is selected, then a button appears to prompt that task, where the parameters can be specified.
-	
-	Save either creates a GroovyOption or a TaskOption
-
-	TaskOption has
-		a task creation string (move it from Tool)
-		a list of parameter name/ stringValue / expression (only one of the last two is set).
+		When the toggle is pressed, the field is replaced by simple TextArea where an expression can be entered
+		Right click on the expression field for a menu of values :
+			Tools and Rows have a list of expressions, and maybe a set og global expressions too.
+			e.g. "row.path", "tool.directory", project.directory
 	
 	To list available Tasks, we need a global TaskRegistry
 		HomeTool uses this registry, and filters only Tools
 	In addition to the global TaskRegistry, a Tool can be a TaskRegistry, and so can a Row.
+
+	Hmm, how do we return instances of the SAME tool, e.g. changing directory in DirectoryTool?
+		A) Don't, just create a new Tool every time
+		B) Create another option : GroovyOption, TaskOption, ParametersOption
+			The last one will copy the parameters back into the current tool when the option runs.
+
+	OneOfParameter : GroupParameter
+		Use this when setting the script / task when editing an Option.
+		Pull down list to select which parameter to edit
+		Override check to check the CURRENT only
+
 
 
 Maybe I should rename Task to Command and Command to OSCommand???
 	TaskDescription becomes CommandDescription
 	In which case, the project needs to be renamed. Ouch!
 
-Given that many options which return Tools are newTab, maybe I need a way to override this
+Given that many options which return Tools are newTab, maybe I need a way to override this.
 	function which have newTab : Boolean become newTab : Boolean?
+	Do something similar for prompt? So you could default "rm" to prompt, but override by holding down shift.
 
 DateParameter
 	Use it on GitLogTool
