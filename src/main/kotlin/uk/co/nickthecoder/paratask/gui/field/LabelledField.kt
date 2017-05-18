@@ -163,6 +163,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
     fun onExpression() {
         if (expressionButton?.isSelected == true) {
             children.add(expressionField)
+            expressionField.text = ""
         } else {
             children.remove(expressionField)
             expressionField.text = null

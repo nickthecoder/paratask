@@ -7,12 +7,10 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.CopyableTask
-import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.gui.ProgrammingModeTaskPrompter
 import uk.co.nickthecoder.paratask.parameter.TaskParameter
 
 class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {
-
-    private var dirty = false
 
     private val comboBox = ComboBox<CopyableTask>()
 
@@ -50,14 +48,10 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
         button.addEventHandler(ActionEvent.ACTION) { onEditParameters() }
     }
 
-    override fun isDirty(): Boolean = dirty
-
     private fun onEditParameters() {
         val task = comboBox.value
-        task.taskD.programmingMode = true
         if (task != null) {
-            // TODO Use a new type of task prompter, which can handle expressions. Use Stage.showAndWait
-            val taskPrompter = TaskPrompter(task)
+            val taskPrompter = ProgrammingModeTaskPrompter(task)
             taskPrompter.placeOnStage(Stage())
         }
     }

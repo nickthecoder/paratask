@@ -4,26 +4,31 @@ import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
 class TaskForm(val task: Task) {
 
-    val form = GroupParametersForm(task.taskD.root)
+    val form = task.taskD.root.createField()
 
     val scrollPane = ScrollPane(form)
 
     init {
         scrollPane.fitToWidthProperty().set(true)
-        form.buildContent()
     }
 
     fun check(): Boolean {
 
+        val programming = task.taskD.programmingMode
+
         // Are there any "dirty" fields, where the value in the GUI isn't in the Value.
-        // For example, if a non-valid number is typed into a IntField
+        // For example, if a non-valid number is typed into an IntField
         form.descendants().forEach { field ->
-            if (field.isDirty()) {
-                ensureVisible(field)
-                return false;
+            val parameter = field.parameter
+            if (!programming || (parameter is ValueParameter<*> && parameter.expression != null)) {
+                if (field.isDirty()) {
+                    ensureVisible(field)
+                    return false
+                }
             }
         }
 

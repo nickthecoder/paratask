@@ -48,9 +48,9 @@ Here we see GroupParameter in action
     val task = TaskParameter("task")
 
     init {
-        taskD.addParameters(task, yesNo)
+        //taskD.addParameters(task, yesNo)
         //taskD.addParameters(multiple) // BUG!
-        //taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
+        taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
         group.addParameters(rangeFrom, rangeTo)
     }
 

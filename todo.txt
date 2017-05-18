@@ -5,13 +5,8 @@ New Prompter with just a "Done" button
 	Add a css class, and colour expressions differently Yellow?
 	Find out how to change background correctly, and use it on FileField drag and drop.
 
-	MultipleParameter needs to add the "=" buttons too.
-	Add Example to the dummy list, and check group parameter children
-
-	Should there be a RootParameter:GroupParameter, and IT has the taskD
-		Also has the descendents and valueParameters methods.
-
 Bug ExampleTool with only "multiple" the size is full screen height.
+	Also gives the wrong size for multiple when first prompting programming of directory!
 
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)

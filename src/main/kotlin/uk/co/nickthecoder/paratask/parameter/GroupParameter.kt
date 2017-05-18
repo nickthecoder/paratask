@@ -105,9 +105,9 @@ open class GroupParameter(
     }
 
     /**
-     * Creates a box with the name of the group at the top, and all of the child parameters' Nodes
-     * inside the box.
-     * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
+     * Creates a GroupParametersForm, which contains fields for each of this group's children
+     * When used to group parameters it is wrapped in a box, but when used as the root,
+     * it is not wrapped in a box.
      */
     override fun createField(): GroupParametersForm {
         val result = GroupParametersForm(this)

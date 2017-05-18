@@ -11,9 +11,15 @@ interface ParentParameter : Parameter {
             if (parameter is ParentParameter) {
                 parameter.check()
             } else {
-                val error = parameter.errorMessage()
-                if (error != null) {
-                    throw ParameterException(parameter, error)
+                if (parameter is ValueParameter<*> && parameter.expression != null) {
+                    if ( parameter.expression == "") {
+                        throw ParameterException( parameter, "Expression is required")
+                    }
+                } else {
+                    val error = parameter.errorMessage()
+                    if (error != null) {
+                        throw ParameterException(parameter, error)
+                    }
                 }
             }
         }
