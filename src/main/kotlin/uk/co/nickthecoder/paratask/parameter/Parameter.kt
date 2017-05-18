@@ -24,7 +24,7 @@ interface Parameter : Labelled {
 
     fun createField(): ParameterField
 
-    fun findRoot(): GroupParameter? {
+    fun findRoot(): RootParameter? {
         return parent?.findRoot()
     }
 

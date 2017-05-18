@@ -1,0 +1,29 @@
+package uk.co.nickthecoder.paratask.parameter
+
+import uk.co.nickthecoder.paratask.TaskDescription
+
+class RootParameter(val taskD: TaskDescription, description: String)
+
+    : GroupParameter("root", description = description) {
+
+    override fun findTaskD(): TaskDescription? = taskD
+
+    override fun findRoot(): RootParameter?= this
+
+    fun valueParameters(): List<ValueParameter<*>> {
+        val result = mutableListOf<ValueParameter<*>>()
+
+        fun addAll(group: GroupParameter) {
+            group.children.forEach { child ->
+                if (child is ValueParameter<*>) {
+                    result.add(child)
+                } else if (child is GroupParameter) {
+                    addAll(child)
+                }
+            }
+        }
+
+        addAll(this)
+        return result
+    }
+}

@@ -9,25 +9,32 @@ import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class GroupParameter(
+open class GroupParameter(
         name: String,
         override val label: String = name.uncamel(),
         description: String = "",
         val collapsable: Boolean = true,
-        val expanded: Boolean = true,
-        val taskD: TaskDescription? = null)
+        val expanded: Boolean = true)
 
     : AbstractParameter(name, description = description, label = label),
         WrappableField, ParentParameter {
 
     override val children = mutableListOf<Parameter>()
 
-    override fun findRoot(): GroupParameter? {
-        return if (isRoot()) {
-            this
-        } else {
-            super<AbstractParameter>.findRoot()
+    fun descendants(): List<Parameter> {
+        val result = mutableListOf<Parameter>()
+
+        fun addAll(group: GroupParameter) {
+            group.children.forEach { child ->
+                result.add(child)
+                if (child is GroupParameter) {
+                    addAll(child)
+                }
+            }
         }
+
+        addAll(this)
+        return result
     }
 
     fun add(child: Parameter) {
@@ -97,39 +104,6 @@ class GroupParameter(
         return null
     }
 
-    fun descendants(): List<Parameter> {
-        val result = mutableListOf<Parameter>()
-
-        fun addAll(group: GroupParameter) {
-            group.children.forEach { child ->
-                result.add(child)
-                if (child is GroupParameter) {
-                    addAll(child)
-                }
-            }
-        }
-
-        addAll(this)
-        return result
-    }
-
-    fun valueParameters(): List<ValueParameter<*>> {
-        val result = mutableListOf<ValueParameter<*>>()
-
-        fun addAll(group: GroupParameter) {
-            group.children.forEach { child ->
-                if (child is ValueParameter<*>) {
-                    result.add(child)
-                } else if (child is GroupParameter) {
-                    addAll(child)
-                }
-            }
-        }
-
-        addAll(this)
-        return result
-    }
-
     /**
      * Creates a box with the name of the group at the top, and all of the child parameters' Nodes
      * inside the box.
@@ -159,12 +133,4 @@ class GroupParameter(
     override fun errorMessage(): String? = null
 
     override fun isStretchy(): Boolean = true
-
-    override fun findTaskD(): TaskDescription? {
-        parent?.let {
-            return it.findTaskD()
-        }
-        return taskD
-    }
-
 }

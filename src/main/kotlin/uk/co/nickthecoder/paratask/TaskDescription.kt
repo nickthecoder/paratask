@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.RootParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -11,7 +12,7 @@ class TaskDescription(
         override val label: String = name.uncamel(),
         val description: String = "") : Labelled {
 
-    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description, taskD = this)
+    val root: RootParameter = RootParameter(taskD = this, description = description)
 
     var programmingMode: Boolean = false
 
@@ -52,8 +53,8 @@ class TaskDescription(
         val builder = StringBuilder()
         builder.appendln("TaskDescription ${name}")
         builder.appendln()
-        for ( parameter in valueParameters()) {
-            builder.appendln( "    ${parameter.name} = ${parameter.value}")
+        for (parameter in valueParameters()) {
+            builder.appendln("    ${parameter.name} = ${parameter.value}")
         }
         return builder.toString()
     }
