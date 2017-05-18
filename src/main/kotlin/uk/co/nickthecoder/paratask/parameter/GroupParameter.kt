@@ -3,9 +3,9 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
+import uk.co.nickthecoder.paratask.gui.field.ParametersForm
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -109,7 +109,7 @@ open class GroupParameter(
      * When used to group parameters it is wrapped in a box, but when used as the root,
      * it is not wrapped in a box.
      */
-    override fun createField(): GroupParametersForm {
+    override fun createField(): ParametersForm {
         val result = GroupParametersForm(this)
         result.buildContent()
         return result

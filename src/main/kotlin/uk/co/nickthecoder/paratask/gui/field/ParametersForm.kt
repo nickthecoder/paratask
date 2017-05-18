@@ -25,9 +25,17 @@ open class ParametersForm(val parentParameter: ParentParameter)
     internal val fieldSet = mutableListOf<ParameterField>()
 
     open fun buildContent() {
+        buildTop()
+        buildChildren()
+    }
+
+    open fun buildTop() {
         if (parentParameter.description.length > 0) {
             children.add(TextFlow(Text(parentParameter.description)))
         }
+    }
+
+    open fun buildChildren() {
         var index = 0
         parentParameter.children.forEach() { child ->
             if (!child.hidden) {
@@ -35,6 +43,13 @@ open class ParametersForm(val parentParameter: ParentParameter)
                 index++
             }
         }
+    }
+
+    open fun addField(parameterField: ParameterField) {
+        children.add(parameterField)
+        parameterField.getStyleClass().add("field-${parameter.name}")
+        parameterField.form = this
+        fieldSet.add(parameterField)
     }
 
     open fun addParameter(parameter: Parameter, index: Int): Node {

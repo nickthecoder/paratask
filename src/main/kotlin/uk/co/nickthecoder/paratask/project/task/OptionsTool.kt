@@ -128,7 +128,7 @@ class OptionsTool() : AbstractTableTool<Option>() {
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null)
 
         init {
-            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, script)
+            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, script, taskP)
         }
 
         override fun run() {

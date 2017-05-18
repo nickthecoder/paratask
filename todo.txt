@@ -1,8 +1,12 @@
 
 Use new prompter in EditOption
 
-	Add a css class, and colour expressions differently Yellow?
-	Find out how to change background correctly, and use it on FileField drag and drop.
+AddHeaderFooter task
+	A single file, or recurse though a directory
+	Filter based on extensions
+	If file contains the magic phrase, then skip
+	otherwise append the given template
+	Use it to add GPL headers to all my files.
 
 Bug ExampleTool with only "multiple" the size is full screen height.
 	Also gives the wrong size for multiple when first prompting programming of directory!

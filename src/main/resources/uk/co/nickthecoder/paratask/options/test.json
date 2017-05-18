@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "q",
             "code": "QQ",
             "label": "q",
-            "script": "q",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "CC",
             "code": "C",
             "label": "c",
-            "script": "CC",
             "isRow": true,
             "isMultiple": true,
             "prompt": true,
@@ -27,9 +27,9 @@
         },
         {
             "type": "groovy",
+            "script": "X",
             "code": "X",
             "label": "Edit Text File",
-            "script": "new EditorTool(rows.collect {it.file})",
             "isRow": true,
             "isMultiple": true,
             "prompt": true,

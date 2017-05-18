@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.GroupParameter
 import uk.co.nickthecoder.paratask.parameter.IntParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
+import uk.co.nickthecoder.paratask.parameter.OneOfParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.TaskParameter
 
@@ -45,13 +46,20 @@ Here we see GroupParameter in action
 
     val multiple = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
 
+    val oneOf = OneOfParameter("oneOf")
+
+    val a = StringParameter("a")
+
+    val b = IntParameter("b")
+
     val task = TaskParameter("task")
 
     init {
         //taskD.addParameters(task, yesNo)
         //taskD.addParameters(multiple) // BUG!
-        taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
+        taskD.addParameters(oneOf, task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
         group.addParameters(rangeFrom, rangeTo)
+        oneOf.addParameters( a, b )
     }
 
     override fun run() {

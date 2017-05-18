@@ -6,23 +6,25 @@ interface ParentParameter : Parameter {
 
     val children: List<Parameter>
 
-    fun check() {
-        for (parameter in children) {
-            if (parameter is ParentParameter) {
-                parameter.check()
+    open fun check() {
+        children.forEach { checkChild(it) }
+    }
+
+    fun checkChild(parameter: Parameter) {
+        if (parameter is ParentParameter) {
+            parameter.check()
+        } else {
+            if (parameter is ValueParameter<*> && parameter.expression != null) {
+                if (parameter.expression == "") {
+                    throw ParameterException(parameter, "Expression is required")
+                }
             } else {
-                if (parameter is ValueParameter<*> && parameter.expression != null) {
-                    if ( parameter.expression == "") {
-                        throw ParameterException( parameter, "Expression is required")
-                    }
-                } else {
-                    val error = parameter.errorMessage()
-                    if (error != null) {
-                        throw ParameterException(parameter, error)
-                    }
+                val error = parameter.errorMessage()
+                if (error != null) {
+                    throw ParameterException(parameter, error)
                 }
             }
         }
-    }
 
+    }
 }
