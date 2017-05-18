@@ -37,29 +37,25 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val group = GroupParameter("group", description = """
-Here we see GroupParameter in action
-""")
+    val group = GroupParameter("group", description = "Here we see GroupParameter in action")
     val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
     val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
+    val oneOf = OneOfParameter("oneOf")
+    val a = StringParameter("a")
+    val b = IntParameter("b")
 
     val multiple = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
 
-    val oneOf = OneOfParameter("oneOf")
-
-    val a = StringParameter("a")
-
-    val b = IntParameter("b")
 
     val task = TaskParameter("task")
 
     init {
         //taskD.addParameters(task, yesNo)
         //taskD.addParameters(multiple) // BUG!
-        taskD.addParameters(oneOf, task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
+        taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, oneOf, multiple)
         group.addParameters(rangeFrom, rangeTo)
-        oneOf.addParameters( a, b )
+        oneOf.addParameters(a, b)
     }
 
     override fun run() {

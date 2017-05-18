@@ -11,10 +11,11 @@ class OneOfParameter(
         name: String,
         val required: Boolean = true,
         label: String = name.uncamel(),
+        description: String = "",
         val message: String = "Choose",
         value: String? = null)
 
-    : GroupParameter(name, label = label), ValueParameter<String?> {
+    : GroupParameter(name, label = label, description = description), ValueParameter<String?> {
 
     override val expressionProperty = SimpleStringProperty()
 

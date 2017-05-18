@@ -1,6 +1,8 @@
 
 Use new prompter in EditOption
 
+Why does ExampleTask not output the OneOfParameter(s)
+
 AddHeaderFooter task
 	A single file, or recurse though a directory
 	Filter based on extensions

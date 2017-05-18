@@ -17,7 +17,8 @@ class RootParameter(val taskD: TaskDescription, description: String)
             group.children.forEach { child ->
                 if (child is ValueParameter<*>) {
                     result.add(child)
-                } else if (child is GroupParameter) {
+                }
+                if (child is GroupParameter) {
                     addAll(child)
                 }
             }
