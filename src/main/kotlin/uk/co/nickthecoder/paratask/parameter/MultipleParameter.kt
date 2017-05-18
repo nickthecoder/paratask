@@ -1,10 +1,10 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
@@ -20,11 +20,10 @@ class MultipleParameter<T>(
         value: List<T>? = null,
         val factory: () -> ValueParameter<T>)
 
-    : ValueParameter<List<T>>, AbstractParameter(
+    : AbstractParameter(
         name = name,
         label = label,
-        description = description),
-        WrappableField, ParentParameter {
+        description = description), ValueParameter<List<T>>, WrappableField, ParentParameter {
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
@@ -48,7 +47,7 @@ class MultipleParameter<T>(
                 innerParameter.value = item
             }
             expression = null
-            parameterListeners.fireStructureChanged(this)
+            parameterListeners.fireStructureChanged(this@MultipleParameter)
         }
 
     init {

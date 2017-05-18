@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.OneOfForm
@@ -15,28 +15,16 @@ class OneOfParameter(
         val message: String = "Choose",
         value: String? = null)
 
-    : GroupParameter(name, label = label, description = description), ValueParameter<String?> {
+    : GroupParameter(name, label = label, description = description), PropertyValueParameter<String?> {
 
     override val expressionProperty = SimpleStringProperty()
-
-    override var expression: String?
-        get() = expressionProperty.get()
-        set(v) {
-            expressionProperty.set(v)
-        }
 
     override val converter: StringConverter<String?> = object : StringConverter<String?>() {
         override fun toString(v: String?): String = v ?: ""
         override fun fromString(v: String): String? = if (v == "") null else v
     }
 
-    val valueProperty = SimpleStringProperty()
-
-    override var value: String?
-        get() = valueProperty.get()
-        set(v) {
-            valueProperty.set(v)
-        }
+    override val property = SimpleObjectProperty<String?>()
 
     init {
         this.value = value

@@ -41,7 +41,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
     val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
-    val oneOf = OneOfParameter("oneOf")
+    val oneOf = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
     val a = StringParameter("a")
     val b = IntParameter("b")
 

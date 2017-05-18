@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
 import javafx.util.StringConverter
 import kotlin.reflect.KProperty
@@ -12,7 +13,7 @@ interface ValueParameter<T>
 
     val converter: StringConverter<T>
 
-    var value: T
+    var value : T
 
     var stringValue: String
         get() = converter.toString(value)
@@ -20,9 +21,13 @@ interface ValueParameter<T>
             value = converter.fromString(v)
         }
 
-    val expressionProperty : StringProperty
+    val expressionProperty: StringProperty
 
     var expression: String?
+        get() = expressionProperty.get()
+        set(v) {
+            expressionProperty.set(v)
+        }
 
     /**
      * Set the value based on an evaluated expression, and therefore the type T isn't known by the
