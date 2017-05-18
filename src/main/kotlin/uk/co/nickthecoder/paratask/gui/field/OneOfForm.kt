@@ -5,70 +5,43 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.ComboBox
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameter.OneOfParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 
 class OneOfForm(var oneOfParameter: OneOfParameter)
     : ParametersForm(oneOfParameter) {
 
-    val comboBox = ComboBox<String?>()
-
-    val comboBoxField = ParameterField(parameter)
-
-
-    val converter: StringConverter<String?> = object : StringConverter<String?>() {
-        override fun toString(v: String?): String {
-            for (child in oneOfParameter.children) {
-                if (child.name == v) {
-                    return child.label
-                }
-            }
-            return ""
-        }
-
-        override fun fromString(v: String): String? {
-            for (child in oneOfParameter.children) {
-                if (child.label == v) {
-                    return child.name
-                }
-            }
-            return null
-        }
-    }
+    val choiceP = ChoiceParameter<String?>("choose", label = oneOfParameter.message, value = oneOfParameter.value)
 
     init {
-        comboBox.converter = converter
-        comboBox.items.clear()
         for (child in oneOfParameter.children) {
-            comboBox.items.add(child.name)
+            choiceP.choice(child.name, child.name, child.label)
         }
-        comboBox.valueProperty().addListener(object : ChangeListener<String?> {
-            override fun changed(ov: ObservableValue<out String?>?, old: String?, new: String?) {
-                onChanged()
-            }
-        })
-        comboBoxField.control = comboBox
-        comboBox.valueProperty().bindBidirectional(oneOfParameter.valueProperty)
+        choiceP.property.bindBidirectional(oneOfParameter.valueProperty)
+        choiceP.listen { onChanged() }
     }
-
 
     override fun buildTop() {
         super.buildTop()
 
-        addField(comboBoxField)
+        addParameter(choiceP, 0)
     }
 
     override fun buildChildren() {
         println("Building oneofchild ${oneOfParameter.value} -> ${oneOfParameter.chosenParameter()}")
         oneOfParameter.chosenParameter()?.let { child: Parameter ->
             if (!child.hidden) {
-                addParameter(child, 0)
+                addParameter(child, 1)
             }
         }
     }
 
     fun onChanged() {
+        println( "onChanged choiceP ${choiceP.value} one ${oneOfParameter.value}")
         Platform.runLater {
+            println( "Later onChanged choiceP ${choiceP.value} one ${oneOfParameter.value}")
             children.clear()
             fieldSet.clear()
             buildContent()

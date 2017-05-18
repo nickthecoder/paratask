@@ -5,13 +5,16 @@ import javafx.beans.property.StringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.OneOfForm
+import uk.co.nickthecoder.paratask.util.uncamel
 
 class OneOfParameter(
         name: String,
         val required: Boolean = true,
+        label: String = name.uncamel(),
+        val message: String = "Choose",
         value: String? = null)
 
-    : GroupParameter(name), ValueParameter<String?> {
+    : GroupParameter(name, label = label), ValueParameter<String?> {
 
     override val expressionProperty = SimpleStringProperty()
 
