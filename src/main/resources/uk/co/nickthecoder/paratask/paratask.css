@@ -153,8 +153,16 @@
 * Drag and Drop                                     *
 *****************************************************/
 
-.drop.text-field {
-    -fx-background-color: #8f8;
+.drop.text-input {
+    -fx-control-inner-background: #8f8;
+}
+
+/****************************************************
+* Expression TextField                              *
+*****************************************************/
+
+.expression.text-input {
+    -fx-control-inner-background: #ffc;
 }
 
 /****************************************************

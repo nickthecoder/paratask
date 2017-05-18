@@ -1,7 +1,6 @@
 
-New Prompter with just a "Done" button
-	It sets the taskd.programming mode
-	Checking parameters needs to ignore expressions, but ensure the exression field isn't blank.
+Use new prompter in EditOption
+
 	Add a css class, and colour expressions differently Yellow?
 	Find out how to change background correctly, and use it on FileField drag and drop.
 

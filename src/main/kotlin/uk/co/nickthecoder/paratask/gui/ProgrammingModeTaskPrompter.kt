@@ -6,10 +6,6 @@ import uk.co.nickthecoder.paratask.Task
 
 open class ProgrammingModeTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
 
-    init {
-        task.taskD.programmingMode = true
-    }
-
     override protected fun onOk() {
         if (taskForm.check()) {
             close()

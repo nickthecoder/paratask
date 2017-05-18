@@ -31,6 +31,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         children.add(this.label)
         getStyleClass().add("field");
 
+        expressionField.getStyleClass().add("expression")
         if (parameter.isProgrammingMode()) {
             expressionButton = ToggleButton("=")
             children.add(expressionButton)

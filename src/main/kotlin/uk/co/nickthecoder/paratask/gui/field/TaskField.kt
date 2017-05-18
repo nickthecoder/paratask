@@ -51,6 +51,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     private fun onEditParameters() {
         val task = comboBox.value
         if (task != null) {
+            task.taskD.programmingMode = true
             val taskPrompter = ProgrammingModeTaskPrompter(task)
             taskPrompter.placeOnStage(Stage())
         }
