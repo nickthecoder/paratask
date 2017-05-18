@@ -31,18 +31,19 @@ class TaskParameter(
 
     val taskList = mutableListOf<CopyableTask>()
 
-    // I don't currently require this type of Parameter to be converted to strings, so this is left
-    // unimplemented.
-    // This means that Tools cannot use this parameter (nor any other CopyableTasks) 
     override val converter = object : StringConverter<CopyableTask?>() {
         override fun fromString(str: String): CopyableTask? {
+            for ( task in taskList ) {
+                if (task.taskD.name == str ) {
+                    return task
+                }
+            }
             return null
         }
 
-        override fun toString(obj: CopyableTask?): String {
-            return ""
+        override fun toString(task: CopyableTask?): String {
+            return task?.taskD?.name ?: ""
         }
-
     }
 
     // TODO REMOVE
