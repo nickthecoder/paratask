@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.parameter
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
@@ -13,7 +14,8 @@ class GroupParameter(
         override val label: String = name.uncamel(),
         description: String = "",
         val collapsable: Boolean = true,
-        val expanded: Boolean = true)
+        val expanded: Boolean = true,
+        val taskD: TaskDescription? = null)
 
     : AbstractParameter(name, description = description, label = label),
         WrappableField {
@@ -171,4 +173,10 @@ class GroupParameter(
 
     override fun isStretchy(): Boolean = true
 
+    override fun findTaskD(): TaskDescription? {
+        parent?.let {
+            return it.findTaskD()
+        }
+        return taskD
+    }
 }

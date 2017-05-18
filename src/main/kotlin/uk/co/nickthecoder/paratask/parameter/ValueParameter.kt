@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.StringProperty
 import javafx.util.StringConverter
 import kotlin.reflect.KProperty
 
@@ -18,6 +19,8 @@ interface ValueParameter<T>
         set(v: String) {
             value = converter.fromString(v)
         }
+
+    val expressionProperty : StringProperty
 
     var expression: String?
 

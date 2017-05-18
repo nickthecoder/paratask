@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 
 /**
@@ -27,7 +28,13 @@ abstract class AbstractValueParameter<T>(
         }
     }
 
-    override var expression: String? = null
+    override val expressionProperty = SimpleStringProperty()
+
+    override var expression: String?
+        get() = expressionProperty.get()
+        set(v) {
+            expressionProperty.set(v)
+        }
 
     override var value: T
         set(v: T) {

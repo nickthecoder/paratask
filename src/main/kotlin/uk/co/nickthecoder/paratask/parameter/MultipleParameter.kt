@@ -1,9 +1,9 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import javafx.beans.property.SimpleStringProperty
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
@@ -27,7 +27,13 @@ class MultipleParameter<T>(
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
-    override var expression: String? = null
+    override val expressionProperty = SimpleStringProperty()
+
+    override var expression: String?
+        get() = expressionProperty.get()
+        set(v) {
+            expressionProperty.set(v)
+        }
 
     override var value: List<T>
         get() = innerParameters.map { it.value }
@@ -120,6 +126,7 @@ class MultipleParameter<T>(
     private fun createInnerParameter() {
         val innerParameter = factory()
         innerParameter.parameterListeners.add(innerListener)
+        innerParameter.parent = this
     }
 
     fun newValue(index: Int = value.size) {

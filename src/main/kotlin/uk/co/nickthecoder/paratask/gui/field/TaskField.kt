@@ -54,6 +54,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
 
     private fun onEditParameters() {
         val task = comboBox.value
+        task.taskD.programmingMode = true
         if (task != null) {
             // TODO Use a new type of task prompter, which can handle expressions. Use Stage.showAndWait
             val taskPrompter = TaskPrompter(task)

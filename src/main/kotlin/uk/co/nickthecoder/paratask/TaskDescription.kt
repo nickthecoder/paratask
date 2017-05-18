@@ -11,7 +11,9 @@ class TaskDescription(
         override val label: String = name.uncamel(),
         val description: String = "") : Labelled {
 
-    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description)
+    val root: GroupParameter = GroupParameter("taskRoot", label = "", description = description, taskD = this)
+
+    var programmingMode: Boolean = false
 
     /**
      * When used on a command line, this parameter can be used without using its parameter name.

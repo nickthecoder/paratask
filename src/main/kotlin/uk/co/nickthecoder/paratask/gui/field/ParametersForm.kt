@@ -12,6 +12,7 @@ import uk.co.nickthecoder.paratask.parameter.Parameter
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
+ * This is the base class for GroupParmetersForm and MultipleField.
  */
 open class ParametersForm(parameter: Parameter)
     : ParameterField(parameter) {
@@ -67,8 +68,9 @@ open class ParametersForm(parameter: Parameter)
     }
 
     init {
-        columns.add(FormColumn(0.0))
-        columns.add(FormColumn())
+        columns.add(FormColumn(0.0)) // Label
+        columns.add(FormColumn(0.0)) // Expression button
+        columns.add(FormColumn()) // Main Control
         getStyleClass().add("form");
     }
 
@@ -86,10 +88,10 @@ open class ParametersForm(parameter: Parameter)
 
     internal fun calculateColumnWidths() {
         var totalStretch: Double = 0.0
-        var prefWidth = spacing
+        var prefWidth = -spacing
         columns.forEach {
             totalStretch += it.stretch
-            prefWidth += it.prefWidth
+            prefWidth += it.prefWidth + if (it.prefWidth == 0.0) 0.0 else spacing
         }
 
         val extra = width - insets.left - insets.right - prefWidth

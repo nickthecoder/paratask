@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.parameter
 
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
 
@@ -9,7 +10,7 @@ interface Parameter : Labelled {
 
     val description: String
 
-    var parent: GroupParameter?
+    var parent: Parameter?
 
     val parameterListeners: ParameterListeners
 
@@ -27,5 +28,8 @@ interface Parameter : Labelled {
         return parent?.findRoot()
     }
 
+    fun findTaskD(): TaskDescription? = parent?.findTaskD()
+
+    fun isProgrammingMode(): Boolean = findTaskD()?.programmingMode ?: false
 
 }

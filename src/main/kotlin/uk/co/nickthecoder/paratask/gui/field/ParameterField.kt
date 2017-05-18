@@ -18,7 +18,7 @@ open class ParameterField(open val parameter: Parameter) : Region() {
         children.add(error)
     }
 
-    var control: Node? = null
+    open var control: Node? = null
         set(v) {
             if (field != null) {
                 children.remove(field)
