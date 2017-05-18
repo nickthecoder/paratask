@@ -24,7 +24,7 @@ class OneOfParameter(
         override fun fromString(v: String): String? = if (v == "") null else v
     }
 
-    override val property = SimpleObjectProperty<String?>()
+    override val valueProperty = SimpleObjectProperty<String?>()
 
     init {
         this.value = value

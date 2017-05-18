@@ -18,7 +18,7 @@ abstract class AbstractValueParameter<T>(
 
     override abstract val converter: StringConverter<T>
 
-    override var property = object : SimpleObjectProperty<T>() {
+    override var valueProperty = object : SimpleObjectProperty<T>() {
         override fun set(v: T) {
             val changed = v != get()
             if (changed) {
@@ -32,10 +32,10 @@ abstract class AbstractValueParameter<T>(
 
     override var value: T
         set(v: T) {
-            property.set(v)
+            valueProperty.set(v)
             expression = null
         }
-        get() = property.get()
+        get() = valueProperty.get()
 
     init {
         this.value = value

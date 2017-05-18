@@ -37,7 +37,7 @@ class FileField : LabelledField {
 
         with(textField) {
             text = parameter.stringValue
-            textProperty().bindBidirectional(parameter.property, parameter.converter);
+            textProperty().bindBidirectional(parameter.valueProperty, parameter.converter);
             textProperty().addListener({ _, _, _: String ->
                 val error = parameter.errorMessage()
                 if (error == null) {

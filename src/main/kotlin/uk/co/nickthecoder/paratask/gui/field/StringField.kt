@@ -19,7 +19,7 @@ class StringField : LabelledField {
         if (parameter.columns > 0) {
             textField.prefColumnCount = parameter.columns
         }
-        textField.textProperty().bindBidirectional(parameter.property);
+        textField.textProperty().bindBidirectional(parameter.valueProperty);
         textField.textProperty().addListener({ _, _, _: String ->
             val error = parameter.errorMessage()
             if (error == null) {

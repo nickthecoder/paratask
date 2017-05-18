@@ -35,7 +35,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
 
     init {
         comboBox.converter = converter
-        comboBox.valueProperty().bindBidirectional(parameter.property)
+        comboBox.valueProperty().bindBidirectional(parameter.valueProperty)
 
         for (task in parameter.taskList) {
             comboBox.items.add(task)

@@ -96,7 +96,7 @@ class IntField : LabelledField {
 
         val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
         parameter.value = spinner.valueFactory.value
-        spinner.valueFactory.valueProperty().bindBidirectional(parameter.property);
+        spinner.valueFactory.valueProperty().bindBidirectional(parameter.valueProperty)
         return spinner
     }
 

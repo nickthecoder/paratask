@@ -25,7 +25,7 @@ class BooleanField : LabelledField {
         } else {
             checkBox.setSelected(parameter.value == true)
         }
-        checkBox.selectedProperty().bindBidirectional(parameter.property);
+        checkBox.selectedProperty().bindBidirectional(parameter.valueProperty);
 
         label.addEventHandler(MouseEvent.MOUSE_CLICKED, {
             checkBox.requestFocus()

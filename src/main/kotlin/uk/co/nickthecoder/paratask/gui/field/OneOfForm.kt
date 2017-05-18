@@ -19,7 +19,7 @@ class OneOfForm(var oneOfParameter: OneOfParameter)
         for (child in oneOfParameter.children) {
             choiceP.choice(child.name, child.name, child.label)
         }
-        choiceP.property.bindBidirectional(oneOfParameter.property)
+        choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
         choiceP.listen { onChanged() }
     }
 

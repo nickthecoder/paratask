@@ -4,11 +4,11 @@ import javafx.beans.property.ObjectProperty
 
 interface PropertyValueParameter<T> : ValueParameter<T> {
 
-    val property: ObjectProperty<T>
+    val valueProperty: ObjectProperty<T>
 
     override var value: T
-        get() = property.get()
+        get() = valueProperty.get()
         set(v) {
-            property.set(v)
+            valueProperty.set(v)
         }
 }
