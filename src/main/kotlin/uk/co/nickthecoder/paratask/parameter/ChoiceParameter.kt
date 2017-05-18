@@ -14,7 +14,7 @@ open class ChoiceParameter<T>(
         value: T,
         required: Boolean = true)
 
-    : NullableValueParameter<T>(
+    : AbstractValueParameter<T?>(
         name = name,
         label = label,
         description = description,

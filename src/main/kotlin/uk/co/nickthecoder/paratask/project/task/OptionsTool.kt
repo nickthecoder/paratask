@@ -64,12 +64,12 @@ class OptionsTool() : AbstractTableTool<Option>() {
         includesTool.toolPane = SharedToolPane(this)
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
     override fun run() {
         shortTitle = "${defaultShortTitle()} (${optionsNameP.value})"
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
         for (option in optionsFile.listOptions()) {
             list.add(option)

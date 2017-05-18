@@ -15,7 +15,7 @@ class BooleanParameter(
         val oppositeName: String? = null,
         val labelOnLeft: Boolean = true)
 
-    : NullableValueParameter<Boolean>(
+    : AbstractValueParameter<Boolean?>(
         name = name,
         label = label,
         description = description,

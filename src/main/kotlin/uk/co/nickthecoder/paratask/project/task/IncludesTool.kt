@@ -29,11 +29,11 @@ class IncludesTool() : AbstractTableTool<String>() {
         columns.add(Column<String, String>("include") { it })
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
     override fun run() {
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.requiredValue())
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
         for (include in optionsFile.listIncludes()) {
             list.add(include)

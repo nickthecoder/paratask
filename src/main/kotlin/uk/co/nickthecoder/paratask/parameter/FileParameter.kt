@@ -16,7 +16,7 @@ class FileParameter(
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         val stretchy: Boolean = true)
 
-    : NullableValueParameter<File>(
+    : AbstractValueParameter<File?>(
         name = name,
         label = label,
         description = description,

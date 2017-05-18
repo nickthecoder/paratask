@@ -21,7 +21,7 @@ class TaskParameter(
         value: CopyableTask? = null,
         required: Boolean = true)
 
-    : NullableValueParameter<CopyableTask?>(
+    : AbstractValueParameter<CopyableTask?>(
         name = name,
         label = label,
         description = description,
