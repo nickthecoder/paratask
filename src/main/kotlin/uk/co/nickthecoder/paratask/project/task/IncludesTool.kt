@@ -61,7 +61,7 @@ class IncludesTool() : AbstractTableTool<String>() {
 
         override val taskD = TaskDescription("Edit Includes")
 
-        val includes = MultipleParameter("includes") { StringParameter.factory() }
+        val includes = MultipleParameter("includes") { StringParameter("") }
 
         init {
             taskD.addParameters(includes)

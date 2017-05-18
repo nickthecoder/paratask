@@ -11,6 +11,8 @@ New Prompter with just a "Done" button
 	Should there be a RootParameter:GroupParameter, and IT has the taskD
 		Also has the descendents and valueParameters methods.
 
+Bug ExampleTool with only "multiple" the size is full screen height.
+
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 

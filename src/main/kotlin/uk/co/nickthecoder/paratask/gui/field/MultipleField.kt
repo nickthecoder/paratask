@@ -6,106 +6,95 @@ import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
+import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.ParameterEvent
 import uk.co.nickthecoder.paratask.parameter.ParameterEventType
 import uk.co.nickthecoder.paratask.parameter.ParameterListener
 
-class MultipleField<T>(parameter: MultipleParameter<T>)
-    : ParametersForm(parameter), ParameterListener {
-
-    override val parameter: MultipleParameter<T>
+class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
+    : ParametersForm(multipleParameter), ParameterListener {
 
     private var dirty = false
 
     val whole = BorderPane()
-    val list = VBox()
+    //val list = VBox()
+
+    val addButton = Button("+")
 
     init {
-        if (parameter.minItems > 0 && parameter.innerParameters.size == 0) {
-            parameter.newValue()
-        }
+        parameter.parameterListeners.add(this)
 
-        this.parameter = parameter
-
-        val addButton = Button("+")
         addButton.onAction = EventHandler {
-            newValue(parameter.value.size)
+            extraValue()
         }
         addButton.setTooltip(Tooltip("Add"))
-
-        whole.center = list
-        whole.bottom = addButton
-
-        buildList()
-
-        whole.getStyleClass().add("multiple-field")
-        list.getStyleClass().add("multiple-list")
-
-        control = whole
-        parameter.parameterListeners.add(this)
     }
 
-    private fun buildList() {
-        list.children.clear()
+    override fun buildContent() {
+        super.buildContent()
+        children.add(addButton)
+    }
+
+    override fun addParameter(parameter: Parameter, index: Int): Node {
+
+        val result = super.addParameter(parameter, index)
+
+        if (result is LabelledField) {
+            val buttons = HBox()
+
+            buttons.getStyleClass().add("multiple-line-buttons")
+
+            if (multipleParameter.allowInsert) {
+                val addButton = Button("+")
+                addButton.onAction = EventHandler {
+                    newValue(index + 1)
+                }
+                addButton.setTooltip(Tooltip("Insert Before"))
+                buttons.children.add(addButton)
+            }
+
+            val removeButton = Button("-")
+            removeButton.onAction = EventHandler {
+                removeAt(index)
+            }
+            removeButton.setTooltip(Tooltip("Remove"))
+            buttons.children.add(removeButton)
+
+            result.replaceLabel(buttons)
+
+        }
+        return result
+    }
+
+    private fun rebuildList() {
+        children.clear()
         fieldSet.clear()
 
         var index = 0
-        for (innerParameter in parameter.innerParameters) {
-
-            val field = innerParameter.createField()
-            if (field is LabelledField) {
-                field.label.setVisible(false)
-            }
-            field.form = this
-
-            fieldSet.add(field)
-            list.children.add(createLine(field, index))
-
+        for (innerParameter in multipleParameter.innerParameters) {
+            addParameter(innerParameter, index)
             index++
         }
-    }
 
-    private fun createLine(field: ParameterField, index: Int): Node {
-        val line = HBox()
-        val buttons = HBox()
-
-        line.children.add(buttons)
-        line.children.add(field)
-
-        buttons.getStyleClass().add("multiple-line-buttons")
-        line.getStyleClass().add("multiple-line")
-
-        if (parameter.allowInsert) {
-            val addButton = Button("+")
-            addButton.onAction = EventHandler {
-                newValue(index + 1)
-            }
-            addButton.setTooltip(Tooltip("Insert Before"))
-        }
-
-        val removeButton = Button("-")
-        removeButton.onAction = EventHandler {
-            removeAt(index)
-        }
-        removeButton.setTooltip(Tooltip("Remove"))
-        buttons.children.add(removeButton)
-
-        return line
+        children.add(addButton)
     }
 
     private fun newValue(index: Int) {
-        parameter.newValue(index)
+        multipleParameter.newValue(index)
+    }
+
+    private fun extraValue() {
+        newValue(multipleParameter.children.size)
     }
 
     fun removeAt(index: Int) {
-        parameter.removeAt(index)
+        multipleParameter.removeAt(index)
     }
 
     override fun parameterChanged(event: ParameterEvent) {
         if (event.type == ParameterEventType.STRUCTURAL) {
-            buildList()
+            rebuildList()
         }
     }
 }

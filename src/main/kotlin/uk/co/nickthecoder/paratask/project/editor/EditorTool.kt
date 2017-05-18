@@ -12,7 +12,7 @@ class EditorTool() : AbstractTool() {
 
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
-    val filename = MultipleParameter("filename") { FileParameter.factory() }
+    val filename = MultipleParameter("filename") { FileParameter("") }
 
     constructor(vararg files: File) : this() {
         for (file in files) {

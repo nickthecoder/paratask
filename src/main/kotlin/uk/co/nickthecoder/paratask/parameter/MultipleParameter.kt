@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.scene.Node
 import javafx.scene.control.TitledPane
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
 import uk.co.nickthecoder.paratask.gui.field.ParameterField
 import uk.co.nickthecoder.paratask.gui.field.WrappableField
@@ -23,9 +24,11 @@ class MultipleParameter<T>(
         name = name,
         label = label,
         description = description),
-        WrappableField {
+        WrappableField, ParentParameter {
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
+
+    override val children: List<Parameter> = innerParameters
 
     override val expressionProperty = SimpleStringProperty()
 
@@ -93,17 +96,23 @@ class MultipleParameter<T>(
             return "Cannot have more than ${maxItems} items"
         }
 
+        /*
         var index = 0
         for (innerParameter in innerParameters) {
 
             innerParameter.errorMessage()?.let { return "Item #${index + 1} : ${it}" }
             index++
         }
+        */
 
         return null
     }
 
-    override fun createField() = MultipleField(this)
+    override fun createField(): MultipleField<T> {
+        val result = MultipleField(this)
+        result.buildContent()
+        return result
+    }
 
     override fun wrap(parameterField: ParameterField): Node {
         val titledPane = TitledPane(label, parameterField)
@@ -123,14 +132,9 @@ class MultipleParameter<T>(
         }
     }
 
-    private fun createInnerParameter() {
-        val innerParameter = factory()
-        innerParameter.parameterListeners.add(innerListener)
-        innerParameter.parent = this
-    }
-
     fun newValue(index: Int = value.size) {
         val innerParameter = factory()
+        innerParameter.parent = this
 
         innerParameters.add(index, innerParameter)
         parameterListeners.fireStructureChanged(this)
@@ -138,6 +142,8 @@ class MultipleParameter<T>(
 
     fun addValue(item: T, index: Int = value.size) {
         val innerParameter = factory()
+        innerParameter.parent = this
+
         innerParameter.value = item
 
         innerParameters.add(index, innerParameter)
@@ -146,6 +152,8 @@ class MultipleParameter<T>(
 
     fun addStringValue(str: String, index: Int = value.size) {
         val innerParameter = factory()
+        innerParameter.parent = this
+
         innerParameter.stringValue = str
 
         innerParameters.add(index, innerParameter)

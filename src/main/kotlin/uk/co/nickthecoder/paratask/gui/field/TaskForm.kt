@@ -13,6 +13,7 @@ class TaskForm(val task: Task) {
 
     init {
         scrollPane.fitToWidthProperty().set(true)
+        form.buildContent()
     }
 
     fun check(): Boolean {

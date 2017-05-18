@@ -29,7 +29,7 @@ class StartTask() : AbstractTask() {
 
     val projectsP = MultipleParameter<String>("projects", minItems = 1,
             description = "The names of the projects to load. (Do not include the .json suffix)")
-    { StringParameter.factory() }
+    { StringParameter("") }
 
     init {
         taskD.addParameters(directoryP, projectsP)

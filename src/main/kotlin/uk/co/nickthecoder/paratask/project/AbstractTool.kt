@@ -74,4 +74,8 @@ abstract class AbstractTool() : Tool {
     }
 
     protected fun singleResults(results: Results) = listOf<Results>(results)
+
+    override fun toString(): String {
+        return "Task : ${taskD.toString()}"
+    }
 }

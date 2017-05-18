@@ -23,37 +23,41 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
 
-    val greeting = StringParameter("greeting", value = "Hello")
-    val freeBeer = BooleanParameter("freeBeer", label = "Do you want Free Beer?")
-    val threeWay = BooleanParameter("threeWay", label = "Yes / No / Maybe", required = false)
-    val directory = FileParameter("directory")
+    val simpleString = StringParameter("simpleString", value = "Hello")
+    val yesNo = BooleanParameter("yesNo", label = "Yes / No")
+    val yesNoMaybe = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
+    val file = FileParameter("file")
+    val directory = FileParameter("directory", expectFile = false)
 
-    val range = GroupParameter("range", description = """
-Here we see GroupParameter in action
-""")
-    val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
-    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
-
-    val color = ChoiceParameter("color", value = Color.BLUE)
+    val choice = ChoiceParameter("choice", value = Color.BLUE)
             .choice("red", Color.RED)
             .choice("green", Color.GREEN)
             .choice("blue", Color.BLUE)
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val multiple = MultipleParameter("multiple") { IntParameter.factory() }
+    val group = GroupParameter("group", description = """
+Here we see GroupParameter in action
+""")
+    val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
+    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
+
+
+    val multiple = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
 
     val task = TaskParameter("task")
 
     init {
-        taskD.addParameters(task, multiple, greeting, color, freeBeer, threeWay, range, directory)
-        range.addParameters(rangeFrom, rangeTo)
+        taskD.addParameters(task, yesNo)
+        //taskD.addParameters(multiple) // BUG!
+        //taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, multiple)
+        group.addParameters(rangeFrom, rangeTo)
     }
 
     override fun run() {
         println("Example Parameter values : ")
 
-        dumpValues()
+        println(taskD.toString())
     }
 
     override fun check() {

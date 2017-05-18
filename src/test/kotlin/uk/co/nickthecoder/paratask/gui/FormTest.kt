@@ -33,9 +33,9 @@ class FormTest : GuiTest() {
 
         form = GroupParametersForm(taskD.root)
 
-        firstF = form.addParameter(firstP) as ParameterField
-        helloF = form.addParameter(helloP) as ParameterField
-        worldF = form.addParameter(worldP) as ParameterField
+        firstF = form.addParameter(firstP,0) as ParameterField
+        helloF = form.addParameter(helloP,1) as ParameterField
+        worldF = form.addParameter(worldP,2) as ParameterField
 
         return form
     }

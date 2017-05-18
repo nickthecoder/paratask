@@ -13,7 +13,7 @@ import uk.co.nickthecoder.paratask.parameter.ValueParameter
 
 open class LabelledField(parameter: ValueParameter<*>, label: String = parameter.label) : ParameterField(parameter) {
 
-    val label: Label
+    var label: Node
 
     val expressionButton: ToggleButton?
 
@@ -22,9 +22,10 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
     val valueParameter = parameter
 
     init {
-        this.label = Label(label)
+        val lab = Label(label)
+        this.label = lab
         if (parameter.description != "") {
-            this.label.tooltip = Tooltip(parameter.description)
+            lab.tooltip = Tooltip(parameter.description)
         }
 
         children.add(this.label)
@@ -44,6 +45,15 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
             expressionButton = null
         }
 
+    }
+
+    /**
+     * When placed in a MultipleField, the label is replaced by "+" and "-" buttons
+     */
+    fun replaceLabel(node: Node) {
+        children.remove(label)
+        label = node
+        children.add(label)
     }
 
     override var control: Node?

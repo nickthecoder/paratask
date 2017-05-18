@@ -109,7 +109,7 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
         val code = StringParameter("code", value = option.code)
 
-        val aliases = MultipleParameter("aliases", value = option.aliases) { StringParameter.factory() }
+        val aliases = MultipleParameter("aliases", value = option.aliases) { StringParameter("") }
 
         val label = StringParameter("label", value = option.label)
 

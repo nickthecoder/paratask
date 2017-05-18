@@ -75,19 +75,6 @@ open class IntParameter(
     override fun createField(): LabelledField = IntField(this)
 
     override fun toString(): String = "Int" + super.toString()
-
-    companion object {
-        fun factory(
-                required: Boolean = true,
-                range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
-        )
-                = IntParameter(
-                name = "inner",
-                label = "",
-                required = required,
-                range = range
-        )
-    }
 }
 
 

@@ -82,7 +82,7 @@ class GroupParameterTest : MyTest(), ParameterListener {
 
     @Test
     fun children() {
-        assertEquals(listOf(abc, def, subGroup), group.children())
+        assertEquals(listOf(abc, def, subGroup), group.children)
     }
 
     @Test

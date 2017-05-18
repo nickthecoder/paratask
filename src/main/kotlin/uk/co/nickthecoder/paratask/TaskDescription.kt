@@ -49,15 +49,12 @@ class TaskDescription(
     }
 
     override fun toString(): String {
-        return "TaskDescription ${name}"
-    }
-
-    fun toVerboseString(): String {
-        val result = StringBuilder()
-        result.appendln(toString())
-        for (parameter in root.descendants()) {
-            result.appendln(parameter)
+        val builder = StringBuilder()
+        builder.appendln("TaskDescription ${name}")
+        builder.appendln()
+        for ( parameter in valueParameters()) {
+            builder.appendln( "    ${parameter.name} = ${parameter.value}")
         }
-        return result.toString()
+        return builder.toString()
     }
 }

@@ -18,15 +18,15 @@ class GroupParameter(
         val taskD: TaskDescription? = null)
 
     : AbstractParameter(name, description = description, label = label),
-        WrappableField {
+        WrappableField, ParentParameter {
 
-    private val children = mutableListOf<Parameter>()
+    override val children = mutableListOf<Parameter>()
 
     override fun findRoot(): GroupParameter? {
         return if (isRoot()) {
             this
         } else {
-            super.findRoot()
+            super<AbstractParameter>.findRoot()
         }
     }
 
@@ -97,10 +97,6 @@ class GroupParameter(
         return null
     }
 
-    fun children(): List<Parameter> {
-        return children
-    }
-
     fun descendants(): List<Parameter> {
         val result = mutableListOf<Parameter>()
 
@@ -139,7 +135,11 @@ class GroupParameter(
      * inside the box.
      * Note that {@link TaskPrompter} does NOT use this on the {@link Task}'s root.
      */
-    override fun createField() = GroupParametersForm(this)
+    override fun createField(): GroupParametersForm {
+        val result = GroupParametersForm(this)
+        result.buildContent()
+        return result
+    }
 
     fun isRoot(): Boolean = parent == null
 
@@ -158,19 +158,6 @@ class GroupParameter(
 
     override fun errorMessage(): String? = null
 
-    fun check() {
-        for (parameter in descendants()) {
-            if (parameter is GroupParameter) {
-                parameter.check()
-            } else {
-                val error = parameter.errorMessage()
-                if (error != null) {
-                    throw ParameterException(parameter, error)
-                }
-            }
-        }
-    }
-
     override fun isStretchy(): Boolean = true
 
     override fun findTaskD(): TaskDescription? {
@@ -179,4 +166,5 @@ class GroupParameter(
         }
         return taskD
     }
+
 }

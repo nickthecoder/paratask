@@ -23,7 +23,7 @@ class GrepTask() : AbstractTask(), CommandTask {
 
     val matchP = MultipleParameter<String>("match", minItems = 1,
             description = "The regular expression to search for"
-    ) { StringParameter.factory() }
+    ) { StringParameter("") }
 
     val partP = ChoiceParameter<String>("part", value = "",
             description = "Match a word, a line or any part of the file")

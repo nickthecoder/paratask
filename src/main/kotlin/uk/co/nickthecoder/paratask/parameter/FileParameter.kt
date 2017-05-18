@@ -58,14 +58,4 @@ class FileParameter(
 
     override fun toString() = "File" + super.toString()
 
-    companion object {
-        fun factory(
-                required: Boolean = true
-        )
-                = FileParameter(
-                name = "inner",
-                label = "",
-                required = required
-        )
-    }
 }

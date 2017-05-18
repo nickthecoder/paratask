@@ -37,16 +37,4 @@ class StringParameter(
     override fun createField(): StringField = StringField(this)
 
     override fun toString() = "String" + super.toString()
-
-
-    companion object {
-        fun factory(
-                required: Boolean = true
-        )
-                = StringParameter(
-                name = "inner",
-                label = "",
-                required = required
-        )
-    }
 }

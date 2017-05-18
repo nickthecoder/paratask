@@ -12,7 +12,7 @@ class TerminalTool : AbstractTerminalTool {
 
     val commandP = StringParameter("command", value = "bash")
 
-    val argumentsP = MultipleParameter<String>("arguments") { StringParameter.factory(required = false) }
+    val argumentsP = MultipleParameter<String>("arguments") { StringParameter("") }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 

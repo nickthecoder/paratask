@@ -30,7 +30,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val onlyFilesP = BooleanParameter("onlyFiles", required = false, value = null)
 
-    val extensionsP = MultipleParameter("extensions") { StringParameter.factory() }
+    val extensionsP = MultipleParameter("extensions") { StringParameter("") }
 
     val includeHiddenP = BooleanParameter("includeHidden", value = false)
 

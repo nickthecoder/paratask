@@ -8,18 +8,53 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
+import javafx.scene.text.Text
+import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameter.ParentParameter
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  * This is the base class for GroupParmetersForm and MultipleField.
  */
-open class ParametersForm(parameter: Parameter)
-    : ParameterField(parameter) {
+open class ParametersForm(val parentParameter: ParentParameter)
+    : ParameterField(parentParameter) {
 
     internal val columns = mutableListOf<FormColumn>()
 
     internal val fieldSet = mutableListOf<ParameterField>()
+
+    open fun buildContent() {
+        if (parentParameter.description.length > 0) {
+            children.add(TextFlow(Text(parentParameter.description)))
+        }
+        var index = 0
+        parentParameter.children.forEach() { child ->
+            if (!child.hidden) {
+                addParameter(child, index)
+                index++
+            }
+        }
+    }
+
+    open fun addParameter(parameter: Parameter, index: Int): Node {
+
+        val parameterField = parameter.createField()
+
+        val node = if (parameter is WrappableField) {
+            parameter.wrap(parameterField)
+        } else {
+            parameterField
+        }
+
+        children.add(node)
+
+        parameterField.getStyleClass().add("field-${parameter.name}")
+        parameterField.form = this
+        fieldSet.add(parameterField)
+
+        return node
+    }
 
     fun descendants(): List<ParameterField> {
         val list = mutableListOf<ParameterField>()

@@ -11,12 +11,7 @@ abstract class AbstractTask() : Task {
     override fun check() {
     }
 
-    fun dumpValues() {
-
-        taskD.root.descendants().forEach { parameter ->
-            if (parameter is ValueParameter<*>) {
-                println("Parameter ${parameter.name} = ${parameter.value} ('${parameter.stringValue}')")
-            }
-        }
+    override fun toString(): String {
+        return "Task : ${taskD.toString()}"
     }
 }
