@@ -34,7 +34,7 @@ class TaskOption(var task: Task)
 
     protected fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
 
-        println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
+        // println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
         if (parameter is MultipleParameter<*> && parameter.expression == null) {
             for (innerParameter in parameter.innerParameters) {
                 evaluateParameter(innerParameter, tool, row = row, rows = rows)
@@ -50,7 +50,8 @@ class TaskOption(var task: Task)
                 parameter.evaluated(gscript.run(bindings))
             }
         }
-        println("Evaluated to ${parameter.value}")
+
+        //println("Evaluated to ${parameter.value}")
     }
 
     override fun copy(): TaskOption {

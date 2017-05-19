@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameter.GroupParameter
+import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.RootParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
@@ -40,12 +40,24 @@ class TaskDescription(
     fun copyValuesFrom(source: TaskDescription) {
         for (sourceParameter in source.root.descendants()) {
             if (sourceParameter is ValueParameter<*>) {
+
                 val stringValue = sourceParameter.stringValue
                 val destParameter = root.find(sourceParameter.name)
                 if (destParameter is ValueParameter<*>) {
                     destParameter.stringValue = stringValue
                     destParameter.expression = sourceParameter.expression
                 }
+
+                if (sourceParameter is MultipleParameter<*>
+                        && destParameter is MultipleParameter<*>
+                        && destParameter.expression == null) {
+
+
+                    for (i in 0..sourceParameter.innerParameters.size - 1) {
+                        destParameter.innerParameters[i].expression = sourceParameter.innerParameters[i].expression
+                    }
+                }
+
             }
         }
     }
@@ -55,7 +67,22 @@ class TaskDescription(
         builder.appendln("TaskDescription ${name}")
         builder.appendln()
         for (parameter in valueParameters()) {
-            builder.appendln("    ${parameter.name} = ${parameter.value}")
+            if (parameter is MultipleParameter<*> && parameter.expression == null) {
+                builder.appendln("    MultipleParameter")
+                for (innerParameter in parameter.innerParameters) {
+                    if (innerParameter.expression == null) {
+                        builder.appendln("        ${innerParameter.value}")
+                    } else {
+                        builder.appendln("        Expression(${innerParameter.expression})")
+                    }
+                }
+            } else {
+                if (parameter.expression == null) {
+                    builder.appendln("    ${parameter.name} = ${parameter.value}")
+                } else {
+                    builder.appendln("    ${parameter.name} = Expression(${parameter.expression})")
+                }
+            }
         }
         return builder.toString()
     }

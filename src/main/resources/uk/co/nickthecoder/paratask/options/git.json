@@ -5,28 +5,6 @@
     "options": [
         {
             "type": "groovy",
-            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory )",
-            "code": "dt",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
-            "script": "new TerminalTool( \"git\", \"diff\", row.path ).dir( tool.directory )",
-            "code": "d",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "new GitLogTool( tool.directory )",
             "code": "log",
             "label": "Git Log",
@@ -107,33 +85,8 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.task.CommandTask",
-            "code": "dt2",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "command",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "value": "difftool"
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.project.task.TerminalTool",
-            "code": "d2",
+            "code": "d",
             "label": "Git Diff",
             "isRow": true,
             "isMultiple": false,
@@ -147,7 +100,46 @@
                 },
                 {
                     "name": "arguments",
-                    "value": "diff"
+                    "values": [
+                        {
+                            "value": "diff"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.CommandTask",
+            "code": "dt",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "command",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "difftool"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
                 },
                 {
                     "name": "directory",

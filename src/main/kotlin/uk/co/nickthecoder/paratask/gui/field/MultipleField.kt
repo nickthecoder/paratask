@@ -41,7 +41,6 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
         val result = super.addParameter(parameter, index)
 
-        println( "MF add parameter ${parameter.isProgrammingMode()} vs ${this.parameter.isProgrammingMode()}")
         if (result is LabelledField) {
             val buttons = HBox()
 

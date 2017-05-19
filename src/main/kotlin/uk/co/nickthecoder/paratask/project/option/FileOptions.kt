@@ -4,6 +4,7 @@ import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
+import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import java.io.BufferedWriter
 import java.io.File
@@ -153,10 +154,33 @@ class FileOptions(val file: File) {
                         val jparameter = jp.asObject()
                         val name = jparameter.getString("name", "")
                         val parameter = option.task.taskD.root.find(name)
+                        val jexpression = jparameter.get("expression")
+                        if (parameter is MultipleParameter<*> && jexpression == null) {
+                            // Special handling, because it contains multiple values
+                            val jvalues1 = jparameter.get("values")
+                            if (jvalues1 == null) {
+                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in ${file}. Skipping")
+                                continue
+                            }
+                            val jvalues = jparameter.get("values").asArray()
+                            for (jvaluesItem in jvalues) {
+                                val innerParameter = parameter.newValue()
+                                val jvi = jvaluesItem.asObject()
+                                val jvalue = jvi.get("value")
+                                if (jvalue == null) {
+                                    innerParameter.expression = jvi.getString("expression", "?missing value?")
+                                } else {
+                                    innerParameter.stringValue = jvalue.asString()
+                                }
+                            }
+                            // TODO Note, the above cannot handle MultipleParameters inside MultipleParameters!!
+                            // Should refactor with a "loadParameter" method, and use recursion.
+                            continue
+                        }
                         if (parameter is ValueParameter<*>) {
                             val jvalue = jparameter.get("value")
                             if (jvalue == null) {
-                                parameter.expression = jparameter.getString("expression", "")
+                                parameter.expression = jparameter.getString("expression", "?missing value?")
                             } else {
                                 parameter.stringValue = jvalue.asString()
                             }
@@ -216,10 +240,25 @@ class FileOptions(val file: File) {
                 for (parameter in option.task.valueParameters()) {
                     val jparameter = JsonObject()
                     jparameter.add("name", parameter.name)
-                    if (parameter.expression == null) {
-                        jparameter.add("value", parameter.stringValue)
+
+                    if (parameter is MultipleParameter<*> && parameter.expression == null) {
+                        val jvalues = JsonArray()
+                        jparameter.add("values", jvalues)
+                        for (innerParameter in parameter.innerParameters) {
+                            val jobj = JsonObject()
+                            if (innerParameter.expression == null) {
+                                jobj.add("value", innerParameter.stringValue)
+                            } else {
+                                jobj.add("expression", innerParameter.expression )
+                            }
+                            jvalues.add(jobj)
+                        }
                     } else {
-                        jparameter.add("expression", parameter.expression ?: "")
+                        if (parameter.expression == null) {
+                            jparameter.add("value", parameter.stringValue)
+                        } else {
+                            jparameter.add("expression", parameter.expression ?: "")
+                        }
                     }
                     jparameters.add(jparameter)
                 }

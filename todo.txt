@@ -8,11 +8,16 @@ Add a "debug" script to GroovyOption and TaskOption's base class which is run be
 	Maybe call it "pre", to denote it is always run before hand.
 	Give a label/description
 
+Rename EditorTool.filename to file to be consistan
+
 Add a "debug" flag that GroovyOption / TaskOption / OptionsRunner looks at
 	Prints the Option
 
 Need a "CommandOption", which runs a arbitary OS command
 	Can't I just use a CommandTask?
+
+Change project layout - move classes into appropriate places
+	Beware that json files contain qualified class names!
 
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 

@@ -121,12 +121,13 @@ class MultipleParameter<T>(
         }
     }
 
-    fun newValue(index: Int = value.size) {
+    fun newValue(index: Int = value.size) : ValueParameter<T> {
         val innerParameter = factory()
         innerParameter.parent = this
 
         innerParameters.add(index, innerParameter)
         parameterListeners.fireStructureChanged(this)
+        return innerParameter
     }
 
     fun addValue(item: T, index: Int = value.size) {

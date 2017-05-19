@@ -56,7 +56,9 @@
                 },
                 {
                     "name": "match",
-                    "value": ""
+                    "values": [
+                        { "value" : "" }
+                    ]
                 },
                 {
                     "name": "matchCase",

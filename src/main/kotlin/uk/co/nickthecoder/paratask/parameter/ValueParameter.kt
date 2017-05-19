@@ -1,8 +1,8 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import kotlin.reflect.KProperty
 
 /**
@@ -13,7 +13,7 @@ interface ValueParameter<T>
 
     val converter: StringConverter<T>
 
-    var value : T
+    var value: T
 
     var stringValue: String
         get() = converter.toString(value)

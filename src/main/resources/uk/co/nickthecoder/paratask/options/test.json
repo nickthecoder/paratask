@@ -57,7 +57,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "value": "/home/nick/tmp"
+                    "value": "/home/nick"
                 },
                 {
                     "name": "depth",
@@ -69,7 +69,9 @@
                 },
                 {
                     "name": "extensions",
-                    "value": ""
+                    "values": [
+                        
+                    ]
                 },
                 {
                     "name": "includeHidden",
@@ -82,6 +84,33 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.editor.EditorTool",
+            "code": "e2",
+            "label": "Edit a couple of files",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "filename",
+                    "values": [
+                        {
+                            "value": "/home/nick/todo.txt"
+                        },
+                        {
+                            "expression": "1"
+                        },
+                        {
+                            "value": "/home/nick/todo.txt"
+                        }
+                    ]
                 }
             ]
         }
