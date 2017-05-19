@@ -12,22 +12,22 @@ class EditorTool() : AbstractTool() {
 
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
-    val filename = MultipleParameter("filename") { FileParameter("") }
+    val fileP = MultipleParameter("file") { FileParameter("") }
 
     constructor(vararg files: File) : this() {
         for (file in files) {
-            filename.addValue(file)
+            fileP.addValue(file)
         }
     }
 
     constructor(files: List<File>) : this() {
         for (file in files) {
-            filename.addValue(file)
+            fileP.addValue(file)
         }
     }
 
     init {
-        taskD.addParameters(filename)
+        taskD.addParameters(fileP)
     }
 
 
@@ -35,10 +35,10 @@ class EditorTool() : AbstractTool() {
     }
 
     override fun createResults(): List<Results> {
-        if (filename.value.size == 0) {
+        if (fileP.value.size == 0) {
             return singleResults(EditorResults(this, null))
         } else {
-            return filename.value.map { EditorResults(this, it) }
+            return fileP.value.map { EditorResults(this, it) }
         }
     }
 
