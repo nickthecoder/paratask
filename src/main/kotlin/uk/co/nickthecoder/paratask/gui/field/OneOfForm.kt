@@ -21,6 +21,7 @@ class OneOfForm(var oneOfParameter: OneOfParameter)
         }
         choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
         choiceP.listen { onChanged() }
+        choiceP.parent = oneOfParameter
     }
 
     override fun buildTop() {

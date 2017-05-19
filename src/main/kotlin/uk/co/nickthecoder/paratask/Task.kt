@@ -30,4 +30,20 @@ interface Task {
     fun valueParameters(): List<ValueParameter<*>> = taskD.root.valueParameters()
 
     fun parameters(): List<Parameter> = taskD.root.descendants()
+
+    fun copy(): Task {
+
+        val copy = this::class.java.newInstance()
+        copy.taskD.copyValuesFrom(taskD)
+        return copy
+    }
+
+
+    fun creationString(): String = this::class.java.name
+
+    companion object {
+        fun create(creationString: String): Task {
+            return Class.forName(creationString).newInstance() as Task
+        }
+    }
 }

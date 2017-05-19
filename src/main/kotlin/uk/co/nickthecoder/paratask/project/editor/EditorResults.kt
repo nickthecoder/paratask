@@ -81,7 +81,13 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     fun hide(vararg nodes: Node) {
-        nodes.forEach { dummyParent.children.add(it) }
+        nodes.forEach {
+            try {
+                dummyParent.children.add(it)
+            } catch (e: Exception) {
+                // Don't care if the node to be hidden is already in the dummpyParent.
+            }
+        }
     }
 
     fun showFindBar() {

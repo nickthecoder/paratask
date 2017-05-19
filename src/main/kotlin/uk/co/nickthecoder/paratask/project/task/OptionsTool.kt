@@ -1,8 +1,8 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.AbstractTask
-import uk.co.nickthecoder.paratask.CopyableTask
 import uk.co.nickthecoder.paratask.HasCopyableTasks
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.gui.project.SharedToolPane
@@ -129,7 +129,7 @@ class OptionsTool : AbstractTableTool<Option> {
             val tool: Tool?,
             name: String = "editOption")
 
-        : AbstractTask(), CopyableTask {
+        : AbstractTask() {
 
         override val taskD = TaskDescription(name)
 

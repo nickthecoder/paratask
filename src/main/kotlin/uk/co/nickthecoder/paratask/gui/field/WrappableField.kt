@@ -5,6 +5,6 @@ import uk.co.nickthecoder.paratask.gui.field.ParameterField
 
 interface WrappableField {
 
-    fun wrap(parameterField: ParameterField): Node
+    fun wrap(): Node
 
 }

@@ -1,4 +1,19 @@
 
+Bug
+	dt2 and d2 had "difftool\n" and "diff\n" in saved .json file
+
+Multiple parameters not working correctly with expressions
+
+Add a "debug" script to GroovyOption and TaskOption's base class which is run before the option itself is run.
+	Maybe call it "pre", to denote it is always run before hand.
+	Give a label/description
+
+Add a "debug" flag that GroovyOption / TaskOption / OptionsRunner looks at
+	Prints the Option
+
+Need a "CommandOption", which runs a arbitary OS command
+	Can't I just use a CommandTask?
+
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 
 Task names may not be unique, therefore options names won't be unique

@@ -28,8 +28,8 @@ interface Parameter : Labelled {
         return parent?.findRoot()
     }
 
-    fun findTaskD(): TaskDescription? = parent?.findTaskD()
+    fun findTaskD(): TaskDescription = parent!!.findTaskD()
 
-    fun isProgrammingMode(): Boolean = findTaskD()?.programmingMode ?: false
+    fun isProgrammingMode(): Boolean = findTaskD().programmingMode
 
 }

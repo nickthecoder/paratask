@@ -18,6 +18,7 @@ class ExceptionTool : AbstractTool {
     }
 
     constructor(e: Exception) : super() {
+        e.printStackTrace()
         exception = e
     }
 

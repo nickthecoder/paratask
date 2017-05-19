@@ -1,13 +1,8 @@
 package uk.co.nickthecoder.paratask.parameter
 
-import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.scene.Node
-import javafx.scene.control.TitledPane
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.gui.field.MultipleField
-import uk.co.nickthecoder.paratask.gui.field.ParameterField
-import uk.co.nickthecoder.paratask.gui.field.WrappableField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class MultipleParameter<T>(
@@ -23,7 +18,7 @@ class MultipleParameter<T>(
     : AbstractParameter(
         name = name,
         label = label,
-        description = description), ValueParameter<List<T>>, WrappableField, ParentParameter {
+        description = description), ValueParameter<List<T>>, ParentParameter {
 
     internal val innerParameters = mutableListOf<ValueParameter<T>>()
 
@@ -43,6 +38,7 @@ class MultipleParameter<T>(
             innerParameters.clear()
             for (item in newValue) {
                 val innerParameter = factory()
+                innerParameter.parent = this
                 innerParameters.add(innerParameter)
                 innerParameter.value = item
             }
@@ -111,12 +107,6 @@ class MultipleParameter<T>(
         val result = MultipleField(this)
         result.buildContent()
         return result
-    }
-
-    override fun wrap(parameterField: ParameterField): Node {
-        val titledPane = TitledPane(label, parameterField)
-        titledPane.setCollapsible(false)
-        return titledPane
     }
 
 

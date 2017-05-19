@@ -1,16 +1,15 @@
 package uk.co.nickthecoder.paratask.project.option
 
 import groovy.lang.Binding
-import uk.co.nickthecoder.paratask.CopyableTask
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.project.Tool
 
-class TaskOption(var task: CopyableTask)
+class TaskOption(var task: Task)
     : AbstractOption() {
 
-    constructor(creationString: String) : this(CopyableTask.create(creationString))
+    constructor(creationString: String) : this(Task.create(creationString))
 
     override fun run(tool: Tool, row: Any): Task {
         return createResult(tool, row = row, rows = null)
@@ -24,9 +23,9 @@ class TaskOption(var task: CopyableTask)
         return createResult(tool, null, null)
     }
 
-    protected fun createResult(tool: Tool, row: Any?, rows: List<Any>?): CopyableTask {
-
+    protected fun createResult(tool: Tool, row: Any?, rows: List<Any>?): Task {
         val copiedTask = task.copy()
+
         for (parameter in copiedTask.valueParameters()) {
             evaluateParameter(parameter, tool, row = row, rows = rows)
         }
@@ -35,6 +34,7 @@ class TaskOption(var task: CopyableTask)
 
     protected fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
 
+        println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
         if (parameter is MultipleParameter<*> && parameter.expression == null) {
             for (innerParameter in parameter.innerParameters) {
                 evaluateParameter(innerParameter, tool, row = row, rows = rows)
@@ -50,6 +50,7 @@ class TaskOption(var task: CopyableTask)
                 parameter.evaluated(gscript.run(bindings))
             }
         }
+        println("Evaluated to ${parameter.value}")
     }
 
     override fun copy(): TaskOption {

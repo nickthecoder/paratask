@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.gui.field
 import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.TitledPane
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
@@ -40,6 +41,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
         val result = super.addParameter(parameter, index)
 
+        println( "MF add parameter ${parameter.isProgrammingMode()} vs ${this.parameter.isProgrammingMode()}")
         if (result is LabelledField) {
             val buttons = HBox()
 

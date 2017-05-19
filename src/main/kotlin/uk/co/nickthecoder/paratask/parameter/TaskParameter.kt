@@ -1,12 +1,9 @@
 package uk.co.nickthecoder.paratask.parameter
 
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.CopyableTask
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.field.LabelledField
 import uk.co.nickthecoder.paratask.gui.field.TaskField
-import uk.co.nickthecoder.paratask.project.task.DirectoryTool
-import uk.co.nickthecoder.paratask.project.task.GrepTool
-import uk.co.nickthecoder.paratask.project.task.HomeTool
 import uk.co.nickthecoder.paratask.util.uncamel
 
 /**
@@ -18,19 +15,19 @@ class TaskParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: CopyableTask? = null,
+        value: Task? = null,
         required: Boolean = true,
-        val tasks: List<CopyableTask> = listOf<CopyableTask>())
+        val tasks: List<Task> = listOf<Task>())
 
-    : AbstractValueParameter<CopyableTask?>(
+    : AbstractValueParameter<Task?>(
         name = name,
         label = label,
         description = description,
         value = value,
         required = required) {
 
-    override val converter = object : StringConverter<CopyableTask?>() {
-        override fun fromString(str: String): CopyableTask? {
+    override val converter = object : StringConverter<Task?>() {
+        override fun fromString(str: String): Task? {
             for (task in tasks) {
                 if (task.taskD.name == str) {
                     return task
@@ -39,12 +36,12 @@ class TaskParameter(
             return null
         }
 
-        override fun toString(task: CopyableTask?): String {
+        override fun toString(task: Task?): String {
             return task?.taskD?.name ?: ""
         }
     }
 
-    override fun errorMessage(v: CopyableTask?): String? {
+    override fun errorMessage(v: Task?): String? {
         return null
     }
 

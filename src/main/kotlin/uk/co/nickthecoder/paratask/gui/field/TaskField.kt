@@ -6,17 +6,17 @@ import javafx.scene.control.ComboBox
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.CopyableTask
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.ProgrammingModeTaskPrompter
 import uk.co.nickthecoder.paratask.parameter.TaskParameter
 
 class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {
 
-    private val comboBox = ComboBox<CopyableTask>()
+    private val comboBox = ComboBox<Task>()
 
-    val converter = object : StringConverter<CopyableTask?>() {
+    val converter = object : StringConverter<Task?>() {
 
-        override fun fromString(label: String): CopyableTask? {
+        override fun fromString(label: String): Task? {
             for (task in parameter.tasks) {
                 if (label == task.taskD.name) {
                     return task
@@ -25,7 +25,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
             return null
         }
 
-        override fun toString(obj: CopyableTask?): String {
+        override fun toString(obj: Task?): String {
             @Suppress("UNCHECKED_CAST")
             return obj?.taskD?.name ?: ""
         }

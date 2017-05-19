@@ -10,15 +10,17 @@ import javafx.scene.Node
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameter.Parameter
 import uk.co.nickthecoder.paratask.parameter.ParentParameter
+import uk.co.nickthecoder.paratask.parameter.RootParameter
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  * This is the base class for GroupParmetersForm and MultipleField.
  */
 open class ParametersForm(val parentParameter: ParentParameter)
-    : ParameterField(parentParameter) {
+    : ParameterField(parentParameter), WrappableField {
 
     internal val columns = mutableListOf<FormColumn>()
 
@@ -54,10 +56,13 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     open fun addParameter(parameter: Parameter, index: Int): Node {
 
+        if (parameter.parent == null) {
+            throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
+        }
         val parameterField = parameter.createField()
 
-        val node = if (parameter is WrappableField) {
-            parameter.wrap(parameterField)
+        val node = if (parameterField is WrappableField) {
+            parameterField.wrap()
         } else {
             parameterField
         }
@@ -250,6 +255,14 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     }
 
+    override fun wrap(): Node {
+        val parameter = this.parameter
+        if (parameter is RootParameter) {
+            return this
+        } else {
+            return WrappedField(this)
+        }
+    }
 
     class FormColumn(var stretch: Double = 1.0) {
         var prefWidth: Double = 0.0

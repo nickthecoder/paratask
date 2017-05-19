@@ -30,17 +30,6 @@
         },
         {
             "type": "groovy",
-            "script": "new EditorTool(rows.collect {it.file})",
-            "code": "e",
-            "label": "Edit with built-in Text Editor",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "desktop.browse( row.file )",
             "code": "wb",
             "label": "Open with Web Browser",
@@ -100,6 +89,23 @@
                 {
                     "name": "additionalOptions",
                     "value": "IHsn"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.editor.EditorTool",
+            "code": "e",
+            "label": "Edit with built-in Text Editor",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "filename",
+                    "expression": "rows.collect {it.file}"
                 }
             ]
         }

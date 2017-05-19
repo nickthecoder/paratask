@@ -6,7 +6,7 @@ class RootParameter(val taskD: TaskDescription, description: String)
 
     : GroupParameter("root", description = description) {
 
-    override fun findTaskD(): TaskDescription? = taskD
+    override fun findTaskD(): TaskDescription = taskD
 
     override fun findRoot(): RootParameter?= this
 

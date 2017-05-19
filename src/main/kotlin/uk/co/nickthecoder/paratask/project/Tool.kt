@@ -2,12 +2,12 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.StringProperty
 import javafx.scene.image.Image
-import uk.co.nickthecoder.paratask.CopyableTask
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.project.Results
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.project.option.OptionsRunner
 
-interface Tool : CopyableTask {
+interface Tool : Task {
 
     var toolPane: ToolPane?
 
@@ -41,7 +41,7 @@ interface Tool : CopyableTask {
 
     companion object {
         fun create(creationString: String): Tool {
-            return CopyableTask.create(creationString) as Tool
+            return Task.create(creationString) as Tool
         }
     }
 }

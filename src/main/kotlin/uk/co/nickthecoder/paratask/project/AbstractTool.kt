@@ -62,11 +62,6 @@ abstract class AbstractTool() : Tool {
 
     open fun iconName(): String = "${taskD.name}"
 
-
-    override fun creationString(): String {
-        return this::class.java.name
-    }
-
     override fun updateResults() {
         val newResults = createResults()
         toolPane?.replaceResults(newResults, resultsList)

@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.editor.EditorTool
+import uk.co.nickthecoder.paratask.project.task.CommandTask
 import uk.co.nickthecoder.paratask.project.task.DirectoryTool
 import uk.co.nickthecoder.paratask.project.task.DirectoryTreeTool
 import uk.co.nickthecoder.paratask.project.task.GitTool
@@ -16,7 +17,8 @@ import uk.co.nickthecoder.paratask.project.task.WebTool
 
 object TaskRegistry {
 
-    val tasks = mutableListOf<CopyableTask>()
+    val tasks = mutableListOf<Task>(
+            CommandTask())
 
     val tools = mutableListOf<Tool>(
             HomeTool(),

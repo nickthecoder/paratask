@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "tool.taskEdit(row)",
             "code": ".",
             "label": "Edit Option",
-            "script": "tool.taskEdit(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "tool.taskDelete(row)",
             "code": "-",
             "label": "Delete Option",
-            "script": "tool.taskDelete(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
@@ -27,9 +27,9 @@
         },
         {
             "type": "groovy",
+            "script": "tool.taskNew()",
             "code": "+",
             "label": "New Option",
-            "script": "tool.taskNew()",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
@@ -38,14 +38,25 @@
         },
         {
             "type": "groovy",
+            "script": "tool.taskCopy(row)",
             "code": "++",
             "label": "Copy",
-            "script": "tool.taskCopy(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "script": "new EditorTool( tool.getFileOptions().file )",
+            "code": "edit",
+            "label": "Edit Options File in Text Editor",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
         }
     ]
 }

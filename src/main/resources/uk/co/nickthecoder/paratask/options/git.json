@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory )",
             "code": "dt",
             "label": "Git Diff",
-            "script": "new Command( \"git\", \"difftool\", row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "new TerminalTool( \"git\", \"diff\", row.path ).dir( tool.directory )",
             "code": "d",
             "label": "Git Diff",
-            "script": "new TerminalTool( \"git\", \"diff\", row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -27,9 +27,9 @@
         },
         {
             "type": "groovy",
+            "script": "new GitLogTool( tool.directory )",
             "code": "log",
             "label": "Git Log",
-            "script": "new GitLogTool( tool.directory )",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -38,9 +38,9 @@
         },
         {
             "type": "groovy",
+            "script": "new TerminalTool( \"git\", \"push\", \"origin\", \"master\" ).dir( tool.directory )",
             "code": "push",
             "label": "Git Push",
-            "script": "new TerminalTool( \"git\", \"push\", \"origin\", \"master\" ).dir( tool.directory )",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -49,9 +49,9 @@
         },
         {
             "type": "groovy",
+            "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory )",
             "code": "co",
             "label": "Check Out",
-            "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -60,9 +60,9 @@
         },
         {
             "type": "groovy",
+            "script": "new Command( 'git', 'add', row.path ).dir( tool.directory )",
             "code": "a",
             "label": "Git Add",
-            "script": "new Command( 'git', 'add', row.path ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -71,9 +71,9 @@
         },
         {
             "type": "groovy",
+            "script": "new GitCommitTask( tool.directory, false )",
             "code": "c",
             "label": "Git Commit",
-            "script": "new GitCommitTask( tool.directory, false )",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
@@ -82,9 +82,9 @@
         },
         {
             "type": "groovy",
+            "script": "new Command( \"git\", \"rm\", row.file ).dir( tool.directory )",
             "code": "rm",
             "label": "Git Remove",
-            "script": "new Command( \"git\", \"rm\", row.file ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -93,9 +93,9 @@
         },
         {
             "type": "groovy",
+            "script": "new GitCommitTask( tool.directory, true )",
             "code": "ca",
             "label": "Git Commit All",
-            "script": "new GitCommitTask( tool.directory, true )",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
@@ -103,6 +103,56 @@
             "refresh": true,
             "aliases": [
                 "all"
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.CommandTask",
+            "code": "dt2",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "command",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "value": "difftool"
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.TerminalTool",
+            "code": "d2",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "command",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "value": "diff"
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
             ]
         }
     ]
