@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
@@ -13,6 +12,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.task.HomeTool
 
@@ -185,7 +185,7 @@ class Action(
 
         init {
 
-            HomeTool.toolList.forEach { tool ->
+            TaskRegistry.tools.forEach { tool ->
                 val imageView = tool.icon?.let { ImageView(it) }
                 val item = MenuItem(tool.shortTitle, imageView)
 

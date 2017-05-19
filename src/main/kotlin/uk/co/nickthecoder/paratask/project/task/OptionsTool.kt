@@ -1,15 +1,20 @@
 package uk.co.nickthecoder.paratask.project.task
 
 import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.CopyableTask
+import uk.co.nickthecoder.paratask.HasCopyableTasks
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.gui.project.SharedToolPane
 import uk.co.nickthecoder.paratask.gui.project.ToolPane
 import uk.co.nickthecoder.paratask.parameter.BooleanParameter
 import uk.co.nickthecoder.paratask.parameter.FileParameter
 import uk.co.nickthecoder.paratask.parameter.MultipleParameter
+import uk.co.nickthecoder.paratask.parameter.OneOfParameter
 import uk.co.nickthecoder.paratask.parameter.StringParameter
 import uk.co.nickthecoder.paratask.parameter.TaskParameter
 import uk.co.nickthecoder.paratask.project.Preferences
+import uk.co.nickthecoder.paratask.project.Tool
 import uk.co.nickthecoder.paratask.project.option.FileOptions
 import uk.co.nickthecoder.paratask.project.option.GroovyOption
 import uk.co.nickthecoder.paratask.project.option.Option
@@ -19,7 +24,7 @@ import uk.co.nickthecoder.paratask.project.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.project.table.BooleanColumn
 import uk.co.nickthecoder.paratask.project.table.Column
 
-class OptionsTool() : AbstractTableTool<Option>() {
+class OptionsTool : AbstractTableTool<Option> {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -27,9 +32,25 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    var includesTool: IncludesTool
+    var includesTool: IncludesTool = IncludesTool()
+
+    init {
+        taskD.addParameters(optionsNameP, directoryP)
+    }
 
     override val resultsName = "Options"
+
+    val tool: Tool?
+
+    constructor() : super() {
+        tool = null
+    }
+
+    constructor(tool: Tool) : super() {
+        this.tool = tool
+        optionsNameP.value = tool.optionsName
+        directoryP.value = Preferences.optionsPath[0]
+    }
 
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
@@ -41,12 +62,6 @@ class OptionsTool() : AbstractTableTool<Option>() {
         directoryP.value = Preferences.optionsPath[0]
     }
 
-    init {
-        taskD.addParameters(optionsNameP, directoryP)
-
-        includesTool = IncludesTool()
-    }
-
     override fun createColumns() {
         columns.add(Column<Option, String>("code") { it.code })
         columns.add(Column<Option, String>("label") { it.label })
@@ -55,7 +70,13 @@ class OptionsTool() : AbstractTableTool<Option>() {
         columns.add(BooleanColumn<Option>("refresh") { it.refresh })
         columns.add(BooleanColumn<Option>("newTab") { it.newTab })
         columns.add(BooleanColumn<Option>("prompt") { it.prompt })
-        columns.add(Column<Option, String>("script") { if (it is GroovyOption) it.script else "" })
+        columns.add(Column<Option, String>("script") {
+            when (it) {
+                is GroovyOption -> it.script
+                is TaskOption -> it.task.taskD.name
+                else -> ""
+            }
+        })
 
     }
 
@@ -86,15 +107,15 @@ class OptionsTool() : AbstractTableTool<Option>() {
     }
 
     fun taskEdit(option: Option): EditOptionTask {
-        return EditOptionTask(getFileOptions(), option)
+        return EditOptionTask(getFileOptions(), option, tool = tool)
     }
 
     fun taskCopy(option: Option): CopyOptionTask {
-        return CopyOptionTask(getFileOptions(), option)
+        return CopyOptionTask(getFileOptions(), option, tool = tool)
     }
 
     fun taskNew(): NewOptionTask {
-        return NewOptionTask(getFileOptions())
+        return NewOptionTask(getFileOptions(), tool = tool)
     }
 
     fun taskDelete(option: Option): DeleteOptionTask {
@@ -102,8 +123,13 @@ class OptionsTool() : AbstractTableTool<Option>() {
     }
 
 
-    open class EditOptionTask(val fileOptions: FileOptions, val option: Option, name: String = "editOption")
-        : AbstractTask() {
+    open class EditOptionTask(
+            val fileOptions: FileOptions,
+            val option: Option,
+            val tool: Tool?,
+            name: String = "editOption")
+
+        : AbstractTask(), CopyableTask {
 
         override val taskD = TaskDescription(name)
 
@@ -123,55 +149,78 @@ class OptionsTool() : AbstractTableTool<Option>() {
 
         var prompt = BooleanParameter("prompt", value = option.prompt)
 
+        val scriptOrTaskP = OneOfParameter("typeOfAction")
+
         var script = StringParameter("script", value = if (option is GroovyOption) option.script else "")
 
-        var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null)
+        val tasks = if (tool is HasCopyableTasks) {
+            TaskRegistry.tools + TaskRegistry.tasks + tool.tasks
+        } else {
+            TaskRegistry.tools + TaskRegistry.tasks
+        }
+
+        var taskP = TaskParameter("task", tasks = tasks, value = if (option is TaskOption) option.task else null)
 
         init {
-            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, script, taskP)
+            if (option is GroovyOption) {
+                script.value = option.script
+                scriptOrTaskP.value = script
+            } else if (option is TaskOption) {
+                taskP.value = option.task.copy()
+                scriptOrTaskP.value = taskP
+            }
+            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP)
+            scriptOrTaskP.addParameters(script, taskP)
         }
 
         override fun run() {
-            update()
-            save()
+            val option = update()
+            save(option)
         }
 
-        open fun update() {
+        open fun update(): Option {
 
-            option.code = code.value
-            option.aliases = aliases.value.toMutableList()
-            option.label = label.value
-            option.isRow = isRow.value == true
-            option.isMultiple = isMultiple.value == true
-            option.refresh = refresh.value == true
-            option.newTab = newTab.value == true
-            option.prompt = prompt.value == true
-            if (option is GroovyOption) {
-                option.script = script.value
+            val newOption: Option
+            if (scriptOrTaskP.value == script) {
+                newOption = GroovyOption(script.value)
+            } else {
+                newOption = TaskOption(taskP.value!!.copy())
             }
-            fileOptions.update(option)
+            newOption.code = code.value
+            newOption.aliases = aliases.value.toMutableList()
+            newOption.label = label.value
+            newOption.isRow = isRow.value == true
+            newOption.isMultiple = isMultiple.value == true
+            newOption.refresh = refresh.value == true
+            newOption.newTab = newTab.value == true
+            newOption.prompt = prompt.value == true
+
+            return newOption
         }
 
-        open fun save() {
+        open fun save(newOption: Option) {
+            fileOptions.removeOption(option)
+            fileOptions.addOption(newOption)
             fileOptions.save()
         }
     }
 
-    open class NewOptionTask(fileOptions: FileOptions)
-        : EditOptionTask(fileOptions, GroovyOption(""), name = "newOption") {
+    open class NewOptionTask(fileOptions: FileOptions, tool: Tool?)
+        : EditOptionTask(fileOptions, GroovyOption(""), name = "newOption", tool = tool) {
 
-        override open fun update() {
-            super.update()
-            fileOptions.addOption(option)
+        override open fun save(newOption: Option) {
+            fileOptions.addOption(newOption)
+            fileOptions.save()
         }
     }
 
-    open class CopyOptionTask(fileOptions: FileOptions, option: Option)
-        : EditOptionTask(fileOptions, option.copy(), name = "copyOption") {
+    open class CopyOptionTask(fileOptions: FileOptions, option: Option, tool: Tool?)
+        : EditOptionTask(fileOptions, option.copy(), name = "copyOption", tool = tool) {
 
-        override open fun update() {
+        override open fun save(newOption: Option) {
             super.update()
-            fileOptions.addOption(option)
+            fileOptions.addOption(newOption)
+            fileOptions.save()
         }
     }
 

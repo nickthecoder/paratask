@@ -19,7 +19,8 @@ class TaskParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: CopyableTask? = null,
-        required: Boolean = true)
+        required: Boolean = true,
+        val tasks: List<CopyableTask> = listOf<CopyableTask>())
 
     : AbstractValueParameter<CopyableTask?>(
         name = name,
@@ -28,13 +29,10 @@ class TaskParameter(
         value = value,
         required = required) {
 
-
-    val taskList = mutableListOf<CopyableTask>()
-
     override val converter = object : StringConverter<CopyableTask?>() {
         override fun fromString(str: String): CopyableTask? {
-            for ( task in taskList ) {
-                if (task.taskD.name == str ) {
+            for (task in tasks) {
+                if (task.taskD.name == str) {
                     return task
                 }
             }
@@ -44,13 +42,6 @@ class TaskParameter(
         override fun toString(task: CopyableTask?): String {
             return task?.taskD?.name ?: ""
         }
-    }
-
-    // TODO REMOVE
-    init {
-        taskList.add(HomeTool())
-        taskList.add(GrepTool())
-        taskList.add(DirectoryTool())
     }
 
     override fun errorMessage(v: CopyableTask?): String? {

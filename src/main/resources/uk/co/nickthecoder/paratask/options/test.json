@@ -26,8 +26,8 @@
             "refresh": true
         },
         {
-            "type": "groovy",
-            "script": "X",
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.HomeTool",
             "code": "X",
             "label": "Edit Text File",
             "isRow": true,
@@ -39,6 +39,50 @@
                 "XX",
                 "ZZ",
                 "yy"
+            ],
+            "parameters": [
+                
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.DirectoryTool",
+            "code": "tmp",
+            "label": "/home/tmp",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "/home/nick/tmp"
+                },
+                {
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "value": ""
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                }
             ]
         }
     ]

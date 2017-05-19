@@ -9,7 +9,7 @@ interface CopyableTask : Task {
         return copy
     }
 
-    fun creationString(): String
+    fun creationString(): String = this::class.java.name
 
     companion object {
         fun create(creationString: String): CopyableTask {

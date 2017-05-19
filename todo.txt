@@ -1,7 +1,15 @@
 
-Use new prompter in EditOption
+FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 
-Why does ExampleTask not output the OneOfParameter(s)
+Task names may not be unique, therefore options names won't be unique
+	Could add an additional mapping when registering a task
+	Could enforce all non-core Tools prefix their options name with an ID e.g. uk.co.nickthecoder.git
+		Maybe this could be done automatically by using meta data in the Plugin object.
+
+Switch logic newTab -> sameTab
+
+Split project into sub-projects
+	Git is a good first choice. Ahh, but the options .json file!!!	
 
 AddHeaderFooter task
 	A single file, or recurse though a directory
@@ -15,28 +23,6 @@ Bug ExampleTool with only "multiple" the size is full screen height.
 
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
-
-Options aren't like AS/400 commands (yet)
-	Sub-task? of TaskPrompter has a box with a toggle button on the left, and the field on the right.
-		When the toggle is pressed, the field is replaced by simple TextArea where an expression can be entered
-		Right click on the expression field for a menu of values :
-			Tools and Rows have a list of expressions, and maybe a set og global expressions too.
-			e.g. "row.path", "tool.directory", project.directory
-	
-	To list available Tasks, we need a global TaskRegistry
-		HomeTool uses this registry, and filters only Tools
-	In addition to the global TaskRegistry, a Tool can be a TaskRegistry, and so can a Row.
-
-	Hmm, how do we return instances of the SAME tool, e.g. changing directory in DirectoryTool?
-		A) Don't, just create a new Tool every time
-		B) Create another option : GroovyOption, TaskOption, ParametersOption
-			The last one will copy the parameters back into the current tool when the option runs.
-
-	OneOfParameter : GroupParameter
-		Use this when setting the script / task when editing an Option.
-		Pull down list to select which parameter to edit
-		Override check to check the CURRENT only
-
 
 
 Maybe I should rename Task to Command and Command to OSCommand???

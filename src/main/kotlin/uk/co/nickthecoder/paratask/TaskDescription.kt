@@ -44,6 +44,7 @@ class TaskDescription(
                 val destParameter = root.find(sourceParameter.name)
                 if (destParameter is ValueParameter<*>) {
                     destParameter.stringValue = stringValue
+                    destParameter.expression = sourceParameter.expression
                 }
             }
         }

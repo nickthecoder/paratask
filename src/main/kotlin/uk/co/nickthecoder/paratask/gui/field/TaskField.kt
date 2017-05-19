@@ -17,7 +17,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     val converter = object : StringConverter<CopyableTask?>() {
 
         override fun fromString(label: String): CopyableTask? {
-            for (task in parameter.taskList) {
+            for (task in parameter.tasks) {
                 if (label == task.taskD.name) {
                     return task
                 }
@@ -37,7 +37,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
         comboBox.converter = converter
         comboBox.valueProperty().bindBidirectional(parameter.valueProperty)
 
-        for (task in parameter.taskList) {
+        for (task in parameter.tasks) {
             comboBox.items.add(task)
         }
 

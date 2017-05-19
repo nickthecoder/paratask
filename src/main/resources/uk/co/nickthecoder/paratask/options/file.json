@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "desktop.edit( row.file )",
             "code": "edit",
             "label": "Edit File",
-            "script": "desktop.edit( row.file )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "desktop.open( row.file )",
             "code": "o",
             "label": "Open File",
-            "script": "desktop.open( row.file )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -30,9 +30,9 @@
         },
         {
             "type": "groovy",
+            "script": "new EditorTool(rows.collect {it.file})",
             "code": "e",
             "label": "Edit with built-in Text Editor",
-            "script": "new EditorTool(rows.collect {it.file})",
             "isRow": true,
             "isMultiple": true,
             "prompt": false,
@@ -41,14 +41,67 @@
         },
         {
             "type": "groovy",
+            "script": "desktop.browse( row.file )",
             "code": "wb",
             "label": "Open with Web Browser",
-            "script": "desktop.browse( row.file )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.GrepTool",
+            "code": "grep",
+            "label": "Grep",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "match",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "type",
+                    "value": "extended"
+                },
+                {
+                    "name": "part",
+                    "value": "any"
+                },
+                {
+                    "name": "invertResults",
+                    "value": "false"
+                },
+                {
+                    "name": "followSymLinks",
+                    "value": "false"
+                },
+                {
+                    "name": "maxMatches",
+                    "value": ""
+                },
+                {
+                    "name": "contextLines",
+                    "value": ""
+                },
+                {
+                    "name": "additionalOptions",
+                    "value": "IHsn"
+                }
+            ]
         }
     ]
 }

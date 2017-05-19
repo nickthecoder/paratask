@@ -13,11 +13,11 @@ import uk.co.nickthecoder.paratask.parameter.Parameter
 class OneOfForm(var oneOfParameter: OneOfParameter)
     : ParametersForm(oneOfParameter) {
 
-    val choiceP = ChoiceParameter<String?>("choose", label = oneOfParameter.message, value = oneOfParameter.value)
+    val choiceP = ChoiceParameter<Parameter?>("choose", label = oneOfParameter.message, value = oneOfParameter.value)
 
     init {
         for (child in oneOfParameter.children) {
-            choiceP.choice(child.name, child.name, child.label)
+            choiceP.choice(child.name, child, child.label)
         }
         choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
         choiceP.listen { onChanged() }
@@ -30,8 +30,7 @@ class OneOfForm(var oneOfParameter: OneOfParameter)
     }
 
     override fun buildChildren() {
-        println("Building oneofchild ${oneOfParameter.value} -> ${oneOfParameter.chosenParameter()}")
-        oneOfParameter.chosenParameter()?.let { child: Parameter ->
+        oneOfParameter.value?.let { child: Parameter ->
             if (!child.hidden) {
                 addParameter(child, 1)
             }

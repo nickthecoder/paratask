@@ -7,7 +7,7 @@ import uk.co.nickthecoder.paratask.parameter.MultipleParameter
 import uk.co.nickthecoder.paratask.parameter.ValueParameter
 import uk.co.nickthecoder.paratask.project.Tool
 
-class TaskOption(val task: CopyableTask)
+class TaskOption(var task: CopyableTask)
     : AbstractOption() {
 
     constructor(creationString: String) : this(CopyableTask.create(creationString))

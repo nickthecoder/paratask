@@ -13,18 +13,27 @@ class OneOfParameter(
         label: String = name.uncamel(),
         description: String = "",
         val message: String = "Choose",
-        value: String? = null)
+        value: Parameter? = null)
 
-    : GroupParameter(name, label = label, description = description), PropertyValueParameter<String?> {
+    : GroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
 
     override val expressionProperty = SimpleStringProperty()
 
-    override val converter: StringConverter<String?> = object : StringConverter<String?>() {
-        override fun toString(v: String?): String = v ?: ""
-        override fun fromString(v: String): String? = if (v == "") null else v
+    override val converter: StringConverter<Parameter?> = object : StringConverter<Parameter?>() {
+        override fun toString(v: Parameter?): String = v?.name ?: ""
+
+        override fun fromString(v: String): Parameter? {
+            if (v == "") return null
+            for (child in children) {
+                if (child.name == v) {
+                    return child
+                }
+            }
+            return null
+        }
     }
 
-    override val valueProperty = SimpleObjectProperty<String?>()
+    override val valueProperty = SimpleObjectProperty<Parameter?>()
 
     init {
         this.value = value
@@ -41,7 +50,7 @@ class OneOfParameter(
         return errorMessage(value)
     }
 
-    override fun errorMessage(v: String?): String? {
+    override fun errorMessage(v: Parameter?): String? {
         if (required && value == null) {
             return "You must choose an item from the list"
         }
@@ -51,8 +60,7 @@ class OneOfParameter(
     override fun check() {
         errorMessage()?.let { throw ParameterException(this, it) }
 
-        chosenParameter()?.let { checkChild(it) }
+        value?.let { checkChild(it) }
     }
 
-    fun chosenParameter(): Parameter? = if (value == null) null else find(value!!)
 }
