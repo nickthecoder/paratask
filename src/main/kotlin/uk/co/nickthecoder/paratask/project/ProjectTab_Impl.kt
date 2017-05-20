@@ -2,12 +2,16 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.geometry.Orientation
 import javafx.scene.Node
+import javafx.scene.control.SplitPane
+import javafx.scene.control.Tab
+import javafx.scene.image.ImageView
+import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
-    : ProjectTab, javafx.scene.control.Tab() {
+    : ProjectTab, Tab() {
 
     override lateinit var projectTabs: ProjectTabs
 
@@ -15,9 +19,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
-    val splitPane = javafx.scene.control.SplitPane()
+    val splitPane = SplitPane()
 
-    val stackPane = javafx.scene.layout.StackPane(splitPane)
+    val stackPane = StackPane(splitPane)
 
     init {
         stackPane.children.add(left as Node)
@@ -29,7 +33,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     private fun updateTab() {
         textProperty().bind(left.toolPane.tool.shortTitleProperty)
-        val imageView = left.toolPane.tool.icon?.let { javafx.scene.image.ImageView(it) }
+        val imageView = left.toolPane.tool.icon?.let { ImageView(it) }
         graphic = imageView
     }
 
@@ -96,7 +100,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         }
         splitPane.items.clear()
         right = null
-        splitPane.items.add(left as javafx.scene.Node)
+        splitPane.items.add(left as Node)
     }
 
     override fun split(tool: Tool) {

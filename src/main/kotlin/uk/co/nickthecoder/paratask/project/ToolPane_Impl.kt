@@ -2,16 +2,18 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
 import javafx.geometry.Side
+import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
+import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 
 class ToolPane_Impl(override var tool: Tool)
 
-    : ToolPane, javafx.scene.layout.StackPane() {
+    : ToolPane, StackPane() {
 
-    private val tabPane = javafx.scene.control.TabPane()
+    private val tabPane = TabPane()
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
@@ -24,12 +26,12 @@ class ToolPane_Impl(override var tool: Tool)
         // Adding the ParametersPane to the stack first (and then adding to the TabPane later) is a bodge
         // because TabPane doesn't set the parent of its child tabs immediately, and I need the ParametersPane
         // to be part of the Scene graph earlier than it otherwise would.
-        children.addAll(tabPane, parametersPane as javafx.scene.Node)
+        children.addAll(tabPane, parametersPane as Node)
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
         parametersTab.text = "Parameters"
-        parametersTab.content = parametersPane as javafx.scene.Node
+        parametersTab.content = parametersPane as Node
 
         tabPane.tabs.addAll(parametersTab)
 
@@ -135,7 +137,7 @@ class ToolPane_Impl(override var tool: Tool)
         }
     }
 
-    private class ResultsTab(val results: Results) : javafx.scene.control.Tab(results.label, results.node) {
+    private class ResultsTab(val results: Results) : Tab(results.label, results.node) {
         init {
             this.textProperty().bind(results.labelProperty)
         }

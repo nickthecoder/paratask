@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonObject
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
@@ -39,7 +40,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
         this.title = title
 
         with(borderPane) {
-            center = tabs as javafx.scene.Node
+            center = tabs as Node
             top = toolBar
             setPrefSize(800.0, 600.0)
         }
@@ -62,7 +63,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
     fun onNewWindow() {
         val newWindow = ProjectWindow("New Project")
-        newWindow.placeOnStage(javafx.stage.Stage())
+        newWindow.placeOnStage(Stage())
         newWindow.addTool(HomeTool())
     }
 
@@ -90,12 +91,12 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun onOpenProject() {
-        TaskPrompter(OpenProjectTask()).placeOnStage(javafx.stage.Stage())
+        TaskPrompter(OpenProjectTask()).placeOnStage(Stage())
     }
 
 
     fun onSaveProject() {
-        TaskPrompter(SaveProjectTask(this)).placeOnStage(javafx.stage.Stage())
+        TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
     }
 
     companion object {
@@ -111,7 +112,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
             val projectWindow = ProjectWindow(title, width, height)
             projectWindow.projectFile = projectFile
             projectWindow.title = jroot.getString("title", "")
-            projectWindow.placeOnStage(javafx.stage.Stage())
+            projectWindow.placeOnStage(Stage())
 
             val jtabs = jroot.get("tabs")
             jtabs?.let {

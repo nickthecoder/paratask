@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.geometry.Side
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.TextField
@@ -15,7 +16,7 @@ import uk.co.nickthecoder.paratask.util.Stoppable
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
-    : javafx.scene.layout.BorderPane(), HalfTab {
+    : BorderPane(), HalfTab {
 
     override val toolBars = BorderPane()
 
@@ -38,7 +39,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     init {
         toolBars.center = toolBar
 
-        center = toolPane as javafx.scene.Node
+        center = toolPane as Node
         bottom = toolBars
 
         with(optionsField) {
@@ -56,7 +57,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         forwardButton.disableProperty().bind(history.canRedoProperty.not())
         historyGroup.children.addAll(backButton, forwardButton)
 
-        val runStopStack = javafx.scene.layout.StackPane()
+        val runStopStack = StackPane()
         stopButton = Actions.TOOL_STOP.createButton(shortcuts) { onStop() }
         runButton = Actions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
@@ -95,11 +96,11 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     override fun changeTool(tool: Tool) {
         toolPane.detaching()
-        children.remove(toolPane as javafx.scene.Node)
+        children.remove(toolPane as Node)
 
         toolPane = ToolPane_Impl(tool)
 
-        center = toolPane as javafx.scene.Node
+        center = toolPane as Node
         toolPane.attached(this)
 
         projectTab.changed()

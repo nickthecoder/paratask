@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
@@ -44,7 +45,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun addAfter(after: ProjectTab, tool: Tool): ProjectTab {
-        val index = tabs.indexOf(after as javafx.scene.control.Tab)
+        val index = tabs.indexOf(after as Tab)
         return addTool(index + 1, tool)
     }
 
@@ -54,7 +55,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     override fun removeTab(projectTab: ProjectTab) {
         projectTab.detaching()
-        tabs.remove<javafx.scene.control.Tab>(projectTab as javafx.scene.control.Tab)
+        tabs.remove<Tab>(projectTab as Tab)
     }
 
     override fun split() {
