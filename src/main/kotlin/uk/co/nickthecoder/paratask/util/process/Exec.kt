@@ -1,5 +1,8 @@
 package uk.co.nickthecoder.paratask.util.process
 
+import java.io.File
+import java.util.concurrent.TimeUnit
+
 val NOT_STARTED = -1000
 
 val INTERRUPTED = -10001
@@ -33,24 +36,24 @@ class Exec {
 
     val listeners = ProcessNotifier()
 
-    fun dir(dir: java.io.File?): uk.co.nickthecoder.paratask.util.process.Exec {
+    fun dir(dir: File?):Exec {
         builder.directory(dir)
         return this
     }
 
-    fun inheritOut(): uk.co.nickthecoder.paratask.util.process.Exec {
+    fun inheritOut(): Exec {
         builder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
         outSink = null
         return this
     }
 
-    fun inheritErr(): uk.co.nickthecoder.paratask.util.process.Exec {
+    fun inheritErr(): Exec {
         builder.redirectError(ProcessBuilder.Redirect.INHERIT)
         errSink = null
         return this
     }
 
-    fun mergeErrWithOut(): uk.co.nickthecoder.paratask.util.process.Exec {
+    fun mergeErrWithOut(): Exec {
         builder.redirectErrorStream(true)
         errSink = null
         return this
@@ -64,7 +67,7 @@ class Exec {
         })
     }
 
-    fun start(): uk.co.nickthecoder.paratask.util.process.Exec {
+    fun start(): Exec {
 
         if (process != null) {
             throw RuntimeException("Process already started")
@@ -78,15 +81,15 @@ class Exec {
         outSink?.let { sink ->
             sink.setStream(process.inputStream)
             outThread = Thread(sink)
-            outThread?.setDaemon(true)
-            outThread?.setName("Exec.OutputSink")
+            outThread?.isDaemon = true
+            outThread?.name = "Exec.OutputSink"
             outThread?.start()
         }
         errSink?.let { sink ->
             sink.setStream(process.errorStream)
             errThread = Thread(sink)
-            errThread?.setDaemon(true)
-            errThread?.setName("Exec.ErrorSink")
+            errThread?.isDaemon = true
+            errThread?.name = "Exec.ErrorSink"
             errThread?.start()
         }
 
@@ -109,8 +112,8 @@ class Exec {
         }
     }
 
-    fun waitFor(duration: Long = 0, units: java.util.concurrent.TimeUnit = java.util.concurrent.TimeUnit.SECONDS, killOnTimeout: Boolean = false): Int {
-        val timeoutThread = uk.co.nickthecoder.paratask.util.process.Exec.Timeout(units.toMillis(duration))
+    fun waitFor(duration: Long = 0, units: TimeUnit = TimeUnit.SECONDS, killOnTimeout: Boolean = false): Int {
+        val timeoutThread = Exec.Timeout(units.toMillis(duration))
 
         try {
             try {
@@ -119,7 +122,7 @@ class Exec {
                 if (killOnTimeout) {
                     kill()
                 }
-                return uk.co.nickthecoder.paratask.util.process.INTERRUPTED
+                return INTERRUPTED
             }
             if (duration > 0) {
                 timeoutThread.start()
@@ -128,25 +131,25 @@ class Exec {
             timeoutThread.done = true
 
             // Let the threads reading input finish before we end, otherwise the output may be truncated.
-            outThread?.let { it.join() }
-            errThread?.let { it.join() }
+            outThread?.join()
+            errThread?.join()
         }
 
-        return uk.co.nickthecoder.paratask.util.process.NOT_STARTED
+        return NOT_STARTED
     }
 
     class Timeout(val timeoutMillis: Long) : Thread() {
         init {
             this.name = "Exec.Timeout"
-            this.setDaemon(true)
+            this.isDaemon = true
         }
 
         var done: Boolean = false
 
-        val calling = Thread.currentThread()
+        val calling :Thread = Thread.currentThread()
 
         override fun run() {
-            sleep(timeoutMillis);
+            sleep(timeoutMillis)
             if (!done) {
                 calling.interrupt()
             }

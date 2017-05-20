@@ -11,10 +11,7 @@ import uk.co.nickthecoder.paratask.parameters.*
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
     : ParametersForm(multipleParameter), ParameterListener {
 
-    private var dirty = false
-
     val whole = BorderPane()
-    //val list = VBox()
 
     val addButton = Button("+")
 
@@ -24,7 +21,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         addButton.onAction = EventHandler {
             extraValue()
         }
-        addButton.setTooltip(Tooltip("Add"))
+        addButton.tooltip = Tooltip("Add")
     }
 
     override fun buildContent() {
@@ -39,14 +36,14 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         if (result is LabelledField) {
             val buttons = HBox()
 
-            buttons.getStyleClass().add("multiple-line-buttons")
+            buttons.styleClass.add("multiple-line-buttons")
 
             if (multipleParameter.allowInsert) {
                 val addButton = Button("+")
                 addButton.onAction = EventHandler {
                     newValue(index + 1)
                 }
-                addButton.setTooltip(Tooltip("Insert Before"))
+                addButton.tooltip = Tooltip("Insert Before")
                 buttons.children.add(addButton)
             }
 
@@ -54,7 +51,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
             removeButton.onAction = EventHandler {
                 removeAt(index)
             }
-            removeButton.setTooltip(Tooltip("Remove"))
+            removeButton.tooltip = Tooltip("Remove")
             buttons.children.add(removeButton)
 
             result.replaceLabel(buttons)
@@ -67,10 +64,8 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         children.clear()
         fieldSet.clear()
 
-        var index = 0
-        for (innerParameter in multipleParameter.innerParameters) {
+        for ((index, innerParameter) in multipleParameter.innerParameters.withIndex()) {
             addParameter(innerParameter, index)
-            index++
         }
 
         children.add(addButton)
@@ -94,4 +89,3 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         }
     }
 }
-

@@ -1,9 +1,7 @@
 package uk.co.nickthecoder.paratask.tools
 
-import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
-import javafx.concurrent.Worker.State
+import javafx.scene.web.WebEngine
 import javafx.scene.web.WebView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.project.AbstractResults
@@ -32,33 +30,22 @@ class WebTool() : AbstractTool() {
 
 }
 
-class WebResults(override val tool: WebTool, var address: String) : AbstractResults(tool, "Web Page") {
+class WebResults(override val tool: WebTool, address: String) : AbstractResults(tool, "Web Page") {
 
     override val node = WebView()
 
-    val webEngine = node.getEngine()
+    val webEngine : WebEngine = node.engine
 
     init {
-        webEngine.load(address);
-        webEngine.getLoadWorker().stateProperty().addListener(object : ChangeListener<State> {
+        webEngine.load(address)
 
-            override fun changed(observable: ObservableValue<out State>?, oldValue: State?, newValue: State?) {
-                changedAddress(webEngine.getLocation())
+        webEngine.loadWorker.stateProperty().addListener { _, _, _ -> changedAddress(webEngine.location) }
+
+        webEngine.loadWorker.stateProperty().addListener { _, _, newValue ->
+            if (newValue == Worker.State.SUCCEEDED) {
+                pageLoaded()
             }
-        })
-
-        webEngine.getLoadWorker().stateProperty().addListener(object : ChangeListener<Worker.State> {
-            override fun changed(
-                    observable: ObservableValue <out Worker.State>?,
-                    oldValue: Worker.State,
-                    newValue: Worker.State) {
-
-                if (newValue == Worker.State.SUCCEEDED) {
-                    pageLoaded()
-                }
-
-            }
-        });
+        }
     }
 
     fun changedAddress(address: String) {

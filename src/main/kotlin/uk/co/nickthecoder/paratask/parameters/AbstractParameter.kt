@@ -20,5 +20,5 @@ abstract class AbstractParameter(
 
     override var parent: Parameter? = null
 
-    override fun toString() = "Parameter ${name}"
+    override fun toString() = "Parameter $name"
 }

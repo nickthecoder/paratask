@@ -6,7 +6,7 @@ interface ParentParameter : Parameter {
 
     val children: List<Parameter>
 
-    open fun check() {
+    fun check() {
         children.forEach { checkChild(it) }
     }
 

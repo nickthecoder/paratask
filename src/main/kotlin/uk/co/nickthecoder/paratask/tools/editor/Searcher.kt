@@ -84,5 +84,5 @@ class Searcher(val codeArea: CodeArea) {
         // TODO Implement find prev
     }
 
-    data class Match(val start: Int, val end: Int) {}
+    data class Match(val start: Int, val end: Int)
 }

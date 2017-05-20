@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
 import javafx.beans.value.ObservableValueBase
 
-class WrappedRow<R>(val row: R) {
+class WrappedRow<out R>(val row: R) {
 
     val codeProperty = SimpleStringProperty("")
 
@@ -14,7 +14,6 @@ class WrappedRow<R>(val row: R) {
             codeProperty.set(value)
         }
 
-
     val observables = mutableMapOf<String, ObservableValue<Any?>>()
 
     fun clearOption() {
@@ -22,7 +21,7 @@ class WrappedRow<R>(val row: R) {
     }
 
     fun observable(name: String, getter: (R) -> Any?): ObservableValue<Any?> {
-        return observables.get(name) ?: cache(name, getter)
+        return observables[name] ?: cache(name, getter)
     }
 
     fun cache(name: String, getter: (R) -> Any?): ObservableValue<Any?> {

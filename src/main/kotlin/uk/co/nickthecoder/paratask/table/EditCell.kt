@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.project.Actions
 
-public class EditCell<S, T>(
+class EditCell<S, T>(
         val tableResults: TableResults<*>,
         val converter: StringConverter<T>)
 
@@ -24,7 +24,7 @@ public class EditCell<S, T>(
     private val textField = TextField()
 
     init {
-        textField.setContextMenu(tableResults.contextMenu)
+        textField.contextMenu = tableResults.contextMenu
         textField.styleClass.add("edit-cell")
         itemProperty().addListener { _, _, newItem ->
             if (newItem == null) {
@@ -33,23 +33,23 @@ public class EditCell<S, T>(
                 setText(converter.toString(newItem))
             }
         }
-        setGraphic(textField)
-        setContentDisplay(ContentDisplay.TEXT_ONLY)
+        graphic = textField
+        contentDisplay = ContentDisplay.TEXT_ONLY
 
         textField.setOnAction { _ ->
-            commitEdit(this.converter.fromString(textField.getText()))
+            commitEdit(this.converter.fromString(textField.text))
         }
 
         textField.focusedProperty().addListener { _, _, isNowFocused ->
             if (!isNowFocused) {
-                commitEdit(this.converter.fromString(textField.getText()))
+                commitEdit(this.converter.fromString(textField.text))
             }
         }
 
         textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
             if (Actions.acceleratorEscape.match(event)) {
                 // I don't think this EVER gets called. Hmmm.
-                textField.setText(converter.toString(getItem()))
+                textField.text = converter.toString(item)
                 cancelEdit()
                 event.consume()
             } else if (Actions.acceleratorUp.match(event)) {
@@ -78,7 +78,7 @@ public class EditCell<S, T>(
     }
 
     fun move(delta: Int) {
-        commitEdit(converter.fromString(textField.getText()))
+        commitEdit(converter.fromString(textField.text))
 
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
@@ -86,22 +86,22 @@ public class EditCell<S, T>(
         }
 
         tableView.selectionModel.focus(row)
-        Platform.runLater { tableView.edit(row, tableView.columns.get(0)) }
+        Platform.runLater { tableView.edit(row, tableView.columns[0]) }
 
     }
 
     // set the text of the text field and display the graphic
     override fun startEdit() {
         super.startEdit()
-        textField.setText(converter.toString(getItem()))
-        setContentDisplay(ContentDisplay.GRAPHIC_ONLY)
+        textField.text = converter.toString(item)
+        contentDisplay = ContentDisplay.GRAPHIC_ONLY
         textField.requestFocus()
     }
 
     // revert to text display
     override fun cancelEdit() {
         super.cancelEdit()
-        setContentDisplay(ContentDisplay.TEXT_ONLY)
+        contentDisplay = ContentDisplay.TEXT_ONLY
     }
 
     // commits the edit. Update property if possible and revert to text display
@@ -110,12 +110,12 @@ public class EditCell<S, T>(
         // This block is necessary to support commit on losing focus, because the baked-in mechanism
         // sets our editing state to false before we can intercept the loss of focus.
         // The default commitEdit(...) method simply bails if we are not editing...
-        if (!isEditing() && item != getItem()) {
-            val table = getTableView()
+        if (!isEditing && item != getItem()) {
+            val table = tableView
             if (table != null) {
-                val column = getTableColumn()
+                val column = tableColumn
                 val event = CellEditEvent<S, T>(table,
-                        TablePosition<S, T>(table, getIndex(), column),
+                        TablePosition<S, T>(table, index, column),
                         TableColumn.editCommitEvent(), item)
 
                 Event.fireEvent(column, event)
@@ -124,7 +124,7 @@ public class EditCell<S, T>(
 
         super.commitEdit(item)
 
-        setContentDisplay(ContentDisplay.TEXT_ONLY)
+        contentDisplay = ContentDisplay.TEXT_ONLY
     }
 
 }

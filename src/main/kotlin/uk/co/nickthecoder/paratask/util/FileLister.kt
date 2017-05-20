@@ -26,44 +26,23 @@ class FileLister(
     companion object {
 
         fun matchesExtensions(file: File, extensions: List<String>): Boolean {
-            val lastDot = file.getName().lastIndexOf('.')
+            val lastDot = file.name.lastIndexOf('.')
             if (lastDot < 0) {
                 return false
             }
-            val fe = file.getName().substring(lastDot + 1)
-            for (allowed in extensions) {
-                if (fe.equals(allowed)) {
-                    return true
-                }
-            }
-            return false
+            val fe = file.name.substring(lastDot + 1)
+            return extensions.contains(fe)
         }
 
-        val CASE_SENSITIVE: Comparator<File> = object : Comparator<File> {
-            override fun compare(a: File, b: File): Int {
-                return a.getPath().toLowerCase().compareTo(b.getPath().toLowerCase());
-            }
-        }
+        val CASE_SENSITIVE: Comparator<File> = Comparator { a, b -> a.path.toLowerCase().compareTo(b.path.toLowerCase()); }
 
         /**
          * Compares files based on how their path name strings compare. Note this is case sensitive, and is therefore
          * not usually the best solution. Consider {@link #NAME_ORDER} instead.
          */
-        val CASE_INSENSITIVE: Comparator<File> = object : Comparator<File> {
-            override fun compare(a: File, b: File): Int {
-                return a.getPath().compareTo(b.getPath());
-            }
-        }
-        val SIZE_ORDER = object : Comparator<File> {
-            override fun compare(a: File, b: File): Int {
-                return a.length().compareTo(b.length())
-            }
-        }
-        val MODIFIED_ORDER = object : Comparator<File> {
-            override fun compare(a: File, b: File): Int {
-                return a.lastModified().compareTo(b.lastModified())
-            }
-        }
+        val CASE_INSENSITIVE: Comparator<File> = Comparator { a, b -> a.path.compareTo(b.path); }
+        val SIZE_ORDER = Comparator<File> { a, b -> a.length().compareTo(b.length()) }
+        val MODIFIED_ORDER = Comparator<File> { a, b -> a.lastModified().compareTo(b.lastModified()) }
     }
 
     var stopping: Boolean = false
@@ -90,13 +69,13 @@ class FileLister(
             try {
                 filesAndDirectories = directory.listFiles(this)
                 if (filesAndDirectories == null) {
-                    throw IOException("Failed to list directory ${directory}")
+                    throw IOException("Failed to list directory $directory")
                 }
 
-                val files = filesAndDirectories.filter { !it.isDirectory() }
+                val files = filesAndDirectories.filter { !it.isDirectory }
                 val sortedFiles = if (fileComparator == null) files else files.sortedWith<File>(fileComparator)
 
-                val directories = filesAndDirectories.filter { it.isDirectory() }
+                val directories = filesAndDirectories.filter { it.isDirectory }
                 val sortedDirectories = if (directoryComparator == null)
                     directories
                 else
@@ -126,7 +105,7 @@ class FileLister(
 
     override fun accept(file: File): Boolean {
 
-        val isDirectory = file.isDirectory()
+        val isDirectory = file.isDirectory
 
         if (onlyFiles == false && !isDirectory) {
             return false
@@ -136,18 +115,18 @@ class FileLister(
         }
 
         if (isDirectory) {
-            if (!enterHidden && !includeHidden && file.isHidden()) {
+            if (!enterHidden && !includeHidden && file.isHidden) {
                 return false
             }
 
         } else {
-            if (!includeHidden && file.isHidden()) {
+            if (!includeHidden && file.isHidden) {
                 return false
             }
 
         }
 
-        if (extensions != null && extensions.size > 0) {
+        if (extensions != null && extensions.isNotEmpty()) {
             if (!matchesExtensions(file, extensions)) {
                 return false
             }

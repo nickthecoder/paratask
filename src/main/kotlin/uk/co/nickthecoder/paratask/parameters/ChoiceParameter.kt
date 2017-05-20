@@ -24,12 +24,11 @@ open class ChoiceParameter<T>(
     override val converter = object : StringConverter<T?>() {
 
         override fun fromString(label: String): T? {
-            return keyToValueMap.get(label)
+            return keyToValueMap[label]
         }
 
         override fun toString(obj: T?): String {
-            val lab = valueToKeyMap.get(obj)
-            return if (lab == null) "<unknown>" else lab
+            return valueToKeyMap[obj] ?: "<unknown>"
         }
     }
 
@@ -40,7 +39,7 @@ open class ChoiceParameter<T>(
 
     override fun isStretchy() = false
 
-    override fun createField(): ChoiceField<T> = ChoiceField<T>(this)
+    override fun createField(): ChoiceField<T> = ChoiceField(this)
 
     override fun toString(): String = "Choice" + super.toString()
 
@@ -54,16 +53,16 @@ open class ChoiceParameter<T>(
     }
 
     fun getLabelForValue(value: T?): String? {
-        return valueToLabelMap.get(value)
+        return valueToLabelMap[value]
     }
 
     fun getValueForLabel(label: String?): T? {
-        return labelToValueMap.get(label)
+        return labelToValueMap[label]
     }
 
     fun choiceKeys(): Collection<String> = valueToKeyMap.values
 
-    fun valueKey() = valueToKeyMap.get(value)
+    fun valueKey() = valueToKeyMap[value]
 
     fun addChoice(key: String, value: T?, label: String = key.uncamel()) {
         keyToValueMap.put(key, value)
@@ -75,8 +74,8 @@ open class ChoiceParameter<T>(
     }
 
     fun removeKey(key: String) {
-        val value = keyToValueMap.get(key)
-        val label = valueToLabelMap.get(value)
+        val value = keyToValueMap[key]
+        val label = valueToLabelMap[value]
 
         keyToValueMap.remove(key)
         valueToKeyMap.remove(value)

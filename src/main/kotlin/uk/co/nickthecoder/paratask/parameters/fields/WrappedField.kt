@@ -18,16 +18,16 @@ class WrappedField(val parameterField: ParameterField) : TitledPane() {
     val box = VBox()
 
     init {
-        setCollapsible(false)
+        isCollapsible = false
 
         text = parameterField.parameter.label
         if (parameter is ValueParameter<*> && parameter.isProgrammingMode()) {
-            expressionField.getStyleClass().add("expression")
+            expressionField.styleClass.add("expression")
             expressionButton = ToggleButton("=")
             box.children.add(expressionButton)
             expressionField.textProperty().bindBidirectional(parameter.expressionProperty)
             if (parameter.expression != null) {
-                expressionButton.setSelected(true)
+                expressionButton.isSelected = true
                 box.children.add(expressionField)
             } else {
                 box.children.add(parameterField)

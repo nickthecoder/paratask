@@ -1,23 +1,36 @@
 package uk.co.nickthecoder.paratask.project
 
-class SaveProjectTask(val projectWindow: ProjectWindow) : uk.co.nickthecoder.paratask.AbstractTask() {
-    override val taskD = uk.co.nickthecoder.paratask.TaskDescription("Save Project")
+import com.eclipsesource.json.JsonArray
+import com.eclipsesource.json.JsonObject
+import com.eclipsesource.json.PrettyPrint
+import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.util.nameWithoutExtension
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 
-    val directory = uk.co.nickthecoder.paratask.parameters.FileParameter("projectsDirectory", mustExist = null, expectFile = false)
+class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
+    override val taskD = TaskDescription("Save Project")
 
-    val name = uk.co.nickthecoder.paratask.parameters.StringParameter("name")
+    val directory = FileParameter("projectsDirectory", mustExist = null, expectFile = false)
 
-    val title = uk.co.nickthecoder.paratask.parameters.StringParameter("title")
+    val name = StringParameter("name")
+
+    val title = StringParameter("title")
 
     init {
         taskD.addParameters(directory, name, title)
-        directory.value = projectWindow.projectFile?.parentFile ?: uk.co.nickthecoder.paratask.project.Preferences.projectsDirectory
+        directory.value = projectWindow.projectFile?.parentFile ?: Preferences.projectsDirectory
         name.value = projectWindow.projectFile?.nameWithoutExtension() ?: ""
         title.value = projectWindow.title
     }
 
     override fun run() {
-        val file = java.io.File(directory.value!!, name.value + ".json")
+        val file = File(directory.value!!, name.value + ".json")
         projectWindow.projectFile = file
 
         save(file)
@@ -42,16 +55,16 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : uk.co.nickthecoder.par
 }
  */
 
-    fun save(projectFile: java.io.File) {
-        val jroot = com.eclipsesource.json.JsonObject()
+    fun save(projectFile: File) {
+        val jroot = JsonObject()
 
         jroot.set("title", title.value)
         jroot.set("width", projectWindow.scene.width)
         jroot.set("height", projectWindow.scene.height)
 
-        val jtabs = com.eclipsesource.json.JsonArray()
+        val jtabs = JsonArray()
         for (tab in projectWindow.tabs.listTabs()) {
-            val jtab = com.eclipsesource.json.JsonObject()
+            val jtab = JsonObject()
             jtabs.add(jtab)
 
             val jleft = createHalfTab(tab.left)
@@ -66,26 +79,24 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : uk.co.nickthecoder.par
         jroot.add("tabs", jtabs)
 
 
-        java.io.BufferedWriter(java.io.OutputStreamWriter(java.io.FileOutputStream(projectFile))).use {
-            jroot.writeTo(it, com.eclipsesource.json.PrettyPrint.indentWithSpaces(4))
+        BufferedWriter(OutputStreamWriter(FileOutputStream(projectFile))).use {
+            jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
         }
     }
 
-    private fun createHalfTab(halfTab: HalfTab): com.eclipsesource.json.JsonObject {
-        val jhalfTab = com.eclipsesource.json.JsonObject()
+    private fun createHalfTab(halfTab: HalfTab): JsonObject {
+        val jhalfTab = JsonObject()
 
         val tool = halfTab.toolPane.tool
         jhalfTab.set("tool", tool.creationString())
 
-        val jparameters = com.eclipsesource.json.JsonArray()
+        val jparameters = JsonArray()
 
-        for (parameter in tool.taskD.root.descendants()) {
-            if (parameter is uk.co.nickthecoder.paratask.parameters.ValueParameter<*>) {
-                val jparameter = com.eclipsesource.json.JsonObject()
-                jparameter.set("name", parameter.name)
-                jparameter.set("value", parameter.stringValue)
-                jparameters.add(jparameter)
-            }
+        for (parameter in tool.valueParameters()) {
+            val jparameter = JsonObject()
+            jparameter.set("name", parameter.name)
+            jparameter.set("value", parameter.stringValue)
+            jparameters.add(jparameter)
         }
         jhalfTab.add("parameters", jparameters)
 

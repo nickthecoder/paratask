@@ -13,11 +13,11 @@ open class SizeColumn<R>(
 
     init {
         setCellFactory { SizeTableCell() }
-        getStyleClass().add("size")
-        getStyleClass().add("number")
+        styleClass.add("size")
+        styleClass.add("number")
     }
 
-    class SizeTableCell<R>() : TextFieldTableCell<R, Long>() {
+    class SizeTableCell<R> : TextFieldTableCell<R, Long>() {
         override fun updateItem(item: Long?, empty: Boolean) {
             super.updateItem(item, empty)
 
@@ -30,7 +30,7 @@ open class SizeColumn<R>(
     }
 
     companion object {
-        private val units = listOf<String>("bytes", "kB", "MB", "GB", "TB", "PB")
+        private val units = listOf("bytes", "kB", "MB", "GB", "TB", "PB")
 
         private val format1 = DecimalFormat("#,###.0")
         private val format2 = DecimalFormat("#,###")
@@ -42,7 +42,7 @@ open class SizeColumn<R>(
             var i = 0
             var value: Double = size.toDouble()
             while (value > limit) {
-                value = value / scale
+                value /= scale
                 i++
             }
             val format = if (i == 0 || value > maxNoDecimals) format2 else format1

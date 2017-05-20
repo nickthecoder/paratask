@@ -14,35 +14,28 @@ val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
-class IntField : LabelledField {
-
-    override val parameter: IntParameter
+class IntField(override val parameter: IntParameter) : LabelledField(parameter) {
 
     private var dirty = false
-
-    constructor(parameter: IntParameter) : super(parameter) {
-        this.parameter = parameter
-        this.control = createControl()
-    }
 
     private fun createControl(): Node {
 
         val spinner = createSpinner()
 
-        spinner.valueFactory.converter = parameter.converter;
+        spinner.valueFactory.converter = parameter.converter
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
             if (acceleratorUp.match(event)) {
                 try {
-                    spinner.increment(1);
+                    spinner.increment(1)
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
                 event.consume()
             } else if (acceleratorDown.match(event)) {
                 try {
-                    spinner.decrement(1);
+                    spinner.decrement(1)
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
@@ -108,8 +101,7 @@ class IntField : LabelledField {
         : SpinnerValueFactory<Int?>() {
 
         constructor(range: IntRange, initialValue: Int? = null, amountToStepBy: Int = 1)
-                : this(range.start, range.endInclusive, initialValue, amountToStepBy) {
-        }
+                : this(range.start, range.endInclusive, initialValue, amountToStepBy)
 
         init {
 
@@ -136,14 +128,18 @@ class IntField : LabelledField {
         }
 
         override fun decrement(steps: Int) {
-            val newValue: Int = add(value, -steps * amountToStepBy);
-            value = if (newValue >= min) newValue else if (isWrapAround()) max else min
+            val newValue: Int = add(value, -steps * amountToStepBy)
+            value = if (newValue >= min) newValue else if (isWrapAround) max else min
         }
 
         override fun increment(steps: Int) {
-            val newValue: Int = add(value, steps * amountToStepBy);
-            value = if (newValue <= max) newValue else if (isWrapAround()) min else max;
+            val newValue: Int = add(value, steps * amountToStepBy)
+            value = if (newValue <= max) newValue else if (isWrapAround) min else max
         }
+    }
+
+    init {
+        this.control = createControl()
     }
 
 }

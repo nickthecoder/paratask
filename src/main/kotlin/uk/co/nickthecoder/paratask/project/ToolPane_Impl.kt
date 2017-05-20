@@ -1,8 +1,13 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.application.Platform
+import javafx.geometry.Side
 import javafx.scene.control.Tab
+import javafx.scene.control.TabPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Tool
 
-class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
+class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, javafx.scene.layout.StackPane() {
 
@@ -12,7 +17,7 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
 
     override lateinit var halfTab: HalfTab
 
-    val parametersTab = javafx.scene.control.Tab()
+    val parametersTab = Tab()
 
     init {
 
@@ -20,44 +25,40 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
         // because TabPane doesn't set the parent of its child tabs immediately, and I need the ParametersPane
         // to be part of the Scene graph earlier than it otherwise would.
         children.addAll(tabPane, parametersPane as javafx.scene.Node)
-        tabPane.setSide(javafx.geometry.Side.BOTTOM)
-        tabPane.setTabClosingPolicy(javafx.scene.control.TabPane.TabClosingPolicy.UNAVAILABLE)
+        tabPane.side = Side.BOTTOM
+        tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
-        parametersTab.setText("Parameters")
-        parametersTab.setContent(parametersPane as javafx.scene.Node)
+        parametersTab.text = "Parameters"
+        parametersTab.content = parametersPane as javafx.scene.Node
 
-        tabPane.getTabs().addAll(parametersTab)
+        tabPane.tabs.addAll(parametersTab)
 
-        tabPane.selectionModel.selectedItemProperty().addListener(object : javafx.beans.value.ChangeListener<Tab> {
-            override fun changed(ov: javafx.beans.value.ObservableValue<out Tab>, oldTab: javafx.scene.control.Tab?, newTab: javafx.scene.control.Tab?) {
-                onTabChanged(oldTab, newTab)
-            }
-        })
+        tabPane.selectionModel.selectedItemProperty().addListener { _, oldTab, newTab -> onTabChanged(oldTab, newTab) }
     }
 
     override fun selected() {
         val tab = tabPane.selectionModel.selectedItem
         // TODO ResultsTab and parameters tab should be handled the same
         println()
-        if (tab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab) {
-            javafx.application.Platform.runLater() {
+        if (tab is ToolPane_Impl.ResultsTab) {
+            Platform.runLater {
                 tab.results.selected()
             }
         }
     }
 
-    fun onTabChanged(oldTab: javafx.scene.control.Tab?, newTab: javafx.scene.control.Tab?) {
-        if (oldTab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab) {
+    fun onTabChanged(oldTab: Tab?, newTab: Tab?) {
+        if (oldTab is ToolPane_Impl.ResultsTab) {
             oldTab.results.deselected()
         }
-        if (newTab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab) {
+        if (newTab is ToolPane_Impl.ResultsTab) {
             newTab.results.selected()
         }
     }
 
-    override fun resultsTool(): uk.co.nickthecoder.paratask.Tool {
+    override fun resultsTool(): Tool {
         val tab = tabPane.selectionModel.selectedItem
-        if (tab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab) {
+        if (tab is ToolPane_Impl.ResultsTab) {
             return tab.results.tool
         } else {
             return tool
@@ -78,13 +79,11 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
     }
 
     private fun removeResults(results: Results): Int {
-        var i: Int = 0
-        for (tab in tabPane.tabs) {
-            if (tab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab && tab.results === results) {
+        for ((i, tab) in tabPane.tabs.withIndex()) {
+            if (tab is ToolPane_Impl.ResultsTab && tab.results === results) {
                 tabPane.tabs.removeAt(i)
                 return i
             }
-            i++
         }
         return -1
     }
@@ -95,7 +94,7 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
         var index = replaceIndex
         for (results in resultsList) {
             children.add(results.node) // Temporarily add to StackPane. A bodge to ensure parent is set
-            val resultsTab = uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab(results)
+            val resultsTab = ResultsTab(results)
             tabPane.tabs.add(index, resultsTab)
             index++
             results.attached(this)
@@ -103,7 +102,7 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
         tabPane.selectionModel.select(0)
         if (replaceIndex >= 0 && replaceIndex < tabPane.tabs.size) {
             val tab = tabPane.tabs[replaceIndex]
-            if (tab is uk.co.nickthecoder.paratask.project.ToolPane_Impl.ResultsTab) {
+            if (tab is ToolPane_Impl.ResultsTab) {
                 tabPane.selectionModel.select(replaceIndex)
             }
         }
@@ -112,27 +111,27 @@ class ToolPane_Impl(override var tool: uk.co.nickthecoder.paratask.Tool)
     override fun attached(halfTab: HalfTab) {
         this.halfTab = halfTab
 
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ToolPane.attaching")
+        ParaTaskApp.logAttach("ToolPane.attaching")
         parametersPane.attached(this)
 
         tool.attached(this)
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ToolPane.attached")
+        ParaTaskApp.logAttach("ToolPane.attached")
     }
 
     override fun detaching() {
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ToolPane detaching")
+        ParaTaskApp.logAttach("ToolPane detaching")
         parametersPane.detaching()
         tool.detaching()
         parametersPane.detaching()
         removeOldResults(tool.resultsList)
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ToolPane detached")
+        ParaTaskApp.logAttach("ToolPane detached")
     }
 
     override fun toggleParameters() {
-        if (parametersTab.isSelected()) {
-            tabPane.getSelectionModel().select(0)
+        if (parametersTab.isSelected) {
+            tabPane.selectionModel.select(0)
         } else {
-            tabPane.getSelectionModel().select(tabPane.tabs.count() - 1)
+            tabPane.selectionModel.select(tabPane.tabs.count() - 1)
         }
     }
 

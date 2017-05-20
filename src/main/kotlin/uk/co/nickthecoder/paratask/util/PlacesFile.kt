@@ -7,7 +7,6 @@ import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
-import uk.co.nickthecoder.paratask.parameters.ParameterListener
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.io.File
 import java.net.URI
@@ -35,7 +34,7 @@ class PlacesFile(val file: File) {
         } else {
             try {
                 val url = URL(urlString)
-                val filePart = File(url.getFile())
+                val filePart = File(url.file)
                 label = filePart.name
             } catch (e: Exception) {
                 label = ""
@@ -54,7 +53,7 @@ class PlacesFile(val file: File) {
 
     fun taskNew(): EditPlaceTask = NewPlaceTask()
 
-    abstract inner class Place() {
+    abstract inner class Place {
 
         abstract val urlString: String
         abstract val label: String
@@ -66,20 +65,20 @@ class PlacesFile(val file: File) {
 
         fun taskRemove() = RemovePlaceTask(this)
 
-        override fun toString() = "${urlString} ${label}"
+        override fun toString() = "$urlString $label"
 
         abstract val icon: Image?
 
         abstract fun copy(): Place
     }
 
-    inner open class URLPlace(override val urlString: String, override var label: String)
+    inner class URLPlace(override val urlString: String, override var label: String)
         : Place(), Labelled {
 
         init {
             if (label == "") {
                 try {
-                    label = URL(urlString).getHost()
+                    label = URL(urlString).host
                 } catch (e: Exception) {
                 }
             }
@@ -89,7 +88,7 @@ class PlacesFile(val file: File) {
 
         override val icon: Image? by lazy { ParaTaskApp.imageResource("filetypes/web.png") }
 
-        override open fun copy() = URLPlace(urlString, label)
+        override fun copy() = URLPlace(urlString, label)
     }
 
     inner class FilePlace(val file: File, override var label: String) : Place() {
@@ -114,9 +113,9 @@ class PlacesFile(val file: File) {
 
 
     inner open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
-        : AbstractTask(), ParameterListener {
+        : AbstractTask() {
 
-        override val taskD = TaskDescription(name)
+        final override val taskD = TaskDescription(name)
 
         val file = FileParameter("file", expectFile = null, required = false)
 
@@ -134,11 +133,11 @@ class PlacesFile(val file: File) {
             }
             label.value = place.label
 
-            url.parameterListeners.add(this)
-            file.parameterListeners.add(this)
+            url.listen { parameterChanged(it) }
+            file.listen { parameterChanged(it) }
         }
 
-        override fun parameterChanged(event: ParameterEvent) {
+        fun parameterChanged(event: ParameterEvent) {
             if (event.parameter === file) {
                 if (file.value != null) {
                     url.value = ""
@@ -197,7 +196,7 @@ class PlacesFile(val file: File) {
     }
 
 
-    inner class NewPlaceTask() : EditPlaceTask(URLPlace("", ""), name = "newPlace") {
+    inner class NewPlaceTask : EditPlaceTask(URLPlace("", ""), name = "newPlace") {
 
         override fun run() {
             places.add(place)

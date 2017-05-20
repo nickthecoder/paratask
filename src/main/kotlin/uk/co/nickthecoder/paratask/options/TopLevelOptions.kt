@@ -40,15 +40,6 @@ class TopLevelOptions(val optionsName: String) {
         // First we build a list of all the FileOptions and then iterate over the list to find the Option
         val fileOptionsList = listFileOptions()
 
-
-        for (fileOptions in fileOptionsList) {
-
-            val option = fileOptions.find(code)
-            if (option != null) {
-                return option
-            }
-        }
-
-        return null
+        return fileOptionsList.map { it.find(code) }.firstOrNull { it != null }
     }
 }

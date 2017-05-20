@@ -11,7 +11,7 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 import java.io.File
 
-class OptionsFilesTool() : AbstractTableTool<FileOptions>() {
+class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with all Option Files")
 
@@ -39,12 +39,10 @@ class OptionsFilesTool() : AbstractTableTool<FileOptions>() {
     }
 
     private fun add(directory: File) {
-        val fileLister = FileLister(extensions = listOf<String>("json"))
+        val fileLister = FileLister(extensions = listOf("json"))
         val files = fileLister.listFiles(directory)
-        for (file in files) {
-            val name = file.nameWithoutExtension()
-            list.add(OptionsManager.getFileOptions(name, directory))
-        }
+        files.map { it.nameWithoutExtension() }
+            .forEach { list.add(OptionsManager.getFileOptions(it, directory)) }
     }
 }
 

@@ -1,12 +1,17 @@
 package uk.co.nickthecoder.paratask.project
 
-interface Results : uk.co.nickthecoder.paratask.util.Labelled {
+import javafx.beans.property.StringProperty
+import javafx.scene.Node
+import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.util.Labelled
 
-    val tool: uk.co.nickthecoder.paratask.Tool
+interface Results : Labelled {
 
-    val node: javafx.scene.Node
+    val tool: Tool
 
-    val labelProperty: javafx.beans.property.StringProperty
+    val node: Node
+
+    val labelProperty: StringProperty
 
     fun attached(toolPane: ToolPane)
 

@@ -28,12 +28,7 @@ class TaskParameter(
 
     override val converter = object : StringConverter<Task?>() {
         override fun fromString(str: String): Task? {
-            for (task in tasks) {
-                if (task.taskD.name == str) {
-                    return task
-                }
-            }
-            return null
+            return tasks.firstOrNull { it.taskD.name == str }
         }
 
         override fun toString(task: Task?): String {

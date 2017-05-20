@@ -6,7 +6,7 @@ import org.fxmisc.richtext.CodeArea
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.project.ShortcutHelper
 
-class FindBar(val searcher: Searcher, val codeArea: CodeArea) : ToolBar() {
+class FindBar(val searcher: Searcher, codeArea: CodeArea) : ToolBar() {
 
     val textField = TextField()
 

@@ -18,14 +18,7 @@ import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.util.FileLister
 import java.io.File
 
-class FileField : LabelledField {
-
-    override val parameter: FileParameter
-
-    constructor (parameter: FileParameter) : super(parameter) {
-        this.parameter = parameter
-        control = createControl()
-    }
+class FileField(override val parameter: FileParameter) : LabelledField(parameter) {
 
     val textField = TextField()
 
@@ -37,7 +30,7 @@ class FileField : LabelledField {
 
         with(textField) {
             text = parameter.stringValue
-            textProperty().bindBidirectional(parameter.valueProperty, parameter.converter);
+            textProperty().bindBidirectional(parameter.valueProperty, parameter.converter)
             textProperty().addListener({ _, _, _: String ->
                 val error = parameter.errorMessage()
                 if (error == null) {
@@ -51,10 +44,10 @@ class FileField : LabelledField {
             addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
             addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
 
-            setContextMenu(contextMenu)
+            contextMenu = contextMenu
         }
 
-        DragFiles(icon) { parameter.value?.let { listOf<File>(it) } }
+        DragFiles(icon) { parameter.value?.let { listOf(it) } }
         DropFiles(textField, icon) { list ->
             for (file in list) {
                 textField.text = file.path
@@ -72,16 +65,12 @@ class FileField : LabelledField {
 
     private fun buildContextMenu() {
 
-        contextMenu.getItems().clear()
+        contextMenu.items.clear()
         //val browse = MenuItem("Browse")
         //browse.setOnAction { onBrowse() }
         //contextMenu.getItems().addAll(browse)
 
-        val file = parameter.value
-
-        if (file == null) {
-            return
-        }
+        val file = parameter.value ?: return
 
         val parent = file.parentFile
         if (parent != null) {
@@ -91,9 +80,9 @@ class FileField : LabelledField {
             // List siblings of current file
             val lister = createLister()
             val children = lister.listFiles(parent)
-            if (children.size > 0) {
+            if (children.isNotEmpty()) {
                 if (subMenu != null) {
-                    contextMenu.getItems().add(subMenu)
+                    contextMenu.items.add(subMenu)
                 }
                 for (child in children) {
                     addMenuItem(child, subMenu)
@@ -102,10 +91,10 @@ class FileField : LabelledField {
         }
 
         // List children of current directory
-        if (file.isDirectory()) {
+        if (file.isDirectory) {
             val lister = createLister()
             val children = lister.listFiles(file)
-            if (children.size > 0) {
+            if (children.isNotEmpty()) {
                 for (child in children) {
                     addMenuItem(child)
                 }
@@ -118,12 +107,12 @@ class FileField : LabelledField {
     private fun addMenuItem(file: File, subMenu: Menu? = null) {
         val menuItem = MenuItem(file.name)
         menuItem.setOnAction { setValue(file) }
-        menuItem.getStyleClass().add(if (file.isDirectory()) "directory" else "file")
+        menuItem.styleClass.add(if (file.isDirectory) "directory" else "file")
 
         if (subMenu != null) {
-            subMenu.getItems().add(menuItem)
+            subMenu.items.add(menuItem)
         } else {
-            contextMenu.getItems().add(menuItem)
+            contextMenu.items.add(menuItem)
         }
     }
 
@@ -154,13 +143,9 @@ class FileField : LabelledField {
 
     private fun onCompleteFile() {
         contextMenu.hide()
-        contextMenu.getItems().clear()
+        contextMenu.items.clear()
 
-        val file = parameter.value
-
-        if (file == null) {
-            return
-        }
+        val file = parameter.value ?: return
 
         val isDirectory = file.isDirectory
         val prefix = if (isDirectory) "" else file.name
@@ -169,7 +154,7 @@ class FileField : LabelledField {
         val list = lister.listFiles(if (isDirectory) file else file.parentFile)
                 .filter { it.name.startsWith(prefix) }
 
-        if (list.size == 0) {
+        if (list.isEmpty()) {
             return
         }
 
@@ -185,8 +170,12 @@ class FileField : LabelledField {
     }
 
     private fun setValue(file: File?) {
-        val suffix = if (file?.isDirectory() ?: false) File.separator else ""
+        val suffix = if (file?.isDirectory ?: false) File.separator else ""
         textField.text = file?.path + suffix
         textField.positionCaret(textField.text.length)
+    }
+
+    init {
+        control = createControl()
     }
 }

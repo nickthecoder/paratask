@@ -1,11 +1,8 @@
 package uk.co.nickthecoder.paratask.util.process
 
-import java.io.IOException
 import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.Reader
 
 interface Sink : Runnable {
 
-    fun setStream(stream: java.io.InputStream)
+    fun setStream(stream: InputStream)
 }

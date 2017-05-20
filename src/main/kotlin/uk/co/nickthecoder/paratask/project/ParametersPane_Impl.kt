@@ -1,18 +1,24 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.scene.control.Button
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.FlowPane
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.FocusListener
+import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+import uk.co.nickthecoder.paratask.util.Stoppable
 
-class ParametersPane_Impl(override val tool: uk.co.nickthecoder.paratask.Tool)
+class ParametersPane_Impl(override val tool: Tool)
 
-    : ParametersPane, javafx.scene.layout.BorderPane() {
+    : ParametersPane, BorderPane() {
 
-    override val taskForm = uk.co.nickthecoder.paratask.parameters.fields.TaskForm(tool)
+    override val taskForm = TaskForm(tool)
 
-    private val buttons = javafx.scene.layout.FlowPane()
+    private val buttons = FlowPane()
 
-    private val runButton = javafx.scene.control.Button("Run")
+    private val runButton = Button("Run")
 
-    private val stopButton = javafx.scene.control.Button("Stop")
+    private val stopButton = Button("Stop")
 
     private lateinit var toolPane: ToolPane
 
@@ -33,7 +39,7 @@ class ParametersPane_Impl(override val tool: uk.co.nickthecoder.paratask.Tool)
         runButton.disableProperty().bind(tool.taskRunner.disableRunProperty)
 
         buttons.children.addAll(runStop)
-        buttons.getStyleClass().add("buttons")
+        buttons.styleClass.add("buttons")
     }
 
     override fun run(): Boolean {
@@ -50,7 +56,7 @@ class ParametersPane_Impl(override val tool: uk.co.nickthecoder.paratask.Tool)
     }
 
     private fun onStop() {
-        if (tool is uk.co.nickthecoder.paratask.util.Stoppable) {
+        if (tool is Stoppable) {
             tool.stop()
         }
     }
@@ -63,7 +69,7 @@ class ParametersPane_Impl(override val tool: uk.co.nickthecoder.paratask.Tool)
         this.toolPane = toolPane
 
         focusListener = FocusListener(this) { hasFocus: Boolean ->
-            runButton.setDefaultButton(hasFocus)
+            runButton.isDefaultButton = hasFocus
         }
     }
 

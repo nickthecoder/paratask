@@ -18,8 +18,6 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
 
     val expressionField = TextField()
 
-    val valueParameter = parameter
-
     init {
         val lab = Label(label)
         this.label = lab
@@ -28,15 +26,15 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         }
 
         children.add(this.label)
-        getStyleClass().add("field");
+        styleClass.add("field")
 
-        expressionField.getStyleClass().add("expression")
+        expressionField.styleClass.add("expression")
         if (parameter.isProgrammingMode()) {
             expressionButton = ToggleButton("=")
             children.add(expressionButton)
             expressionField.textProperty().bindBidirectional(parameter.expressionProperty)
             if (parameter.expression != null) {
-                expressionButton.setSelected(true)
+                expressionButton.isSelected = true
                 children.add(expressionField)
             }
             expressionButton.addEventHandler(ActionEvent.ACTION) { onExpression() }
@@ -60,12 +58,12 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         get() = super.control
         set(v) {
             super.control = v
-            if (expressionButton?.isSelected() == true) {
-                v?.setVisible(false)
+            if (expressionButton?.isSelected == true) {
+                v?.isVisible = false
             }
         }
 
-    private fun controlOrExpression(): Node? = if (expressionButton?.isSelected() == true) expressionField else control
+    private fun controlOrExpression(): Node? = if (expressionButton?.isSelected == true) expressionField else control
 
     override fun computeMinHeight(width: Double): Double {
         val both = Math.max(label.minHeight(width), controlOrExpression()?.minHeight(width) ?: 0.0)
@@ -168,6 +166,6 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
             children.remove(expressionField)
             expressionField.text = null
         }
-        control?.setVisible(expressionButton?.isSelected == false)
+        control?.isVisible = expressionButton?.isSelected == false
     }
 }

@@ -18,11 +18,11 @@ class BaseFileColumn<R>(
 
     init {
         setCellFactory { BaseFileTableCell() }
-        getStyleClass().add("path")
+        styleClass.add("path")
 
     }
 
-    inner class BaseFileTableCell<R>() : TextFieldTableCell<R, File>() {
+    inner class BaseFileTableCell<R> : TextFieldTableCell<R, File>() {
         override fun updateItem(item: File?, empty: Boolean) {
             super.updateItem(item, empty)
 

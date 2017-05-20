@@ -15,8 +15,8 @@ open class Column<R, T>(
 
     init {
         @Suppress("UNCHECKED_CAST")
-        setCellValueFactory { p -> p.getValue().observable(name, getter) as ObservableValue<T> }
-        setEditable(false)
+        setCellValueFactory { p -> p.value.observable(name, getter) as ObservableValue<T> }
+        isEditable = false
         if (width != null) {
             prefWidth = width.toDouble()
         }

@@ -1,18 +1,4 @@
-Change project layout - move classes into appropriate places
-	Beware that json files contain qualified class names!
-
-	paratask 		Example, core non-gui classes, Task, Tool, Entry point stuff
-		parameter
-			field
-		table
-		tasks
-			git
-			editor
-		option
-		util
-		gui		Javafx classes that don't belong elsewhere
-		project		Everything to do with the project window
-
+GrepTool to show the command line.
 
 Work on Keyboard Focus
 	Have a ProjectShortcutManager

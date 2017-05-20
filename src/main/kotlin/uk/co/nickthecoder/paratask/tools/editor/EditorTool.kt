@@ -35,7 +35,7 @@ class EditorTool() : AbstractTool() {
     }
 
     override fun createResults(): List<Results> {
-        if (fileP.value.size == 0) {
+        if (fileP.value.isEmpty()) {
             return singleResults(EditorResults(this, null))
         } else {
             return fileP.value.map { EditorResults(this, it) }

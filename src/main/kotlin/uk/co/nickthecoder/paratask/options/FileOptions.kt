@@ -38,7 +38,7 @@ class FileOptions(val file: File) {
     }
 
     fun find(code: String): Option? {
-        return optionsMap.get(code)
+        return optionsMap[code]
     }
 
     fun renameOption(option: Option, newCode: String, newAliases: List<String>) {
@@ -109,9 +109,7 @@ class FileOptions(val file: File) {
 
         val jincludes = jroot.get("includes")
         jincludes?.let {
-            for (jinclude in jincludes.asArray()) {
-                includes.add(jinclude.asString())
-            }
+            jincludes.asArray().mapTo(includes) { it.asString() }
         }
 
         val joptions = jroot.get("options")
@@ -159,7 +157,7 @@ class FileOptions(val file: File) {
                             // Special handling, because it contains multiple values
                             val jvalues1 = jparameter.get("values")
                             if (jvalues1 == null) {
-                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in ${file}. Skipping")
+                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in $file. Skipping")
                                 continue
                             }
                             val jvalues = jparameter.get("values").asArray()

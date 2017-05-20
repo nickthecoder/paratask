@@ -32,26 +32,19 @@ open class ParametersForm(val parentParameter: ParentParameter)
     }
 
     open fun buildTop() {
-        if (parentParameter.description.length > 0) {
+        if (parentParameter.description.isNotEmpty()) {
             children.add(TextFlow(Text(parentParameter.description)))
         }
     }
 
     open fun buildChildren() {
         var index = 0
-        parentParameter.children.forEach() { child ->
+        parentParameter.children.forEach { child ->
             if (!child.hidden) {
                 addParameter(child, index)
                 index++
             }
         }
-    }
-
-    open fun addField(parameterField: ParameterField) {
-        children.add(parameterField)
-        parameterField.getStyleClass().add("field-${parameter.name}")
-        parameterField.form = this
-        fieldSet.add(parameterField)
     }
 
     open fun addParameter(parameter: Parameter, index: Int): Node {
@@ -69,7 +62,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
         children.add(node)
 
-        parameterField.getStyleClass().add("field-${parameter.name}")
+        parameterField.styleClass.add("field-${parameter.name}")
         parameterField.form = this
         fieldSet.add(parameterField)
 
@@ -114,11 +107,11 @@ open class ParametersForm(val parentParameter: ParentParameter)
         override fun getBean() = this@ParametersForm
 
         override fun getCssMetaData(): CssMetaData<ParametersForm, Number> {
-            return SPACING;
+            return SPACING
         }
 
         override fun invalidated() {
-            requestLayout();
+            requestLayout()
         }
     }
 
@@ -126,7 +119,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
         columns.add(FormColumn(0.0)) // Label
         columns.add(FormColumn(0.0)) // Expression button
         columns.add(FormColumn()) // Main Control
-        getStyleClass().add("form");
+        styleClass.add("form")
     }
 
     internal fun calculateColumnPreferences() {
@@ -230,7 +223,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
             override fun isSettable(form: ParametersForm): Boolean = true
 
             override fun getStyleableProperty(form: ParametersForm): StyleableDoubleProperty {
-                return form.spacingProperty;
+                return form.spacingProperty
             }
         }
 

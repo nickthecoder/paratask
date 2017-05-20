@@ -1,21 +1,30 @@
 package uk.co.nickthecoder.paratask.tools.git
 
+import javafx.scene.control.TableRow
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.table.BaseFileColumn
+import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.WrappedRow
+import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitTool.GitStatusRow
+import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.process.OSCommand
+import java.io.File
 
 // TODO Allow results to be filtered based on index and work?
 // e.g. show changes, deletions, un
 
-class GitTool() : uk.co.nickthecoder.paratask.tools.AbstractCommandTool<GitStatusRow>() {
+class GitTool() : AbstractCommandTool<GitStatusRow>() {
 
-    override val taskD = uk.co.nickthecoder.paratask.TaskDescription("git", description = "Source Code Control")
+    override val taskD = TaskDescription("git", description = "Source Code Control")
 
-    val directoryP = uk.co.nickthecoder.paratask.parameters.FileParameter("directory", expectFile = false)
+    val directoryP = FileParameter("directory", expectFile = false)
 
-    val directory: java.io.File? by directoryP
+    val directory: File? by directoryP
 
-    constructor(directory: java.io.File) : this() {
+    constructor(directory: File) : this() {
         directoryP.value = directory
     }
 
@@ -24,16 +33,16 @@ class GitTool() : uk.co.nickthecoder.paratask.tools.AbstractCommandTool<GitStatu
     }
 
     override fun createColumns() {
-        columns.add(uk.co.nickthecoder.paratask.table.Column<GitStatusRow, Char>("index") { it.index })
-        columns.add(uk.co.nickthecoder.paratask.table.Column<GitStatusRow, Char>("work") { it.work })
-        columns.add(uk.co.nickthecoder.paratask.table.Column<GitStatusRow, String>("name") { it.file.name })
-        columns.add(uk.co.nickthecoder.paratask.table.BaseFileColumn<GitStatusRow>("path", base = directory!!) { it.file })
-        columns.add(uk.co.nickthecoder.paratask.table.Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
+        columns.add(Column<GitStatusRow, Char>("index") { it.index })
+        columns.add(Column<GitStatusRow, Char>("work") { it.work })
+        columns.add(Column<GitStatusRow, String>("name") { it.file.name })
+        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory!!) { it.file })
+        columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
     }
 
 
-    override fun createCommand(): uk.co.nickthecoder.paratask.util.process.OSCommand {
-        return uk.co.nickthecoder.paratask.util.process.OSCommand("git", "status", "--porcelain").dir(directory!!)
+    override fun createCommand(): OSCommand {
+        return OSCommand("git", "status", "--porcelain").dir(directory!!)
     }
 
     override fun processLine(line: String) {
@@ -51,21 +60,21 @@ class GitTool() : uk.co.nickthecoder.paratask.tools.AbstractCommandTool<GitStatu
             renamed = path.substring(0, arrow)
             path = path.substring(arrow + 4)
         }
-        val file = java.io.File(directory, path)
+        val file = File(directory, path)
 
         val gsr = GitStatusRow(file, index = index, work = work, renamed = renamed)
         list.add(gsr)
     }
 
-    fun addDirectory(directory: java.io.File, index: Char, work: Char) {
-        val fileLister = uk.co.nickthecoder.paratask.util.FileLister(depth = 10, includeHidden = true)
+    fun addDirectory(directory: File, index: Char, work: Char) {
+        val fileLister = FileLister(depth = 10, includeHidden = true)
         val listing = fileLister.listFiles(directory)
         for (file in listing) {
             list.add(GitStatusRow(file, index = index, work = work))
         }
     }
 
-    override fun updateRow(tableRow: javafx.scene.control.TableRow<WrappedRow<GitStatusRow>>, row: uk.co.nickthecoder.paratask.tools.git.GitTool.GitStatusRow) {
+    override fun updateRow(tableRow: TableRow<WrappedRow<GitStatusRow>>, row: GitTool.GitStatusRow) {
         val style = if (row.index == '?') {
             "untracked"
         } else if (row.work == 'M') {
@@ -77,12 +86,12 @@ class GitTool() : uk.co.nickthecoder.paratask.tools.AbstractCommandTool<GitStatu
         } else {
             "normal"
         }
-        tableRow.getStyleClass().add("git-" + style)
+        tableRow.styleClass.add("git-" + style)
     }
 
 
     inner class GitStatusRow(
-            val file: java.io.File,
+            val file: File,
             val index: Char,
             val work: Char,
             val renamed: String? = null) {
@@ -91,7 +100,7 @@ class GitTool() : uk.co.nickthecoder.paratask.tools.AbstractCommandTool<GitStatu
 
         init {
             val filePath = file.path
-            val prefix = directory!!.path + java.io.File.separatorChar
+            val prefix = directory!!.path + File.separatorChar
             if (filePath.startsWith(prefix)) {
                 path = filePath.substring(prefix.length)
             } else {

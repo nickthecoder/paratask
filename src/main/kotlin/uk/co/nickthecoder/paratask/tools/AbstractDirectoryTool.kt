@@ -22,7 +22,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     : AbstractTableTool<WrappedFile>() {
 
 
-    override val taskD = TaskDescription(name = name, description = description)
+    final override val taskD = TaskDescription(name = name, description = description)
 
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true, value = homeDirectory)
 

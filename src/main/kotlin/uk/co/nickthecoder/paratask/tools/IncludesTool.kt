@@ -10,7 +10,7 @@ import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 
-class IncludesTool() : AbstractTableTool<String>() {
+class IncludesTool : AbstractTableTool<String>() {
 
     override val taskD = TaskDescription("includes", description = "Work with Included Options")
 
@@ -55,7 +55,7 @@ class IncludesTool() : AbstractTableTool<String>() {
     }
 
 
-    open class EditIncludesTask(val fileOptions: FileOptions)
+    class EditIncludesTask(val fileOptions: FileOptions)
         : AbstractTask() {
 
         override val taskD = TaskDescription("Edit Includes")

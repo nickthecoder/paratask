@@ -16,7 +16,7 @@ interface ValueParameter<T>
 
     var stringValue: String
         get() = converter.toString(value)
-        set(v: String) {
+        set(v) {
             value = converter.fromString(v)
         }
 

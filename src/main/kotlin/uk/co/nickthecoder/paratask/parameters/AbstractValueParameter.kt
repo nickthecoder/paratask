@@ -30,8 +30,8 @@ abstract class AbstractValueParameter<T>(
 
     override val expressionProperty = SimpleStringProperty()
 
-    override var value: T
-        set(v: T) {
+    final override var value: T
+        set(v) {
             valueProperty.set(v)
             expression = null
         }
@@ -41,7 +41,7 @@ abstract class AbstractValueParameter<T>(
         this.value = value
     }
 
-    override open fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
+    override fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
 
     override fun toString() = super.toString() + " = " + value
 }

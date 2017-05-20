@@ -18,11 +18,11 @@ open class ModifiedColumn<R>(
 
     init {
         setCellFactory { DateTableCell() }
-        getStyleClass().add("modified")
+        styleClass.add("modified")
 
     }
 
-    class DateTableCell<R>() : TextFieldTableCell<R, Long>() {
+    class DateTableCell<R> : TextFieldTableCell<R, Long>() {
         override fun updateItem(item: Long?, empty: Boolean) {
             super.updateItem(item, empty)
 
@@ -35,8 +35,8 @@ open class ModifiedColumn<R>(
     }
 
     companion object {
-        val dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-        val shortDateFormat = DateTimeFormatter.ofPattern("d MMMM")
+        val dateFormat : DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+        val shortDateFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM")
 
         fun format(millis: Long): String {
             val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault())
@@ -50,11 +50,11 @@ open class ModifiedColumn<R>(
                 return shortDateFormat.format(date)
             }
             if (days > 1) {
-                return "${days} days ago"
+                return "$days days ago"
             }
             val hours = duration.toHours()
             if (hours > 1) {
-                return "${hours} hours ago"
+                return "$hours hours ago"
             }
             return "${duration.toMinutes()} minutes ago"
         }

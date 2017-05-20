@@ -39,7 +39,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     val dummyParent = StackPane()
 
     init {
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea))
+        codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
 
         node.bottom = toolBar
         node.center = codeArea
@@ -51,7 +51,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         shortcuts.add(Actions.EDIT_PASTE, { onPaste() })
         shortcuts.add(Actions.ESCAPE, { onEscape() })
 
-        with(toolBar.getItems())
+        with(toolBar.items)
         {
             val save = Actions.FILE_SAVE.createButton(shortcuts) { onSave() }
             val undo = Actions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
@@ -106,13 +106,13 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     fun onUndo() {
-        if (codeArea.isUndoAvailable()) {
+        if (codeArea.isUndoAvailable) {
             codeArea.undo()
         }
     }
 
     fun onRedo() {
-        if (codeArea.isRedoAvailable()) {
+        if (codeArea.isRedoAvailable) {
             codeArea.redo()
         }
     }

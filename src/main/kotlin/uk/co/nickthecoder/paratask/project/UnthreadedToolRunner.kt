@@ -5,7 +5,7 @@ import uk.co.nickthecoder.paratask.Tool
 
 open class UnthreadedToolRunner(val tool: Tool) : UnthreadedTaskRunner(tool) {
 
-    override open fun runTask() {
+    override fun runTask() {
         super.runTask()
 
         Platform.runLater {

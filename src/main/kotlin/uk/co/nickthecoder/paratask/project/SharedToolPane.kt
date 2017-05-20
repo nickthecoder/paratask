@@ -1,6 +1,8 @@
 package uk.co.nickthecoder.paratask.project
 
-class SharedToolPane(override var tool: uk.co.nickthecoder.paratask.Tool) : ToolPane {
+import uk.co.nickthecoder.paratask.Tool
+
+class SharedToolPane(override var tool: Tool) : ToolPane {
 
     val shared: ToolPane = tool.toolPane!!
 
@@ -10,7 +12,7 @@ class SharedToolPane(override var tool: uk.co.nickthecoder.paratask.Tool) : Tool
     override val parametersPane: ParametersPane
         get() = shared.parametersPane
 
-    override fun resultsTool(): uk.co.nickthecoder.paratask.Tool = shared.resultsTool()
+    override fun resultsTool(): Tool = shared.resultsTool()
 
     override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
         shared.replaceResults(resultsList, oldResultsList)

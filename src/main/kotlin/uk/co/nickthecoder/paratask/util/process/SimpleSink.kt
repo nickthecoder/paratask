@@ -1,35 +1,36 @@
 package uk.co.nickthecoder.paratask.util.process
 
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.Reader
+
 open class SimpleSink(val bufferSize: Int = 200) : Sink {
 
-    var reader: java.io.Reader? = null
+    var reader: Reader? = null
 
-    override fun setStream(stream: java.io.InputStream) {
-        reader = java.io.InputStreamReader(stream)
+    override fun setStream(stream: InputStream) {
+        reader = InputStreamReader(stream)
     }
 
     override fun run() {
 
-        val reader = this.reader
-
-        if (reader == null) {
-            return
-        }
+        val reader = this.reader ?: return
 
         try {
             val buffer = CharArray(bufferSize)
 
             while ( true ) {
-                var amount: Int = reader.read(buffer, 0, bufferSize)
+                val amount: Int = reader.read(buffer, 0, bufferSize)
                 if ( amount == -1 ) {
                     break
                 }
-                sink(buffer, amount);
+                sink(buffer, amount)
             }
-        } catch (e: java.io.IOException) {
-            sinkError(e);
+        } catch (e: IOException) {
+            sinkError(e)
         } finally {
-            reader.close();
+            reader.close()
         }
     }
 
@@ -37,8 +38,8 @@ open class SimpleSink(val bufferSize: Int = 200) : Sink {
         // Does nothing - throws away the output
     }
 
-    protected fun sinkError(e: java.io.IOException) {
-        e.printStackTrace();
+    protected fun sinkError(e: IOException) {
+        e.printStackTrace()
     }
 
 }

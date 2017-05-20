@@ -10,7 +10,7 @@ class GroovyOption(var script: String)
     private var gscript: GroovyScript? = null
 
     fun getScript(): GroovyScript {
-        var gs = gscript
+        val gs = gscript
         if (gs == null || gs.source !== script) {
             gscript = GroovyScript(script)
         }

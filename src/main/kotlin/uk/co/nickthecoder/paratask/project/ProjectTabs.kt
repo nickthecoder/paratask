@@ -1,14 +1,16 @@
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Tool
+
 interface ProjectTabs {
 
     val projectWindow: ProjectWindow
 
-    fun addTool(tool: uk.co.nickthecoder.paratask.Tool): ProjectTab
+    fun addTool(tool: Tool): ProjectTab
 
-    fun addTool(index: Int, tool: uk.co.nickthecoder.paratask.Tool): ProjectTab
+    fun addTool(index: Int, tool: Tool): ProjectTab
 
-    fun addAfter(after: ProjectTab, tool: uk.co.nickthecoder.paratask.Tool): ProjectTab
+    fun addAfter(after: ProjectTab, tool : Tool): ProjectTab
 
     fun addToolPane(toolPane: ToolPane): ProjectTab
 
@@ -23,8 +25,6 @@ interface ProjectTabs {
     fun splitToggle()
 
     fun duplicateTab()
-
-    fun getScene(): javafx.scene.Scene
 
     fun listTabs(): List<ProjectTab>
 

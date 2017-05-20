@@ -1,15 +1,17 @@
 package uk.co.nickthecoder.paratask.project
 
-open class ProgrammingModeTaskPrompter(task: uk.co.nickthecoder.paratask.Task) : AbstractTaskPrompter(task) {
+import uk.co.nickthecoder.paratask.Task
 
-    override protected fun onOk() {
+open class ProgrammingModeTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
+
+    override fun onOk() {
         // println("Programming mode task : ${task}")
         if (taskForm.check()) {
             close()
         }
     }
 
-    override protected fun onCancel() {
+    override fun onCancel() {
         close()
     }
 }

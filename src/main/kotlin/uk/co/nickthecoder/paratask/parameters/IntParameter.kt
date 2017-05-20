@@ -25,11 +25,11 @@ open class IntParameter(
         override fun fromString(str: String): Int? {
             val trimmed = str.trim()
 
-            if (trimmed.length == 0) {
+            if (trimmed.isEmpty()) {
                 return null
             }
             try {
-                return Integer.parseInt(trimmed);
+                return Integer.parseInt(trimmed)
             } catch (e: Exception) {
                 throw ParameterException(this@IntParameter, "Not an integer")
             }

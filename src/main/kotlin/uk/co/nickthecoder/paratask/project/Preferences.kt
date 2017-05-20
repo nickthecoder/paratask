@@ -27,7 +27,7 @@ object Preferences {
         }
 
         for (directory in optionsPath) {
-            result.choice(directory.name, directory, directory.getPath())
+            result.choice(directory.name, directory, directory.path)
             if (defaultFirst && result.value == null) {
                 result.value = directory
             }

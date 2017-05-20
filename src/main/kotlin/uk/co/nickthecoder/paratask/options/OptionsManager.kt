@@ -7,7 +7,7 @@ object OptionsManager {
     private val topLevelMap = mutableMapOf<String, TopLevelOptions>()
 
     fun getTopLevelOptions(optionsName: String): TopLevelOptions {
-        val found = topLevelMap.get(optionsName)
+        val found = topLevelMap[optionsName]
         if (found == null) {
             val newTL = TopLevelOptions(optionsName)
             topLevelMap.put(optionsName, newTL)
@@ -24,7 +24,7 @@ object OptionsManager {
     private val pathMap = mutableMapOf<File, OptionsPath>()
 
     private fun getOptionsPath(directory: File): OptionsPath {
-        val found = pathMap.get(directory)
+        val found = pathMap[directory]
         if (found == null) {
             val newOP = OptionsPath(directory)
             pathMap.put(directory, newOP)
@@ -44,7 +44,7 @@ data class OptionsPath(val directory: File) {
     val fileOptionsMap = mutableMapOf<String, FileOptions>()
 
     fun getFileOptions(optionsName: String): FileOptions {
-        val found = fileOptionsMap.get(optionsName)
+        val found = fileOptionsMap[optionsName]
         if (found == null) {
             val result = FileOptions(File(directory, optionsName + ".json"))
             fileOptionsMap.put(optionsName, result)

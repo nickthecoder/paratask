@@ -24,12 +24,7 @@ class OneOfParameter(
 
         override fun fromString(v: String): Parameter? {
             if (v == "") return null
-            for (child in children) {
-                if (child.name == v) {
-                    return child
-                }
-            }
-            return null
+            return children.firstOrNull { it.name == v }
         }
     }
 

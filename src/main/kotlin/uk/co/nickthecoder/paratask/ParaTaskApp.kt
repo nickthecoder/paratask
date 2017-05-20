@@ -6,10 +6,10 @@ import javafx.scene.image.Image
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.project.TaskPrompter
 
-class ParaTaskApp() : Application() {
+class ParaTaskApp : Application() {
     override fun start(stage: Stage?) {
         if (stage == null) {
-            return;
+            return
         }
         TaskPrompter(task).placeOnStage(stage)
     }
@@ -21,11 +21,11 @@ class ParaTaskApp() : Application() {
 
         fun style(scene: Scene) {
             val resource = ParaTaskApp::class.java.getResource("paratask.css")
-            scene.getStylesheets().add(resource.toExternalForm())
+            scene.stylesheets.add(resource.toExternalForm())
         }
 
         fun imageResource(name: String): Image? {
-            val image = imageMap.get(name)
+            val image = imageMap[name]
             if (image == null) {
                 val imageStream = ParaTaskApp::class.java.getResourceAsStream(name)
                 val newImage = if (imageStream == null) null else Image(imageStream)

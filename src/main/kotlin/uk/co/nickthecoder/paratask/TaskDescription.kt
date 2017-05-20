@@ -64,7 +64,7 @@ class TaskDescription(
 
     override fun toString(): String {
         val builder = StringBuilder()
-        builder.appendln("TaskDescription ${name}")
+        builder.appendln("TaskDescription $name")
         builder.appendln()
         for (parameter in valueParameters()) {
             if (parameter is MultipleParameter<*> && parameter.expression == null) {

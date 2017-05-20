@@ -17,12 +17,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     val converter = object : StringConverter<Task?>() {
 
         override fun fromString(label: String): Task? {
-            for (task in parameter.tasks) {
-                if (label == task.taskD.name) {
-                    return task
-                }
-            }
-            return null
+            return parameter.tasks.firstOrNull { label == it.taskD.name }
         }
 
         override fun toString(obj: Task?): String {

@@ -1,9 +1,11 @@
 package uk.co.nickthecoder.paratask.gui
 
+import java.io.File
+
 open class DragFiles(
         val source: javafx.scene.Node,
         val modes: Array<javafx.scene.input.TransferMode> = arrayOf(javafx.scene.input.TransferMode.COPY),
-        val files: () -> (List<java.io.File>?)) {
+        val files: () -> (List<File>?)) {
 
     init {
         source.setOnDragDetected { onDragDetected(it) }

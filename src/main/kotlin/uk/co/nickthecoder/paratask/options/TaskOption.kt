@@ -23,7 +23,7 @@ class TaskOption(var task: Task)
         return createResult(tool, null, null)
     }
 
-    protected fun createResult(tool: Tool, row: Any?, rows: List<Any>?): Task {
+    private fun createResult(tool: Tool, row: Any?, rows: List<Any>?): Task {
         val copiedTask = task.copy()
 
         for (parameter in copiedTask.valueParameters()) {
@@ -32,7 +32,7 @@ class TaskOption(var task: Task)
         return copiedTask
     }
 
-    protected fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
+    private fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
 
         // println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
         if (parameter is MultipleParameter<*> && parameter.expression == null) {

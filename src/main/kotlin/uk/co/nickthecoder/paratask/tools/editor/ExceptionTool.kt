@@ -27,7 +27,7 @@ class ExceptionTool : AbstractTool {
 
     override fun createResults() = singleResults(ExceptionResults())
 
-    inner class ExceptionResults() : AbstractResults(this@ExceptionTool) {
+    inner class ExceptionResults : AbstractResults(this@ExceptionTool) {
 
         override val node = TextArea()
 

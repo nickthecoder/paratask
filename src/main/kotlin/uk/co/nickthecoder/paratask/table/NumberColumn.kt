@@ -10,6 +10,6 @@ open class NumberColumn<R,T>(
         Column<R, T>(name = name, label = label, getter = getter) {
 
     init {
-        getStyleClass().add("number")
+        styleClass.add("number")
     }
 }

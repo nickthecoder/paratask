@@ -16,14 +16,14 @@ class FileNameColumn<R>(
         setCellFactory { FileNameTableCell() }
     }
 
-    inner class FileNameTableCell<R>() : TextFieldTableCell<R, File>() {
+    inner class FileNameTableCell<R> : TextFieldTableCell<R, File>() {
         override fun updateItem(item: File?, empty: Boolean) {
             super.updateItem(item, empty)
 
             if (empty || item == null) {
                 setText(null)
             } else {
-                setText(item.name)
+                text = item.name
                 setTooltip(Tooltip(item.path))
             }
         }

@@ -10,23 +10,21 @@ class OSCommand(program: String, vararg args: Any?) {
         get() = command[0]
 
     val arguments: List<String>
-        get() = command.slice(1..command.size-1)
+        get() = command.slice(1..command.size - 1)
 
     var directory: File? = null
 
     init {
         command.add(program)
-        for (arg: Any? in args) {
-            if (arg != null) {
-                if (arg is List<*>) {
-                    arg.forEach { arg2 ->
-                        if (arg2 != null) {
-                            command.add(arg2.toString())
-                        }
+        args.filterNotNull().forEach {
+            if (it is List<*>) {
+                it.forEach { arg2 ->
+                    if (arg2 != null) {
+                        command.add(arg2.toString())
                     }
-                } else {
-                    command.add(arg.toString())
                 }
+            } else {
+                command.add(it.toString())
             }
         }
     }

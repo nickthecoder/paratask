@@ -28,8 +28,7 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
 
         override fun toString(obj: Any?): String {
             @Suppress("UNCHECKED_CAST")
-            val lab = parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T)
-            return if (lab == null) "" else lab
+            return parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T) ?: ""
         }
     }
 
@@ -66,20 +65,13 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
     }
 
     private fun updateChoices() {
-        comboBox.getItems().clear()
+        comboBox.items.clear()
         for (value: T? in parameter.choiceValues()) {
-            comboBox.getItems().add(value ?: FAKE_NULL)
+            comboBox.items.add(value ?: FAKE_NULL)
         }
-        comboBox.setValue(parameter.value ?: FAKE_NULL)
+        comboBox.value = parameter.value ?: FAKE_NULL
 
     }
 
     override fun isDirty(): Boolean = dirty
-
-    // Is this needed ? Does Combobox eat Enter key presses?
-    private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(acceleratorEnter)
-        defaultRunnable?.let { defaultRunnable.run() }
-    }
-
 }

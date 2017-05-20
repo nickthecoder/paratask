@@ -1,5 +1,10 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.geometry.Orientation
+import javafx.scene.Node
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Tool
+
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     : ProjectTab, javafx.scene.control.Tab() {
@@ -15,38 +20,38 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     val stackPane = javafx.scene.layout.StackPane(splitPane)
 
     init {
-        stackPane.children.add(left as javafx.scene.Node)
-        splitPane.items.add(left as javafx.scene.Node)
-        splitPane.orientation = javafx.geometry.Orientation.HORIZONTAL
-        setContent(stackPane)
+        stackPane.children.add(left as Node)
+        splitPane.items.add(left as Node)
+        splitPane.orientation = Orientation.HORIZONTAL
+        content = stackPane
         updateTab()
     }
 
     private fun updateTab() {
         textProperty().bind(left.toolPane.tool.shortTitleProperty)
         val imageView = left.toolPane.tool.icon?.let { javafx.scene.image.ImageView(it) }
-        setGraphic(imageView)
+        graphic = imageView
     }
 
     override fun attached(projectTabs: ProjectTabs) {
         this.projectTabs = projectTabs
 
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.attaching HalfTab")
+        ParaTaskApp.logAttach("ProjectTab.attaching HalfTab")
         left.attached(this)
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.attached HalfTab")
+        ParaTaskApp.logAttach("ProjectTab.attached HalfTab")
     }
 
     override fun detaching() {
         this.projectTabs = projectTabs
 
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.detaching left HalfTab")
+        ParaTaskApp.logAttach("ProjectTab.detaching left HalfTab")
         left.detaching()
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.detached left HalfTab")
+        ParaTaskApp.logAttach("ProjectTab.detached left HalfTab")
 
         right?.let {
-            uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.detaching right HalfTab")
+            ParaTaskApp.logAttach("ProjectTab.detaching right HalfTab")
             it.detaching()
-            uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("ProjectTab.detached right HalfTab")
+            ParaTaskApp.logAttach("ProjectTab.detached right HalfTab")
         }
     }
 
@@ -58,7 +63,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     }
 
-    override fun add(tool: uk.co.nickthecoder.paratask.Tool) {
+    override fun add(tool: Tool) {
         assert(right == null)
 
         val r = HalfTab_Impl(ToolPane_Impl(tool))
@@ -94,7 +99,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         splitPane.items.add(left as javafx.scene.Node)
     }
 
-    override fun split(tool: uk.co.nickthecoder.paratask.Tool) {
+    override fun split(tool: Tool) {
         if (right == null) {
             add(tool)
         }

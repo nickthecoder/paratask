@@ -12,10 +12,10 @@ open class BooleanColumn<R>(
 
     init {
         setCellFactory { BooleanTableCell() }
-        getStyleClass().add("boolean")
+        styleClass.add("boolean")
     }
 
-    class BooleanTableCell<R>() : TextFieldTableCell<R, Boolean>() {
+    class BooleanTableCell<R> : TextFieldTableCell<R, Boolean>() {
         override fun updateItem(item: Boolean?, empty: Boolean) {
             super.updateItem(item, empty)
 

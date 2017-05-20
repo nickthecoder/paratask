@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Tool
+
 interface ProjectTab {
 
     val tabs: ProjectTabs
@@ -14,11 +16,11 @@ interface ProjectTab {
 
     fun detaching()
 
-    fun add(tool: uk.co.nickthecoder.paratask.Tool)
+    fun add(tool: Tool)
 
     fun remove(toolPane: ToolPane)
 
-    fun split(tool: uk.co.nickthecoder.paratask.Tool)
+    fun split(tool: Tool)
 
     fun split()
 

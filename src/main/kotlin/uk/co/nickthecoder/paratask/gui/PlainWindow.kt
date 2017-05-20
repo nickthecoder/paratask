@@ -6,13 +6,13 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.util.AutoExit
 
-class PlainWindow(val windowTitle: String, val root: Parent) : Stage() {
+class PlainWindow(windowTitle: String, root: Parent) : Stage() {
 
     init {
         val scene = Scene(root)
         ParaTaskApp.style(scene)
 
-        setTitle(windowTitle)
+        title = windowTitle
         setScene(scene)
         sizeToScene()
 

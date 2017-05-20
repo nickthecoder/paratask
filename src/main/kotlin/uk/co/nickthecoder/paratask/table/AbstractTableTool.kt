@@ -4,7 +4,7 @@ import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.AbstractTool
 
-abstract class AbstractTableTool<R : Any>() : AbstractTool(), TableTool<R> {
+abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
 
     override val columns = mutableListOf<Column<R, *>>()
 
@@ -14,21 +14,21 @@ abstract class AbstractTableTool<R : Any>() : AbstractTool(), TableTool<R> {
 
     abstract fun createColumns()
 
-    override open fun createResults(): List<Results> {
+    override fun createResults(): List<Results> {
         columns.clear()
         createColumns()
-        return listOf<TableResults<R>>(TableResults<R>(this, list, resultsName))
+        return listOf(TableResults(this, list, resultsName))
     }
 
     open fun updateRow(tableRow: TableRow<WrappedRow<R>>, row: R) {
     }
 
-    open override fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
+    override fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
 
     /**
      * Allows rows to be styled. For example, GitTool colours the row based on the state of the file
      */
-    inner class CustomTableRow() : TableRow<WrappedRow<R>>() {
+    inner class CustomTableRow : TableRow<WrappedRow<R>>() {
         override fun updateItem(wrappedRow: WrappedRow<R>?, empty: Boolean) {
             super.updateItem(wrappedRow, empty)
             if (!empty && wrappedRow != null) {

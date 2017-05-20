@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.util.AutoExit
 
 open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
 
@@ -19,7 +18,7 @@ open class ThreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
                 }
             }
         }
-        thread.setDaemon(true)
+        thread.isDaemon = true
         thread.start()
     }
 }

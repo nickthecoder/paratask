@@ -2,7 +2,6 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class History(val halfTab: HalfTab) {
 
@@ -89,7 +88,7 @@ class History(val halfTab: HalfTab) {
         moments.forEach { moment ->
             println("M : ${moment.creationString}")
         }
-        println("Index = ${index}")
+        println("Index = $index")
         println()
     }
 
@@ -99,7 +98,7 @@ class History(val halfTab: HalfTab) {
             println("M : ${moment.creationString}")
             println(moment.tool.taskD)
         }
-        println("Index = ${index}")
+        println("Index = $index")
         println()
     }
 
@@ -112,19 +111,15 @@ class History(val halfTab: HalfTab) {
         val tool: Tool
             get() {
                 val result = Tool.create(creationString)
-                for (parameter in result.taskD.root.descendants()) {
-                    if (parameter is ValueParameter<*>) {
-                        parameter.stringValue = values.get(parameter.name)!! // Safe
-                    }
+                for (parameter in result.valueParameters()) {
+                    parameter.stringValue = values[parameter.name]!! // Safe
                 }
                 return result
             }
 
         init {
-            for (parameter in tool.taskD.root.descendants()) {
-                if (parameter is ValueParameter<*>) {
-                    values.put(parameter.name, parameter.stringValue)
-                }
+            for (parameter in tool.taskD.valueParameters()) {
+                values.put(parameter.name, parameter.stringValue)
             }
         }
 
@@ -133,6 +128,12 @@ class History(val halfTab: HalfTab) {
                 return creationString == other.creationString && values == other.values
             }
             return false
+        }
+
+        override fun hashCode(): Int {
+            var result = creationString.hashCode()
+            result = 31 * result + values.hashCode()
+            return result
         }
     }
 

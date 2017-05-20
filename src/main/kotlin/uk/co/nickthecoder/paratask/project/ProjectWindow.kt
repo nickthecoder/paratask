@@ -1,18 +1,35 @@
 package uk.co.nickthecoder.paratask.project
 
+import com.eclipsesource.json.Json
+import com.eclipsesource.json.JsonObject
+import javafx.scene.Scene
+import javafx.scene.control.ToolBar
+import javafx.scene.layout.BorderPane
+import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.tools.HomeTool
+import uk.co.nickthecoder.paratask.tools.WebTool
+import uk.co.nickthecoder.paratask.tools.editor.ExceptionTool
+import uk.co.nickthecoder.paratask.util.AutoExit
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
+
 class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 600.0) {
 
-    var projectFile: java.io.File? = null
+    var projectFile: File? = null
 
-    private val borderPane = javafx.scene.layout.BorderPane()
+    private val borderPane = BorderPane()
 
-    val scene = javafx.scene.Scene(borderPane, width, height)
+    val scene = Scene(borderPane, width, height)
 
-    private var stage: javafx.stage.Stage? = null
+    private var stage: Stage? = null
 
     val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
-    private val toolBar = javafx.scene.control.ToolBar()
+    private val toolBar = ToolBar()
 
     private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
@@ -27,7 +44,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
             setPrefSize(800.0, 600.0)
         }
 
-        with(toolBar.getItems()) {
+        with(toolBar.items) {
             add(Actions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
             add(Actions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
             add(Actions.QUIT.createButton(shortcuts) { onQuit() })
@@ -44,54 +61,54 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun onNewWindow() {
-        val newWindow = uk.co.nickthecoder.paratask.project.ProjectWindow("New Project")
+        val newWindow = ProjectWindow("New Project")
         newWindow.placeOnStage(javafx.stage.Stage())
-        newWindow.addTool(uk.co.nickthecoder.paratask.tools.HomeTool())
+        newWindow.addTool(HomeTool())
     }
 
-    fun onNewTab(tool: uk.co.nickthecoder.paratask.Tool = uk.co.nickthecoder.paratask.tools.HomeTool()) {
+    fun onNewTab(tool: Tool = HomeTool()) {
         addTool(tool.copy())
     }
 
-    fun placeOnStage(stage: javafx.stage.Stage) {
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.style(scene)
+    fun placeOnStage(stage: Stage) {
+        ParaTaskApp.style(scene)
 
         stage.title = title
-        stage.setScene(scene)
-        uk.co.nickthecoder.paratask.util.AutoExit.Companion.show(stage)
+        stage.scene = scene
+        AutoExit.show(stage)
         this.stage = stage
     }
 
-    fun addTool(tool: uk.co.nickthecoder.paratask.Tool): ProjectTab {
+    fun addTool(tool: Tool): ProjectTab {
         return tabs.addTool(tool)
     }
 
     fun onAbout() {
-        val about = uk.co.nickthecoder.paratask.tools.WebTool("http://nickthecoder.co.uk/wiki/view/software/ParaTask")
+        val about = WebTool("http://nickthecoder.co.uk/wiki/view/software/ParaTask")
         val toolPane = ToolPane_Impl(about)
         tabs.addToolPane(toolPane)
     }
 
     fun onOpenProject() {
-        uk.co.nickthecoder.paratask.project.TaskPrompter(uk.co.nickthecoder.paratask.gui.project.OpenProjectTask()).placeOnStage(javafx.stage.Stage())
+        TaskPrompter(OpenProjectTask()).placeOnStage(javafx.stage.Stage())
     }
 
 
     fun onSaveProject() {
-        uk.co.nickthecoder.paratask.project.TaskPrompter(uk.co.nickthecoder.paratask.gui.project.SaveProjectTask(this)).placeOnStage(javafx.stage.Stage())
+        TaskPrompter(SaveProjectTask(this)).placeOnStage(javafx.stage.Stage())
     }
 
     companion object {
 
-        fun load(projectFile: java.io.File) {
+        fun load(projectFile: File) {
 
-            val jroot = com.eclipsesource.json.Json.parse(java.io.InputStreamReader(java.io.FileInputStream(projectFile))).asObject()
+            val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
 
             val title = jroot.getString("title", "")
             val width = jroot.getDouble("width", 600.0)
             val height = jroot.getDouble("height", 600.0)
 
-            val projectWindow = uk.co.nickthecoder.paratask.project.ProjectWindow(title, width, height)
+            val projectWindow = ProjectWindow(title, width, height)
             projectWindow.projectFile = projectFile
             projectWindow.title = jroot.getString("title", "")
             projectWindow.placeOnStage(javafx.stage.Stage())
@@ -102,12 +119,12 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
                     val jleft = jtab.get("left").asObject()
                     jleft?.let {
-                        val tool = uk.co.nickthecoder.paratask.project.ProjectWindow.Companion.loadTool(jleft)
+                        val tool = ProjectWindow.loadTool(jleft)
                         val projectTab = projectWindow.addTool(tool)
 
                         val jright = jtab.get("right")
                         if (jright != null) {
-                            val toolR = uk.co.nickthecoder.paratask.project.ProjectWindow.Companion.loadTool(jright.asObject())
+                            val toolR = ProjectWindow.loadTool(jright.asObject())
                             projectTab.split(toolR)
                         }
                     }
@@ -115,16 +132,16 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
             }
         }
 
-        private fun loadTool(jhalfTab: com.eclipsesource.json.JsonObject): uk.co.nickthecoder.paratask.Tool {
+        private fun loadTool(jhalfTab: JsonObject): Tool {
             val creationString = jhalfTab.get("tool").asString()
-            val tool = uk.co.nickthecoder.paratask.Tool.Companion.create(creationString)
+            val tool = Tool.create(creationString)
 
             val jparameters = jhalfTab.get("parameters").asArray()
             for (jparameter in jparameters.map { it.asObject() }) {
                 val name = jparameter.get("name").asString()
                 val value = jparameter.get("value").asString()
                 val parameter = tool.taskD.root.find(name)
-                if (parameter != null && parameter is uk.co.nickthecoder.paratask.parameters.ValueParameter<*>) {
+                if (parameter != null && parameter is ValueParameter<*>) {
                     parameter.stringValue = value
                 }
             }
@@ -134,7 +151,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
     fun handleException(e: Exception) {
         try {
-            val tool = uk.co.nickthecoder.paratask.tools.editor.ExceptionTool(e)
+            val tool = ExceptionTool(e)
             addTool(tool)
         } catch(e: Exception) {
         }

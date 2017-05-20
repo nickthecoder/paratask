@@ -1,10 +1,13 @@
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+
 interface ParametersPane {
 
-    val tool: uk.co.nickthecoder.paratask.Tool
+    val tool: Tool
 
-    val taskForm: uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+    val taskForm: TaskForm
 
     fun run(): Boolean
 

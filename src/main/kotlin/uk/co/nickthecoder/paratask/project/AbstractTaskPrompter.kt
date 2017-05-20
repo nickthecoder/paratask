@@ -1,21 +1,32 @@
 package uk.co.nickthecoder.paratask.project
 
-abstract class AbstractTaskPrompter(val task: uk.co.nickthecoder.paratask.Task) {
+import javafx.event.EventHandler
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.FlowPane
+import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+import uk.co.nickthecoder.paratask.util.AutoExit
 
-    var root = javafx.scene.layout.BorderPane()
+abstract class AbstractTaskPrompter(val task: Task) {
 
-    var taskForm = uk.co.nickthecoder.paratask.parameters.fields.TaskForm(task)
+    var root = BorderPane()
 
-    var stage: javafx.stage.Stage? = null
+    var taskForm = TaskForm(task)
 
-    val buttons = javafx.scene.layout.FlowPane()
+    var stage: Stage? = null
 
-    val okButton = javafx.scene.control.Button("OK")
+    val buttons = FlowPane()
 
-    val cancelButton = javafx.scene.control.Button("Cancel")
+    val okButton = Button("OK")
+
+    val cancelButton = Button("Cancel")
 
     open protected fun close() {
-        stage?.let { it.hide() }
+        stage?.hide()
     }
 
     abstract protected fun onOk()
@@ -27,13 +38,13 @@ abstract class AbstractTaskPrompter(val task: uk.co.nickthecoder.paratask.Task) 
         task.taskRunner.processors.add(CommandInTerminalWindow(task.taskD.label))
 
         with(okButton) {
-            onAction = javafx.event.EventHandler {
+            onAction = EventHandler {
                 onOk()
             }
         }
 
         with(cancelButton) {
-            onAction = javafx.event.EventHandler { onCancel() }
+            onAction = EventHandler { onCancel() }
             cancelButtonProperty().set(true)
         }
 
@@ -44,25 +55,25 @@ abstract class AbstractTaskPrompter(val task: uk.co.nickthecoder.paratask.Task) 
         }
 
         with(root) {
-            getStyleClass().add("task-prompter")
+            styleClass.add("task-prompter")
             center = taskForm.scrollPane
             bottom = buttons
         }
     }
 
-    fun placeOnStage(stage: javafx.stage.Stage) {
+    fun placeOnStage(stage: Stage) {
 
         build()
 
         this.stage = stage
         stage.title = task.taskD.label
 
-        val scene = javafx.scene.Scene(root)
+        val scene = Scene(root)
 
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.style(scene)
+        ParaTaskApp.style(scene)
 
-        stage.setScene(scene)
-        uk.co.nickthecoder.paratask.util.AutoExit.Companion.show(stage)
+        stage.scene = scene
+        AutoExit.show(stage)
     }
 
 }

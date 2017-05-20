@@ -19,8 +19,8 @@ class ButtonGroup : javafx.scene.layout.HBox() {
             button.styleClass.add("first")
         } else {
             if (children.size > 1) {
-                children.get(children.count() - 1).styleClass.add("middle")
-                children.get(children.count() - 1).styleClass.remove("last")
+                children[children.count() - 1].styleClass.add("middle")
+                children[children.count() - 1].styleClass.remove("last")
             }
             button.styleClass.add("last")
         }

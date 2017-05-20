@@ -6,7 +6,7 @@ import uk.co.nickthecoder.paratask.project.TaskRunner
 
 interface Task {
 
-    var taskRunner: TaskRunner
+    val taskRunner: TaskRunner
 
     val taskD: TaskDescription
 
@@ -20,11 +20,6 @@ interface Task {
      */
     fun check()
 
-    /**
-     * Runs the task.
-     * @param values When running form a GUI, these are a COPY of the values, and therefore changing them will
-     * have no effect on the values in the GUI.
-     */
     fun run(): Any?
 
     fun valueParameters(): List<ValueParameter<*>> = taskD.root.valueParameters()

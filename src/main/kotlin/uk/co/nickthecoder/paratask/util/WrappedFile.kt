@@ -5,6 +5,6 @@ import java.io.File
 
 class WrappedFile(val file: File) {
     val icon by lazy {
-        ParaTaskApp.imageResource("filetypes/${if (file.isDirectory()) "directory" else "file"}.png")
+        ParaTaskApp.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
     }
 }

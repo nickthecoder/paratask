@@ -15,14 +15,14 @@ fun String.uncamel(space: String = " ", upperFirst: Boolean = true): String {
         val c = get(i)
         if (first) {
             result.append(Character.toUpperCase(c))
-            first = false;
+            first = false
         } else {
             if (Character.isUpperCase(c) && !wasUpper) {
-                result.append(space);
+                result.append(space)
             }
-            result.append(c);
+            result.append(c)
         }
-        wasUpper = Character.isUpperCase(c);
+        wasUpper = Character.isUpperCase(c)
     }
     return result.toString()
 }

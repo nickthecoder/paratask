@@ -25,7 +25,7 @@ class TerminalResults(
             allowInput = allowInput)
 
     fun start() {
-        node.start();
+        node.start()
     }
 
     fun waitFor(): Int {

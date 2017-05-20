@@ -1,14 +1,16 @@
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Tool
+
 interface ToolPane {
 
-    var tool: uk.co.nickthecoder.paratask.Tool
+    var tool: Tool
 
     val halfTab: HalfTab
 
     val parametersPane: ParametersPane
 
-    fun resultsTool(): uk.co.nickthecoder.paratask.Tool
+    fun resultsTool(): Tool
 
     fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>)
 

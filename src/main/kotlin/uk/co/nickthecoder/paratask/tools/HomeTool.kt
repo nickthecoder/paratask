@@ -9,7 +9,7 @@ import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class HomeTool() : AbstractTableTool<Tool>() {
+class HomeTool : AbstractTableTool<Tool>() {
 
     override val taskD = TaskDescription("home", description = "Lists available Tools")
 

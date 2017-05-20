@@ -12,12 +12,11 @@ class TerminalTool : AbstractTerminalTool {
 
     val commandP = StringParameter("osCommand", value = "bash")
 
-    val argumentsP = MultipleParameter<String>("arguments") { StringParameter("") }
+    val argumentsP = MultipleParameter("arguments") { StringParameter("") }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
-    constructor() : super(showCommand = true, allowInput = true) {
-    }
+    constructor() : super(showCommand = true, allowInput = true)
 
     constructor(osCommand: OSCommand) : this() {
         commandP.value = osCommand.program

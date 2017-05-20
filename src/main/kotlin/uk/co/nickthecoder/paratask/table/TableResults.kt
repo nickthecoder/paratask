@@ -20,40 +20,40 @@ import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.options.RowOptionsRunner
 
-open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List<R>, label: String = "Results") :
+open class TableResults<R : Any>(final override val tool: TableTool<R>, val list: List<R>, label: String = "Results") :
 
         AbstractResults(tool, label) {
 
-    val data = WrappedList<R>(list)
+    val data = WrappedList(list)
 
     val tableView: TableView<WrappedRow<R>> = TableView()
 
     override val node = tableView
 
-    private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn<WrappedRow<R>, String>("")
+    private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn("")
 
     val runner = RowOptionsRunner<R>(tool)
 
     override fun attached(toolPane: ToolPane) {
 
         with(codeColumn) {
-            setCellValueFactory { p -> p.getValue().codeProperty }
-            setEditable(true)
+            setCellValueFactory { p -> p.value.codeProperty }
+            isEditable = true
             setCellFactory({ EditCell(this@TableResults, IdentityConverter()) })
             prefWidth = 50.0
         }
-        tableView.getColumns().add(codeColumn)
+        tableView.columns.add(codeColumn)
 
         for (column in tool.columns) {
-            tableView.getColumns().add(column)
+            tableView.columns.add(column)
         }
 
         val sortedList = SortedList(data)
         sortedList.comparatorProperty().bind(tableView.comparatorProperty())
 
         with(tableView) {
-            setItems(sortedList)
-            setEditable(true)
+            items = sortedList
+            isEditable = true
             selectionModel.selectionMode = SelectionMode.MULTIPLE
 
             tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
@@ -153,7 +153,7 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
                     val option = OptionsManager.findOption(code, tool.optionsName)
                     if (option != null) {
 
-                        var list = batchOptions.get(option)
+                        var list = batchOptions[option]
                         if (list == null) {
                             list = mutableListOf<WrappedRow<R>>()
                             batchOptions.put(option, list)
@@ -165,7 +165,7 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
                 }
             }
 
-            if (batchOptions.size > 0) {
+            if (batchOptions.isNotEmpty()) {
                 runner.runBatch(batchOptions, newTab = newTab, prompt = prompt)
             } else {
                 val rowIndex = tableView.selectionModel.focusedIndex
@@ -177,9 +177,6 @@ open class TableResults<R : Any>(override val tool: TableTool<R>, val list: List
         }
     }
 
-
-    private inner class SingleRowOption(val option: Option, val row: R) {
-    }
 }
 
 

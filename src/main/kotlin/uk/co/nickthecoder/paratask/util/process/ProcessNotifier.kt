@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.util.process
 
-class ProcessNotifier() {
+class ProcessNotifier {
 
     private val listeners = mutableListOf<ProcessListener>()
 
@@ -11,26 +11,26 @@ class ProcessNotifier() {
     fun start(process: Process) {
         this.process = process
 
-        val thread = Thread() {
+        val thread = Thread {
             process.waitFor()
-            ended = true;
+            ended = true
             listeners.forEach {
                 listener ->
                 try {
-                    listener.finished(process);
+                    listener.finished(process)
                 } catch (e: Exception) {
-                    e.printStackTrace();
+                    e.printStackTrace()
                 }
             }
 
         }
         thread.name = "ProcessNotifier"
-        thread.setDaemon(true)
-        thread.start();
+        thread.isDaemon = true
+        thread.start()
     }
 
     fun add(listener: ProcessListener) {
-        listeners.add(listener);
+        listeners.add(listener)
         if (ended) {
             listener.finished(process)
         }

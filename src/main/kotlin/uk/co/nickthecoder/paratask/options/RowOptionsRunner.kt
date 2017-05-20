@@ -7,11 +7,11 @@ import javafx.scene.control.SeparatorMenuItem
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.table.WrappedRow
 
-class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
+class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
 
     fun buildContextMenu(contextMenu: ContextMenu, rows: List<R>) {
 
-        contextMenu.getItems().clear()
+        contextMenu.items.clear()
 
         val optionsName = tool.optionsName
         val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
@@ -24,23 +24,23 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
                 if (option.isRow) {
                     if (needSep) {
                         needSep = false
-                        contextMenu.getItems().add(SeparatorMenuItem())
+                        contextMenu.items.add(SeparatorMenuItem())
                     }
                     val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { runRows(option, rows) }
-                    contextMenu.getItems().add(menuItem)
+                    contextMenu.items.add(menuItem)
                     added = true
                 }
             }
             needSep = needSep || added
         }
 
-        if (contextMenu.getItems().count() > 0) {
+        if (contextMenu.items.count() > 0) {
             val menu = Menu("Non-Row Options")
             val temp = ContextMenu()
             createNonRowOptionsMenu(temp)
-            menu.getItems().addAll(temp.getItems())
-            contextMenu.getItems().add(0, menu)
+            menu.items.addAll(temp.items)
+            contextMenu.items.add(0, menu)
         } else {
             createNonRowOptionsMenu(contextMenu)
         }
@@ -54,10 +54,9 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
             if (option.isMultiple) {
                 doMultiple(option, list.map { it.row }, newTab = newTab, prompt = prompt)
             } else {
-                for (wrappedRow in list) {
-                    val row = wrappedRow.row
+                list.map { it.row }.forEach {
                     if (option.isRow) {
-                        doRow(option, row, newTab = newTab, prompt = prompt)
+                        doRow(option, it, newTab = newTab, prompt = prompt)
                     } else {
                         doNonRow(option, newTab = newTab, prompt = prompt)
                     }
@@ -69,14 +68,11 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
 
     fun runDefault(row: R, prompt: Boolean = false, newTab: Boolean = false) {
         refresher = Refresher()
-        val option = OptionsManager.findOption(".", tool.optionsName)
-        if (option == null) {
-            return
-        }
+        val option = OptionsManager.findOption(".", tool.optionsName) ?: return
         doRow(option, row, prompt = prompt, newTab = newTab)
     }
 
-    protected fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+    private fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
         val batchRefresher = BatchRefresher()
         refresher = batchRefresher
 
@@ -85,7 +81,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
         batchRefresher.complete()
     }
 
-    protected fun doRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+    private fun doRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
         try {
             if (option.isMultiple) {
                 doMultiple(option, rows, prompt = prompt, newTab = newTab)
@@ -100,7 +96,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
 
     }
 
-    protected fun doRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
+    private fun doRow(option: Option, row: R, prompt: Boolean = false, newTab: Boolean = false) {
         try {
             val result = option.run(tool, row = row)
 
@@ -114,7 +110,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
     }
 
 
-    protected fun doMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
+    private fun doMultiple(option: Option, rows: List<R>, newTab: Boolean, prompt: Boolean) {
         try {
             val result = option.runMultiple(tool, rows)
             process(result,
@@ -127,7 +123,7 @@ class RowOptionsRunner<R : Any>(tool: Tool) : OptionsRunner(tool) {
     }
 
 
-    inner class BatchRefresher() : Refresher() {
+    inner class BatchRefresher : Refresher() {
 
         var count = 0
 

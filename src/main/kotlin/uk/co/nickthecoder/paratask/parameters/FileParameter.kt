@@ -26,7 +26,7 @@ class FileParameter(
 
         override fun fromString(str: String): File? = if (str == "") null else File(str)
 
-        override fun toString(file: File?): String = file?.getPath() ?: ""
+        override fun toString(file: File?): String = file?.path ?: ""
     }
 
     override fun errorMessage(v: File?): String? {
@@ -42,9 +42,9 @@ class FileParameter(
             }
         }
         if (expectFile != null) {
-            if (expectFile && v.isDirectory()) {
+            if (expectFile && v.isDirectory) {
                 return "Expeceted a file, but is a directory"
-            } else if (!expectFile && v.isFile()) {
+            } else if (!expectFile && v.isFile) {
                 return "Expeceted a directory, but is a file"
             }
         }

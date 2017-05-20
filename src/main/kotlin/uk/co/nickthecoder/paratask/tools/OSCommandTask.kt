@@ -14,7 +14,7 @@ class OSCommandTask : AbstractTask() {
 
     val commandP = StringParameter("osCommand", value = "bash")
 
-    val argumentsP = MultipleParameter<String>("arguments") { StringParameter("") }
+    val argumentsP = MultipleParameter("arguments") { StringParameter("") }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 

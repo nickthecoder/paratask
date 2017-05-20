@@ -8,12 +8,12 @@ open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
 
     val applyButton = Button("Apply")
 
-    protected override fun onCancel() {
+    override fun onCancel() {
         task.taskRunner.cancel()
         close()
     }
 
-    protected override fun onOk() {
+    override fun onOk() {
         task.taskRunner.autoExit = true
         if (checkAndRun()) {
             close()
@@ -24,7 +24,7 @@ open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
         checkAndRun()
     }
 
-    override protected fun build() {
+    override fun build() {
         super.build()
 
         with(okButton) {

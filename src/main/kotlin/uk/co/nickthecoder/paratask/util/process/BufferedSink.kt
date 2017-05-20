@@ -1,8 +1,13 @@
 package uk.co.nickthecoder.paratask.util.process
 
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+
 open class BufferedSink() : Sink {
 
-    var reader: java.io.BufferedReader? = null
+    var reader: BufferedReader? = null
 
     var handler: ((String) -> Unit)? = null
 
@@ -10,30 +15,23 @@ open class BufferedSink() : Sink {
         this.handler = handler
     }
 
-    override fun setStream(stream: java.io.InputStream) {
-        reader = java.io.BufferedReader(java.io.InputStreamReader(stream))
+    override fun setStream(stream: InputStream) {
+        reader = BufferedReader(InputStreamReader(stream))
     }
 
     override fun run() {
 
-        val reader = this.reader
-
-        if (reader == null) {
-            return
-        }
+        val reader = this.reader ?: return
 
         try {
             while (true) {
-                val line = reader.readLine()
-                if (line == null) {
-                    break
-                }
-                sink(line);
+                val line = reader.readLine() ?: break
+                sink(line)
             }
-        } catch (e: java.io.IOException) {
-            sinkError(e);
+        } catch (e: IOException) {
+            sinkError(e)
         } finally {
-            reader.close();
+            reader.close()
         }
     }
 
@@ -41,7 +39,7 @@ open class BufferedSink() : Sink {
         handler?.let { it(line) }
     }
 
-    protected open fun sinkError(e: java.io.IOException) {
+    protected open fun sinkError(e: IOException) {
         // Do nothing
     }
 

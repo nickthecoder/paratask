@@ -59,7 +59,7 @@ class TaskForm(val task: Task) {
         val viewport = scrollPane.viewportBounds
         val contentHeight = scrollPane.content.boundsInLocal.height
 
-        val bounds = scrollPane.content.sceneToLocal(node.localToScene(node.getBoundsInLocal()));
+        val bounds = scrollPane.content.sceneToLocal(node.localToScene(node.boundsInLocal))
 
         val nodeMinY = bounds.minY
         val nodeMaxY = bounds.maxY

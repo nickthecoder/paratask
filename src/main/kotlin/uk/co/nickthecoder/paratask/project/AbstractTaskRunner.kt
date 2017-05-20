@@ -50,7 +50,7 @@ abstract class AbstractTaskRunner(val task: Task)
     abstract override fun run()
 
     open protected fun pre() {
-        if (autoExit) AutoExit.inc("ThreadedTaskTunner")
+        if (autoExit) AutoExit.inc("ThreadedTaskRunner")
 
         if (runState == RunState.RUNNING) {
             // As a Task has state, it cannot safely be run more than once concurrently.
@@ -66,11 +66,11 @@ abstract class AbstractTaskRunner(val task: Task)
         for (listener in listeners) {
             listener.ended(false)
         }
-        if (autoExit) AutoExit.dec("ThreadedTaskTunner")
+        if (autoExit) AutoExit.dec("ThreadedTaskRunner")
 
     }
 
-    open override fun cancel() {
+    override fun cancel() {
         for (listener in listeners) {
             listener.ended(true)
         }
@@ -79,11 +79,7 @@ abstract class AbstractTaskRunner(val task: Task)
     open protected fun runTask() {
         val result = task.run()
 
-        for (processor in processors) {
-            if (processor.process(result)) {
-                break
-            }
-        }
+        processors.find { it.process(result) }
     }
 
     override fun hasStarted() = runState != RunState.IDLE

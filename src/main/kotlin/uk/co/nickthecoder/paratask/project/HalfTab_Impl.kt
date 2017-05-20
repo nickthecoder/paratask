@@ -1,28 +1,39 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.geometry.Side
+import javafx.scene.control.Button
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.TextField
+import javafx.scene.control.ToolBar
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
+import uk.co.nickthecoder.paratask.util.Stoppable
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
     : javafx.scene.layout.BorderPane(), HalfTab {
 
-    override val toolBars = javafx.scene.layout.BorderPane()
+    override val toolBars = BorderPane()
 
-    private val toolBar = javafx.scene.control.ToolBar()
+    private val toolBar = ToolBar()
 
     private val shortcuts = ShortcutHelper("HalfTab", this)
 
-    override val optionsField = javafx.scene.control.TextField()
+    override val optionsField = TextField()
 
     override lateinit var projectTab: ProjectTab
 
-    val stopButton: javafx.scene.control.Button
+    val stopButton: Button
 
-    val runButton: javafx.scene.control.Button
+    val runButton: Button
 
-    private val history = uk.co.nickthecoder.paratask.project.History(this)
+    private val history = History(this)
 
-    val optionsContextMenu = javafx.scene.control.ContextMenu()
+    val optionsContextMenu = ContextMenu()
 
     init {
         toolBars.center = toolBar
@@ -32,10 +43,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         with(optionsField) {
             prefColumnCount = 6
-            addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, { optionsFieldKeyPressed(it) })
-            addEventHandler(javafx.scene.input.MouseEvent.MOUSE_PRESSED, { optionFieldMouse(it) })
-            addEventHandler(javafx.scene.input.MouseEvent.MOUSE_RELEASED, { optionFieldMouse(it) })
-            setContextMenu(optionsContextMenu)
+            addEventHandler(KeyEvent.KEY_PRESSED, { optionsFieldKeyPressed(it) })
+            addEventHandler(MouseEvent.MOUSE_PRESSED, { optionFieldMouse(it) })
+            addEventHandler(MouseEvent.MOUSE_RELEASED, { optionFieldMouse(it) })
+            contextMenu = optionsContextMenu
         }
 
         val historyGroup = ButtonGroup()
@@ -50,7 +61,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton = Actions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
 
-        with(toolBar.getItems()) {
+        with(toolBar.items) {
             add(optionsField)
             add(runStopStack)
             add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
@@ -65,15 +76,15 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     override fun attached(projectTab: ProjectTab) {
         this.projectTab = projectTab
 
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("HalfTab.attaching ToolPane")
+        ParaTaskApp.logAttach("HalfTab.attaching ToolPane")
         toolPane.attached(this)
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("HalfTab.attached ToolPane")
+        ParaTaskApp.logAttach("HalfTab.attached ToolPane")
     }
 
     override fun detaching() {
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("HalfTab.detaching ToolPane")
+        ParaTaskApp.logAttach("HalfTab.detaching ToolPane")
         toolPane.detaching()
-        uk.co.nickthecoder.paratask.ParaTaskApp.Companion.logAttach("HalfTab.detached ToolPane")
+        ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
     fun bindButtons() {
@@ -82,7 +93,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         stopButton.visibleProperty().bind(toolPane.tool.taskRunner.showStopProperty)
     }
 
-    override fun changeTool(tool: uk.co.nickthecoder.paratask.Tool) {
+    override fun changeTool(tool: Tool) {
         toolPane.detaching()
         children.remove(toolPane as javafx.scene.Node)
 
@@ -99,7 +110,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     fun onStop() {
         val tool = toolPane.tool
-        if (tool is uk.co.nickthecoder.paratask.util.Stoppable) {
+        if (tool is Stoppable) {
             tool.stop()
         }
     }
@@ -108,7 +119,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         toolPane.parametersPane.run()
     }
 
-    fun onSelectTool(tool: uk.co.nickthecoder.paratask.Tool) {
+    fun onSelectTool(tool: Tool) {
         changeTool(tool.copy())
     }
 
@@ -120,11 +131,11 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         history.push(toolPane.tool)
     }
 
-    override fun pushHistory(tool: uk.co.nickthecoder.paratask.Tool) {
+    override fun pushHistory(tool: Tool) {
         history.push(tool)
     }
 
-    fun optionsFieldKeyPressed(event: javafx.scene.input.KeyEvent) {
+    fun optionsFieldKeyPressed(event: KeyEvent) {
         var done = false
         val tool = toolPane.resultsTool()
         val runner = tool.optionsRunner
@@ -143,7 +154,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         }
     }
 
-    fun optionFieldMouse(event: javafx.scene.input.MouseEvent) {
+    fun optionFieldMouse(event: MouseEvent) {
         if (event.isPopupTrigger) {
             onOptionsContextMenu()
             event.consume()
@@ -153,6 +164,6 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     private fun onOptionsContextMenu() {
         val tool = toolPane.resultsTool()
         tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
-        optionsContextMenu.show(optionsField, javafx.geometry.Side.BOTTOM, 0.0, 0.0)
+        optionsContextMenu.show(optionsField, Side.BOTTOM, 0.0, 0.0)
     }
 }

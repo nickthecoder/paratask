@@ -2,7 +2,6 @@ package uk.co.nickthecoder.paratask.gui
 
 import javafx.application.Platform
 import javafx.event.EventHandler
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -33,9 +32,9 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     private var killed = false
 
     init {
-        getStyleClass().add("terminal")
-        textArea.getStyleClass().add("output")
-        inputField.getStyleClass().add("input")
+        styleClass.add("terminal")
+        textArea.styleClass.add("output")
+        inputField.styleClass.add("input")
 
         submitButton = Button("Submit")
         submitButton.onAction = EventHandler {
@@ -49,8 +48,8 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
         if (showCommand) {
             val commandLine = TextField(exec.osCommand.toString())
-            commandLine.setEditable(false)
-            commandLine.getStyleClass().add("osCommand")
+            commandLine.isEditable = false
+            commandLine.styleClass.add("osCommand")
             top = commandLine
         }
 
@@ -59,7 +58,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
             inputPane = BorderPane()
             bottom = inputPane
             inputField.requestFocus()
-            inputPane.getStyleClass().add("inputArea")
+            inputPane.styleClass.add("inputArea")
 
             with(inputPane)
             {
@@ -100,15 +99,15 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
     private var focusListener: FocusListener? = null
 
-    public fun attached() {
+    fun attached() {
         if (inputPane != null) {
             focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
-                submitButton.setDefaultButton(hasFocus)
+                submitButton.isDefaultButton = hasFocus
             }
         }
     }
 
-    public fun detaching() {
+    fun detaching() {
         focusListener?.remove()
         stop()
     }
@@ -132,8 +131,8 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     private fun message(message: String) {
         val textField = TextField(message)
         with(textField) {
-            setEditable(false)
-            getStyleClass().add("message")
+            isEditable = false
+            styleClass.add("message")
             requestFocus()
             bottom = this
         }
@@ -161,7 +160,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         @Synchronized
         fun sinkSynch(line: String) {
 
-            val empty = appendText.length == 0
+            val empty = appendText.isEmpty()
 
             appendText.appendln(line)
             //lines++
@@ -187,7 +186,4 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         }
     }
 
-    fun chooseFocus(): Node? {
-        return if (inputPane == null) null else inputField
-    }
 }

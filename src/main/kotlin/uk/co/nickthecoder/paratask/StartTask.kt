@@ -14,7 +14,7 @@ import uk.co.nickthecoder.paratask.project.UnthreadedTaskRunner
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.io.File
 
-class StartTask() : AbstractTask() {
+class StartTask : AbstractTask() {
 
     override val taskD = TaskDescription("Open Project")
 
@@ -27,7 +27,7 @@ class StartTask() : AbstractTask() {
             value = Preferences.projectsDirectory,
             description = "The directory containing the project files\ndefault=${Preferences.projectsDirectory}")
 
-    val projectsP = MultipleParameter<String>("projects", minItems = 1,
+    val projectsP = MultipleParameter("projects", minItems = 1,
             description = "The names of the projects to load. (Do not include the .json suffix)")
     { StringParameter("") }
 
@@ -49,7 +49,7 @@ class StartTask() : AbstractTask() {
 // with no osCommand line arguments, and no possibility that JavaFX isn't needed, but for paratask,
 // it is bloody horrible!
 
-class StartingApp() : Application() {
+class StartingApp : Application() {
     override fun start(stage: Stage?) {
         if (stage == null) {
             return
@@ -57,7 +57,7 @@ class StartingApp() : Application() {
         val label = Label("")
         val scene = Scene(label)
         stage.title = "Loading ParaTask"
-        stage.setScene(scene)
+        stage.scene = scene
         AutoExit.show(stage)
 
         for (file in projectFiles) {

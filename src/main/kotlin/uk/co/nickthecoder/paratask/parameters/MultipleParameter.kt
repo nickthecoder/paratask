@@ -54,7 +54,7 @@ class MultipleParameter<T>(
 
         override fun fromString(str: String): List<T>? {
             if (str == "") {
-                return listOf<T>()
+                return listOf()
             }
             val lines = str.split('\n')
             val result = lines.map {
@@ -85,10 +85,10 @@ class MultipleParameter<T>(
         }
 
         if (v.size < minItems) {
-            return "Must have at least ${minItems} items"
+            return "Must have at least $minItems items"
         }
         if (v.size > maxItems) {
-            return "Cannot have more than ${maxItems} items"
+            return "Cannot have more than $maxItems items"
         }
 
         /*
@@ -121,33 +121,28 @@ class MultipleParameter<T>(
         }
     }
 
-    fun newValue(index: Int = value.size) : ValueParameter<T> {
+    private fun addInnerParameter(index: Int, initialise : (ValueParameter<T>)->Unit): ValueParameter<T> {
         val innerParameter = factory()
         innerParameter.parent = this
-
+        innerParameter.parameterListeners.add(innerListener)
         innerParameters.add(index, innerParameter)
+
+        initialise(innerParameter)
+
         parameterListeners.fireStructureChanged(this)
         return innerParameter
     }
 
-    fun addValue(item: T, index: Int = value.size) {
-        val innerParameter = factory()
-        innerParameter.parent = this
-
-        innerParameter.value = item
-
-        innerParameters.add(index, innerParameter)
-        parameterListeners.fireStructureChanged(this)
+    fun newValue(index: Int = value.size): ValueParameter<T> {
+        return addInnerParameter(index) {}
     }
 
-    fun addStringValue(str: String, index: Int = value.size) {
-        val innerParameter = factory()
-        innerParameter.parent = this
+    fun addValue(item: T, index: Int = value.size): ValueParameter<T> {
+        return addInnerParameter(index) { it.value = item }
+    }
 
-        innerParameter.stringValue = str
-
-        innerParameters.add(index, innerParameter)
-        parameterListeners.fireStructureChanged(this)
+    fun addStringValue(str: String, index: Int = value.size): ValueParameter<T> {
+        return addInnerParameter(index) { it.stringValue = str}
     }
 
     fun removeAt(index: Int) {

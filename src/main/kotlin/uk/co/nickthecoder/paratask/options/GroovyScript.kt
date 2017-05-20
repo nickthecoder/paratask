@@ -30,8 +30,8 @@ class GroovyScript(val source: String) {
         createShell().parse(source)
     }
 
-    public fun run(binding: Binding): Any? {
-        script.setBinding(binding);
+    fun run(binding: Binding): Any? {
+        script.binding = binding
 
         try {
             return script.run()
@@ -40,5 +40,5 @@ class GroovyScript(val source: String) {
         }
     }
 
-    override fun toString() = "GroovyScript : ${source}"
+    override fun toString() = "GroovyScript : $source"
 }

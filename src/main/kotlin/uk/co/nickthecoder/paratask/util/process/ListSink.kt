@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.util.process
 
-class ListSink() : BufferedSink() {
+class ListSink : BufferedSink() {
 
     val list = mutableListOf<String>()
 

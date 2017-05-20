@@ -1,14 +1,17 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.beans.property.SimpleStringProperty
+import uk.co.nickthecoder.paratask.Tool
+
 abstract class AbstractResults(
-        override val tool: uk.co.nickthecoder.paratask.Tool,
+        override val tool:Tool,
         label: String = "Results")
 
     : Results {
 
-    override val labelProperty = javafx.beans.property.SimpleStringProperty()
+    override val labelProperty = SimpleStringProperty()
 
-    override var label: String
+    final override var label: String
         get() = labelProperty.get()
         set(value) {
             labelProperty.set(value)
@@ -18,14 +21,13 @@ abstract class AbstractResults(
         this.label = label
     }
 
-    open override fun attached(toolPane: ToolPane) {}
+    override fun attached(toolPane: ToolPane) {}
 
-    open override fun detaching() {}
+    override fun detaching() {}
 
     override fun selected() {
         node.requestFocus()
     }
 
     override fun deselected() {}
-
 }

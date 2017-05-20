@@ -26,10 +26,10 @@ object Actions {
     val QUIT = Action("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
-    val CLOSE_TAB = Action("tab.close", KeyCode.W, control = true, tooltip = "Close Tab")
+    //val CLOSE_TAB = Action("tab.close", KeyCode.W, control = true, tooltip = "Close Tab")
     val DUPLICATE_TAB = Action("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
 
-    val SPLIT_TAB_TOGGLE = Action("split.tab.toggle", KeyCode.F3, tooltip = "Split/Unsplit")
+    val SPLIT_TAB_TOGGLE = Action("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = Action("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
     // HalfTab
@@ -112,15 +112,15 @@ class Action(
         val label: String? = null
 ) {
 
-    val keyCodeCombination: KeyCodeCombination?
+    val keyCodeCombination: KeyCodeCombination? = if (keyCode == null) {
+        null
+    } else {
+        createKeyCodeCombination(keyCode, shift, control, alt, meta, shortcut)
+    }
 
-    val image: Image?
+    val image: Image? = ParaTaskApp.imageResource("buttons/$name.png")
 
     init {
-        keyCodeCombination = if (keyCode == null) null else
-            createKeyCodeCombination(keyCode, shift, control, alt, meta, shortcut)
-
-        image = ParaTaskApp.imageResource("buttons/${name}.png")
 
         Actions.add(this)
     }
@@ -134,29 +134,29 @@ class Action(
             return null
         }
 
-        var result = StringBuilder()
+        val result = StringBuilder()
         tooltip?.let { result.append(it) }
 
         if (tooltip != null && keyCodeCombination != null) {
             result.append(" ")
         }
-        keyCodeCombination?.let { result.append(it.getDisplayText()) }
+        keyCodeCombination?.let { result.append(it.displayText) }
 
         return Tooltip(result.toString())
     }
 
     fun createButton(shortcuts: ShortcutHelper? = null, action: () -> Unit): Button {
 
-        shortcuts?.let { it.add(this, action) }
+        shortcuts?.add(this, action)
 
         val button = Button()
         if (image == null) {
-            button.setText(label ?: name)
+            button.text = label ?: name
         } else {
-            button.setGraphic(ImageView(image))
+            button.graphic = ImageView(image)
         }
         if (label != null) {
-            button.setText(label)
+            button.text = label
         }
         button.onAction = EventHandler {
             action()
@@ -192,7 +192,7 @@ class Action(
                 item.onAction = EventHandler {
                     action(tool)
                 }
-                getItems().add(item)
+                items.add(item)
             }
 
         }

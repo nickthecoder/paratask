@@ -11,7 +11,7 @@ import uk.co.nickthecoder.paratask.project.ProjectWindow
 class ParaToolApp : Application() {
     override fun start(stage: Stage?) {
         if (stage == null) {
-            return;
+            return
         }
         val projectWindow = ProjectWindow()
         projectWindow.placeOnStage(stage)

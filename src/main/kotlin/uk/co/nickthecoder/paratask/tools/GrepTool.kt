@@ -53,9 +53,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable {
         grepTask.check()
     }
 
-    data class GrepRow(val file: File, var lineNumber: Int, var line: String) {
-
-    }
+    data class GrepRow(val file: File, var lineNumber: Int, var line: String)
 
 }
 

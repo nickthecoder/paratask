@@ -12,8 +12,8 @@ open class ParameterField(open val parameter: Parameter) : Region() {
     val error = Label()
 
     init {
-        error.setVisible(false)
-        error.getStyleClass().add("error");
+        error.isVisible = false
+        error.styleClass.add("error")
 
         children.add(error)
     }
@@ -25,7 +25,7 @@ open class ParameterField(open val parameter: Parameter) : Region() {
             }
             field = v
             if (v != null) {
-                v.getStyleClass().add("control")
+                v.styleClass.add("control")
                 children.add(v)
             }
         }

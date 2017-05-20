@@ -12,7 +12,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 
-class GrepTask() : AbstractTask() {
+class GrepTask : AbstractTask() {
 
     override val taskD = TaskDescription(
             name = "grep",
@@ -21,17 +21,17 @@ class GrepTask() : AbstractTask() {
     val fileP = FileParameter("file", label = "File or Directory",
             description = "Search a single file, or a whole directory tree", expectFile = null)
 
-    val matchP = MultipleParameter<String>("match", minItems = 1,
+    val matchP = MultipleParameter("match", minItems = 1,
             description = "The regular expression to search for"
     ) { StringParameter("") }
 
-    val partP = ChoiceParameter<String>("part", value = "",
+    val partP = ChoiceParameter("part", value = "",
             description = "Match a word, a line or any part of the file")
             .choice("any", "", "Any Part")
             .choice("word", "-w", "Word")
             .choice("line", "-x", "Line")
 
-    val typeP = ChoiceParameter<String>("type", value = "-E",
+    val typeP = ChoiceParameter("type", value = "-E",
             description = "The type of matching\nNote, Perl is still experimental")
             .choice("regular", "-G", "Regular")
             .choice("extended", "-E", "Extended")
@@ -81,8 +81,8 @@ class GrepTask() : AbstractTask() {
 
             val maxMatches = maxMatchesP.value
             if (maxMatches != null) {
-                command.addArgument("-m");
-                command.addArgument(maxMatches);
+                command.addArgument("-m")
+                command.addArgument(maxMatches)
             }
         }
         if (matchCaseP.value == false) {
@@ -91,7 +91,7 @@ class GrepTask() : AbstractTask() {
 
         partP.value?.let { command.addArgument(it) }
 
-        maxMatchesP.value?.let { command.addArgument("--max-count=${it}") }
+        maxMatchesP.value?.let { command.addArgument("--max-count=$it") }
 
         contextLinesP.value?.let {
             command.addArgument("-C")

@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.parameters.Parameter
 class OneOfForm(var oneOfParameter: OneOfParameter)
     : ParametersForm(oneOfParameter) {
 
-    val choiceP = ChoiceParameter<Parameter?>("choose", label = oneOfParameter.message, value = oneOfParameter.value)
+    val choiceP = ChoiceParameter("choose", label = oneOfParameter.message, value = oneOfParameter.value)
 
     init {
         for (child in oneOfParameter.children) {

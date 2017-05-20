@@ -35,7 +35,7 @@ open class TaskParser(val task: Task) {
 
         try {
             parseRegularArguments()
-            if (arguments.size > 0) {
+            if (arguments.isNotEmpty()) {
                 parseExtraArguments()
             }
         } catch (e: Exception) {
@@ -86,7 +86,7 @@ open class TaskParser(val task: Task) {
 
 
     private fun parseRegularArguments() {
-        while (arguments.size > 0) {
+        while (arguments.isNotEmpty()) {
             val arg = arguments[0]
             val arg2 = if (arguments.size > 1) arguments[1] else null
 
@@ -105,13 +105,13 @@ open class TaskParser(val task: Task) {
                 return 1
             }
             if (arg2 == null) {
-                throw ParameterException(parameter, "Expected a value for parameter ${name}")
+                throw ParameterException(parameter, "Expected a value for parameter $name")
             }
             if (parameter is ValueParameter<*>) {
                 parameter.stringValue = arg2
                 return 2
             } else {
-                throw ParameterException(parameter, "Parameter ${name} cannot have a value")
+                throw ParameterException(parameter, "Parameter $name cannot have a value")
             }
         }
         return 0
@@ -138,7 +138,7 @@ open class TaskParser(val task: Task) {
                 return remove
             }
             throw RuntimeException(
-                    """Unknown parameter ${name}
+                    """Unknown parameter $name
 NOTE, if you expect this argument to be used a "default" argument,
 then place the POSIX standard "--" BEFORE the "default" argument(s).
 """)

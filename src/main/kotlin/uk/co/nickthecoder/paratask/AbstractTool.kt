@@ -3,17 +3,13 @@ package uk.co.nickthecoder.paratask
 import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.project.ToolPane_Impl
 import uk.co.nickthecoder.paratask.options.OptionsRunner
-import uk.co.nickthecoder.paratask.project.TaskRunner
-import uk.co.nickthecoder.paratask.project.ThreadedToolRunner
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.uncamel
 
-abstract class AbstractTool() : Tool {
+abstract class AbstractTool : Tool {
 
-    override var taskRunner: TaskRunner = ThreadedToolRunner(this)
+    override val taskRunner by lazy { ThreadedToolRunner(this) }
 
     override var toolPane: ToolPane? = null
 
@@ -29,9 +25,9 @@ abstract class AbstractTool() : Tool {
 
     override var autoRun: Boolean = true
 
-    override val optionsRunner = OptionsRunner(this)
+    override val optionsRunner by lazy{ OptionsRunner(this) }
 
-    override var resultsList: List<Results> = listOf<Results>()
+    override var resultsList: List<Results> = listOf()
 
     protected fun defaultShortTitle() = taskD.name.uncamel()
 
@@ -61,7 +57,7 @@ abstract class AbstractTool() : Tool {
         ParaTaskApp.imageResource("tools/${iconName()}.png")
     }
 
-    open fun iconName(): String = "${taskD.name}"
+    open fun iconName(): String = taskD.name
 
     override fun updateResults() {
         val newResults = createResults()
@@ -69,9 +65,9 @@ abstract class AbstractTool() : Tool {
         resultsList = newResults
     }
 
-    protected fun singleResults(results: Results) = listOf<Results>(results)
+    protected fun singleResults(results: Results) = listOf(results)
 
     override fun toString(): String {
-        return "Tool : ${taskD.toString()}"
+        return "Tool : $taskD"
     }
 }

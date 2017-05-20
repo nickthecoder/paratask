@@ -28,7 +28,7 @@ class StringParameter(
     override fun isStretchy(): Boolean = stretchy
 
     override fun errorMessage(v: String?): String? {
-        if (required && (v == null || v.length == 0)) {
+        if (required && (v == null || v.isEmpty())) {
             return "Required"
         }
         return null

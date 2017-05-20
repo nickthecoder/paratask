@@ -108,9 +108,7 @@ open class GroupParameter(
         result.buildContent()
         return result
     }
-
-    fun isRoot(): Boolean = parent == null
-
+    
     override fun errorMessage(): String? = null
 
     override fun isStretchy(): Boolean = true

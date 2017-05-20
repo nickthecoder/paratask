@@ -3,11 +3,12 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.Node
+import javafx.scene.Scene
 
 class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
     : ChangeListener<Node> {
 
-    val scene = parent.scene
+    val scene : Scene? = parent.scene
 
     init {
         scene?.focusOwnerProperty()?.addListener(this)

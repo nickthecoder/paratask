@@ -20,7 +20,7 @@ open class OptionsRunner(val tool: Tool) {
 
     fun createNonRowOptionsMenu(contextMenu: ContextMenu) {
 
-        contextMenu.getItems().clear()
+        contextMenu.items.clear()
 
         val optionsName = tool.optionsName
         val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
@@ -33,11 +33,11 @@ open class OptionsRunner(val tool: Tool) {
                 if (!option.isRow) {
                     if (needSep) {
                         needSep = false
-                        contextMenu.getItems().add(SeparatorMenuItem())
+                        contextMenu.items.add(SeparatorMenuItem())
                     }
                     val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { runNonRow(option) }
-                    contextMenu.getItems().add(menuItem)
+                    contextMenu.items.add(menuItem)
                     added = true
                 }
             }
@@ -121,7 +121,7 @@ open class OptionsRunner(val tool: Tool) {
         val projectTabs = halfTab?.projectTab?.projectTabs
 
         // Reuse the current tool where possible, otherwise copy the tool
-        var newTool = if (returnedTool !== tool || newTab) returnedTool.copy() else tool
+        val newTool = if (returnedTool !== tool || newTab) returnedTool.copy() else tool
 
         if (newTab) {
 
