@@ -48,7 +48,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val multiple = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
 
 
-    val task = TaskParameter("task", tasks = TaskRegistry.tasks + TaskRegistry.tools)
+    val task = TaskParameter("task", tasks = TaskRegistry.allTasksAndTools())
 
     init {
         taskD.addParameters(task, yesNo)

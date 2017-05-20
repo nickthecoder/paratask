@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "tool.taskNew()",
             "code": "+",
             "label": "New Place",
-            "script": "tool.taskNew()",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "row.taskRemove()",
             "code": "-",
             "label": "Remove Place",
-            "script": "row.taskRemove()",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
@@ -27,20 +27,9 @@
         },
         {
             "type": "groovy",
-            "code": "++",
-            "label": "Copy Place",
-            "script": "row.taskCopy()",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
+            "script": "new EditorTool( tool.file.value )",
             "code": "edit",
             "label": "Edit in Text Editor",
-            "script": "new EditorTool( tool.file.value )",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -49,14 +38,25 @@
         },
         {
             "type": "groovy",
+            "script": "if ( row instanceof PlacesFile.FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
             "code": ".",
             "label": "Open Place",
-            "script": "if ( row instanceof PlacesFile.FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": true,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "row.taskCopy()",
+            "code": "=",
+            "label": "Copy Place",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
         }
     ]
 }

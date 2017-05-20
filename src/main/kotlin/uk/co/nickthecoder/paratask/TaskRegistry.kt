@@ -17,10 +17,10 @@ import uk.co.nickthecoder.paratask.project.task.WebTool
 
 object TaskRegistry {
 
-    val tasks = mutableListOf<Task>(
+    private val tasks = mutableListOf<Task>(
             CommandTask())
 
-    val tools = mutableListOf<Tool>(
+    private val tools = mutableListOf<Tool>(
             HomeTool(),
             DirectoryTool(), DirectoryTreeTool(), PlacesTool(),
             TerminalTool(), PythonTool(), GroovyTool(),
@@ -28,4 +28,9 @@ object TaskRegistry {
             GrepTool(), GitTool(),
             OptionsFilesTool())
 
+    fun allTasks() = tasks.map{ it.copy() }
+
+    fun allTools() = tools.map{ it.copy() }
+
+    fun allTasksAndTools() : List<Task> = allTasks() + allTools()
 }

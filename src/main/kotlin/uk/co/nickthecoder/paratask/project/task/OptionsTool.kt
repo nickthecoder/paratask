@@ -154,9 +154,9 @@ class OptionsTool : AbstractTableTool<Option> {
         var script = StringParameter("script", value = if (option is GroovyOption) option.script else "")
 
         val tasks = if (tool is HasCopyableTasks) {
-            TaskRegistry.tools + TaskRegistry.tasks + tool.tasks
+            TaskRegistry.allTasksAndTools() + tool.tasks
         } else {
-            TaskRegistry.tools + TaskRegistry.tasks
+            TaskRegistry.allTasksAndTools()
         }
 
         var taskP = TaskParameter("task", tasks = tasks, value = if (option is TaskOption) option.task else null)
