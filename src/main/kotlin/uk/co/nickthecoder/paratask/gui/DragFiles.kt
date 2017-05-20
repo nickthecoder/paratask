@@ -1,27 +1,20 @@
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.scene.Node
-import javafx.scene.input.ClipboardContent
-import javafx.scene.input.DragEvent
-import javafx.scene.input.MouseEvent
-import javafx.scene.input.TransferMode
-import java.io.File
-
 open class DragFiles(
-        val source: Node,
-        val modes: Array<TransferMode> = arrayOf(TransferMode.COPY),
-        val files: () -> (List<File>?)) {
+        val source: javafx.scene.Node,
+        val modes: Array<javafx.scene.input.TransferMode> = arrayOf(javafx.scene.input.TransferMode.COPY),
+        val files: () -> (List<java.io.File>?)) {
 
     init {
         source.setOnDragDetected { onDragDetected(it) }
         source.setOnDragDone { onDone(it) }
     }
 
-    open fun onDragDetected(event: MouseEvent) {
+    open fun onDragDetected(event: javafx.scene.input.MouseEvent) {
         val dragboard = source.startDragAndDrop(* modes)
 
         files()?.let {
-            val content = ClipboardContent()
+            val content = javafx.scene.input.ClipboardContent()
             content.putFiles(it)
             dragboard.setContent(content)
 
@@ -29,7 +22,7 @@ open class DragFiles(
         event.consume()
     }
 
-    open fun onDone(event: DragEvent) {
+    open fun onDone(event: javafx.scene.input.DragEvent) {
         event.consume()
     }
 }

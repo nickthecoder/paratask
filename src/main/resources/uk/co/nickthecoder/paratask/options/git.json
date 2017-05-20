@@ -16,17 +16,6 @@
         },
         {
             "type": "groovy",
-            "script": "new TerminalTool( \"git\", \"push\", \"origin\", \"master\" ).dir( tool.directory )",
-            "code": "push",
-            "label": "Git Push",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "new Command( \"git\", \"checkout\", row.path ).dir( tool.directory )",
             "code": "co",
             "label": "Check Out",
@@ -146,6 +135,52 @@
                     "expression": "tool.directory"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.project.task.TerminalTool",
+            "code": "push",
+            "label": "Git Push",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "command",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "push"
+                        },
+                        {
+                            "value": "origin"
+                        },
+                        {
+                            "value": "master"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "groovy",
+            "script": "s",
+            "code": "ig",
+            "label": "Edit .gitignore",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

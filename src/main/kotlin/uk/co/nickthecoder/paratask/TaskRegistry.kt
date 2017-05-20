@@ -1,24 +1,23 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.project.Tool
-import uk.co.nickthecoder.paratask.project.editor.EditorTool
-import uk.co.nickthecoder.paratask.project.task.CommandTask
-import uk.co.nickthecoder.paratask.project.task.DirectoryTool
-import uk.co.nickthecoder.paratask.project.task.DirectoryTreeTool
-import uk.co.nickthecoder.paratask.project.task.GitTool
-import uk.co.nickthecoder.paratask.project.task.GrepTool
-import uk.co.nickthecoder.paratask.project.task.GroovyTool
-import uk.co.nickthecoder.paratask.project.task.HomeTool
-import uk.co.nickthecoder.paratask.project.task.OptionsFilesTool
-import uk.co.nickthecoder.paratask.project.task.PlacesTool
-import uk.co.nickthecoder.paratask.project.task.PythonTool
-import uk.co.nickthecoder.paratask.project.task.TerminalTool
-import uk.co.nickthecoder.paratask.project.task.WebTool
+import uk.co.nickthecoder.paratask.tools.editor.EditorTool
+import uk.co.nickthecoder.paratask.tools.OSCommandTask
+import uk.co.nickthecoder.paratask.tools.DirectoryTool
+import uk.co.nickthecoder.paratask.tools.DirectoryTreeTool
+import uk.co.nickthecoder.paratask.tools.git.GitTool
+import uk.co.nickthecoder.paratask.tools.GrepTool
+import uk.co.nickthecoder.paratask.tools.GroovyTool
+import uk.co.nickthecoder.paratask.tools.HomeTool
+import uk.co.nickthecoder.paratask.tools.OptionsFilesTool
+import uk.co.nickthecoder.paratask.tools.PlacesTool
+import uk.co.nickthecoder.paratask.tools.PythonTool
+import uk.co.nickthecoder.paratask.tools.TerminalTool
+import uk.co.nickthecoder.paratask.tools.WebTool
 
 object TaskRegistry {
 
     private val tasks = mutableListOf<Task>(
-            CommandTask())
+            OSCommandTask())
 
     private val tools = mutableListOf<Tool>(
             HomeTool(),

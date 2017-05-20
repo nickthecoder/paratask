@@ -3,7 +3,6 @@ package uk.co.nickthecoder.paratask.gui
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.nickthecoder.paratask.parameter.StringParameter
 
 class StringFieldTest : StringFieldBase() {
 

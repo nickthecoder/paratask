@@ -8,7 +8,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import uk.co.nickthecoder.paratask.gui.field.LabelledField
+import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 
 open class IntFieldTest : IntFieldBase() {
 

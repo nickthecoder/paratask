@@ -1,8 +1,5 @@
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.scene.control.Button
-import javafx.scene.layout.HBox
-
 /**
  * Used to style buttons so that they are joined together, with rounded corners on the first and
  * last buttons only.
@@ -10,13 +7,13 @@ import javafx.scene.layout.HBox
  * Note, this class isn't well developed. It cannot handle removing buttons, not making the first/last buttons
  * invisible.
  */
-class ButtonGroup : HBox() {
+class ButtonGroup : javafx.scene.layout.HBox() {
 
     init {
         styleClass.add("button-group")
     }
 
-    fun add(button: Button) {
+    fun add(button: javafx.scene.control.Button) {
 
         if (children.size == 0) {
             button.styleClass.add("first")

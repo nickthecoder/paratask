@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.paratask.util
 
-import uk.co.nickthecoder.paratask.project.Stoppable
 import java.io.File
 import java.io.FileFilter
 import java.io.IOException

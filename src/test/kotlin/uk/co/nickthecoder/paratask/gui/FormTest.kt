@@ -7,10 +7,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.field.GroupParametersForm
-import uk.co.nickthecoder.paratask.gui.field.ParameterField
-import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.parameters.fields.GroupParametersForm
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
+import uk.co.nickthecoder.paratask.parameters.IntParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 
 class FormTest : GuiTest() {
 

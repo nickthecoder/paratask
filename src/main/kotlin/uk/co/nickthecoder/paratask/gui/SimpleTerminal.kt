@@ -7,10 +7,10 @@ import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
-import uk.co.nickthecoder.paratask.project.Stoppable
-import uk.co.nickthecoder.paratask.util.BufferedSink
-import uk.co.nickthecoder.paratask.util.Exec
-import uk.co.nickthecoder.paratask.util.ProcessListener
+import uk.co.nickthecoder.paratask.util.Stoppable
+import uk.co.nickthecoder.paratask.util.process.BufferedSink
+import uk.co.nickthecoder.paratask.util.process.Exec
+import uk.co.nickthecoder.paratask.util.process.ProcessListener
 import java.io.PrintStream
 
 class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Boolean = false)
@@ -48,9 +48,9 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         }
 
         if (showCommand) {
-            val commandLine = TextField(exec.command.toString())
+            val commandLine = TextField(exec.osCommand.toString())
             commandLine.setEditable(false)
-            commandLine.getStyleClass().add("command")
+            commandLine.getStyleClass().add("osCommand")
             top = commandLine
         }
 

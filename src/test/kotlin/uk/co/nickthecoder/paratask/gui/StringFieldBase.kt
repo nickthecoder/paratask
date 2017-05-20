@@ -1,8 +1,9 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Parent
-import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.project.task.NullTask
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.TaskPrompter
+import uk.co.nickthecoder.paratask.tools.NullTask
 
 open class StringFieldBase : MyGuiTest() {
 

@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
-import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File

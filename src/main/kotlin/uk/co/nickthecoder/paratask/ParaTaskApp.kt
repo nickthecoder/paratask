@@ -4,7 +4,7 @@ import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.project.TaskPrompter
 
 class ParaTaskApp() : Application() {
     override fun start(stage: Stage?) {

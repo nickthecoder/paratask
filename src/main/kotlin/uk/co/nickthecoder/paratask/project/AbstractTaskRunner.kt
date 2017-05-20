@@ -3,7 +3,9 @@ package uk.co.nickthecoder.paratask.project
 import javafx.application.Platform
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskListener
 import uk.co.nickthecoder.paratask.util.AutoExit
+import uk.co.nickthecoder.paratask.util.Stoppable
 
 enum class RunState {
     IDLE, RUNNING, FINISHED;

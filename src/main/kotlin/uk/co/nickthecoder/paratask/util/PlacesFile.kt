@@ -5,10 +5,10 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameter.FileParameter
-import uk.co.nickthecoder.paratask.parameter.ParameterEvent
-import uk.co.nickthecoder.paratask.parameter.ParameterListener
-import uk.co.nickthecoder.paratask.parameter.StringParameter
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.ParameterListener
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.io.File
 import java.net.URI
 import java.net.URL

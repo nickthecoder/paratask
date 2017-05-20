@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
+import uk.co.nickthecoder.paratask.Tool
 
 open class UnthreadedToolRunner(val tool: Tool) : UnthreadedTaskRunner(tool) {
 

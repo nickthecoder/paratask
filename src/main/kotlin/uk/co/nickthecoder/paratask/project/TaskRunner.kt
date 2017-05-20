@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.BooleanProperty
+import uk.co.nickthecoder.paratask.TaskListener
 
 interface TaskRunner {
 

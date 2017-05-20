@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
+import uk.co.nickthecoder.paratask.Tool
 
 open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
 

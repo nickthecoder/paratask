@@ -8,10 +8,10 @@ import javafx.scene.input.TransferMode
 import java.io.File
 
 open class DropFiles(
-        val target: Node,
-        val source: Node = target,
-        val modes: Array<TransferMode> = TransferMode.ANY,
-        val dropped: (List<File>) -> Boolean
+        val target: javafx.scene.Node,
+        val source: javafx.scene.Node = target,
+        val modes: Array<javafx.scene.input.TransferMode> = javafx.scene.input.TransferMode.ANY,
+        val dropped: (List<java.io.File>) -> Boolean
 
 ) {
 
@@ -22,36 +22,36 @@ open class DropFiles(
         target.setOnDragDropped { onDragDropped(it) }
     }
 
-    open fun accept(event: DragEvent): Boolean {
+    open fun accept(event: javafx.scene.input.DragEvent): Boolean {
         return event.getGestureSource() != source && event.getDragboard().hasFiles()
     }
 
-    open fun onDragOver(event: DragEvent) {
+    open fun onDragOver(event: javafx.scene.input.DragEvent) {
         if (accept(event)) {
             event.acceptTransferModes(* modes)
         }
         event.consume()
     }
 
-    open fun onDragEntered(event: DragEvent) {
+    open fun onDragEntered(event: javafx.scene.input.DragEvent) {
         if (accept(event)) {
-            if (target is Styleable) {
+            if (target is javafx.css.Styleable) {
                 target.getStyleClass().add("drop")
             }
         }
         event.consume()
     }
 
-    open fun onDragExited(event: DragEvent) {
+    open fun onDragExited(event: javafx.scene.input.DragEvent) {
         if (accept(event)) {
-            if (target is Styleable) {
+            if (target is javafx.css.Styleable) {
                 target.getStyleClass().remove("drop")
             }
         }
         event.consume()
     }
 
-    open fun onDragDropped(event: DragEvent) {
+    open fun onDragDropped(event: javafx.scene.input.DragEvent) {
         val dragboard = event.getDragboard()
         var success = false;
         if (accept(event)) {

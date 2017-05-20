@@ -1,8 +1,8 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
-import uk.co.nickthecoder.paratask.gui.project.HalfTab
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class History(val halfTab: HalfTab) {
 

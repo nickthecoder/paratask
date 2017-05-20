@@ -1,13 +1,62 @@
+Change project layout - move classes into appropriate places
+	Beware that json files contain qualified class names!
 
-Add a "debug" script to GroovyOption and TaskOption's base class which is run before the option itself is run.
-	Maybe call it "pre", to denote it is always run before hand.
-	Give a label/description
+	paratask 		Example, core non-gui classes, Task, Tool, Entry point stuff
+		parameter
+			field
+		table
+		tasks
+			git
+			editor
+		option
+		util
+		gui		Javafx classes that don't belong elsewhere
+		project		Everything to do with the project window
+
+
+Work on Keyboard Focus
+	Have a ProjectShortcutManager
+		Next/Prev major tab	: ctrl + PageUp, PageDown - May be tricky as the minor tabs will steal this!
+		Next/Prev minor tab	: ctrl + shift + PageUp, PageDown
+		Major Tab #n		: ctrl + 1..9
+		Minor Tab #n		: shift+ctrl + 1..9. Also F9 for Parameters
+		Left/Right Half Tab	: ctrl + { }
+		Non-Row Options Field   : F10
+	Each of these actions changes the focus to the appropriate Results (or parameters)
+	To ensure that the shortcuts always work, put them ALL at the top level
+		Things such as F5 will need a findHalfTab()?.tool.refresh
+			Where findHalfTab() will return a HalfTab unless there is none.
+	Allow each action to have multiple shortcuts, so that it can avoid WindowManage clashes without users customising the shortcuts
+
+	New Toolbar button to launch a web page containing the keyboard shortcuts
+
+	Running Options
+		Enter for default behaviour
+		Double click to run the default option
+		F6 to prompt
+		"ctrl" to force a new Tab - this doesn't work well with double click though.
+			Maybe double click shouldn't allow any modifications ???
+			As JavaFX doesn't seem to support middle click for paste, perhaps use double middle click
+		"shift+ctrl" to force the same tab???
+
+Make it each to add some of the task's parameter to the results
+	e.g. The "directory"parameter for the DirectoryTool
+
+Create a Tool to edit keyboard shortcuts
+	Must keep the defaults, and only save those that are different.
+		Action to have "var userShortcut : KeyCombination?"	
+	Don't worry if tooltips don't get updated till a restart/new window.
+
+Add a "debug" script to TaskOption which is run before the option itself is run.
+	Funny... The easiest way to do this is to merge GroovyOption and TaskOption!
+		Simpler, better
+			Does away with lots of "ifs"
+			No need for clunky "OneOfParameter"
+			
 
 Add a "debug" flag that GroovyOption / TaskOption / OptionsRunner looks at
 	Prints the Option
 
-Change project layout - move classes into appropriate places
-	Beware that json files contain qualified class names!
 
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 

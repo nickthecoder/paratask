@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.project.TaskRunner
 
 interface Task {

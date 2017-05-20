@@ -1,15 +1,15 @@
 package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
-import uk.co.nickthecoder.paratask.parameter.BooleanParameter
-import uk.co.nickthecoder.paratask.parameter.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameter.FileParameter
-import uk.co.nickthecoder.paratask.parameter.GroupParameter
-import uk.co.nickthecoder.paratask.parameter.IntParameter
-import uk.co.nickthecoder.paratask.parameter.MultipleParameter
-import uk.co.nickthecoder.paratask.parameter.OneOfParameter
-import uk.co.nickthecoder.paratask.parameter.StringParameter
-import uk.co.nickthecoder.paratask.parameter.TaskParameter
+import uk.co.nickthecoder.paratask.parameters.BooleanParameter
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.IntParameter
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.OneOfParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.TaskParameter
 
 class ExampleTask : AbstractTask() {
 
@@ -72,5 +72,5 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 }
 
 fun main(args: Array<String>) {
-    CommandLineTask(ExampleTask()).go(args)
+    TaskParser(ExampleTask()).go(args)
 }

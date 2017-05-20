@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameter.Parameter
+import uk.co.nickthecoder.paratask.parameters.Parameter
 
 class ParameterException(val parameter: Parameter, override val message: String)
     : RuntimeException(message) {

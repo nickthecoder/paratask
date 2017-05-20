@@ -1,9 +1,9 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameter.MultipleParameter
-import uk.co.nickthecoder.paratask.parameter.Parameter
-import uk.co.nickthecoder.paratask.parameter.RootParameter
-import uk.co.nickthecoder.paratask.parameter.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.RootParameter
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -17,7 +17,7 @@ class TaskDescription(
     var programmingMode: Boolean = false
 
     /**
-     * When used on a command line, this parameter can be used without using its parameter name.
+     * When used on a osCommand line, this parameter can be used without using its parameter name.
      * It is good practice to place a "--" argument before the unnamed arguments to avoid
      * unnamed arguments beginning with "--" being interpreted as regular (named) arguments.
      */
