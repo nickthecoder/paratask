@@ -27,7 +27,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.task.HomeTool",
+            "task": "uk.co.nickthecoder.paratask.tools.HomeTool",
             "code": "X",
             "label": "Edit Text File",
             "isRow": true,
@@ -46,7 +46,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.task.DirectoryTool",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
             "code": "tmp",
             "label": "/home/tmp",
             "isRow": true,
@@ -89,7 +89,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.editor.EditorTool",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
             "code": "e2",
             "label": "Edit a couple of files",
             "isRow": false,

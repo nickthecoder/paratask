@@ -54,6 +54,10 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
             removeButton.tooltip = Tooltip("Remove")
             buttons.children.add(removeButton)
 
+            if ( index == 0 && multipleParameter.minItems > 0 ) {
+                removeButton.setVisible(false)
+            }
+
             result.replaceLabel(buttons)
 
         }

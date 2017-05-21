@@ -16,14 +16,12 @@ class GrepTask : AbstractTask() {
 
     override val taskD = TaskDescription(
             name = "grep",
-            description = "Search a file or recursively through a directory tree")
+            description = "Search a single file or recursively through a directory tree")
 
     val fileP = FileParameter("file", label = "File or Directory",
             description = "Search a single file, or a whole directory tree", expectFile = null)
 
-    val matchP = MultipleParameter("match", minItems = 1,
-            description = "The regular expression to search for"
-    ) { StringParameter("") }
+    val matchP = StringParameter("match", columns = 20)
 
     val partP = ChoiceParameter("part", value = "",
             description = "Match a word, a line or any part of the file")
@@ -58,11 +56,20 @@ class GrepTask : AbstractTask() {
     val additionalOptionsP = StringParameter("additionalOptions", value = "IHsn",
             description = "Additional grep parameters (default=IHsn)")
 
+
+    val moreMatchesP = MultipleParameter("moreMatches",
+            description = "More regular expression to search for"
+    ) { StringParameter("") }
+
+    val moreFilesP = MultipleParameter("moreFiles",
+            description = "More Files or Directories"
+    ) { FileParameter("", expectFile = null) }
+
     init {
         taskD.addParameters(
                 fileP, matchP, matchCaseP,
                 typeP, partP, invertResultsP, followSymLinksP,
-                maxMatchesP, contextLinesP, additionalOptionsP)
+                maxMatchesP, contextLinesP, additionalOptionsP, moreFilesP, moreMatchesP)
     }
 
     override fun run(): OSCommand {
@@ -98,13 +105,20 @@ class GrepTask : AbstractTask() {
             command.addArgument(it)
         }
 
-        matchP.value.forEach { value ->
+        command.addArgument("-e")
+        command.addArgument(matchP.value)
+
+        moreMatchesP.value.forEach { value ->
             command.addArgument("-e")
             command.addArgument(value)
         }
 
         command.addArgument("--")
         command.addArgument(fileP.value)
+
+        moreFilesP.value.forEach { file ->
+            command.addArgument(file)
+        }
 
         return command
     }

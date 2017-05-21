@@ -7,7 +7,7 @@ import uk.co.nickthecoder.paratask.parameters.Parameter
 
 open class ParameterField(open val parameter: Parameter) : Region() {
 
-    lateinit var form: ParametersForm
+    lateinit var form: FieldParent
 
     val error = Label()
 
@@ -40,4 +40,5 @@ open class ParameterField(open val parameter: Parameter) : Region() {
     }
 
     open fun isDirty(): Boolean = false
+
 }

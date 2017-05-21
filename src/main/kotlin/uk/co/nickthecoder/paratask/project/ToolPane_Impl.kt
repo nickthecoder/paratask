@@ -5,13 +5,19 @@ import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 
 class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, StackPane() {
+
+    val borderPane = BorderPane()
 
     private val tabPane = TabPane()
 
@@ -21,12 +27,20 @@ class ToolPane_Impl(override var tool: Tool)
 
     val parametersTab = Tab()
 
+    val headerRows = VBox()
+
     init {
+        headerRows.styleClass.add("header")
+
+        borderPane.center = tabPane
+        tool.createHeaderRows().forEach() {
+            headerRows.children.add(it)
+        }
 
         // Adding the ParametersPane to the stack first (and then adding to the TabPane later) is a bodge
         // because TabPane doesn't set the parent of its child tabs immediately, and I need the ParametersPane
         // to be part of the Scene graph earlier than it otherwise would.
-        children.addAll(tabPane, parametersPane as Node)
+        children.addAll(borderPane, parametersPane as Node)
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
@@ -56,6 +70,7 @@ class ToolPane_Impl(override var tool: Tool)
         if (newTab is ToolPane_Impl.ResultsTab) {
             newTab.results.selected()
         }
+        borderPane.top = if (newTab === parametersTab) null else if (headerRows.children.isEmpty()) null else headerRows
     }
 
     override fun resultsTool(): Tool {

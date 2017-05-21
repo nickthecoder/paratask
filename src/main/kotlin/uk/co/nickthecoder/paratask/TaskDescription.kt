@@ -53,7 +53,7 @@ class TaskDescription(
                         && destParameter.expression == null) {
 
 
-                    for (i in 0..sourceParameter.innerParameters.size - 1) {
+                    for (i in 0..destParameter.innerParameters.size - 1) {
                         destParameter.innerParameters[i].expression = sourceParameter.innerParameters[i].expression
                     }
                 }

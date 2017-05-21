@@ -89,6 +89,15 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         return Math.max(allThree, err)
     }
 
+    override fun computePrefWidth(height: Double): Double {
+
+        val lab = if (label.isVisible) label.prefWidth(height) + form.spacing else 0.0
+        val button = expressionButton?.prefWidth(height) ?: 0.0
+        val allThree = lab + button + (controlOrExpression()?.prefWidth(height) ?: 0.0)
+        val err = if (error.isVisible) error.prefWidth(height) else 0.0
+        return Math.max(allThree, err)
+    }
+
     override fun layoutChildren() {
         val controlOrExp = controlOrExpression()
 
@@ -133,7 +142,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         }
     }
 
-    protected fun adjustColumnWidth(column: ParametersForm.FormColumn, node: Node) {
+    protected fun adjustColumnWidth(column: FieldColumn, node: Node) {
         val prefW = node.prefWidth(-1.0)
         val minW = node.minWidth(-1.0)
         if (column.prefWidth < prefW) {
@@ -144,7 +153,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         }
     }
 
-    internal fun adjustColumnWidths(columns: List<ParametersForm.FormColumn>) {
+    internal fun adjustColumnWidths(columns: List<FieldColumn>) {
         adjustColumnWidth(columns[0], label)
         expressionButton?.let { adjustColumnWidth(columns[1], it) }
         controlOrExpression()?.let { adjustColumnWidth(columns[2], it) }

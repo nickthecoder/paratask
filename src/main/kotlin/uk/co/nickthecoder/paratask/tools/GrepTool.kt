@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.FileNameColumn
@@ -29,6 +30,17 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable {
         columns.add(Column<GrepRow, String>("line") { it.line })
 
     }
+
+    override fun createHeaderRows(): List<HeaderRow> {
+        val row1 = HeaderRow()
+        row1.add(grepTask.fileP)
+        val row2 = HeaderRow()
+        row2.add(grepTask.matchP)
+        row2.add(grepTask.typeP)
+        row2.add(grepTask.matchCaseP)
+        return listOf(row1, row2)
+    }
+
 
     override fun createCommand(): OSCommand = grepTask.run()
 

@@ -8,6 +8,7 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 
 class WebTool() : AbstractTool() {
 
@@ -22,6 +23,8 @@ class WebTool() : AbstractTool() {
     init {
         taskD.addParameters(addressP)
     }
+
+    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(addressP))
 
     override fun run() {
     }

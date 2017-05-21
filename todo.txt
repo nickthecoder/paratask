@@ -1,3 +1,26 @@
+
+Make it each to add some of the task's parameter to the results
+	e.g. The "directory"parameter for the DirectoryTool
+
+Create a HeaderRow which works similarly to ParameterForm
+	Pass it a list of Parameters to place in the row
+	Can also say how many are on the left and right (with the remainder in the middle)
+	Each Field has its own column
+	Ask for the pref width of each field
+		If there is at least one stretchy parameter
+			Give each stretchy parameter an equal share  of the slack (which may be -ve)
+				Set the gap to zero
+		Otherwise the slack is put into a "gap"
+			The there are left AND right fields the the gap is half the slack
+			Also, if there are NO left and right fields, then ditto
+			Otherewise the gap = slack
+		If there is no slack, then the gap is zero
+
+
+
+Tool.autoRun isn't really being used.
+Also, prompt isn't being respected - tools are run, without their parameters being shown
+
 GrepTool to show the command line.
 
 Work on Keyboard Focus
@@ -24,9 +47,6 @@ Work on Keyboard Focus
 			Maybe double click shouldn't allow any modifications ???
 			As JavaFX doesn't seem to support middle click for paste, perhaps use double middle click
 		"shift+ctrl" to force the same tab???
-
-Make it each to add some of the task's parameter to the results
-	e.g. The "directory"parameter for the DirectoryTool
 
 Create a Tool to edit keyboard shortcuts
 	Must keep the defaults, and only save those that are different.

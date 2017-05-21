@@ -20,6 +20,15 @@
     -fx-padding: 5px 0 0 0;
 }
 
+.header {
+    -fx-padding: 10px 10px 10px 10px;
+    -fx-spacing: 10px;
+}
+
+.header-row {
+    -fx-spacing: 20px;
+}
+
 /***********************************************************
 * See :                                                    *
 *   uk.co.nickthecoder.paratask.gui.TaskPrompter           *

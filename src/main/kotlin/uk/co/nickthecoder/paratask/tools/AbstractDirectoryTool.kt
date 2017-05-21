@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -56,6 +57,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
+
+    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
 
     override fun run() {
         val lister = FileLister(

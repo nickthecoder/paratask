@@ -5,6 +5,7 @@ import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.options.OptionsRunner
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 
 interface Tool : Task {
 
@@ -35,6 +36,8 @@ interface Tool : Task {
     fun attached(toolPane: ToolPane)
 
     fun detaching()
+
+    fun createHeaderRows() : List<HeaderRow> = listOf()
 
     override fun copy(): Tool = super.copy() as Tool
 

@@ -20,9 +20,9 @@ import uk.co.nickthecoder.paratask.parameters.RootParameter
  * This is the base class for GroupParmetersForm and MultipleField.
  */
 open class ParametersForm(val parentParameter: ParentParameter)
-    : ParameterField(parentParameter), WrappableField {
+    : ParameterField(parentParameter), FieldParent, WrappableField {
 
-    internal val columns = mutableListOf<FormColumn>()
+    override val columns = mutableListOf<FieldColumn>()
 
     internal val fieldSet = mutableListOf<ParameterField>()
 
@@ -94,10 +94,8 @@ open class ParametersForm(val parentParameter: ParentParameter)
         return null
     }
 
-    val spacing: Double
-        get() {
-            return spacingProperty.get()
-        }
+    override val spacing: Double
+        get() = spacingProperty.get()
 
     /**
      * Gets the -fx-spacing property from css.
@@ -116,13 +114,13 @@ open class ParametersForm(val parentParameter: ParentParameter)
     }
 
     init {
-        columns.add(FormColumn(0.0)) // Label
-        columns.add(FormColumn(0.0)) // Expression button
-        columns.add(FormColumn()) // Main Control
+        columns.add(FieldColumn(0.0)) // Label
+        columns.add(FieldColumn(0.0)) // Expression button
+        columns.add(FieldColumn()) // Main Control
         styleClass.add("form")
     }
 
-    internal fun calculateColumnPreferences() {
+    override fun calculateColumnPreferences() {
         columns.forEach {
             it.prefWidth = 0.0
             it.minWidth = 0.0
@@ -134,7 +132,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
         }
     }
 
-    internal fun calculateColumnWidths() {
+    override fun calculateColumnWidths() {
         var totalStretch: Double = 0.0
         var prefWidth = -spacing
         columns.forEach {
@@ -232,7 +230,6 @@ open class ParametersForm(val parentParameter: ParentParameter)
                 cssMetaDataList.add(it)
             }
             cssMetaDataList.add(SPACING)
-
         }
 
         internal fun sum(nodes: List<Node>, f: (Node, Double) -> Double, other: Double): Double {
@@ -255,12 +252,6 @@ open class ParametersForm(val parentParameter: ParentParameter)
         } else {
             return WrappedField(this)
         }
-    }
-
-    class FormColumn(var stretch: Double = 1.0) {
-        var prefWidth: Double = 0.0
-        var minWidth: Double = 0.0
-        var width: Double = 0.0
     }
 
 }

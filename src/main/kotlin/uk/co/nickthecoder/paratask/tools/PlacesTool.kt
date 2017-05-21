@@ -15,10 +15,13 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
-    val file = FileParameter("file", value = homeDirectory.child(".config", "gtk-3.0", "bookmarks"))
+    val fileP = FileParameter("file", value = homeDirectory.child(".config", "gtk-3.0", "bookmarks"))
 
     private lateinit var placesFile: PlacesFile
 
+    init {
+        taskD.addParameters( fileP )
+    }
     override fun createColumns() {
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.icon) })
         columns.add(Column<Place, String>("label") { it.label })
@@ -26,7 +29,8 @@ class PlacesTool : AbstractTableTool<Place>() {
     }
 
     override fun run() {
-        placesFile = PlacesFile(file.value!!)
+        placesFile = PlacesFile(fileP.value!!)
+        list = placesFile.places
     }
 
     fun taskNew() = placesFile.taskNew()

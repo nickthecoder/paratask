@@ -46,6 +46,12 @@ class MultipleParameter<T>(
             parameterListeners.fireStructureChanged(this@MultipleParameter)
         }
 
+    val innerListener = object : ParameterListener {
+        override fun parameterChanged(event: ParameterEvent) {
+            parameterListeners.fireInnerParameterChanged(this@MultipleParameter, event.parameter)
+        }
+    }
+
     init {
         value?.let { this.value = value }
     }
@@ -115,13 +121,7 @@ class MultipleParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
-    val innerListener = object : ParameterListener {
-        override fun parameterChanged(event: ParameterEvent) {
-            parameterListeners.fireInnerParameterChanged(this@MultipleParameter, event.parameter)
-        }
-    }
-
-    private fun addInnerParameter(index: Int, initialise : (ValueParameter<T>)->Unit): ValueParameter<T> {
+    private fun addInnerParameter(index: Int, initialise: (ValueParameter<T>) -> Unit): ValueParameter<T> {
         val innerParameter = factory()
         innerParameter.parent = this
         innerParameter.parameterListeners.add(innerListener)
@@ -142,7 +142,7 @@ class MultipleParameter<T>(
     }
 
     fun addStringValue(str: String, index: Int = value.size): ValueParameter<T> {
-        return addInnerParameter(index) { it.stringValue = str}
+        return addInnerParameter(index) { it.stringValue = str }
     }
 
     fun removeAt(index: Int) {

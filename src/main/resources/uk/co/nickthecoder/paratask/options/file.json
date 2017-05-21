@@ -41,7 +41,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.task.GrepTool",
+            "task": "uk.co.nickthecoder.paratask.tools.GrepTool",
             "code": "grep",
             "label": "Grep",
             "isRow": true,
@@ -96,7 +96,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.project.editor.EditorTool",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
             "code": "e",
             "label": "Edit with built-in Text Editor",
             "isRow": true,

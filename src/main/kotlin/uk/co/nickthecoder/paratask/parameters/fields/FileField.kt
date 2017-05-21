@@ -68,7 +68,7 @@ class FileField(override val parameter: FileParameter) : LabelledField(parameter
         contextMenu.items.clear()
         //val browse = MenuItem("Browse")
         //browse.setOnAction { onBrowse() }
-        //contextMenu.getItems().addAll(browse)
+        //contextMenu.getItems().add(browse)
 
         val file = parameter.value ?: return
 
