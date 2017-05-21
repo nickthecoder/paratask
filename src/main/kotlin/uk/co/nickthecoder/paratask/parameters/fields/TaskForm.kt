@@ -8,12 +8,13 @@ import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class TaskForm(val task: Task) {
 
-    val form = task.taskD.root.createField()
+    val form = ParametersForm(task.taskD.root)
 
     val scrollPane = ScrollPane(form)
 
     init {
         scrollPane.fitToWidthProperty().set(true)
+        form.buildContent()
     }
 
     fun check(): Boolean {

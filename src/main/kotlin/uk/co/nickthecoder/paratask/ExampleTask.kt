@@ -51,6 +51,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val task = TaskParameter("task", tasks = TaskRegistry.allTasksAndTools())
 
     init {
+        //taskD.addParameters(oneOf)
         //taskD.addParameters(task, yesNo)
         //taskD.addParameters(multiple) // BUG!
         taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, oneOf, multiple)

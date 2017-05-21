@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.MultipleField
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -9,10 +10,10 @@ class MultipleParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        val allowInsert: Boolean = false,
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE,
         value: List<T>? = null,
+        autoAdd: Boolean = true,
         val factory: () -> ValueParameter<T>)
 
     : AbstractParameter(
@@ -54,6 +55,9 @@ class MultipleParameter<T>(
 
     init {
         value?.let { this.value = value }
+        if (autoAdd && minItems > 0 && innerParameters.isEmpty()) {
+            newValue()
+        }
     }
 
     override val converter = object : StringConverter<List<T>>() {
@@ -84,6 +88,11 @@ class MultipleParameter<T>(
 
     override fun isStretchy() = true
 
+    override fun check() {
+        errorMessage()?.let { throw ParameterException(this, it) }
+        super.check()
+    }
+
     override fun errorMessage(v: List<T>?): String? {
 
         if (v == null) {
@@ -96,15 +105,6 @@ class MultipleParameter<T>(
         if (v.size > maxItems) {
             return "Cannot have more than $maxItems items"
         }
-
-        /*
-        var index = 0
-        for (innerParameter in innerParameters) {
-
-            innerParameter.errorMessage()?.let { return "Item #${index + 1} : ${it}" }
-            index++
-        }
-        */
 
         return null
     }

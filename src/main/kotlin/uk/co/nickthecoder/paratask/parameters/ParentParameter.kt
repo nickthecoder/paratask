@@ -19,10 +19,7 @@ interface ParentParameter : Parameter {
                     throw ParameterException(parameter, "Expression is required")
                 }
             } else {
-                val error = parameter.errorMessage()
-                if (error != null) {
-                    throw ParameterException(parameter, error)
-                }
+                parameter.errorMessage()?.let { throw ParameterException(parameter, it) }
             }
         }
 

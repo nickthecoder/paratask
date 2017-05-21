@@ -8,6 +8,7 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
+import javafx.scene.layout.Region
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.ParameterException
@@ -20,11 +21,11 @@ import uk.co.nickthecoder.paratask.parameters.RootParameter
  * This is the base class for GroupParmetersForm and MultipleField.
  */
 open class ParametersForm(val parentParameter: ParentParameter)
-    : ParameterField(parentParameter), FieldParent, WrappableField {
+    : Region(), FieldParent, HasChildFields {
 
     override val columns = mutableListOf<FieldColumn>()
 
-    internal val fieldSet = mutableListOf<ParameterField>()
+    override val fieldSet = mutableListOf<ParameterField>()
 
     open fun buildContent() {
         buildTop()
@@ -45,6 +46,15 @@ open class ParametersForm(val parentParameter: ParentParameter)
                 index++
             }
         }
+    }
+
+    fun clear() {
+        children.clear()
+        fieldSet.clear()
+    }
+
+    fun add(node: Node) {
+        children.add(node)
     }
 
     open fun addParameter(parameter: Parameter, index: Int): Node {
@@ -72,10 +82,10 @@ open class ParametersForm(val parentParameter: ParentParameter)
     fun descendants(): List<ParameterField> {
         val list = mutableListOf<ParameterField>()
 
-        fun addThem(form: ParametersForm) {
+        fun addThem(form: HasChildFields) {
             form.fieldSet.forEach {
                 list.add(it)
-                if (it is ParametersForm) {
+                if (it is HasChildFields) {
                     addThem(it)
                 }
             }
@@ -243,15 +253,6 @@ open class ParametersForm(val parentParameter: ParentParameter)
             return sum
         }
 
-    }
-
-    override fun wrap(): Node {
-        val parameter = this.parameter
-        if (parameter is RootParameter) {
-            return this
-        } else {
-            return WrappedField(this)
-        }
     }
 
 }

@@ -7,14 +7,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.fields.GroupParametersForm
+import uk.co.nickthecoder.paratask.parameters.fields.GroupField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 
 class FormTest : GuiTest() {
 
-    lateinit var form: GroupParametersForm
+    lateinit var form: GroupField
 
     lateinit var scene: Scene
 
@@ -31,11 +31,11 @@ class FormTest : GuiTest() {
 
         taskD.addParameters(firstP, helloP, worldP)
 
-        form = GroupParametersForm(taskD.root)
+        form = GroupField(taskD.root)
 
-        firstF = form.addParameter(firstP,0) as ParameterField
-        helloF = form.addParameter(helloP,1) as ParameterField
-        worldF = form.addParameter(worldP,2) as ParameterField
+        //firstF = form.addParameter(firstP,0) as ParameterField
+        //helloF = form.addParameter(helloP,1) as ParameterField
+        //worldF = form.addParameter(worldP,2) as ParameterField
 
         return form
     }

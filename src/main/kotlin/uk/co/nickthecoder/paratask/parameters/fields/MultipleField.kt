@@ -9,70 +9,70 @@ import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.parameters.*
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : ParametersForm(multipleParameter), ParameterListener {
-
-    val whole = BorderPane()
+    : LabelledField(multipleParameter), ParameterListener, HasChildFields {
 
     val addButton = Button("+")
 
+    val parametersForm = ParametersForm(multipleParameter)
+
+    override val fieldSet : List<ParameterField>
+        get() = parametersForm.fieldSet
+
     init {
+        control = parametersForm
         parameter.parameterListeners.add(this)
 
         addButton.onAction = EventHandler {
             extraValue()
         }
         addButton.tooltip = Tooltip("Add")
+
+        parametersForm.styleClass.add("multiple")
     }
 
-    override fun buildContent() {
-        super.buildContent()
-        children.add(addButton)
-    }
-
-    override fun addParameter(parameter: Parameter, index: Int): Node {
-
-        val result = super.addParameter(parameter, index)
-
-        if (result is LabelledField) {
-            val buttons = HBox()
-
-            buttons.styleClass.add("multiple-line-buttons")
-
-            if (multipleParameter.allowInsert) {
-                val addButton = Button("+")
-                addButton.onAction = EventHandler {
-                    newValue(index + 1)
-                }
-                addButton.tooltip = Tooltip("Insert Before")
-                buttons.children.add(addButton)
-            }
-
-            val removeButton = Button("-")
-            removeButton.onAction = EventHandler {
-                removeAt(index)
-            }
-            removeButton.tooltip = Tooltip("Remove")
-            buttons.children.add(removeButton)
-
-            if ( index == 0 && multipleParameter.minItems > 0 ) {
-                removeButton.setVisible(false)
-            }
-
-            result.replaceLabel(buttons)
-
-        }
-        return result
-    }
-
-    private fun rebuildList() {
-        children.clear()
-        fieldSet.clear()
+    fun buildContent() {
+        parametersForm.clear()
 
         for ((index, innerParameter) in multipleParameter.innerParameters.withIndex()) {
             addParameter(innerParameter, index)
         }
 
-        children.add(addButton)
+        if ( multipleParameter.innerParameters.isEmpty()) {
+            parametersForm.add(addButton)
+        }
+    }
+
+    fun addParameter(parameter: Parameter, index: Int): Node {
+
+        val result = parametersForm.addParameter(parameter, index)
+
+        val buttons = HBox()
+
+        buttons.styleClass.add("multiple-line-buttons")
+
+        val addButton = Button("+")
+        addButton.onAction = EventHandler {
+            newValue(index + 1)
+        }
+        addButton.tooltip = Tooltip("Insert Before")
+        buttons.children.add(addButton)
+
+        val removeButton = Button("-")
+        removeButton.onAction = EventHandler {
+            removeAt(index)
+        }
+        removeButton.tooltip = Tooltip("Remove")
+        buttons.children.add(removeButton)
+
+        //if (index == 0 && multipleParameter.minItems > 0) {
+        //    removeButton.setVisible(false)
+        //}
+
+        if (result is LabelledField) {
+            result.replaceLabel(buttons)
+        }
+
+        return result
     }
 
     private fun newValue(index: Int) {
@@ -89,7 +89,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
     override fun parameterChanged(event: ParameterEvent) {
         if (event.type == ParameterEventType.STRUCTURAL) {
-            rebuildList()
+            buildContent()
         }
     }
 }

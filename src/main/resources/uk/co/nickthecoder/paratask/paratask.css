@@ -6,8 +6,12 @@
 *****************************************************/
 
 .form {
-    -fx-padding: 10px 10px 10px 10px;
+    -fx-padding: 10px;
     -fx-spacing: 10px;
+}
+
+.form.multiple {
+    -fx-padding: 0px;
 }
 
 .task-prompter > .scroll-pane {

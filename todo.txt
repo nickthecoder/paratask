@@ -1,21 +1,17 @@
+Parameter.createField returns a field still!
+	GroupField HAS a parametersForm rather than subclassing it.
+		It is not a LabelledField, and therefore is left aligned.
+	MultipleParmeter returns a MultipleField which IS a LabelledField, and the "main" contol is a parmaetersForm
+	OneOfParameter return a OneOfField, which has a ParametersForm, with only one element.
 
-Make it each to add some of the task's parameter to the results
-	e.g. The "directory"parameter for the DirectoryTool
+OneOf isn't a sub class of GroupParameter - it should share a abstract base class
+	createField and buildContent are not inherrited by OneOf
 
-Create a HeaderRow which works similarly to ParameterForm
-	Pass it a list of Parameters to place in the row
-	Can also say how many are on the left and right (with the remainder in the middle)
-	Each Field has its own column
-	Ask for the pref width of each field
-		If there is at least one stretchy parameter
-			Give each stretchy parameter an equal share  of the slack (which may be -ve)
-				Set the gap to zero
-		Otherwise the slack is put into a "gap"
-			The there are left AND right fields the the gap is half the slack
-			Also, if there are NO left and right fields, then ditto
-			Otherewise the gap = slack
-		If there is no slack, then the gap is zero
+Do something about GrepTask/GrepTool
+	The moreFilesP and moreMatchesP are clearly bodges. Need something better than that!
+	MultipleParameter must be HeaderRow friendly!
 
+MultipleParameter.expression should check for a list, and add all elements
 
 
 Tool.autoRun isn't really being used.

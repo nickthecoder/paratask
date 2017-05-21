@@ -18,6 +18,10 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
 
     private var dirty = false
 
+    init {
+        this.control = createControl()
+    }
+
     private fun createControl(): Node {
 
         val spinner = createSpinner()
@@ -136,10 +140,6 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
             val newValue: Int = add(value, steps * amountToStepBy)
             value = if (newValue <= max) newValue else if (isWrapAround) min else max
         }
-    }
-
-    init {
-        this.control = createControl()
     }
 
 }

@@ -33,9 +33,9 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable {
 
     override fun createHeaderRows(): List<HeaderRow> {
         val row1 = HeaderRow()
-        row1.add(grepTask.fileP)
+        row1.add(grepTask.filesP)
         val row2 = HeaderRow()
-        row2.add(grepTask.matchP)
+        row2.add(grepTask.patternsP)
         row2.add(grepTask.typeP)
         row2.add(grepTask.matchCaseP)
         return listOf(row1, row2)

@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.OneOfForm
+import uk.co.nickthecoder.paratask.parameters.fields.OneOfField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class OneOfParameter(
@@ -15,7 +15,7 @@ class OneOfParameter(
         val message: String = "Choose",
         value: Parameter? = null)
 
-    : GroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
+    : AbstractGroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
 
     override val expressionProperty = SimpleStringProperty()
 
@@ -35,8 +35,8 @@ class OneOfParameter(
     }
 
 
-    override fun createField(): OneOfForm {
-        val result = OneOfForm(this)
+    override fun createField(): OneOfField {
+        val result = OneOfField(this)
         result.buildContent()
         return result
     }
