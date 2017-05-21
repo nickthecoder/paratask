@@ -43,11 +43,10 @@ class GitLogTool() : AbstractCommandTool<GitLogRow>() {
 
     constructor(directory: File) : this() {
         directoryP.value = directory
+        directoryP.hidden = true
     }
 
     init {
-        directoryP.hidden = true
-
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP) //, untilP, beforeP)
     }
 

@@ -13,7 +13,6 @@ class MultipleParameter<T>(
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE,
         value: List<T>? = null,
-        autoAdd: Boolean = true,
         val factory: () -> ValueParameter<T>)
 
     : AbstractParameter(
@@ -55,9 +54,6 @@ class MultipleParameter<T>(
 
     init {
         value?.let { this.value = value }
-        if (autoAdd && minItems > 0 && innerParameters.isEmpty()) {
-            newValue()
-        }
     }
 
     override val converter = object : StringConverter<List<T>>() {
@@ -88,7 +84,26 @@ class MultipleParameter<T>(
 
     override fun isStretchy() = true
 
+    fun evaluateMultiple( child: ValueParameter<*>, value : Iterable<*>) {
+        var index = 0
+        for ( myChild in innerParameters ) {
+            if (myChild === child ) {
+                removeAt(index)
+                value.forEach {
+                    newValue(index).evaluated(it)
+                    index ++
+                }
+                return
+            }
+            index ++
+        }
+        throw RuntimeException( "Tried to evaluate innerParameter ${child}, but is not one of my children")
+    }
+
     override fun check() {
+        if ( expression != null ) {
+            return
+        }
         errorMessage()?.let { throw ParameterException(this, it) }
         super.check()
     }

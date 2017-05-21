@@ -31,11 +31,16 @@ interface ValueParameter<T>
     /**
      * Set the value based on an evaluated expression, and therefore the type T isn't known by the
      * caller.
-     * Throws an exception if the type is not correct.
      */
     fun evaluated(v: Any?) {
-        @Suppress("UNCHECKED_CAST")
-        value = v as T
+        val parent = parent
+        if (v is Iterable<*> && parent is MultipleParameter<*>) {
+            parent.evaluateMultiple(this, v)
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            // TODO We really need to throw an exception is the type isn't correct. How?
+            value = v as T
+        }
     }
 
     override fun errorMessage(): String? = errorMessage(value)

@@ -13,6 +13,8 @@ class FileParameter(
         required: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
+        var baseDirectory: File? = null,
+        val baseDirectoryP: FileParameter? = null,
         val stretchy: Boolean = true)
 
     : AbstractValueParameter<File?>(
@@ -26,7 +28,21 @@ class FileParameter(
 
         override fun fromString(str: String): File? = if (str == "") null else File(str)
 
-        override fun toString(file: File?): String = file?.path ?: ""
+        override fun toString(file: File?): String {
+            baseDirectory?.let {
+                return file?.relativeTo(it)?.path ?: ""
+            }
+            return file?.path ?: ""
+        }
+    }
+
+    init {
+        if (baseDirectoryP != null) {
+            baseDirectoryP.listen {
+                baseDirectory = baseDirectoryP.value
+            }
+            baseDirectory = baseDirectoryP.value
+        }
     }
 
     override fun errorMessage(v: File?): String? {

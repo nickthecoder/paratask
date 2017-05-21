@@ -36,7 +36,8 @@ class TaskOption(var task: Task)
 
         // println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
         if (parameter is MultipleParameter<*> && parameter.expression == null) {
-            for (innerParameter in parameter.innerParameters) {
+            val innerExpressionsParameters = parameter.innerParameters.filter { it.expression != null }
+            for (innerParameter in innerExpressionsParameters) {
                 evaluateParameter(innerParameter, tool, row = row, rows = rows)
             }
         } else {

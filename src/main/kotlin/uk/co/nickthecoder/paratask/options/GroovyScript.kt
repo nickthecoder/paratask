@@ -14,10 +14,10 @@ class GroovyScript(val source: String) {
         val importCustomizer = ImportCustomizer()
         importCustomizer.addStarImports(
                 "uk.co.nickthecoder.paratask",
-                "uk.co.nickthecoder.paratask.parameter",
-                "uk.co.nickthecoder.paratask.project",
-                "uk.co.nickthecoder.paratask.project.task",
-                "uk.co.nickthecoder.paratask.project.editor",
+                "uk.co.nickthecoder.paratask.parameters",
+                "uk.co.nickthecoder.paratask.options",
+                "uk.co.nickthecoder.paratask.tools",
+                "uk.co.nickthecoder.paratask.tools.editor",
                 "uk.co.nickthecoder.paratask.util")
 
         val configuration = CompilerConfiguration()

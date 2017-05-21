@@ -41,7 +41,7 @@ abstract class AbstractValueParameter<T>(
         this.value = value
     }
 
-    override fun errorMessage(v: T?): String? = if (v == null && required) "Required" else null
+    override fun errorMessage(v: T?): String? = if (v == null && required && !isProgrammingMode()) "Required" else null
 
     override fun toString() = super.toString() + " = " + value
 }
