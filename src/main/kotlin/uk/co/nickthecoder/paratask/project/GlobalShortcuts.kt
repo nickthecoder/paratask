@@ -24,6 +24,8 @@ class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
         put(Actions.FOCUS_RESULTS) { toolPane()?.focusResults() }
         put(Actions.FOCUS_OPTION) { halfTab()?.focusOption() }
 
+        put(Actions.FOCUS_OTHER_SPLIT) { halfTab()?.focusOtherHalf() }
+
         for ((index, action) in Actions.MAJOR_TABS.withIndex()) {
             put(action) { projectWindow.tabs.selectTab(index) }
         }

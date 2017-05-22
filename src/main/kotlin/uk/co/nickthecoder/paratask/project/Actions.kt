@@ -44,8 +44,10 @@ object Actions {
     val HISTORY_FORWARD = Action("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
 
     // AbstractTableResults
-    val OPTION_RUN = Action("actions.run", KeyCode.ENTER, shift = null)
-    val OPTION_PROMPT = Action("actions.run.newWindow", KeyCode.F4, shift = null)
+    val OPTION_RUN = Action("actions.run", KeyCode.ENTER)
+    val OPTION_RUN_NEW_TAB = Action("actions.run.new.tab", KeyCode.ENTER, shift = true)
+    val OPTION_PROMPT = Action("actions.run", KeyCode.F8)
+    val OPTION_PROMPT_NEW_TAB = Action("actions.run.new.tab", KeyCode.F8, shift = true)
 
     // FileField
     val UP_DIRECTORY = Action("directory.up", KeyCode.UP, alt = true)
@@ -73,9 +75,10 @@ object Actions {
     val NEXT_MINOR_TAB = Action("tab.minor.next", KeyCode.CLOSE_BRACKET, control = true, shift = true)
     val PREV_MINOR_TAB = Action("tab.minor.prev", KeyCode.OPEN_BRACKET, control = true, shift = true)
 
-    val FOCUS_OPTION = Action("focus.option", KeyCode.F10 )
-    val FOCUS_RESULTS = Action("focus.results", KeyCode.F10, control = true )
-    val FOCUS_HEADER = Action("focus.header", KeyCode.F10, shift = true )
+    val FOCUS_OPTION = Action("focus.option", KeyCode.F10)
+    val FOCUS_RESULTS = Action("focus.results", KeyCode.F10, control = true)
+    val FOCUS_HEADER = Action("focus.header", KeyCode.F10, shift = true)
+    val FOCUS_OTHER_SPLIT = Action("focus.other.split", KeyCode.F3, control = true)
 
     val MAJOR_TAB_1 = Action("tab.major.1", KeyCode.DIGIT1, control = true)
     val MAJOR_TAB_2 = Action("tab.major.2", KeyCode.DIGIT2, control = true)

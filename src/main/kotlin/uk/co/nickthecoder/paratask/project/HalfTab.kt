@@ -34,4 +34,6 @@ interface HalfTab {
 
     fun focusOption()
 
+    fun focusOtherHalf()
+
 }

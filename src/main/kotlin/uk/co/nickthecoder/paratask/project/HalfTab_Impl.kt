@@ -143,9 +143,15 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val runner = tool.optionsRunner
 
         if (Actions.OPTION_RUN.match(event)) {
-            done = runner.runNonRow(optionsField.text, prompt = false, newTab = event.isShiftDown)
+            done = runner.runNonRow(optionsField.text, prompt = false, newTab = false)
+        } else if (Actions.OPTION_RUN_NEW_TAB.match(event)) {
+            done = runner.runNonRow(optionsField.text, prompt = false, newTab = true)
+
         } else if (Actions.OPTION_PROMPT.match(event)) {
-            done = runner.runNonRow(optionsField.text, prompt = true, newTab = event.isShiftDown)
+            done = runner.runNonRow(optionsField.text, prompt = true, newTab = false)
+        } else if (Actions.OPTION_PROMPT_NEW_TAB.match(event)) {
+            done = runner.runNonRow(optionsField.text, prompt = true, newTab = true)
+
         } else if (Actions.CONTEXT_MENU.match(event)) {
             onOptionsContextMenu()
             event.consume()
@@ -171,5 +177,11 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     override fun focusOption() {
         optionsField.requestFocus()
+    }
+
+    override fun focusOtherHalf() {
+        val other = if (projectTab.left === this) projectTab.right else projectTab.left
+
+        other?.toolPane?.focusResults()
     }
 }

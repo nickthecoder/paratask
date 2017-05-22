@@ -34,6 +34,7 @@ class GroovyOption(var script: String)
         val bindings = Binding()
         bindings.setProperty("tool", tool)
         bindings.setProperty("desktop", ThreadedDesktop.instance)
+        bindings.setProperty("helper", Helper.instance)
 
         if (rowOrRows != null) {
             bindings.setProperty(if (isMultiple) "rows" else "row", rowOrRows)

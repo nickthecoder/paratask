@@ -47,6 +47,7 @@ class TaskOption(var task: Task)
                 bindings.setProperty("tool", tool)
                 bindings.setProperty("row", row)
                 bindings.setProperty("rows", rows)
+                bindings.setProperty("helper", Helper.instance)
 
                 parameter.evaluated(gscript.run(bindings))
             }

@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.fields.FileField
+import uk.co.nickthecoder.paratask.util.homeDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File
 
@@ -26,11 +27,16 @@ class FileParameter(
 
     override val converter = object : StringConverter<File?>() {
 
-        override fun fromString(str: String): File? = if (str == "") null else File(str)
+        override fun fromString(str: String): File? {
+            if (str == "") return null
+            if (str == "~") return homeDirectory
+            if (str.startsWith("~" + File.separatorChar)) return File(homeDirectory, str.substring(2))
+            return File(str)
+        }
 
         override fun toString(file: File?): String {
             baseDirectory?.let {
-                return file?.relativeTo(it)?.path ?: ""
+                file?.relativeToOrNull(it)?.let { return it.path }
             }
             return file?.path ?: ""
         }

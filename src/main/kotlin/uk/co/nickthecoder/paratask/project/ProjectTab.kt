@@ -16,6 +16,8 @@ interface ProjectTab {
 
     fun detaching()
 
+    fun isSelected() : Boolean
+
     fun close()
 
     fun add(tool: Tool)

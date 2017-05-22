@@ -85,7 +85,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
                         tableView.edit(rowIndex, codeColumn)
                     }
                     2 -> {
-                        runner.runDefault(tableView.items[rowIndex].row, newTab = event.isShiftDown)
+                        runner.runDefault(tableView.items[rowIndex].row)
                     }
                 }
 

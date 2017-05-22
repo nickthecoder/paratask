@@ -10,6 +10,9 @@ open class UnthreadedToolRunner(val tool: Tool) : UnthreadedTaskRunner(tool) {
 
         Platform.runLater {
             tool.updateResults()
+            if (tool?.toolPane?.halfTab?.projectTab?.isSelected() == true) {
+                tool?.toolPane?.focusResults()
+            }
         }
     }
 }
