@@ -146,9 +146,7 @@ open class OptionsRunner(val tool: Tool) {
 
         if (refresh) {
             refresher.add()
-            println( "Listening for a task to end")
             task.taskRunner.listen {
-                println( "Task HAS ended")
                 refresher.onFinished()
             }
         }
