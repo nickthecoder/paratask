@@ -146,13 +146,23 @@ open class OptionsRunner(val tool: Tool) {
 
         if (refresh) {
             refresher.add()
+            println( "Listening for a task to end")
             task.taskRunner.listen {
+                println( "Task HAS ended")
                 refresher.onFinished()
             }
         }
 
+        var checked: Boolean
+        try {
+            task.check()
+            checked = true
+        } catch (e: Exception) {
+            checked = false
+        }
+
         // Either prompt the Task, or run it straight away
-        if (prompt) {
+        if (prompt || !checked) {
             TaskPrompter(task).placeOnStage(Stage())
         } else {
             task.taskRunner.run()
