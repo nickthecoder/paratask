@@ -12,7 +12,7 @@ class GitCommitTask() : AbstractTask() {
 
     override val taskD = TaskDescription("gitCommit")
 
-    val message = StringParameter("message")
+    val message = StringParameter("message", columns=60, rows=10)
 
     val all = BooleanParameter("all")
 
