@@ -10,8 +10,8 @@ open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
 
         Platform.runLater {
             tool.updateResults()
-            if (tool?.toolPane?.halfTab?.projectTab?.isSelected() == true) {
-                tool?.toolPane?.focusResults()
+            if (tool.toolPane?.halfTab?.projectTab?.isSelected() == true) {
+                tool.toolPane?.focusResults()
             }
         }
     }
