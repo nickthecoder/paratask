@@ -11,6 +11,8 @@ class StringParameter(
         value: String = "",
         required: Boolean = true,
         val columns: Int = 30,
+        val rows: Int = 1,
+        val style: String? = null,
         val stretchy: Boolean = true)
 
     : AbstractValueParameter<String>(

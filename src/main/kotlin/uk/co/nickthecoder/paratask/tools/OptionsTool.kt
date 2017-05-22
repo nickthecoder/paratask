@@ -149,7 +149,9 @@ class OptionsTool : AbstractTableTool<Option> {
 
         val scriptOrTaskP = OneOfParameter("typeOfAction")
 
-        var script = StringParameter("script", value = if (option is GroovyOption) option.script else "")
+        var script = StringParameter("script",
+                rows = 4, style = "script",
+                value = if (option is GroovyOption) option.script else "")
 
         var taskP = TaskParameter("task", tasks = TaskRegistry.allTasksAndTools(), value = if (option is TaskOption) option.task else null)
 

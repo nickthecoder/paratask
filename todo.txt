@@ -1,4 +1,7 @@
 
+PlacesTool : Get default option working correctly.
+
+BUG. Middle click doesn't change selection, so operates on the wrong row.
 
 GrepTool running despite no values for files or matches
 
@@ -10,10 +13,8 @@ Add a "debug" script to TaskOption which is run before the option itself is run.
 			Does away with lots of "ifs"
 			No need for clunky "OneOfParameter"
 			
-
-Add a "debug" flag that GroovyOption / TaskOption / OptionsRunner looks at
-	Prints the Option
-
+TaskParameter Better selection of tools
+	Group by catergory in a pop-up menu
 
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 

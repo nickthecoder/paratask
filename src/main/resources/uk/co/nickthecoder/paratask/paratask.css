@@ -171,8 +171,12 @@
 }
 
 /****************************************************
-* Expression TextField                              *
+* Various types of TextField / TextArea             *
 *****************************************************/
+
+.script.text-input {
+    -fx-font-family: monospace;
+}
 
 .expression.text-input {
     -fx-control-inner-background: #ffc;
