@@ -107,11 +107,12 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         var x = insets.left
         var y = insets.top
 
-        var h = Math.max(label.prefHeight(-1.0), controlOrExp?.prefHeight(-1.0) ?: 0.0)
+        var h: Double
         var w: Double
 
         // Label
         if (label.isVisible) {
+            h = label.prefHeight(-1.0)
             w = form.columns[0].width
             layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
             x += w + form.spacing
@@ -126,10 +127,12 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         }
 
         // Control
-        val stretchy = parameter.isStretchy() || expressionButton?.isSelected == true
-        w = if (stretchy) form.columns[2].width else controlOrExp?.prefWidth(h) ?: 0.0
-        layoutInArea(controlOrExp, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
-        x += w + form.spacing
+        controlOrExp?.let {
+            val stretchy = parameter.isStretchy() || expressionButton?.isSelected == true
+            h = it.prefHeight(-1.0)
+            w = if (stretchy) form.columns[2].width else it.prefWidth(h)
+            layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
+        }
 
         // Error message
         y += Math.max(label.prefHeight(-1.0), controlOrExp?.prefHeight(-1.0) ?: 0.0)
