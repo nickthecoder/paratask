@@ -1,6 +1,11 @@
 
+AddHeaderFooter task
+	A single file, or recurse though a directory
+	Filter based on extensions
+	If file contains the magic phrase, then skip
+	otherwise append the given template
+	Use it to add GPL headers to all my files.
 
-ChoiceParameter not syncing value with 2nd field
 
 BUG. Middle click doesn't change selection, so operates on the wrong row.
 
@@ -17,21 +22,6 @@ TaskParameter Better selection of tools
 	Group by catergory in a pop-up menu
 
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
-
-Task names may not be unique, therefore options names won't be unique
-	Could add an additional mapping when registering a task
-	Could enforce all non-core Tools prefix their options name with an ID e.g. uk.co.nickthecoder.git
-		Maybe this could be done automatically by using meta data in the Plugin object.
-
-Split project into sub-projects
-	Git is a good first choice. Ahh, but the options .json file!!!	
-
-AddHeaderFooter task
-	A single file, or recurse though a directory
-	Filter based on extensions
-	If file contains the magic phrase, then skip
-	otherwise append the given template
-	Use it to add GPL headers to all my files.
 
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)

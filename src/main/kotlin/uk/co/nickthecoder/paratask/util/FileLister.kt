@@ -110,9 +110,6 @@ class FileLister(
         if (onlyFiles == false && !isDirectory) {
             return false
         }
-        if (onlyFiles == true && isDirectory) {
-            return false
-        }
 
         if (isDirectory) {
             if (!enterHidden && !includeHidden && file.isHidden) {
