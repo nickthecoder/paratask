@@ -6,15 +6,9 @@ interface ProjectTabs {
 
     val projectWindow: ProjectWindow
 
-    fun addTool(tool: Tool): ProjectTab
+    fun addTool(tool: Tool, run: Boolean = true): ProjectTab
 
-    fun addTool(index: Int, tool: Tool): ProjectTab
-
-    fun addAfter(after: ProjectTab, tool : Tool): ProjectTab
-
-    fun addToolPane(toolPane: ToolPane): ProjectTab
-
-    fun addToolPane(index: Int, toolPane: ToolPane): ProjectTab
+    fun addAfter(after: ProjectTab, tool : Tool, run: Boolean = true): ProjectTab
 
     fun removeTab(projectTab: ProjectTab)
 

@@ -52,10 +52,6 @@ class MultipleParameter<T>(
         }
     }
 
-    init {
-        value?.let { this.value = value }
-    }
-
     override val converter = object : StringConverter<List<T>>() {
 
         override fun fromString(str: String): List<T>? {
@@ -71,7 +67,7 @@ class MultipleParameter<T>(
         }
 
         override fun toString(obj: List<T>?): String {
-            if (obj == null) {
+            if (obj == null || obj.isEmpty()) {
                 return ""
             }
             val strings = obj.map {
@@ -80,6 +76,10 @@ class MultipleParameter<T>(
             }
             return strings.joinToString(separator = "\n", postfix = "\n")
         }
+    }
+
+    init {
+        value?.let { this.value = value }
     }
 
     override fun isStretchy() = true

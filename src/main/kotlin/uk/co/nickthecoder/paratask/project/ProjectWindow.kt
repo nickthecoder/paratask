@@ -86,8 +86,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
     fun onAbout() {
         val about = WebTool("http://nickthecoder.co.uk/wiki/view/software/ParaTask")
-        val toolPane = ToolPane_Impl(about)
-        tabs.addToolPane(toolPane)
+        tabs.addTool(about)
     }
 
     fun onOpenProject() {

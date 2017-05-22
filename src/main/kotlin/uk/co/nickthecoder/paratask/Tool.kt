@@ -19,8 +19,6 @@ interface Tool : Task {
 
     val optionsName: String
 
-    var autoRun: Boolean
-
     val optionsRunner: OptionsRunner
 
     var resultsList: List<Results>

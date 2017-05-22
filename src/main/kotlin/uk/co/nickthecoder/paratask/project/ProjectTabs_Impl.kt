@@ -11,7 +11,8 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     init {
         selectionModel.selectedItemProperty().addListener {
-            _, oldTab, newTab -> onTabChanged(oldTab as ProjectTab_Impl?, newTab as ProjectTab_Impl?)
+            _, oldTab, newTab ->
+            onTabChanged(oldTab as ProjectTab_Impl?, newTab as ProjectTab_Impl?)
         }
     }
 
@@ -20,11 +21,8 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         newTab?.selected()
     }
 
-    override fun addToolPane(toolPane: ToolPane): ProjectTab {
-        return addToolPane(tabs.size, toolPane)
-    }
-
-    override fun addToolPane(index: Int, toolPane: ToolPane): ProjectTab {
+    private fun addTool(index: Int, tool: Tool, run: Boolean): ProjectTab {
+        val toolPane = ToolPane_Impl(tool)
         val newProjectTab = ProjectTab_Impl(this, toolPane)
         tabs.add(index, newProjectTab)
 
@@ -33,20 +31,21 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         ParaTaskApp.logAttach("ProjectTabs.attached ProjectTab")
 
         selectionModel.clearAndSelect(index)
+
+        toolPane.halfTab.pushHistory()
+        if (run) {
+            toolPane.tool.taskRunner.run()
+        }
         return newProjectTab
     }
 
-    override fun addTool(tool: Tool): ProjectTab {
-        return addTool(tabs.size, tool)
+    override fun addTool(tool: Tool, run: Boolean): ProjectTab {
+        return addTool(tabs.size, tool, run = run)
     }
 
-    override fun addTool(index: Int, tool: Tool): ProjectTab {
-        return addToolPane(index, ToolPane_Impl(tool))
-    }
-
-    override fun addAfter(after: ProjectTab, tool: Tool): ProjectTab {
+    override fun addAfter(after: ProjectTab, tool: Tool, run: Boolean): ProjectTab {
         val index = tabs.indexOf(after as Tab)
-        return addTool(index + 1, tool)
+        return addTool(index + 1, tool, run = run)
     }
 
     override fun currentTab(): ProjectTab? {

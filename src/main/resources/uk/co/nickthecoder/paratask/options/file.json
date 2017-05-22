@@ -41,6 +41,25 @@
         },
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "e",
+            "label": "Edit with built-in Text Editor",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.GrepTool",
             "code": "grep",
             "label": "Grep",
@@ -51,13 +70,19 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "file",
-                    "expression": "row.file"
+                    "name": "filesOrDirectories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
-                    "name": "match",
+                    "name": "patternsToMatch",
                     "values": [
-                        { "value" : "" }
+                        {
+                            "value": ""
+                        }
                     ]
                 },
                 {
@@ -91,23 +116,6 @@
                 {
                     "name": "additionalOptions",
                     "value": "IHsn"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "e",
-            "label": "Edit with built-in Text Editor",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "filename",
-                    "expression": "rows.collect {it.file}"
                 }
             ]
         }

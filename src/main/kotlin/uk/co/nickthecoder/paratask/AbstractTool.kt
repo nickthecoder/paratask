@@ -23,9 +23,7 @@ abstract class AbstractTool : Tool {
 
     override val optionsName: String by lazy { taskD.name }
 
-    override var autoRun: Boolean = true
-
-    override val optionsRunner by lazy{ OptionsRunner(this) }
+    override val optionsRunner by lazy { OptionsRunner(this) }
 
     override var resultsList: List<Results> = listOf()
 
@@ -33,17 +31,7 @@ abstract class AbstractTool : Tool {
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
-
-        if (autoRun) {
-            toolPane.parametersPane.run()
-        }
     }
-
-    fun ensureToolPane(): ToolPane {
-        return toolPane ?: ToolPane_Impl(this)
-    }
-
-    override fun check() {}
 
     override fun detaching() {
 
@@ -52,6 +40,13 @@ abstract class AbstractTool : Tool {
         }
         this.toolPane = null
     }
+
+    fun ensureToolPane(): ToolPane {
+        return toolPane ?: ToolPane_Impl(this)
+    }
+
+    override fun check() {}
+
 
     override val icon: Image? by lazy {
         ParaTaskApp.imageResource("tools/${iconName()}.png")

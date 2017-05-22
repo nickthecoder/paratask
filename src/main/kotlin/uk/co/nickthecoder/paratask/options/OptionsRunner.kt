@@ -126,14 +126,15 @@ open class OptionsRunner(val tool: Tool) {
         if (newTab) {
 
             // TODO Insert after current tab
-            projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool)
+            projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool, run = !prompt)
 
         } else {
             halfTab?.changeTool(newTool)
+            if ( !prompt ) {
+                newTool.taskRunner.run()
+            }
         }
-        if (prompt) {
-            // TODO Show the parameters pane
-        }
+
     }
 
     protected fun processExec(exec: Exec, refresh: Boolean) {

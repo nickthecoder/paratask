@@ -34,9 +34,9 @@ class History(val halfTab: HalfTab) {
     private fun use(moment: Moment) {
         using = true
         val tool = moment.tool
-        tool.autoRun = true
 
         halfTab.changeTool(tool)
+        tool.taskRunner.run()
 
         using = false
     }
