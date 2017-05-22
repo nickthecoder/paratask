@@ -6,6 +6,7 @@ import uk.co.nickthecoder.paratask.parameters.RootParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
+import java.lang.Integer.min
 
 class TaskDescription(
         val name: String = "",
@@ -52,8 +53,8 @@ class TaskDescription(
                         && destParameter is MultipleParameter<*>
                         && destParameter.expression == null) {
 
-
-                    for (i in 0..destParameter.innerParameters.size - 1) {
+                    val size = min( destParameter.innerParameters.size, sourceParameter.innerParameters.size)
+                    for (i in 0..size - 1) {
                         destParameter.innerParameters[i].expression = sourceParameter.innerParameters[i].expression
                     }
                 }

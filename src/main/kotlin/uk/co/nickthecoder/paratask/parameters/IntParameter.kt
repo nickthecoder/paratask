@@ -42,6 +42,7 @@ open class IntParameter(
     }
 
     override fun errorMessage(v: Int?): String? {
+        if (isProgrammingMode()) return null
 
         if (v == null) {
             return super.errorMessage(v)

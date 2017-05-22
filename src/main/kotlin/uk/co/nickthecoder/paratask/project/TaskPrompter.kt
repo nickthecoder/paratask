@@ -6,23 +6,11 @@ import uk.co.nickthecoder.paratask.Task
 
 open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
 
+    val okButton = Button("OK")
+
+    val cancelButton = Button("Cancel")
+
     val applyButton = Button("Apply")
-
-    override fun onCancel() {
-        task.taskRunner.cancel()
-        close()
-    }
-
-    override fun onOk() {
-        task.taskRunner.autoExit = true
-        if (checkAndRun()) {
-            close()
-        }
-    }
-
-    private fun onApply() {
-        checkAndRun()
-    }
 
     override fun build() {
         super.build()
@@ -31,6 +19,14 @@ open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
             visibleProperty().bind(task.taskRunner.showRunProperty)
             disableProperty().bind(task.taskRunner.disableRunProperty)
             defaultButtonProperty().set(true)
+            onAction = EventHandler {
+                onOk()
+            }
+        }
+
+        with(cancelButton) {
+            onAction = EventHandler { onCancel() }
+            cancelButtonProperty().set(true)
         }
 
         with(applyButton)
@@ -38,7 +34,24 @@ open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
             onAction = EventHandler { onApply() }
             visibleProperty().bind(task.taskRunner.showRunProperty)
         }
-        buttons.children.add(applyButton)
+
+        buttons.children.addAll( okButton, cancelButton, applyButton)
+    }
+
+    fun onCancel() {
+        task.taskRunner.cancel()
+        close()
+    }
+
+    fun onOk() {
+        task.taskRunner.autoExit = true
+        if (checkAndRun()) {
+            close()
+        }
+    }
+
+    private fun onApply() {
+        checkAndRun()
     }
 
     fun checkAndRun(): Boolean {

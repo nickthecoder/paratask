@@ -1,18 +1,7 @@
-Parameter.createField returns a field still!
-	GroupField HAS a parametersForm rather than subclassing it.
-		It is not a LabelledField, and therefore is left aligned.
-	MultipleParmeter returns a MultipleField which IS a LabelledField, and the "main" contol is a parmaetersForm
-	OneOfParameter return a OneOfField, which has a ParametersForm, with only one element.
 
-OneOf isn't a sub class of GroupParameter - it should share a abstract base class
-	createField and buildContent are not inherrited by OneOf
+Bug : Edit Git Ignore is not saving the expression : new File( tool.directory, ".gitignore" )
 
-Do something about GrepTask/GrepTool
-	The moreFilesP and moreMatchesP are clearly bodges. Need something better than that!
-	MultipleParameter must be HeaderRow friendly!
-
-MultipleParameter.expression should check for a list, and add all elements
-
+Bug : MultipleField not laying out correcntly with more than one item.
 
 Tool.autoRun isn't really being used.
 Also, prompt isn't being respected - tools are run, without their parameters being shown

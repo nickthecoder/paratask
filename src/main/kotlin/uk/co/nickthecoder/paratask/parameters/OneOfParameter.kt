@@ -46,6 +46,8 @@ class OneOfParameter(
     }
 
     override fun errorMessage(v: Parameter?): String? {
+        if (isProgrammingMode()) return null
+
         if (required && value == null) {
             return "You must choose an item from the list"
         }

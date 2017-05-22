@@ -31,70 +31,6 @@
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
-            "code": "d",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "osCommand",
-                    "value": "bash"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "diff"
-                        },
-                        {
-                            "expression": "row.file.path"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
-            "code": "dt",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "osCommand",
-                    "value": "bash"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "difftool"
-                        },
-                        {
-                            "expression": "row.file.path"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
             "code": "push",
             "label": "Git Push",
             "isRow": false,
@@ -124,54 +60,6 @@
                 {
                     "name": "directory",
                     "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "groovy",
-            "script": "s",
-            "code": "ig",
-            "label": "Edit .gitignore",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitLogTool",
-            "code": "log",
-            "label": "Git Log",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "maxItems",
-                    "value": "1"
-                },
-                {
-                    "name": "grep",
-                    "value": ""
-                },
-                {
-                    "name": "grepType",
-                    "value": "fixed"
-                },
-                {
-                    "name": "merges",
-                    "value": ""
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
                 }
             ]
         },
@@ -206,17 +94,6 @@
                     "expression": "tool.directory"
                 }
             ]
-        },
-        {
-            "type": "groovy",
-            "script": "println(rows.path)",
-            "code": "t2",
-            "label": "Test rows.path",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
         },
         {
             "type": "task",
@@ -288,11 +165,133 @@
             "parameters": [
                 {
                     "name": "message",
-                    "value": " "
+                    "value": ""
                 },
                 {
                     "name": "all",
                     "value": "false"
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "egi",
+            "label": "Edit .gitignore",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "new File( tool.directory, \".gitignore\" )"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitLogTool",
+            "code": "log",
+            "label": "Git Log",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "maxItems",
+                    "value": "10000"
+                },
+                {
+                    "name": "grep",
+                    "value": ""
+                },
+                {
+                    "name": "grepType",
+                    "value": "fixed"
+                },
+                {
+                    "name": "merges",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "code": "d",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "code": "dt",
+            "label": "Git Diff Tool",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "difftool"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
                 },
                 {
                     "name": "directory",

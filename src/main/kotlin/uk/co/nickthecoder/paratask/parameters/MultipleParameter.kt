@@ -62,7 +62,7 @@ class MultipleParameter<T>(
             if (str == "") {
                 return listOf()
             }
-            val lines = str.split('\n')
+            val lines = (if (str.endsWith('\n')) str.substring(0,str.length-1) else str).split('\n')
             val result = lines.map {
                 val innerParameter = factory()
                 innerParameter.converter.fromString(it)
@@ -78,7 +78,7 @@ class MultipleParameter<T>(
                 val innerParameter = factory()
                 innerParameter.converter.toString(it)
             }
-            return strings.joinToString(separator = "\n")
+            return strings.joinToString(separator = "\n", postfix = "\n")
         }
     }
 
@@ -109,6 +109,7 @@ class MultipleParameter<T>(
     }
 
     override fun errorMessage(v: List<T>?): String? {
+        if (isProgrammingMode()) return null
 
         if (v == null) {
             return "Expected a list of items"

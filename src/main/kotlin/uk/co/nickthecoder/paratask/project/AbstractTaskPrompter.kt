@@ -21,37 +21,17 @@ abstract class AbstractTaskPrompter(val task: Task) {
 
     val buttons = FlowPane()
 
-    val okButton = Button("OK")
-
-    val cancelButton = Button("Cancel")
 
     open protected fun close() {
         stage?.hide()
     }
 
-    abstract protected fun onOk()
-
-    abstract protected fun onCancel()
-
     open protected fun build() {
 
         task.taskRunner.processors.add(CommandInTerminalWindow(task.taskD.label))
 
-        with(okButton) {
-            onAction = EventHandler {
-                onOk()
-            }
-        }
-
-        with(cancelButton) {
-            onAction = EventHandler { onCancel() }
-            cancelButtonProperty().set(true)
-        }
-
         with(buttons) {
             styleClass.add("buttons")
-            children.add(okButton)
-            children.add(cancelButton)
         }
 
         with(root) {

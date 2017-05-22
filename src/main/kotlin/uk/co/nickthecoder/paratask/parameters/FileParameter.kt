@@ -46,6 +46,8 @@ class FileParameter(
     }
 
     override fun errorMessage(v: File?): String? {
+        if (isProgrammingMode()) return null
+
         if (v == null) {
             return super.errorMessage(v)
         }

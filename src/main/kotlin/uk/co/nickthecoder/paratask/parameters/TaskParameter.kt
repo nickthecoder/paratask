@@ -36,9 +36,7 @@ class TaskParameter(
         }
     }
 
-    override fun errorMessage(v: Task?): String? {
-        return null
-    }
+    override fun errorMessage(v: Task?): String? = null
 
     override fun isStretchy() = false
 
