@@ -129,10 +129,7 @@ open class OptionsRunner(val tool: Tool) {
             projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool, run = !prompt)
 
         } else {
-            halfTab?.changeTool(newTool)
-            if ( !prompt ) {
-                newTool.taskRunner.run()
-            }
+            halfTab?.changeTool(newTool, prompt)
         }
 
     }

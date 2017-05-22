@@ -55,7 +55,6 @@ open class TaskParser(val task: Task) {
 
         try {
             task.check()
-            task.taskD.root.check()
         } catch (e: ParameterException) {
             if (promptP.value == false) {
                 // --no-prompt specified, but task failed the checks. Exit without prompting or running

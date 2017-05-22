@@ -36,7 +36,6 @@ class History(val halfTab: HalfTab) {
         val tool = moment.tool
 
         halfTab.changeTool(tool)
-        tool.taskRunner.run()
 
         using = false
     }

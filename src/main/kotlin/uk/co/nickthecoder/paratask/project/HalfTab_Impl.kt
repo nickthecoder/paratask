@@ -95,7 +95,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         stopButton.visibleProperty().bind(toolPane.tool.taskRunner.showStopProperty)
     }
 
-    override fun changeTool(tool: Tool) {
+    override fun changeTool(tool: Tool, prompt: Boolean) {
         toolPane.detaching()
         children.remove(toolPane as Node)
 
@@ -108,6 +108,15 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         bindButtons()
         history.push(tool)
+
+        if (!prompt) {
+            try {
+                tool.check()
+            } catch(e: Exception) {
+                return
+            }
+            tool.taskRunner.run()
+        }
     }
 
     override fun onStop() {

@@ -41,11 +41,16 @@ abstract class AbstractTool : Tool {
         this.toolPane = null
     }
 
+    override fun check() {
+        taskD.root.check()
+        customCheck()
+    }
+
     fun ensureToolPane(): ToolPane {
         return toolPane ?: ToolPane_Impl(this)
     }
 
-    override fun check() {}
+    override fun customCheck() {}
 
 
     override val icon: Image? by lazy {

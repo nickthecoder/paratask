@@ -54,8 +54,7 @@ open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
         }
     }
 
-    override fun check() {
-        super.check()
+    override fun customCheck() {
         if (file.value == null && (url.value == "")) {
             throw ParameterException(url, "You must enter a URL or a File")
         }

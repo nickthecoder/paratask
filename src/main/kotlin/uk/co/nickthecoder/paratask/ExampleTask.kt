@@ -65,7 +65,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
         println(taskD.toString())
     }
 
-    override fun check() {
+    override fun customCheck() {
         if (rangeFrom.value!! > rangeTo.value!!) {
             throw ParameterException(rangeTo, "Must be less than 'from'")
         }

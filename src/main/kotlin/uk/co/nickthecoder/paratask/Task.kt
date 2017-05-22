@@ -10,6 +10,8 @@ interface Task {
 
     val taskD: TaskDescription
 
+    fun check()
+
     /**
      * Check that the parameters are all valid. This must be called before a task is run.
      * If Task's have their own validation, above that supplied by the Parameters themselves, then override
@@ -18,7 +20,7 @@ interface Task {
      * In most cases, this method does nothing.
      * </p>
      */
-    fun check()
+    fun customCheck()
 
     fun run(): Any?
 

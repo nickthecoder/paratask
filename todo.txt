@@ -4,7 +4,6 @@ ChoiceParameter not syncing value with 2nd field
 
 BUG. Middle click doesn't change selection, so operates on the wrong row.
 
-GrepTool running despite no values for files or matches
 
 GrepTool to show the command line.
 
@@ -83,10 +82,6 @@ Embed a "real" terminal
 
 WebTool open in new tab (right click says "Open in new window) - top level and tool tab!
 WebTool to allow for multiple web pages.
-
-FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
-    This is currently a memory leak unless the FocusListener is explicitly removed
-	(They are being removed, but I wouldn't notice if that stopped working).
 
 Bugs
 ====

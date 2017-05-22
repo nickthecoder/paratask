@@ -38,7 +38,6 @@ class TaskForm(val task: Task) {
         }
 
         try {
-            task.taskD.root.check()
             task.check()
 
         } catch (e: ParameterException) {

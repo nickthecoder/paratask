@@ -34,7 +34,11 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
         toolPane.halfTab.pushHistory()
         if (run) {
-            toolPane.tool.taskRunner.run()
+            try {
+                tool.check()
+                tool.taskRunner.run()
+            } catch (e: Exception) {
+            }
         }
         return newProjectTab
     }
@@ -74,7 +78,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun nextTab() {
-        if ( tabs.isNotEmpty()) {
+        if (tabs.isNotEmpty()) {
             var index = selectionModel.selectedIndex + 1
             if (index >= tabs.size) index = 0
 
@@ -83,9 +87,9 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun prevTab() {
-        if ( tabs.isNotEmpty()) {
+        if (tabs.isNotEmpty()) {
             var index = selectionModel.selectedIndex - 1
-            if (index < 0 ) index = tabs.size - 1
+            if (index < 0) index = tabs.size - 1
 
             selectionModel.clearAndSelect(index)
         }
