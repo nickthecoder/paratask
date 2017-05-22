@@ -13,6 +13,7 @@ import uk.co.nickthecoder.paratask.tools.PythonTool
 import uk.co.nickthecoder.paratask.tools.TerminalTool
 import uk.co.nickthecoder.paratask.tools.WebTool
 import uk.co.nickthecoder.paratask.tools.git.*
+import uk.co.nickthecoder.paratask.tools.places.PlacesDirectoryTool
 
 object TaskRegistry {
 
@@ -21,7 +22,7 @@ object TaskRegistry {
 
     private val homeTools = mutableListOf<Tool>(
             HomeTool(),
-            DirectoryTool(), DirectoryTreeTool(), PlacesTool(),
+            DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
             TerminalTool(), PythonTool(), GroovyTool(),
             WebTool(), EditorTool(),
             GrepTool(), GitTool(),

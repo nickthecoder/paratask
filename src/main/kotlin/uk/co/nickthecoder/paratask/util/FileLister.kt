@@ -135,4 +135,31 @@ class FileLister(
         return true
     }
 
+    /**
+     * To make it slightly easier to use FileLister from Groovy (and Java)
+     */
+    class Builder(
+            var depth: Int = 1,
+            var onlyFiles: Boolean? = true, // true for files, false for directories, null for either
+            var extensions: List<String>? = null,
+            var fileComparator: (Comparator<File>)? = CASE_INSENSITIVE,
+            var directoryComparator: (Comparator<File>)? = fileComparator,
+            var includeHidden: Boolean = false,
+            var enterHidden: Boolean = includeHidden,
+            var includeBase: Boolean = false,
+            var errorHandler: (Exception) -> Unit = { throw(it) }
+    ) {
+
+
+        fun build() = FileLister(
+                depth = depth,
+                onlyFiles = onlyFiles,
+                extensions = extensions,
+                fileComparator = fileComparator,
+                directoryComparator = directoryComparator,
+                includeHidden = includeHidden,
+                includeBase = includeBase,
+                errorHandler = errorHandler)
+    }
+
 }

@@ -57,6 +57,71 @@
             "prompt": false,
             "newTab": true,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "def builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.file.parentFile )\n\ndef prevFile = row.file\nfor ( file in files ) {\n    if (file.equals(row.file)) {\n        def edit = row.taskEdit()\n        edit.file.value = prevFile\n        edit.run()\n        break\n    }\n    prevFile = file\n}\n",
+            "code": "<",
+            "label": "Move to Previous Video",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( row.file )\n\ndef builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.file.parentFile )\n\ndef found = false\nfor ( file in files ) {\n    if (found) {\n        def edit = row.taskEdit()\n        edit.file.value = file\n        edit.run()\n        break\n    }\n    if (file.equals(row.file)) {\n        found = true\n    }\n    prevFile = file\n}\n",
+            "code": ">",
+            "label": "Play Video and Move to Next",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "code": "^",
+            "label": "Open Parent Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                }
+            ]
         }
     ]
 }

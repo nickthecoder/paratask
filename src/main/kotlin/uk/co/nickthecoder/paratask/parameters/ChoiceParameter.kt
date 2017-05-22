@@ -85,7 +85,7 @@ open class ChoiceParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
-    fun clearChoices() {
+    fun clear() {
         keyToValueMap.clear()
         valueToLabelMap.clear()
         labelToValueMap.clear()

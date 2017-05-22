@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.fields.FileField
+import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File
@@ -73,6 +74,28 @@ class FileParameter(
             }
         }
         return null
+    }
+
+    fun createFileChoicesParameter(
+            fileLister: FileLister,
+            name: String = "file",
+            hideExtension: Boolean = true)
+
+            : ChoiceParameter<String?> {
+
+        val filenameP = ChoiceParameter<String?>(name, value = null)
+        listen {
+            filenameP.clear()
+            val directory = value
+            if (directory?.isDirectory == true) {
+                fileLister.listFiles(directory).forEach { file ->
+                    filenameP.addChoice(file.name, file.name, if (hideExtension) file.nameWithoutExtension else file.name)
+                }
+            }
+        }
+        parameterListeners.fireValueChanged(this)
+
+        return filenameP
     }
 
     override fun isStretchy(): Boolean = stretchy

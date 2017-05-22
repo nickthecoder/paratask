@@ -9,6 +9,8 @@ import java.net.URL
 
 abstract class Place(val placesFile: PlacesFile) {
 
+    abstract val name: String
+
     abstract val urlString: String
 
     abstract val label: String
@@ -38,7 +40,8 @@ class URLPlace(placesFile: PlacesFile, override val urlString: String, override 
         }
     }
 
-    val uri by lazy { URI(urlString) }
+    override val name
+        get() = urlString
 
     override val icon: Image? by lazy { ParaTaskApp.imageResource("filetypes/web.png") }
 
@@ -57,6 +60,8 @@ class FilePlace(placesFile: PlacesFile, val file: File, override var label: Stri
     }
 
     override val urlString = file.toURI().toURL().toString()
+
+    override val name = file.name
 
     override val icon: Image? by lazy {
         ParaTaskApp.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")

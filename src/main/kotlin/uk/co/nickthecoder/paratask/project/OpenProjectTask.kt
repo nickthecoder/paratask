@@ -27,7 +27,7 @@ class OpenProjectTask : AbstractTask() {
     }
 
     fun updateNameChoices() {
-        name.clearChoices()
+        name.clear()
         val dir = directory.value ?: return
 
         val lister = FileLister(extensions = listOf("json"))
