@@ -4,7 +4,6 @@ import javafx.css.CssMetaData
 import javafx.css.StyleConverter
 import javafx.css.Styleable
 import javafx.css.StyleableDoubleProperty
-import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Scene
@@ -13,18 +12,19 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.util.requestFocusNext
 
-class HeaderRow() : Region() {
+class HeaderRow() : Region(), FocusListener {
 
     val fieldPositions = mutableListOf<FieldPosition>()
 
     private var goButton: Button? = null
 
-    var focusListener: FocusListener? = null
+    var focusHelper: FocusHelper? = null
 
     init {
         styleClass.add("header-row")
@@ -43,7 +43,6 @@ class HeaderRow() : Region() {
         val parameterField = parameter.createField()
 
         parameterField.styleClass.add("field-${parameter.name}")
-        //parameterField.form = this
         fieldPositions.add(FieldPosition(this, parameterField))
         children.add(parameterField)
 
@@ -57,11 +56,15 @@ class HeaderRow() : Region() {
             goButton = this
         }
         children.add(goButton)
-        focusListener = FocusListener(this.parent, scene = scene) { mine -> button.setDefaultButton(mine) }
+        focusHelper = FocusHelper(this.parent, this, scene = scene, name="HeaderRow")
+    }
+
+    override fun focusChanged(gained: Boolean) {
+        goButton?.setDefaultButton(gained)
     }
 
     fun detaching() {
-        focusListener?.let { it.remove() }
+        focusHelper?.let { it.remove() }
     }
 
     val spacing: Double

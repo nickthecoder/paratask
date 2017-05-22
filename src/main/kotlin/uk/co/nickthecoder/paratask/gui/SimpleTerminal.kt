@@ -14,7 +14,7 @@ import java.io.PrintStream
 
 class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Boolean = false)
 
-    : BorderPane(), Stoppable, ProcessListener {
+    : BorderPane(), Stoppable, ProcessListener, FocusListener {
 
     var maxSize = 100000
 
@@ -97,18 +97,20 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         //textArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
     }
 
-    private var focusListener: FocusListener? = null
+    private var focusHelper: FocusHelper? = null
 
     fun attached() {
         if (inputPane != null) {
-            focusListener = FocusListener(inputPane) { hasFocus: Boolean ->
-                submitButton.isDefaultButton = hasFocus
-            }
+            focusHelper = FocusHelper(inputPane, this, name = "SimpleTerminal")
         }
     }
 
+    override fun focusChanged(gained: Boolean) {
+        submitButton?.setDefaultButton(gained)
+    }
+
     fun detaching() {
-        focusListener?.remove()
+        focusHelper?.remove()
         stop()
     }
 
@@ -132,7 +134,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     override fun finished(process: Process) {
         Platform.runLater {
             message("Finished : Exit status ${process.waitFor()}")
-            focusListener?.remove()
+            focusHelper?.remove()
         }
     }
 

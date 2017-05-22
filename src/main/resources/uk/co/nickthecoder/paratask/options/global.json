@@ -200,6 +200,39 @@
                     "expression": "new File( helper.home, \".config/gtk-3.0/bookmarks\" )"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "System.gc()",
+            "code": "gc",
+            "label": "Garbage Collect",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "println tool",
+            "code": "printT",
+            "label": "Print Tool (Used for debugging)",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "println row",
+            "code": "printR",
+            "label": "Print Row (Used for debugging)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

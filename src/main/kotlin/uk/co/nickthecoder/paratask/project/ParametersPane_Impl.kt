@@ -6,13 +6,14 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
 import uk.co.nickthecoder.paratask.util.Stoppable
 
 class ParametersPane_Impl(override val tool: Tool)
 
-    : ParametersPane, BorderPane() {
+    : ParametersPane, BorderPane(), FocusListener {
 
     override val taskForm = TaskForm(tool)
 
@@ -24,7 +25,7 @@ class ParametersPane_Impl(override val tool: Tool)
 
     private lateinit var toolPane: ToolPane
 
-    private lateinit var focusListener: FocusListener
+    private lateinit var focusHelper: FocusHelper
 
     init {
         center = taskForm.scrollPane
@@ -69,14 +70,15 @@ class ParametersPane_Impl(override val tool: Tool)
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
+        focusHelper = FocusHelper(this, this, name = "ParametersPane")
+    }
 
-        focusListener = FocusListener(this) { hasFocus: Boolean ->
-            runButton.isDefaultButton = hasFocus
-        }
+    override fun focusChanged(gained: Boolean) {
+        runButton?.setDefaultButton(gained)
     }
 
     override fun detaching() {
-        focusListener.remove()
+        focusHelper.remove()
     }
 
 }

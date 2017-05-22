@@ -85,7 +85,8 @@ WebTool open in new tab (right click says "Open in new window) - top level and t
 WebTool to allow for multiple web pages.
 
 FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
-    This is currently a memory leak unless the FocusListener is explicitly removed (which they aren't!)
+    This is currently a memory leak unless the FocusListener is explicitly removed
+	(They are being removed, but I wouldn't notice if that stopped working).
 
 Bugs
 ====
