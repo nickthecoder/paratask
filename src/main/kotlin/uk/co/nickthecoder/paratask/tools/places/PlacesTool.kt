@@ -1,13 +1,11 @@
-package uk.co.nickthecoder.paratask.tools
+package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.util.PlacesFile
-import uk.co.nickthecoder.paratask.util.PlacesFile.Place
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 

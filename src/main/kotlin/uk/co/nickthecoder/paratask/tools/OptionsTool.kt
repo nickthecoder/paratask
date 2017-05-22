@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.AbstractTask
-import uk.co.nickthecoder.paratask.HasCopyableTasks
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.project.SharedToolPane
@@ -152,13 +151,7 @@ class OptionsTool : AbstractTableTool<Option> {
 
         var script = StringParameter("script", value = if (option is GroovyOption) option.script else "")
 
-        val tasks = if (tool is HasCopyableTasks) {
-            TaskRegistry.allTasksAndTools() + tool.tasks
-        } else {
-            TaskRegistry.allTasksAndTools()
-        }
-
-        var taskP = TaskParameter("task", tasks = tasks, value = if (option is TaskOption) option.task else null)
+        var taskP = TaskParameter("task", tasks = TaskRegistry.allTasksAndTools(), value = if (option is TaskOption) option.task else null)
 
         init {
             if (option is GroovyOption) {

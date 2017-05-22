@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.tools.GrepTool
 import uk.co.nickthecoder.paratask.tools.GroovyTool
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.OptionsFilesTool
-import uk.co.nickthecoder.paratask.tools.PlacesTool
+import uk.co.nickthecoder.paratask.tools.places.PlacesTool
 import uk.co.nickthecoder.paratask.tools.PythonTool
 import uk.co.nickthecoder.paratask.tools.TerminalTool
 import uk.co.nickthecoder.paratask.tools.WebTool

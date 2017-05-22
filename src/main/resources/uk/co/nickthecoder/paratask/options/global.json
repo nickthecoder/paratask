@@ -186,7 +186,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.PlacesTool",
+            "task": "uk.co.nickthecoder.paratask.tools.places.PlacesTool",
             "code": "places",
             "label": "Places",
             "isRow": false,

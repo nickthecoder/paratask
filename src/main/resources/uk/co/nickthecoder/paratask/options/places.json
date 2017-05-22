@@ -38,7 +38,7 @@
         },
         {
             "type": "groovy",
-            "script": "if ( row instanceof PlacesFile.FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
+            "script": "if ( row instanceof FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
             "code": ".",
             "label": "Open Place",
             "isRow": true,
