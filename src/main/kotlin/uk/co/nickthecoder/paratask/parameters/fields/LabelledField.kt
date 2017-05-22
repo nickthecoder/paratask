@@ -112,7 +112,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
 
         // Label
         if (label.isVisible) {
-            h = label.prefHeight(-1.0)
+            h = Math.max(label.prefHeight(-1.0), controlOrExp?.prefHeight(-1.0) ?: 0.0)
             w = form.columns[0].width
             layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
             x += w + form.spacing

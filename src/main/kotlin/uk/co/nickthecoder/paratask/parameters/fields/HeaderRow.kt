@@ -4,16 +4,24 @@ import javafx.css.CssMetaData
 import javafx.css.StyleConverter
 import javafx.css.Styleable
 import javafx.css.StyleableDoubleProperty
+import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.VPos
+import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.project.Actions
 
 class HeaderRow() : Region() {
 
     val fieldPositions = mutableListOf<FieldPosition>()
+
+    private var goButton: Button? = null
 
     init {
         styleClass.add("header-row")
@@ -39,6 +47,15 @@ class HeaderRow() : Region() {
         return this
     }
 
+    fun addRunButton(tool: Tool, scene: Scene) {
+        val button = Actions.TOOL_RUN.createButton() { tool.toolPane!!.parametersPane.run() }
+        with(button) {
+            button.setDefaultButton(true)
+            goButton = this
+        }
+        children.add(goButton)
+        FocusListener(this.parent, scene=scene) { mine -> button.setDefaultButton(mine) }
+    }
 
     val spacing: Double
         get() = spacingProperty.get()
@@ -104,6 +121,8 @@ class HeaderRow() : Region() {
 
         var stretchies = 0
         var slack = width - insets.left - insets.right + spacing
+        goButton?.let { slack -= spacing + it.prefWidth(-1.0) }
+
         fieldPositions.forEach() {
             val field = it.field
 
@@ -140,6 +159,10 @@ class HeaderRow() : Region() {
 
             layoutInArea(field, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
             x += w + spacing
+        }
+
+        goButton?.let {
+            layoutInArea(it, x, y, it.prefWidth(-1.0), prefHeight(-1.0), 0.0, HPos.LEFT, VPos.TOP)
         }
     }
 

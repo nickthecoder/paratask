@@ -1,7 +1,4 @@
 
-Tool.autoRun isn't really being used.
-Also, prompt isn't being respected - tools are run, without their parameters being shown
-
 Add a "Go" button to the header rows, so that ENTER works.
 
 GrepTool to show the command line.

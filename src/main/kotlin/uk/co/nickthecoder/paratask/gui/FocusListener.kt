@@ -5,10 +5,8 @@ import javafx.beans.value.ObservableValue
 import javafx.scene.Node
 import javafx.scene.Scene
 
-class FocusListener(val parent: Node, val callback: (Boolean) -> Unit)
+class FocusListener(val parent: Node, val scene: Scene? = parent.scene, val callback: (Boolean) -> Unit)
     : ChangeListener<Node> {
-
-    val scene : Scene? = parent.scene
 
     init {
         scene?.focusOwnerProperty()?.addListener(this)
