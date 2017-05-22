@@ -26,7 +26,6 @@ object Actions {
     val QUIT = Action("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = Action("window.new", KeyCode.N, control = true, tooltip = "New Window")
     val NEW_TAB = Action("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
-    //val CLOSE_TAB = Action("tab.close", KeyCode.W, control = true, tooltip = "Close Tab")
     val DUPLICATE_TAB = Action("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
 
     val SPLIT_TAB_TOGGLE = Action("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
@@ -67,6 +66,41 @@ object Actions {
     val EDIT_UNDO = Action("edit.undo", KeyCode.Z, control = true, tooltip = "Undo")
     val EDIT_REDO = Action("edit.redo", KeyCode.Z, shift = true, control = true, tooltip = "Redo")
     val ESCAPE = Action("escape", KeyCode.ESCAPE)
+
+    // GlobalShortcuts
+    val NEXT_MAJOR_TAB = Action("tab.major.next", KeyCode.CLOSE_BRACKET, control = true)
+    val PREV_MAJOR_TAB = Action("tab.major.prev", KeyCode.OPEN_BRACKET, control = true)
+    val NEXT_MINOR_TAB = Action("tab.minor.next", KeyCode.CLOSE_BRACKET, control = true, shift = true)
+    val PREV_MINOR_TAB = Action("tab.minor.prev", KeyCode.OPEN_BRACKET, control = true, shift = true)
+
+    val FOCUS_OPTION = Action("focus.option", KeyCode.F10 )
+    val FOCUS_RESULTS = Action("focus.results", KeyCode.F10, control = true )
+    val FOCUS_HEADER = Action("focus.header", KeyCode.F10, shift = true )
+
+    val MAJOR_TAB_1 = Action("tab.major.1", KeyCode.DIGIT1, control = true)
+    val MAJOR_TAB_2 = Action("tab.major.2", KeyCode.DIGIT2, control = true)
+    val MAJOR_TAB_3 = Action("tab.major.3", KeyCode.DIGIT3, control = true)
+    val MAJOR_TAB_4 = Action("tab.major.4", KeyCode.DIGIT4, control = true)
+    val MAJOR_TAB_5 = Action("tab.major.5", KeyCode.DIGIT5, control = true)
+    val MAJOR_TAB_6 = Action("tab.major.6", KeyCode.DIGIT6, control = true)
+    val MAJOR_TAB_7 = Action("tab.major.7", KeyCode.DIGIT7, control = true)
+    val MAJOR_TAB_8 = Action("tab.major.8", KeyCode.DIGIT8, control = true)
+    val MAJOR_TAB_9 = Action("tab.major.9", KeyCode.DIGIT9, control = true)
+
+    val MAJOR_TABS = listOf(MAJOR_TAB_1, MAJOR_TAB_2, MAJOR_TAB_3, MAJOR_TAB_4, MAJOR_TAB_5, MAJOR_TAB_6, MAJOR_TAB_7, MAJOR_TAB_8, MAJOR_TAB_9)
+
+    val MINOR_TAB_1 = Action("tab.minor.1", KeyCode.DIGIT1, control = true, shift = true)
+    val MINOR_TAB_2 = Action("tab.minor.2", KeyCode.DIGIT2, control = true, shift = true)
+    val MINOR_TAB_3 = Action("tab.minor.3", KeyCode.DIGIT3, control = true, shift = true)
+    val MINOR_TAB_4 = Action("tab.minor.4", KeyCode.DIGIT4, control = true, shift = true)
+    val MINOR_TAB_5 = Action("tab.minor.5", KeyCode.DIGIT5, control = true, shift = true)
+    val MINOR_TAB_6 = Action("tab.minor.6", KeyCode.DIGIT6, control = true, shift = true)
+    val MINOR_TAB_7 = Action("tab.minor.7", KeyCode.DIGIT7, control = true, shift = true)
+    val MINOR_TAB_8 = Action("tab.minor.8", KeyCode.DIGIT8, control = true, shift = true)
+    val MINOR_TAB_9 = Action("tab.minor.9", KeyCode.DIGIT9, control = true, shift = true)
+
+    val MINOR_TABS = listOf(MINOR_TAB_1, MINOR_TAB_2, MINOR_TAB_3, MINOR_TAB_4, MINOR_TAB_5, MINOR_TAB_6, MINOR_TAB_7, MINOR_TAB_8, MINOR_TAB_9)
+
 
     val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)

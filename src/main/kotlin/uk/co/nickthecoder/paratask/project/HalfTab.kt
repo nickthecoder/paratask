@@ -14,6 +14,8 @@ interface HalfTab {
 
     val toolBars: BorderPane
 
+    val history: History
+
     fun attached(projectTab: ProjectTab)
 
     fun detaching()
@@ -23,4 +25,13 @@ interface HalfTab {
     fun pushHistory()
 
     fun pushHistory(tool: Tool)
+
+    fun onStop()
+
+    fun onRun()
+
+    fun onClose()
+
+    fun focusOption()
+
 }

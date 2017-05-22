@@ -16,6 +16,7 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.util.requestFocusNext
 
 class HeaderRow() : Region() {
 
@@ -54,7 +55,7 @@ class HeaderRow() : Region() {
             goButton = this
         }
         children.add(goButton)
-        FocusListener(this.parent, scene=scene) { mine -> button.setDefaultButton(mine) }
+        FocusListener(this.parent, scene = scene) { mine -> button.setDefaultButton(mine) }
     }
 
     val spacing: Double
@@ -63,6 +64,10 @@ class HeaderRow() : Region() {
 
     override fun getCssMetaData(): List<CssMetaData<out Styleable, *>> {
         return cssMetaDataList
+    }
+
+    fun focus() {
+        requestFocusNext()
     }
 
     companion object {
@@ -152,7 +157,6 @@ class HeaderRow() : Region() {
             if (field.parameter.isStretchy()) {
                 w += extra
                 it.columns[2].width = it.columns[2].prefWidth + extra
-                extra
             } else {
                 it.columns[2].width = it.columns[2].prefWidth
             }

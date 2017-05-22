@@ -80,6 +80,10 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         hide(toolBar, findBar)
     }
 
+    override fun focus() {
+        codeArea.requestFocus()
+    }
+
     fun hide(vararg nodes: Node) {
         nodes.forEach {
             try {

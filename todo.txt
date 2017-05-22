@@ -1,8 +1,4 @@
 
-Add a "Go" button to the header rows, so that ENTER works.
-
-GrepTool to show the command line.
-
 Work on Keyboard Focus
 	Have a ProjectShortcutManager
 		Next/Prev major tab	: ctrl + PageUp, PageDown - May be tricky as the minor tabs will steal this!
@@ -28,10 +24,9 @@ Work on Keyboard Focus
 			As JavaFX doesn't seem to support middle click for paste, perhaps use double middle click
 		"shift+ctrl" to force the same tab???
 
-Create a Tool to edit keyboard shortcuts
-	Must keep the defaults, and only save those that are different.
-		Action to have "var userShortcut : KeyCombination?"	
-	Don't worry if tooltips don't get updated till a restart/new window.
+GrepTool running despite no values for files or matches
+
+GrepTool to show the command line.
 
 Add a "debug" script to TaskOption which is run before the option itself is run.
 	Funny... The easiest way to do this is to merge GroovyOption and TaskOption!

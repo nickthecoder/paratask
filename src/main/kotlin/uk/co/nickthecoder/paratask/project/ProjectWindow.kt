@@ -34,6 +34,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
     private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
+
     var title: String = ""
 
     init {
@@ -72,6 +73,8 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun placeOnStage(stage: Stage) {
+        GlobalShortcuts( scene, this )
+
         ParaTaskApp.style(scene)
 
         stage.title = title

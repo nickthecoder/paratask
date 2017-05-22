@@ -8,7 +8,7 @@ interface ProjectTabs {
 
     fun addTool(tool: Tool, run: Boolean = true): ProjectTab
 
-    fun addAfter(after: ProjectTab, tool : Tool, run: Boolean = true): ProjectTab
+    fun addAfter(after: ProjectTab, tool: Tool, run: Boolean = true): ProjectTab
 
     fun removeTab(projectTab: ProjectTab)
 
@@ -22,4 +22,9 @@ interface ProjectTabs {
 
     fun listTabs(): List<ProjectTab>
 
+    fun nextTab()
+
+    fun prevTab()
+
+    fun selectTab(index: Int)
 }

@@ -73,4 +73,5 @@ class TaskForm(val task: Task) {
             scrollPane.vvalue = (nodeMaxY - viewport.height) / (contentHeight - viewport.height)
         }
     }
+
 }

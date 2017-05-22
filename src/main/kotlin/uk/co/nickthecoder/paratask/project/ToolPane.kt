@@ -21,4 +21,15 @@ interface ToolPane {
     fun selected()
 
     fun toggleParameters()
+
+    fun nextTab()
+
+    fun prevTab()
+
+    fun selectTab(index: Int)
+
+    fun focusHeader()
+
+    fun focusResults()
+
 }

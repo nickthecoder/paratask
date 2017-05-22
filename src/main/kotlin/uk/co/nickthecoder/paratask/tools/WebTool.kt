@@ -63,4 +63,8 @@ class WebResults(override val tool: WebTool, address: String) : AbstractResults(
         //val docTitle = node.getEngine().getTitle()
         // TODO Update the long title when implemented
     }
+
+    override fun focus() {
+        node.requestFocus()
+    }
 }

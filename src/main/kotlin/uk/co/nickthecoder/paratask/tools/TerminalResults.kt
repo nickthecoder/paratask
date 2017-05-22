@@ -49,4 +49,8 @@ class TerminalResults(
         node.detaching()
         ParaTaskApp.logAttach("TerminalResults.detached")
     }
+
+    override fun focus() {
+        node.focus()
+    }
 }

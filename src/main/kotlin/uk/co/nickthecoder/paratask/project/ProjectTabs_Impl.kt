@@ -72,4 +72,30 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     override fun listTabs(): List<ProjectTab> {
         return tabs.map { it as ProjectTab }
     }
+
+    override fun nextTab() {
+        if ( tabs.isNotEmpty()) {
+            var index = selectionModel.selectedIndex + 1
+            if (index >= tabs.size) index = 0
+
+            selectionModel.clearAndSelect(index)
+        }
+    }
+
+    override fun prevTab() {
+        if ( tabs.isNotEmpty()) {
+            var index = selectionModel.selectedIndex - 1
+            if (index < 0 ) index = tabs.size - 1
+
+            selectionModel.clearAndSelect(index)
+        }
+    }
+
+    override fun selectTab(index: Int) {
+        if (index >= 0 && index < tabs.size) {
+            selectionModel.clearAndSelect(index)
+        }
+    }
+
+
 }

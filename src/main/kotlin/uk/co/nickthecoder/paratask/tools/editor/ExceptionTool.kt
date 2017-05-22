@@ -37,5 +37,9 @@ class ExceptionTool : AbstractTool {
             node.text = exception?.message + "\n\n" + writer.toString()
 
         }
+
+        override fun focus() {
+            node.requestFocus()
+        }
     }
 }

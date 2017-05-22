@@ -69,6 +69,10 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     override fun detaching() {}
 
+    override fun focus() {
+        tableView.requestFocus()
+    }
+
     open fun onMouseClicked(event: MouseEvent) {
 
         contextMenu.hide()

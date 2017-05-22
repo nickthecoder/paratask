@@ -1,6 +1,10 @@
 package uk.co.nickthecoder.paratask.util
 
 import javafx.application.Platform
+import javafx.event.Event
+import javafx.scene.Node
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import java.util.concurrent.CountDownLatch
 
 fun runAndWait(action: () -> Unit) {
@@ -28,3 +32,8 @@ fun runAndWait(action: () -> Unit) {
     }
 }
 
+fun Node.requestFocusNext() {
+    this.requestFocus()
+    val tab = KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "\t", KeyCode.TAB, false, false, false, false)
+    Event.fireEvent(this, tab)
+}

@@ -112,6 +112,14 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         stop()
     }
 
+    fun focus() {
+        if (bottom === inputPane) {
+            inputField.requestFocus()
+        } else {
+            textArea.requestFocus()
+        }
+    }
+
     private fun kill() {
         exec.kill(forcibly = killed) // If kill button is pressed twice, forcibly kill the second time 
         killed = true

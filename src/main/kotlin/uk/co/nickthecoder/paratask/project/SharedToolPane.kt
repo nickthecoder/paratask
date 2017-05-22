@@ -27,4 +27,24 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
     override fun toggleParameters() {
         shared.toggleParameters()
     }
+
+    override fun nextTab() {
+        shared.nextTab()
+    }
+
+    override fun prevTab() {
+        shared.prevTab()
+    }
+
+    override fun selectTab(index: Int) {
+        shared.selectTab(index)
+    }
+
+    override fun focusHeader() {
+        shared.focusHeader()
+    }
+
+    override fun focusResults() {
+        shared.focusResults()
+    }
 }

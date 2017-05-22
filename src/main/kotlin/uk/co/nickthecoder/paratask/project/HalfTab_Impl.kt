@@ -33,7 +33,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     val runButton: Button
 
-    private val history = History(this)
+    override val history = History(this)
 
     val optionsContextMenu = ContextMenu()
 
@@ -110,14 +110,14 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         history.push(tool)
     }
 
-    fun onStop() {
+    override fun onStop() {
         val tool = toolPane.tool
         if (tool is Stoppable) {
             tool.stop()
         }
     }
 
-    fun onRun() {
+    override fun onRun() {
         toolPane.parametersPane.run()
     }
 
@@ -125,7 +125,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         changeTool(tool.copy())
     }
 
-    fun onClose() {
+    override fun onClose() {
         projectTab.remove(toolPane)
     }
 
@@ -167,5 +167,9 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val tool = toolPane.resultsTool()
         tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
         optionsContextMenu.show(optionsField, Side.BOTTOM, 0.0, 0.0)
+    }
+
+    override fun focusOption() {
+        optionsField.requestFocus()
     }
 }

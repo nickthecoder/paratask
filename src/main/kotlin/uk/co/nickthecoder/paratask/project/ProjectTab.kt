@@ -16,6 +16,8 @@ interface ProjectTab {
 
     fun detaching()
 
+    fun close()
+
     fun add(tool: Tool)
 
     fun remove(toolPane: ToolPane)

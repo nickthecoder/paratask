@@ -20,4 +20,6 @@ interface Results : Labelled {
     fun selected()
 
     fun deselected()
+
+    fun focus()
 }
