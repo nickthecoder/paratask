@@ -5,7 +5,9 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.ParameterEventType
+import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 // Note. JavaFX cannot handle null values in Combobox correctly
 // See : http://stackoverflow.com/questions/25877323/no-select-item-on-javafx-combobox
@@ -59,6 +61,8 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
         parameter.listen { event ->
             if (event.type == ParameterEventType.STRUCTURAL) {
                 updateChoices()
+            } else if (event.type == ParameterEventType.VALUE) {
+                comboBox.value = parameter.value
             }
         }
         return comboBox
