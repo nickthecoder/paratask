@@ -1,5 +1,4 @@
 
-PlacesDirectory
 
 ChoiceParameter not syncing value with 2nd field
 
@@ -25,8 +24,6 @@ Task names may not be unique, therefore options names won't be unique
 	Could enforce all non-core Tools prefix their options name with an ID e.g. uk.co.nickthecoder.git
 		Maybe this could be done automatically by using meta data in the Plugin object.
 
-Switch logic newTab -> sameTab
-
 Split project into sub-projects
 	Git is a good first choice. Ahh, but the options .json file!!!	
 
@@ -37,16 +34,10 @@ AddHeaderFooter task
 	otherwise append the given template
 	Use it to add GPL headers to all my files.
 
-Bug ExampleTool with only "multiple" the size is full screen height.
-	Also gives the wrong size for multiple when first prompting programming of directory!
-
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
-
-Maybe I should rename Task to Command and Command to OSCommand???
-	TaskDescription becomes CommandDescription
-	In which case, the project needs to be renamed. Ouch!
+Switch logic newTab -> sameTab?
 
 Given that many options which return Tools are newTab, maybe I need a way to override this.
 	function which have newTab : Boolean become newTab : Boolean?
@@ -64,16 +55,13 @@ SimpleTerminal
 
 Implement command line tab completion
 
-Consider letting GrepTask have multiple files instead of just one
-    Will need to set the "base" only if there is ONE and it is a directory.
-
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?
         When removing the last editor tab, remove the whole toolPane
+    Allow a single Editor tool to be reused
+	i.e. When opening a new text file, if there is already an Editor open, then use it, adding a new minor tab
+	    (or showing the minor tab if it is already open)
 
-New Tools :
-    PlacesChoices
-    Groovy Tools - Lists groovy scripts in a directory, and allows them to be run.
 
 Table Column selection
     http://stackoverflow.com/questions/27739833/adapt-tableview-menu-button
@@ -82,21 +70,10 @@ Editor - Allow listeners when saving the file
     Use it in PlacesTool to refresh the list when editing.
 
 
-
-
-
-StringListParameter
-    trim : Boolean
-    removeBlanks : Boolean
-    
-    Renderes as a TextArea
-
-    Can use this for includes as well as command line options
-
-
-
-
-Listen to the directories on the options path, and clear any cache when a file changes.
+Directory Listener
+    Listen to the directories on the options path, and clear any cache when a file changes.
+    Editor to offer "reload" when a file is touched
+    Directory and Places, PlacesDirectory update themselves when a directory changes.
 
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 
@@ -107,25 +84,13 @@ Embed a "real" terminal
 WebTool open in new tab (right click says "Open in new window) - top level and tool tab!
 WebTool to allow for multiple web pages.
 
-Task and Tool are in two different packages. Should they be?
-
-ProjectWindow to detach all tabs when it is closed
-    (so that terminals and other tools can clean up)
-
-WebTool to allow for multiple web pages.
-
 FocusListener to use weak refs, so that if the resources are gc'd, then it can remove itself.
+    This is currently a memory leak unless the FocusListener is explicitly removed (which they aren't!)
 
 Bugs
 ====
 
 Editor must not re-load existing files when re-running the tool.
-
-Full width Inner parameters of a MultipleParameter are not layed out correctly
-
-A collapsed groups must unfurl when a child has an error
-    Add a listener in GroupField
-    That won't handle custom errors, only Parameter's built in validation
 
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace :-(
 

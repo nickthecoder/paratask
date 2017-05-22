@@ -24,6 +24,8 @@ class HeaderRow() : Region() {
 
     private var goButton: Button? = null
 
+    var focusListener: FocusListener? = null
+
     init {
         styleClass.add("header-row")
     }
@@ -55,7 +57,11 @@ class HeaderRow() : Region() {
             goButton = this
         }
         children.add(goButton)
-        FocusListener(this.parent, scene = scene) { mine -> button.setDefaultButton(mine) }
+        focusListener = FocusListener(this.parent, scene = scene) { mine -> button.setDefaultButton(mine) }
+    }
+
+    fun detaching() {
+        focusListener?.let { it.remove() }
     }
 
     val spacing: Double

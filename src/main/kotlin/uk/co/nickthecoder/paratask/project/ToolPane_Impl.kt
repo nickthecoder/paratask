@@ -33,11 +33,9 @@ class ToolPane_Impl(override var tool: Tool)
     init {
         borderPane.center = tabPane
 
-        headerRowsBox.styleClass.add("header")
         headerRows = tool.createHeaderRows()
-        headerRows.forEach() {
-            headerRowsBox.children.add(it)
-        }
+
+        headerRowsBox.styleClass.add("header")
 
         // Adding the ParametersPane to the stack first (and then adding to the TabPane later) is a bodge
         // because TabPane doesn't set the parent of its child tabs immediately, and I need the ParametersPane
@@ -134,11 +132,16 @@ class ToolPane_Impl(override var tool: Tool)
 
         tool.attached(this)
 
+        headerRows.forEach() {
+            headerRowsBox.children.add(it)
+        }
+
         val lastRowIndex = headerRows.size - 1
         if (lastRowIndex >= 0) {
             val lastRow = headerRows[lastRowIndex]
             lastRow.addRunButton(tool, scene)
         }
+
         ParaTaskApp.logAttach("ToolPane.attached")
     }
 
@@ -148,6 +151,11 @@ class ToolPane_Impl(override var tool: Tool)
         tool.detaching()
         parametersPane.detaching()
         removeOldResults(tool.resultsList)
+
+        headerRows.forEach() {
+            it.detaching()
+        }
+
         ParaTaskApp.logAttach("ToolPane detached")
     }
 
