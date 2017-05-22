@@ -4,31 +4,6 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "new GitCommitTask( tool.directory, false )",
-            "code": "c",
-            "label": "Git Commit",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
-            "script": "new GitCommitTask( tool.directory, true )",
-            "code": "ca",
-            "label": "Git Commit All",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "aliases": [
-                "all"
-            ]
-        },
-        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
             "code": "push",
@@ -154,31 +129,6 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
-            "code": "c2",
-            "label": "Git Commit",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "parameters": [
-                {
-                    "name": "message",
-                    "value": ""
-                },
-                {
-                    "name": "all",
-                    "value": "false"
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
             "code": "egi",
             "label": "Edit .gitignore",
@@ -292,6 +242,59 @@
                             "expression": "row.file.path"
                         }
                     ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
+            "code": "c",
+            "label": "Git Commit",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "message",
+                    "value": ""
+                },
+                {
+                    "name": "all",
+                    "value": "false"
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
+            "code": "ca",
+            "label": "Git Commit All",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "aliases": [
+                "all"
+            ],
+            "parameters": [
+                {
+                    "name": "message",
+                    "value": ""
+                },
+                {
+                    "name": "all",
+                    "value": "true"
                 },
                 {
                     "name": "directory",
