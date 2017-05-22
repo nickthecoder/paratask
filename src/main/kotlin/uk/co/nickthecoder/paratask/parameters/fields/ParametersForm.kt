@@ -37,7 +37,9 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     open fun buildTop() {
         if (parentParameter.description.isNotEmpty()) {
-            children.add(TextFlow(Text(parentParameter.description)))
+            val textFlow = TextFlow(Text(parentParameter.description))
+            textFlow.prefWidth = 500.0
+            children.add(textFlow)
         }
     }
 
@@ -195,7 +197,9 @@ open class ParametersForm(val parentParameter: ParentParameter)
             w += it.prefWidth + spacing
         }
 
-        return w + insets.left + insets.right
+        val mchildren: List<Node> = getManagedChildren()
+        val otherWidths = mchildren.filter { it !is ParameterField }.map { it.prefWidth(height) }.max()
+        return Math.max(w, otherWidths ?: 0.0) + insets.left + insets.right
     }
 
     override fun computeMinHeight(width: Double): Double {
@@ -205,7 +209,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
     }
 
     override fun computePrefHeight(w: Double): Double {
-        val width = if (w == -1.0) computePrefWidth(1.0) else w
+        val width = (if (w == -1.0) computePrefWidth(-1.0) else w) - insets.left - insets.right
 
         val mchildren: List<Node> = getManagedChildren()
         val sum = sum(mchildren, Node::prefHeight, width)
@@ -218,6 +222,9 @@ open class ParametersForm(val parentParameter: ParentParameter)
         val w = width - insets.left - insets.right
 
         getManagedChildren<Node>().forEach {
+            //if ( it !is ParameterField ) {
+            //    println( "Laying out ${it} using width ${w}")
+            //}
             if (it.isVisible) {
                 val h = it.prefHeight(w)
                 layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
