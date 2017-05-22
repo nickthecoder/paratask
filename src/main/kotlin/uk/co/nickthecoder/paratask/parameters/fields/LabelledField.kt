@@ -73,7 +73,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
     }
 
     override fun computePrefHeight(width: Double): Double {
-        val both = Math.max(label.prefHeight(width), controlOrExpression()?.minHeight(width) ?: 0.0)
+        val both = Math.max(label.prefHeight(width), controlOrExpression()?.prefHeight(width) ?: 0.0)
         val allThree = Math.max(both, expressionButton?.prefHeight(width) ?: 0.0)
         val err = if (error.isVisible) error.prefHeight(width) else 0.0
 

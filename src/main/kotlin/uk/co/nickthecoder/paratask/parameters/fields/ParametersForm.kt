@@ -26,6 +26,10 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     override val fieldSet = mutableListOf<ParameterField>()
 
+    init {
+        styleClass.add("parametersForm")
+    }
+
     open fun buildContent() {
         buildTop()
         buildChildren()
@@ -165,6 +169,10 @@ open class ParametersForm(val parentParameter: ParentParameter)
             }
         }
     }
+
+    override fun computeMaxWidth(height: Double): Double = Double.MAX_VALUE
+
+    override fun computeMaxHeight(height: Double): Double = Double.MAX_VALUE
 
     override fun computeMinWidth(height: Double): Double {
         calculateColumnPreferences()

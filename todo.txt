@@ -1,4 +1,7 @@
 
+TaskParameter uses OneOf which is buggy!
+
+
 PlacesTool : Get default option working correctly.
 
 BUG. Middle click doesn't change selection, so operates on the wrong row.

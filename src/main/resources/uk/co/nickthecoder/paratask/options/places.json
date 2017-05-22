@@ -38,17 +38,6 @@
         },
         {
             "type": "groovy",
-            "script": "if ( row instanceof FilePlace ) { if ( row.file.isDirectory() ) { println( \"dir\" ) } else { desktop.open( row.file) } } else { desktop.browse( row.uri ) }",
-            "code": ".",
-            "label": "Open Place",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "row.taskCopy()",
             "code": "=",
             "label": "Copy Place",
@@ -57,6 +46,17 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "script": "if ( row instanceof FilePlace ) {\n    if ( row.file.isDirectory() ) {\n        new DirectoryTool( row.file )\n    } else {\n        desktop.open( row.file)\n    }\n} else {\n    desktop.browse( row.uri )\n}",
+            "code": ".",
+            "label": "Open Place",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
         }
     ]
 }
