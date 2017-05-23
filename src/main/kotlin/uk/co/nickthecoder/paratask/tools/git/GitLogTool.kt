@@ -24,9 +24,9 @@ import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.process.OSCommand
-import java.io.File
+import java.time.format.DateTimeFormatter
 
-class GitLogTool() : AbstractCommandTool<GitLogRow>() {
+class GitLogTool : AbstractCommandTool<GitLogRow>() {
 
     override val taskD = TaskDescription("gitLog", description = "Log of Commits/Merges")
 
@@ -53,30 +53,23 @@ class GitLogTool() : AbstractCommandTool<GitLogRow>() {
 
     val mergesP = BooleanParameter("merges", required = false)
 
-    //TODO Replace with DateParameter
-    //val untilP = StringParameter("until", required = false)
+    val sinceP = DateParameter("since", required = false)
 
-    //val beforeP = StringParameter("before", required = false)
+    val untilP = DateParameter("until", required = false)
 
-    constructor(directory: File) : this() {
-        directoryP.value = directory
-        directoryP.hidden = true
-    }
+    val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     init {
-        taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP) //, untilP, beforeP)
+        taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
     }
 
     override fun createColumns() {
         columns.add(Column<GitLogRow, String>("date") { it.date })
         columns.add(Column<GitLogRow, String>("message", width = 400) { it.message })
         columns.add(Column<GitLogRow, String>("author") { it.author })
-
     }
 
     override fun createCommand(): OSCommand {
-
-        list.clear()
 
         val command = OSCommand("git", "log", "--date=short").dir(directory!!)
 
@@ -95,9 +88,12 @@ class GitLogTool() : AbstractCommandTool<GitLogRow>() {
             command.addArgument("--no-merges")
         }
 
-        //beforeP.value?.let { osCommand.addArgument( "--before=${it}")}
-        //untilP.value?.let { osCommand.addArgument( "--until=${it}")}
+        sinceP.value?.let { command.addArgument("--since=${dateFormat.format(it)}") }
+        untilP.value?.let { command.addArgument("--until=${dateFormat.format(it)}") }
 
+        state = GitLogTool.ParseState.head
+
+        println("since=${sinceP.value} until=${untilP.value} commnad: ${command}")
         return command
     }
 
