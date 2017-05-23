@@ -18,42 +18,88 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.event.ActionEvent
-import javafx.scene.control.Button
-import javafx.scene.control.ComboBox
+import javafx.geometry.Side
+import javafx.scene.control.*
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskGroup
+import uk.co.nickthecoder.paratask.TaskRegistry
+import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.parameters.TaskParameter
+import uk.co.nickthecoder.paratask.project.Action
 import uk.co.nickthecoder.paratask.project.ProgrammingModeTaskPrompter
 
 class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {
 
-    private val comboBox = ComboBox<Task>()
+    private val taskButton = Button("...")
+
+    private val contextMenu = ContextMenu()
+
+    val taskLabel = Label("")
 
     val button = Button("Parameters")
 
     init {
-        comboBox.converter = parameter.converter
-        comboBox.valueProperty().bindBidirectional(parameter.valueProperty)
-
-        for (task in parameter.creationStringToTask.values) {
-            comboBox.items.add(task)
-        }
 
         val box = HBox()
-        box.children.addAll(comboBox, button)
+        box.styleClass.add("task-field")
+        box.children.addAll(taskLabel, taskButton, button)
         this.control = box
 
+        taskButton.addEventFilter(ActionEvent.ACTION) { onChooseTask() }
+
         button.addEventHandler(ActionEvent.ACTION) { onEditParameters() }
+        buildContextMenu()
+        taskButton.contextMenu = contextMenu
+        parameter.value?.let { taskLabel.text = it.taskD.label }
     }
 
     private fun onEditParameters() {
-        val task = comboBox.value
+        val task = parameter.value
         if (task != null) {
             task.taskD.programmingMode = true
             val taskPrompter = ProgrammingModeTaskPrompter(task)
             taskPrompter.placeOnStage(Stage())
         }
+    }
+
+    private fun buildContextMenu() {
+        TaskRegistry.topLevel.listTools().forEach { addTask(it) }
+        TaskRegistry.topLevel.listTasks().forEach { addTask(it) }
+
+        contextMenu.items.add(SeparatorMenuItem())
+        TaskRegistry.listGroups().forEach { addGroup(it) }
+    }
+
+    private fun addGroup(taskGroup: TaskGroup) {
+        // Skip the top-level tools as these are added as top-leve items
+        if (taskGroup === TaskRegistry.topLevel) return
+
+        val menu = Menu(taskGroup.label)
+        taskGroup.listTools().forEach { addTask(it, menu) }
+        taskGroup.listTasks().forEach { addTask(it, menu) }
+        contextMenu.items.add(menu)
+    }
+
+    private fun addTask(task: Task, parent: Any = contextMenu) {
+        val menuItem = MenuItem(task.taskD.label)
+        menuItem.addEventHandler(ActionEvent.ACTION) {
+            parameter.value = task
+            taskLabel.text = task.taskD.label
+        }
+
+        if (parent is ContextMenu) {
+            parent.items.add(menuItem)
+        } else if (parent is Menu) {
+            parent.items.add(menuItem)
+        }
+    }
+
+    fun onChooseTask() {
+        contextMenu.show(taskButton, Side.BOTTOM, 0.0, 0.0)
     }
 }

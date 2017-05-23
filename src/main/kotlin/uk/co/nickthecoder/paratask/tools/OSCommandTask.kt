@@ -27,7 +27,7 @@ import uk.co.nickthecoder.paratask.util.process.Exec
 
 class OSCommandTask : AbstractTask() {
 
-    override val taskD = TaskDescription("osCommand", label = "Run an operating system osCommand")
+    override val taskD = TaskDescription("osCommand", label = "Run an Operating System Command")
 
     val commandP = StringParameter("osCommand", value = "bash")
 

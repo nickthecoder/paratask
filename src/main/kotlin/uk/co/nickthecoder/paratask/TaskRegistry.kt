@@ -38,6 +38,8 @@ object TaskRegistry {
 
     val home = TaskGroup("Home")
 
+    val topLevel = TaskGroup("Top Level")
+
     init {
         home.addTools(
                 HomeTool(),
@@ -47,23 +49,26 @@ object TaskRegistry {
                 GrepTool(), GitTool(),
                 OptionsFilesTool()
         )
-        home.addTasks(OSCommandTask())
+
+        topLevel.addTools(TerminalTool())
+        topLevel.addTasks(OSCommandTask())
 
         val git = TaskGroup("Git")
-        git.addTools(GitTool(), GitLogTool())
-        git.addTasks(GitCommitTask(), GitCommitTask(), GitRMTask())
+        git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
+        git.addTasks(GitCommitTask(), GitRMTask())
 
+        addGroup(topLevel)
         addGroup(home)
         addGroup(git)
     }
 
-    fun listGroups() : List<TaskGroup> = taskGroups
+    fun listGroups(): List<TaskGroup> = taskGroups
 
     fun addGroup(group: TaskGroup) {
         taskGroups.add(group)
     }
 
-    fun find( task : Task ) {
+    fun find(task: Task) {
 
     }
 }

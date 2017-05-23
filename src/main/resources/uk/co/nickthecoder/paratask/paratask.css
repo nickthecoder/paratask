@@ -51,6 +51,18 @@
     -fx-min-width: 90px;
 }
 
+
+/************************************************************
+* See :                                                     *
+*   uk.co.nickthecoder.paratask.parameters.fields.TaskField *
+*                                                           *
+*************************************************************/
+
+.task-field {
+    -fx-alignment: center-left;
+    -fx-spacing: 10px;
+}
+
 /****************************************************
 * See :                                             *
 *   uk.co.nickthecoder.paratask.gui.MultipleField   *
