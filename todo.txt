@@ -2,11 +2,6 @@
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
-SimpleTerminal
-    Add an option to PAUSE when buffer size is exceeded, and show a More button to continue
-	Hmm, this would only make sense if it pause per-screenful, like the more command.
-        Make this the default, and change it for interactive tools, such as Python, Groovy, and plain terminal.
-
 Implement command line tab completion
 
 Editor - Open a file in a new lower tab
@@ -24,10 +19,6 @@ Editor - Allow listeners when saving the file
     Use it in PlacesTool to refresh the list when editing.
 
 
-Directory Listener
-    Listen to the directories on the options path, and clear any cache when a file changes.
-    Editor to offer "reload" when a file is touched
-    Directory and Places, PlacesDirectory update themselves when a directory changes.
 
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 

@@ -7,12 +7,16 @@ import java.nio.file.Path
 interface AutoRefreshTool : Tool, FileListener {
 
     override fun fileChanged(path: Path) {
+        refresh()
+    }
+
+    fun refresh() {
         taskRunner.runIfNotAlready()
     }
 
     fun watch( file : File) {
         unwatch()
-        FileWatcher.instance.register(file.canonicalFile, this)
+        FileWatcher.instance.register(file, this)
     }
 
     fun unwatch() {

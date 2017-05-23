@@ -23,14 +23,17 @@ import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.util.FileListener
+import uk.co.nickthecoder.paratask.util.FileWatcher
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.nio.file.Path
 
-class FileOptions(val file: File) {
+class FileOptions(val file: File) : FileListener {
 
     val name = file.nameWithoutExtension
 
@@ -40,10 +43,13 @@ class FileOptions(val file: File) {
 
     private val primaryOptionsMap = mutableMapOf<String, Option>()
 
+    private var saving: Boolean = false
+
     init {
         if (file.exists()) {
             load()
         }
+        FileWatcher.instance.register(file, this)
     }
 
     fun listOptions(): Collection<Option> {
@@ -83,6 +89,12 @@ class FileOptions(val file: File) {
         addOption(option)
     }
 
+    override fun fileChanged(path: Path) {
+        if (!saving) {
+            load()
+        }
+    }
+
     /*
      Example JSON file :
  
@@ -120,8 +132,13 @@ class FileOptions(val file: File) {
 
     }
      */
+
     // https://github.com/ralfstx/minimal-json
     fun load() {
+        includes.clear()
+        optionsMap.clear()
+        primaryOptionsMap.clear()
+
         val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
 
         val jincludes = jroot.get("includes")
@@ -264,7 +281,7 @@ class FileOptions(val file: File) {
                             if (innerParameter.expression == null) {
                                 jobj.add("value", innerParameter.stringValue)
                             } else {
-                                jobj.add("expression", innerParameter.expression )
+                                jobj.add("expression", innerParameter.expression)
                             }
                             jvalues.add(jobj)
                         }
@@ -284,9 +301,14 @@ class FileOptions(val file: File) {
 
         }
         jroot.add("options", joptions)
-        BufferedWriter(OutputStreamWriter(FileOutputStream(file))).use {
-            jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
-        }
 
+        saving = true
+        try {
+            BufferedWriter(OutputStreamWriter(FileOutputStream(file))).use {
+                jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
+            }
+        } finally {
+            saving = false
+        }
     }
 }

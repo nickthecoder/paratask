@@ -29,8 +29,8 @@ class FileWatcher {
 
     private val entriesByDirectory: MutableMap<Path, MutableList<Entry>> = mutableMapOf<Path, MutableList<Entry>>()
 
-    fun register(file: File, listener: FileListener) {
-        register(file.toPath(), listener)
+    fun register(file: File, listener: FileListener, useCanonical : Boolean = true) {
+        register( (if (useCanonical) file.canonicalFile else file).toPath(), listener)
     }
 
     fun register(file: Path, listener: FileListener) {
@@ -172,14 +172,9 @@ class FileWatcher {
 
     private inner class Entry(listener: FileListener, private val path: Path) {
 
-        internal val weakListener: WeakReference<FileListener>
+        internal val weakListener = WeakReference<FileListener>(listener)
 
-        internal var lastModified: Long = 0
-
-        init {
-            this.weakListener = WeakReference<FileListener>(listener)
-            this.lastModified = path.toFile().lastModified()
-        }
+        internal var lastModified: Long = path.toFile().lastModified()
 
         fun check() {
             val lm = path.toFile().lastModified()
@@ -190,6 +185,10 @@ class FileWatcher {
                     listener!!.fileChanged(path)
                 }
             }
+        }
+
+        override fun toString(): String {
+            return "FileWatching Entry for listener ${weakListener.get()}"
         }
     }
 

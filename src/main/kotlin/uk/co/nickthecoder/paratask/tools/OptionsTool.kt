@@ -38,8 +38,9 @@ import uk.co.nickthecoder.paratask.options.TaskOption
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 
-class OptionsTool : AbstractTableTool<Option> {
+class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -114,6 +115,24 @@ class OptionsTool : AbstractTableTool<Option> {
         includesTool.optionsNameP.value = optionsNameP.value
         includesTool.directoryP.value = directoryP.value
         includesTool.run()
+
+        watch(optionsFile.file)
+    }
+
+    override fun refresh() {
+        // Ahh what a bodge ;-)
+        // There is a race condition between FileOptions reloading itself, and OptionsTool refreshing.
+        // By sleeping for a second, it is likely that FileOptions will win the race, and the results
+        // will be as expected. Obviously, by no means fool proof, but good enough for me!
+        Thread( Runnable {
+            Thread.sleep(1000)
+            super.refresh()
+        }).start()
+    }
+
+    override fun detaching() {
+        super<AbstractTableTool>.detaching()
+        super<AutoRefreshTool>.detaching()
     }
 
     override fun updateResults() {
