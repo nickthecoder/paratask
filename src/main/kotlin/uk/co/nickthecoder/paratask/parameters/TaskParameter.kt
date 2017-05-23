@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.TaskField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -33,8 +34,7 @@ class TaskParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: Task? = null,
-        required: Boolean = true,
-        val tasks: List<Task> = listOf<Task>())
+        required: Boolean = true)
 
     : AbstractValueParameter<Task?>(
         name = name,
@@ -43,13 +43,24 @@ class TaskParameter(
         value = value,
         required = required) {
 
+    val creationStringToTask = mutableMapOf<String, Task>()
+
+    init {
+        TaskRegistry.listGroups().forEach { group ->
+            group.listToolsAndTasks().forEach { task ->
+                creationStringToTask.put(task.creationString(), task)
+            }
+        }
+    }
+
     override val converter = object : StringConverter<Task?>() {
         override fun fromString(str: String): Task? {
-            return tasks.firstOrNull { it.taskD.name == str }
+            return creationStringToTask.get(str)
         }
 
         override fun toString(task: Task?): String {
-            return task?.taskD?.name ?: ""
+
+            return task?.creationString() ?: ""
         }
     }
 

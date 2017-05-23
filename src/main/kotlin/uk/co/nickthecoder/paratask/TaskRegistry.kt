@@ -34,30 +34,36 @@ import uk.co.nickthecoder.paratask.tools.places.PlacesDirectoryTool
 
 object TaskRegistry {
 
-    private val tasks = mutableListOf<Task>(
-            OSCommandTask(), GitRMTask(), GitCommitTask())
+    private val taskGroups = mutableListOf<TaskGroup>()
 
-    private val homeTools = mutableListOf<Tool>(
-            HomeTool(),
-            DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
-            TerminalTool(), PythonTool(), GroovyTool(),
-            WebTool(), EditorTool(),
-            GrepTool(), GitTool(),
-            OptionsFilesTool())
+    val home = TaskGroup("Home")
 
-    private val otherTools = mutableListOf<Tool>(
-            GitLogTool(), GitCommittedFilesTool()
-    )
+    init {
+        home.addTools(
+                HomeTool(),
+                DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
+                TerminalTool(), PythonTool(), GroovyTool(),
+                WebTool(), EditorTool(),
+                GrepTool(), GitTool(),
+                OptionsFilesTool()
+        )
+        home.addTasks(OSCommandTask())
 
+        val git = TaskGroup("Git")
+        git.addTools(GitTool(), GitLogTool())
+        git.addTasks(GitCommitTask(), GitCommitTask(), GitRMTask())
 
-    fun homeTools(): List<Tool> = homeTools.map { it.copy() }
+        addGroup(home)
+        addGroup(git)
+    }
 
-    fun otherTools(): List<Tool> = otherTools.map { it.copy() }
+    fun listGroups() : List<TaskGroup> = taskGroups
 
-    fun allTasks() = tasks.map { it.copy() }
+    fun addGroup(group: TaskGroup) {
+        taskGroups.add(group)
+    }
 
+    fun find( task : Task ) {
 
-    fun allTools() = homeTools() + otherTools()
-
-    fun allTasksAndTools(): List<Task> = allTools() + allTasks()
+    }
 }

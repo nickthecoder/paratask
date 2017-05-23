@@ -170,7 +170,7 @@ class OptionsTool : AbstractTableTool<Option> {
                 rows = 10, columns = 40, style = "script",
                 value = if (option is GroovyOption) option.script else "")
 
-        var taskP = TaskParameter("task", tasks = TaskRegistry.allTasksAndTools(), value = if (option is TaskOption) option.task else null)
+        var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null)
 
         init {
             if (option is GroovyOption) {

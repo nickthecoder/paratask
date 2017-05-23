@@ -38,7 +38,7 @@ class HomeTool : AbstractTableTool<Tool>() {
 
     override fun run() {
         list.clear()
-        list.addAll(TaskRegistry.homeTools())
+        list.addAll(TaskRegistry.home.listTools())
     }
 
 }

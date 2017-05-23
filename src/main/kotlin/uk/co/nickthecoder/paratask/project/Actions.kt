@@ -242,7 +242,7 @@ class Action(
 
         init {
 
-            TaskRegistry.homeTools().forEach { tool ->
+            TaskRegistry.home.listTools().forEach { tool ->
                 val imageView = tool.icon?.let { ImageView(it) }
                 val item = MenuItem(tool.shortTitle, imageView)
 

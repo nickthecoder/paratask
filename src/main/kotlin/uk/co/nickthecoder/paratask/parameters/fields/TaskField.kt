@@ -31,25 +31,13 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
 
     private val comboBox = ComboBox<Task>()
 
-    val converter = object : StringConverter<Task?>() {
-
-        override fun fromString(label: String): Task? {
-            return parameter.tasks.firstOrNull { label == it.taskD.name }
-        }
-
-        override fun toString(obj: Task?): String {
-            @Suppress("UNCHECKED_CAST")
-            return obj?.taskD?.name ?: ""
-        }
-    }
-
     val button = Button("Parameters")
 
     init {
-        comboBox.converter = converter
+        comboBox.converter = parameter.converter
         comboBox.valueProperty().bindBidirectional(parameter.valueProperty)
 
-        for (task in parameter.tasks) {
+        for (task in parameter.creationStringToTask.values) {
             comboBox.items.add(task)
         }
 
