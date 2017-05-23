@@ -25,12 +25,13 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesDirectoryTool : AbstractTableTool<Place>() {
+class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override val taskD = TaskDescription("placesDirectory", description = "Places Directory")
 
@@ -59,8 +60,15 @@ class PlacesDirectoryTool : AbstractTableTool<Place>() {
     }
 
     override fun run() {
-        placesFile = PlacesFile(File(directoryP.value!!, filenameP.value!!))
+        val file = File(directoryP.value!!, filenameP.value!!)
+        placesFile = PlacesFile(file)
         list = placesFile.places
+        watch(file)
+    }
+
+    override fun detaching() {
+        super<AutoRefreshTool>.detaching()
+        super<AbstractTableTool>.detaching()
     }
 
     fun taskNew() = placesFile.taskNew()

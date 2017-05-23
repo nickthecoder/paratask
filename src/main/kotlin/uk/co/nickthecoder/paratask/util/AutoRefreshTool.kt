@@ -12,7 +12,7 @@ interface AutoRefreshTool : Tool, FileListener {
 
     fun watch( file : File) {
         unwatch()
-        FileWatcher.instance.register(file, this)
+        FileWatcher.instance.register(file.canonicalFile, this)
     }
 
     fun unwatch() {
