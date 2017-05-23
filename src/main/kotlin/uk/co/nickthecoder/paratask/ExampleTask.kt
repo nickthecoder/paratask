@@ -68,7 +68,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
         taskD.addParameters(
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
                 fileP, directoryP, choiceP, groupP, oneOfP, multipleP)
-        
+
         groupP.addParameters(rangeFromP, rangeToP)
         oneOfP.addParameters(aP, bP)
     }

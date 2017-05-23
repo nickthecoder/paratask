@@ -2,17 +2,6 @@
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
-Switch logic newTab -> sameTab?
-
-Given that many options which return Tools are newTab, maybe I need a way to override this.
-	function which have newTab : Boolean become newTab : Boolean?
-	Do something similar for prompt? So you could default "rm" to prompt, but override by holding down shift.
-
-DateParameter
-	Use it on GitLogTool
-
-Port the directory listening code from wrkfoo, so that DirectoryTool and DirectoryTreeTool can update
-
 SimpleTerminal
     Add an option to PAUSE when buffer size is exceeded, and show a More button to continue
 	Hmm, this would only make sense if it pause per-screenful, like the more command.

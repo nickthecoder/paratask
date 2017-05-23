@@ -18,20 +18,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.parameters.BooleanParameter
+import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.util.FileListener
+import uk.co.nickthecoder.paratask.util.FileWatcher
 import java.io.File
+import java.nio.file.Path
 
-class DirectoryTool() : AbstractDirectoryTool("directory", "Work with a Single Directory") {
+class DirectoryTool : AbstractDirectoryTool("directory", "Work with a Single Directory") {
 
-    constructor(directory: File) : this() {
-        this.directoryP.value = directory
-    }
+    var fileListener: FileListener? = null
+
+    val autoRefreshP = BooleanParameter("autoRefresh", value = true,
+            description = "Refresh the list when the contents of the directory changes")
 
     init {
         depthP.hidden = true
+        taskD.addParameters(autoRefreshP)
+    }
+
+    override fun run() {
+        super.run()
+        if (autoRefreshP.value == true) {
+            watch(directoryP.value!!)
+        }
+    }
+
+    fun watch(directory: File) {
+        unwatch()
+        fileListener = object : FileListener {
+            override fun fileChanged(path: Path) {
+                taskRunner.run()
+            }
+        }
+        FileWatcher.instance.register(directory, fileListener!!)
+    }
+
+    fun unwatch() {
+        fileListener?.let { FileWatcher.instance.unregister(it) }
+        fileListener = null
     }
 
     override fun isTree(): Boolean = true
 
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+    }
 }
 
 fun main(args: Array<String>) {
