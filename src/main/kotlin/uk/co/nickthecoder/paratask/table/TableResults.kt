@@ -22,10 +22,7 @@ import javafx.application.Platform
 import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.SelectionMode
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
@@ -73,10 +70,12 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             isEditable = true
             selectionModel.selectionMode = SelectionMode.MULTIPLE
 
-            tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
-
             tableView.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
-            rowFactory = Callback { tool.createRow() }
+            rowFactory = Callback {
+                val tableRow = tool.createRow()
+                tableRow.setOnMouseClicked { onRowClicked(it, tableRow) }
+                tableRow
+            }
         }
     }
 
@@ -90,29 +89,26 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         tableView.requestFocus()
     }
 
-    open fun onMouseClicked(event: MouseEvent) {
-
+    open fun onRowClicked(event: MouseEvent, tabelRow: TableRow<WrappedRow<R>>) {
         contextMenu.hide()
 
-        val rowIndex = tableView.selectionModel.focusedIndex
-        if (rowIndex >= 0) {
-            if (event.button == MouseButton.PRIMARY) {
-                when (event.clickCount) {
-                    1 -> { // Edit the row's option field
-                        tableView.edit(rowIndex, codeColumn)
-                    }
-                    2 -> {
-                        runner.runDefault(tableView.items[rowIndex].row)
-                    }
+        if (event.button == MouseButton.PRIMARY) {
+            when (event.clickCount) {
+                1 -> { // Edit the tabelRow's option field
+                    tableView.edit(tabelRow.index, codeColumn)
                 }
-
-            } else if (event.button == MouseButton.MIDDLE) {
-                runner.runDefault(tableView.items[rowIndex].row, newTab = true)
-
-            } else if (event.button == MouseButton.SECONDARY) {
-                showContextMenu(tableView, event)
+                2 -> {
+                    runner.runDefault(tabelRow.item.row)
+                }
             }
+
+        } else if (event.button == MouseButton.MIDDLE) {
+            runner.runDefault(tabelRow.item.row, newTab = true)
+
+        } else if (event.button == MouseButton.SECONDARY) {
+            showContextMenu(tableView, event)
         }
+
     }
 
     fun showContextMenu(node: Node, event: Any) {

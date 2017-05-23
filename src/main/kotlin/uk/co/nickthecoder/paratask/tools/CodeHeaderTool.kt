@@ -35,9 +35,9 @@ class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>() {
 
     override val taskD = TaskDescription("codeHeader", description = "Adds a Copyright notice to the top of source code file")
 
-    val directoryP = FileParameter("directory", expectFile = false, mustExist = true, value = File("/home/nick/projects/paratask/src/main/kotlin"))
+    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
 
-    val extensionsP = MultipleParameter("extensions", value = listOf("kt")) { StringParameter("") }
+    val extensionsP = MultipleParameter("extensions", value = listOf("java", "kt")) { StringParameter("") }
 
     val containsP = StringParameter("contains",
             value = "This program is free software",
@@ -49,7 +49,8 @@ class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>() {
 
     val headerTextP = StringParameter("headerText", rows = 20, columns = 50, value =
     """/*
-ParaTask Copyright (C) 2017  Nick Robinson
+<PROGRAM NAME AND DESCRIPTION>
+Copyright (C) <YEAR> <AUTHOR>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -84,36 +85,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         if (list.isEmpty()) {
             containsText = containsP.value
             val lister = FileLister(/*extensions = extensionsP.value, */depth = depthP.value!!)
-            list.addAll(lister.listFiles(directoryP.value!!).filter { includeFile(it) }.map { ProcessedFile(it) })
+            list.addAll(lister.listFiles(directoryP.value!!).map { ProcessedFile(it) })
         }
     }
 
-    fun includeFile(file: File): Boolean {
+    fun isProcessed(file: File): Boolean {
         println("Checking ${file}")
 
         val reader = file.bufferedReader()
         try {
             for (i in 1..withinLinesP.value!!) {
                 val line = reader.readLine()
-                if (line == null) return true
+                if (line == null) return false
                 if (line.contains(containsText)) {
-                    return false
+                    return true
                 }
             }
         } finally {
             reader.close()
         }
-        return true
+        return false
     }
 
 
     inner class ProcessedFile(file: File) : WrappedFile(file) {
         var processed = false
 
+        init {
+            processed = isProcessed(file)
+        }
+
         fun addHeader() {
-            val contents = file.readText()
-            file.writeText(headerTextP.value + contents)
-            processed = true
+            if (!processed) {
+                val contents = file.readText()
+                file.writeText(headerTextP.value + contents)
+                processed = true
+            }
         }
     }
 }
