@@ -74,17 +74,14 @@ class ToolPane_Impl(override var tool: Tool)
 
         if (tab is MinorTab) {
             Platform.runLater {
-                tab.selected()
+                tab.focus()
             }
         }
     }
 
     fun onTabChanged(oldTab: Tab?, newTab: Tab?) {
-        if (oldTab is ResultsTab) {
-            oldTab.results.deselected()
-        }
         if (newTab is MinorTab) {
-            newTab.selected()
+            newTab.focus()
         }
         borderPane.top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
     }
@@ -223,13 +220,15 @@ class ToolPane_Impl(override var tool: Tool)
 
 
     class ParametersTab(val parametersPane: ParametersPane) : Tab(), MinorTab {
+        override fun focus() {
+            parametersPane.taskForm.form.focus()
+        }
 
         override fun selected() {
             focus()
         }
 
-        override fun focus() {
-            parametersPane.taskForm.form.focus()
+        override fun deselected() {
         }
     }
 }

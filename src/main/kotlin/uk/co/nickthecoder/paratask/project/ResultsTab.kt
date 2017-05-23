@@ -29,6 +29,10 @@ class ResultsTab(val results: Results) : Tab(results.label, results.node), Minor
         results.selected()
     }
 
+    override fun deselected() {
+        results.deselected()
+    }
+
     override fun focus() {
         results.focus()
     }

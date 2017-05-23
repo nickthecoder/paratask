@@ -21,5 +21,7 @@ interface MinorTab {
 
     fun selected()
 
+    fun deselected()
+
     fun focus()
 }

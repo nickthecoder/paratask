@@ -79,14 +79,16 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
-    override fun selected() {
-        tableView.requestFocus()
-    }
-
     override fun detaching() {}
 
     override fun focus() {
         tableView.requestFocus()
+        Platform.runLater { editOption() }
+    }
+
+    fun editOption(rowIndex: Int = -1) {
+        val index = if (rowIndex >= 0) rowIndex else tableView.selectionModel.focusedIndex
+        tableView.edit(index, codeColumn)
     }
 
     open fun onRowClicked(event: MouseEvent, tabelRow: TableRow<WrappedRow<R>>) {
@@ -95,7 +97,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         if (event.button == MouseButton.PRIMARY) {
             when (event.clickCount) {
                 1 -> { // Edit the tabelRow's option field
-                    tableView.edit(tabelRow.index, codeColumn)
+                    editOption(tabelRow.index)
                 }
                 2 -> {
                     runner.runDefault(tabelRow.item.row)
@@ -151,7 +153,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         if (row < 0 || row >= tableView.items.size) {
             return
         }
-        Platform.runLater { tableView.edit(tableView.selectionModel.focusedIndex, codeColumn) }
+        Platform.runLater { editOption() }
     }
 
 

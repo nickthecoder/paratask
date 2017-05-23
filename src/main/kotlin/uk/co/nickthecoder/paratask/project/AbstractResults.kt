@@ -21,7 +21,7 @@ import javafx.beans.property.SimpleStringProperty
 import uk.co.nickthecoder.paratask.Tool
 
 abstract class AbstractResults(
-        override val tool:Tool,
+        override val tool: Tool,
         label: String = "Results")
 
     : Results {
@@ -43,7 +43,7 @@ abstract class AbstractResults(
     override fun detaching() {}
 
     override fun selected() {
-        node.requestFocus()
+        focus()
     }
 
     override fun deselected() {}
