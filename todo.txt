@@ -1,14 +1,4 @@
 
-GrepTool to show the command line.
-
-Add a "debug" script to TaskOption which is run before the option itself is run.
-	Funny... The easiest way to do this is to merge GroovyOption and TaskOption!
-		Simpler, better
-			Does away with lots of "ifs"
-			No need for clunky "OneOfParameter"
-
-FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
-
 Editor - find (simple non-regex will be good enough to begin with)
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 

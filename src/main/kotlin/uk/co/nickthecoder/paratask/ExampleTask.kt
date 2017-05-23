@@ -18,15 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
-import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
-import uk.co.nickthecoder.paratask.parameters.IntParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.OneOfParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.parameters.TaskParameter
+import uk.co.nickthecoder.paratask.parameters.*
+import java.time.format.DateTimeFormatter
 
 class ExampleTask : AbstractTask() {
 
@@ -41,39 +34,39 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
 
-    val simpleString = StringParameter("simpleString", value = "Hello")
-    val yesNo = BooleanParameter("yesNo", label = "Yes / No")
-    val yesNoMaybe = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
-    val file = FileParameter("file")
-    val directory = FileParameter("directory", expectFile = false)
+    val simpleStringP = StringParameter("simpleString", value = "Hello")
+    val yesNoP = BooleanParameter("yesNo", label = "Yes / No")
+    val yesNoMaybeP = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
+    val fileP = FileParameter("file")
+    val directoryP = FileParameter("directory", expectFile = false)
 
-    val choice = ChoiceParameter("choice", value = Color.BLUE)
+    val dateP = DateParameter("date")
+
+    val isoDateP = DateParameter("isoDate", dateFormat = DateTimeFormatter.ISO_DATE)
+
+    val choiceP = ChoiceParameter("choice", value = Color.BLUE)
             .choice("red", Color.RED)
             .choice("green", Color.GREEN)
             .choice("blue", Color.BLUE)
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val group = GroupParameter("group", description = "Here we see GroupParameter in action")
-    val rangeFrom = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
-    val rangeTo = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
+    val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
+    val rangeFromP = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
+    val rangeToP = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
 
-    val oneOf = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
-    val a = StringParameter("a")
-    val b = IntParameter("b")
+    val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
+    val aP = StringParameter("a")
+    val bP = IntParameter("b")
 
-    val multiple = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
+    val multipleP = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
 
-    val task = TaskParameter("task")
+    val taskP = TaskParameter("task")
 
     init {
-        //taskD.addParameters(oneOf)
-        //taskD.addParameters(task)
-        taskD.addParameters(multiple) // BUG!
-        //taskD.addParameters(yesNo)
-        //taskD.addParameters(task, simpleString, yesNo, yesNoMaybe, file, directory, choice, group, oneOf, multiple)
-        group.addParameters(rangeFrom, rangeTo)
-        oneOf.addParameters(a, b)
+        taskD.addParameters(dateP, isoDateP, taskP, simpleStringP, yesNoP, yesNoMaybeP, fileP, directoryP, choiceP, groupP, oneOfP, multipleP)
+        groupP.addParameters(rangeFromP, rangeToP)
+        oneOfP.addParameters(aP, bP)
     }
 
     override fun run() {
@@ -83,8 +76,8 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     }
 
     override fun customCheck() {
-        if (rangeFrom.value!! > rangeTo.value!!) {
-            throw ParameterException(rangeTo, "Must be less than 'from'")
+        if (rangeFromP.value!! > rangeToP.value!!) {
+            throw ParameterException(rangeToP, "Must be less than 'from'")
         }
     }
 }
