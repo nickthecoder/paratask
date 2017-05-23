@@ -153,14 +153,14 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
         override fun onFinished() {
             count--
             if (count == 0 && batchComplete) {
-                tool.taskRunner.run()
+                tool.taskRunner.runIfNotAlready()
             }
         }
 
         fun complete() {
             batchComplete = true
             if (count == 0) {
-                tool.taskRunner.run()
+                tool.taskRunner.runIfNotAlready()
             }
         }
 

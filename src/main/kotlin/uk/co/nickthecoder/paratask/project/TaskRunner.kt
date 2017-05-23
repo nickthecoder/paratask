@@ -34,6 +34,10 @@ interface TaskRunner {
 
     fun listen(listener: (Boolean) -> Unit)
 
+    fun runIfNotAlready() {
+        if (!isRunning()) run()
+    }
+
     fun run()
 
     fun cancel()

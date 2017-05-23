@@ -20,14 +20,15 @@ package uk.co.nickthecoder.paratask.tools
 import uk.co.nickthecoder.paratask.ToolParser
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 import uk.co.nickthecoder.paratask.util.FileListener
 import uk.co.nickthecoder.paratask.util.FileWatcher
 import java.io.File
 import java.nio.file.Path
 
-class DirectoryTool : AbstractDirectoryTool("directory", "Work with a Single Directory") {
-
-    var fileListener: FileListener? = null
+class DirectoryTool :
+        AbstractDirectoryTool("directory", "Work with a Single Directory"),
+        AutoRefreshTool {
 
     val autoRefreshP = BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
@@ -44,25 +45,11 @@ class DirectoryTool : AbstractDirectoryTool("directory", "Work with a Single Dir
         }
     }
 
-    fun watch(directory: File) {
-        unwatch()
-        fileListener = object : FileListener {
-            override fun fileChanged(path: Path) {
-                taskRunner.run()
-            }
-        }
-        FileWatcher.instance.register(directory, fileListener!!)
-    }
-
-    fun unwatch() {
-        fileListener?.let { FileWatcher.instance.unregister(it) }
-        fileListener = null
-    }
-
     override fun isTree(): Boolean = true
 
-    override fun attached(toolPane: ToolPane) {
-        super.attached(toolPane)
+    override fun detaching() {
+        super<AutoRefreshTool>.detaching()
+        super<AbstractDirectoryTool>.detaching()
     }
 }
 
