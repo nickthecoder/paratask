@@ -136,16 +136,25 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             move(1)
 
         } else if (Actions.OPTION_RUN.match(event)) {
-            runTableOptions(newTab = event.isShiftDown)
+            runTableOptions()
+            event.consume()
+
+        } else if (Actions.OPTION_RUN_NEW_TAB.match(event)) {
+            runTableOptions(newTab = true)
             event.consume()
 
         } else if (Actions.OPTION_PROMPT.match(event)) {
-            runTableOptions(newTab = event.isShiftDown)
+            runTableOptions()
+            event.consume()
+
+        } else if (Actions.OPTION_PROMPT_NEW_TAB.match(event)) {
+            runTableOptions(newTab = true)
             event.consume()
 
         } else if (Actions.acceleratorEscape.match(event)) {
             event.consume()
         }
+        editOption()
     }
 
     fun move(delta: Int) {
@@ -163,11 +172,14 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         tableView.requestFocus()
         Platform.runLater {
 
+            var foundCode = false
+
             val batchOptions = mutableMapOf<Option, MutableList<WrappedRow<R>>>()
 
             for (wrappedRow in tableView.items) {
                 val code = wrappedRow.code
                 if (code != "") {
+                    foundCode = true
 
                     val option = OptionsManager.findOption(code, tool.optionsName)
                     if (option != null) {
@@ -186,7 +198,10 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
             if (batchOptions.isNotEmpty()) {
                 runner.runBatch(batchOptions, newTab = newTab, prompt = prompt)
-            } else {
+            }
+
+            if (!foundCode) {
+                // Run the "default" option against the current row
                 val rowIndex = tableView.selectionModel.focusedIndex
                 if (rowIndex >= 0) {
                     runner.runDefault(tableView.items[rowIndex].row, newTab = newTab)

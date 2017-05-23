@@ -1,15 +1,4 @@
 
-AddHeaderFooter task
-	A single file, or recurse though a directory
-	Filter based on extensions
-	If file contains the magic phrase, then skip
-	otherwise append the given template
-	Use it to add GPL headers to all my files.
-
-
-BUG. Middle click doesn't change selection, so operates on the wrong row.
-
-
 GrepTool to show the command line.
 
 Add a "debug" script to TaskOption which is run before the option itself is run.
@@ -17,9 +6,6 @@ Add a "debug" script to TaskOption which is run before the option itself is run.
 		Simpler, better
 			Does away with lots of "ifs"
 			No need for clunky "OneOfParameter"
-			
-TaskParameter Better selection of tools
-	Group by catergory in a pop-up menu
 
 FileOptions doesn't know which tool it is for. Therefore we can't get a list of tool specific tasks.
 
