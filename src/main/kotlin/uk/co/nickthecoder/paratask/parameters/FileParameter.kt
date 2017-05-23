@@ -33,8 +33,7 @@ class FileParameter(
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         var baseDirectory: File? = null,
-        val baseDirectoryP: FileParameter? = null,
-        val stretchy: Boolean = true)
+        val baseDirectoryP: FileParameter? = null)
 
     : AbstractValueParameter<File?>(
         name = name,
@@ -115,9 +114,9 @@ class FileParameter(
         return filenameP
     }
 
-    override fun isStretchy(): Boolean = stretchy
+    override fun isStretchy(): Boolean = true
 
-    override fun createField(): FileField = FileField(this)
+    override fun createField() = FileField(this)
 
     override fun toString() = "File" + super.toString()
 

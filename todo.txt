@@ -12,22 +12,7 @@ Editor - Open a file in a new lower tab
 	    (or showing the minor tab if it is already open)
 
 
-Table Column selection
-    http://stackoverflow.com/questions/27739833/adapt-tableview-menu-button
-
-Editor - Allow listeners when saving the file
-    Use it in PlacesTool to refresh the list when editing.
-
-
-
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
-
-Add optional help button to TaskPrompter and ParametersPane (if TaskDescription has a help address)
-
-Embed a "real" terminal
-
-WebTool open in new tab (right click says "Open in new window) - top level and tool tab!
-WebTool to allow for multiple web pages.
 
 Bugs
 ====

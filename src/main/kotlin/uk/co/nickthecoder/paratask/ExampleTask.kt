@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.time.format.DateTimeFormatter
 
 class ExampleTask : AbstractTask() {
@@ -39,6 +41,8 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val yesNoMaybeP = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
     val fileP = FileParameter("file")
     val directoryP = FileParameter("directory", expectFile = false)
+
+    val resourceP = ResourceParameter("resource", value= Resource(homeDirectory))
 
     val dateP = DateParameter("date")
 
@@ -67,7 +71,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
         //taskD.addParameters(dateP, isoDateP)
         taskD.addParameters(
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
-                fileP, directoryP, choiceP, groupP, oneOfP, multipleP)
+                fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
         groupP.addParameters(rangeFromP, rangeToP)
         oneOfP.addParameters(aP, bP)

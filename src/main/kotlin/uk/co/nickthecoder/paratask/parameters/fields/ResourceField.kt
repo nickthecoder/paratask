@@ -17,23 +17,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import java.io.File
 
-class FileField(override val parameter: FileParameter) : FileFieldBase(parameter) {
+class ResourceField(override val parameter: ResourceParameter) :FileFieldBase(parameter) {
 
     init {
         control = createControl()
     }
 
     override fun buildTextField() {
-
         with(textField) {
             textProperty().bindBidirectional(parameter.valueProperty, parameter.converter)
         }
         super.buildTextField()
     }
 
-    override fun getFile(): File? = parameter.value
+
+    override fun getFile(): File? = parameter.value?.file
 
 }

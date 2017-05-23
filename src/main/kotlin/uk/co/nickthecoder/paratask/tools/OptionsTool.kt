@@ -104,7 +104,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
     override fun run() {
-        shortTitle = "${defaultShortTitle()} (${optionsNameP.value})"
+        shortTitle = optionsNameP.value
         list.clear()
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 

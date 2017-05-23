@@ -78,6 +78,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
 
     override fun run() {
+        shortTitle = directory.name
+
         val lister = FileLister(
                 depth = depthP.value!!,
                 onlyFiles = onlyFilesP.value,
