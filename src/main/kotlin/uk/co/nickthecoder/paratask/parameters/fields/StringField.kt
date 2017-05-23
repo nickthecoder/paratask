@@ -21,9 +21,14 @@ import javafx.scene.Node
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
+import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.util.focusNext
 
 class StringField(override val parameter: StringParameter) : LabelledField(parameter) {
+
+    lateinit var textField: TextInputControl
 
     private fun createControl(): Node {
         val textField: TextInputControl
@@ -34,6 +39,7 @@ class StringField(override val parameter: StringParameter) : LabelledField(param
                 textField.prefColumnCount = parameter.columns
             }
             textField.prefRowCount = parameter.rows
+            textField.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyTyped(it) }
         } else {
             textField = TextField()
             if (parameter.columns > 0) {
@@ -53,7 +59,18 @@ class StringField(override val parameter: StringParameter) : LabelledField(param
             }
         })
 
+        this.textField = textField
         return textField
+    }
+
+    fun onKeyTyped(event: KeyEvent) {
+        if ( Actions.FOCUS_NEXT.match(event)) {
+            textField.focusNext()
+            event.consume()
+        } else if ( Actions.INSERT_TAB.match(event) ) {
+            textField.insertText(textField.caretPosition, "    ")
+            event.consume()
+        }
     }
 
     init {

@@ -17,12 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
+import com.sun.org.apache.xerces.internal.dom.ParentNode
 import javafx.application.Platform
 import javafx.event.Event
 import javafx.scene.Node
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import java.util.concurrent.CountDownLatch
+import groovy.xml.dom.DOMCategory.parent
+import javafx.scene.Parent
+
 
 fun runAndWait(action: () -> Unit) {
 
@@ -49,7 +53,7 @@ fun runAndWait(action: () -> Unit) {
     }
 }
 
-fun Node.requestFocusNext() {
+fun Node.fireTabToFocusNext() {
     this.requestFocus()
     val tab = KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "\t", KeyCode.TAB, false, false, false, false)
     Event.fireEvent(this, tab)

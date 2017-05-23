@@ -33,7 +33,7 @@ import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.project.Actions
-import uk.co.nickthecoder.paratask.util.requestFocusNext
+import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
 class HeaderRow() : Region(), FocusListener {
 
@@ -93,7 +93,7 @@ class HeaderRow() : Region(), FocusListener {
     }
 
     fun focus() {
-        requestFocusNext()
+        fireTabToFocusNext()
     }
 
     companion object {

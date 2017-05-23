@@ -122,6 +122,9 @@ object Actions {
     val MINOR_TABS = listOf(MINOR_TAB_1, MINOR_TAB_2, MINOR_TAB_3, MINOR_TAB_4, MINOR_TAB_5, MINOR_TAB_6, MINOR_TAB_7, MINOR_TAB_8, MINOR_TAB_9)
 
 
+    val FOCUS_NEXT = Action("focus.next", KeyCode.TAB)
+    val INSERT_TAB = Action("insert.tab", KeyCode.TAB, control = true)
+
     val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)
     val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
