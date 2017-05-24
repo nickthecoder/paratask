@@ -1,5 +1,15 @@
 
-Editor - find (simple non-regex will be good enough to begin with)
+Use options from the jar file, so that it works "out of the box"
+    // TODO Are we reliant on listing a directory for the options to work?
+
+Tools to have a "long" label, which is displayed in the window title bar
+	Implement as a Property, so that Tools don't need to inform when the longLabel changes.
+
+Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
+
+Use Resource for Places?
+
+Editor - find and replace
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Implement command line tab completion

@@ -25,17 +25,16 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.FileListener
 import uk.co.nickthecoder.paratask.util.FileWatcher
+import uk.co.nickthecoder.paratask.util.Resource
 import java.io.BufferedWriter
-import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.nio.file.Path
 
-class FileOptions(val file: File) : FileListener {
+class FileOptions(val resource: Resource) : FileListener {
 
-    val name = file.nameWithoutExtension
+    val name = resource.nameWithoutExtension
 
     val includes = mutableListOf<String>()
 
@@ -46,10 +45,8 @@ class FileOptions(val file: File) : FileListener {
     private var saving: Boolean = false
 
     init {
-        if (file.exists()) {
-            load()
-        }
-        FileWatcher.instance.register(file, this)
+        load()
+        resource.file?.let { FileWatcher.instance.register(it, this) }
     }
 
     fun listOptions(): Collection<Option> {
@@ -139,7 +136,15 @@ class FileOptions(val file: File) : FileListener {
         optionsMap.clear()
         primaryOptionsMap.clear()
 
-        val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
+        val jroot: JsonObject
+        try {
+            jroot = Json.parse(InputStreamReader(resource.url.openStream())).asObject()
+        } catch (e: Exception) {
+            // We don't care if we can't read the file - it may not exist, and that's fine!
+            println("Failed to load options file ${resource}")
+            e.printStackTrace()
+            return
+        }
 
         val jincludes = jroot.get("includes")
         jincludes?.let {
@@ -191,7 +196,7 @@ class FileOptions(val file: File) : FileListener {
                             // Special handling, because it contains multiple values
                             val jvalues1 = jparameter.get("values")
                             if (jvalues1 == null) {
-                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in $file. Skipping")
+                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in $resource. Skipping")
                                 continue
                             }
                             val jvalues = jparameter.get("values").asArray()
@@ -205,7 +210,7 @@ class FileOptions(val file: File) : FileListener {
                                     innerParameter.stringValue = jvalue.asString()
                                 }
                             }
-                            // TODO Note, the above cannot handle MultipleParameters inside MultipleParameters!!
+                            // Note, the above cannot handle MultipleParameters inside MultipleParameters!!
                             // Should refactor with a "loadParameter" method, and use recursion.
                             continue
                         }
@@ -223,9 +228,12 @@ class FileOptions(val file: File) : FileListener {
                 addOption(option)
             }
         }
+        println( "Loaded. options from ${resource}.  ${optionsMap.keys}")
     }
 
     fun save() {
+        val file = resource.file ?: return
+
         val jroot = JsonObject()
 
         val jincludes = JsonArray()

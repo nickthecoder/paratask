@@ -25,22 +25,23 @@ import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 import java.io.File
 
 class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
-    override val taskD = TaskDescription("optionsFiles", description = "Work with all Option Files")
+    override val taskD = TaskDescription("optionsFiles", description = "Work with Option Files (does not include those in the jar file)")
 
-    val directory = Preferences.createOptionsDirectoryParameter()
+    val directory = Preferences.createOptionsResourceParameter(onlyDirectories = true)
 
     init {
         taskD.addParameters(directory)
     }
 
     override fun createColumns() {
-        columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension() })
-        columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.file.path })
+        columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.resource.nameWithoutExtension })
+        columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.resource.path })
     }
 
     override fun run() {
@@ -55,11 +56,13 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
         }
     }
 
-    private fun add(directory: File) {
+    private fun add(resourceDirectory: Resource) {
+        val directory = resourceDirectory?.file ?: return
         val fileLister = FileLister(extensions = listOf("json"))
         val files = fileLister.listFiles(directory)
-        files.map { it.nameWithoutExtension() }
-            .forEach { list.add(OptionsManager.getFileOptions(it, directory)) }
+        files.map { it.nameWithoutExtension() }.forEach {
+            list.add(OptionsManager.getFileOptions(it, resourceDirectory))
+        }
     }
 }
 

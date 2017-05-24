@@ -26,7 +26,7 @@ class GroovyTool : AbstractTerminalTool(allowInput = true, showCommand = true) {
 
     override fun createCommand(): OSCommand {
         return OSCommand("groovysh")
-        // TODO I tried disabling the colors, but groovysh 2.2.2 throws whenever I use --color argument :-(
+        // I tried disabling the colors, but groovysh 2.2.2 throws whenever I use --color argument :-(
     }
 }
 

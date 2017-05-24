@@ -91,7 +91,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
         with(exec)
         {
-            // TODO Could show stderr in a different font/style
             mergeErrWithOut()
             outSink = TerminalSink()
 
@@ -106,7 +105,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     private fun submit() {
         out.println(inputField.text)
         out.flush()
-        // TODO Color the input text differently?
         textArea.appendText("> " + inputField.text + "\n")
         textArea.selectPositionCaret(textArea.text.length)
         textArea.deselect()

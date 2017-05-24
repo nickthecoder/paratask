@@ -17,36 +17,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 object Preferences {
 
-    val optionsPath = mutableListOf<File>()
+    val optionsPath = mutableListOf<Resource>()
 
     var projectsDirectory = homeDirectory.child(".config", "paratask", "projects")
 
     init {
-        optionsPath.add(homeDirectory.child(".config", "paratask", "options"))
+        optionsPath.add(Resource(homeDirectory.child(".config", "paratask", "options")))
+        optionsPath.add(Resource(ParaTaskApp.javaClass.getResource("options")))
     }
 
-    fun createOptionsDirectoryParameter(
+    fun createOptionsResourceParameter(
             name: String = "directory",
             required: Boolean = false,
-            defaultFirst: Boolean = required
-    ): ChoiceParameter<File?> {
+            defaultFirst: Boolean = required,
+            onlyDirectories :Boolean = false
 
-        val result = ChoiceParameter<File?>(name, value = null, required = required)
+    ): ChoiceParameter<Resource?> {
+
+        val result = ChoiceParameter<Resource?>(name, value = null, required = required)
         if (!required) {
             result.choice("", null, "<ALL>")
         }
 
-        for (directory in optionsPath) {
-            result.choice(directory.name, directory, directory.path)
-            if (defaultFirst && result.value == null) {
-                result.value = directory
+        optionsPath.forEach { resource ->
+            if ( resource.isFile() || ! onlyDirectories ) {
+                println( "Inlcudeing ${resource} isfile ? ${resource.isFile()} onlyDirs? ${onlyDirectories}")
+                val str = resource.toString()
+                val name = resource.directoryName
+
+                result.choice(str, resource, name)
+                if (defaultFirst && result.value == null) {
+                    result.value = resource
+                }
             }
         }
         return result

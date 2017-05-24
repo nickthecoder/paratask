@@ -31,9 +31,6 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-// TODO Allow results to be filtered based on index and work?
-// e.g. show changes, deletions, un
-
 class GitTool() : AbstractCommandTool<GitStatusRow>() {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")

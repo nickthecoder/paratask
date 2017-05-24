@@ -22,12 +22,6 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.project.SharedToolPane
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.OneOfParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.parameters.TaskParameter
 import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.options.FileOptions
@@ -35,6 +29,7 @@ import uk.co.nickthecoder.paratask.options.GroovyOption
 import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.options.TaskOption
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -46,12 +41,12 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val directoryP = FileParameter("directory", expectFile = false)
+    val resourceDirectoryP = ResourceParameter("directory", expectFile = false)
 
     var includesTool: IncludesTool = IncludesTool()
 
     init {
-        taskD.addParameters(optionsNameP, directoryP)
+        taskD.addParameters(optionsNameP, resourceDirectoryP)
     }
 
     override val resultsName = "Options"
@@ -65,17 +60,17 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     constructor(tool: Tool) : super() {
         this.tool = tool
         optionsNameP.value = tool.optionsName
-        directoryP.value = Preferences.optionsPath[0]
+        resourceDirectoryP.value = Preferences.optionsPath[0]
     }
 
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
-        directoryP.value = fileOptions.file.parentFile
+        resourceDirectoryP.value = fileOptions.resource.parentResource()
     }
 
     constructor(optionsName: String) : this() {
         optionsNameP.value = optionsName
-        directoryP.value = Preferences.optionsPath[0]
+        resourceDirectoryP.value = Preferences.optionsPath[0]
     }
 
     override fun createColumns() {
@@ -101,22 +96,22 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
         includesTool.toolPane = SharedToolPane(this)
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
 
     override fun run() {
         shortTitle = optionsNameP.value
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
 
         for (option in optionsFile.listOptions()) {
             list.add(option)
         }
 
         includesTool.optionsNameP.value = optionsNameP.value
-        includesTool.directoryP.value = directoryP.value
+        includesTool.resourceDirectoryP.value = resourceDirectoryP.value
         includesTool.run()
 
-        watch(optionsFile.file)
+        optionsFile.resource.file?.let { watch(it) }
     }
 
     override fun refresh() {
@@ -124,7 +119,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
         // There is a race condition between FileOptions reloading itself, and OptionsTool refreshing.
         // By sleeping for a second, it is likely that FileOptions will win the race, and the results
         // will be as expected. Obviously, by no means fool proof, but good enough for me!
-        Thread( Runnable {
+        Thread(Runnable {
             Thread.sleep(1000)
             super.refresh()
         }).start()

@@ -10,7 +10,48 @@ class Resource(val url: URL) {
 
     constructor(file: File) : this(toURL(file))
 
+    constructor(directoryResource: Resource, child: String) : this(URL(directoryResource.url, "${directoryResource.path}/$child"))
+
+    val name: String
+        get() {
+            file?.let { return it.name }
+            val str = toString()
+            if (str.length > 20) {
+                return "…" + str.substring(str.length - 18)
+            }
+            return str
+        }
+
+    val nameWithoutExtension: String
+        get() {
+            file?.let {return it.nameWithoutExtension}
+            return name
+        }
+
+    val path: String
+        get() {
+            file?.let { return it.path }
+            return url.toString()
+        }
+
+    val directoryName: String
+        get() {
+            file?.let { return it.name }
+            val str = toString()
+            file?.name ?: if (str.length > 20) {
+                str.substring(18) + "…"
+            }
+            return str
+        }
+
+    fun parentResource() : Resource {
+        return Resource(this, ".")
+    }
+
     fun isFile() = file != null
+
+    override fun toString() = url.toString()
+
 
     companion object {
         fun toFile(url: URL): File? {

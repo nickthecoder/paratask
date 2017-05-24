@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
+import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 
@@ -33,23 +34,23 @@ class IncludesTool : AbstractTableTool<String>() {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val directoryP = FileParameter("directory")
+    val resourceDirectoryP = ResourceParameter("directory")
 
     override val resultsName = "Includes"
 
     init {
-        taskD.addParameters(optionsNameP, directoryP)
+        taskD.addParameters(optionsNameP, resourceDirectoryP)
     }
 
     override fun createColumns() {
         columns.add(Column<String, String>("include") { it })
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
 
     override fun run() {
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
 
         for (include in optionsFile.listIncludes()) {
             list.add(include)

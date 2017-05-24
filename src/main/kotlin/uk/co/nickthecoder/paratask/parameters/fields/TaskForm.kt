@@ -70,7 +70,6 @@ class TaskForm(val task: Task) {
     }
 
     private fun ensureVisible(node: Node) {
-        // TODO Ensure all the field's parents are not collapsed
 
         // Ensures the field is visible within the scrollPane
         val viewport = scrollPane.viewportBounds

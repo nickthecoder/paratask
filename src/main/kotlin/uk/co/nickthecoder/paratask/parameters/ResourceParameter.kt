@@ -26,6 +26,7 @@ class ResourceParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: Resource? = null,
+        val expectFile : Boolean = true,
         required: Boolean = true)
 
     : AbstractValueParameter<Resource?>(
@@ -45,11 +46,15 @@ class ResourceParameter(
         }
 
         if (v.file?.exists() == false) {
-            return "Must either be a valid URL, or a file that exists"
+            return "Must either be a valid URL, or a file/directory that exists"
         }
 
-        if (v.file?.isDirectory() == true) {
-            return "Cannot be a directory"
+        if (v.file?.isDirectory() == true && expectFile == true) {
+            return "Expected a file, not a directory"
+        }
+
+        if (v.file?.isFile() == true && expectFile == false) {
+            return "Expected a directory, not a file"
         }
 
         return null

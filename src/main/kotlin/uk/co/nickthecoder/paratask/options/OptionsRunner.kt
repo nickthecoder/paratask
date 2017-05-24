@@ -142,7 +142,6 @@ open class OptionsRunner(val tool: Tool) {
 
         if (newTab) {
 
-            // TODO Insert after current tab
             projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool, run = !prompt)
 
         } else {
