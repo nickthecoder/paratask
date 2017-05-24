@@ -1,13 +1,25 @@
 
-Use options from the jar file, so that it works "out of the box"
-    // TODO Are we reliant on listing a directory for the options to work?
+Tools with directories should default to "."
+	When running options, resolve all FileParameters based on :
+		The tool's directory is it is HasDirectory
+		The current working directory otherwise.
+	There is a more generic version of this... What about the current database, current DB table etc.
 
-Tools to have a "long" label, which is displayed in the window title bar
-	Implement as a Property, so that Tools don't need to inform when the longLabel changes.
+TerminalTool to allow running of Tasks/Tools/Options from the input field
 
-Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
+TerminalTool to keep track of the current directory by parsing the output, looking for a special PS1
+	Only do this if running bash/sh?
 
-Use Resource for Places?
+Write a DB tool
+	Work with Tables
+	Work with Users
+	Work with Rows
+Ideally, it would work with at least MariaDB/MySQL, SQLLite and Progres
+
+BUG: Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
+
+Use Resource for Places? Looks good! Resource can have the "icon" stuff in it.
+	Maybe use a different icon for file,directory,jar,other
 
 Editor - find and replace
     Editor to work with grep to highlight matches (using regex and fixed patterns)

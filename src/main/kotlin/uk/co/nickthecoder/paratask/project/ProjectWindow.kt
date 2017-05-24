@@ -90,7 +90,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun placeOnStage(stage: Stage) {
-        GlobalShortcuts( scene, this )
+        GlobalShortcuts(scene, this)
 
         ParaTaskApp.style(scene)
 
@@ -116,6 +116,18 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
 
     fun onSaveProject() {
         TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
+    }
+
+    fun handleException(e: Exception) {
+        try {
+            val tool = ExceptionTool(e)
+            addTool(tool)
+        } catch(e: Exception) {
+        }
+    }
+
+    fun toolChanged(currentTool: Tool) {
+        stage?.titleProperty()?.bind(currentTool?.longTitleProperty)
     }
 
     companion object {
@@ -169,11 +181,4 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
         }
     }
 
-    fun handleException(e: Exception) {
-        try {
-            val tool = ExceptionTool(e)
-            addTool(tool)
-        } catch(e: Exception) {
-        }
-    }
 }

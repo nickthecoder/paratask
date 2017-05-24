@@ -56,7 +56,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     }
 
     override fun createHeaderRows(): List<HeaderRow> {
-        return listOf(HeaderRow().add(filenameP))
+        return listOf(HeaderRow().addAll(directoryP, filenameP))
     }
 
     override fun run() {

@@ -50,7 +50,6 @@ object Preferences {
 
         optionsPath.forEach { resource ->
             if ( resource.isFile() || ! onlyDirectories ) {
-                println( "Inlcudeing ${resource} isfile ? ${resource.isFile()} onlyDirs? ${onlyDirectories}")
                 val str = resource.toString()
                 val name = resource.directoryName
 

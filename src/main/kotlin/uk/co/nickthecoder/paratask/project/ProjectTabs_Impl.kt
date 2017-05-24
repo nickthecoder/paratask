@@ -36,6 +36,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     private fun onTabChanged(oldTab: ProjectTab_Impl?, newTab: ProjectTab_Impl?) {
         oldTab?.deselected()
         newTab?.selected()
+        newTab?.left?.toolPane?.tool?.let { projectWindow.toolChanged(it) }
     }
 
     private fun addTool(index: Int, tool: Tool, run: Boolean): ProjectTab {

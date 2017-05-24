@@ -32,6 +32,10 @@ interface Tool : Task {
 
     val shortTitle: String
 
+    val longTitleProperty: StringProperty
+
+    val longTitle: String
+
     val icon: Image?
 
     val optionsName: String

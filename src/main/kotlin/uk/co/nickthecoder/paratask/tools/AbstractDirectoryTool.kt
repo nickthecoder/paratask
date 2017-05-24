@@ -79,6 +79,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun run() {
         shortTitle = directory.name
+        longTitle = "Directory ${directory.path}"
 
         val lister = FileLister(
                 depth = depthP.value!!,

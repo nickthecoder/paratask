@@ -80,10 +80,15 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     fun onTabChanged(oldTab: Tab?, newTab: Tab?) {
+        if (oldTab is MinorTab) {
+            oldTab.deselected()
+        }
         if (newTab is MinorTab) {
+            newTab.selected()
             newTab.focus()
         }
         borderPane.top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
+
     }
 
     override fun resultsTool(): Tool {

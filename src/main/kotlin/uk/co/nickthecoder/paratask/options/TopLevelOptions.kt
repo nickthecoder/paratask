@@ -29,7 +29,6 @@ class TopLevelOptions(val optionsName: String) {
 
         val addedOptionsNames = mutableSetOf<String>()
 
-        println("TopLevelOptions for name ${optionsName}")
         fun add(optionsName: String) {
 
             if (addedOptionsNames.contains(optionsName)) {
@@ -37,10 +36,8 @@ class TopLevelOptions(val optionsName: String) {
             }
             addedOptionsNames.add(optionsName)
 
-            println( "Iterating over ${Preferences.optionsPath}")
             for (directoryResource in Preferences.optionsPath) {
                 val fileOptions: FileOptions = OptionsManager.getFileOptions(optionsName, directoryResource)
-                println( "Created FileOptions ${fileOptions.resource}")
                 fileOptionsList.add(fileOptions)
 
                 for (include in fileOptions.listIncludes()) {

@@ -58,6 +58,7 @@ class GitTool() : AbstractCommandTool<GitStatusRow>() {
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
 
     override fun createCommand(): OSCommand {
+        longTitle = "Git ${directory}"
         return OSCommand("git", "status", "--porcelain").dir(directory!!)
     }
 

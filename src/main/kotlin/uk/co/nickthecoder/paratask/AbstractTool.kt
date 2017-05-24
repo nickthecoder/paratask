@@ -38,6 +38,14 @@ abstract class AbstractTool : Tool {
             Platform.runLater { shortTitleProperty.set(value) }
         }
 
+    override val longTitleProperty by lazy { SimpleStringProperty(defaultLongTitle()) }
+
+    override var longTitle: String
+        get() = longTitleProperty.get()
+        set(value) {
+            Platform.runLater { longTitleProperty.set(value) }
+        }
+
     override val optionsName: String by lazy { taskD.name }
 
     override val optionsRunner by lazy { OptionsRunner(this) }
@@ -45,6 +53,8 @@ abstract class AbstractTool : Tool {
     override var resultsList: List<Results> = listOf()
 
     protected fun defaultShortTitle() = taskD.name.uncamel()
+
+    protected fun defaultLongTitle() = taskD.name.uncamel()
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane

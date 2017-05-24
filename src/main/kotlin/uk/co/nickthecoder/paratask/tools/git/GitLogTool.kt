@@ -71,6 +71,8 @@ class GitLogTool : AbstractCommandTool<GitLogRow>() {
 
     override fun createCommand(): OSCommand {
 
+        longTitle = "Git Log ${directory}"
+
         val command = OSCommand("git", "log", "--date=short").dir(directory!!)
 
         if (grepP.value != "") {
@@ -93,7 +95,6 @@ class GitLogTool : AbstractCommandTool<GitLogRow>() {
 
         state = GitLogTool.ParseState.head
 
-        println("since=${sinceP.value} until=${untilP.value} commnad: ${command}")
         return command
     }
 

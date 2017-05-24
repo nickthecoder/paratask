@@ -141,8 +141,7 @@ class FileOptions(val resource: Resource) : FileListener {
             jroot = Json.parse(InputStreamReader(resource.url.openStream())).asObject()
         } catch (e: Exception) {
             // We don't care if we can't read the file - it may not exist, and that's fine!
-            println("Failed to load options file ${resource}")
-            e.printStackTrace()
+            //println("Failed to load options file ${resource}")
             return
         }
 
@@ -228,7 +227,6 @@ class FileOptions(val resource: Resource) : FileListener {
                 addOption(option)
             }
         }
-        println( "Loaded. options from ${resource}.  ${optionsMap.keys}")
     }
 
     fun save() {
