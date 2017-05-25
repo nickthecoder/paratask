@@ -18,21 +18,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.options
 
 import javafx.event.ActionEvent
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.CustomMenuItem
-import javafx.scene.control.Label
-import javafx.scene.control.MenuItem
-import javafx.scene.control.SeparatorMenuItem
+import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.project.TaskPrompter
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.util.process.OSCommand
+import uk.co.nickthecoder.paratask.project.TaskPrompter
 import uk.co.nickthecoder.paratask.util.process.Exec
-import java.io.File
+import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 open class OptionsRunner(val tool: Tool) {
 
@@ -138,13 +131,12 @@ open class OptionsRunner(val tool: Tool) {
 
     protected fun processTool(returnedTool: Tool, newTab: Boolean, prompt: Boolean) {
 
-        resolveCurrentDirectory(returnedTool)
-
         val halfTab = tool.toolPane?.halfTab
         val projectTabs = halfTab?.projectTab?.projectTabs
 
         // Reuse the current tool where possible, otherwise copy the tool
         val newTool = if (returnedTool !== tool || newTab) returnedTool.copy() else tool
+        newTool.resolveParameters(tool.resolver)
 
         if (newTab) {
 
@@ -166,7 +158,7 @@ open class OptionsRunner(val tool: Tool) {
 
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
-        resolveCurrentDirectory(task)
+        task.resolveParameters(tool.resolver)
 
         if (refresh) {
             refresher.add()
@@ -190,29 +182,6 @@ open class OptionsRunner(val tool: Tool) {
             task.taskRunner.run()
         }
 
-    }
-
-    fun currentDirectory(): File {
-        if (tool is HasDirectory) {
-            tool.directory?.let { return it }
-        }
-        // TODO If/when a project has a directory, use that
-
-        return File(".")
-    }
-
-    fun resolveCurrentDirectory(task: Task) {
-        val directory = currentDirectory()
-
-        task.valueParameters().forEach { parameter ->
-            if (parameter is FileParameter) {
-                if (parameter.value?.path == ".") {
-                    parameter.value = directory
-                } else {
-                    parameter.value?.let { parameter.value = directory.resolve(it) }
-                }
-            }
-        }
     }
 
 

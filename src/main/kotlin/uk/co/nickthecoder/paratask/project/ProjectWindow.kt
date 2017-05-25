@@ -24,8 +24,8 @@ import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.*
+import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
@@ -86,8 +86,18 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun onNewTab(tool: Tool = HomeTool()) {
-        addTool(tool.copy())
+        val newTool = tool.copy()
+        newTool.resolveParameters(resolver)
+        addTool(newTool)
     }
+
+    val directoryResolver = object : DirectoryResolver() {
+        // TODO When project has a directory, use that.
+        override fun directory() = File("").absoluteFile
+    }
+
+    val resolver = CompoundParameterResolver(directoryResolver)
+
 
     fun placeOnStage(stage: Stage) {
         GlobalShortcuts(scene, this)

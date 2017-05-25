@@ -22,6 +22,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.options.OptionsRunner
 import uk.co.nickthecoder.paratask.project.*
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractTool : Tool {
@@ -52,12 +53,18 @@ abstract class AbstractTool : Tool {
 
     override var resultsList: List<Results> = listOf()
 
+    override val resolver: CompoundParameterResolver = CompoundParameterResolver()
+
     protected fun defaultShortTitle() = taskD.name.uncamel()
 
     protected fun defaultLongTitle() = taskD.name.uncamel()
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
+        if (this is HasDirectory) {
+            resolver.children.add(HasDirectoryResolver(this))
+        }
+        resolver.children.add(toolPane.halfTab.projectTab.projectTabs.projectWindow.resolver)
     }
 
     override fun detaching() {
@@ -98,3 +105,4 @@ abstract class AbstractTool : Tool {
         return "Tool : $taskD"
     }
 }
+

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.project.TaskRunner
@@ -26,6 +27,21 @@ interface Task {
     val taskRunner: TaskRunner
 
     val taskD: TaskDescription
+
+    fun resolveParameters(resolver: ParameterResolver) {
+        valueParameters().forEach {
+            resolveParameter(resolver, it)
+        }
+    }
+
+    fun resolveParameter(resolver: ParameterResolver, parameter: ValueParameter<*>) {
+        if (parameter is ValueParameter<*>) {
+            resolver.resolve(parameter)
+            if (parameter is MultipleParameter<*>) {
+                parameter.innerParameters.forEach { resolveParameter(resolver, it) }
+            }
+        }
+    }
 
     fun check()
 
