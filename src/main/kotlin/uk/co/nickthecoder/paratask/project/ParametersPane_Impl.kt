@@ -66,7 +66,7 @@ class ParametersPane_Impl(override val tool: Tool)
 
     override fun run(): Boolean {
 
-        tool.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.resolver)
+        tool.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
 
         if (taskForm.check()) {
 

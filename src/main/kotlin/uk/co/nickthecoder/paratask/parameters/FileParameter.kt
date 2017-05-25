@@ -67,7 +67,7 @@ class FileParameter(
 
     override fun errorMessage(v: File?): String? {
 
-        val resolvedValue = resolver()?.resolveValue(this, v) as File? ?: v
+        val resolvedValue = resolver().resolveValue(this, v) as File? ?: v
 
         if (isProgrammingMode()) return null
 

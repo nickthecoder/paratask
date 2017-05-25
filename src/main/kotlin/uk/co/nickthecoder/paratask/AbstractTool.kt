@@ -63,7 +63,7 @@ abstract class AbstractTool : Tool {
         this.toolPane = toolPane
         val r = resolver
         if (r is CompoundParameterResolver) {
-            r.add(toolPane.halfTab.projectTab.projectTabs.projectWindow.resolver)
+            r.add(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
             if (this is HasDirectory) {
                 r.add(HasDirectoryResolver(this))
             }

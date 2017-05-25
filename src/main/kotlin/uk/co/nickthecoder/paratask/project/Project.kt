@@ -5,6 +5,8 @@ import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.CompoundParameterResolver
+import uk.co.nickthecoder.paratask.DirectoryResolver
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import java.io.*
@@ -13,6 +15,13 @@ class Project(val projectWindow: ProjectWindow) {
 
     var projectFile: File? = null
 
+    var directory: File = File("").absoluteFile
+
+    val directoryResolver = object : DirectoryResolver() {
+        override fun directory() = directory
+    }
+
+    val resolver = CompoundParameterResolver(directoryResolver)
 
     /*
      Example JSON file :
@@ -91,11 +100,10 @@ class Project(val projectWindow: ProjectWindow) {
 
             val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
 
-            val title = jroot.getString("title", "")
             val width = jroot.getDouble("width", 600.0)
             val height = jroot.getDouble("height", 600.0)
 
-            val projectWindow = ProjectWindow(title, width, height)
+            val projectWindow = ProjectWindow(width, height)
             val project = projectWindow.project
 
             project.projectFile = projectFile

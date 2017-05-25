@@ -17,25 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import com.eclipsesource.json.Json
-import com.eclipsesource.json.JsonObject
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.*
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
 import uk.co.nickthecoder.paratask.tools.editor.ExceptionTool
 import uk.co.nickthecoder.paratask.util.AutoExit
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
 
-class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 600.0) {
+class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
     val project = Project(this)
 
@@ -75,24 +69,16 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun onNewWindow() {
-        val newWindow = ProjectWindow("New Project")
+        val newWindow = ProjectWindow()
         newWindow.placeOnStage(Stage())
         newWindow.addTool(HomeTool())
     }
 
     fun onNewTab(tool: Tool = HomeTool()) {
         val newTool = tool.copy()
-        newTool.resolveParameters(resolver)
+        newTool.resolveParameters(project.resolver)
         addTool(newTool)
     }
-
-    val directoryResolver = object : DirectoryResolver() {
-        // TODO When project has a directory, use that.
-        override fun directory() = File("").absoluteFile
-    }
-
-    val resolver = CompoundParameterResolver(directoryResolver)
-
 
     fun placeOnStage(stage: Stage) {
         GlobalShortcuts(scene, this)

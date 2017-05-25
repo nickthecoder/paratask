@@ -150,7 +150,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     fun onSelectTool(tool: Tool) {
         val newTool = tool.copy()
-        newTool.resolveParameters(projectTab.projectTabs.projectWindow.resolver)
+        newTool.resolveParameters(projectTab.projectTabs.projectWindow.project.resolver)
         changeTool(newTool)
     }
 

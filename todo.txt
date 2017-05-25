@@ -1,9 +1,9 @@
 
 Project to have a Directory.
 
-project title isn't used!
-
 Terminal isn't HasDirectory yet
+
+Bug : GroupParameter is not stretching its children.
 
 Git Diff truncates lines
 	Is this related to an env setting. Does it think it is running in an xterm?

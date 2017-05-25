@@ -136,13 +136,10 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     open fun onKeyPressed(event: KeyEvent) {
         if (Actions.acceleratorUp.match(event)) {
-            // If we consume then EditCell doesn't get this event. Hmmm.
-            //event.consume()
-            move(-1)
+            if (!move(-1)) event.consume()
 
         } else if (Actions.acceleratorDown.match(event)) {
-            //event.consume()
-            move(1)
+            if (!move(1)) event.consume()
 
         } else if (Actions.OPTION_RUN.match(event)) {
             runTableOptions()
@@ -163,15 +160,15 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         } else if (Actions.acceleratorEscape.match(event)) {
             event.consume()
         }
-        editOption()
     }
 
-    fun move(delta: Int) {
+    fun move(delta: Int) : Boolean {
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
-            return
+            return false
         }
         Platform.runLater { editOption() }
+        return true
     }
 
 

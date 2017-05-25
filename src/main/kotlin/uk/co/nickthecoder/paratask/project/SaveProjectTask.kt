@@ -17,40 +17,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import com.eclipsesource.json.JsonArray
-import com.eclipsesource.json.JsonObject
-import com.eclipsesource.json.PrettyPrint
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
-import java.io.BufferedWriter
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
+
     override val taskD = TaskDescription("Save Project")
 
     val saveInDirectoryP = FileParameter("saveInDirectory", mustExist = null, expectFile = false)
 
     val filenameP = StringParameter("filename")
 
+    val projectData = GroupParameter("projectMetaData")
+
+    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
+
     init {
+        taskD.addParameters(saveInDirectoryP, filenameP, projectData)
+        projectData.addParameters(directoryP)
+
         val project = projectWindow.project
 
-        taskD.addParameters(saveInDirectoryP, filenameP)
         saveInDirectoryP.value = project.projectFile?.parentFile ?: Preferences.projectsDirectory
         filenameP.value = project.projectFile?.nameWithoutExtension() ?: ""
+        directoryP.value = project.directory
     }
 
     override fun run() {
-        var filename = filenameP.value!!
-        if ( filename.endsWith(".json")) {
-            filename.substring(0..filename.length-5)
+        var filename = filenameP.value
+        if (filename.endsWith(".json")) {
+            filename = filename.substring(0..filename.length - 5)
         }
-        val file = File(saveInDirectoryP.value!!, filenameP.value + ".json")
+        val file = File(saveInDirectoryP.value!!, filename + ".json")
 
         projectWindow.project.save(file)
     }
