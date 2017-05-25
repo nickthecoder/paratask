@@ -182,7 +182,7 @@ class FileWatcher {
                 val listener = this.weakListener.get()
                 if (listener != null) {
                     this.lastModified = lm
-                    listener!!.fileChanged(path)
+                    listener.fileChanged(path)
                 }
             }
         }

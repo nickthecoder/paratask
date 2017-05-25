@@ -24,17 +24,22 @@ import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.FileNameColumn
 import uk.co.nickthecoder.paratask.table.NumberColumn
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
 /**
  * Converts the text output from GrepTask's into a List, so that the results can be displayed as a table.
  */
-class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable {
+class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
 
     val grepTask = GrepTask()
 
     override val taskD = grepTask.taskD
+
+    override val directory: File?
+        get() = grepTask.filesP.value.firstOrNull { it?.isDirectory() == true }
+
 
     init {
         grepTask.contextLinesP.hidden = true

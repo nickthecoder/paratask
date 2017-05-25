@@ -91,7 +91,7 @@ class ParametersPane_Impl(override val tool: Tool)
     }
 
     override fun focusChanged(gained: Boolean) {
-        runButton?.setDefaultButton(gained)
+        runButton.setDefaultButton(gained)
     }
 
     override fun detaching() {

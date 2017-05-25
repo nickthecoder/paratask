@@ -57,7 +57,7 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
     }
 
     private fun add(resourceDirectory: Resource) {
-        val directory = resourceDirectory?.file ?: return
+        val directory = resourceDirectory.file ?: return
         val fileLister = FileLister(extensions = listOf("json"))
         val files = fileLister.listFiles(directory)
         files.map { it.nameWithoutExtension() }.forEach {

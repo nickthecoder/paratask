@@ -28,8 +28,11 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.project.TaskPrompter
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
+import java.io.File
 
 open class OptionsRunner(val tool: Tool) {
 
@@ -134,6 +137,9 @@ open class OptionsRunner(val tool: Tool) {
     }
 
     protected fun processTool(returnedTool: Tool, newTab: Boolean, prompt: Boolean) {
+
+        resolveCurrentDirectory(returnedTool)
+
         val halfTab = tool.toolPane?.halfTab
         val projectTabs = halfTab?.projectTab?.projectTabs
 
@@ -160,6 +166,8 @@ open class OptionsRunner(val tool: Tool) {
 
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
+        resolveCurrentDirectory(task)
+
         if (refresh) {
             refresher.add()
             task.taskRunner.listen {
@@ -182,6 +190,29 @@ open class OptionsRunner(val tool: Tool) {
             task.taskRunner.run()
         }
 
+    }
+
+    fun currentDirectory(): File {
+        if (tool is HasDirectory) {
+            tool.directory?.let { return it }
+        }
+        // TODO If/when a project has a directory, use that
+
+        return File(".")
+    }
+
+    fun resolveCurrentDirectory(task: Task) {
+        val directory = currentDirectory()
+
+        task.valueParameters().forEach { parameter ->
+            if (parameter is FileParameter) {
+                if (parameter.value?.path == ".") {
+                    parameter.value = directory
+                } else {
+                    parameter.value?.let { parameter.value = directory.resolve(it) }
+                }
+            }
+        }
     }
 
 

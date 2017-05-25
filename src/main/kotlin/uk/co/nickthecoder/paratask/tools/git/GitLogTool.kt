@@ -23,16 +23,18 @@ import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
+import java.io.File
 import java.time.format.DateTimeFormatter
 
-class GitLogTool : AbstractCommandTool<GitLogRow>() {
+class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
 
     override val taskD = TaskDescription("gitLog", description = "Log of Commits/Merges")
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    val directory by directoryP
+    override val directory by directoryP
 
     val maxItemsP = IntParameter("maxItems", range = 1..Int.MAX_VALUE)
 

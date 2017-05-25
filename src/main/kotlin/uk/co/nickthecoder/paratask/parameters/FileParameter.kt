@@ -28,9 +28,9 @@ class FileParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: File? = null,
         required: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
+        value: File? = if (expectFile == false) File(".") else null,
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         var baseDirectory: File? = null,
         val baseDirectoryP: FileParameter? = null)

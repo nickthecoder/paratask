@@ -32,17 +32,19 @@ import uk.co.nickthecoder.paratask.table.FileNameColumn
 import uk.co.nickthecoder.paratask.table.ModifiedColumn
 import uk.co.nickthecoder.paratask.table.SizeColumn
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import uk.co.nickthecoder.paratask.util.homeDirectory
+import java.io.File
 
 abstract class AbstractDirectoryTool(name: String, description: String)
 
-    : AbstractTableTool<WrappedFile>() {
+    : AbstractTableTool<WrappedFile>(), HasDirectory {
 
 
     final override val taskD = TaskDescription(name = name, description = description)
 
-    val directoryP = FileParameter("directory", expectFile = false, mustExist = true, value = homeDirectory)
+    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
 
     val depthP = IntParameter("depth", value = 1, range = 1..Int.MAX_VALUE)
 
@@ -56,8 +58,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val includeBaseP = BooleanParameter("includeBase", value = false)
 
-    val directory
-        get() = directoryP.value!!
+    override val directory: File? by directoryP
 
 
     init {
@@ -78,8 +79,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
 
     override fun run() {
-        shortTitle = directory.name
-        longTitle = "Directory ${directory.path}"
+        shortTitle = directory?.name ?: "Directory"
+        longTitle = "Directory ${directory?.path}"
 
         val lister = FileLister(
                 depth = depthP.value!!,

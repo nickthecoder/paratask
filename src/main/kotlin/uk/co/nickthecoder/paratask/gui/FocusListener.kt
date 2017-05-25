@@ -17,6 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
-interface FocusListener{
-    fun focusChanged( foo: Boolean)
+interface FocusListener {
+    fun focusChanged(gained: Boolean)
 }

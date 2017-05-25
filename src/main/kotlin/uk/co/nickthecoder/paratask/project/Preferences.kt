@@ -32,7 +32,7 @@ object Preferences {
 
     init {
         optionsPath.add(Resource(homeDirectory.child(".config", "paratask", "options")))
-        optionsPath.add(Resource(ParaTaskApp.javaClass.getResource("options")))
+        //optionsPath.add(Resource(ParaTaskApp::class.java.getResource("options")))
     }
 
     fun createOptionsResourceParameter(
@@ -51,9 +51,8 @@ object Preferences {
         optionsPath.forEach { resource ->
             if ( resource.isFile() || ! onlyDirectories ) {
                 val str = resource.toString()
-                val name = resource.directoryName
 
-                result.choice(str, resource, name)
+                result.choice(str, resource, resource.directoryName)
                 if (defaultFirst && result.value == null) {
                     result.value = resource
                 }

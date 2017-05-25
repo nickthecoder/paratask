@@ -1,9 +1,28 @@
 
-Tools with directories should default to "."
-	When running options, resolve all FileParameters based on :
-		The tool's directory is it is HasDirectory
-		The current working directory otherwise.
-	There is a more generic version of this... What about the current database, current DB table etc.
+Terminal isn't HasDirectory yet
+
+DirectoryTool -> F9 - focus is not in the parameters
+
+Git Diff truncates lines
+	Is this related to an env setting. Does it think it is running in an xterm?
+		If so need to remove those env values. Hmm.
+	Maybe this is why GroovyTool is trying to output in colour.
+
+BUG. Saving a (new?) option doesn't make it available
+
+TerminalTool : Have a button/option to save contents of the buffer.
+	Different option to open in the Editor
+OsCommandTool option to save output to a file or display in the Editor
+	Maybe this is instead of the "lazy" terminal mentioned below.
+
+Should directoryP values be required? Some are.
+	mustExist? Some are.
+
+Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
+
+Switching to a major tab with table doesn't edit the cell (but the cell IS blue)
+
+Need some way to "hide" weird options such as "GC", printRow etc.
 
 TerminalTool to allow running of Tasks/Tools/Options from the input field
 

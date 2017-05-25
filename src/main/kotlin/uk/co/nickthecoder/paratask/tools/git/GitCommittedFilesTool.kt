@@ -24,15 +24,18 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>() {
+class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     override val taskD = TaskDescription("gitCommittedFiles", description = "List of File involved in a Git Commit")
 
     val directoryP = FileParameter("directory", expectFile = false)
+
+    override val directory by directoryP
 
     val commitP = StringParameter("commit")
 
@@ -47,17 +50,14 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>() {
         taskD.addParameters(directoryP, commitP)
     }
 
-    val directory: File
-        get() = directoryP.value!!
-
 
     override fun createColumns() {
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
-        columns.add(BaseFileColumn<WrappedFile>("path", base = directory) { it.file })
+        columns.add(BaseFileColumn<WrappedFile>("path", base = directory!!) { it.file })
     }
 
     override fun createCommand(): OSCommand {
-        val command = OSCommand("git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit).dir(directory)
+        val command = OSCommand("git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit).dir(directory!!)
         return command
     }
 

@@ -121,7 +121,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     }
 
     override fun focusChanged(gained: Boolean) {
-        submitButton?.setDefaultButton(gained)
+        submitButton.setDefaultButton(gained)
     }
 
     fun detaching() {

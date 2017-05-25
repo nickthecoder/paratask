@@ -23,6 +23,7 @@ import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 import uk.co.nickthecoder.paratask.util.FileListener
 import uk.co.nickthecoder.paratask.util.FileWatcher
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File
 import java.nio.file.Path
 
@@ -41,7 +42,7 @@ class DirectoryTool :
     override fun run() {
         super.run()
         if (autoRefreshP.value == true) {
-            watch(directoryP.value!!)
+            watch(directory!!)
         }
     }
 

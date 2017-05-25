@@ -127,7 +127,7 @@ class ProjectWindow(title: String = "", width: Double = 800.0, height: Double = 
     }
 
     fun toolChanged(currentTool: Tool) {
-        stage?.titleProperty()?.bind(currentTool?.longTitleProperty)
+        stage?.titleProperty()?.bind(currentTool.longTitleProperty)
     }
 
     companion object {

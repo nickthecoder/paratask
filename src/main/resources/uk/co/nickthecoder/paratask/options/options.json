@@ -38,17 +38,6 @@
         },
         {
             "type": "groovy",
-            "script": "new EditorTool( tool.getFileOptions().file )",
-            "code": "edit",
-            "label": "Edit Options File in Text Editor",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "tool.taskCopy(row)",
             "code": "=",
             "label": "Copy Option",
@@ -57,6 +46,17 @@
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "script": "val file = tool.getFileOptions().resource.file\n\nif (file != null) {\n    new EditorTool( file )\n}\n",
+            "code": "edit",
+            "label": "Edit Options File in Text Editor",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false
         }
     ]
 }

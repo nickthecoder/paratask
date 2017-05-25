@@ -22,13 +22,17 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class GitRMTask() : AbstractTask() {
+class GitRMTask() : AbstractTask(), HasDirectory {
+
     override val taskD = TaskDescription("gitRM")
 
     val directoryP = FileParameter("directory", expectFile = false)
+
+    override val directory by directoryP
 
     val filesP = MultipleParameter<File?>("files", minItems = 1) { FileParameter("", expectFile = null, baseDirectoryP = directoryP) }
 

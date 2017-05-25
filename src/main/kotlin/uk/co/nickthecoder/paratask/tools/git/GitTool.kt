@@ -28,16 +28,17 @@ import uk.co.nickthecoder.paratask.table.WrappedRow
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitTool.GitStatusRow
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class GitTool() : AbstractCommandTool<GitStatusRow>() {
+class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
     val directoryP = FileParameter("directory", expectFile = false)
 
-    val directory: File? by directoryP
+    override val directory: File? by directoryP
 
     constructor(directory: File) : this() {
         directoryP.value = directory

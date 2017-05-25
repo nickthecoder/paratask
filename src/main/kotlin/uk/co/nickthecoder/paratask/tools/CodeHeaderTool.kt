@@ -28,14 +28,17 @@ import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import java.io.File
 
-class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>() {
+class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory {
 
     override val taskD = TaskDescription("codeHeader", description = "Adds a Copyright notice to the top of source code file")
 
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
+
+    override val directory by directoryP
 
     val extensionsP = MultipleParameter("extensions", value = listOf("java", "kt")) { StringParameter("") }
 
@@ -77,7 +80,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     override fun createColumns() {
         columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
         columns.add(Column<ProcessedFile, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<ProcessedFile>("path", base = directoryP.value!!) { it.file })
+        columns.add(BaseFileColumn<ProcessedFile>("path", base = directory!!) { it.file })
     }
 
     override fun run() {
@@ -85,7 +88,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         if (list.isEmpty()) {
             containsText = containsP.value
             val lister = FileLister(/*extensions = extensionsP.value, */depth = depthP.value!!)
-            list.addAll(lister.listFiles(directoryP.value!!).map { ProcessedFile(it) })
+            list.addAll(lister.listFiles(directory!!).map { ProcessedFile(it) })
         }
     }
 

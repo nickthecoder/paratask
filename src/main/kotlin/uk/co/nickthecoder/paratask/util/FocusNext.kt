@@ -63,6 +63,7 @@ private class FocusNext(val startNode: Node, var attempts: Int) {
             val parent = node.parent
 
             if (parent == null) {
+                // TODO - Bug it will never get here! (plus parent is shadowed)
                 // We've reached the top of the tree. Look at ealier siblings
                 for (i in 0..idx - 1) {
                     if (tryFocusNode(children[i])) {

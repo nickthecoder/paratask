@@ -68,7 +68,4 @@ object TaskRegistry {
         taskGroups.add(group)
     }
 
-    fun find(task: Task) {
-
-    }
 }

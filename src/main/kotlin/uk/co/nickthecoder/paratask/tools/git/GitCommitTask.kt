@@ -22,30 +22,33 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.Exec
 import java.io.File
 
-class GitCommitTask() : AbstractTask() {
+class GitCommitTask() : AbstractTask(), HasDirectory {
 
     override val taskD = TaskDescription("gitCommit")
 
-    val message = StringParameter("message", columns=60, rows=10)
+    val messageP = StringParameter("message", columns = 60, rows = 10)
 
-    val all = BooleanParameter("all")
+    val allP = BooleanParameter("all")
 
-    val directory = FileParameter("directory", expectFile = false)
+    val directoryP = FileParameter("directory", expectFile = false)
 
-        constructor(directory: File, all: Boolean = false) : this() {
-        this.directory.value = directory
-        this.all.value = all
+    override val directory by directoryP
+
+    constructor(directory: File, all: Boolean = false) : this() {
+        this.directoryP.value = directory
+        this.allP.value = all
     }
 
     init {
-        taskD.addParameters(message, all, directory)
+        taskD.addParameters(messageP, allP, directoryP)
     }
 
     override fun run() {
-        val exec = Exec("git", "commit", "-m", message.value, if (all.value == true) "-a" else null).dir(directory.value)
+        val exec = Exec("git", "commit", "-m", messageP.value, if (allP.value == true) "-a" else null).dir(directoryP.value)
         exec.start()
     }
 }

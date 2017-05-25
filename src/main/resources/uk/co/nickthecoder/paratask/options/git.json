@@ -5,6 +5,59 @@
     "options": [
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
+            "code": "ca",
+            "label": "Git Commit All",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "aliases": [
+                "all"
+            ],
+            "parameters": [
+                {
+                    "name": "messge",
+                    "value": ""
+                },
+                {
+                    "name": "all",
+                    "value": "true"
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
+            "code": "c",
+            "label": "Git Commit",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "messge",
+                    "value": ""
+                },
+                {
+                    "name": "all",
+                    "value": "false"
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
             "code": "co",
             "label": "Check Out",
@@ -31,7 +84,7 @@
                 },
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
+                    "value": "."
                 }
             ]
         },
@@ -63,7 +116,7 @@
                 },
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
+                    "value": "."
                 }
             ]
         },
@@ -80,7 +133,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
+                    "value": "."
                 },
                 {
                     "name": "files",
@@ -107,7 +160,7 @@
                     "name": "file",
                     "values": [
                         {
-                            "expression": "new File( tool.directory, \".gitignore\" )"
+                            "value": "./.gitignore"
                         }
                     ]
                 }
@@ -141,60 +194,84 @@
                 },
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
+                    "value": "."
                 }
             ]
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
-            "code": "c",
-            "label": "Git Commit",
-            "isRow": false,
+            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "code": "d",
+            "label": "Git Diff",
+            "isRow": true,
             "isMultiple": false,
-            "prompt": true,
+            "prompt": false,
             "newTab": false,
-            "refresh": true,
+            "refresh": false,
             "parameters": [
                 {
-                    "name": "message",
+                    "name": "osCommand",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitLogTool",
+            "code": "log",
+            "label": "Git Log",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "."
+                },
+                {
+                    "name": "maxItems",
+                    "value": "10000"
+                },
+                {
+                    "name": "grep",
                     "value": ""
                 },
                 {
-                    "name": "all",
+                    "name": "grepType",
+                    "value": "fixed"
+                },
+                {
+                    "name": "merges",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
                     "value": "false"
                 },
                 {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
-            "code": "ca",
-            "label": "Git Commit All",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "aliases": [
-                "all"
-            ],
-            "parameters": [
-                {
-                    "name": "message",
+                    "name": "since",
                     "value": ""
                 },
                 {
-                    "name": "all",
-                    "value": "true"
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
+                    "name": "until",
+                    "value": ""
                 }
             ]
         },
@@ -229,53 +306,16 @@
                 },
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitLogTool",
-            "code": "log",
-            "label": "Git Log",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "maxItems",
-                    "value": "10000"
-                },
-                {
-                    "name": "grep",
-                    "value": ""
-                },
-                {
-                    "name": "grepType",
-                    "value": "fixed"
-                },
-                {
-                    "name": "merges",
-                    "value": ""
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
+                    "value": "."
                 }
             ]
         },
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
-            "code": "d",
-            "label": "Git Diff",
-            "isRow": true,
+            "code": "dall",
+            "label": "Git Diff All",
+            "isRow": false,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
@@ -290,15 +330,12 @@
                     "values": [
                         {
                             "value": "diff"
-                        },
-                        {
-                            "expression": "row.file.path"
                         }
                     ]
                 },
                 {
                     "name": "directory",
-                    "expression": "tool.directory"
+                    "value": "."
                 }
             ]
         }
