@@ -46,8 +46,6 @@ class FileParameter(
 
         override fun fromString(str: String): File? {
             if (str == "") return null
-            if (str == "~") return homeDirectory
-            if (str.startsWith("~" + File.separatorChar)) return File(homeDirectory, str.substring(2))
             return File(str)
         }
 

@@ -16,6 +16,7 @@ import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 abstract class FileFieldBase(override val parameter: ValueParameter<*>) : LabelledField(parameter) {
@@ -148,10 +149,18 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
     }
 
     private fun onCompleteFile() {
+
         contextMenu.hide()
         contextMenu.items.clear()
 
         val file = getFile() ?: return
+
+        println("Completing file $file")
+        if (file.path.startsWith("~")) {
+            println("Using home. ${homeDirectory.resolve(file.path.substring(1))}")
+            setFile(homeDirectory.resolve(file.path.substring(1)))
+            return
+        }
 
         val isDirectory = file.isDirectory
         val prefix = if (isDirectory) "" else file.name
