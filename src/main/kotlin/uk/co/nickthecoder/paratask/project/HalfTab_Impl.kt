@@ -30,6 +30,7 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.ButtonGroup
+import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
 
 class HalfTab_Impl(override var toolPane: ToolPane)
@@ -204,7 +205,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     }
 
     override fun focusOption() {
-        optionsField.requestFocus()
+        RequestFocus.requestFocus(optionsField)
     }
 
     override fun focusOtherHalf() {

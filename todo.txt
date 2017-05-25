@@ -1,15 +1,23 @@
 
+DirectoryTool -> F9 - focus is not in the parameters
+	While fixing this, I broke focus on table results. So saved to stash, to make it easier to merge those
+	changes WITHOUT breakage! (But I haven't coded a GitStashTool, and now is a godd time ;-)
 
 Terminal isn't HasDirectory yet
 
-DirectoryTool -> F9 - focus is not in the parameters
+Make git diff its own command (with boolean for tool/text)
+	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.
+		Maybe even create special Parameters for the "positions"
+			A button to pop-up a list of stashes, commits etc.
+	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
 
 Git Diff truncates lines
 	Is this related to an env setting. Does it think it is running in an xterm?
 		If so need to remove those env values. Hmm.
 	Maybe this is why GroovyTool is trying to output in colour.
 
-BUG. Saving a (new?) option doesn't make it available
+BUG. Saving a (new?) option doesn't make it available - may have been a "build" dir vs .config problem???
+	(and therefore only happens from the IDE.)
 
 TerminalTool : Have a button/option to save contents of the buffer.
 	Different option to open in the Editor

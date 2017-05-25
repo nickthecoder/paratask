@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
+import uk.co.nickthecoder.paratask.util.RequestFocus
 
 class ToolPane_Impl(override var tool: Tool)
 
@@ -77,7 +78,6 @@ class ToolPane_Impl(override var tool: Tool)
 
         if (tab is MinorTab) {
             Platform.runLater {
-                println("Selected minor tab ${tab}")
                 tab.focus()
             }
         }
@@ -230,7 +230,9 @@ class ToolPane_Impl(override var tool: Tool)
 
     class ParametersTab(val parametersPane: ParametersPane) : Tab(), MinorTab {
         override fun focus() {
-            parametersPane.taskForm.form.focus()
+            Platform.runLater {
+                parametersPane.focus()
+            }
         }
 
         override fun selected() {

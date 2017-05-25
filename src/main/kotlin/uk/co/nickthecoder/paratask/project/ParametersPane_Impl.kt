@@ -26,7 +26,9 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
+import uk.co.nickthecoder.paratask.util.focusNext
 
 class ParametersPane_Impl(override val tool: Tool)
 
@@ -36,7 +38,7 @@ class ParametersPane_Impl(override val tool: Tool)
 
     private val buttons = FlowPane()
 
-    private val runButton = Button("Run")
+    val runButton = Button("Run")
 
     private val stopButton = Button("Stop")
 
@@ -98,6 +100,10 @@ class ParametersPane_Impl(override val tool: Tool)
 
     override fun detaching() {
         focusHelper.remove()
+    }
+
+    override fun focus() {
+        this.focusNext()
     }
 
 }

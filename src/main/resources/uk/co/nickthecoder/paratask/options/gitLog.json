@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "new GitTool( tool.directory )",
             "code": "gs",
             "label": "Git Status",
-            "script": "new GitTool( tool.directory )",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -16,9 +16,9 @@
         },
         {
             "type": "groovy",
+            "script": "new TerminalTool( new Command(\"git\", \"diff\", row.commit+\"^\", row.commit).dir( tool.directory ) )",
             "code": "d",
             "label": "Git Diff",
-            "script": "new TerminalTool( new Command(\"git\", \"diff\", row.commit+\"^\", row.commit).dir( tool.directory ) )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -27,9 +27,9 @@
         },
         {
             "type": "groovy",
+            "script": "new Command( \"git\", \"difftool\", row.commit+\"^\", row.commit ).dir( tool.directory )",
             "code": "dt",
             "label": "Git Diff Tool",
-            "script": "new Command( \"git\", \"difftool\", row.commit+\"^\", row.commit ).dir( tool.directory )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -38,9 +38,9 @@
         },
         {
             "type": "groovy",
+            "script": "new GitCommittedFilesTool( tool.directory, row.commit )",
             "code": ".",
             "label": "List Committed Files",
-            "script": "new GitCommittedFilesTool( tool.directory, row.commit )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -52,14 +52,46 @@
         },
         {
             "type": "groovy",
+            "script": "x",
             "code": "test",
             "label": "test",
-            "script": "x",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "code": "co",
+            "label": "Git Check Out Commit",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "checkout"
+                        },
+                        {
+                            "expression": "row.commit"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
         }
     ]
 }

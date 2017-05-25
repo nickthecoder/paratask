@@ -30,6 +30,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.util.RequestFocus
 
 class EditCell<S, T>(
         val tableResults: TableResults<*>,
@@ -76,7 +77,7 @@ class EditCell<S, T>(
                 event.consume()
                 move(1)
             } else if (Actions.CONTEXT_MENU.match(event)) {
-                tableResults.showContextMenu( textField, event )
+                tableResults.showContextMenu(textField, event)
                 event.consume()
             }
         }
@@ -88,7 +89,7 @@ class EditCell<S, T>(
 
     fun onMouse(event: MouseEvent) {
         if (event.isPopupTrigger) {
-            tableResults.showContextMenu( textField, event )
+            tableResults.showContextMenu(textField, event)
             tableResults.contextMenu.show(textField, Side.LEFT, event.x, event.y)
             event.consume()
         }
@@ -96,14 +97,15 @@ class EditCell<S, T>(
 
     fun move(delta: Int) {
         commitEdit(converter.fromString(textField.text))
-
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
             return
         }
 
         tableView.selectionModel.focus(row)
-        Platform.runLater { tableView.edit(row, tableView.columns[0]) }
+        Platform.runLater {
+            tableView.edit(row, tableView.columns[0])
+        }
 
     }
 
@@ -112,7 +114,7 @@ class EditCell<S, T>(
         super.startEdit()
         textField.text = converter.toString(item)
         contentDisplay = ContentDisplay.GRAPHIC_ONLY
-        textField.requestFocus()
+        RequestFocus.requestFocus(textField)
     }
 
     // revert to text display
@@ -138,7 +140,6 @@ class EditCell<S, T>(
                 Event.fireEvent(column, event)
             }
         }
-
         super.commitEdit(item)
 
         contentDisplay = ContentDisplay.TEXT_ONLY

@@ -31,4 +31,6 @@ interface ParametersPane {
     fun attached(toolPane: ToolPane)
 
     fun detaching()
+
+    fun focus()
 }
