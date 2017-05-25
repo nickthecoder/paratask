@@ -53,7 +53,7 @@ abstract class AbstractTool : Tool {
 
     override var resultsList: List<Results> = listOf()
 
-    override val resolver: CompoundParameterResolver = CompoundParameterResolver()
+    override var resolver: ParameterResolver = CompoundParameterResolver()
 
     protected fun defaultShortTitle() = taskD.name.uncamel()
 
@@ -61,10 +61,13 @@ abstract class AbstractTool : Tool {
 
     override fun attached(toolPane: ToolPane) {
         this.toolPane = toolPane
-        if (this is HasDirectory) {
-            resolver.children.add(HasDirectoryResolver(this))
+        val r = resolver
+        if (r is CompoundParameterResolver) {
+            r.add(toolPane.halfTab.projectTab.projectTabs.projectWindow.resolver)
+            if (this is HasDirectory) {
+                r.add(HasDirectoryResolver(this))
+            }
         }
-        resolver.children.add(toolPane.halfTab.projectTab.projectTabs.projectWindow.resolver)
     }
 
     override fun detaching() {

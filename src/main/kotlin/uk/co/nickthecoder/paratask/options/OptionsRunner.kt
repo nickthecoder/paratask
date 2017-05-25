@@ -148,14 +148,6 @@ open class OptionsRunner(val tool: Tool) {
 
     }
 
-    protected fun processExec(exec: Exec, refresh: Boolean) {
-        if (refresh) {
-            refresher.add()
-            exec.listen { refresher.onFinished() }
-        }
-        exec.start()
-    }
-
     protected fun processTask(task: Task, prompt: Boolean, refresh: Boolean) {
 
         task.resolveParameters(tool.resolver)
@@ -184,6 +176,13 @@ open class OptionsRunner(val tool: Tool) {
 
     }
 
+    protected fun processExec(exec: Exec, refresh: Boolean) {
+        if (refresh) {
+            refresher.add()
+            exec.listen { refresher.onFinished() }
+        }
+        exec.start()
+    }
 
     /**
      * This is the "simple" version, but RowOptionsRunner has a more complex version, which handles

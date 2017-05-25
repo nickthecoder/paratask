@@ -32,6 +32,8 @@ class TaskDescription(
 
     val root: RootParameter = RootParameter(taskD = this, description = description)
 
+    var resolver: ParameterResolver = PlainDirectoryResolver()
+
     var programmingMode: Boolean = false
 
     /**
@@ -70,7 +72,7 @@ class TaskDescription(
                         && destParameter is MultipleParameter<*>
                         && destParameter.expression == null) {
 
-                    val size = min( destParameter.innerParameters.size, sourceParameter.innerParameters.size)
+                    val size = min(destParameter.innerParameters.size, sourceParameter.innerParameters.size)
                     for (i in 0..size - 1) {
                         destParameter.innerParameters[i].expression = sourceParameter.innerParameters[i].expression
                     }

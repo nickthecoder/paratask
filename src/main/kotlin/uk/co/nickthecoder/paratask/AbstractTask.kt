@@ -19,15 +19,19 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.project.TaskRunner
 import uk.co.nickthecoder.paratask.project.ThreadedTaskRunner
+import uk.co.nickthecoder.paratask.util.currentDirectory
 
 abstract class AbstractTask : Task {
 
-    override val taskRunner : TaskRunner by lazy { ThreadedTaskRunner(this) }
+    override val taskRunner: TaskRunner by lazy { ThreadedTaskRunner(this) }
+
+    override var resolver: ParameterResolver = PlainDirectoryResolver()
 
     override fun check() {
         taskD.root.check()
         customCheck()
     }
+
     override fun customCheck() {}
 
     override fun toString(): String {

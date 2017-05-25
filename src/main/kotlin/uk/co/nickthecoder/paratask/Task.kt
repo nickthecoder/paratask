@@ -28,6 +28,17 @@ interface Task {
 
     val taskD: TaskDescription
 
+    /**
+     * This is used to resolve OTHER tasks created by this task.
+     * For example, if this task/tool has a directory, the child tasks can resolve files based on that directory.
+     */
+    var resolver: ParameterResolver
+
+    /**
+     * Resolves this task's parameters based on the context of the whoever created this task.
+     * Tasks may optionally extend this method, performing their own resolution (maybe based on their own resolver),
+     * but this would be unusual.
+     */
     fun resolveParameters(resolver: ParameterResolver) {
         valueParameters().forEach {
             resolveParameter(resolver, it)
@@ -62,7 +73,6 @@ interface Task {
     fun parameters(): List<Parameter> = taskD.root.descendants()
 
     fun copy(): Task {
-
         val copy = this::class.java.newInstance()
         copy.taskD.copyValuesFrom(taskD)
         return copy

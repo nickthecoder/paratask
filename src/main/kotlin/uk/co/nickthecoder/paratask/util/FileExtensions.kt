@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask.util
 
 import java.io.File
 
+val currentDirectory: File = File("").absoluteFile
+
 val homeDirectory: File = File(System.getProperty("user.home"))
 
 fun File.child(vararg names: String): File {

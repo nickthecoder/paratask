@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.fields.FileField
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.homeDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File
 
@@ -67,23 +66,26 @@ class FileParameter(
     }
 
     override fun errorMessage(v: File?): String? {
+
+        val resolvedValue = resolver()?.resolveValue(this, v) as File? ?: v
+
         if (isProgrammingMode()) return null
 
-        if (v == null) {
-            return super.errorMessage(v)
+        if (resolvedValue == null) {
+            return super.errorMessage(resolvedValue)
         }
 
         if (mustExist != null) {
-            if (v.exists() && mustExist == false) {
+            if (resolvedValue.exists() && mustExist == false) {
                 return "File already exists"
-            } else if (!v.exists() && mustExist == true) {
+            } else if (!resolvedValue.exists() && mustExist == true) {
                 return "File does not exist"
             }
         }
         if (expectFile != null) {
-            if (expectFile && v.isDirectory) {
+            if (expectFile && resolvedValue.isDirectory) {
                 return "Expeceted a file, but is a directory"
-            } else if (!expectFile && v.isFile) {
+            } else if (!expectFile && resolvedValue.isFile) {
                 return "Expeceted a directory, but is a file"
             }
         }

@@ -17,6 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
+import com.sun.corba.se.impl.resolver.FileResolverImpl
+import uk.co.nickthecoder.paratask.DirectoryResolver
+import uk.co.nickthecoder.paratask.ParameterResolver
+import uk.co.nickthecoder.paratask.PlainDirectoryResolver
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
@@ -44,6 +48,8 @@ interface Parameter : Labelled {
     fun findRoot(): RootParameter? {
         return parent?.findRoot()
     }
+
+    fun resolver() : ParameterResolver = findRoot()?.taskD?.resolver ?: PlainDirectoryResolver.instance
 
     fun findTaskD(): TaskDescription = parent!!.findTaskD()
 
