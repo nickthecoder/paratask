@@ -24,7 +24,7 @@ class Resource(val url: URL) {
 
     val nameWithoutExtension: String
         get() {
-            file?.let {return it.nameWithoutExtension}
+            file?.let { return it.nameWithoutExtension }
             return name
         }
 
@@ -44,11 +44,20 @@ class Resource(val url: URL) {
             return str
         }
 
-    fun parentResource() : Resource {
+    fun parentResource(): Resource {
         return Resource(this, ".")
     }
 
     fun isFile() = file != null
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Resource) {
+            return other.url == this.url
+        }
+        return false
+    }
+
+    override fun hashCode(): Int = url.hashCode() + 1
 
     override fun toString() = url.toString()
 
