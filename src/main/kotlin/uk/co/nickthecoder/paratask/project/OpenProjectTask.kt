@@ -56,7 +56,7 @@ class OpenProjectTask : AbstractTask() {
 
     override fun run() {
         val file = File(directory.value, name.value + ".json")
-        Platform.runLater { ProjectWindow.Companion.load(file) }
+        Platform.runLater { Project.load(file) }
     }
 
 }

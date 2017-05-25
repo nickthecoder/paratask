@@ -33,90 +33,26 @@ import java.io.OutputStreamWriter
 class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
     override val taskD = TaskDescription("Save Project")
 
-    val directory = FileParameter("projectsDirectory", mustExist = null, expectFile = false)
+    val saveInDirectoryP = FileParameter("saveInDirectory", mustExist = null, expectFile = false)
 
-    val name = StringParameter("name")
-
-    val title = StringParameter("title")
+    val filenameP = StringParameter("filename")
 
     init {
-        taskD.addParameters(directory, name, title)
-        directory.value = projectWindow.projectFile?.parentFile ?: Preferences.projectsDirectory
-        name.value = projectWindow.projectFile?.nameWithoutExtension() ?: ""
-        title.value = projectWindow.title
+        val project = projectWindow.project
+
+        taskD.addParameters(saveInDirectoryP, filenameP)
+        saveInDirectoryP.value = project.projectFile?.parentFile ?: Preferences.projectsDirectory
+        filenameP.value = project.projectFile?.nameWithoutExtension() ?: ""
     }
 
     override fun run() {
-        val file = File(directory.value!!, name.value + ".json")
-        projectWindow.projectFile = file
+        var filename = filenameP.value!!
+        if ( filename.endsWith(".json")) {
+            filename.substring(0..filename.length-5)
+        }
+        val file = File(saveInDirectoryP.value!!, filenameP.value + ".json")
 
-        save(file)
+        projectWindow.project.save(file)
     }
 
-/*
- Example JSON file :
-{
-     "title" : "My Project",
-     "tabs" : [
-         {
-             "left" = {
-                "label" : "My Tab",
-                "tool" : "uk.co.nickthecoder.paratask.whatever",
-                "parameters" : [
-                     { "name" : "foo", "value" : "fooValue" },
-                     { "name" : "bar", "value" : "barValue" },
-                 }
-             }
-         }
-     ]
-}
- */
-
-    fun save(projectFile: File) {
-        val jroot = JsonObject()
-
-        jroot.set("title", title.value)
-        jroot.set("width", projectWindow.scene.width)
-        jroot.set("height", projectWindow.scene.height)
-
-        val jtabs = JsonArray()
-        for (tab in projectWindow.tabs.listTabs()) {
-            val jtab = JsonObject()
-            jtabs.add(jtab)
-
-            val jleft = createHalfTab(tab.left)
-            jtab.set("left", jleft)
-
-            val right = tab.right
-            if (right != null) {
-                val jright = createHalfTab(right)
-                jtab.set("right", jright)
-            }
-        }
-        jroot.add("tabs", jtabs)
-
-
-        BufferedWriter(OutputStreamWriter(FileOutputStream(projectFile))).use {
-            jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
-        }
-    }
-
-    private fun createHalfTab(halfTab: HalfTab): JsonObject {
-        val jhalfTab = JsonObject()
-
-        val tool = halfTab.toolPane.tool
-        jhalfTab.set("tool", tool.creationString())
-
-        val jparameters = JsonArray()
-
-        for (parameter in tool.valueParameters()) {
-            val jparameter = JsonObject()
-            jparameter.set("name", parameter.name)
-            jparameter.set("value", parameter.stringValue)
-            jparameters.add(jparameter)
-        }
-        jhalfTab.add("parameters", jparameters)
-
-        return jhalfTab
-    }
 }

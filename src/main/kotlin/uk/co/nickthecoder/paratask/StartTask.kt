@@ -21,13 +21,10 @@ import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.project.Preferences
-import uk.co.nickthecoder.paratask.project.TaskRunner
-import uk.co.nickthecoder.paratask.project.UnthreadedTaskRunner
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.io.File
 
@@ -78,7 +75,7 @@ class StartingApp : Application() {
         AutoExit.show(stage)
 
         for (file in projectFiles) {
-            ProjectWindow.load(file)
+            Project.load(file)
         }
 
         stage.close()
