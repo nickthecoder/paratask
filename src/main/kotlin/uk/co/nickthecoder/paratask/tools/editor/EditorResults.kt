@@ -88,6 +88,10 @@ class EditorResults(override val tool: EditorTool, val file: File?)
 
     }
 
+    constructor(tool: EditorTool, text: String) : this(tool, null) {
+        codeArea.replaceText(0, codeArea.length, text)
+    }
+
     override fun selected() {
         tool.toolPane?.halfTab?.toolBars?.left = toolBar
         file?.path?.let { tool.longTitle = "Editor ${it}" }

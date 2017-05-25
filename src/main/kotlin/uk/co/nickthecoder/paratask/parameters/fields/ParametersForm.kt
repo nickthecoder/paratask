@@ -64,7 +64,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
     open fun buildChildren() {
         var index = 0
         parentParameter.children.forEach { child ->
-            if (!child.hidden) {
+            if ((!child.hidden) || parentParameter.isProgrammingMode()) {
                 addParameter(child, index)
                 index++
             }

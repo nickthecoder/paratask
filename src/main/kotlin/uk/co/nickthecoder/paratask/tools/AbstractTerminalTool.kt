@@ -56,6 +56,10 @@ abstract class AbstractTerminalTool(
 
     override fun createResults(): List<Results> = singleResults(terminalResults!!)
 
+    fun getOutput() :String {
+        return terminalResults?.simpleTerminal?.textArea?.text ?: ""
+    }
+
     override fun stop() {
         terminalResults?.stop()
     }

@@ -23,6 +23,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.io.File
 
 class EditorTool() : AbstractTool() {
@@ -30,6 +31,8 @@ class EditorTool() : AbstractTool() {
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
     val fileP = MultipleParameter("file") { FileParameter("") }
+
+    val initialTextP = StringParameter("initialText", required = false)
 
     constructor(vararg files: File) : this() {
         for (file in files) {
@@ -43,8 +46,14 @@ class EditorTool() : AbstractTool() {
         }
     }
 
+    constructor(text: String) : this() {
+        println("Constructed with ${text}")
+        initialTextP.value = text
+    }
+
     init {
-        taskD.addParameters(fileP)
+        taskD.addParameters(fileP, initialTextP)
+        initialTextP.hidden = true
     }
 
 
@@ -53,7 +62,7 @@ class EditorTool() : AbstractTool() {
 
     override fun createResults(): List<Results> {
         if (fileP.value.isEmpty()) {
-            return singleResults(EditorResults(this, null))
+            return singleResults(EditorResults(this, initialTextP.value))
         } else {
             return fileP.value.map { EditorResults(this, it) }
         }

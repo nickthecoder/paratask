@@ -35,7 +35,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
     var maxSize = 100000
 
-    private val textArea = TextArea()
+    val textArea = TextArea()
 
     private val inputPane: BorderPane?
     private val inputField = TextField()

@@ -36,10 +36,12 @@ class TerminalResults(
 
     val exec = Exec(osCommand)
 
-    override val node = SimpleTerminal(
+    val simpleTerminal = SimpleTerminal(
             exec,
             showCommand = showCommand,
             allowInput = allowInput)
+
+    override val node = simpleTerminal
 
     fun start() {
         node.start()

@@ -61,17 +61,6 @@ class TerminalTool : AbstractTerminalTool {
         return this
     }
 
-    fun changeCommand(osCommand: OSCommand) {
-        argumentsP.clear()
-        for (i in osCommand.command.indices) {
-            if (i == 0) {
-                commandP.value = osCommand.command[0]
-            } else {
-                argumentsP.addValue(osCommand.command[i])
-            }
-        }
-    }
-
     override fun createCommand(): OSCommand {
         val command = OSCommand(commandP.value)
         argumentsP.value.forEach { arg ->
