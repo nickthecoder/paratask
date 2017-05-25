@@ -69,11 +69,15 @@ class ToolPane_Impl(override var tool: Tool)
         tabPane.selectionModel.selectedItemProperty().addListener { _, oldTab, newTab -> onTabChanged(oldTab, newTab) }
     }
 
+    /**
+     * Called when the MAJOR tab has changed, and is used to ensure focus on the currently selected MINOR tab.
+     */
     override fun selected() {
         val tab = tabPane.selectionModel.selectedItem
 
         if (tab is MinorTab) {
             Platform.runLater {
+                println("Selected minor tab ${tab}")
                 tab.focus()
             }
         }

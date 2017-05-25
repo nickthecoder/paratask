@@ -88,7 +88,11 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     fun editOption(rowIndex: Int = -1) {
         val index = if (rowIndex >= 0) rowIndex else tableView.selectionModel.focusedIndex
-        tableView.edit(index, codeColumn)
+
+        if (tableView.getEditingCell() == null) {
+            tableView.edit(-1, null) // Stop editing
+            tableView.edit(index, codeColumn)
+        }
     }
 
     open fun onRowClicked(event: MouseEvent, tabelRow: TableRow<WrappedRow<R>>) {

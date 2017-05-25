@@ -1,4 +1,5 @@
 
+
 Terminal isn't HasDirectory yet
 
 DirectoryTool -> F9 - focus is not in the parameters
