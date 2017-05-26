@@ -18,16 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
-import uk.co.nickthecoder.paratask.project.Preferences
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
+import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
-import java.io.File
 
 class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
@@ -67,5 +66,5 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 }
 
 fun main(args: Array<String>) {
-    ToolParser(OptionsFilesTool()).go(args)
+    TaskParser(OptionsFilesTool()).go(args)
 }

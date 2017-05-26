@@ -17,17 +17,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import javafx.application.Application
-import javafx.scene.Scene
-import javafx.scene.control.Label
-import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.*
-import uk.co.nickthecoder.paratask.util.AutoExit
 import java.io.File
 
+/**
+ * The most frequently used entry point to the application. Used to open ProjectWindows from the command line.
+ * If we assume a script called "paratask" sets up the classpath etc, and then calls this class's main, then a
+ * typical command is :
+ *
+ * paratask myproject myotherproject
+ *
+ * Which will load two project files, and open them in two separate ProjectWindows.
+ * You can also prompt this command using :
+ *
+ * paratask --prompt
+ *
+ * And then choose the projects from the gui, rather than from the command line.
+ *
+ * This is made way too tricky, because JavaFX sucks ;-) There are THREE different scenarios. :
+ * The task is prompted, in which case the JavaFX Application has to
+ */
 class StartTask : AbstractTask() {
 
     override val taskD = TaskDescription("Open Project")
@@ -54,38 +66,10 @@ class StartTask : AbstractTask() {
         val projectFiles = projectsP.value.map {
             File(directoryP.value, it + ".json")
         }
-        StartingApp.projectFiles = projectFiles
-        Application.launch(StartingApp::class.java)
+        ParaTaskApp.openProjects( projectFiles )
     }
 }
 
-// Wow, what a bloody palavor it is to lauch JavaFX. I'm sure its fine when you want a single window
-// with no osCommand line arguments, and no possibility that JavaFX isn't needed, but for paratask,
-// it is bloody horrible!
-
-class StartingApp : Application() {
-    override fun start(stage: Stage?) {
-        if (stage == null) {
-            return
-        }
-        val label = Label("")
-        val scene = Scene(label)
-        stage.title = "Loading ParaTask"
-        stage.scene = scene
-        AutoExit.show(stage)
-
-        for (file in projectFiles) {
-            Project.load(file)
-        }
-
-        stage.close()
-    }
-
-
-    companion object {
-        lateinit var projectFiles: List<File>
-    }
-}
 
 fun main(args: Array<String>) {
     TaskParser(StartTask()).go(args)

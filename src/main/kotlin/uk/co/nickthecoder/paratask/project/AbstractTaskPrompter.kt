@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import javafx.event.EventHandler
 import javafx.scene.Scene
-import javafx.scene.control.Button
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage

@@ -17,15 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
-import uk.co.nickthecoder.paratask.util.FileListener
-import uk.co.nickthecoder.paratask.util.FileWatcher
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import java.io.File
-import java.nio.file.Path
 
 class DirectoryTool :
         AbstractDirectoryTool("directory", "Work with a Single Directory"),
@@ -55,5 +49,5 @@ class DirectoryTool :
 }
 
 fun main(args: Array<String>) {
-    ToolParser(DirectoryTool()).go(args)
+    TaskParser(DirectoryTool()).go(args)
 }

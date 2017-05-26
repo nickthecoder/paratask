@@ -19,13 +19,11 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.tools.AbstractDirectoryTool
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
-import uk.co.nickthecoder.paratask.util.FileWatcher
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 
@@ -63,5 +61,5 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
 
 fun main(args: Array<String>) {
-    ToolParser(PlacesTool()).go(args)
+    TaskParser(PlacesTool()).go(args)
 }

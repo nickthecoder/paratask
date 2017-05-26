@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
@@ -26,6 +27,10 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.util.FileLister
 import java.io.File
 
+/**
+ * Note, unlike more Tasks, this CANNOT be run from the command line, use StartTask instead. This is because it
+ * does not attempt to start JavaFX - it assumes it is already running.
+ */
 class OpenProjectTask : AbstractTask() {
     override val taskD = TaskDescription("Open Project")
 
@@ -56,11 +61,9 @@ class OpenProjectTask : AbstractTask() {
 
     override fun run() {
         val file = File(directory.value, name.value + ".json")
-        Platform.runLater { Project.load(file) }
+        Platform.runLater {
+            Project.load(file).projectWindow.placeOnStage(Stage())
+        }
     }
 
-}
-
-fun main(args: Array<String>) {
-    TaskParser(OpenProjectTask()).go(args)
 }

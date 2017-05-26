@@ -18,14 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.git
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
-import java.io.File
 import java.time.format.DateTimeFormatter
 
 class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
@@ -139,5 +138,5 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
 
 
 fun main(args: Array<String>) {
-    ToolParser(GitLogTool()).go(args)
+    TaskParser(GitLogTool()).go(args)
 }

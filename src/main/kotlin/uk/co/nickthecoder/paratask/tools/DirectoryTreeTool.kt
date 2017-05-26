@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import java.io.File
 
@@ -40,5 +40,5 @@ class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a 
 }
 
 fun main(args: Array<String>) {
-    ToolParser(DirectoryTreeTool()).go(args)
+    TaskParser(DirectoryTreeTool()).go(args)
 }

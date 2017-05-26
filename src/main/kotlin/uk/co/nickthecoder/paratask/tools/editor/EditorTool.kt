@@ -17,13 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
+import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.AbstractTool
-import uk.co.nickthecoder.paratask.ToolParser
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
 class EditorTool() : AbstractTool() {
@@ -71,5 +71,5 @@ class EditorTool() : AbstractTool() {
 }
 
 fun main(args: Array<String>) {
-    ToolParser(EditorTool()).go(args)
+    TaskParser(EditorTool()).go(args)
 }

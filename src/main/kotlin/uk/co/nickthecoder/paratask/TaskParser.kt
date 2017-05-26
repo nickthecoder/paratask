@@ -17,19 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import javafx.application.Application
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.project.TaskPrompter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
 
 /**
- * Use to process osCommand line arguments, and then either run the Task directly, or start up the
- * GUI to prompt the parameters.
+ * Used to process operating system command line arguments, and then either run the Task directly, or start up the
+ * GUI to prompt the parameters. If prompting, then ParaTaskApp is used to start JavaFX.
  */
-open class TaskParser(val task: Task) {
+class TaskParser(val task: Task) {
 
     val metaTaskD = TaskDescription("metaTask")
 
@@ -68,7 +69,7 @@ open class TaskParser(val task: Task) {
         runOrPrompt()
     }
 
-    protected open fun runOrPrompt() {
+    private fun runOrPrompt() {
 
         try {
             task.check()
@@ -79,16 +80,31 @@ open class TaskParser(val task: Task) {
                 return
             }
             // Task failed the checks, so prompt the task.
-            ParaTaskApp.task = task
-            Application.launch(ParaTaskApp::class.java)
+            promptTask(task)
             return
         }
         // Task passed the checks
         if (promptP.value == true) {
-            ParaTaskApp.task = task
-            Application.launch(ParaTaskApp::class.java)
+            promptTask(task)
         } else {
             // Run without prompting
+            runTask(task)
+        }
+    }
+
+    private fun promptTask(task: Task) {
+        if (task is Tool) {
+            ParaTaskApp.openTool(task, run = false)
+        } else {
+            ParaTaskApp.promptTask(task)
+        }
+
+    }
+
+    private fun runTask(task: Task) {
+        if (task is Tool) {
+            ParaTaskApp.openTool(task, run = false)
+        } else {
             val result = task.run()
             if (result is OSCommand) {
                 val exec = Exec(result)
@@ -99,7 +115,6 @@ open class TaskParser(val task: Task) {
             }
         }
     }
-
 
     private fun parseRegularArguments() {
         while (arguments.isNotEmpty()) {

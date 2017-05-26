@@ -104,11 +104,11 @@ class Project(val projectWindow: ProjectWindow) {
             val height = jroot.getDouble("height", 600.0)
 
             val projectWindow = ProjectWindow(width, height)
+            projectWindow.placeOnStage(Stage())
+
             val project = projectWindow.project
 
             project.projectFile = projectFile
-
-            projectWindow.placeOnStage(Stage())
 
             val jtabs = jroot.get("tabs")
             jtabs?.let {

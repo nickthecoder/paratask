@@ -19,8 +19,8 @@ package uk.co.nickthecoder.paratask.tools
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.TaskRegistry
-import uk.co.nickthecoder.paratask.ToolParser
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
@@ -44,5 +44,5 @@ class HomeTool : AbstractTableTool<Tool>() {
 }
 
 fun main(args: Array<String>) {
-    ToolParser(HomeTool()).go(args)
+    TaskParser(HomeTool()).go(args)
 }

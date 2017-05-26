@@ -19,8 +19,7 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
@@ -77,5 +76,5 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
 
 fun main(args: Array<String>) {
-    ToolParser(PlacesDirectoryTool()).go(args)
+    TaskParser(PlacesDirectoryTool()).go(args)
 }

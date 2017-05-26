@@ -1,5 +1,13 @@
 
-Refrsh on a Tool screws up table's focus.
+BUG: Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
+	Delete ToolParser
+
+
+Use Resource for Places? Looks good! Resource can have the "icon" stuff in it.
+	Maybe use a different icon for file,directory,jar,other
+	
+Editor - find and replace
+    Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Terminal isn't HasDirectory yet
 
@@ -8,8 +16,6 @@ Git Diff truncates lines
 		If so need to remove those env values. Hmm.
 	Maybe this is why GroovyTool is trying to output in colour.
 
-TerminalTool : Have a button/option to save contents of the buffer.
-	Different option to open in the Editor
 OsCommandTool option to save output to a file or display in the Editor
 	Maybe this is instead of the "lazy" terminal mentioned below.
 
@@ -31,14 +37,6 @@ Write a DB tool
 	Work with Users
 	Work with Rows
 Ideally, it would work with at least MariaDB/MySQL, SQLLite and Progres
-
-BUG: Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
-
-Use Resource for Places? Looks good! Resource can have the "icon" stuff in it.
-	Maybe use a different icon for file,directory,jar,other
-
-Editor - find and replace
-    Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Implement command line tab completion
 

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
@@ -130,5 +130,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 fun main(args: Array<String>) {
-    ToolParser(CodeHeaderTool()).go(args)
+    TaskParser(CodeHeaderTool()).go(args)
 }

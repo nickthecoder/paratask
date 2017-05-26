@@ -19,7 +19,7 @@ package uk.co.nickthecoder.paratask.tools.git
 
 import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
@@ -129,5 +129,5 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
 }
 
 fun main(args: Array<String>) {
-    ToolParser(GitTool()).go(args)
+    TaskParser(GitTool()).go(args)
 }

@@ -17,14 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.ToolParser
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
-import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.FileNameColumn
 import uk.co.nickthecoder.paratask.table.NumberColumn
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
@@ -92,5 +92,5 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
 }
 
 fun main(args: Array<String>) {
-    ToolParser(GrepTool()).go(args)
+    TaskParser(GrepTool()).go(args)
 }

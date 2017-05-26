@@ -45,7 +45,6 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         addButton.tooltip = Tooltip("Add")
 
         parametersForm.styleClass.add("multiple")
-        println( "MF ${label} ${label.isVisible}")
     }
 
     fun buildContent() {

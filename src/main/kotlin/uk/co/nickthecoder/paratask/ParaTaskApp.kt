@@ -19,20 +19,60 @@ package uk.co.nickthecoder.paratask
 
 import javafx.application.Application
 import javafx.scene.Scene
+import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.project.Project
+import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.project.TaskPrompter
+import java.io.File
 
+/**
+ * JavaFX really sucks for this type of application, where there are many differeny program entry points, and
+ * especially when the application only *sometimes* needs to start JavaFX.
+ * So this is NOT an entry point for the application, just an annoyance that I have to put up with!
+ *
+ * To make matters worse, I may have a Task, which is NOT prompted (i.e. run directly from the command line), and
+ * part of it's run, it needs to pop up a window (such as prompting ANOTHER Task). In this case, it is this second
+ * Task which must start JavaFX, and therefore ALL windows have to go through this Application class, just in case,
+ * they are the first JavaFX window to be opened. Grr.
+ *
+ * This also maeans that Tasks CANNOT use the standard dialog boxes (such as Alert) unaided, because it is impossible
+ * to create a JavaFX object before JavaFX has been initialised, and that is only possible by calling
+ * Application.launch.
+ *
+ * You may guess that I'm really pissed off about the crappy design of this part of JavaFX!!!
+ */
 class ParaTaskApp : Application() {
-    override fun start(stage: Stage?) {
-        if (stage == null) {
-            return
+
+    override fun start(stage: Stage) {
+        initialTask?.let { task ->
+            promptTask(task, stage)
+            initialTask = null
         }
-        TaskPrompter(task).placeOnStage(stage)
+
+        initialTool?.let { tool ->
+            openTool(tool, initialRun, stage)
+            initialTask = null
+        }
+
+        initialProjectFiles?.let { files ->
+            openProjects(files, stage)
+            initialProjectFiles = null
+        }
     }
 
     companion object {
-        lateinit var task: Task
+
+        private var started = false
+
+        private var initialTask: Task? = null
+
+        private var initialTool: Tool? = null
+
+        private var initialRun: Boolean = false
+
+        private var initialProjectFiles: List<File>? = null
 
         private val imageMap = mutableMapOf<String, Image?>()
 
@@ -55,6 +95,60 @@ class ParaTaskApp : Application() {
         fun logAttach(@Suppress("UNUSED_PARAMETER") string: String) {
             // println( string )
         }
-    }
 
+        fun promptTask(task: Task) {
+            if (started) {
+                if (task is Tool) {
+                    openTool(task, false, Stage())
+                } else {
+                    promptTask(task, Stage())
+                }
+            } else {
+                started = true
+                this.initialTask = task
+                Application.launch(ParaTaskApp::class.java)
+            }
+        }
+
+        fun openTool(tool: Tool, run: Boolean) {
+            if (started) {
+                openTool(tool, run = true, stage = Stage())
+            } else {
+                started = true
+                this.initialRun = true
+                this.initialTool = tool
+                Application.launch(ParaTaskApp::class.java)
+            }
+        }
+
+        fun openProjects(projectFiles: List<File>) {
+            if (started) {
+                openProjects(projectFiles, Stage())
+            } else {
+                started = true
+                this.initialProjectFiles = projectFiles
+                Application.launch(ParaTaskApp::class.java)
+            }
+        }
+
+
+        private fun openTool(tool: Tool, run: Boolean, stage: Stage) {
+            val projectWindow = ProjectWindow()
+            projectWindow.placeOnStage(stage)
+            projectWindow.addTool(tool)
+        }
+
+        private fun promptTask(task: Task, stage: Stage) {
+            TaskPrompter(task).placeOnStage(stage)
+        }
+
+        private fun openProjects(projectFiles: List<File>, stage: Stage) {
+
+            var first = true
+            for (file in projectFiles) {
+                val project = Project.load(file)
+            }
+
+        }
+    }
 }
