@@ -26,12 +26,7 @@ class PlacesFile(val file: File) {
     val places = file.readLines().map { parseLine(it) }.toMutableList()
 
     fun save() {
-        val writer = file.printWriter()
-        writer.use {
-            for (place in places) {
-                writer.println(place.toString())
-            }
-        }
+        file.writeText(places.joinToString(separator = "\n", postfix = "\n"))
     }
 
     private fun parseLine(line: String): Place {

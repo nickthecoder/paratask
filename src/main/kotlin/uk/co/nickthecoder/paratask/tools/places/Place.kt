@@ -27,6 +27,12 @@ import java.net.URL
 
 class Place(val placesFile: PlacesFile, val resource: Resource, val label: String) {
 
+    val name: String
+        get() = if (resource.isFile()) resource.file!!.name else resource.toString()
+
+    val path: String
+        get() = if (resource.isFile()) resource.file!!.path else resource.toString()
+
     fun taskEdit() = EditPlaceTask(this)
 
     fun taskCopy() = CopyPlaceTask(this)

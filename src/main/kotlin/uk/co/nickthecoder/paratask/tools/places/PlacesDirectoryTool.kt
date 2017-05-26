@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
@@ -24,6 +25,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.TruncatedStringColumn
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.child
@@ -41,7 +43,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     val filenameP = directoryP.createFileChoicesParameter(fileLister)
 
-    private lateinit var placesFile: PlacesFile
+    lateinit var placesFile: PlacesFile
 
     init {
         taskD.addParameters(directoryP, filenameP)
@@ -50,8 +52,8 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     override fun createColumns() {
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
         columns.add(Column<Place, String>("label") { it.label })
-        columns.add(Column<Place, String>("name") { it.resource.name })
-        columns.add(Column<Place, String>("url") { it.resource.toString() })
+        columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
+        columns.add(Column<Place, String>("location") { it.resource.path })
     }
 
     override fun createHeaderRows(): List<HeaderRow> {
