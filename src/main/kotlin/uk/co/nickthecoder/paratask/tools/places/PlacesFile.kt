@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 import java.net.URL
 
@@ -53,9 +54,9 @@ class PlacesFile(val file: File) {
         val url = URL(urlString)
         if (urlString.startsWith("file:")) {
             val file = File(url.toURI())
-            return FilePlace(this, file, label)
+            return Place(this, Resource(file), label)
         } else {
-            return URLPlace(this, urlString, label)
+            return Place(this, Resource(urlString), label)
         }
     }
 

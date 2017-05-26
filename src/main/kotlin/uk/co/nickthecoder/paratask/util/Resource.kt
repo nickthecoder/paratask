@@ -1,6 +1,8 @@
 package uk.co.nickthecoder.paratask.util
 
+import javafx.scene.image.Image
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import java.io.File
 import java.net.URL
 
@@ -8,7 +10,19 @@ class Resource(val url: URL) {
 
     val file: File? = toFile(url)
 
+    val icon: Image? by lazy {
+        val type = if (isFile()) {
+            if (file?.isDirectory == true) "directory" else "file"
+        } else {
+            "web"
+        }
+        ParaTaskApp.imageResource("filetypes/${type}.png")
+    }
+
     constructor(file: File) : this(toURL(file))
+
+    constructor(urlString: String) : this(URL(urlString))
+
 
     constructor(directoryResource: Resource, child: String) : this(URL(directoryResource.url, "${directoryResource.path}/$child"))
 

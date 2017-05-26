@@ -155,9 +155,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
         val file = getFile() ?: return
 
-        println("Completing file $file")
         if (file.path.startsWith("~")) {
-            println("Using home. ${homeDirectory.resolve(file.path.substring(1))}")
             setFile(homeDirectory.resolve(file.path.substring(1)))
             return
         }

@@ -17,8 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import uk.co.nickthecoder.paratask.util.Resource
+import java.io.File
 
-class NewPlaceTask(placesFile: PlacesFile) : EditPlaceTask(URLPlace(placesFile, "", ""), name = "newPlace") {
+
+class NewPlaceTask(placesFile: PlacesFile) : EditPlaceTask(Place(placesFile, Resource(File("")), "")) {
 
     override fun run() {
         place.placesFile.places.add(place)

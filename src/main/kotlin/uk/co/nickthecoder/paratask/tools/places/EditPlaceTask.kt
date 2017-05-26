@@ -21,64 +21,69 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.OneOfParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.util.Resource
 
 open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
     : AbstractTask() {
 
     final override val taskD = TaskDescription(name)
 
-    val file = FileParameter("file", expectFile = null, required = false)
+    val labelP = StringParameter("label", required = false)
 
-    val url = StringParameter("url", required = false)
+    val fileP = FileParameter("file", expectFile = null, required = false)
 
-    val label = StringParameter("label", required = false)
+    val urlP = StringParameter("url", required = false)
+
+    val oneOfP = OneOfParameter("fileOrURL")
 
     init {
-        taskD.addParameters(file, url, label)
+        taskD.addParameters(labelP, oneOfP)
+        oneOfP.addParameters(fileP, urlP)
 
-        if (place is FilePlace) {
-            file.value = place.file
+        if (place.resource.isFile()) {
+            fileP.value = place.resource.file!!
         } else {
-            url.value = place.urlString
+            urlP.value = place.resource.toString()
         }
-        label.value = place.label
+        labelP.value = place.label
 
-        url.listen { parameterChanged(it) }
-        file.listen { parameterChanged(it) }
+        urlP.listen { parameterChanged(it) }
+        fileP.listen { parameterChanged(it) }
     }
 
     fun parameterChanged(event: ParameterEvent) {
-        if (event.parameter === file) {
-            if (file.value != null) {
-                url.value = ""
+        if (event.parameter === fileP) {
+            if (fileP.value != null) {
+                urlP.value = ""
             }
         }
-        if (event.parameter === url) {
-            if (url.value != "") {
-                file.value = null
+        if (event.parameter === urlP) {
+            if (urlP.value != "") {
+                fileP.value = null
             }
         }
     }
 
 
     private fun createPlace(): Place {
-        return if (file.value == null) {
-            URLPlace(place.placesFile, url.value, label.value)
+        return if (fileP.value == null) {
+            Place(place.placesFile, Resource(urlP.value), labelP.value)
         } else {
-            FilePlace(place.placesFile, file.value!!, label.value)
+            Place(place.placesFile, Resource(fileP.value!!), labelP.value)
         }
     }
 
     override fun customCheck() {
-        if (file.value == null && (url.value == "")) {
-            throw ParameterException(url, "You must enter a URL or a File")
+        if (fileP.value == null && (urlP.value == "")) {
+            throw ParameterException(urlP, "You must enter a URL or a File")
         }
         try {
             createPlace()
         } catch(e: Exception) {
-            throw ParameterException(url, "Invlid URL")
+            throw ParameterException(urlP, "Invlid URL")
         }
     }
 

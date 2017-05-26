@@ -23,14 +23,14 @@ import java.io.File
 
 class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a Directory Tree") {
 
-    constructor(directory: File) : this() {
-        this.directoryP.value = directory
-    }
-
     override val optionsName = "directory"
 
     init {
         depthP.value = 3
+    }
+
+    constructor(directory: File) : this() {
+        this.directoryP.value = directory
     }
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().addAll(directoryP, depthP))

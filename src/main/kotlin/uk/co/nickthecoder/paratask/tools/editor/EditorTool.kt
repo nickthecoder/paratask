@@ -34,6 +34,10 @@ class EditorTool() : AbstractTool() {
 
     val initialTextP = StringParameter("initialText", required = false)
 
+    constructor(file: File) : this() {
+        fileP.addValue(file)
+    }
+
     constructor(vararg files: File) : this() {
         for (file in files) {
             fileP.addValue(file)

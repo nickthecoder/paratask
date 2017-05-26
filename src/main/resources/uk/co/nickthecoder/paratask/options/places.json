@@ -27,17 +27,6 @@
         },
         {
             "type": "groovy",
-            "script": "new EditorTool( tool.file.value )",
-            "code": "edit",
-            "label": "Edit in Text Editor",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
             "script": "row.taskCopy()",
             "code": "=",
             "label": "Copy Place",
@@ -49,36 +38,39 @@
         },
         {
             "type": "groovy",
-            "script": "if ( row instanceof FilePlace ) {\n    if ( row.file.isDirectory() ) {\n        new DirectoryTool( row.file )\n    } else {\n        desktop.open( row.file)\n    }\n} else {\n    desktop.browse( row.uri )\n}",
+            "script": "if ( row.resource.isFile() ) {\n    if ( row.resource.file.isDirectory() ) {\n        new DirectoryTool( row.resource.file )\n    } else {\n        desktop.open( row.resource.file)\n    }\n} else {\n    desktop.browse( row.resource.url.toURI() )\n}",
             "code": ".",
             "label": "Open Place",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "edit",
+            "label": "Edit in Text Editor",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
             "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
-            "script": "def builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.file.parentFile )\n\ndef prevFile = row.file\nfor ( file in files ) {\n    if (file.equals(row.file)) {\n        def edit = row.taskEdit()\n        edit.file.value = prevFile\n        edit.run()\n        break\n    }\n    prevFile = file\n}\n",
-            "code": "<",
-            "label": "Move to Previous Video",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
-            "script": "desktop.open( row.file )\n\ndef builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.file.parentFile )\n\ndef found = false\nfor ( file in files ) {\n    if (found) {\n        def edit = row.taskEdit()\n        edit.file.value = file\n        edit.run()\n        break\n    }\n    if (file.equals(row.file)) {\n        found = true\n    }\n    prevFile = file\n}\n",
-            "code": ">",
-            "label": "Play Video and Move to Next",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "tool.placesFile.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                }
+            ]
         },
         {
             "type": "task",
@@ -93,7 +85,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "expression": "row.file.parentFile"
+                    "expression": "row.resource.file.parentFile"
                 },
                 {
                     "name": "depth",
@@ -120,8 +112,34 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "def builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.resource.file.parentFile )\n\ndef prevFile = row.resource.file\nfor ( file in files ) {\n    if (file.equals(row.resource.file)) {\n        def edit = row.taskEdit()\n        edit.fileP.value = prevFile\n        edit.run()\n        break\n    }\n    prevFile = file\n}\n",
+            "code": "<",
+            "label": "Move to Previous Video",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( row.resource.file )\n\ndef builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\ndef files = lister.listFiles( row.resource.file.parentFile )\n\ndef found = false\nfor ( file in files ) {\n    if (found) {\n        def edit = row.taskEdit()\n        edit.fileP.value = file\n        edit.run()\n        break\n    }\n    if (file.equals(row.resource.file)) {\n        found = true\n    }\n    prevFile = file\n}\n",
+            "code": ">",
+            "label": "Play Video and Move to Next",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

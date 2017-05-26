@@ -55,6 +55,10 @@
                     "values": [
                         
                     ]
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
                 }
             ]
         },
@@ -116,6 +120,53 @@
                 {
                     "name": "additionalOptions",
                     "value": "IHsn"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "code": "^",
+            "label": "Open Parent Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
                 }
             ]
         }

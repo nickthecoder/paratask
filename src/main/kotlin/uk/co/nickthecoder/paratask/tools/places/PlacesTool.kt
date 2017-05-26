@@ -39,10 +39,10 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
         taskD.addParameters( fileP )
     }
     override fun createColumns() {
-        columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.icon) })
+        columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
         columns.add(Column<Place, String>("label") { it.label })
-        columns.add(Column<Place, String>("name") { it.name })
-        columns.add(Column<Place, String>("url") { it.urlString })
+        columns.add(Column<Place, String>("name") { it.resource.name })
+        columns.add(Column<Place, String>("url") { it.resource.toString() })
     }
 
     override fun run() {

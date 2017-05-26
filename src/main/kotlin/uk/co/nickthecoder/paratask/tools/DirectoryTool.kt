@@ -20,8 +20,9 @@ package uk.co.nickthecoder.paratask.tools
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
+import java.io.File
 
-class DirectoryTool :
+class DirectoryTool() :
         AbstractDirectoryTool("directory", "Work with a Single Directory"),
         AutoRefreshTool {
 
@@ -31,6 +32,10 @@ class DirectoryTool :
     init {
         depthP.hidden = true
         taskD.addParameters(autoRefreshP)
+    }
+
+    constructor(file: File) : this() {
+        directoryP.value = file
     }
 
     override fun run() {
