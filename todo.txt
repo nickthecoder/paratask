@@ -1,4 +1,6 @@
 
+Refrsh on a Tool screws up table's focus.
+
 Terminal isn't HasDirectory yet
 
 Git Diff truncates lines

@@ -41,7 +41,7 @@ open class GroupField(val groupParameter: GroupParameter)
     override fun wrap(): Node {
         return WrappedField(this)
     }
-    
+
     override fun computePrefHeight(width: Double): Double {
         return insets.top + insets.bottom + (control?.prefHeight(width) ?: 0.0)
     }

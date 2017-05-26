@@ -28,7 +28,14 @@ open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
         Platform.runLater {
             tool.updateResults()
             if (tool.toolPane?.halfTab?.projectTab?.isSelected() == true) {
-                tool.toolPane?.focusResults()
+                // A runLater inside a runLater. WTF? Without this, the keyboard focus does not work correctly
+                // Given that I've already had LOTS of trouble with TabPane not updating itself immediately, but
+                // doing it fractionaly later, I am laying the blame there again. If the minor tab is not correctly
+                // added to the scene graph at this time, then the focus may fail. Delaying using runLater bodges
+                // the problem.
+                Platform.runLater {
+                    tool.toolPane?.focusResults()
+                }
             }
         }
     }
