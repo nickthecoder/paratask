@@ -27,12 +27,14 @@ class FileWatcher {
 
     private val watchServiceByFileSystem = mutableMapOf<FileSystem, WatchService>()
 
-    private val entriesByDirectory: MutableMap<Path, MutableList<Entry>> = mutableMapOf<Path, MutableList<Entry>>()
+    private val entriesByDirectory = mutableMapOf<Path, MutableList<Entry>>()
 
-    fun register(file: File, listener: FileListener, useCanonical : Boolean = true) {
-        register( (if (useCanonical) file.canonicalFile else file).toPath(), listener)
+    @Synchronized
+    fun register(file: File, listener: FileListener, useCanonical: Boolean = true) {
+        register((if (useCanonical) file.canonicalFile else file).toPath(), listener)
     }
 
+    @Synchronized
     fun register(file: Path, listener: FileListener) {
 
         val directory: Path
@@ -51,6 +53,7 @@ class FileWatcher {
         list.add(Entry(listener, file))
     }
 
+    @Synchronized
     fun unregister(listener: FileListener) {
         for (list in entriesByDirectory.values) {
             for (entry in list) {
@@ -62,6 +65,10 @@ class FileWatcher {
         }
     }
 
+    /**
+     * This allows a single FileListener to unregister from just ONE of the files that it is listening to.
+     */
+    @Synchronized
     fun unregister(file: Path, dl: FileListener) {
         val directory: Path
         if (Files.isDirectory(file)) {
@@ -85,9 +92,11 @@ class FileWatcher {
 
     private fun watchService(directory: Path): WatchService = watchService(directory.fileSystem)
 
+    @Synchronized
     private fun watchService(filesystem: FileSystem): WatchService =
             watchServiceByFileSystem[filesystem] ?: createWatchService(filesystem)
 
+    @Synchronized
     private fun createWatchService(filesystem: FileSystem): WatchService {
         val watchService = filesystem.newWatchService()!!
         watchServiceByFileSystem.put(filesystem, watchService)
@@ -139,10 +148,16 @@ class FileWatcher {
         val valid = key.reset()
         if (!valid) {
             // Directory has been deleted, so remove all the listeners
-            entriesByDirectory.remove(directory)
+            removeAll(directory)
         }
     }
 
+    @Synchronized
+    private fun removeAll(directory: Path) {
+        entriesByDirectory.remove(directory)
+    }
+
+    @Synchronized
     private fun notifyListeners(directory: Path): Boolean {
         val list = entriesByDirectory[directory] ?: return false
         if (list.isEmpty()) {
@@ -152,6 +167,7 @@ class FileWatcher {
 
         for (entry in list) {
             val listener = entry.weakListener.get()
+
             if (listener == null) {
                 list.remove(entry)
                 // Recurse to prevent concurrent modification exception.

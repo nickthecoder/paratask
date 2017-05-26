@@ -1,28 +1,10 @@
 
-Bug : Getting ConcurrentModificationExceptions when saving (and re-loading?) options files.
-
-PlacesTool and PlacesDirectoryTool
-	Replace name with a new TruncatedStringColumn, with option for left or right ellipsis
-	Adds a tooltip for the whole thing.
-
-Use Resource for Places? Looks good! Resource can have the "icon" stuff in it.
-	Maybe use a different icon for file,directory,jar,other
+Bug : Getting ConcurrentModificationExceptions when saving options files.
 	
 Editor - find and replace
     Editor to work with grep to highlight matches (using regex and fixed patterns)
 
 Terminal isn't HasDirectory yet
-
-Git Diff truncates lines
-	Is this related to an env setting. Does it think it is running in an xterm?
-		If so need to remove those env values. Hmm.
-	Maybe this is why GroovyTool is trying to output in colour.
-
-OsCommandTool option to save output to a file or display in the Editor
-	Maybe this is instead of the "lazy" terminal mentioned below.
-
-Should directoryP values be required? Some are.
-	mustExist? Some are.
 
 Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
 
@@ -30,6 +12,7 @@ Need some way to "hide" weird options such as "GC", printRow etc.
 	Maybe have a "order", and when N options are in the menu, then place the less used options in a sub-menu.
 
 TerminalTool to allow running of Tasks/Tools/Options from the input field
+	Special prefix such as ":" to specify an option, and allow for simple command line style arguments
 
 TerminalTool to keep track of the current directory by parsing the output, looking for a special PS1
 	Only do this if running bash/sh?
