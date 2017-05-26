@@ -46,4 +46,6 @@ open class GroupParameter(
     
     override fun errorMessage(): String? = null
 
+    override fun isStretchy() = true
+
 }

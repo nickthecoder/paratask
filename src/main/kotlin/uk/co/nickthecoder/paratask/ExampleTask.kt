@@ -42,7 +42,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val fileP = FileParameter("file")
     val directoryP = FileParameter("directory", expectFile = false)
 
-    val resourceP = ResourceParameter("resource", value= Resource(homeDirectory))
+    val resourceP = ResourceParameter("resource", value = Resource(homeDirectory))
 
     val dateP = DateParameter("date")
 
@@ -58,12 +58,13 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
     val rangeFromP = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
     val rangeToP = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
+    val stringInGroupP = StringParameter("units")
 
     val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
     val aP = StringParameter("a")
     val bP = IntParameter("b")
 
-    val multipleP = MultipleParameter("multiple") { IntParameter("", range = 1..10) }
+    val multipleP = MultipleParameter("multiple") { StringParameter("") }
 
     val taskP = TaskParameter("task")
 
@@ -73,7 +74,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
                 fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
-        groupP.addParameters(rangeFromP, rangeToP)
+        groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)
     }
 

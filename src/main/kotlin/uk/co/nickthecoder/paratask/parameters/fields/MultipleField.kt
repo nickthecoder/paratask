@@ -32,7 +32,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
     val parametersForm = ParametersForm(multipleParameter)
 
-    override val fieldSet : List<ParameterField>
+    override val fieldSet: List<ParameterField>
         get() = parametersForm.fieldSet
 
     init {
@@ -45,6 +45,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         addButton.tooltip = Tooltip("Add")
 
         parametersForm.styleClass.add("multiple")
+        println( "MF ${label} ${label.isVisible}")
     }
 
     fun buildContent() {
@@ -54,7 +55,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
             addParameter(innerParameter, index)
         }
 
-        if ( multipleParameter.innerParameters.isEmpty()) {
+        if (multipleParameter.innerParameters.isEmpty()) {
             parametersForm.add(addButton)
         }
     }
@@ -80,10 +81,6 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         }
         removeButton.tooltip = Tooltip("Remove")
         buttons.children.add(removeButton)
-
-        //if (index == 0 && multipleParameter.minItems > 0) {
-        //    removeButton.setVisible(false)
-        //}
 
         if (result is LabelledField) {
             result.replaceLabel(buttons)

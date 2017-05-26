@@ -25,6 +25,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.control.Tooltip
+import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 open class LabelledField(parameter: ValueParameter<*>, label: String = parameter.label) : ParameterField(parameter) {

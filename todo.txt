@@ -1,9 +1,5 @@
 
-Project to have a Directory.
-
 Terminal isn't HasDirectory yet
-
-Bug : GroupParameter is not stretching its children.
 
 Git Diff truncates lines
 	Is this related to an env setting. Does it think it is running in an xterm?
@@ -20,9 +16,8 @@ Should directoryP values be required? Some are.
 
 Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
 
-Switching to a major tab with table doesn't edit the cell (but the cell IS blue)
-
 Need some way to "hide" weird options such as "GC", printRow etc.
+	Maybe have a "order", and when N options are in the menu, then place the less used options in a sub-menu.
 
 TerminalTool to allow running of Tasks/Tools/Options from the input field
 
