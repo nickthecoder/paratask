@@ -1,7 +1,9 @@
 
-BUG: Cannot launch "paratask --prompt paratack", as it tries to start JavaFX twice.
-	Delete ToolParser
+Bug : Getting ConcurrentModificationExceptions when saving (and re-loading?) options files.
 
+PlacesTool and PlacesDirectoryTool
+	Replace name with a new TruncatedStringColumn, with option for left or right ellipsis
+	Adds a tooltip for the whole thing.
 
 Use Resource for Places? Looks good! Resource can have the "icon" stuff in it.
 	Maybe use a different icon for file,directory,jar,other

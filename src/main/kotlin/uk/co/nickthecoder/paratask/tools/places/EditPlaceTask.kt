@@ -22,7 +22,6 @@ import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.OneOfParameter
-import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.Resource
 
@@ -45,31 +44,16 @@ open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
 
         if (place.resource.isFile()) {
             fileP.value = place.resource.file!!
+            oneOfP.value = fileP
         } else {
             urlP.value = place.resource.toString()
+            oneOfP.value = urlP
         }
         labelP.value = place.label
-
-        urlP.listen { parameterChanged(it) }
-        fileP.listen { parameterChanged(it) }
     }
-
-    fun parameterChanged(event: ParameterEvent) {
-        if (event.parameter === fileP) {
-            if (fileP.value != null) {
-                urlP.value = ""
-            }
-        }
-        if (event.parameter === urlP) {
-            if (urlP.value != "") {
-                fileP.value = null
-            }
-        }
-    }
-
 
     private fun createPlace(): Place {
-        return if (fileP.value == null) {
+        return if (oneOfP.value === urlP) {
             Place(place.placesFile, Resource(urlP.value), labelP.value)
         } else {
             Place(place.placesFile, Resource(fileP.value!!), labelP.value)
