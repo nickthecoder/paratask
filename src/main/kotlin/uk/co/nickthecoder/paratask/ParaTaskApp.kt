@@ -19,7 +19,6 @@ package uk.co.nickthecoder.paratask
 
 import javafx.application.Application
 import javafx.scene.Scene
-import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.project.Project
@@ -47,17 +46,17 @@ class ParaTaskApp : Application() {
 
     override fun start(stage: Stage) {
         initialTask?.let { task ->
-            promptTask(task, stage)
+            startPromptTask(task, stage)
             initialTask = null
         }
 
         initialTool?.let { tool ->
-            openTool(tool, initialRun, stage)
+            startOpenTool(tool, initialRun, stage)
             initialTask = null
         }
 
         initialProjectFiles?.let { files ->
-            openProjects(files, stage)
+            startOpenProjects(files)
             initialProjectFiles = null
         }
     }
@@ -96,12 +95,12 @@ class ParaTaskApp : Application() {
             // println( string )
         }
 
-        fun promptTask(task: Task) {
+        fun startPromptTask(task: Task) {
             if (started) {
                 if (task is Tool) {
-                    openTool(task, false, Stage())
+                    startOpenTool(task, false, Stage())
                 } else {
-                    promptTask(task, Stage())
+                    startPromptTask(task, Stage())
                 }
             } else {
                 started = true
@@ -110,12 +109,12 @@ class ParaTaskApp : Application() {
             }
         }
 
-        fun openTool(tool: Tool, run: Boolean) {
+        fun startOpenTool(tool: Tool, run: Boolean) {
             if (started) {
-                openTool(tool, run = true, stage = Stage())
+                startOpenTool(tool, run = true, stage = Stage())
             } else {
                 started = true
-                this.initialRun = true
+                this.initialRun = run
                 this.initialTool = tool
                 Application.launch(ParaTaskApp::class.java)
             }
@@ -123,7 +122,7 @@ class ParaTaskApp : Application() {
 
         fun openProjects(projectFiles: List<File>) {
             if (started) {
-                openProjects(projectFiles, Stage())
+                openProjects(projectFiles)
             } else {
                 started = true
                 this.initialProjectFiles = projectFiles
@@ -132,21 +131,22 @@ class ParaTaskApp : Application() {
         }
 
 
-        private fun openTool(tool: Tool, run: Boolean, stage: Stage) {
+        private fun startOpenTool(tool: Tool, run: Boolean, stage: Stage) {
             val projectWindow = ProjectWindow()
             projectWindow.placeOnStage(stage)
             projectWindow.addTool(tool)
+            if (run) {
+                tool.taskRunner.run()
+            }
         }
 
-        private fun promptTask(task: Task, stage: Stage) {
+        private fun startPromptTask(task: Task, stage: Stage) {
             TaskPrompter(task).placeOnStage(stage)
         }
 
-        private fun openProjects(projectFiles: List<File>, stage: Stage) {
-
-            var first = true
+        private fun startOpenProjects(projectFiles: List<File>) {
             for (file in projectFiles) {
-                val project = Project.load(file)
+                Project.load(file)
             }
 
         }

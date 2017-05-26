@@ -17,12 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
-import uk.co.nickthecoder.paratask.project.TaskPrompter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
 
@@ -94,16 +92,16 @@ class TaskParser(val task: Task) {
 
     private fun promptTask(task: Task) {
         if (task is Tool) {
-            ParaTaskApp.openTool(task, run = false)
+            ParaTaskApp.startOpenTool(task, run = false)
         } else {
-            ParaTaskApp.promptTask(task)
+            ParaTaskApp.startPromptTask(task)
         }
 
     }
 
     private fun runTask(task: Task) {
         if (task is Tool) {
-            ParaTaskApp.openTool(task, run = false)
+            ParaTaskApp.startOpenTool(task, run = false)
         } else {
             val result = task.run()
             if (result is OSCommand) {
