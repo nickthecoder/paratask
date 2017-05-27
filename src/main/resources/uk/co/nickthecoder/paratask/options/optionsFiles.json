@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "groovy",
+            "script": "new OptionsTool( row )",
             "code": ".",
             "label": "Work with Options",
-            "script": "new OptionsTool( row )",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -18,28 +18,50 @@
             ]
         },
         {
-            "type": "groovy",
-            "code": "inc",
-            "label": "Work with Included Options",
-            "script": "new IncludesTool( row )",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": true
-        },
-        {
-            "type": "groovy",
-            "code": ".",
-            "label": "Work with Options",
-            "script": "new OptionsTool( row )",
-            "isRow": true,
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "code": "^",
+            "label": "Open Options Directory",
+            "isRow": false,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "aliases": [
-                "e"
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
+                }
             ]
         }
     ]

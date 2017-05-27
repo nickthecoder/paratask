@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.util
 import java.awt.Desktop
 import java.io.File
 import java.net.URI
+import java.net.URL
 
 class ThreadedDesktop {
 
@@ -48,6 +49,10 @@ class ThreadedDesktop {
         thread.name = "TheadedDesktop.browse"
         thread.isDaemon = true
         thread.start()
+    }
+
+    fun browse(url: URL) {
+        browse(url.toURI())
     }
 
     fun browse(file: File) {

@@ -1,19 +1,10 @@
 {
+    "comments": "Used by the DirectoryTool (and DirectoryTreeTool).\nFor options relating to rows containing a directory, use the \"dir\" file instead.",
     "includes": [
-        "file"
+        "file",
+        "dir"
     ],
     "options": [
-        {
-            "type": "groovy",
-            "script": "if ( row.file.isDirectory() ) { tool.directoryP.value = row.file; tool } else { desktop.open( row.file ) }",
-            "code": ".",
-            "label": "Open File / Directory",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
@@ -60,6 +51,17 @@
                     "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "if ( row.file.isDirectory() ) { tool.directoryP.value = row.file; tool } else { desktop.open( row.file ) }",
+            "code": ".",
+            "label": "Open File / Work with Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

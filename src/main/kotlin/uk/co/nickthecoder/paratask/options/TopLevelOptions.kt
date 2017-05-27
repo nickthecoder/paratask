@@ -52,11 +52,19 @@ class TopLevelOptions(val optionsName: String) {
         return fileOptionsList
     }
 
-    fun find(code: String): Option? {
+    fun findNonRowOption(code: String): Option? {
 
         // First we build a list of all the FileOptions and then iterate over the list to find the Option
         val fileOptionsList = listFileOptions()
 
-        return fileOptionsList.map { it.find(code) }.firstOrNull { it != null }
+        return fileOptionsList.map { it.find(code) }.firstOrNull { it?.isRow == false }
+    }
+
+    fun findOptionForRow(code: String, row: Any): Option? {
+        // First we build a list of all the FileOptions and then iterate over the list to find the Option
+        val fileOptionsList = listFileOptions().filter { it.acceptRow(row) }
+
+        return fileOptionsList.map { it.find(code) }.firstOrNull { it != null } ?:
+                findNonRowOption(code)
     }
 }

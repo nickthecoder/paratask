@@ -1,19 +1,10 @@
 {
     "includes": [
-        "file"
+        "dir",
+        "file",
+        "url"
     ],
     "options": [
-        {
-            "type": "groovy",
-            "script": "if ( row.resource.isFile() ) {\n    if ( row.resource.file.isDirectory() ) {\n        new DirectoryTool( row.resource.file )\n    } else {\n        desktop.open( row.resource.file)\n    }\n} else {\n    desktop.browse( row.resource.url.toURI() )\n}",
-            "code": ".",
-            "label": "Open Place",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
@@ -117,10 +108,21 @@
             "refresh": false
         },
         {
+            "type": "groovy",
+            "script": "row.taskEdit()",
+            "code": "e",
+            "label": "Edit Place",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false
+        },
+        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
             "code": "edit",
-            "label": "Edit in Text Editor",
+            "label": "Edit Places in Text Editor",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -138,19 +140,24 @@
                 {
                     "name": "initialText",
                     "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
                 }
             ]
-        },
-        {
-            "type": "groovy",
-            "script": "row.taskEdit()",
-            "code": "e",
-            "label": "Edit Place",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false
         }
     ]
 }

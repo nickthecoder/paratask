@@ -32,10 +32,12 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with Option Files (does not include those in the jar file)")
 
-    val directory = Preferences.createOptionsResourceParameter(onlyDirectories = true)
+    val directoryP = Preferences.createOptionsResourceParameter(onlyDirectories = true)
+
+    var directory by directoryP
 
     init {
-        taskD.addParameters(directory)
+        taskD.addParameters(directoryP)
     }
 
     override fun createColumns() {
@@ -45,7 +47,7 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
     override fun run() {
         list.clear()
-        val chosenDirectory = directory.value
+        val chosenDirectory = directoryP.value
         if (chosenDirectory == null) {
             for (dir in Preferences.optionsPath) {
                 add(dir)

@@ -1,7 +1,32 @@
 
-Check if Places updates across NFS, if not remove FileWatcher, and replace with Options.refresh
+Add a "Meta" tab to OptionsTool
+	Filter script, comment
 
-Terminal isn't HasDirectory yet
+Non-Row Options to have a shortcut
+	For example, Alt+UP on a directory based tool runs the "^" option.
+
+Tidy/complete file based options
+
+	directory.json is for DirectoryTool and  DirectoryTreeTool
+	file.json for a row that has a non-directory file
+	dir.json for a row that has a directory
+	dirTool.json non-row options for tools which have a directory (maybe test for isDirectory, or exclude Grep!)
+
+mmv task, with description of how to use the parameters!
+
+We need a filter on FileOptions
+	Set up "file", "dir" and "url"
+	Note that PlacesTool has a set of Resources, but DirectoryTool has a set of 
+
+Pipeline - As well as "Script", "Task", can also be a Pipeline
+	A list of Tasks/Tools/Scripts?
+		e.g. Command | Editor
+		GitLog | FilterRow | Table ( GitLog )
+
+Expressions to allow for autocomplete.
+	e.g. row. should autocomplete all public methods/attributes
+
+Check if Places updates across NFS, if not remove FileWatcher, and replace with Options.refresh
 
 Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
 
@@ -11,16 +36,50 @@ Need some way to "hide" weird options such as "GC", printRow etc.
 TerminalTool to allow running of Tasks/Tools/Options from the input field
 	Special prefix such as ":" to specify an option, and allow for simple command line style arguments
 
-TerminalTool to keep track of the current directory by parsing the output, looking for a special PS1
-	Only do this if running bash/sh?
+User definable project attributes. For example, the license header, database name.
+	Meta get meta - we'll use Meta data to define the meta data for our data ;-)
 
-Write a DB tool
-	Work with Tables
-	Work with Users
-	Work with Rows
-Ideally, it would work with at least MariaDB/MySQL, SQLLite and Progres
+Nail down a "Load" and "Save" paramater, split between a name and a directory
+	File extension as a ComboBox (for save only)
+	Drag the "save" icon to a directory to fill in the directory part - This may not be possible, as it is going the "wrong" way.
+	The directory needs a set of "favourite" places, which can be selected
+	This would be a Group Parameter, but with a value ! (File)
+
+
+A true tree style tool would be interesting.
+	Not only to implement DirecoryTree properly, but also for unrelated items in the tree
+		e.g. Place -> directory -> file ( each with different option files )
+
+Sidebar - A tool which appears on the left, not within a major tab,
+	Places is the obvious one, bu Directory and DirectoryTree may be useful too,
+
+TerminalTool to keep track of the current directory by parsing the output, looking for a special PS1
+
+TerminalTool : Store history of command issued.
+
+TerminalTool : Tab-complete
+	Maybe use Alt+DOWN, for consistancy with FileParameter
+	Also, allow files to be dragged to the input field to add them as arguments
+
+Drag and drop to copy/move/link files
 
 Implement command line tab completion
+
+Make git diff its own command (with boolean for Use Diff Tool)
+	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.
+		Maybe even create special Parameters for the "positions"
+			A button to pop-up a list of stashes, commits etc.
+	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
+
+
+Bugs
+====
+
+Editor must not re-load existing files when re-running the tool.
+
+
+Later Version
+=============
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?
@@ -30,20 +89,19 @@ Editor - Open a file in a new lower tab
 	    (or showing the minor tab if it is already open)
 
 
+Terminal isn't HasDirectory yet
+
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
 
-Make git diff its own command (with boolean for Use Diff Tool)
-	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.
-		Maybe even create special Parameters for the "positions"
-			A button to pop-up a list of stashes, commits etc.
-	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
-
-Bugs
-====
-
-Editor must not re-load existing files when re-running the tool.
-
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace :-(
+
+
+Write a DB tool
+	Work with Tables
+	Work with Users
+	Work with Rows
+Ideally, it would work with at least MariaDB/MySQL, SQLLite and Progres
+
 
 Hard Bugs
 =========

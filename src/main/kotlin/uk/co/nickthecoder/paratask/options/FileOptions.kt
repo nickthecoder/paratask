@@ -21,6 +21,7 @@ import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
+import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.FileListener
@@ -37,6 +38,10 @@ class FileOptions(val resource: Resource) : FileListener {
     val name = resource.nameWithoutExtension
 
     val includes = mutableListOf<String>()
+
+    var comments: String = ""
+
+    var rowFilterScript: GroovyScript? = null
 
     private val optionsMap = mutableMapOf<String, Option>()
 
@@ -59,6 +64,18 @@ class FileOptions(val resource: Resource) : FileListener {
 
     fun find(code: String): Option? {
         return optionsMap[code]
+    }
+
+    fun acceptRow(row: Any?): Boolean {
+        if (rowFilterScript == null) {
+            return true
+        }
+        if (row == null) {
+            return false
+        }
+        val binding = Binding()
+        binding.setVariable("row", row)
+        return rowFilterScript?.run(binding) == true
     }
 
     fun renameOption(option: Option, newCode: String, newAliases: List<String>) {
@@ -96,6 +113,8 @@ class FileOptions(val resource: Resource) : FileListener {
      Example JSON file :
  
     {
+         "comments" : "Applies only to files (not directories)",
+         "rowFilterScript" : "row.isFile()",
          "includes" : [ "foo", "bar" ],
          "options" : [
              {
@@ -144,6 +163,10 @@ class FileOptions(val resource: Resource) : FileListener {
             //println("Failed to load options file ${resource}")
             return
         }
+
+        comments = jroot.getString("comments", "")
+        val rowFilterScriptSource = jroot.getString("rowFilterScript", "")
+        rowFilterScript = if (rowFilterScriptSource == "") null else GroovyScript(rowFilterScriptSource)
 
         val jincludes = jroot.get("includes")
         jincludes?.let {
@@ -233,6 +256,11 @@ class FileOptions(val resource: Resource) : FileListener {
         val file = resource.file ?: return
 
         val jroot = JsonObject()
+
+        if (comments != "") {
+            jroot.add("comments", comments)
+        }
+        rowFilterScript?.let { jroot.add("rowFilterScript", it.source) }
 
         val jincludes = JsonArray()
         for (include in includes) {

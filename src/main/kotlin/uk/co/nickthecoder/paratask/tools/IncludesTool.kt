@@ -57,10 +57,6 @@ class IncludesTool : AbstractTableTool<String>() {
         }
     }
 
-    override fun updateResults() {
-        super.updateResults()
-    }
-
     fun taskEditIncludes(): EditIncludesTask {
         return EditIncludesTask(getFileOptions())
     }

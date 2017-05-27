@@ -162,7 +162,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
-    fun move(delta: Int) : Boolean {
+    fun move(delta: Int): Boolean {
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
             return false
@@ -187,7 +187,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
                 if (code != "") {
                     foundCode = true
 
-                    val option = OptionsManager.findOption(code, tool.optionsName)
+                    val option = OptionsManager.findOptionForRow(code, tool.optionsName, wrappedRow.row)
                     if (option != null) {
 
                         var list = batchOptions[option]

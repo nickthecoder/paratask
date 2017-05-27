@@ -76,7 +76,7 @@ open class OptionsRunner(val tool: Tool) {
 
     fun runNonRow(code: String, prompt: Boolean = false, newTab: Boolean = false): Boolean {
         refresher = Refresher()
-        val option = OptionsManager.findOption(code, tool.optionsName)
+        val option = OptionsManager.findNonRowOption(code, tool.optionsName)
         if (option == null || option.isRow) {
             return false
         }

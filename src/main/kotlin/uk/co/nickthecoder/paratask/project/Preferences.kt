@@ -49,7 +49,7 @@ object Preferences {
         }
 
         optionsPath.forEach { resource ->
-            if ( resource.isFile() || ! onlyDirectories ) {
+            if ( resource.isFileOrDirectory() || ! onlyDirectories ) {
                 val str = resource.toString()
 
                 result.choice(str, resource, resource.directoryName)

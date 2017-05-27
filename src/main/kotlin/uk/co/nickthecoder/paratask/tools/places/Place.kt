@@ -28,10 +28,26 @@ import java.net.URL
 class Place(val placesFile: PlacesFile, val resource: Resource, val label: String) {
 
     val name: String
-        get() = if (resource.isFile()) resource.file!!.name else resource.toString()
+        get() = if (resource.isFileOrDirectory()) resource.file!!.name else resource.toString()
 
     val path: String
-        get() = if (resource.isFile()) resource.file!!.path else resource.toString()
+        get() = if (resource.isFileOrDirectory()) resource.file!!.path else resource.toString()
+
+    val file
+        get() = resource.file
+
+    val url
+        get() = resource.url
+
+    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
+    // Place (and any future rows that *may* contain File objects).
+    fun isFile() = resource.isFile()
+
+    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
+    // Place (and any future rows that *may* contain File objects).
+    fun isDirectory() = resource.isDirectory()
+
+    fun isURL() = !resource.isFileOrDirectory()
 
     fun taskEdit() = EditPlaceTask(this)
 

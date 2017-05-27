@@ -24,4 +24,13 @@ open class WrappedFile(val file: File) {
     val icon by lazy {
         ParaTaskApp.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
     }
+
+    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
+    // Place (and any future rows that *may* contain File objects).
+    fun isFile() = file.isFile
+
+    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
+    // Place (and any future rows that *may* contain File objects).
+    fun isDirectory() = file.isDirectory
+
 }

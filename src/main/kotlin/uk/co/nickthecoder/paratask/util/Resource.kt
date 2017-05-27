@@ -11,7 +11,7 @@ class Resource(val url: URL) {
     val file: File? = toFile(url)
 
     val icon: Image? by lazy {
-        val type = if (isFile()) {
+        val type = if (isFileOrDirectory()) {
             if (file?.isDirectory == true) "directory" else "file"
         } else {
             "web"
@@ -58,11 +58,19 @@ class Resource(val url: URL) {
             return str
         }
 
+    val parentFile
+        get() = file?.parentFile
+
+
     fun parentResource(): Resource {
         return Resource(this, ".")
     }
 
-    fun isFile() = file != null
+    fun isFileOrDirectory() = file != null
+
+    fun isFile() = file?.isFile() == true
+
+    fun isDirectory() = file?.isDirectory() == true
 
     override fun equals(other: Any?): Boolean {
         if (other is Resource) {

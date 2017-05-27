@@ -19,17 +19,10 @@ package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.TaskRegistry
-import uk.co.nickthecoder.paratask.project.SharedToolPane
-import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.options.FileOptions
-import uk.co.nickthecoder.paratask.options.GroovyOption
-import uk.co.nickthecoder.paratask.options.Option
-import uk.co.nickthecoder.paratask.options.OptionsManager
-import uk.co.nickthecoder.paratask.options.TaskOption
+import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -91,6 +84,10 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     }
 
+    override fun createResults(): List<Results> {
+        return super.createResults() + includesTool.createResults() + TaskResults(this, OptionsMetaDataTask())
+    }
+
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
@@ -128,11 +125,6 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     override fun detaching() {
         super<AbstractTableTool>.detaching()
         super<AutoRefreshTool>.detaching()
-    }
-
-    override fun updateResults() {
-        includesTool.updateResults()
-        super.updateResults()
     }
 
     fun taskEdit(option: Option): EditOptionTask {
@@ -258,4 +250,28 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             fileOptions.save()
         }
     }
+
+    inner class OptionsMetaDataTask() : AbstractTask() {
+
+        override val taskD = TaskDescription("optionsMetaData")
+
+        val fileOptions = getFileOptions()
+
+        val commentsP = StringParameter("comments", required = false, rows = 6,
+                value = fileOptions.comments)
+
+        val rowFilterP = StringParameter("rowFilterScript", required = false, style = "script", rows = 10,
+                value = fileOptions.rowFilterScript?.source ?: "")
+
+        init {
+            taskD.addParameters(commentsP, rowFilterP)
+        }
+
+        override fun run() {
+            fileOptions.comments = commentsP.value
+            fileOptions.rowFilterScript = if (rowFilterP.value == "") null else GroovyScript(rowFilterP.value)
+            fileOptions.save()
+        }
+    }
 }
+

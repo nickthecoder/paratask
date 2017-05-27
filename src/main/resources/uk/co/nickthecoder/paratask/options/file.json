@@ -1,19 +1,10 @@
 {
+    "comments": "Must define row.isFile()\nIf this is true, then row.file must be a File object, refering to a file (not a directory)",
+    "rowFilterScript": "row.isFile()",
     "includes": [
         
     ],
     "options": [
-        {
-            "type": "groovy",
-            "script": "desktop.edit( row.file )",
-            "code": "edit",
-            "label": "Edit File",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
         {
             "type": "groovy",
             "script": "desktop.open( row.file )",
@@ -26,40 +17,6 @@
             "refresh": false,
             "aliases": [
                 "open"
-            ]
-        },
-        {
-            "type": "groovy",
-            "script": "desktop.browse( row.file )",
-            "code": "wb",
-            "label": "Open with Web Browser",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "e",
-            "label": "Edit with built-in Text Editor",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "file",
-                    "values": [
-                        
-                    ]
-                },
-                {
-                    "name": "initialText",
-                    "value": ""
-                }
             ]
         },
         {
@@ -125,50 +82,53 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
-            "code": "^",
-            "label": "Open Parent Directory",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "e",
+            "label": "Edit with built-in Editor",
             "isRow": true,
-            "isMultiple": false,
+            "isMultiple": true,
             "prompt": false,
-            "newTab": false,
+            "newTab": true,
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file.parentFile"
-                },
-                {
-                    "name": "depth",
-                    "value": "1"
-                },
-                {
-                    "name": "onlyFiles",
-                    "value": ""
-                },
-                {
-                    "name": "extensions",
+                    "name": "file",
                     "values": [
                         
                     ]
                 },
                 {
-                    "name": "includeHidden",
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
                     "value": "false"
                 },
                 {
-                    "name": "enterHidden",
+                    "name": "useRegex",
                     "value": "false"
-                },
-                {
-                    "name": "includeBase",
-                    "value": "false"
-                },
-                {
-                    "name": "autoRefresh",
-                    "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.browse( row.file )",
+            "code": "web",
+            "label": "Open with Web Browser",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

@@ -42,7 +42,7 @@ open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
         taskD.addParameters(labelP, oneOfP)
         oneOfP.addParameters(fileP, urlP)
 
-        if (place.resource.isFile()) {
+        if (place.resource.isFileOrDirectory()) {
             fileP.value = place.resource.file!!
             oneOfP.value = fileP
         } else {

@@ -28,6 +28,8 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
 
     fun buildContextMenu(contextMenu: ContextMenu, rows: List<R>) {
 
+        val firstRow = if (rows.isEmpty()) null else rows[0]
+
         contextMenu.items.clear()
 
         val optionsName = tool.optionsName
@@ -35,7 +37,7 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
 
         var needSep = false
 
-        for (fileOptions in topLevelOptions.listFileOptions()) {
+        topLevelOptions.listFileOptions().filter { it.acceptRow(firstRow) }.forEach { fileOptions ->
             var added = false
             for (option in fileOptions.listOptions()) {
                 if (option.isRow) {
@@ -85,7 +87,7 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
 
     fun runDefault(row: R, prompt: Boolean = false, newTab: Boolean = false) {
         refresher = Refresher()
-        val option = OptionsManager.findOption(".", tool.optionsName) ?: return
+        val option = OptionsManager.findOptionForRow(".", tool.optionsName, row) ?: return
         doRow(option, row, prompt = prompt, newTab = newTab)
     }
 

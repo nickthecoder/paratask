@@ -34,8 +34,12 @@ object OptionsManager {
         }
     }
 
-    fun findOption(code: String, optionsName: String): Option? {
-        return getTopLevelOptions(optionsName).find(code)
+    fun findNonRowOption(code: String, optionsName: String): Option? {
+        return getTopLevelOptions(optionsName).findNonRowOption(code)
+    }
+
+    fun findOptionForRow(code: String, optionsName: String, row: Any): Option? {
+        return getTopLevelOptions(optionsName).findOptionForRow(code, row)
     }
 
     private val pathMap = mutableMapOf<Resource, OptionsPath>()

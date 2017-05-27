@@ -41,7 +41,7 @@ abstract class AbstractTaskPrompter(val task: Task) {
         stage?.hide()
     }
 
-    open protected fun build() {
+    open fun build() {
 
         task.taskRunner.processors.add(CommandInTerminalWindow(task.taskD.label))
 
