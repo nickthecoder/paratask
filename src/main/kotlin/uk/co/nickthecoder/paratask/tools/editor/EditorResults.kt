@@ -19,15 +19,14 @@ package uk.co.nickthecoder.paratask.tools.editor
 
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.Node
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
+import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.project.ShortcutHelper
-import uk.co.nickthecoder.paratask.project.AbstractResults
 import java.io.File
 
 class EditorResults(override val tool: EditorTool, val file: File?)
@@ -42,7 +41,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
 
     val searcher = Searcher(codeArea)
 
-    val findBar = FindBar(searcher, codeArea)
+    val findBar = FindBar(searcher, this)
 
     val dirtyProperty = SimpleBooleanProperty()
 
@@ -63,10 +62,13 @@ class EditorResults(override val tool: EditorTool, val file: File?)
 
         val shortcuts = ShortcutHelper("EditorTool", node)
 
-        shortcuts.add(Actions.EDIT_CUT, { onCut() })
-        shortcuts.add(Actions.EDIT_COPY, { onCopy() })
-        shortcuts.add(Actions.EDIT_PASTE, { onPaste() })
-        shortcuts.add(Actions.ESCAPE, { onEscape() })
+        shortcuts.add(Actions.EDIT_FIND_PREV) { searcher.onFindPrev() }
+        shortcuts.add(Actions.EDIT_FIND_NEXT) { searcher.onFindNext() }
+
+        shortcuts.add(Actions.EDIT_CUT) { onCut() }
+        shortcuts.add(Actions.EDIT_COPY) { onCopy() }
+        shortcuts.add(Actions.EDIT_PASTE) { onPaste() }
+        shortcuts.add(Actions.ESCAPE) { onEscape() }
 
         with(toolBar.items)
         {
@@ -85,42 +87,52 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         file?.let { load(it) }
 
         codeArea.plainTextChanges().addObserver { dirty = true }
-
+        findBar.isVisible = false
     }
 
     constructor(tool: EditorTool, text: String) : this(tool, null) {
-        codeArea.replaceText(0, codeArea.length, text)
+        load(text)
     }
 
     override fun selected() {
         tool.toolPane?.halfTab?.toolBars?.left = toolBar
-        file?.path?.let { tool.longTitle = "Editor ${it}" }
+        file?.path?.let { tool.longTitle = "Editor $it" }
     }
 
     override fun deselected() {
-        hide(toolBar, findBar)
+        hideToolBar()
+        dummyParent.children.add(toolBar)
     }
 
     override fun focus() {
         codeArea.requestFocus()
     }
 
-    fun hide(vararg nodes: Node) {
-        nodes.forEach {
-            try {
-                dummyParent.children.add(it)
-            } catch (e: Exception) {
-                // Don't care if the node to be hidden is already in the dummpyParent.
-            }
-        }
+    fun hideToolBar() {
+        findBar.detaching()
+        findBar.isVisible = false
+        tool.toolPane?.halfTab?.toolBars?.bottom = null
+        codeArea.requestFocus()
     }
 
     fun showFindBar() {
-        tool.toolPane?.halfTab?.toolBars?.bottom = findBar
+        if (findBar.isVisible) {
+            findBar.focus()
+        } else {
+            findBar.isVisible = true
+            tool.toolPane?.halfTab?.toolBars?.bottom = findBar
+            findBar.attached()
+        }
+    }
+
+    fun load(text: String) {
+        codeArea.replaceText(0, codeArea.length, text)
+        codeArea.selectRange(0, 0)
+        codeArea.positionCaret(0)
     }
 
     fun load(file: File) {
-        codeArea.replaceText(0, codeArea.length, file.readText())
+        load(file.readText())
         codeArea.undoManager.forgetHistory()
         dirty = false
     }
@@ -143,6 +155,7 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     fun onCopy() {
+        println("Copy")
         codeArea.copy()
     }
 
@@ -155,11 +168,11 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     fun onEscape() {
-        hide(findBar)
+        hideToolBar()
+        searcher.reset()
     }
 
     fun onFind() {
         showFindBar()
-        findBar.textField.requestFocus()
     }
 }

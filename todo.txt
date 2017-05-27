@@ -1,8 +1,8 @@
 
-Bug : Getting ConcurrentModificationExceptions when saving options files.
-	
 Editor - find and replace
     Editor to work with grep to highlight matches (using regex and fixed patterns)
+
+Check if Places updates across NFS, if not remove FileWatcher, and replace with Options.refresh
 
 Terminal isn't HasDirectory yet
 

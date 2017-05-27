@@ -17,41 +17,58 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
-import javafx.beans.binding.BooleanBinding
-import javafx.beans.binding.IntegerBinding
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.value.ObservableBooleanValue
-import javafx.beans.value.ObservableIntegerValue
 import org.fxmisc.richtext.CodeArea
 import java.util.regex.Pattern
 
 class Searcher(val codeArea: CodeArea) {
 
+    val MAX_MATCHES = 500
+
     val searchStringProperty = SimpleStringProperty()
 
-    var searchString: String
+    var searchString: String?
         get() = searchStringProperty.get()
         set(v) {
             searchStringProperty.set(v)
         }
 
+    val matchCaseProperty = SimpleBooleanProperty()
+
+    var matchCase: Boolean
+        get() = matchCaseProperty.get()
+        set(v) {
+            matchCaseProperty.set(v)
+        }
+
+    val useRegexProperty = SimpleBooleanProperty()
+
+    var useRegex: Boolean
+        get() = useRegexProperty.get()
+        set(v) {
+            useRegexProperty.set(v)
+        }
+
     private val matches = mutableListOf<Match>()
-
-    val matchCountValue: ObservableIntegerValue = object : IntegerBinding() {
-        override fun computeValue() = matches.size
-    }
-
-    val foundValue: ObservableBooleanValue = object : BooleanBinding() {
-        override fun computeValue() = matches.size > 0
-    }
 
     private var findStartCaretPosition = 0
 
-    val matchNumberValue: ObservableIntegerValue = object : IntegerBinding() {
-        override fun computeValue() = matchNumber + 1
-    }
+    val matchPositionProperty = SimpleStringProperty("")
+
+    var matchPosition: String
+        set(v) {
+            matchPositionProperty.set(v)
+        }
+        get() = matchPositionProperty.get()
 
     private var matchNumber = 0
+
+    fun reset() {
+        matchNumber = 0
+        matches.clear()
+        matchPosition = ""
+    }
 
     fun beginFind() {
         matches.clear()
@@ -62,28 +79,40 @@ class Searcher(val codeArea: CodeArea) {
 
         val text = codeArea.text
 
-        val pattern: Pattern
+        var pattern: Pattern
         try {
-            pattern = Pattern.compile(searchString)
+            val flags =
+                    (if (matchCase) 0 else Pattern.CASE_INSENSITIVE) +
+                            if (useRegex) 0 else Pattern.LITERAL
+            pattern = Pattern.compile(searchString, flags)
         } catch (e: Exception) {
-            // TODO Feedback that the pattern is invalid
-            return
+            pattern = Pattern.compile(searchString, Pattern.LITERAL)
         }
         val matcher = pattern.matcher(text)
 
         findStartCaretPosition = codeArea.caretPosition
 
         var count = 0
-        var repositioned = false
         while (matcher.find()) {
             val start = matcher.start()
             val end = matcher.end()
-            if (!repositioned && start > findStartCaretPosition) {
-                gotoMatch(count)
-                repositioned = true
-            }
             matches.add(Match(start, end))
-            if (count++ > 500) break
+            if (++count >= MAX_MATCHES) {
+                break
+            }
+        }
+
+        if (matches.isEmpty()) {
+            matchPosition = "Not found"
+        } else {
+            for (i in 0..matches.size - 1) {
+                val match = matches[i]
+                if (match.start > findStartCaretPosition) {
+                    gotoMatch(i)
+                    return
+                }
+            }
+            gotoMatch(0)
         }
     }
 
@@ -91,14 +120,28 @@ class Searcher(val codeArea: CodeArea) {
         val match = matches[index]
         codeArea.selectRange(match.end, match.start)
         matchNumber = index
+        matchPosition = "Match ${matchNumber + 1} of " + if (matches.size >= MAX_MATCHES) "at least ${MAX_MATCHES}" else "${matches.size}"
+        codeArea.requestFocus()
     }
 
     fun onFindNext() {
-        // TODO Implement find next
+        if (matches.size == 0) return
+
+        if (matchNumber >= matches.size - 1) {
+            gotoMatch(0)
+        } else {
+            gotoMatch(matchNumber + 1)
+        }
     }
 
     fun onFindPrev() {
-        // TODO Implement find prev
+        if (matches.size == 0) return
+
+        if (matchNumber <= 0) {
+            gotoMatch(matches.size - 1)
+        } else {
+            gotoMatch(matchNumber - 1)
+        }
     }
 
     data class Match(val start: Int, val end: Int)

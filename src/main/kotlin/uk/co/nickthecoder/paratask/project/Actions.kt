@@ -51,7 +51,7 @@ object Actions {
     // HalfTab
     val SPLIT_TOOL_TOGGLE = Action("tool.toggleParameters", KeyCode.F9, tooltip = "Show/Hide Parameters")
 
-    val TOOL_STOP = Action("tool.stop", KeyCode.ESCAPE, tooltip = "Stop the Tool")
+    val TOOL_STOP = Action("tool.stop", KeyCode.ESCAPE, shift = true, tooltip = "Stop the Tool")
     val TOOL_RUN = Action("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
     val TOOL_SELECT = Action("tool.select", KeyCode.HOME, control = true, tooltip = "Select a Tool")
@@ -73,6 +73,7 @@ object Actions {
     // EditorTool
 
     val EDIT_FIND = Action("edit.find", KeyCode.F, control = true, tooltip = "Find")
+    val EDIT_FIND_GO = Action("edit.find.go", KeyCode.ENTER, label = "Find")
     val EDIT_FIND_NEXT = Action("edit.find.next", KeyCode.G, control = true, tooltip = "Find Next")
     val EDIT_FIND_PREV = Action("edit.find.prev", KeyCode.G, control = true, shift = true, tooltip = "Find Next")
 

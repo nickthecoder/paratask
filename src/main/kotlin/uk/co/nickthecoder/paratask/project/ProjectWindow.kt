@@ -26,7 +26,7 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
-import uk.co.nickthecoder.paratask.tools.editor.ExceptionTool
+import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 
 class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
