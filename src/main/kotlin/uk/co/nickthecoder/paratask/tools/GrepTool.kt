@@ -72,7 +72,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
         try {
             if (colon2 > 0) {
                 val file = File(line.substring(0, colon1))
-                val lineNumber = Integer.parseInt(line.substring(colon1 + 1, colon2))
+                val lineNumber = parseIntSafely(line.substring(colon1 + 1, colon2)) ?: 0
                 val matchedLine = line.substring(colon2 + 1)
                 list.add(GrepRow(file, lineNumber, matchedLine))
             }
@@ -81,6 +81,14 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
             // The version of grep I'm using seems to ignore the -I option when recursing. Grr.
         }
 
+    }
+
+    private fun parseIntSafely(str: String): Int? {
+        try {
+            return Integer.parseInt(str)
+        } catch(e: Exception) {
+            return null
+        }
     }
 
     override fun check() {

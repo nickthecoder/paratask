@@ -51,10 +51,8 @@ class TaskOption(var task: Task)
 
     private fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
 
-        // println("Evaluating parameter ${parameter.name} expression=${parameter.expression} value=${parameter.value}")
         if (parameter is MultipleParameter<*> && parameter.expression == null) {
-            val innerExpressionsParameters = parameter.innerParameters.filter { it.expression != null }
-            for (innerParameter in innerExpressionsParameters) {
+            parameter.innerParameters.filter { it.expression != null }.forEach { innerParameter ->
                 evaluateParameter(innerParameter, tool, row = row, rows = rows)
             }
         } else {
@@ -67,10 +65,9 @@ class TaskOption(var task: Task)
                 bindings.setProperty("helper", Helper.instance)
 
                 parameter.evaluated(gscript.run(bindings))
+                parameter.expression = null
             }
         }
-
-        //println("Evaluated to ${parameter.value}")
     }
 
     override fun copy(): TaskOption {

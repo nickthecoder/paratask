@@ -52,8 +52,6 @@ class Searcher(val codeArea: CodeArea) {
 
     private val matches = mutableListOf<Match>()
 
-    private var findStartCaretPosition = 0
-
     val matchPositionProperty = SimpleStringProperty("")
 
     var matchPosition: String
@@ -90,7 +88,7 @@ class Searcher(val codeArea: CodeArea) {
         }
         val matcher = pattern.matcher(text)
 
-        findStartCaretPosition = codeArea.caretPosition
+        val caretPos = codeArea.caretPosition
 
         var count = 0
         while (matcher.find()) {
@@ -107,7 +105,7 @@ class Searcher(val codeArea: CodeArea) {
         } else {
             for (i in 0..matches.size - 1) {
                 val match = matches[i]
-                if (match.start > findStartCaretPosition) {
+                if (match.start >= caretPos) {
                     gotoMatch(i)
                     return
                 }

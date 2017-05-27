@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
+import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.ToolBar
@@ -27,9 +28,12 @@ import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.project.ShortcutHelper
+import uk.co.nickthecoder.paratask.project.ToolPane
 import java.io.File
 
-class EditorResults(override val tool: EditorTool, val file: File?)
+class EditorResults(
+        override val tool: EditorTool,
+        val file: File?)
 
     : AbstractResults(tool, file?.name ?: "New File") {
 
@@ -108,6 +112,25 @@ class EditorResults(override val tool: EditorTool, val file: File?)
         codeArea.requestFocus()
     }
 
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+
+        tool.goToLineP.value?.let {
+            codeArea.positionCaret(codeArea.position(it - 1, 0).toOffset())
+        }
+
+        if (tool.findTextP.value != "") {
+            searcher.searchString = tool.findTextP.value
+            searcher.matchCase = tool.matchCaseP.value == true
+            searcher.useRegex = tool.useRegexP.value == true
+
+            Platform.runLater { // Without the run later, the selection stays off screen.
+                searcher.beginFind()
+                showFindBar()
+            }
+        }
+    }
+
     fun hideToolBar() {
         findBar.detaching()
         findBar.isVisible = false
@@ -155,7 +178,6 @@ class EditorResults(override val tool: EditorTool, val file: File?)
     }
 
     fun onCopy() {
-        println("Copy")
         codeArea.copy()
     }
 

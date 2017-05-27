@@ -20,9 +20,7 @@ package uk.co.nickthecoder.paratask.tools.editor
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
@@ -33,6 +31,14 @@ class EditorTool() : AbstractTool() {
     val fileP = MultipleParameter("file") { FileParameter("") }
 
     val initialTextP = StringParameter("initialText", required = false)
+
+    val findTextP = StringParameter("findText", required = false)
+
+    val matchCaseP = BooleanParameter("matchCase", value = false)
+
+    val useRegexP = BooleanParameter("useRegex", value = false)
+
+    val goToLineP = IntParameter("goToLine", required = false)
 
     constructor(file: File) : this() {
         fileP.addValue(file)
@@ -51,13 +57,16 @@ class EditorTool() : AbstractTool() {
     }
 
     constructor(text: String) : this() {
-        println("Constructed with ${text}")
         initialTextP.value = text
     }
 
     init {
-        taskD.addParameters(fileP, initialTextP)
+        taskD.addParameters(fileP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
         initialTextP.hidden = true
+        goToLineP.hidden = true
+        findTextP.hidden = true
+        matchCaseP.hidden = true
+        useRegexP.hidden = true
     }
 
 
@@ -71,7 +80,6 @@ class EditorTool() : AbstractTool() {
             return fileP.value.map { EditorResults(this, it) }
         }
     }
-
 }
 
 fun main(args: Array<String>) {

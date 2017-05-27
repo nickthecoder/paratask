@@ -18,7 +18,7 @@ abstract class DirectoryResolver : ParameterResolver {
         } else if (path.startsWith("~" + File.separatorChar)) {
             return File(homeDirectory, path.substring(2))
         } else {
-            return directory()?.resolve(file)
+            return directory()?.resolve(file) ?: file
         }
     }
 

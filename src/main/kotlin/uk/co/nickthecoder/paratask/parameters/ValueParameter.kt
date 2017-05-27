@@ -58,6 +58,7 @@ interface ValueParameter<T>
             // TODO We really need to throw an exception is the type isn't correct. How?
             value = v as T
         }
+        expression = null
     }
 
     override fun errorMessage(): String? = errorMessage(value)

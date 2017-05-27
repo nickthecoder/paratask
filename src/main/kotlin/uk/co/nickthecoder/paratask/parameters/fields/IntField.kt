@@ -40,7 +40,6 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
     }
 
     private fun createControl(): Node {
-
         val spinner = createSpinner()
 
         spinner.valueFactory.converter = parameter.converter
@@ -70,7 +69,9 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
                 val v = parameter.converter.fromString(newValue)
-                spinner.valueFactory.value = v
+                if ( parameter.expression != null) {
+                    spinner.valueFactory.value = v
+                }
                 showOrClearError(parameter.errorMessage(v))
                 dirty = false
             } catch (e: Exception) {
@@ -109,7 +110,10 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
         }
 
         val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
-        parameter.value = spinner.valueFactory.value
+        if ( parameter.expression == null) {
+            parameter.value = spinner.valueFactory.value
+        }
+
         spinner.valueFactory.valueProperty().bindBidirectional(parameter.valueProperty)
         return spinner
     }
