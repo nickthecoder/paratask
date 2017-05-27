@@ -1,6 +1,4 @@
 
-Option "edit" on OptionsTool throws.
-
 Check if Places updates across NFS, if not remove FileWatcher, and replace with Options.refresh
 
 Terminal isn't HasDirectory yet

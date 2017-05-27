@@ -5,17 +5,6 @@
     "options": [
         {
             "type": "groovy",
-            "script": "val file = tool.getFileOptions().resource.file\n\nif (file != null) {\n    new EditorTool( file )\n}\n",
-            "code": "edit",
-            "label": "Edit Options File in Text Editor",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "tool.taskCopy(row)",
             "code": "=",
             "label": "Copy Option",
@@ -57,6 +46,47 @@
             "prompt": true,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "edit",
+            "label": "Edit Options File in Text Editor",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "tool.getFileOptions().resource.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
+                }
+            ]
         }
     ]
 }
