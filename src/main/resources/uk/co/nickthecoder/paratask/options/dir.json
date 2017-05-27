@@ -1,0 +1,137 @@
+{
+    "comments": "Must define row.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)\n\nNot to be confused with the \"directory\" options file, which is for the\nDirectoryTool (and DirectoryTreeTool) only.",
+    "rowFilterScript": "row.isDirectory()",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "code": ".",
+            "label": "Work with Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTreeTool",
+            "code": "tree",
+            "label": "Work with Directory Tree",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "depth",
+                    "value": "3"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( row.file )",
+            "code": "o",
+            "label": "Open Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "code": "term",
+            "label": "Terminal",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "bash"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file"
+                }
+            ]
+        }
+    ]
+}

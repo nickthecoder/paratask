@@ -1,0 +1,20 @@
+{
+    "comments": "Used by PlacesTool.\nRow must define isURL() and url\n",
+    "rowFilterScript": "row.isURL()",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "desktop.browser( row.url )",
+            "code": "o",
+            "label": "Open in Web Browser",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        }
+    ]
+}
