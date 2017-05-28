@@ -23,6 +23,7 @@ import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.options.OptionsRunner
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
+import uk.co.nickthecoder.paratask.project.Project
 
 interface Tool : Task {
 
@@ -43,6 +44,9 @@ interface Tool : Task {
     val optionsRunner: OptionsRunner
 
     var resultsList: List<Results>
+
+    val project : Project?
+        get() = toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow?.project
 
     /**
      * Note, this is separate from run because this must be done in JavaFX's thread, whereas run

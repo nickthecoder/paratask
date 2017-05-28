@@ -15,18 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package uk.co.nickthecoder.paratask.tools
+package uk.co.nickthecoder.paratask.tools.places
 
-import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
-import java.io.File
 
 class DirectoryTool() :
         AbstractDirectoryTool("directory", "Work with a Single Directory"),
-        AutoRefreshTool {
+        uk.co.nickthecoder.paratask.util.AutoRefreshTool {
 
-    val autoRefreshP = BooleanParameter("autoRefresh", value = true,
+    val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
 
     init {
@@ -34,7 +31,7 @@ class DirectoryTool() :
         taskD.addParameters(autoRefreshP)
     }
 
-    constructor(file: File) : this() {
+    constructor(file: java.io.File) : this() {
         directoryP.value = file
     }
 
@@ -54,5 +51,5 @@ class DirectoryTool() :
 }
 
 fun main(args: Array<String>) {
-    TaskParser(DirectoryTool()).go(args)
+    uk.co.nickthecoder.paratask.TaskParser(DirectoryTool()).go(args)
 }

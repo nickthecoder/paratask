@@ -3,6 +3,16 @@
         "places"
     ],
     "options": [
-        
+        {
+            "type": "groovy",
+            "script": "tool.taskNewPlacesFile()",
+            "code": "new",
+            "label": "New Places File",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
     ]
 }

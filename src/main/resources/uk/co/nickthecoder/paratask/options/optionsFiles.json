@@ -4,22 +4,8 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "new OptionsTool( row )",
-            "code": ".",
-            "label": "Work with Options",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "aliases": [
-                "e"
-            ]
-        },
-        {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
             "code": "^",
             "label": "Open Options Directory",
             "isRow": false,
@@ -61,6 +47,30 @@
                 {
                     "name": "autoRefresh",
                     "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.OptionsTool",
+            "code": ".",
+            "label": "Work with Options",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "e"
+            ],
+            "parameters": [
+                {
+                    "name": "optionsName",
+                    "expression": "row.resource.nameWithoutExtension"
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.resource.parentResource()"
                 }
             ]
         }

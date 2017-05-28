@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package uk.co.nickthecoder.paratask.tools
+package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -34,7 +34,6 @@ import uk.co.nickthecoder.paratask.table.SizeColumn
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
-import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 abstract class AbstractDirectoryTool(name: String, description: String)

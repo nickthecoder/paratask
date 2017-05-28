@@ -17,20 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
+import uk.co.nickthecoder.paratask.tools.*
 import uk.co.nickthecoder.paratask.tools.editor.EditorTool
-import uk.co.nickthecoder.paratask.tools.OSCommandTask
-import uk.co.nickthecoder.paratask.tools.DirectoryTool
-import uk.co.nickthecoder.paratask.tools.DirectoryTreeTool
-import uk.co.nickthecoder.paratask.tools.GrepTool
-import uk.co.nickthecoder.paratask.tools.GroovyTool
-import uk.co.nickthecoder.paratask.tools.HomeTool
-import uk.co.nickthecoder.paratask.tools.OptionsFilesTool
-import uk.co.nickthecoder.paratask.tools.places.PlacesTool
-import uk.co.nickthecoder.paratask.tools.PythonTool
-import uk.co.nickthecoder.paratask.tools.TerminalTool
-import uk.co.nickthecoder.paratask.tools.WebTool
 import uk.co.nickthecoder.paratask.tools.git.*
-import uk.co.nickthecoder.paratask.tools.places.PlacesDirectoryTool
+import uk.co.nickthecoder.paratask.tools.places.*
 
 object TaskRegistry {
 
@@ -47,11 +37,16 @@ object TaskRegistry {
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),
-                OptionsFilesTool()
+                OptionsFilesTool(),
+                OptionsTool()
         )
 
         topLevel.addTools(TerminalTool())
         topLevel.addTasks(OSCommandTask())
+
+        val files = TaskGroup("Files")
+        files.addTools(DirectoryTool(), DirectoryTreeTool(), GrepTool())
+        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask())
 
         val git = TaskGroup("Git")
         git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
@@ -60,6 +55,7 @@ object TaskRegistry {
         addGroup(topLevel)
         addGroup(home)
         addGroup(git)
+        addGroup(files)
     }
 
     fun listGroups(): List<TaskGroup> = taskGroups

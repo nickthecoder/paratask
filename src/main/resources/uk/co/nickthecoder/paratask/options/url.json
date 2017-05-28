@@ -8,13 +8,16 @@
         {
             "type": "groovy",
             "script": "desktop.browser( row.url )",
-            "code": "o",
+            "code": ".",
             "label": "Open in Web Browser",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
-            "refresh": false
+            "refresh": false,
+            "aliases": [
+                "o"
+            ]
         }
     ]
 }

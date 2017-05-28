@@ -7,7 +7,7 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
             "code": "^",
             "label": "Open Parent Directory",
             "isRow": false,
@@ -54,10 +54,10 @@
         },
         {
             "type": "groovy",
-            "script": "if ( row.file.isDirectory() ) { tool.directoryP.value = row.file; tool } else { desktop.open( row.file ) }",
-            "code": ".",
-            "label": "Open File / Work with Directory",
-            "isRow": true,
+            "script": "desktop.open( tool.directory )",
+            "code": "o",
+            "label": "Open Directory",
+            "isRow": false,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,

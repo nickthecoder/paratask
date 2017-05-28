@@ -63,7 +63,8 @@ class Resource(val url: URL) {
 
 
     fun parentResource(): Resource {
-        return Resource(this, ".")
+        val path = File(url.path).parentFile
+        return Resource(URL(url, path.toString()))
     }
 
     fun isFileOrDirectory() = file != null

@@ -95,7 +95,10 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
         grepTask.check()
     }
 
-    data class GrepRow(val file: File, var lineNumber: Int, var line: String)
+    data class GrepRow(val file: File, var lineNumber: Int, var line: String) {
+        // So that file.json can be included
+        fun isFile() = file.isFile()
+    }
 
 }
 

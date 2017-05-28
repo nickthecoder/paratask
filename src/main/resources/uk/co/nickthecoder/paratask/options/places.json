@@ -7,7 +7,7 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.DirectoryTool",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
             "code": "^",
             "label": "Open Parent Directory",
             "isRow": true,

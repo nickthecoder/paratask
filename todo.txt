@@ -1,27 +1,21 @@
 
-Add a "Meta" tab to OptionsTool
-	Filter script, comment
+Bug : IntField does not keep initial value when prompted
+
+Bug : 
 
 Non-Row Options to have a shortcut
 	For example, Alt+UP on a directory based tool runs the "^" option.
+	e.g. ctrl+P to Push from GitTool ctrl+O to check Out ctrl+A check out All etc.
 
-Tidy/complete file based options
-
-	directory.json is for DirectoryTool and  DirectoryTreeTool
-	file.json for a row that has a non-directory file
-	dir.json for a row that has a directory
-	dirTool.json non-row options for tools which have a directory (maybe test for isDirectory, or exclude Grep!)
-
-mmv task, with description of how to use the parameters!
-
-We need a filter on FileOptions
-	Set up "file", "dir" and "url"
-	Note that PlacesTool has a set of Resources, but DirectoryTool has a set of 
+Create a base class for OSCommandTasks, which show their results
+	Use it for mmv, and git commit, copyfiles etc?
+	Add verbose option on copy, move files.
 
 Pipeline - As well as "Script", "Task", can also be a Pipeline
 	A list of Tasks/Tools/Scripts?
 		e.g. Command | Editor
 		GitLog | FilterRow | Table ( GitLog )
+		ListDirectory | ForEach?? | SearchAndReplace
 
 Expressions to allow for autocomplete.
 	e.g. row. should autocomplete all public methods/attributes

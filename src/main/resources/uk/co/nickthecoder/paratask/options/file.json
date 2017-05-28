@@ -6,20 +6,6 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "desktop.open( row.file )",
-            "code": "o",
-            "label": "Open File",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "aliases": [
-                "open"
-            ]
-        },
-        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.GrepTool",
             "code": "grep",
@@ -129,6 +115,120 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( row.file )",
+            "code": ".",
+            "label": "Open File",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "o"
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "code": "rm",
+            "label": "Delete File",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "rm"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-f"
+                        },
+                        {
+                            "value": "--"
+                        },
+                        {
+                            "expression": "rows.collect{ it.file.toString() }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.SearchAndReplaceTask",
+            "code": "s&r",
+            "label": "Search and Replace",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "files",
+                    "expression": "rows.file"
+                },
+                {
+                    "name": "searchString",
+                    "value": ""
+                },
+                {
+                    "name": "replaceString",
+                    "value": ""
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
+                },
+                {
+                    "name": "matchCase",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "code": "q",
+            "label": "Queue Music in Audacious",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "osCommand",
+                    "value": "audacious"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "--enqueue"
+                        },
+                        {
+                            "expression": "rows.collect { it.file.toString() }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                }
+            ]
         }
     ]
 }

@@ -74,6 +74,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     fun taskNew() = placesFile.taskNew()
 
+    fun taskNewPlacesFile() = NewPlacesFileTask(directory = directoryP.value!!)
 }
 
 
