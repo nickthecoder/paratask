@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
+import uk.co.nickthecoder.paratask.AbstractCommandTask
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -29,7 +30,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 
-class GrepTask : AbstractTask() {
+class GrepTask : AbstractCommandTask() {
 
     override val taskD = TaskDescription(
             name = "grep",
@@ -40,7 +41,7 @@ class GrepTask : AbstractTask() {
             description = "Files or Directories to search"
     ) { FileParameter("", expectFile = null) }
 
-    val patternsP = MultipleParameter("patternsToMatch", minItems = 1,
+    val patternsP = MultipleParameter("patterns", minItems = 1,
             description = "Pattern(s) to search for"
     ) { StringParameter("") }
 
@@ -82,11 +83,12 @@ class GrepTask : AbstractTask() {
         taskD.addParameters(
                 filesP, patternsP, matchCaseP,
                 typeP, partP, invertResultsP, followSymLinksP,
-                maxMatchesP, contextLinesP, additionalOptionsP)
+                maxMatchesP, contextLinesP, additionalOptionsP,
+                outputP)
         taskD.unnamedParameter = filesP
     }
 
-    override fun run(): OSCommand {
+    override fun createCommand(): OSCommand {
 
         val rOrR = if (followSymLinksP.value == true) "-R" else "-r"
 

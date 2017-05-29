@@ -21,6 +21,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
@@ -28,27 +29,31 @@ class TerminalTool : AbstractTerminalTool {
 
     override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
 
-    val commandP = StringParameter("osCommand", value = "bash")
+    val programP = StringParameter("program", value = "bash")
 
-    val argumentsP = MultipleParameter("arguments") { StringParameter("") }
+    val argumentsP = MultipleParameter("arguments") { StringParameter("", required = false) }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
     constructor() : super(showCommand = true, allowInput = true)
 
+    constructor( exec : Exec) : this(exec.osCommand) {
+
+    }
+
     constructor(osCommand: OSCommand) : this() {
-        commandP.value = osCommand.program
+        programP.value = osCommand.program
         argumentsP.value = osCommand.arguments
         directoryP.value = osCommand.directory
     }
 
     constructor(program: String, vararg arguments: Any?) : this() {
-        commandP.value = program
+        programP.value = program
         argumentsP.value = arguments.filter { it != null }.map { it.toString() }
     }
 
     init {
-        taskD.addParameters(commandP, argumentsP, directoryP)
+        taskD.addParameters(programP, argumentsP, directoryP)
     }
 
     fun input(value: Boolean): TerminalTool {
@@ -62,7 +67,7 @@ class TerminalTool : AbstractTerminalTool {
     }
 
     override fun createCommand(): OSCommand {
-        val command = OSCommand(commandP.value)
+        val command = OSCommand(programP.value)
         argumentsP.value.forEach { arg ->
             command.addArgument(arg)
         }

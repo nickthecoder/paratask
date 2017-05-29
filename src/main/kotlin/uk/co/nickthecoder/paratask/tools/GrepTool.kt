@@ -64,7 +64,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
     }
 
 
-    override fun createCommand(): OSCommand = grepTask.run()
+    override fun createCommand() = grepTask.createCommand()
 
     override fun processLine(line: String) {
         val colon1 = line.indexOf(':')

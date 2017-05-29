@@ -28,13 +28,11 @@ import uk.co.nickthecoder.paratask.util.process.Exec
 
 class TerminalResults(
         tool: Tool,
-        val osCommand: OSCommand,
+        val exec: Exec,
         val showCommand: Boolean = true,
         val allowInput: Boolean = false)
 
     : AbstractResults(tool, "Terminal"), Stoppable {
-
-    val exec = Exec(osCommand)
 
     val simpleTerminal = SimpleTerminal(
             exec,

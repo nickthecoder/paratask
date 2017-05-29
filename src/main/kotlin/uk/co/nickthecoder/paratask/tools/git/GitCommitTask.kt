@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.git
 
+import uk.co.nickthecoder.paratask.AbstractCommandTask
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
@@ -24,9 +25,10 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.Exec
+import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class GitCommitTask() : AbstractTask(), HasDirectory {
+class GitCommitTask() : AbstractCommandTask(), HasDirectory {
 
     override val taskD = TaskDescription("gitCommit")
 
@@ -38,17 +40,16 @@ class GitCommitTask() : AbstractTask(), HasDirectory {
 
     override val directory by directoryP
 
+    init {
+        taskD.addParameters(messageP, allP, directoryP, outputP)
+    }
+
     constructor(directory: File, all: Boolean = false) : this() {
         this.directoryP.value = directory
         this.allP.value = all
     }
 
-    init {
-        taskD.addParameters(messageP, allP, directoryP)
-    }
-
-    override fun run() {
-        val exec = Exec("git", "commit", "-m", messageP.value, if (allP.value == true) "-a" else null).dir(directoryP.value)
-        exec.start()
+    override fun createCommand() : OSCommand {
+        return OSCommand("git", "commit", "-m", messageP.value, if (allP.value == true) "-a" else null).dir(directoryP.value!!)
     }
 }

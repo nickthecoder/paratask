@@ -59,6 +59,8 @@ class ParaTaskApp : Application() {
             startOpenProjects(files)
             initialProjectFiles = null
         }
+
+        initialFunction?.let { it() }
     }
 
     companion object {
@@ -72,6 +74,8 @@ class ParaTaskApp : Application() {
         private var initialRun: Boolean = false
 
         private var initialProjectFiles: List<File>? = null
+
+        private var initialFunction: (() -> Unit)? = null
 
         private val imageMap = mutableMapOf<String, Image?>()
 
@@ -126,6 +130,16 @@ class ParaTaskApp : Application() {
             } else {
                 started = true
                 this.initialProjectFiles = projectFiles
+                Application.launch(ParaTaskApp::class.java)
+            }
+        }
+
+        fun runFunction(func: () -> Unit) {
+            if (started) {
+                func()
+            } else {
+                started = true
+                this.initialFunction = func
                 Application.launch(ParaTaskApp::class.java)
             }
         }

@@ -16,7 +16,7 @@
         },
         {
             "type": "groovy",
-            "script": "new TerminalTool( new Command(\"git\", \"diff\", row.commit+\"^\", row.commit).dir( tool.directory ) )",
+            "script": "new TerminalTool( new OSCommand(\"git\", \"diff\", row.commit+\"^\", row.commit).dir( tool.directory ) )",
             "code": "d",
             "label": "Git Diff",
             "isRow": true,
@@ -27,7 +27,7 @@
         },
         {
             "type": "groovy",
-            "script": "new Command( \"git\", \"difftool\", row.commit+\"^\", row.commit ).dir( tool.directory )",
+            "script": "new OSCommand( \"git\", \"difftool\", row.commit+\"^\", row.commit ).dir( tool.directory )",
             "code": "dt",
             "label": "Git Diff Tool",
             "isRow": true,
@@ -63,7 +63,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "co",
             "label": "Git Check Out Commit",
             "isRow": true,
@@ -73,7 +73,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "git"
                 },
                 {

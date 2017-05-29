@@ -42,7 +42,7 @@ object TaskRegistry {
         )
 
         topLevel.addTools(TerminalTool())
-        topLevel.addTasks(OSCommandTask())
+        topLevel.addTasks(CommandTask())
 
         val files = TaskGroup("Files")
         files.addTools(DirectoryTool(), DirectoryTreeTool(), GrepTool())

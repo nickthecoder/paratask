@@ -43,8 +43,6 @@ abstract class AbstractTaskPrompter(val task: Task) {
 
     open fun build() {
 
-        task.taskRunner.processors.add(CommandInTerminalWindow(task.taskD.label))
-
         with(buttons) {
             styleClass.add("buttons")
         }

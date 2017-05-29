@@ -17,41 +17,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.AbstractCommandTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
-import uk.co.nickthecoder.paratask.util.process.Exec
-import java.io.File
 
-class OSCommandTask : AbstractTask() {
+class CommandTask : AbstractCommandTask() {
 
-    override val taskD = TaskDescription("osCommand", label = "Run an Operating System Command")
+    override val taskD = TaskDescription("command", label = "Run an Operating System Command")
 
-    val commandP = StringParameter("osCommand", value = "bash")
+    val programP = StringParameter("program", value = "bash")
 
     val argumentsP = MultipleParameter("arguments") { StringParameter("") }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
     init {
-        taskD.addParameters(commandP, argumentsP, directoryP)
+        taskD.addParameters(programP, argumentsP, directoryP, outputP)
     }
 
-    override fun run() {
-        val command = OSCommand(commandP.value)
+    override fun createCommand() :OSCommand {
+        val command = OSCommand(programP.value)
         argumentsP.value.forEach { arg ->
             command.addArgument(arg)
         }
         command.directory = directoryP.value
-
-        val exec = Exec( command )
-        exec.inheritErr()
-        exec.inheritOut()
-        exec.start()
-        exec.waitFor()
+        return command
     }
 
 }

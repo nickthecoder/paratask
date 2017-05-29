@@ -26,7 +26,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "bash"
                 },
                 {
@@ -305,7 +305,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": ">>",
             "label": "Next Track (Audacious)",
             "isRow": false,
@@ -315,7 +315,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "audacious"
                 },
                 {
@@ -334,7 +334,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "<<",
             "label": "Previous Track (Audacious)",
             "isRow": false,
@@ -344,7 +344,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "audacious"
                 },
                 {
@@ -363,7 +363,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "\"",
             "label": "Pause/Play (Audacious)",
             "isRow": false,
@@ -373,7 +373,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "audacious"
                 },
                 {

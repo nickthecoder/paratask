@@ -28,7 +28,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "bash"
                 },
                 {
@@ -95,7 +95,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "rm",
             "label": "Delete Directory and Contents",
             "isRow": true,
@@ -105,7 +105,7 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "rm"
                 },
                 {
@@ -130,7 +130,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.OSCommandTask",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "play",
             "label": "Play Music",
             "isRow": false,
@@ -143,7 +143,7 @@
             ],
             "parameters": [
                 {
-                    "name": "osCommand",
+                    "name": "program",
                     "value": "audacious"
                 },
                 {

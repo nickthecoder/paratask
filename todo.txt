@@ -1,7 +1,6 @@
 
-Bug : IntField does not keep initial value when prompted
-
-Bug : 
+Should Tasks really return an OSCommand from their run ? That is why gittool doesn't update -
+	it is refreshing after the task finishes, but before the OSCommand is acutally run.
 
 Non-Row Options to have a shortcut
 	For example, Alt+UP on a directory based tool runs the "^" option.
@@ -10,6 +9,10 @@ Non-Row Options to have a shortcut
 Create a base class for OSCommandTasks, which show their results
 	Use it for mmv, and git commit, copyfiles etc?
 	Add verbose option on copy, move files.
+
+When running Tasks which return a Command from the command line, they output to stdout/err if run normally,
+	but to a gui when prompted. Hmm.
+	Should probably have a meta-parameter
 
 Pipeline - As well as "Script", "Task", can also be a Pipeline
 	A list of Tasks/Tools/Scripts?
