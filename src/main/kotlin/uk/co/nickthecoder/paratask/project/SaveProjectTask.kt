@@ -20,12 +20,11 @@ package uk.co.nickthecoder.paratask.project
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 import java.io.File
 
-class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
+class SaveProjectTask(val project: Project) : AbstractTask() {
 
     override val taskD = TaskDescription("Save Project")
 
@@ -33,19 +32,15 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
 
     val filenameP = StringParameter("filename")
 
-    val projectData = GroupParameter("projectMetaData")
-
-    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
+    val projectDataP = project.projectDataP //.copy()
 
     init {
-        taskD.addParameters(saveInDirectoryP, filenameP, projectData)
-        projectData.addParameters(directoryP)
+        taskD.addParameters(saveInDirectoryP, filenameP, projectDataP)
 
-        val project = projectWindow.project
+        val project = project.projectWindow.project
 
         saveInDirectoryP.value = project.projectFile?.parentFile ?: Preferences.projectsDirectory
         filenameP.value = project.projectFile?.nameWithoutExtension() ?: ""
-        directoryP.value = project.directory
     }
 
     override fun run() {
@@ -55,7 +50,7 @@ class SaveProjectTask(val projectWindow: ProjectWindow) : AbstractTask() {
         }
         val file = File(saveInDirectoryP.value!!, filename + ".json")
 
-        projectWindow.project.save(file)
+        project.projectWindow.project.save(file)
     }
 
 }

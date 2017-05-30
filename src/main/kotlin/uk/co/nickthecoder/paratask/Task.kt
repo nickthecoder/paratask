@@ -35,7 +35,7 @@ interface Task {
     var resolver: ParameterResolver
 
     /**
-     * Resolves this task's parameters based on the context of the whoever created this task.
+     * Resolves this task's parameters based on the context of whoever created this task.
      * Tasks may optionally extend this method, performing their own resolution (maybe based on their own resolver),
      * but this would be unusual.
      */

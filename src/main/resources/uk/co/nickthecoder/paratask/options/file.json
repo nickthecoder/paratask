@@ -25,11 +25,9 @@
                     ]
                 },
                 {
-                    "name": "patternsToMatch",
+                    "name": "patterns",
                     "values": [
-                        {
-                            "value": ""
-                        }
+                        
                     ]
                 },
                 {
@@ -63,45 +61,10 @@
                 {
                     "name": "additionalOptions",
                     "value": "IHsn"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "e",
-            "label": "Edit with built-in Editor",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "file",
-                    "values": [
-                        
-                    ]
                 },
                 {
-                    "name": "initialText",
-                    "value": ""
-                },
-                {
-                    "name": "goToLine",
-                    "value": ""
-                },
-                {
-                    "name": "findText",
-                    "value": ""
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
-                },
-                {
-                    "name": "useRegex",
-                    "value": "false"
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -162,6 +125,10 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -227,6 +194,47 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "e",
+            "label": "Edit with built-in Editor",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "expression": "rows.file"
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
                 }
             ]
         }

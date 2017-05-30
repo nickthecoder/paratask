@@ -55,4 +55,5 @@ interface Parameter : Labelled {
 
     fun isProgrammingMode(): Boolean = findTaskD().programmingMode
 
+    fun copy() : Parameter
 }

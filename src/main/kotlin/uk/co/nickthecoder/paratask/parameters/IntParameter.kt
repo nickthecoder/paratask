@@ -93,6 +93,6 @@ open class IntParameter(
     override fun createField(): LabelledField = IntField(this)
 
     override fun toString(): String = "Int" + super.toString()
+
+    override fun copy() = IntParameter(name = name, label = label, description = description, value = value, required = required)
 }
-
-

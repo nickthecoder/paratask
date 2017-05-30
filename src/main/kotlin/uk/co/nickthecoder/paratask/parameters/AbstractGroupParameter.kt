@@ -20,7 +20,7 @@ package uk.co.nickthecoder.paratask.parameters
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.util.uncamel
 
-abstract class AbstractGroupParameter (
+abstract class AbstractGroupParameter(
         name: String,
         override val label: String = name.uncamel(),
         description: String = "")
@@ -114,4 +114,10 @@ abstract class AbstractGroupParameter (
     }
 
     override fun isStretchy(): Boolean = true
+
+    protected fun copyChildren(copy: AbstractGroupParameter) {
+        children.forEach { child ->
+            copy.addParameters(child.copy())
+        }
+    }
 }

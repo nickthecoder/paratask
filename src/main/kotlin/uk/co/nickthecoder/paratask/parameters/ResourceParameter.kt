@@ -26,7 +26,7 @@ class ResourceParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: Resource? = null,
-        val expectFile : Boolean = true,
+        val expectFile: Boolean = true,
         required: Boolean = true)
 
     : AbstractValueParameter<Resource?>(
@@ -66,4 +66,6 @@ class ResourceParameter(
 
     override fun toString() = "Resource" + super.toString()
 
+    override fun copy() = ResourceParameter(name = name, label = label, description = description, value = value,
+            expectFile = expectFile, required = required)
 }

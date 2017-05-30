@@ -77,4 +77,17 @@ class OneOfParameter(
         value?.let { checkChild(it) }
     }
 
+
+    override fun copy(): OneOfParameter {
+        val result = OneOfParameter(name = name, label = label, description = description, value = null, message = message)
+        children.forEach { child ->
+            val copiedChild = child.copy()
+            result.addParameters(copiedChild)
+            if (child === value) {
+                result.value = copiedChild
+            }
+        }
+        return result
+    }
+
 }

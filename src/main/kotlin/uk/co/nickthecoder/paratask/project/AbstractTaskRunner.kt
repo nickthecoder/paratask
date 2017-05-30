@@ -92,7 +92,7 @@ abstract class AbstractTaskRunner(val task: Task)
     }
 
     open protected fun runTask() {
-        val result = task.run()
+        task.run()
     }
 
     override fun hasStarted() = runState != RunState.IDLE

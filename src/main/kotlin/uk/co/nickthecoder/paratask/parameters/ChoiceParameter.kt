@@ -109,6 +109,17 @@ open class ChoiceParameter<T>(
 
         parameterListeners.fireStructureChanged(this)
     }
+
+    override fun copy(): ChoiceParameter<T> {
+        val result = ChoiceParameter<T>(name = name, label = label, description = description, value = value!!,
+                required = required)
+
+        keyToValueMap.forEach { (key, value) ->
+            result.addChoice(key, value, valueToLabelMap.get(value)!!)
+        }
+        return result
+    }
+
 }
 
 inline fun <reified T : Enum<T>> ChoiceParameter<T>.enumChoices(): ChoiceParameter<T> {

@@ -61,4 +61,8 @@ class BooleanParameter(
     override fun createField(): LabelledField = BooleanField(this)
 
     override fun toString(): String = "Boolean" + super.toString()
+
+    override fun copy() = BooleanParameter(name = name, label = label, description = description, value = value,
+            required = required, oppositeName = oppositeName, labelOnLeft = labelOnLeft)
+
 }

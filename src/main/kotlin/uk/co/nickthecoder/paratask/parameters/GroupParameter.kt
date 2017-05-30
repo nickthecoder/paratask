@@ -31,8 +31,7 @@ open class GroupParameter(
     : AbstractGroupParameter(
         name = name,
         label = label,
-        description = description)
-{
+        description = description) {
     /**
      * Creates a GroupField, which contains fields for each of this group's children
      * When used to group parameters it is wrapped in a box, but when used as the root,
@@ -43,9 +42,14 @@ open class GroupParameter(
         result.buildContent()
         return result
     }
-    
+
     override fun errorMessage(): String? = null
 
     override fun isStretchy() = true
 
+    override fun copy(): GroupParameter {
+        val result = GroupParameter(name = name, label = label, description = description)
+        copyChildren(result)
+        return result
+    }
 }

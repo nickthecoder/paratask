@@ -242,7 +242,7 @@
                     ]
                 },
                 {
-                    "name": "patternsToMatch",
+                    "name": "patterns",
                     "values": [
                         
                     ]
@@ -278,6 +278,10 @@
                 {
                     "name": "additionalOptions",
                     "value": "IHsn"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -329,6 +333,10 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -358,6 +366,10 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -387,6 +399,10 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -434,6 +450,62 @@
                 {
                     "name": "autoRefresh",
                     "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CodeHeaderTool",
+            "code": "header",
+            "label": "Add Code Header",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "."
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        {
+                            "value": "java"
+                        },
+                        {
+                            "value": "kt"
+                        },
+                        {
+                            "value": "java"
+                        },
+                        {
+                            "value": "kt"
+                        },
+                        {
+                            "value": "java"
+                        },
+                        {
+                            "value": "kt"
+                        }
+                    ]
+                },
+                {
+                    "name": "depth",
+                    "value": "10"
+                },
+                {
+                    "name": "headerTest",
+                    "expression": "tool.project.findProjectData(\"headerTest\")"
+                },
+                {
+                    "name": "withinLines",
+                    "value": "10"
+                },
+                {
+                    "name": "headerText",
+                    "expression": "tool.project.findProjectData(\"headerText\")"
                 }
             ]
         }

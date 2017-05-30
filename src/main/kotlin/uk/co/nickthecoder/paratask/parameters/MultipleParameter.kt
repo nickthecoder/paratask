@@ -75,7 +75,7 @@ class MultipleParameter<T>(
             if (str == "") {
                 return listOf()
             }
-            val lines = (if (str.endsWith('\n')) str.substring(0,str.length-1) else str).split('\n')
+            val lines = (if (str.endsWith('\n')) str.substring(0, str.length - 1) else str).split('\n')
             val result = lines.map {
                 val innerParameter = factory()
                 innerParameter.converter.fromString(it)
@@ -101,24 +101,24 @@ class MultipleParameter<T>(
 
     override fun isStretchy() = true
 
-    fun evaluateMultiple( child: ValueParameter<*>, value : Iterable<*>) {
+    fun evaluateMultiple(child: ValueParameter<*>, value: Iterable<*>) {
         var index = 0
-        for ( myChild in innerParameters ) {
-            if (myChild === child ) {
+        for (myChild in innerParameters) {
+            if (myChild === child) {
                 removeAt(index)
                 value.forEach {
                     newValue(index).evaluated(it)
-                    index ++
+                    index++
                 }
                 return
             }
-            index ++
+            index++
         }
-        throw RuntimeException( "Tried to evaluate innerParameter ${child}, but is not one of my children")
+        throw RuntimeException("Tried to evaluate innerParameter ${child}, but is not one of my children")
     }
 
     override fun check() {
-        if ( expression != null ) {
+        if (expression != null) {
             return
         }
         errorMessage()?.let { throw ParameterException(this, it) }
@@ -184,5 +184,16 @@ class MultipleParameter<T>(
     }
 
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
+
+    override fun copy(): MultipleParameter<T> {
+        val result = MultipleParameter<T>(name = name, label = label, description = description, value = value,
+                minItems = minItems, maxItems = maxItems, factory = factory)
+
+        value.forEach {
+            result.addValue(it)
+        }
+
+        return result
+    }
 }
 

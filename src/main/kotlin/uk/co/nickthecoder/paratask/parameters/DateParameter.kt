@@ -62,8 +62,8 @@ open class DateParameter(
         return null
     }
 
-    fun date() : Date? {
-        value?. let { return Date.from(it.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()) }
+    fun date(): Date? {
+        value?.let { return Date.from(it.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()) }
         return null
     }
 
@@ -72,4 +72,7 @@ open class DateParameter(
     override fun createField(): DateField = DateField(this)
 
     override fun toString(): String = "Date" + super.toString()
+
+    override fun copy() = DateParameter(name = name, label = label, description = description, value = value,
+            dateFormat = dateFormat, required = required)
 }

@@ -17,45 +17,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.tools.*
-import uk.co.nickthecoder.paratask.tools.editor.EditorTool
-import uk.co.nickthecoder.paratask.tools.git.*
-import uk.co.nickthecoder.paratask.tools.places.*
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 
 object TaskRegistry {
 
     private val taskGroups = mutableListOf<TaskGroup>()
 
+    private val registered = mutableSetOf<Registers>()
+
     val home = TaskGroup("Home")
 
     val topLevel = TaskGroup("Top Level")
 
+    val misc = TaskGroup("Miscellaneous")
+
+    val projectData = GroupParameter("projectData")
+
     init {
-        home.addTools(
-                HomeTool(),
-                DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
-                TerminalTool(), PythonTool(), GroovyTool(),
-                WebTool(), EditorTool(),
-                GrepTool(), GitTool(),
-                OptionsFilesTool(),
-                OptionsTool()
-        )
-
-        topLevel.addTools(TerminalTool())
-        topLevel.addTasks(CommandTask())
-
-        val files = TaskGroup("Files")
-        files.addTools(DirectoryTool(), DirectoryTreeTool(), GrepTool())
-        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask())
-
-        val git = TaskGroup("Git")
-        git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
-        git.addTasks(GitCommitTask(), GitRMTask())
-
-        addGroup(topLevel)
         addGroup(home)
-        addGroup(git)
-        addGroup(files)
+        addGroup(topLevel)
+        addGroup(misc)
     }
 
     fun listGroups(): List<TaskGroup> = taskGroups
@@ -63,5 +44,13 @@ object TaskRegistry {
     fun addGroup(group: TaskGroup) {
         taskGroups.add(group)
     }
+
+    fun register(item: Registers) {
+        if (!registered.contains(item)) {
+            registered.add(item)
+            item.register()
+        }
+    }
+
 
 }

@@ -106,7 +106,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
 
     fun onSaveProject() {
-        TaskPrompter(SaveProjectTask(this)).placeOnStage(Stage())
+        project.save()
     }
 
     fun handleException(e: Exception) {

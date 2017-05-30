@@ -1,3 +1,20 @@
+/*
+ParaTask Copyright (C) 2017  Nick Robinson
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package uk.co.nickthecoder.paratask.project
 
 import com.eclipsesource.json.Json
@@ -7,7 +24,9 @@ import com.eclipsesource.json.PrettyPrint
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.CompoundParameterResolver
 import uk.co.nickthecoder.paratask.DirectoryResolver
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import java.io.*
 
@@ -15,34 +34,53 @@ class Project(val projectWindow: ProjectWindow) {
 
     var projectFile: File? = null
 
-    var directory: File = File("").absoluteFile
+    val projectDataP = TaskRegistry.projectData.copy()
 
     val directoryResolver = object : DirectoryResolver() {
-        override fun directory() = directory
+        override fun directory() = findProjectData("directory") as File
     }
 
     val resolver = CompoundParameterResolver(directoryResolver)
 
-    /*
-     Example JSON file :
-    {
-         "title" : "My Project",
-         "width" : 600,
-         "height" : 800,
-         "directory" : "/home/me/myproject",
-         "tabs" : [
-             {
-                 "left" = {
-                    "tool" : "uk.co.nickthecoder.paratask.whatever",
-                    "parameters" : [
-                         { "name" : "foo", "value" : "fooValue" },
-                         { "name" : "bar", "value" : "barValue" },
-                     }
-                 }
-             }
-         ]
+    val saveProjectTask: SaveProjectTask by lazy { SaveProjectTask(this) }
+
+    fun findProjectData(name: String): Any? {
+        val parameter = projectDataP.find(name)
+
+        if (parameter is ValueParameter<*>) {
+            return parameter.value
+        }
+
+        return null
     }
-    */
+
+    fun save() {
+        TaskPrompter(saveProjectTask).placeOnStage(Stage())
+    }
+
+/*
+ Example JSON file :
+{
+     "title" : "My Project",
+     "width" : 600,
+     "height" : 800,
+     "projectData" : [
+         { "name" : "directory", "value" : "/home/me/myproject" },
+         { "name" : "codeHeader", "value" : "/* ... */" }
+     ],
+     "tabs" : [
+         {
+             "left" = {
+                "tool" : "uk.co.nickthecoder.paratask.whatever",
+                "parameters" : [
+                     { "name" : "foo", "value" : "fooValue" },
+                     { "name" : "bar", "value" : "barValue" }
+                 ]
+             }
+         }
+     ]
+}
+*/
 
     fun save(projectFile: File) {
 
@@ -52,6 +90,17 @@ class Project(val projectWindow: ProjectWindow) {
 
         jroot.set("width", projectWindow.scene.width)
         jroot.set("height", projectWindow.scene.height)
+
+        val jprojectData = JsonArray()
+        projectDataP.descendants().forEach { parameter ->
+            if (parameter is ValueParameter<*>) {
+                val jparameter = JsonObject()
+                jparameter.set("name", parameter.name)
+                jparameter.set("value", parameter.stringValue)
+                jprojectData.add(jparameter)
+            }
+        }
+        jroot.add("projectData", jprojectData)
 
         val jtabs = JsonArray()
         for (tab in projectWindow.tabs.listTabs()) {
@@ -109,6 +158,22 @@ class Project(val projectWindow: ProjectWindow) {
             val project = projectWindow.project
 
             project.projectFile = projectFile
+
+
+            val jprojectData = jroot.get("projectData")
+            if (jprojectData != null) {
+                for (jitem in jprojectData.asArray()) {
+                    val ji = jitem.asObject()
+                    val name = ji.getString("name", null)
+                    val value = ji.getString("value", null)
+                    if (name != null && value != null) {
+                        val parameter = project.projectDataP.find(name)
+                        if (parameter is ValueParameter<*>) {
+                            parameter.stringValue = value
+                        }
+                    }
+                }
+            }
 
             val jtabs = jroot.get("tabs")
             jtabs?.let {

@@ -57,4 +57,7 @@ class StringParameter(
     override fun createField(): StringField = StringField(this)
 
     override fun toString() = "String" + super.toString()
+
+    override fun copy() = StringParameter(name = name, label = label, description = description, value = value,
+            required = required, columns = columns, rows = rows, style = style, stretchy = stretchy)
 }

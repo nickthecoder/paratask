@@ -79,6 +79,10 @@ class ParaTaskApp : Application() {
 
         private val imageMap = mutableMapOf<String, Image?>()
 
+        init {
+            TaskRegistry.register(ParaTaskCore.instance)
+        }
+
         fun style(scene: Scene) {
             val resource = ParaTaskApp::class.java.getResource("paratask.css")
             scene.stylesheets.add(resource.toExternalForm())

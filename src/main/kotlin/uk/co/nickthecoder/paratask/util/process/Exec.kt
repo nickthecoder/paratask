@@ -53,7 +53,7 @@ class Exec {
 
     val listeners = ProcessNotifier()
 
-    fun dir(dir: File?):Exec {
+    fun dir(dir: File?): Exec {
         builder.directory(dir)
         return this
     }
@@ -87,7 +87,7 @@ class Exec {
     fun start(): Exec {
 
         if (process != null) {
-            throw RuntimeException("Process already started")
+            return this // Already started.
         }
 
         val process = builder.start()
@@ -163,7 +163,7 @@ class Exec {
 
         var done: Boolean = false
 
-        val calling :Thread = Thread.currentThread()
+        val calling: Thread = Thread.currentThread()
 
         override fun run() {
             sleep(timeoutMillis)

@@ -25,7 +25,7 @@ class RootParameter(val taskD: TaskDescription, description: String)
 
     override fun findTaskD(): TaskDescription = taskD
 
-    override fun findRoot(): RootParameter?= this
+    override fun findRoot(): RootParameter? = this
 
     fun valueParameters(): List<ValueParameter<*>> {
         val result = mutableListOf<ValueParameter<*>>()
@@ -42,6 +42,12 @@ class RootParameter(val taskD: TaskDescription, description: String)
         }
 
         addAll(this)
+        return result
+    }
+
+    override fun copy() :RootParameter {
+        val result =RootParameter(taskD = taskD, description = description)
+        copyChildren(result)
         return result
     }
 }

@@ -17,12 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
+import uk.co.nickthecoder.paratask.Registers
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.BooleanColumn
@@ -32,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import java.io.File
 
-class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory {
+class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory, Registers {
 
     override val taskD = TaskDescription("codeHeader", description = "Adds a Copyright notice to the top of source code file")
 
@@ -42,7 +45,7 @@ class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDir
 
     val extensionsP = MultipleParameter("extensions", value = listOf("java", "kt")) { StringParameter("") }
 
-    val containsP = StringParameter("contains",
+    val headerTestP = StringParameter("headerTest",
             value = "This program is free software",
             description = "Check if the file already has a header by looking for this text")
 
@@ -51,8 +54,7 @@ class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDir
     val depthP = IntParameter("depth", description = "Depth of recusrive search", value = 10)
 
     val headerTextP = StringParameter("headerText", rows = 20, columns = 50, value =
-    """/*
-<PROGRAM NAME AND DESCRIPTION>
+    """<PROGRAM NAME AND DESCRIPTION>
 Copyright (C) <YEAR> <AUTHOR>
 
 This program is free software: you can redistribute it and/or modify
@@ -67,14 +69,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 """)
 
     private lateinit var containsText: String
 
     init {
-        taskD.addParameters(directoryP, extensionsP, depthP, containsP, withinLinesP, headerTextP)
+        taskD.addParameters(directoryP, extensionsP, depthP, headerTestP, withinLinesP, headerTextP)
+    }
+
+    override fun register() {
+        TaskRegistry.projectData.addParameters(headerTestP.copy())
+        TaskRegistry.projectData.addParameters(headerTextP.copy())
     }
 
     override fun createColumns() {
@@ -83,10 +88,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         columns.add(BaseFileColumn<ProcessedFile>("path", base = directory!!) { it.file })
     }
 
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        // Use the project's standard header if one has been set.
+        project?.projectDataP?.find("headerTextP")?.let {
+            if (it is StringParameter) {
+                headerTextP.value = it.value
+            }
+        }
+    }
+
     override fun run() {
 
         if (list.isEmpty()) {
-            containsText = containsP.value
+            containsText = headerTestP.value
             val lister = FileLister(/*extensions = extensionsP.value, */depth = depthP.value!!)
             list.addAll(lister.listFiles(directory!!).map { ProcessedFile(it) })
         }
@@ -120,8 +135,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         fun addHeader() {
             if (!processed) {
+                val headerText = "/*\n${headerTextP.value}\n*/\n"
                 val contents = file.readText()
-                file.writeText(headerTextP.value + contents)
+                file.writeText(headerText + contents)
                 processed = true
             }
         }

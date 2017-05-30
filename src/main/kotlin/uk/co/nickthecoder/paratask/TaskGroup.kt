@@ -31,9 +31,20 @@ class TaskGroup(val label: String) {
 
     fun addTasks(vararg tasks: Task) {
         this.tasks.addAll(tasks)
+        tools.forEach {
+            if (it is Registers) {
+                TaskRegistry.register(it)
+            }
+        }
     }
 
     fun addTools(vararg tools: Tool) {
         this.tools.addAll(tools)
+        tools.forEach {
+            if (it is Registers) {
+                TaskRegistry.register(it)
+            }
+        }
     }
+
 }

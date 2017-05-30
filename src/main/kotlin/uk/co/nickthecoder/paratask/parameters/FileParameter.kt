@@ -120,4 +120,6 @@ class FileParameter(
 
     override fun toString() = "File" + super.toString()
 
+    override fun copy() = FileParameter(name = name, label = label, description = description, value = value,
+            required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile)
 }
