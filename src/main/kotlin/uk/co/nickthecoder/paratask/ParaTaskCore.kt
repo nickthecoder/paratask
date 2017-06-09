@@ -43,8 +43,8 @@ class ParaTaskCore : Registers {
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),
-                OptionsFilesTool(),
-                OptionsTool()
+                OptionsFilesTool(), OptionsTool(),
+                MythRecordedTool()
         )
 
         TaskRegistry.topLevel.addTools(TerminalTool())

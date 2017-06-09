@@ -1,0 +1,40 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": ".",
+            "label": "Play",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "smplayer"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file.toString()"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        }
+    ]
+}
