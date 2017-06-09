@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import java.io.File
 
@@ -26,14 +27,20 @@ class ResourceField(override val parameter: ResourceParameter) :FileFieldBase(pa
         control = createControl()
     }
 
-    override fun buildTextField() {
+    override fun buildTextField() : Node {
         with(textField) {
             textProperty().bindBidirectional(parameter.valueProperty, parameter.converter)
         }
-        super.buildTextField()
+        return super.buildTextField()
     }
 
 
     override fun getFile(): File? = parameter.value?.file
+
+    override fun setFile(file: File?) {
+        val suffix = if (file?.isDirectory ?: false) File.separator else ""
+        textField.text = file?.path + suffix
+        textField.positionCaret(textField.text.length)
+    }
 
 }

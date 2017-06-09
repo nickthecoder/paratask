@@ -38,7 +38,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.9'
     compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
     compile 'org.fxmisc.richtext:richtextfx:0.6.10'
-    
+    compile 'mysql:mysql-connector-java:5.1.6'
+
     testCompile 'junit:junit:4.11'
     testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
 }

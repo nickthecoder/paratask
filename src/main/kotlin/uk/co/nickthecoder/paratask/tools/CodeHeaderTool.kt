@@ -53,7 +53,7 @@ class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDir
 
     val depthP = IntParameter("depth", description = "Depth of recusrive search", value = 10)
 
-    val headerTextP = StringParameter("headerText", rows = 20, columns = 50, value =
+    val headerTextP = StringParameter("headerText", rows = 10, columns = 50, value =
     """<PROGRAM NAME AND DESCRIPTION>
 Copyright (C) <YEAR> <AUTHOR>
 

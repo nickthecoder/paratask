@@ -19,17 +19,16 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.DragFiles
 import uk.co.nickthecoder.paratask.gui.DropFiles
+import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.util.FileLister
@@ -44,8 +43,10 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
     val icon = ImageView(ParaTaskApp.imageResource("filetypes/file.png"))
 
+    protected val borderPane = BorderPane()
+
     fun createControl(): Node {
-        buildTextField()
+        val main = buildTextField()
 
         DragFiles(icon) { getFile()?.let { listOf(it) } }
         DropFiles(textField, icon) { list ->
@@ -56,14 +57,13 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
             true
         }
 
-        val borderPane = BorderPane()
-        borderPane.center = textField
         borderPane.right = icon
+        borderPane.center = main
 
         return borderPane
     }
 
-    open fun buildTextField() {
+    open fun buildTextField(): Node {
 
         with(textField) {
 
@@ -81,6 +81,8 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
             addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
             addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
         }
+
+        return textField
     }
 
     protected fun buildContextMenu() {
@@ -118,13 +120,9 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         }
     }
 
-    abstract fun getFile(): File?
+    abstract protected fun getFile(): File?
 
-    protected fun setFile(file: File?) {
-        val suffix = if (file?.isDirectory ?: false) File.separator else ""
-        textField.text = file?.path + suffix
-        textField.positionCaret(textField.text.length)
-    }
+    abstract protected fun setFile(file: File?)
 
     protected fun createLister(): FileLister = FileLister(onlyFiles = null)
 

@@ -28,29 +28,17 @@ class SaveProjectTask(val project: Project) : AbstractTask() {
 
     override val taskD = TaskDescription("Save Project")
 
-    val saveInDirectoryP = FileParameter("saveInDirectory", mustExist = null, expectFile = false)
+    val fileP = FileParameter("projectFile", mustExist = null, expectFile = true, extensions = listOf<String>("json"))
 
-    val filenameP = StringParameter("filename")
-
-    val projectDataP = project.projectDataP //.copy()
+    val projectDataP = project.projectDataP
 
     init {
-        taskD.addParameters(saveInDirectoryP, filenameP, projectDataP)
-
-        val project = project.projectWindow.project
-
-        saveInDirectoryP.value = project.projectFile?.parentFile ?: Preferences.projectsDirectory
-        filenameP.value = project.projectFile?.nameWithoutExtension() ?: ""
+        taskD.addParameters(fileP, projectDataP)
+        fileP.value = project.projectFile
     }
 
     override fun run() {
-        var filename = filenameP.value
-        if (filename.endsWith(".json")) {
-            filename = filename.substring(0..filename.length - 5)
-        }
-        val file = File(saveInDirectoryP.value!!, filename + ".json")
-
-        project.projectWindow.project.save(file)
+        project.projectWindow.project.save(fileP.value!!)
     }
 
 }

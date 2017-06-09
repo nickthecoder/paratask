@@ -34,35 +34,23 @@ import java.io.File
 class OpenProjectTask : AbstractTask() {
     override val taskD = TaskDescription("Open Project")
 
-    val directory = FileParameter(
-            "Projects Directory",
+    val fileP = FileParameter(
+            "projectFile",
             mustExist = true,
-            expectFile = false,
+            expectFile = true,
             value = Preferences.projectsDirectory)
 
-    val name = ChoiceParameter<String?>("name", value = null)
-
     init {
-        taskD.addParameters(directory, name)
-        updateNameChoices()
-        directory.listen { updateNameChoices() }
-    }
-
-    fun updateNameChoices() {
-        name.clear()
-        val dir = directory.value ?: return
-
-        val lister = FileLister(extensions = listOf("json"))
-        for (file in lister.listFiles(dir)) {
-            val label = file.nameWithoutExtension
-            name.choice(label, label, label)
-        }
+        taskD.addParameters(fileP)
     }
 
     override fun run() {
-        val file = File(directory.value, name.value + ".json")
         Platform.runLater {
-            Project.load(file).projectWindow.placeOnStage(Stage())
+            val project = Project.load(fileP.value!!)
+            println("Loaded project ${project}")
+            val stage = Stage()
+            println("Created stage ${stage}")
+            //project.projectWindow.placeOnStage(stage)
         }
     }
 

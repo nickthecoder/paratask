@@ -23,7 +23,7 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File
 
-class FileParameter(
+open class FileParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
@@ -32,7 +32,8 @@ class FileParameter(
         value: File? = if (expectFile == false) File(".") else null,
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         var baseDirectory: File? = null,
-        val baseDirectoryP: FileParameter? = null)
+        val baseDirectoryP: FileParameter? = null,
+        val extensions: List<String>? = null)
 
     : AbstractValueParameter<File?>(
         name = name,
@@ -50,7 +51,15 @@ class FileParameter(
 
         override fun toString(file: File?): String {
             baseDirectory?.let {
-                file?.relativeToOrNull(it)?.let { return it.path }
+                file?.relativeToOrNull(it)?.let {
+                    // Add a trailing "/" to indicate it is a directory
+                    // But don't add ANOTHER "/" to root directory ("/").
+                    if (it.isDirectory() && it.path != File.separator) {
+                        return it.path + File.separator
+                    } else {
+                        return it.path
+                    }
+                }
             }
             return file?.path ?: ""
         }
@@ -89,6 +98,13 @@ class FileParameter(
                 return "Expeceted a directory, but is a file"
             }
         }
+
+        extensions?.let { list ->
+            if (!list.contains(resolvedValue.extension)) {
+                return "Incorrect file extension. Expected : $list"
+            }
+        }
+
         return null
     }
 
@@ -121,5 +137,5 @@ class FileParameter(
     override fun toString() = "File" + super.toString()
 
     override fun copy() = FileParameter(name = name, label = label, description = description, value = value,
-            required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile)
+            required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile, extensions = extensions)
 }
