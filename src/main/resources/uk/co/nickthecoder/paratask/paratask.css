@@ -63,6 +63,17 @@
     -fx-spacing: 10px;
 }
 
+/****************************************************************
+* See :                                                         *
+*   uk.co.nickthecoder.paratask.parameters.fields.FileFieldBase *
+*                                                               *
+*****************************************************************/
+
+.file-field .icon {
+    -fx-padding: 0 0 0 6px;
+    -fx-alignment: center;
+}
+
 /****************************************************
 * See :                                             *
 *   uk.co.nickthecoder.paratask.gui.MultipleField   *
@@ -244,10 +255,6 @@
 }
 .test2 {
     -fx-background-color: #f00;
-}
-
-.parametersForm .parametersForm {
-    //-fx-background-color: #f00;
 }
 
 /****************************************************

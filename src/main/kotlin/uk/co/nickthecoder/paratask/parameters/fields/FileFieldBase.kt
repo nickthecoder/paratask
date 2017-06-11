@@ -19,7 +19,10 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.*
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.Menu
+import javafx.scene.control.MenuItem
+import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
@@ -41,6 +44,8 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
     val contextMenu = ContextMenu()
 
+    val iconContainer = HBox()
+
     val icon = ImageView(ParaTaskApp.imageResource("filetypes/file.png"))
 
     protected val borderPane = BorderPane()
@@ -57,8 +62,12 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
             true
         }
 
-        borderPane.right = icon
+        iconContainer.children.add(icon)
+        iconContainer.styleClass.add("icon")
+        borderPane.right = iconContainer
         borderPane.center = main
+        borderPane.styleClass.add("file-field")
+        icon.styleClass.add("icon")
 
         return borderPane
     }
@@ -124,7 +133,19 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
     abstract protected fun setFile(file: File?)
 
-    protected fun createLister(): FileLister = FileLister(onlyFiles = null)
+    protected fun createLister() : FileLister {
+        var extensions : List<String>? = null
+
+        val param = parameter
+        if (param is FileParameter) {
+            param.extensions?.let {
+                extensions = param.extensions
+            }
+        }
+
+        val lister = FileLister(onlyFiles = null, extensions = extensions)
+        return lister
+    }
 
     protected fun addMenuItem(file: File, subMenu: Menu? = null) {
         val menuItem = MenuItem(file.name)

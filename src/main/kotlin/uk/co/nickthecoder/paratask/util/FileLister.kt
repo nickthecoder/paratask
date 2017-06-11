@@ -137,12 +137,10 @@ class FileLister(
             if (!includeHidden && file.isHidden) {
                 return false
             }
-
-        }
-
-        if (extensions != null && extensions.isNotEmpty()) {
-            if (!matchesExtensions(file, extensions)) {
-                return false
+            if (extensions != null && extensions.isNotEmpty()) {
+                if (!matchesExtensions(file, extensions)) {
+                    return false
+                }
             }
         }
 
@@ -163,7 +161,6 @@ class FileLister(
             var includeBase: Boolean = false,
             var errorHandler: (Exception) -> Unit = { throw(it) }
     ) {
-
 
         fun build() = FileLister(
                 depth = depth,

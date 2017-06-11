@@ -1,13 +1,4 @@
 
-User definable project attributes. For example, the license header, database name.
-	Meta get meta - we'll use Meta data to define the meta data for our data ;-)
-
-Nail down a "Load" and "Save" paramater, split between a name and a directory
-	File extension as a ComboBox (for save only)
-	Drag the "save" icon to a directory to fill in the directory part - This may not be possible, as it is going the "wrong" way.
-	The directory needs a set of "favourite" places, which can be selected
-	This would be a Group Parameter, but with a value ! (File)
-
 Drag and drop to copy/move/link files
 
 Implement command line tab completion
