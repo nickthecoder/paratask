@@ -28,7 +28,7 @@ fun String.uncamel(space: String = " ", upperFirst: Boolean = true): String {
     var wasUpper: Boolean = false
 
     var first: Boolean = upperFirst
-    for (i in 0..length-1) {
+    for (i in 0..length - 1) {
         val c = get(i)
         if (first) {
             result.append(Character.toUpperCase(c))
@@ -42,4 +42,31 @@ fun String.uncamel(space: String = " ", upperFirst: Boolean = true): String {
         wasUpper = Character.isUpperCase(c)
     }
     return result.toString()
+}
+
+fun String.escapeNL(): String {
+    return this.replace("\\", "\\\\").replace("\n", "\\n")
+}
+
+fun String.unescapeNL(): String {
+    val builder = StringBuilder(this.length)
+    var foundSlash = false
+    for (i in 0..this.length - 1) {
+        val c = this.get(i)
+
+        if (foundSlash) {
+            if (c == 'n') {
+                builder.append("\n")
+            } else {
+                builder.append(c)
+            }
+        } else {
+            if (c == '\\') {
+                foundSlash = true
+            } else {
+                builder.append(c)
+            }
+        }
+    }
+    return builder.toString()
 }

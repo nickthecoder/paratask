@@ -21,6 +21,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.MultipleField
+import uk.co.nickthecoder.paratask.util.escapeNL
+import uk.co.nickthecoder.paratask.util.unescapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class MultipleParameter<T>(
@@ -78,7 +80,7 @@ class MultipleParameter<T>(
             val lines = (if (str.endsWith('\n')) str.substring(0, str.length - 1) else str).split('\n')
             val result = lines.map {
                 val innerParameter = factory()
-                innerParameter.converter.fromString(it)
+                innerParameter.converter.fromString(it.unescapeNL())
             }
             return result
         }
@@ -89,7 +91,7 @@ class MultipleParameter<T>(
             }
             val strings = obj.map {
                 val innerParameter = factory()
-                innerParameter.converter.toString(it)
+                innerParameter.converter.toString(it).escapeNL()
             }
             return strings.joinToString(separator = "\n", postfix = "\n")
         }

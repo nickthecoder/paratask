@@ -38,7 +38,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.projectData.addParameters(directoryP)
 
         TaskRegistry.home.addTools(
-                HomeTool(),
+                HomeTool(), ListTool(),
                 DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),

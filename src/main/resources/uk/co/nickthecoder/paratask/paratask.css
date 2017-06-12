@@ -1,9 +1,9 @@
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.ParametersForm  *
-*   uk.co.nickthecoder.paratask.gui.LabelledField   *
-*                                                   *
-*****************************************************/
+/****************************
+* See classes :             *
+*   ParametersForm          *
+*   LabelledField           *
+*                           *
+*****************************/
 
 .form {
     -fx-padding: 10px;
@@ -33,12 +33,12 @@
     -fx-spacing: 20px;
 }
 
-/***********************************************************
-* See :                                                    *
-*   uk.co.nickthecoder.paratask.gui.TaskPrompter           *
-*   uk.co.nickthecoder.paratask.gui.project.ParametersPane *
-*                                                          *
-************************************************************/
+/****************************
+* See classes :             *
+*   TaskPrompter            *
+*   ParametersPane          *
+*                           *
+*****************************/
 
 .buttons {
     -fx-padding: 10px;
@@ -52,33 +52,30 @@
 }
 
 
-/************************************************************
-* See :                                                     *
-*   uk.co.nickthecoder.paratask.parameters.fields.TaskField *
-*                                                           *
-*************************************************************/
+/****************************
+* See classes :             *
+*   TaskField               *
+*****************************/
 
 .task-field {
     -fx-alignment: center-left;
     -fx-spacing: 10px;
 }
 
-/****************************************************************
-* See :                                                         *
-*   uk.co.nickthecoder.paratask.parameters.fields.FileFieldBase *
-*                                                               *
-*****************************************************************/
+/****************************
+* See classes :             *
+*   FileFieldBase           *
+*****************************/
 
 .file-field .icon {
     -fx-padding: 0 0 0 6px;
     -fx-alignment: center;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.MultipleField   *
-*                                                   *
-*****************************************************/
+/****************************
+* See classes :             *
+*   MultipleField           *
+*****************************/
 
 .multiple-list {
     -fx-spacing: 6px;
@@ -94,11 +91,10 @@
     -fx-min-width: 30px;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.SimpleTerminal  *
-*                                                   *
-*****************************************************/
+/****************************
+* See classes :             *
+*   SimpleTerminal          *
+*****************************/
 
 .terminal .output {
     -fx-font-family: monospace;
@@ -117,13 +113,11 @@
     -fx-padding : 5px;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.ButtonGroup     *
-*                                                   *
-*****************************************************/
-// This section is probably not pixel perfect, because I'm not sure how it works!
- 
+/****************************
+* See classes :             *
+*   ButtonGroup             *
+*****************************/
+
 .button-group {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border;
     -fx-background-insets: 0 0 -1 0, 0;
@@ -165,37 +159,36 @@
     -fx-background-radius: 1 3 3 1, 0 2 2 0, 0 1 1 0, 3 4 4 3, 0 1 1 0;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.editor.EditorTool   *
-*                                                   *
-*****************************************************/
+/****************************
+* See classes :             *
+*   EditorTool              *
+*****************************/
 
 .editor {
     -fx-font-family: monospace;
 }
 
-/****************************************************
-* See :                                             *
-*   uk.co.nickthecoder.paratask.gui.field.FileField *
-*                                                   *
-*****************************************************/
+/****************************
+* See classes :             *
+*   FileFieldBase           *
+*   FileField               *
+*****************************/
 
 .directory {
     -fx-font-weight: bold;
 }
 
-/****************************************************
-* Drag and Drop                                     *
-*****************************************************/
+/****************************
+* Drag and Drop             *
+*****************************/
 
 .drop.text-input {
     -fx-control-inner-background: #8f8;
 }
 
-/****************************************************
-* Various types of TextField / TextArea             *
-*****************************************************/
+/****************************
+* See classes :             *
+*****************************/
 
 .script.text-input {
     -fx-font-family: monospace;
