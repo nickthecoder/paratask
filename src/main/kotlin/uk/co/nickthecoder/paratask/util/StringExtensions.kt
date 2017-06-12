@@ -60,6 +60,7 @@ fun String.unescapeNL(): String {
             } else {
                 builder.append(c)
             }
+            foundSlash = false
         } else {
             if (c == '\\') {
                 foundSlash = true

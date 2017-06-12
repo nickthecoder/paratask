@@ -41,7 +41,7 @@ class ListTool : AbstractTableTool<Tool>() {
     override fun createColumns() {
         columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })
         columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name.uncamel() })
-        columns.add(Column<Tool, String>("description") { tool -> tool.taskD.description })
+        columns.add(Column<Tool, String>("parameters") { tool -> parameters(tool) })
     }
 
     override fun run() {
@@ -53,6 +53,9 @@ class ListTool : AbstractTableTool<Tool>() {
         }
     }
 
+    fun parameters(tool: Tool): String {
+        return tool.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
+    }
 }
 
 // Note this tool cannot be run from the command line, because the arugments would be too cumbersome.

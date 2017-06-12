@@ -47,10 +47,6 @@ class OpenProjectTask : AbstractTask() {
     override fun run() {
         Platform.runLater {
             val project = Project.load(fileP.value!!)
-            println("Loaded project ${project}")
-            val stage = Stage()
-            println("Created stage ${stage}")
-            //project.projectWindow.placeOnStage(stage)
         }
     }
 

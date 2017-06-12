@@ -4,58 +4,6 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "new EditorTool( row.file )",
-            "code": ".",
-            "label": "Edit with Internal Text Editor",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "e",
-            "label": "Edit in Internal Editor",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "file",
-                    "values": [
-                        {
-                            "expression": "row.file"
-                        }
-                    ]
-                },
-                {
-                    "name": "initialText",
-                    "value": ""
-                },
-                {
-                    "name": "goToLine",
-                    "expression": "row.lineNumber"
-                },
-                {
-                    "name": "findText",
-                    "expression": "tool.grepTask.patternsP.value[0]"
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
-                },
-                {
-                    "name": "useRegex",
-                    "expression": "tool.grepTask.typeP.value != \"-F\""
-                }
-            ]
-        },
-        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.GrepTool",
             "code": "1",
@@ -71,8 +19,10 @@
                     "expression": "tool.grepTask.filesP.value"
                 },
                 {
-                    "name": "patternsToMatch",
-                    "expression": "tool.grepTask.patternsP.value"
+                    "name": "patterns",
+                    "values": [
+                        
+                    ]
                 },
                 {
                     "name": "matchCase",
@@ -105,6 +55,10 @@
                 {
                     "name": "additionalOptions",
                     "expression": "tool.grepTask.additionalOptionsP.value"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -138,6 +92,50 @@
                 {
                     "name": "matchCase",
                     "expression": "tool.grepTask.matchCaseP.value"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": ".",
+            "label": "Edit in Internal Editor",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "e"
+            ],
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "expression": "row.lineNumber"
+                },
+                {
+                    "name": "findText",
+                    "expression": "tool.grepTask.patternsP.value[0]"
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "expression": "tool.grepTask.typeP.value != \"-F\""
                 }
             ]
         }

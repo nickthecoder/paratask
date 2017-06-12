@@ -70,7 +70,6 @@ class TaskParameter(
     override val converter = object : StringConverter<Task?>() {
         override fun fromString(str: String): Task? {
             val lines = (if (str.endsWith('\n')) str.substring(0, str.length - 1) else str).split('\n')
-            println( "Converting TaskParameter from $lines")
             val task = creationStringToTask.get(lines[0])
             for (i in 1..lines.size - 2) {
                 var line = lines[i]
@@ -93,7 +92,6 @@ class TaskParameter(
                     }
                 }
             }
-            // TODO Parse parameter values
             return task
         }
 
