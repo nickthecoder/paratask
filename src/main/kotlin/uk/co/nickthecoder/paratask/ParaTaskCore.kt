@@ -38,7 +38,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.projectData.addParameters(directoryP)
 
         TaskRegistry.home.addTools(
-                HomeTool(), ListTool(),
+                HomeTool(), CustomToolListTool(),
                 DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
@@ -62,6 +62,8 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.addGroup(git)
         TaskRegistry.addGroup(files)
+
+        TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
     }
 
     companion object {

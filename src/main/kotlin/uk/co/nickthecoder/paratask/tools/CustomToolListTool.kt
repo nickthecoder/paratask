@@ -28,9 +28,9 @@ import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class ListTool : AbstractTableTool<Tool>() {
+class CustomToolListTool : AbstractTableTool<Tool>() {
 
-    override val taskD = TaskDescription("listTool", description = "Pre-Build Tools")
+    override val taskD = TaskDescription("customToolList", description = "Create a list of customised tools")
 
     val toolsP = MultipleParameter("tools") { TaskParameter("tool") }
 

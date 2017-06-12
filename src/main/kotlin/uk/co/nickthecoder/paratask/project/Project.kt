@@ -198,7 +198,7 @@ class Project(val projectWindow: ProjectWindow) {
 
         private fun loadTool(jhalfTab: JsonObject): Tool {
             val creationString = jhalfTab.get("tool").asString()
-            val tool = Tool.create(creationString)
+            val tool = TaskRegistry.createTool(creationString)
 
             val jparameters = jhalfTab.get("parameters").asArray()
             for (jparameter in jparameters.map { it.asObject() }) {
