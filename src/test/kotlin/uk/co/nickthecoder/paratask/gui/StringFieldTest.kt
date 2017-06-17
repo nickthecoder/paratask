@@ -11,7 +11,7 @@ class StringFieldTest : StringFieldBase() {
         waitForScene("Optional")
     }
 
-    @Test
+    //@Test
     fun initialValues() {
         assertEquals("", findTextField("optional").text)
         assertEquals("", optional.value)
@@ -23,7 +23,7 @@ class StringFieldTest : StringFieldBase() {
         assertEquals("A", initialA.value)
     }
 
-    @Test
+    //@Test
     fun emptyOptionalValues() {
         var field = findTextField("optional")
         val paramter = optional
@@ -37,7 +37,7 @@ class StringFieldTest : StringFieldBase() {
         assertEquals(false, error.isVisible)
     }
 
-    @Test
+    //@Test
     fun emptyRequiredValues() {
         val field = findTextField("required")
         val parameter = required

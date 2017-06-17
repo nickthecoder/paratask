@@ -18,7 +18,6 @@ class StringParameterTest : MyTest() {
         optional.value = ""
         assertEquals("", optional.value)
         assertNull(optional.errorMessage())
-
     }
 
     @Test
@@ -27,6 +26,7 @@ class StringParameterTest : MyTest() {
         assertEquals("a", required.value)
 
         required.value = ""
+        println("Err message ${required.errorMessage()}")
         assertEquals("Required", required.errorMessage())
 
         required.value = "a"

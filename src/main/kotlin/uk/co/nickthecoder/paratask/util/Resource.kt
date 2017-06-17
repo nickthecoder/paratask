@@ -65,6 +65,7 @@ class Resource(val url: URL) {
             return url.toString()
         }
 
+    // TODO Untested! Hmm, looks odd. Either fix it, delete it, or document it!
     val directoryName: String
         get() {
             file?.let { return it.name }
@@ -81,7 +82,7 @@ class Resource(val url: URL) {
 
     fun parentResource(): Resource {
         val path = File(url.path).parentFile
-        return Resource(URL(url, path.toString()))
+        return Resource(URL(url, path.toString() + "/"))
     }
 
     fun isFileOrDirectory() = file != null

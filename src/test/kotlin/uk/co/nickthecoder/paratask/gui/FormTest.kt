@@ -40,7 +40,7 @@ class FormTest : GuiTest() {
         return form
     }
 
-    @Test
+    //@Test
     fun alignment() {
         val label1 = find<Label>("First")
         val label2 = find<Label>("Hello")

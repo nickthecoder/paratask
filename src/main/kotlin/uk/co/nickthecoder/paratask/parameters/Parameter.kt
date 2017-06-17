@@ -51,9 +51,9 @@ interface Parameter : Labelled {
 
     fun resolver() : ParameterResolver = findRoot()?.taskD?.resolver ?: PlainDirectoryResolver.instance
 
-    fun findTaskD(): TaskDescription = parent!!.findTaskD()
+    fun findTaskD(): TaskDescription? = parent?.findTaskD()
 
-    fun isProgrammingMode(): Boolean = findTaskD().programmingMode
+    fun isProgrammingMode(): Boolean = findTaskD()?.programmingMode ?: false
 
     fun copy() : Parameter
 }

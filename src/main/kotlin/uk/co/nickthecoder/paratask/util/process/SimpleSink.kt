@@ -56,7 +56,7 @@ open class SimpleSink(val bufferSize: Int = 200) : Sink {
     }
 
     protected fun sinkError(e: IOException) {
-        e.printStackTrace()
+        //e.printStackTrace()
     }
 
 }

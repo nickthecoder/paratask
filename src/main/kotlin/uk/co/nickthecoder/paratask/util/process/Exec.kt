@@ -130,26 +130,31 @@ class Exec {
     }
 
     fun waitFor(duration: Long = 0, units: TimeUnit = TimeUnit.SECONDS, killOnTimeout: Boolean = false): Int {
+
         val timeoutThread = Exec.Timeout(units.toMillis(duration))
+        if (duration > 0) {
+            timeoutThread.start()
+        }
 
         try {
             try {
-                process?.let { return it.waitFor() }
+                process?.let {
+                    val result = it.waitFor()
+
+                    // Let the threads reading input finish before we end, otherwise the output may be truncated.
+                    outThread?.join()
+                    errThread?.join()
+                    return result
+                }
+
             } catch (e: InterruptedException) {
                 if (killOnTimeout) {
                     kill()
                 }
                 return INTERRUPTED
             }
-            if (duration > 0) {
-                timeoutThread.start()
-            }
         } finally {
             timeoutThread.done = true
-
-            // Let the threads reading input finish before we end, otherwise the output may be truncated.
-            outThread?.join()
-            errThread?.join()
         }
 
         return NOT_STARTED

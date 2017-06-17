@@ -51,13 +51,12 @@ class FileLister(
             return extensions.contains(fe)
         }
 
-        val CASE_SENSITIVE: Comparator<File> = Comparator { a, b -> a.path.toLowerCase().compareTo(b.path.toLowerCase()); }
+        val CASE_INSENSITIVE: Comparator<File> = Comparator { a, b -> a.path.toLowerCase().compareTo(b.path.toLowerCase()); }
 
         /**
-         * Compares files based on how their path name strings compare. Note this is case sensitive, and is therefore
-         * not usually the best solution. Consider {@link #NAME_ORDER} instead.
+         * Compares files based on how their path name strings compare.
          */
-        val CASE_INSENSITIVE: Comparator<File> = Comparator { a, b -> a.path.compareTo(b.path); }
+        val CASE_SENSITIVE: Comparator<File> = Comparator { a, b -> a.path.compareTo(b.path); }
         val SIZE_ORDER = Comparator<File> { a, b -> a.length().compareTo(b.length()) }
         val MODIFIED_ORDER = Comparator<File> { a, b -> a.lastModified().compareTo(b.lastModified()) }
     }

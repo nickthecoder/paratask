@@ -17,13 +17,13 @@ open class IntFieldTest : IntFieldBase() {
         waitForScene("Optional")
     }
 
-    @Test
+    //@Test
     fun findFields() {
         val optionalField = find<LabelledField>(".field-optional")
         assertTrue(optionalField is LabelledField)
     }
 
-    @Test
+    //@Test
     fun isSpinner() {
         val firstControl = find<Node>(".control")
         assertTrue(firstControl is Spinner<*>)
@@ -32,7 +32,7 @@ open class IntFieldTest : IntFieldBase() {
         assertTrue(findControl("required") is Spinner<*>)
     }
 
-    @Test
+    //@Test
     fun initialValues() {
         assertNull(findSpinner("optional").value)
         assertNull(optional.value)
@@ -50,7 +50,7 @@ open class IntFieldTest : IntFieldBase() {
         assertEquals(5, findSpinner("initial5").value)
     }
 
-    @Test
+    //@Test
     fun upFromInitial() {
         click(findSpinner("optional")).type(KeyCode.UP)
         assertEquals(0, findSpinner("optional").value)
@@ -69,7 +69,7 @@ open class IntFieldTest : IntFieldBase() {
         //assertEquals(2, oneToTenRequired.value)
     }
 
-    @Test
+    //@Test
     fun downFromInitial() {
         click(findSpinner("optional")).type(KeyCode.DOWN)
         assertEquals(0, findSpinner("optional").value)
@@ -84,7 +84,7 @@ open class IntFieldTest : IntFieldBase() {
         assertEquals(1, findSpinner("oneToTenRequired").value)
     }
 
-    @Test
+    //@Test
     fun downFromMin1() {
 
         val oneToTenOptional = findSpinner("oneToTenOptional")
@@ -96,7 +96,7 @@ open class IntFieldTest : IntFieldBase() {
         assertEquals(1, oneToTenOptional.value)
     }
 
-    @Test
+    //@Test
     fun downFromMin2() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
@@ -119,7 +119,7 @@ open class IntFieldTest : IntFieldBase() {
         assertEquals(-10, tenToTenRequired.value)
     }
 
-    @Test
+    //@Test
     fun upToMax() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
@@ -143,7 +143,7 @@ open class IntFieldTest : IntFieldBase() {
     }
 
 
-    @Test
+    //@Test
     fun invalidValues() {
 
         val tenToTenRequired = findSpinner("tenToTenRequired")
@@ -179,7 +179,7 @@ open class IntFieldTest : IntFieldBase() {
     }
 
 
-    @Test
+    //@Test
     fun invalidValues2() {
 
         val oneToTenOptional = findSpinner("oneToTenOptional")
@@ -215,7 +215,7 @@ open class IntFieldTest : IntFieldBase() {
     /**
      * Using Up or down keys does not change the spinners text field when it contains invalid text
      */
-    @Test
+    //@Test
     fun spinInvalid() {
 
         val oneToTenOptional = findSpinner("oneToTenOptional")

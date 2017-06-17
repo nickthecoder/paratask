@@ -133,10 +133,11 @@ class GroupParameterTest : MyTest(), ParameterListener {
     @Test
     fun duplicateAncestor3() {
         val param1 = IntParameter("one")
-        val param2 = StringParameter("one")
+        val param2 = StringParameter("two")
 
         val group1 = GroupParameter("group1")
         group1.add(param1)
+        group1.add(param2)
 
         val group2 = GroupParameter("group2")
         group1.add(group2)
