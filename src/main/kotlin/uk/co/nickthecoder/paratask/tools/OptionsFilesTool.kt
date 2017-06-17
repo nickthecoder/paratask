@@ -26,7 +26,6 @@ import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
-import uk.co.nickthecoder.paratask.util.nameWithoutExtension
 
 class OptionsFilesTool : AbstractTableTool<FileOptions>() {
 
@@ -61,7 +60,7 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
         val directory = resourceDirectory.file ?: return
         val fileLister = FileLister(extensions = listOf("json"))
         val files = fileLister.listFiles(directory)
-        files.map { it.nameWithoutExtension() }.forEach {
+        files.map { it.nameWithoutExtension }.forEach {
             list.add(OptionsManager.getFileOptions(it, resourceDirectory))
         }
     }

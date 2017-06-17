@@ -20,12 +20,13 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
+import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
 
 /**
  * This is the Field created by GroupParameter and is also use in TaskForm to prompt a whole Task.
  */
-open class GroupField(val groupParameter: GroupParameter)
+open class GroupField(val groupParameter: AbstractGroupParameter)
     : ParameterField(groupParameter), WrappableField
 {
     val parametersForm = ParametersForm( groupParameter )

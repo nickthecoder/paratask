@@ -46,7 +46,7 @@ class OpenProjectTask : AbstractTask() {
 
     override fun run() {
         Platform.runLater {
-            val project = Project.load(fileP.value!!)
+            Project.load(fileP.value!!)
         }
     }
 

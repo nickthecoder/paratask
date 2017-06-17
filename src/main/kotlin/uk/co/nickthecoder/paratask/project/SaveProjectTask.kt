@@ -20,9 +20,6 @@ package uk.co.nickthecoder.paratask.project
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.util.nameWithoutExtension
-import java.io.File
 
 class SaveProjectTask(val project: Project) : AbstractTask() {
 
