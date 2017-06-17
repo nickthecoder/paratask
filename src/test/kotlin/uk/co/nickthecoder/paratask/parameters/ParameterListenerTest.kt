@@ -18,6 +18,7 @@ class ParameterListenerTest : ParameterListener {
     @Before
     fun setUp() {
         count = 0
+        listening.parameterListeners.add(this)
     }
 
     @After
