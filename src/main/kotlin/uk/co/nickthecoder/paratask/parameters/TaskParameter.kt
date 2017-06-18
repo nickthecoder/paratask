@@ -112,8 +112,7 @@ class TaskParameter(
 
     override fun createField(): LabelledField = TaskField(this)
 
-    override fun toString(): String = "Int" + super.toString()
+    override fun toString(): String = "Task" + super.toString()
 
     override fun copy() = TaskParameter(name = name, label = label, description = description, value = value, required = required)
 }
-

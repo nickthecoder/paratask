@@ -34,7 +34,13 @@ class CompoundParameter(name: String,
 
     override var value: CompoundParameter
         get() = this
-        set(newValue) {}
+        set(newValue) {
+            for (child in children) {
+                if (child is ValueParameter<*>) {
+                    child.stringValue = (newValue.find(child.name) as ValueParameter<*>).stringValue
+                }
+            }
+        }
 
     override fun errorMessage(v: CompoundParameter?): String? {
         return null
@@ -43,7 +49,6 @@ class CompoundParameter(name: String,
     override val converter = object : StringConverter<CompoundParameter>() {
 
         override fun fromString(str: String): CompoundParameter? {
-            println( "CP fromString\n$str")
             val lines = str.split("\n")
             for (line in lines) {
                 val eq = line.indexOf("=")
@@ -52,9 +57,7 @@ class CompoundParameter(name: String,
                     val stringValue = line.substring(eq + 1).unescapeNL()
                     val child = find(childName)
                     if (child is ValueParameter<*>) {
-                        println( "Name=$childName Value=$stringValue")
                         child.stringValue = stringValue
-                        println( "Parameter $child value=${child.value}")
                     }
                 }
             }
@@ -65,7 +68,7 @@ class CompoundParameter(name: String,
         override fun toString(obj: CompoundParameter): String {
             return obj.descendants().filter { it is ValueParameter<*> }.map {
                 if (it is ValueParameter<*>) {
-                    val strValue = it.expression?: it.stringValue ?: "?"
+                    val strValue = it.expression ?: it.stringValue ?: "?"
                     "${it.name}=${strValue.escapeNL()}"
                 } else {
                     "" // Won't ever be used due to the filter above

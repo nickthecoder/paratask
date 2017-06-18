@@ -32,6 +32,8 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     val parametersForm = ParametersForm(oneOfParameter)
 
+    lateinit var wrappedField: WrappedField
+
     init {
         control = parametersForm
 
@@ -75,6 +77,11 @@ class OneOfField(val oneOfParameter: OneOfParameter)
     }
 
     override fun wrap(): Node {
-        return WrappedField(this)
+        wrappedField = WrappedField(this)
+        return wrappedField
+    }
+
+    override fun addAndRemoveButtons(buttons: Node) {
+        wrappedField.addAndRemoveButtons(buttons)
     }
 }

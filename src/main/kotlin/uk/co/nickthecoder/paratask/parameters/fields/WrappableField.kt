@@ -23,4 +23,6 @@ interface WrappableField {
 
     fun wrap(): Node
 
+    fun addAndRemoveButtons(buttons: Node)
+
 }

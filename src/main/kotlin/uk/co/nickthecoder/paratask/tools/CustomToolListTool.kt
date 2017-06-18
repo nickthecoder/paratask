@@ -22,8 +22,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.TaskParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -32,7 +31,13 @@ class CustomToolListTool : AbstractTableTool<Tool>() {
 
     override val taskD = TaskDescription("customToolList", description = "Create a list of customised tools")
 
-    val toolsP = MultipleParameter("tools") { TaskParameter("tool") }
+    val toolsP = MultipleParameter("tools") {
+        val labelP = StringParameter("label")
+        val toolP = TaskParameter("tool")
+        val compoundP = CompoundParameter("toolDetails")
+        compoundP.addParameters(labelP, toolP)
+        compoundP
+    }
 
     init {
         taskD.addParameters(toolsP)
@@ -46,9 +51,16 @@ class CustomToolListTool : AbstractTableTool<Tool>() {
 
     override fun run() {
         list.clear()
-        toolsP.value.forEach { task ->
-            if (task is Tool) {
-                list.add(task)
+        toolsP.value.forEach { compound ->
+            val toolP = compound.find("tool")
+            val labelP = compound.find("label")
+            if ( toolP != null && labelP != null) {
+                if ( toolP is ValueParameter<*> ) {
+                    val task = toolP.value
+                    if (task is Tool) {
+                        list.add(task)
+                    }
+                }
             }
         }
     }
@@ -58,5 +70,5 @@ class CustomToolListTool : AbstractTableTool<Tool>() {
     }
 }
 
-// Note this tool cannot be run from the command line, because the arugments would be too cumbersome.
+// Note this tool cannot be run from the command line, because the arguments would be too cumbersome.
 // Therefore there is no main function.

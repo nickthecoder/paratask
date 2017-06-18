@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.event.ActionEvent
+import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
@@ -70,4 +71,7 @@ class WrappedField(val parameterField: ParameterField) : TitledPane() {
         }
     }
 
+    fun addAndRemoveButtons(buttons: Node) {
+        this.setGraphic(buttons)
+    }
 }

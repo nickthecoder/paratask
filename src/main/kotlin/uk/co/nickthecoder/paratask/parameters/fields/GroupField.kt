@@ -21,15 +21,16 @@ import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
 
 /**
  * This is the Field created by GroupParameter and is also use in TaskForm to prompt a whole Task.
  */
 open class GroupField(val groupParameter: AbstractGroupParameter)
-    : ParameterField(groupParameter), WrappableField
-{
-    val parametersForm = ParametersForm( groupParameter )
+    : ParameterField(groupParameter), WrappableField {
+
+    val parametersForm = ParametersForm(groupParameter)
+
+    lateinit var wrappedField: WrappedField
 
     init {
         control = parametersForm
@@ -40,7 +41,8 @@ open class GroupField(val groupParameter: AbstractGroupParameter)
     }
 
     override fun wrap(): Node {
-        return WrappedField(this)
+        wrappedField = WrappedField(this)
+        return wrappedField
     }
 
     override fun computePrefHeight(width: Double): Double {
@@ -53,5 +55,9 @@ open class GroupField(val groupParameter: AbstractGroupParameter)
 
     override fun layoutChildren() {
         layoutInArea(control, insets.left, insets.top, width - insets.left - insets.right, height - insets.left - insets.right, 0.0, HPos.LEFT, VPos.CENTER)
+    }
+
+    override fun addAndRemoveButtons(buttons: Node) {
+        wrappedField.addAndRemoveButtons(buttons)
     }
 }
