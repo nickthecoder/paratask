@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.fields.FileField
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.currentDirectory
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.io.File
 
@@ -29,8 +30,8 @@ open class FileParameter(
         description: String = "",
         required: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
-        value: File? = if (expectFile == false) File(".") else null,
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
+        value: File? = if (expectFile == false && mustExist == true) currentDirectory else null,
         var baseDirectory: File? = null,
         val baseDirectoryP: FileParameter? = null,
         val extensions: List<String>? = null)

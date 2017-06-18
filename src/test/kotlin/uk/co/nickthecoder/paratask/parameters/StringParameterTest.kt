@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class StringParameterTest : MyTest() {
+class StringParameterTest : ParameterTestBase() {
 
     val optional = StringParameter("optional", required = false)
 
@@ -26,12 +26,10 @@ class StringParameterTest : MyTest() {
         assertEquals("a", required.value)
 
         required.value = ""
-        println("Err message ${required.errorMessage()}")
         assertEquals("Required", required.errorMessage())
 
         required.value = "a"
         assertNull(required.errorMessage())
-
     }
 
     @Test

@@ -104,9 +104,9 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
             // If the current value is a directory, then it will be confusing to list TWO directories.
             // in the top-level menu. So instead, we create a sub-menu
             val subMenu: Menu? = if (file.isDirectory) Menu("In ${parent.name}${File.separatorChar}") else null
+
             // List siblings of current file
-            val lister = createLister()
-            val children = lister.listFiles(parent)
+            val children = listFiles(parent, file.name.startsWith("."))
             if (children.isNotEmpty()) {
                 if (subMenu != null) {
                     contextMenu.items.add(subMenu)
@@ -119,8 +119,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
         // List children of current directory
         if (file.isDirectory) {
-            val lister = createLister()
-            val children = lister.listFiles(file)
+            val children = listFiles(file)
             if (children.isNotEmpty()) {
                 for (child in children) {
                     addMenuItem(child)
@@ -133,8 +132,8 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
     abstract protected fun setFile(file: File?)
 
-    protected fun createLister() : FileLister {
-        var extensions : List<String>? = null
+    protected fun listFiles(from: File, includeHidden: Boolean = false): List<File> {
+        var extensions: List<String>? = null
 
         val param = parameter
         if (param is FileParameter) {
@@ -143,8 +142,8 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
             }
         }
 
-        val lister = FileLister(onlyFiles = null, extensions = extensions)
-        return lister
+        val lister = FileLister(onlyFiles = null, extensions = extensions, includeHidden = includeHidden)
+        return lister.listFiles(from)
     }
 
     protected fun addMenuItem(file: File, subMenu: Menu? = null) {
@@ -198,9 +197,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
         val isDirectory = file.isDirectory
         val prefix = if (isDirectory) "" else file.name
-        val lister = createLister()
-
-        val list = lister.listFiles(if (isDirectory) file else file.parentFile)
+        val list = listFiles(if (isDirectory) file else file.parentFile, includeHidden = file.name.startsWith("."))
                 .filter { it.name.startsWith(prefix) }
 
         if (list.isEmpty()) {

@@ -7,7 +7,7 @@ import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 
-class GroupParameterTest : MyTest(), ParameterListener {
+class GroupParameterTest : ParameterTestBase(), ParameterListener {
 
     var group = GroupParameter("group")
     var subGroup = GroupParameter("subGroup")

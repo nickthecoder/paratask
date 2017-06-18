@@ -38,6 +38,11 @@ open class ChoiceParameter<T>(
         required = required) {
 
 
+    private val valueToKeyMap = LinkedHashMap<T?, String>()
+    private val keyToValueMap = LinkedHashMap<String, T?>()
+    private val valueToLabelMap = LinkedHashMap<T?, String>()
+    private val labelToValueMap = LinkedHashMap<String, T?>()
+
     override val converter = object : StringConverter<T?>() {
 
         override fun fromString(label: String): T? {
@@ -56,14 +61,22 @@ open class ChoiceParameter<T>(
 
     override fun isStretchy() = false
 
+
+    override fun errorMessage(v: T?): String? {
+        if (isProgrammingMode()) return null
+
+        if (v == null) return super.errorMessage(v)
+
+        if (valueToKeyMap.get(v) == null) {
+            return "Invalid choice"
+        }
+
+        return null
+    }
+
     override fun createField(): ChoiceField<T> = ChoiceField(this)
 
     override fun toString(): String = "Choice" + super.toString()
-
-    private val valueToKeyMap = LinkedHashMap<T?, String>()
-    private val keyToValueMap = LinkedHashMap<String, T?>()
-    private val valueToLabelMap = LinkedHashMap<T?, String>()
-    private val labelToValueMap = LinkedHashMap<String, T?>()
 
     fun choiceValues(): Collection<T?> {
         return keyToValueMap.values
