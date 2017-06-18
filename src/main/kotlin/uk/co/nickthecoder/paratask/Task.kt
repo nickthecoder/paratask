@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
+import groovy.lang.Binding
+import uk.co.nickthecoder.paratask.options.GroovyScript
+import uk.co.nickthecoder.paratask.options.Helper
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
@@ -78,6 +81,38 @@ interface Task {
         return copy
     }
 
+    /**
+     * Copy this task, replacing any expressions with their evaluated values
+     */
+    fun evaluate(tool: Tool, row: Any?, rows: List<Any>?): Task {
+        val copy = this.copy()
+
+        for (parameter in copy.valueParameters()) {
+            evaluateParameter(parameter, tool, row = row, rows = rows)
+        }
+        return copy
+    }
+
+    private fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
+
+        if (parameter is MultipleParameter<*> && parameter.expression == null) {
+            parameter.innerParameters.filter { it.expression != null }.forEach { innerParameter ->
+                evaluateParameter(innerParameter, tool, row = row, rows = rows)
+            }
+        } else {
+            parameter.expression?.let { expression ->
+                val gscript = GroovyScript(expression)
+                val bindings = Binding()
+                bindings.setProperty("tool", tool)
+                bindings.setProperty("row", row)
+                bindings.setProperty("rows", rows)
+                bindings.setProperty("helper", Helper.instance)
+
+                parameter.evaluated(gscript.run(bindings))
+                parameter.expression = null
+            }
+        }
+    }
 
     fun creationString(): String = this::class.java.name
 

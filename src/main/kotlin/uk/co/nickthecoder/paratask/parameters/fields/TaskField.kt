@@ -20,17 +20,12 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.event.ActionEvent
 import javafx.geometry.Side
 import javafx.scene.control.*
-import javafx.scene.input.MouseEvent
-import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
-import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskGroup
 import uk.co.nickthecoder.paratask.TaskRegistry
-import uk.co.nickthecoder.paratask.gui.ButtonGroup
 import uk.co.nickthecoder.paratask.parameters.TaskParameter
-import uk.co.nickthecoder.paratask.project.Action
 import uk.co.nickthecoder.paratask.project.ProgrammingModeTaskPrompter
 
 class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {

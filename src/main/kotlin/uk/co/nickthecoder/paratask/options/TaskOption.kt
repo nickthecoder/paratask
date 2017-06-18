@@ -17,10 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
-import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.Tool
 
 class TaskOption(var task: Task)
@@ -28,47 +25,11 @@ class TaskOption(var task: Task)
 
     constructor(creationString: String) : this(Task.create(creationString))
 
-    override fun run(tool: Tool, row: Any): Task {
-        return createResult(tool, row = row, rows = null)
-    }
+    override fun run(tool: Tool, row: Any) = task.evaluate(tool, row, null)
 
-    override fun runMultiple(tool: Tool, rows: List<Any>): Task {
-        return createResult(tool, null, rows)
-    }
+    override fun runMultiple(tool: Tool, rows: List<Any>) = task.evaluate(tool, null, rows)
 
-    override fun runNonRow(tool: Tool): Task {
-        return createResult(tool, null, null)
-    }
-
-    private fun createResult(tool: Tool, row: Any?, rows: List<Any>?): Task {
-        val copiedTask = task.copy()
-
-        for (parameter in copiedTask.valueParameters()) {
-            evaluateParameter(parameter, tool, row = row, rows = rows)
-        }
-        return copiedTask
-    }
-
-    private fun evaluateParameter(parameter: ValueParameter<*>, tool: Tool, row: Any?, rows: List<Any>?) {
-
-        if (parameter is MultipleParameter<*> && parameter.expression == null) {
-            parameter.innerParameters.filter { it.expression != null }.forEach { innerParameter ->
-                evaluateParameter(innerParameter, tool, row = row, rows = rows)
-            }
-        } else {
-            parameter.expression?.let { expression ->
-                val gscript = GroovyScript(expression)
-                val bindings = Binding()
-                bindings.setProperty("tool", tool)
-                bindings.setProperty("row", row)
-                bindings.setProperty("rows", rows)
-                bindings.setProperty("helper", Helper.instance)
-
-                parameter.evaluated(gscript.run(bindings))
-                parameter.expression = null
-            }
-        }
-    }
+    override fun runNonRow(tool: Tool) = task.evaluate(tool, null, null)
 
     override fun copy(): TaskOption {
         val result = TaskOption(task.copy())

@@ -1,8 +1,6 @@
 
 Expresions and CustomToolList???
 
-Remove "check" method from parameters - it isn't used!
-
 Bug. Adding an include to an empty options file threw an expection (ListTool)
 
 Alias tools - Allow a tool to be renamed/moved using a map of old creation strings to actual creation strings.
