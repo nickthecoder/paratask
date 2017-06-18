@@ -94,9 +94,9 @@ open class FileParameter(
         }
         if (expectFile != null) {
             if (expectFile && resolvedValue.isDirectory) {
-                return "Expeceted a file, but is a directory"
+                return "Expected a file, but is a directory"
             } else if (!expectFile && resolvedValue.isFile) {
-                return "Expeceted a directory, but is a file"
+                return "Expected a directory, but is a file"
             }
         }
 

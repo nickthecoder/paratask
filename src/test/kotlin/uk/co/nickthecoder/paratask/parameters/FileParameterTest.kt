@@ -24,7 +24,7 @@ class FileParameterTest : ParameterTestBase() {
         assertEquals("File does not exist", fileP.errorMessage())
 
         fileP.value = File(base, "dir1")
-        assertEquals("Expeceted a file, but is a directory", fileP.errorMessage())
+        assertEquals("Expected a file, but is a directory", fileP.errorMessage())
     }
 
     @Test
@@ -34,7 +34,7 @@ class FileParameterTest : ParameterTestBase() {
         assertEquals("Required", fileP.errorMessage())
 
         fileP.value = File(base, "file1.txt")
-        assertEquals("Expeceted a directory, but is a file", fileP.errorMessage())
+        assertEquals("Expected a directory, but is a file", fileP.errorMessage())
 
         fileP.value = File(base, "doesNotExist")
         assertEquals("File does not exist", fileP.errorMessage())
