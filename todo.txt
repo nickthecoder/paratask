@@ -1,10 +1,9 @@
 
-Expresions and CustomToolList???
 
 Bug. Adding an include to an empty options file threw an expection (ListTool)
 
-Alias tools - Allow a tool to be renamed/moved using a map of old creation strings to actual creation strings.
-	Use it when renaming ListTool to PreBuildTools???
+Create global option for each tool, so that it can be used from the non-row option field.
+	
 
 Drag and drop to copy/move/link files
 
@@ -36,7 +35,7 @@ Check if Places updates across NFS, if not remove FileWatcher, and replace with 
 Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
 
 Need some way to "hide" weird options such as "GC", printRow etc.
-	Maybe have a "order", and when N options are in the menu, then place the less used options in a sub-menu.
+	Maybe have an "order", and when N options are in the menu, then place the less used options in a sub-menu.
 
 TerminalTool to allow running of Tasks/Tools/Options from the input field
 	Special prefix such as ":" to specify an option, and allow for simple command line style arguments
