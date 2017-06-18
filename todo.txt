@@ -1,7 +1,4 @@
 
-List of pre-built tool options,
-	e.g. List common Grep commands
-
 Bug. Adding an include to an empty options file threw an expection (ListTool)
 
 Alias tools - Allow a tool to be renamed/moved using a map of old creation strings to actual creation strings.

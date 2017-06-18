@@ -83,7 +83,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
         if (result is LabelledField) {
             result.replaceLabel(buttons)
-        } else if (result is WrappableField) {
+        } else if (result is WrappedField) {
             result.addAndRemoveButtons(buttons)
         }
 
