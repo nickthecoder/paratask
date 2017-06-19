@@ -179,11 +179,19 @@
 }
 
 /****************************
-* Drag and Drop             *
+* DropFiles                 *\
 *****************************/
 
-.drop.text-input {
+.drop-copy {
     -fx-control-inner-background: #8f8;
+}
+
+.drop-move {
+    -fx-control-inner-background: #ff8;
+}
+
+.drop-link{
+    -fx-control-inner-background: #faf;
 }
 
 /****************************

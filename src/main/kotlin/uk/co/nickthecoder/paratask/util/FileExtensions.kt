@@ -23,6 +23,8 @@ val currentDirectory: File = File("").absoluteFile
 
 val homeDirectory: File = File(System.getProperty("user.home"))
 
+val imageExtensions = hashSetOf("bmp", "cmyk", "cmyka", "dpf", "eps", "gif", "ico", "jpeg", "jpg", "mng", "pbm", "pcx", "png", "pnm", "ps", "psd", "raw", "rgb", "rgba", "svg", "tga", "tif", "tiff", "webp", "xcf", "xpm")
+
 fun File.child(vararg names: String): File {
     var f = this
     for (name in names) {
@@ -31,3 +33,4 @@ fun File.child(vararg names: String): File {
     return f
 }
 
+fun File.isImage() = this.extension.toLowerCase() in imageExtensions

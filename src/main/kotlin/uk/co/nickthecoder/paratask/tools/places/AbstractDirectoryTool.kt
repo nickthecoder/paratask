@@ -30,10 +30,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.*
-import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.util.Thumbnailer
-import uk.co.nickthecoder.paratask.util.WrappedFile
+import uk.co.nickthecoder.paratask.util.*
 import java.io.File
 
 abstract class AbstractDirectoryTool(name: String, description: String)
@@ -80,16 +77,17 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     fun createImageView(row: WrappedFile): ImageView {
-        val thumbnail = thumbnailer.thumbnailImage(row.file)
-        thumbnail?.let {
-            val iv = ImageView()
-            iv.image = thumbnail
-            iv.fitHeight = thumbnailHeightP.value!!.toDouble()
-            iv.isPreserveRatio = true
-            iv.isSmooth = true
-            return iv
+        if (row.file.isImage()) {
+            val thumbnail = thumbnailer.thumbnailImage(row.file)
+            thumbnail?.let {
+                val iv = ImageView()
+                iv.image = thumbnail
+                iv.fitHeight = thumbnailHeightP.value!!.toDouble()
+                iv.isPreserveRatio = true
+                iv.isSmooth = true
+                return iv
+            }
         }
-
         return ImageView(row.icon)
     }
 

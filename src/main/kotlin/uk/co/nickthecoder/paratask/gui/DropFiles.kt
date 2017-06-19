@@ -42,27 +42,53 @@ open class DropFiles(
         return event.gestureSource != source && event.dragboard.hasFiles()
     }
 
+    private fun setDropStyle(transferMode: TransferMode?) {
+        val type = when (transferMode) {
+            TransferMode.COPY -> "copy"
+            TransferMode.MOVE -> "move"
+            TransferMode.LINK -> "link"
+            else -> null
+        }
+
+        if (target is Styleable) {
+            target.styleClass.remove("drop-copy")
+            target.styleClass.remove("drop-move")
+            target.styleClass.remove("drop-link")
+            if (type != null) {
+                target.styleClass.add("drop-$type")
+            }
+        }
+    }
+
+    /**
+     * When the drag component allows for ANY modes, but the drop component only allows LINK, then
+     * during onDragEventEntered, event.transferMode is COPY, despite the mouse pointer showing a LINK.
+     * I think this is a bug, and this is my best effort work-around.
+     */
+    private fun eventTransferMode(event: DragEvent): TransferMode? {
+        if (!modes.contains(event.transferMode)) {
+            return modes.firstOrNull() ?: event.transferMode
+        }
+        return event.transferMode
+    }
+
     open fun onDragOver(event: DragEvent) {
         if (accept(event)) {
             event.acceptTransferModes(* modes)
+            // We set the styles here, because onDragEntered is only called once, even if the transfer mode changes
+            // (by holding down combinations of shift and ctrl)
+            setDropStyle(eventTransferMode(event))
         }
         event.consume()
     }
 
     open fun onDragEntered(event: DragEvent) {
-        if (accept(event)) {
-            if (target is Styleable) {
-                target.styleClass.add("drop")
-            }
-        }
         event.consume()
     }
 
     open fun onDragExited(event: DragEvent) {
         if (accept(event)) {
-            if (target is Styleable) {
-                target.styleClass.remove("drop")
-            }
+            setDropStyle(null)
         }
         event.consume()
     }

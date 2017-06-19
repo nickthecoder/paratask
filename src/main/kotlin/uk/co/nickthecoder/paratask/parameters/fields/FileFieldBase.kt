@@ -26,6 +26,7 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -54,7 +55,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         val main = buildTextField()
 
         DragFiles(icon) { getFile()?.let { listOf(it) } }
-        DropFiles(textField, icon) { list, _ ->
+        DropFiles(textField, icon, modes = arrayOf(TransferMode.LINK)) { list, _ ->
             for (file in list) {
                 textField.text = file.path
                 break
