@@ -17,13 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.gui.DropFiles
-import uk.co.nickthecoder.paratask.table.TableResults
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
-import uk.co.nickthecoder.paratask.util.FileOperations
-import uk.co.nickthecoder.paratask.util.WrappedFile
-import java.io.File
 
 class DirectoryTool() :
         AbstractDirectoryTool("directory", "Work with a Single Directory"),
@@ -48,33 +42,11 @@ class DirectoryTool() :
         }
     }
 
-    override fun isTree(): Boolean = true
-
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<AbstractDirectoryTool>.detaching()
     }
 
-    override fun createTableResults(): TableResults<WrappedFile> {
-        val tableResults = super.createTableResults()
-
-        DropFiles(tableResults.tableView) { files, transferMode ->
-            droppedFiles(files, transferMode)
-        }
-
-        return tableResults
-    }
-
-    fun droppedFiles(files: List<File>, transferMode: TransferMode): Boolean {
-        val dir = directory
-        if (dir != null) {
-            if (transferMode == TransferMode.COPY) {
-                FileOperations.instance.copyFiles(files, dir)
-            }
-            return true
-        }
-        return false
-    }
 }
 
 fun main(args: Array<String>) {

@@ -18,16 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.css.Styleable
-import javafx.scene.input.TransferMode
 import javafx.scene.Node
 import javafx.scene.input.DragEvent
-import java.io.File
+import javafx.scene.input.TransferMode
 
 open class DropFiles(
         val target: Node,
         val source: Node = target,
         val modes: Array<TransferMode> = TransferMode.ANY,
-        val dropped: (List<File>, TransferMode) -> Boolean
+        val dropped: (DragEvent) -> Boolean
 
 ) {
 
@@ -42,7 +41,21 @@ open class DropFiles(
         return event.gestureSource != source && event.dragboard.hasFiles()
     }
 
-    private fun setDropStyle(transferMode: TransferMode?) {
+    /**
+     * Which node should we style when a drag occurs.
+     * Usually this is the target node, but in the case of a table, sometime it is the TableRow the mouse is
+     * hovering over.
+     */
+    open fun styleableNode(event: DragEvent): Styleable? = if (target is Styleable) target else null
+
+    private var styledNode: Styleable? = null
+
+    private fun setDropStyle(node: Styleable?, transferMode: TransferMode?) {
+
+        styledNode?.styleClass?.remove("drop-copy")
+        styledNode?.styleClass?.remove("drop-move")
+        styledNode?.styleClass?.remove("drop-link")
+
         val type = when (transferMode) {
             TransferMode.COPY -> "copy"
             TransferMode.MOVE -> "move"
@@ -50,13 +63,10 @@ open class DropFiles(
             else -> null
         }
 
-        if (target is Styleable) {
-            target.styleClass.remove("drop-copy")
-            target.styleClass.remove("drop-move")
-            target.styleClass.remove("drop-link")
-            if (type != null) {
-                target.styleClass.add("drop-$type")
-            }
+        styledNode = node
+
+        if (type != null) {
+            styledNode?.styleClass?.add("drop-$type")
         }
     }
 
@@ -77,7 +87,7 @@ open class DropFiles(
             event.acceptTransferModes(* modes)
             // We set the styles here, because onDragEntered is only called once, even if the transfer mode changes
             // (by holding down combinations of shift and ctrl)
-            setDropStyle(eventTransferMode(event))
+            setDropStyle(styleableNode(event), eventTransferMode(event))
         }
         event.consume()
     }
@@ -88,16 +98,15 @@ open class DropFiles(
 
     open fun onDragExited(event: DragEvent) {
         if (accept(event)) {
-            setDropStyle(null)
+            setDropStyle(null, null)
         }
         event.consume()
     }
 
     open fun onDragDropped(event: DragEvent) {
-        val dragboard = event.dragboard
         var success = false
         if (accept(event)) {
-            success = dropped(dragboard.files, event.transferMode)
+            success = dropped(event)
         }
 
         event.isDropCompleted = success

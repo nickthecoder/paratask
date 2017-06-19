@@ -17,17 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.geometry.Rectangle2D
-import javafx.scene.image.Image
+import javafx.css.Styleable
+import javafx.scene.Node
+import javafx.scene.control.TableRow
+import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
+import javafx.scene.input.DragEvent
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFiles
 import uk.co.nickthecoder.paratask.gui.DropFiles
-import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.IntParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.*
@@ -77,18 +77,51 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     fun createImageView(row: WrappedFile): ImageView {
+        var result: ImageView? = null
+
         if (row.file.isImage()) {
             val thumbnail = thumbnailer.thumbnailImage(row.file)
-            thumbnail?.let {
-                val iv = ImageView()
-                iv.image = thumbnail
-                iv.fitHeight = thumbnailHeightP.value!!.toDouble()
-                iv.isPreserveRatio = true
-                iv.isSmooth = true
-                return iv
+            if (thumbnail != null) {
+                result = ImageView()
+                result.image = thumbnail
+                result.fitHeight = thumbnailHeightP.value!!.toDouble()
+                result.isPreserveRatio = true
+                result.isSmooth = true
             }
         }
-        return ImageView(row.icon)
+
+        if (result == null) {
+            result = ImageView(row.icon)
+        }
+
+        return result
+    }
+
+    fun droppedFiles(event: DragEvent): Boolean {
+
+        val (row, _) = findTableRow(event)
+        if (row != null && row.isDirectory()) {
+            val dir = row.file
+            return droppedFiles(dir, event.dragboard.files, event.transferMode)
+        }
+
+        if (!isTree()) {
+            val dir = directory
+            if (dir != null) {
+                return droppedFiles(dir, event.dragboard.files, event.transferMode)
+            }
+        }
+
+        return false
+    }
+
+    fun droppedFiles(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
+
+        if (transferMode == TransferMode.COPY) {
+            FileOperations.instance.copyFiles(files, dest)
+            return true
+        }
+        return false
     }
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
@@ -99,6 +132,10 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
         DragFiles(tableResults.tableView) {
             tableResults.tableView.selectionModel.selectedItems.map { it.row.file }
+        }
+
+        TableDropFiles(tableResults.tableView) { event ->
+            droppedFiles(event)
         }
 
         return tableResults
@@ -121,6 +158,31 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         list.addAll(lister.listFiles(directoryP.value!!).map { WrappedFile(it) })
     }
 
-    abstract fun isTree(): Boolean
+    fun isTree(): Boolean = depthP.value!! > 1
 
+
+    /**
+     * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
+     */
+    inner class TableDropFiles(target: Node,
+                               source: Node = target,
+                               modes: Array<TransferMode> = TransferMode.ANY,
+                               dropped: (DragEvent) -> Boolean)
+        : DropFiles(target, source, modes, dropped) {
+
+        override fun styleableNode(event: DragEvent): Styleable? {
+            val (row, tableRow) = findTableRow(event)
+            if (row?.isDirectory() == true) {
+                return tableRow
+            }
+
+            if (isTree()) {
+                // Cannot copy to a directory tree, as there are multiple directories on display
+                return null
+            }
+
+            return super.styleableNode(event)
+        }
+    }
 }
+

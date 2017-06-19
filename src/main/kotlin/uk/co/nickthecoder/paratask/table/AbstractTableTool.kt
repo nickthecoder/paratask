@@ -18,8 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.control.TableRow
-import uk.co.nickthecoder.paratask.project.Results
+import javafx.scene.control.TableView
+import javafx.scene.input.DragEvent
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.project.Results
 
 abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
 
@@ -45,6 +47,24 @@ abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
     }
 
     override fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
+
+    fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?> {
+        var node = event.pickResult.intersectedNode
+        while (node != null) {
+            if (node is TableView<*>) {
+                return Pair(null, null)
+            }
+            if (node is TableRow<*>) {
+                val tableRow = node as TableRow<WrappedRow<R>>
+                if (tableRow.isEmpty) {
+                    return Pair(null, null)
+                }
+                return Pair(tableRow.item.row, tableRow)
+            }
+            node = node.parent
+        }
+        return Pair(null, null)
+    }
 
     /**
      * Allows rows to be styled. For example, GitTool colours the row based on the state of the file
