@@ -1,9 +1,9 @@
 
+Bug IntP doesn't pick up typed changes, only thouse from the spinner buttons.
+
+Bug groovy shell doesn't work
 
 Bug. Adding an include to an empty options file threw an expection (ListTool)
-
-Create global option for each tool, so that it can be used from the non-row option field.
-	
 
 Drag and drop to copy/move/link files
 
@@ -14,6 +14,9 @@ Make git diff its own command (with boolean for Use Diff Tool)
 		Maybe even create special Parameters for the "positions"
 			A button to pop-up a list of stashes, commits etc.
 	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
+
+Task to extract options from the jar file, and place them into ~/.config/paratask/options
+	(Don't overwrite anything, unless the "overwrite" parameter is ticked.
 
 ---
 

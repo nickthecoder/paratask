@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.geometry.Rectangle2D
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
@@ -33,6 +35,7 @@ import uk.co.nickthecoder.paratask.table.ModifiedColumn
 import uk.co.nickthecoder.paratask.table.SizeColumn
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.Thumbnailer
 import uk.co.nickthecoder.paratask.util.WrappedFile
 import java.io.File
 
@@ -57,15 +60,19 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val includeBaseP = BooleanParameter("includeBase", value = false)
 
+    val thumbnailHeightP = IntParameter("thumbnailHeight", value = 32)
+
+    val thumbnailer = Thumbnailer()
+
     override val directory: File? by directoryP
 
 
     init {
-        taskD.addParameters(directoryP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP)
+        taskD.addParameters(directoryP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
     }
 
     override fun createColumns() {
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { createImageView(it) })
         if (isTree()) {
             columns.add(BaseFileColumn<WrappedFile>("path", base = directoryP.value!!) { it.file })
         } else {
@@ -73,6 +80,20 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         }
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
+    }
+
+    fun createImageView(row: WrappedFile): ImageView {
+        val thumbnail = thumbnailer.thumbnailImage(row.file)
+        thumbnail?.let {
+            val iv = ImageView()
+            iv.image = thumbnail
+            iv.fitHeight = thumbnailHeightP.value!!.toDouble()
+            iv.isPreserveRatio = true
+            iv.isSmooth = true
+            return iv
+        }
+
+        return ImageView(row.icon)
     }
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
@@ -93,7 +114,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         list.clear()
         list.addAll(lister.listFiles(directoryP.value!!).map { WrappedFile(it) })
     }
-
 
     abstract fun isTree(): Boolean
 
