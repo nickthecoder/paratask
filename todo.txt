@@ -1,6 +1,4 @@
 
-Bug IntP doesn't pick up typed changes, only thouse from the spinner buttons.
-
 Bug groovy shell doesn't work
 
 Bug. Adding an include to an empty options file threw an expection (ListTool)

@@ -69,7 +69,7 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
                 val v = parameter.converter.fromString(newValue)
-                if (parameter.expression != null && parameter.expression != "") {
+                if (parameter.expression == null) {
                     spinner.valueFactory.value = v
                 }
                 showOrClearError(parameter.errorMessage(v))
