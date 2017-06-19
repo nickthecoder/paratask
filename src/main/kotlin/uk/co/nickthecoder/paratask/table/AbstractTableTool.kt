@@ -34,7 +34,11 @@ abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
     override fun createResults(): List<Results> {
         columns.clear()
         createColumns()
-        return listOf(TableResults(this, list, resultsName))
+        return listOf(createTableResults())
+    }
+
+    open fun createTableResults(): TableResults<R> {
+        return TableResults(this, list, resultsName)
     }
 
     open fun updateRow(tableRow: TableRow<WrappedRow<R>>, row: R) {

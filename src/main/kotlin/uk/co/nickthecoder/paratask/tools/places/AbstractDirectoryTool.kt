@@ -21,18 +21,15 @@ import javafx.geometry.Rectangle2D
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.DragFiles
+import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
-import uk.co.nickthecoder.paratask.table.BaseFileColumn
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.FileNameColumn
-import uk.co.nickthecoder.paratask.table.ModifiedColumn
-import uk.co.nickthecoder.paratask.table.SizeColumn
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Thumbnailer
@@ -97,6 +94,17 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
+
+
+    override fun createTableResults(): TableResults<WrappedFile> {
+        val tableResults = super.createTableResults()
+
+        DragFiles(tableResults.tableView) {
+            tableResults.tableView.selectionModel.selectedItems.map { it.row.file }
+        }
+
+        return tableResults
+    }
 
     override fun run() {
         shortTitle = directory?.name ?: "Directory"

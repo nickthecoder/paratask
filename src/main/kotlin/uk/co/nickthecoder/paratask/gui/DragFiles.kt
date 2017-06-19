@@ -26,7 +26,7 @@ import java.io.File
 
 open class DragFiles(
         val source: Node,
-        val modes: Array<TransferMode> = arrayOf(TransferMode.COPY),
+        val modes: Array<TransferMode> = TransferMode.ANY,
         val files: () -> (List<File>?)) {
 
     init {

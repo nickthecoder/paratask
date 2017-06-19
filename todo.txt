@@ -1,5 +1,5 @@
 
-Bug groovy shell doesn't work
+Bug. FileField is one behind on the updates when typing filenames.
 
 Bug. Adding an include to an empty options file threw an expection (ListTool)
 

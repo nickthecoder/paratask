@@ -27,7 +27,7 @@ open class DropFiles(
         val target: Node,
         val source: Node = target,
         val modes: Array<TransferMode> = TransferMode.ANY,
-        val dropped: (List<File>) -> Boolean
+        val dropped: (List<File>, TransferMode) -> Boolean
 
 ) {
 
@@ -71,7 +71,7 @@ open class DropFiles(
         val dragboard = event.dragboard
         var success = false
         if (accept(event)) {
-            success = dropped(dragboard.files)
+            success = dropped(dragboard.files, event.transferMode)
         }
 
         event.isDropCompleted = success

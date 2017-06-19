@@ -54,7 +54,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         val main = buildTextField()
 
         DragFiles(icon) { getFile()?.let { listOf(it) } }
-        DropFiles(textField, icon) { list ->
+        DropFiles(textField, icon) { list, _ ->
             for (file in list) {
                 textField.text = file.path
                 break
