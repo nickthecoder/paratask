@@ -1,5 +1,13 @@
 package uk.co.nickthecoder.paratask.util
 
+import javafx.application.Platform
+import javafx.scene.Node
+import javafx.scene.Scene
+import javafx.scene.control.Label
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
+import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.util.process.BufferedSink
 import uk.co.nickthecoder.paratask.util.process.Exec
 import java.io.File
@@ -17,7 +25,11 @@ class FileOperations {
 
     private var thread: Thread? = null
 
+    private val notQueued = ConcurrentLinkedQueue<FileOperation>() // Currently active, and failed operations.
+
     private val queue = ConcurrentLinkedQueue<FileOperation>()
+
+    private var dialog: FileOperationsDialog? = null
 
     companion object {
         /**
@@ -27,19 +39,27 @@ class FileOperations {
         val instance = FileOperations()
     }
 
-    fun copyFile(source: File, destinationDirectory: File) {
-        copyFiles(listOf(source), destinationDirectory)
-    }
-
     fun copyFiles(sources: List<File>, destinationDirectory: File) {
         val files = sources.filter { it.isFile }
         val direcories = sources.filter { it.isDirectory }
 
-        if (files.size > 0) {
+        if (files.isNotEmpty()) {
             add(CopyFilesOperation(files, destinationDirectory))
         }
-        if (direcories.size > 0) {
+        if (direcories.isNotEmpty()) {
             add(CopyDirectoriesOperation(direcories, destinationDirectory))
+        }
+    }
+
+    fun moveFiles(sources: List<File>, destinationDirectory: File) {
+        val files = sources.filter { it.isFile }
+        val directories = sources.filter { it.isDirectory }
+
+        if (files.isNotEmpty()) {
+            add(MoveFilesOperation(files, destinationDirectory))
+        }
+        if (directories.isNotEmpty()) {
+            add(MoveDirectoriesOperation(directories, destinationDirectory))
         }
     }
 
@@ -50,21 +70,101 @@ class FileOperations {
                 override fun run() {
                     var op = queue.poll()
                     while (op != null) {
-                        op.run()
+                        notQueued.add(op)
+                        if (op.activate()) {
+                            notQueued.remove(op)
+                        }
                         op = queue.poll()
                     }
                     thread = null
+                    maybeHideDialog()
                 }
             }
             thread?.name = "FileOperations"
             thread?.start()
         }
+        delayShowDialog()
     }
 
+    /**
+     * Shows the dialog, listing all file operations in progress, queued, and failed
+     * If the dialog doesn't already exist, then it will be show after a short period, so that quick operations
+     * do not pop up the dialog.
+     */
+    private fun delayShowDialog() {
+        dialog?.let {
+            Platform.runLater {
+                // Already open
+                dialog?.buildContent()
+                dialog?.stage?.show()
+            }
+            return
+        }
 
-    //fun moveFile(source: File, destinationDirectory: File) {
-    //    queue.add(MoveOperation(listOf(source), destinationDirectory))
-    //}
+        // TODO Create a thread, sleep for a while, and then show the dialog
+        Platform.runLater {
+            dialog = FileOperationsDialog()
+            dialog?.placeOnStage()
+        }
+    }
+
+    /**
+     * If there are no more queued, in progress or failed operations, then hide the dialog
+     */
+    private fun maybeHideDialog() {
+        dialog?.let {
+            if (queue.size + notQueued.size == 0) {
+                Platform.runLater {
+                    it.stage.hide()
+                    dialog = null
+                }
+            }
+        }
+    }
+
+    inner class FileOperationsDialog {
+
+        lateinit var stage: Stage
+
+        lateinit var whole: BorderPane
+
+        lateinit var list: VBox
+
+        fun placeOnStage() {
+            // This may be the first JavaFX window, therefore we have to jump through hoops to initialise JavaFX
+            // in its annoying way. Grr.
+            ParaTaskApp.runFunction { build() }
+        }
+
+        private fun build() {
+            whole = BorderPane()
+            list = VBox()
+            whole.center = list
+
+            stage = Stage()
+            stage.title = "File Copy/Move Operations"
+            stage.scene = Scene(whole)
+
+            ParaTaskApp.style(stage.scene)
+
+            buildContent()
+
+            stage.sizeToScene()
+            AutoExit.show(stage)
+        }
+
+        internal fun buildContent() {
+            list.children.clear()
+
+            notQueued.forEach { addOp(it) }
+            queue.forEach { addOp(it) }
+        }
+
+        private fun addOp(op: FileOperation) {
+            val node = op.createNode()
+            list.children.add(node)
+        }
+    }
 }
 
 interface FileOperation : Runnable {
@@ -73,6 +173,10 @@ interface FileOperation : Runnable {
     fun message(): String
 
     fun tooltip(): String?
+
+    fun activate(): Boolean // Return false on failure
+
+    fun createNode(): Node
 }
 
 abstract class AbstractOperation : FileOperation {
@@ -84,6 +188,25 @@ abstract class AbstractOperation : FileOperation {
     var exec: Exec? = null
 
     val errors = StringBuilder()
+
+    var label: Label? = null
+
+    override fun createNode(): Node {
+        label = Label(message())
+        return label!!
+    }
+
+    override fun activate(): Boolean {
+        started = true
+        try {
+            run()
+
+        } catch(e: Exception) {
+            // TODO Handle exception
+            return false
+        }
+        return true
+    }
 
     open fun cancel() {
         if (!stopping) {
@@ -106,7 +229,6 @@ abstract class AbstractListOperation(val sources: List<File>) : AbstractOperatio
     var index = 0
 
     override fun run() {
-        started = true
         for (index in 0..sources.size - 1) {
             if (stopping) {
                 break
@@ -131,8 +253,7 @@ abstract class AbstractListOperation(val sources: List<File>) : AbstractOperatio
 class CopyFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
 
     override fun createExec(i: Int): Exec {
-        val destination = File(destinationDirectory, sources[index].name)
-        return Exec("cp", "--", sources[i], destination)
+        return Exec("cp", "-f", "--", sources[i], File(destinationDirectory, sources[i].name))
     }
 
     override fun message(): String =
@@ -140,27 +261,54 @@ class CopyFilesOperation(sources: List<File>, val destinationDirectory: File) : 
                 if (sources.size == 1) {
                     "Copying ${sources[0].name} to ${destinationDirectory.name}"
                 } else {
-                    "Copying file ${index} of ${sources.size} to ${destinationDirectory.name}"
+                    "Copying file $index of ${sources.size} to ${destinationDirectory.name}"
                 }
             } else {
                 "Queued : Copy ${sources.size} files to ${destinationDirectory.name}"
             }
 
-    override fun tooltip(): String = "Destination = ${destinationDirectory}"
+    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
-/**
- * Copies a list of files (not directories - does not recurse)
- */
-class CopyDirectoriesOperation(val sources: List<File>, val destinationDirectory: File) : AbstractOperation() {
 
-    var copyCount = 0
+/**
+ * Moves a list of files (not directories - does not recurse)
+ */
+class MoveFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+
+    override fun createExec(i: Int): Exec {
+        return Exec("mv", "--", sources[i], File(destinationDirectory, sources[i].name))
+    }
+
+    override fun message(): String =
+            if (started) {
+                if (sources.size == 1) {
+                    "Moving ${sources[0].name} to ${destinationDirectory.name}"
+                } else {
+                    "Moving file $index of ${sources.size} to ${destinationDirectory.name}"
+                }
+            } else {
+                "Queued : Move ${sources.size} files to ${destinationDirectory.name}"
+            }
+
+    override fun tooltip(): String = "Destination = $destinationDirectory"
+}
+
+abstract class RecusriveFileOperation(val destinationDirectory: File) : AbstractOperation() {
 
     var latestFile: String? = null
 
+    var copyCount = 0
+
+    var expectedCount = 1
+
     override fun run() {
-        started = true
-        exec = Exec("cp", "-r", "-v", "--", sources, destinationDirectory)
+        val lister = FileLister(depth = 10, onlyFiles = false)
+        expectedCount = lister.listFiles(destinationDirectory).size
+
+        label?.let { it.text = message() }
+
+        exec = createExec()
         exec?.outSink = object : BufferedSink() {
             override fun sink(line: String) {
                 copyCount++
@@ -168,30 +316,55 @@ class CopyDirectoriesOperation(val sources: List<File>, val destinationDirectory
         }
         exec?.start()
         exec?.waitFor()
+
     }
+
+    abstract fun createExec(): Exec
+}
+
+/**
+ * Copies a list of directories (recursively)
+ */
+class CopyDirectoriesOperation(val sources: List<File>, destinationDirectory: File)
+    : RecusriveFileOperation(destinationDirectory = destinationDirectory) {
+
+    override fun createExec() = Exec("cp", "-rfv", "--", sources, destinationDirectory)
 
     override fun message(): String =
             if (started) {
                 if (copyCount == 0) {
                     "Preparing"
                 } else {
-                    "Copying ${latestFile}"
+                    "Copying $latestFile (#$copyCount of about $expectedCount)"
                 }
             } else {
                 "Queued : Copy ${sources.size} directories to ${destinationDirectory.name}"
             }
 
-    override fun tooltip(): String = "Destination = ${destinationDirectory}"
+    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
-//class MoveOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+/**
+ * Moves a list of directories (recursively)
+ */
+class MoveDirectoriesOperation(val sources: List<File>, destinationDirectory: File)
+    : RecusriveFileOperation(destinationDirectory = destinationDirectory) {
 
-//    override fun createExec(i: Int): Exec {
-//        val destination = File(destinationDirectory, sources[index].name)
-//        return Exec("mv", "--", sources[i], destination)
-//    }
 
-//    override fun message(): String = "Moving file ${index} of ${sources.size} to ${destinationDirectory.name}"
+    override fun createExec() = Exec("mv", "-v", "--", sources, destinationDirectory)
 
-//    override fun tooltip(): String = "Destination = ${destinationDirectory}"
-//}
+    override fun message(): String =
+            if (started) {
+                if (copyCount == 0) {
+                    "Preparing"
+                } else {
+                    "Copying $latestFile (#$copyCount of about $expectedCount)"
+                }
+            } else {
+                "Queued : Move ${sources.size} directories to ${destinationDirectory.name}"
+            }
+
+    override fun tooltip(): String = "Destination = $destinationDirectory"
+
+}
+

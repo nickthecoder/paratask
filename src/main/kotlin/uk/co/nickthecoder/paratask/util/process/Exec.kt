@@ -160,6 +160,10 @@ class Exec {
         return NOT_STARTED
     }
 
+    override fun toString(): String {
+        return "Exec : $osCommand"
+    }
+
     class Timeout(val timeoutMillis: Long) : Thread() {
         init {
             this.name = "Exec.Timeout"

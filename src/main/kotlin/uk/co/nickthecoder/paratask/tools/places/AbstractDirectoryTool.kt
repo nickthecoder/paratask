@@ -117,9 +117,15 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     fun droppedFiles(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
 
-        if (transferMode == TransferMode.COPY) {
-            FileOperations.instance.copyFiles(files, dest)
-            return true
+        when (transferMode) {
+            TransferMode.COPY -> {
+                FileOperations.instance.copyFiles(files, dest)
+                return true
+            }
+            TransferMode.MOVE -> {
+                FileOperations.instance.moveFiles(files, dest)
+            }
+        // TODO Link
         }
         return false
     }

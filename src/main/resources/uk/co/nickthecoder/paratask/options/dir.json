@@ -88,43 +88,12 @@
                     "value": "false"
                 },
                 {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "rm",
-            "label": "Delete Directory and Contents",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "rm"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "-rf"
-                        },
-                        {
-                            "value": "--"
-                        },
-                        {
-                            "expression": "rows.collect{ it.file.toString() }"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": "."
                 }
             ]
         },
@@ -157,6 +126,10 @@
                 {
                     "name": "directory",
                     "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -203,6 +176,10 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 }
             ]
         },
@@ -246,6 +223,10 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 }
             ]
         },
@@ -289,6 +270,10 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 }
             ]
         },
@@ -332,6 +317,10 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 },
                 {
                     "name": "autoRefresh",
@@ -379,6 +368,49 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "rm",
+            "label": "Delete Directory (recursively)",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "rm"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-rf"
+                        },
+                        {
+                            "value": "--"
+                        },
+                        {
+                            "expression": "rows.collect{ it.file.toString() }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "."
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }
