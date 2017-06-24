@@ -125,7 +125,9 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             TransferMode.MOVE -> {
                 FileOperations.instance.moveFiles(files, dest)
             }
-        // TODO Link
+            TransferMode.LINK -> {
+                FileOperations.instance.linkFiles(files, dest)
+            }
         }
         return false
     }

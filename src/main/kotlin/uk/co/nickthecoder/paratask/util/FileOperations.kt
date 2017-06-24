@@ -63,6 +63,11 @@ class FileOperations {
         }
     }
 
+    fun linkFiles(sources: List<File>, destinationDirectory: File) {
+
+        add(LinkFilesOperation(sources, destinationDirectory))
+    }
+
     private fun add(operation: FileOperation) {
         queue.add(operation)
         if (thread == null) {
@@ -294,6 +299,29 @@ class MoveFilesOperation(sources: List<File>, val destinationDirectory: File) : 
     override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
+/**
+ * Links a list of files or directories - does not recurse
+ */
+class LinkFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+
+    override fun createExec(i: Int): Exec {
+        return Exec("ln", "-s", "--", sources[i], File(destinationDirectory, sources[i].name))
+    }
+
+    override fun message(): String =
+            if (started) {
+                if (sources.size == 1) {
+                    "Linking ${sources[0].name} to ${destinationDirectory.name}"
+                } else {
+                    "Linking file $index of ${sources.size} to ${destinationDirectory.name}"
+                }
+            } else {
+                "Queued : Link ${sources.size} files to ${destinationDirectory.name}"
+            }
+
+    override fun tooltip(): String = "Destination = $destinationDirectory"
+}
+
 abstract class RecusriveFileOperation(val destinationDirectory: File) : AbstractOperation() {
 
     var latestFile: String? = null
@@ -367,4 +395,5 @@ class MoveDirectoriesOperation(val sources: List<File>, destinationDirectory: Fi
     override fun tooltip(): String = "Destination = $destinationDirectory"
 
 }
+
 
