@@ -23,15 +23,21 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
+import java.io.BufferedReader
+import java.io.DataOutputStream
 import java.io.File
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import java.net.URLEncoder
 import java.sql.Date
 import java.sql.DriverManager
+import java.text.SimpleDateFormat
 
 /**
  *
  */
-class MythRecordedTool : AbstractTableTool<RecordedLine>() {
+class MythRecordedTool : AbstractTableTool<MythRecordedTool.RecordedLine>() {
 
     override val taskD = TaskDescription("mythRecorded")
 
@@ -71,9 +77,10 @@ class MythRecordedTool : AbstractTableTool<RecordedLine>() {
         val connect = DriverManager.getConnection("jdbc:mysql://$server/$database?user=$user&password=$password")
 
         val statement = connect.createStatement()
-        val resultSet = statement.executeQuery("SELECT channel.name, progstart, title, subtitle, description, basename FROM recorded, channel WHERE recorded.chanid = channel.chanid ORDER BY progstart DESC;")
+        val resultSet = statement.executeQuery("SELECT channel.name, channel.chanid, progstart, title, subtitle, description, basename FROM recorded, channel WHERE recorded.chanid = channel.chanid ORDER BY progstart DESC;")
         while (resultSet.next()) {
             val channel = resultSet.getString("name")
+            val channelID = resultSet.getString("chanid")
             val start = resultSet.getDate("progstart")
             val title = resultSet.getString("title")
             val subtitle = resultSet.getString("subtitle")
@@ -82,20 +89,66 @@ class MythRecordedTool : AbstractTableTool<RecordedLine>() {
 
             val file = File(directoryP.value!!, basename)
 
-            val line = RecordedLine(channel, start, title, subtitle, description, file)
+            val line = RecordedLine(channel, channelID, start, title, subtitle, description, file)
             list.add(line)
         }
     }
 
     private fun encode(str: String) = URLEncoder.encode(str, "UTF-8")
 
+    inner class RecordedLine(
+            val channel: String,
+            val channelID: String,
+            val start: Date,
+            val title: String,
+            val subtitle: String,
+            val description: String,
+            val file: File) {
+
+        fun isFile() = true // For "file.json"
+
+        /**
+         * Use the myth "services API" to delete a recorded program.
+         * See .https://www.mythtv.org/wiki/DVR_Service#DeleteRecording
+         *
+         * Example POST request :
+         * http://BackendServerIP:6544/Dvr/DeleteRecording?StartTime=2011-10-03T19:00:00&ChanId=2066
+         */
+        fun delete() {
+
+            val url = URL("http://${serverP.value}:6544.")
+            println("URL = $url")
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val formattedStartTime = dateFormat.format(start).replace(' ', 'T')
+            val urlParameters = "StartTime=$formattedStartTime&ChanId=$channelID"
+
+            println("Opening connection")
+            val connection = url.openConnection() as HttpURLConnection
+            println("Opened connection")
+            connection.requestMethod = "POST"
+            println("Set to post")
+
+            connection.setDoOutput(true)
+            println("Setting output stream")
+            val wr = DataOutputStream(connection.getOutputStream())
+            wr.writeBytes(urlParameters)
+            wr.flush()
+            wr.close()
+
+            println("Created the connection")
+            val responseCode = connection.getResponseCode()
+            println("Response code ${responseCode}")
+
+            // We don't care about the results!
+            val input = BufferedReader(InputStreamReader(connection.getInputStream()))
+            var line = input.readLine()
+            while (line != null) {
+                println(line)
+                line = input.readLine()
+            }
+            input.close()
+        }
+    }
 }
 
-data class RecordedLine(
-        val channel: String,
-        val start: Date,
-        val title: String,
-        val subtitle: String,
-        val description: String,
-        val file: File
-)

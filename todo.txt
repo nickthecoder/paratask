@@ -1,15 +1,23 @@
-
-Create the GUI for FileOperations
-	Use it for rm options
-	Implement MOVE
+FileOperations
+	Make file dialog pretier
+	Report errors
+	Include a cancel button
+	Progress bar
 
 Drag & Drop on major tabs
+	Can't there is no way to drag and drop onto a tab, as it doesn't expose the Tab as a node. Grr.
+	Do I really have to implement my own TabPane? 
+
+Implement MythTool using the service API, not using the DB directly
+	Can't get my myth server to listen on anything except localhost. Grrr.
+
+Drag an drop options
+	Make a generic base class for DragFiles and DropFiles
+	Only useful once drag and drop is allowed on a TabPane's Tab, which isn't possible. Grr.
 
 Bug. FileField is one behind on the updates when typing filenames.
 
-Bug. Adding an include to an empty options file threw an expection (ListTool)
-
-Drag and drop to copy/move/link files
+Bug. Adding an include to an empty options file threw an expection
 
 Implement command line tab completion
 

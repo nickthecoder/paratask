@@ -1,13 +1,24 @@
 {
     "includes": [
-        
+        "file"
     ],
     "options": [
         {
+            "type": "groovy",
+            "script": "row.delete()",
+            "code": "-",
+            "label": "Delete Recorded Program",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": ".",
-            "label": "Play",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "o",
+            "label": "Open Myth Directory",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
@@ -15,24 +26,42 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "program",
-                    "value": "smplayer"
+                    "name": "directory",
+                    "expression": "tool.directoryP.value"
                 },
                 {
-                    "name": "arguments",
+                    "name": "depth",
+                    "value": "1"
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
                     "values": [
-                        {
-                            "expression": "row.file.toString()"
-                        }
+                        
                     ]
                 },
                 {
-                    "name": "directory",
-                    "value": "."
+                    "name": "includeHidden",
+                    "value": "false"
                 },
                 {
-                    "name": "output",
-                    "value": "IGNORE"
+                    "name": "enterHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "includeBase",
+                    "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
                 }
             ]
         }
