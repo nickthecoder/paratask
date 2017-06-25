@@ -19,17 +19,19 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.DragFiles
+import uk.co.nickthecoder.paratask.gui.ToolDropFiles
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.TableResults
 import uk.co.nickthecoder.paratask.table.TruncatedStringColumn
-import uk.co.nickthecoder.paratask.util.AutoRefreshTool
-import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.child
-import uk.co.nickthecoder.paratask.util.homeDirectory
+import uk.co.nickthecoder.paratask.util.*
 import java.io.File
 
 class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
@@ -44,6 +46,30 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     val filenameP = directoryP.createFileChoicesParameter(fileLister)
 
     lateinit var placesFile: PlacesFile
+
+
+    var dropFiles: ToolDropFiles<Place> = object : ToolDropFiles<Place>(this, modes = TransferMode.ANY) {
+
+        override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
+
+        override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
+
+        override fun droppedFilesOnRow(row: Place, files: List<File>, transferMode: TransferMode): Boolean {
+            if (row.isDirectory()) {
+                return fileOperation(row.file!!, files, transferMode)
+            }
+            return false
+        }
+
+        override fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean {
+            for (file in files) {
+                placesFile.places.add(Place(placesFile, Resource(file), file.name))
+            }
+            placesFile.save()
+            return true
+        }
+
+    }
 
     init {
         taskD.addParameters(directoryP, filenameP)
@@ -60,6 +86,17 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
         return listOf(HeaderRow().addAll(directoryP, filenameP))
     }
 
+    override fun createTableResults(): TableResults<Place> {
+        val tableResults = super.createTableResults()
+
+        DragFiles(tableResults.tableView) {
+            tableResults.tableView.selectionModel.selectedItems.filter { it.row.isFileOrDirectory() }.map { it.row.file!! }
+        }
+
+        dropFiles.table = tableResults.tableView
+        return tableResults
+    }
+
     override fun run() {
         val file = File(directoryP.value!!, filenameP.value!!)
         placesFile = PlacesFile(file)
@@ -67,9 +104,16 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
         watch(file)
     }
 
+
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        dropFiles.attached(toolPane)
+    }
+
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<AbstractTableTool>.detaching()
+        dropFiles.detaching()
     }
 
     fun taskNew() = placesFile.taskNew()
