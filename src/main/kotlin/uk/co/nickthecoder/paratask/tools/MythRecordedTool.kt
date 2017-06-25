@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
@@ -152,3 +153,7 @@ class MythRecordedTool : AbstractTableTool<MythRecordedTool.RecordedLine>() {
     }
 }
 
+
+fun main(args: Array<String>) {
+    TaskParser(MythRecordedTool()).go(args)
+}

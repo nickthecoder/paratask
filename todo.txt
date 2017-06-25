@@ -3,6 +3,8 @@ FileOperations
 	Report errors
 	Include a cancel button
 	Progress bar
+	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
+	And ctrl+X/ctrl+V to move files
 
 Drag & Drop on major tabs
 	Can't there is no way to drag and drop onto a tab, as it doesn't expose the Tab as a node. Grr.
