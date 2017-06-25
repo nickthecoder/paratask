@@ -45,7 +45,7 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
         override fun acceptDropOnRow(row: Place) = row.isDirectory()
 
         override fun droppedFilesOnRow(row: Place, files: List<File>, transferMode: TransferMode): Boolean {
-            if (row.isFile()) {
+            if (row.isDirectory()) {
                 return fileOperation(row.file!!, files, transferMode)
             }
             return false

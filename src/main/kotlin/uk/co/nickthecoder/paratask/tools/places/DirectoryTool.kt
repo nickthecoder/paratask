@@ -29,8 +29,6 @@ class DirectoryTool() :
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
 
-    var dropFiles: DropFiles? = null
-
     init {
         depthP.hidden = true
         taskD.addParameters(autoRefreshP)
@@ -47,28 +45,9 @@ class DirectoryTool() :
         }
     }
 
-    override fun attached(toolPane: ToolPane) {
-        super.attached(toolPane)
-        val halfTab = toolPane.halfTab
-        if (halfTab.isLeft()) {
-            dropFiles = DropFiles(halfTab.projectTab as Node) { event ->
-                val dir = directory
-                if (dir == null) {
-                    false
-                } else {
-                    droppedFiles(dir, event.dragboard.files, event.transferMode)
-                }
-            }
-        }
-    }
-
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<AbstractDirectoryTool>.detaching()
-        dropFiles?.let {
-            it.cancel()
-            dropFiles = null
-        }
     }
 
 }

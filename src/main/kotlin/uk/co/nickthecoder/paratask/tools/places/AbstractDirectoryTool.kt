@@ -17,18 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.css.Styleable
-import javafx.scene.Node
-import javafx.scene.control.TableRow
-import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
-import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFiles
-import uk.co.nickthecoder.paratask.gui.DropFiles
+import uk.co.nickthecoder.paratask.gui.ToolDropFiles
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.*
 import java.io.File
@@ -60,6 +56,27 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override val directory: File? by directoryP
 
+    var dropFiles: ToolDropFiles<WrappedFile> = object : ToolDropFiles<WrappedFile>(this) {
+
+        override fun acceptDropOnRow(row: WrappedFile) = row.isDirectory()
+
+        override fun acceptDropOnNonRow() = !isTree()
+
+        override fun droppedFilesOnRow(row: WrappedFile, files: List<File>, transferMode: TransferMode): Boolean {
+            if (row.isDirectory()) {
+                return fileOperation(row.file, files, transferMode)
+            }
+            return false
+        }
+
+        override fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean {
+            val dir = directory
+            if (dir != null) {
+                return fileOperation(dir, files, transferMode)
+            }
+            return false
+        }
+    }
 
     init {
         taskD.addParameters(directoryP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
@@ -74,6 +91,16 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         }
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
+    }
+
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        dropFiles.attached(toolPane)
+    }
+
+    override fun detaching() {
+        super.detaching()
+        dropFiles.detaching()
     }
 
     fun createImageView(row: WrappedFile): ImageView {
@@ -97,43 +124,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         return result
     }
 
-    fun droppedFiles(event: DragEvent): Boolean {
-
-        val (row, _) = findTableRow(event)
-        if (row != null && row.isDirectory()) {
-            val dir = row.file
-            return droppedFiles(dir, event.dragboard.files, event.transferMode)
-        }
-
-        if (!isTree()) {
-            val dir = directory
-            if (dir != null) {
-                return droppedFiles(dir, event.dragboard.files, event.transferMode)
-            }
-        }
-
-        return false
-    }
-
-    fun droppedFiles(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
-
-        when (transferMode) {
-            TransferMode.COPY -> {
-                FileOperations.instance.copyFiles(files, dest)
-                return true
-            }
-            TransferMode.MOVE -> {
-                FileOperations.instance.moveFiles(files, dest)
-            }
-            TransferMode.LINK -> {
-                FileOperations.instance.linkFiles(files, dest)
-            }
-        }
-        return false
-    }
-
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
-
 
     override fun createTableResults(): TableResults<WrappedFile> {
         val tableResults = super.createTableResults()
@@ -142,9 +133,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             tableResults.tableView.selectionModel.selectedItems.map { it.row.file }
         }
 
-        TableDropFiles(tableResults.tableView) { event ->
-            droppedFiles(event)
-        }
+        dropFiles.table = tableResults.tableView
 
         return tableResults
     }
@@ -166,31 +155,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         list.addAll(lister.listFiles(directoryP.value!!).map { WrappedFile(it) })
     }
 
-    fun isTree(): Boolean = depthP.value!! > 1
-
-
-    /**
-     * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
-     */
-    inner class TableDropFiles(target: Node,
-                               source: Node = target,
-                               modes: Array<TransferMode> = TransferMode.ANY,
-                               dropped: (DragEvent) -> Boolean)
-        : DropFiles(target, source, modes, dropped) {
-
-        override fun styleableNode(event: DragEvent): Styleable? {
-            val (row, tableRow) = findTableRow(event)
-            if (row?.isDirectory() == true) {
-                return tableRow
-            }
-
-            if (isTree()) {
-                // Cannot copy to a directory tree, as there are multiple directories on display
-                return null
-            }
-
-            return super.styleableNode(event)
-        }
-    }
+    open fun isTree(): Boolean = false
 }
 

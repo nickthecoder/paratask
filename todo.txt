@@ -6,7 +6,7 @@ FileOperations
 	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
 	And ctrl+X/ctrl+V to move files
 
-CopyFile to places using Drop
+Drag from PlacesTool
 
 MyTabPane
 	Create a pulldown menu of hidden tabs when there are too many for them all to be visible

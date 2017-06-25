@@ -35,6 +35,7 @@ class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a 
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().addAll(directoryP, depthP))
 
+    override fun isTree() = depthP.value != 1
 }
 
 fun main(args: Array<String>) {
