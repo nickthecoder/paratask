@@ -17,14 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.util.MyTab
+import uk.co.nickthecoder.paratask.util.MyTabPane
 
 class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
-    : ProjectTabs, TabPane() {
+    : ProjectTabs, MyTabPane() {
 
     init {
         selectionModel.selectedItemProperty().addListener {
@@ -42,7 +42,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     private fun addTool(index: Int, tool: Tool, run: Boolean): ProjectTab {
         val toolPane = ToolPane_Impl(tool)
         val newProjectTab = ProjectTab_Impl(this, toolPane)
-        tabs.add(index, newProjectTab)
+        add(index, newProjectTab)
 
         ParaTaskApp.logAttach("ProjectTabs.attaching ProjectTab")
         newProjectTab.attached(this)
@@ -66,7 +66,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun addAfter(after: ProjectTab, tool: Tool, run: Boolean): ProjectTab {
-        val index = tabs.indexOf(after as Tab)
+        val index = tabs.indexOf(after as MyTab)
         return addTool(index + 1, tool, run = run)
     }
 
@@ -76,7 +76,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     override fun removeTab(projectTab: ProjectTab) {
         projectTab.detaching()
-        tabs.remove<Tab>(projectTab as Tab)
+        remove(projectTab as MyTab)
     }
 
     override fun split() {

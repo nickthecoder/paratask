@@ -20,15 +20,15 @@ package uk.co.nickthecoder.paratask.project
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.SplitPane
-import javafx.scene.control.Tab
 import javafx.scene.image.ImageView
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.util.MyTab
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
-    : ProjectTab, Tab() {
+    : ProjectTab, MyTab() {
 
     override lateinit var projectTabs: ProjectTabs
 
@@ -41,10 +41,10 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     val stackPane = StackPane(splitPane)
 
     init {
+        content = stackPane
         stackPane.children.add(left as Node)
         splitPane.items.add(left as Node)
         splitPane.orientation = Orientation.HORIZONTAL
-        content = stackPane
         updateTab()
     }
 

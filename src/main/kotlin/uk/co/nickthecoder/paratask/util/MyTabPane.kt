@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.util
 
 import javafx.geometry.Side
+import javafx.scene.control.SingleSelectionModel
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
@@ -15,17 +16,27 @@ import javafx.scene.layout.StackPane
  */
 open class MyTabPane : BorderPane() {
 
-    private val contents = StackPane()
+    internal val contents = StackPane()
 
     private val tabHeaderArea = HBox()
 
     private val tabsContainer = HBox()
 
-    private val tabs = mutableListOf<MyTab>()
+    private val mutableTabs = mutableListOf<MyTab>()
 
-    var currentTab: MyTab? = null
+    val tabs: List<MyTab> = mutableTabs
+
+    val selectionModel = object : SingleSelectionModel<MyTab>() {
+        override fun getItemCount(): Int = if (selectedTab == null) 0 else 1
+
+        override fun getModelItem(index: Int): MyTab? {
+            return tabs[index]
+        }
+    }
+
+    internal var selectedTab: MyTab? = null
         set(v) {
-            currentTab?.let {
+            selectedTab?.let {
                 it.content.isVisible = false
                 it.styleClass.remove("selected")
                 it.closeButton.isVisible = false
@@ -41,8 +52,8 @@ open class MyTabPane : BorderPane() {
                 v.styleClass.add("selected")
                 v.closeButton.isVisible = true
                 v.right = v.closeButton
-
             }
+            selectionModel.select(v)
         }
 
     var side: Side = Side.TOP
@@ -85,11 +96,12 @@ open class MyTabPane : BorderPane() {
         if (tab.parent != null) {
             throw IllegalStateException("The tab is already owned by a MyTabPane")
         }
-        tabs.add(index, tab)
+
+        mutableTabs.add(index, tab)
         tabsContainer.children.add(index, tab)
-        tab.parent = this
+        tab.tabPane = this
         contents.children.add(tab.content)
-        currentTab = tab
+        selectedTab = tab
     }
 
     fun remove(tab: MyTab) {
@@ -97,14 +109,14 @@ open class MyTabPane : BorderPane() {
         if (index < 0) {
             return
         }
-        tabs.remove(tab)
+        mutableTabs.remove(tab)
         tabsContainer.children.remove(tab)
-        if (currentTab === tab) {
+        if (selectedTab === tab) {
             if (tabs.isEmpty()) {
-                currentTab = null
+                selectedTab = null
             } else {
                 // Select the previous tab (when removing the first tab, then selected the next one)
-                currentTab = tabs[if (index == 0) 0 else index - 1]
+                selectedTab = tabs[if (index == 0) 0 else index - 1]
             }
         }
     }
