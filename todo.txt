@@ -6,6 +6,8 @@ FileOperations
 	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
 	And ctrl+X/ctrl+V to move files
 
+Bug. Cannot drag from a DirectoryTool to a directory row in the same table.
+
 Drag from PlacesTool
 
 MyTabPane

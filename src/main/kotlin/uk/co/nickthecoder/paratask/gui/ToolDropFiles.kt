@@ -24,12 +24,12 @@ abstract class ToolDropFiles<R : Any>(
 
     var dropFilesOnTab: DropFiles? = null
 
-    var tableDropFiles: TableDropFiles? = null
+    var dropFilesOnTable: DropFilesOnTable? = null
 
     var table: TableView<WrappedRow<R>>? = null
         set(v) {
             v?.let {
-                tableDropFiles = TableDropFiles(v, modes = rowModes) { event ->
+                dropFilesOnTable = DropFilesOnTable(v, modes = rowModes) { event ->
                     droppedFilesOnTable(event)
                 }
             }
@@ -91,10 +91,10 @@ abstract class ToolDropFiles<R : Any>(
     /**
      * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
      */
-    inner class TableDropFiles(target: Node,
-                               source: Node = target,
-                               modes: Array<TransferMode> = TransferMode.ANY,
-                               dropped: (DragEvent) -> Boolean)
+    inner class DropFilesOnTable(target: Node,
+                                 source: Node = target,
+                                 modes: Array<TransferMode> = TransferMode.ANY,
+                                 dropped: (DragEvent) -> Boolean)
         : DropFiles(target, source, modes, dropped) {
 
         override fun styleableNode(event: DragEvent): Styleable? {
@@ -108,6 +108,17 @@ abstract class ToolDropFiles<R : Any>(
             }
 
             return null
+        }
+
+        override fun accept(event: DragEvent): Boolean {
+            if (event.gestureSource === source) {
+                val pair = tool.findTableRow(event)
+                val row = pair.first
+                if (row != null) {
+                    return acceptDropOnRow(row)
+                }
+            }
+            return super.accept(event)
         }
     }
 }
