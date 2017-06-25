@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.DragFiles
 import uk.co.nickthecoder.paratask.gui.ToolDropFiles
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
@@ -76,6 +77,10 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
+
+        DragFiles(tableResults.tableView) {
+            tableResults.tableView.selectionModel.selectedItems.filter { it.row.isFileOrDirectory() }.map { it.row.file!! }
+        }
 
         dropFiles.table = tableResults.tableView
         return tableResults

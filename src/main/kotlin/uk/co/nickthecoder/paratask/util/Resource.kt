@@ -87,7 +87,7 @@ class Resource(val url: URL) {
 
     fun isFileOrDirectory() = file != null
 
-    fun isFile() = file?.isFile() == true
+    fun   isFile() = file?.isFile() == true
 
     fun isDirectory() = file?.isDirectory() == true
 

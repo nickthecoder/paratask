@@ -43,6 +43,8 @@ class Place(val placesFile: PlacesFile, val resource: Resource, val label: Strin
     // Place (and any future rows that *may* contain File objects).
     fun isFile() = resource.isFile()
 
+    fun isFileOrDirectory() = resource.isFileOrDirectory()
+
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
     fun isDirectory() = resource.isDirectory()

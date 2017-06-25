@@ -6,6 +6,10 @@ FileOperations
 	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
 	And ctrl+X/ctrl+V to move files
 
+I think I'm using Drag/DropFiles source incorrectly.
+	If I set it to the parent directory for DirectoryTool, to PlacesFile for PlacesTool and the TextField for FileField
+	Then the DropFiles need to perform a custom check.
+
 Drag from PlacesTool
 
 MyTabPane
