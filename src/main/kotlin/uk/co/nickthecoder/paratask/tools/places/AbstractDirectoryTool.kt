@@ -58,9 +58,9 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     var dropFiles: ToolDropFiles<WrappedFile> = object : ToolDropFiles<WrappedFile>(this) {
 
-        override fun acceptDropOnRow(row: WrappedFile) = row.isDirectory()
+        override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
 
-        override fun acceptDropOnNonRow() = !isTree()
+        override fun acceptDropOnNonRow() = if (isTree()) null else TransferMode.ANY
 
         override fun droppedFilesOnRow(row: WrappedFile, files: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {

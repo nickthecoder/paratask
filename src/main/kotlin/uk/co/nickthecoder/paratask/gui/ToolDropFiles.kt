@@ -12,15 +12,15 @@ import uk.co.nickthecoder.paratask.util.FileOperations
 import java.io.File
 
 /**
- * A helper class for tools which can be a drop target for files.
- * The files can either be dropped onto the tab, or onto the table
+ * A helper class for table tools which can be a drop target for files.
+ * The files can either be dropped onto the tab, or onto the table (i.e. this class has TWO DropFiles instances).
+ * When dropping onto the table, you can distiguish between dropping to the table as a whole,
+ * or dropping to a single row of the table.
  * R is the type or Row
  */
 abstract class ToolDropFiles<R : Any>(
         val tool: AbstractTableTool<R>,
-        val modes: Array<TransferMode> = TransferMode.ANY,
-        val rowModes: Array<TransferMode> = modes
-) {
+        val modes: Array<TransferMode> = TransferMode.ANY) {
 
     var dropFilesOnTab: DropFiles? = null
 
@@ -29,7 +29,7 @@ abstract class ToolDropFiles<R : Any>(
     var table: TableView<WrappedRow<R>>? = null
         set(v) {
             v?.let {
-                dropFilesOnTable = DropFilesOnTable(v, modes = rowModes) { event ->
+                dropFilesOnTable = DropFilesOnTable(v, modes = modes) { event ->
                     droppedFilesOnTable(event)
                 }
             }
@@ -38,7 +38,7 @@ abstract class ToolDropFiles<R : Any>(
     fun attached(toolPane: ToolPane) {
         val halfTab = toolPane.halfTab
         if (halfTab.isLeft()) {
-            dropFilesOnTab = DropFiles(halfTab.projectTab as Node, modes = modes) { event ->
+            dropFilesOnTab = DropFilesOnTab(halfTab.projectTab as Node, modes = modes) { event ->
                 droppedFilesOnNonRow(event.dragboard.files, event.transferMode)
             }
         }
@@ -54,22 +54,23 @@ abstract class ToolDropFiles<R : Any>(
     fun droppedFilesOnTable(event: DragEvent): Boolean {
 
         val (row, _) = tool.findTableRow(event)
-        if (row != null && acceptDropOnRow(row)) {
+        if (row != null && acceptDropOnRow(row) != null) {
             return droppedFilesOnRow(row, event.dragboard.files, event.transferMode)
         }
-        if (acceptDropOnNonRow()) {
+        if (acceptDropOnNonRow() != null) {
             return droppedFilesOnNonRow(event.dragboard.files, event.transferMode)
         }
         return false
     }
 
-    abstract fun acceptDropOnRow(row: R): Boolean
+    open fun acceptDropOnNonRow(): Array<TransferMode>? = modes
+
+    open fun acceptDropOnRow(row: R): Array<TransferMode>? = modes
 
     abstract fun droppedFilesOnRow(row: R, files: List<File>, transferMode: TransferMode): Boolean
 
     abstract fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean
 
-    open fun acceptDropOnNonRow() = true
 
     fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
 
@@ -88,6 +89,17 @@ abstract class ToolDropFiles<R : Any>(
         return false
     }
 
+    inner class DropFilesOnTab(target: Node,
+                               source: Node = target,
+                               modes: Array<TransferMode> = TransferMode.ANY,
+                               dropped: (DragEvent) -> Boolean)
+        : DropFiles(target, source, modes, dropped) {
+
+        override fun accept(event: DragEvent): Array<TransferMode>? {
+            return acceptDropOnNonRow()
+        }
+    }
+
     /**
      * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
      */
@@ -99,26 +111,29 @@ abstract class ToolDropFiles<R : Any>(
 
         override fun styleableNode(event: DragEvent): Styleable? {
             val (row, tableRow) = tool.findTableRow(event)
-            if (row != null && acceptDropOnRow(row)) {
+            if (row != null && acceptDropOnRow(row) != null) {
                 return tableRow
             }
 
-            if (acceptDropOnNonRow()) {
+            if (acceptDropOnNonRow() != null) {
                 return super.styleableNode(event)
             }
 
             return null
         }
 
-        override fun accept(event: DragEvent): Boolean {
-            if (event.gestureSource === source) {
-                val pair = tool.findTableRow(event)
-                val row = pair.first
-                if (row != null) {
-                    return acceptDropOnRow(row)
-                }
+        override fun accept(event: DragEvent): Array<TransferMode>? {
+            val pair = tool.findTableRow(event)
+            val row = pair.first
+            if (row != null) {
+                acceptDropOnRow(row)?.let { return it }
             }
-            return super.accept(event)
+
+            if (event.gestureSource === source) {
+                return null
+            }
+
+            return acceptDropOnNonRow()
         }
     }
 }

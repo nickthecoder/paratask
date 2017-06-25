@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.css.Styleable
+import javafx.scene.Cursor
 import javafx.scene.Node
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
@@ -42,10 +43,6 @@ open class DropFiles(
         target.setOnDragEntered(null)
         target.setOnDragExited(null)
         target.setOnDragDropped(null)
-    }
-
-    open fun accept(event: DragEvent): Boolean {
-        return event.gestureSource !== source && event.dragboard.hasFiles()
     }
 
     /**
@@ -82,22 +79,29 @@ open class DropFiles(
      * during onDragEventEntered, event.transferMode is COPY, despite the mouse pointer showing a LINK.
      * I think this is a bug, and this is my best effort work-around.
      */
-    private fun eventTransferMode(event: DragEvent): TransferMode? {
-        if (!modes.contains(event.transferMode)) {
-            return modes.firstOrNull() ?: event.transferMode
+    private fun eventTransferMode(allowedModes: Array<TransferMode>, event: DragEvent): TransferMode? {
+        if (!allowedModes.contains(event.transferMode)) {
+            return allowedModes.firstOrNull() ?: event.transferMode
         }
         return event.transferMode
     }
 
+
+    open fun accept(event: DragEvent): Array<TransferMode>? {
+        return if (event.gestureSource !== source && event.dragboard.hasFiles()) modes else null
+    }
+
     open fun onDragOver(event: DragEvent) {
-        if (accept(event)) {
-            event.acceptTransferModes(* modes)
+        val acceptedModes = accept(event)
+
+        if (acceptedModes != null) {
+            event.acceptTransferModes(* acceptedModes)
             // We set the styles here, because onDragEntered is only called once, even if the transfer mode changes
             // (by holding down combinations of shift and ctrl)
-            setDropStyle(styleableNode(event), eventTransferMode(event))
+            setDropStyle(styleableNode(event), eventTransferMode(acceptedModes, event))
         } else {
             // Ensures that the old style is removed when dragging over a table where only some rows accept the drop.
-            setDropStyle(styleableNode(event), null)
+            setDropStyle(null, null)
         }
         event.consume()
     }
@@ -107,15 +111,13 @@ open class DropFiles(
     }
 
     open fun onDragExited(event: DragEvent) {
-        if (accept(event)) {
-            setDropStyle(null, null)
-        }
+        setDropStyle(null, null)
         event.consume()
     }
 
     open fun onDragDropped(event: DragEvent) {
         var success = false
-        if (accept(event)) {
+        if (accept(event) != null) {
             success = dropped(event)
         }
 

@@ -40,9 +40,11 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     lateinit var placesFile: PlacesFile
 
-    var dropFiles: ToolDropFiles<Place> = object : ToolDropFiles<Place>(this, modes = arrayOf(TransferMode.LINK), rowModes = TransferMode.ANY) {
+    var dropFiles: ToolDropFiles<Place> = object : ToolDropFiles<Place>(this, modes = TransferMode.ANY) {
 
-        override fun acceptDropOnRow(row: Place) = row.isDirectory()
+        override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
+
+        override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
         override fun droppedFilesOnRow(row: Place, files: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
