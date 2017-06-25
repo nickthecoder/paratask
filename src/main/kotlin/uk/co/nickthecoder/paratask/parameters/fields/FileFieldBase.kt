@@ -58,6 +58,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         DropFiles(textField, icon, modes = arrayOf(TransferMode.LINK)) { event ->
             for (file in event.dragboard.files) {
                 textField.text = file.path
+                textField.requestFocus()
                 break
             }
             true
