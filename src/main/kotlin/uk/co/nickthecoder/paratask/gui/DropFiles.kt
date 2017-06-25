@@ -37,6 +37,13 @@ open class DropFiles(
         target.setOnDragDropped { onDragDropped(it) }
     }
 
+    fun cancel() {
+        target.setOnDragOver(null)
+        target.setOnDragEntered(null)
+        target.setOnDragExited(null)
+        target.setOnDragDropped(null)
+    }
+
     open fun accept(event: DragEvent): Boolean {
         return event.gestureSource != source && event.dragboard.hasFiles()
     }

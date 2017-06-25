@@ -6,9 +6,13 @@ FileOperations
 	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
 	And ctrl+X/ctrl+V to move files
 
-Drag & Drop on major tabs
-	Can't there is no way to drag and drop onto a tab, as it doesn't expose the Tab as a node. Grr.
-	Do I really have to implement my own TabPane? 
+CopyFile to places using Drop
+
+MyTabPane
+	Create a pulldown menu of hidden tabs when there are too many for them all to be visible
+	Scroll the tabs so that the selected tab is always visible
+		Maybe scroll in proportion to the tab index of the selected tab???
+		Or, scroll just enough for the selected tab to be visible
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
@@ -31,6 +35,14 @@ Make git diff its own command (with boolean for Use Diff Tool)
 
 Task to extract options from the jar file, and place them into ~/.config/paratask/options
 	(Don't overwrite anything, unless the "overwrite" parameter is ticked.
+
+New Tasks
+	ImageMagick tasks
+		Resize
+	Audio tasks
+		Encode a file to mp3/ogg/flac etc
+		Tag the file
+	mmv (multiple move)
 
 ---
 

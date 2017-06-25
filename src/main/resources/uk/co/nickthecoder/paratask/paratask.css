@@ -185,13 +185,22 @@
 .drop-copy {
     -fx-control-inner-background: #8f8;
 }
-
 .drop-move {
     -fx-control-inner-background: #ff8;
 }
-
 .drop-link{
     -fx-control-inner-background: #faf;
+}
+
+
+.my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-copy {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, #8f8 !important;
+}
+.my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-move {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, #ff8 !important;
+}
+.my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-link {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, #faf !important;
 }
 
 /****************************
@@ -285,6 +294,7 @@
 .my-tab-pane > .tab-header-area > .tabs-container > .tab.selected {
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-background;
 }
+
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button {
     -fx-background-color: -fx-mark-color;
     -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z";

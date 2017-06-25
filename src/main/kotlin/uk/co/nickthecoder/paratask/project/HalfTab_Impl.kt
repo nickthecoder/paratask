@@ -107,6 +107,9 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
+    override fun isLeft() = projectTab.left === this
+
+
     fun bindButtons() {
         runButton.disableProperty().bind(toolPane.tool.taskRunner.disableRunProperty)
         runButton.visibleProperty().bind(toolPane.tool.taskRunner.showRunProperty)

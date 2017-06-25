@@ -53,4 +53,5 @@ interface HalfTab {
 
     fun focusOtherHalf()
 
+    fun isLeft() : Boolean
 }
