@@ -310,6 +310,9 @@
 .my-tab-pane > .tab-header-area > .more-button-container {
     -fx-padding: 0 0 4px 8px;
 }
+.my-tab-pane.bottom > .tab-header-area > .more-button-container {
+    -fx-padding: 6px 0 0px 8px;
+}
 .my-tab-pane > .tab-header-area > .more-button-container > .more-button {
     -fx-font-size: 0.7em;
     -fx-padding: 5px 7px 5px 7px;

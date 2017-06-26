@@ -17,10 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import javafx.scene.control.Tab
+import uk.co.nickthecoder.paratask.util.MyTab
 
 
-class ResultsTab(val results: Results) : Tab(results.label, results.node), MinorTab {
+class ResultsTab(val results: Results) : MyTab(results.label, results.node), MinorTab {
     init {
         this.textProperty().bind(results.labelProperty)
     }

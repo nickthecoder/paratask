@@ -10,11 +10,17 @@ import javafx.scene.layout.BorderPane
  * A part of MyTabPane.
  * Unlike the standard JavaFX Tab, MyTab is a Node
  */
-open class MyTab(content: Node = Label("Empty"), text: String = "", graphic: Node? = null) : BorderPane() {
+open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Node? = null) : BorderPane() {
 
     internal var tabPane: MyTabPane? = null
 
     var label = Label(text)
+
+    var text: String
+        get() = label.text
+        set(v) {
+            label.text = text
+        }
 
     var graphic: Node?
         set(v) {
@@ -44,7 +50,6 @@ open class MyTab(content: Node = Label("Empty"), text: String = "", graphic: Nod
         closeButton.styleClass.add("tab-close-button")
         graphic?.let { children.add(it) }
         center = label
-        right = closeButton
         addEventHandler(MouseEvent.MOUSE_PRESSED) { tabPane?.let { it.selectedTab = this } }
         closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED) { close() }
     }

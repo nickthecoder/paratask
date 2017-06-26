@@ -27,8 +27,8 @@ class MyTabPaneDemo : Application() {
         button1.addEventHandler(MouseEvent.MOUSE_CLICKED) { tabPane.side = Side.TOP }
         button2.addEventHandler(MouseEvent.MOUSE_CLICKED) { tabPane.side = Side.BOTTOM }
 
-        val helloTab = MyTab(button1, "Hello")
-        val worldTab = MyTab(button2, "World")
+        val helloTab = MyTab("Hello", button1)
+        val worldTab = MyTab("World", button2)
 
         tabPane.add(helloTab)
         tabPane.add(worldTab)

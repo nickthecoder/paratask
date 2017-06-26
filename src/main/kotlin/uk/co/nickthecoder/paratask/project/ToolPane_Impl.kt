@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.project
 import javafx.application.Platform
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
@@ -28,7 +27,8 @@ import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
-import uk.co.nickthecoder.paratask.util.RequestFocus
+import uk.co.nickthecoder.paratask.util.MyTab
+import uk.co.nickthecoder.paratask.util.MyTabPane
 
 class ToolPane_Impl(override var tool: Tool)
 
@@ -36,7 +36,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     val borderPane = BorderPane()
 
-    private val tabPane = TabPane()
+    private val tabPane = MyTabPane()
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
@@ -62,10 +62,9 @@ class ToolPane_Impl(override var tool: Tool)
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
-        parametersTab.text = "Parameters"
         parametersTab.content = parametersPane as Node
 
-        tabPane.tabs.addAll(parametersTab)
+        tabPane.add(parametersTab)
 
         tabPane.selectionModel.selectedItemProperty().addListener { _, oldTab, newTab -> onTabChanged(oldTab, newTab) }
     }
@@ -83,7 +82,7 @@ class ToolPane_Impl(override var tool: Tool)
         }
     }
 
-    fun onTabChanged(oldTab: Tab?, newTab: Tab?) {
+    fun onTabChanged(oldTab: MyTab?, newTab: MyTab?) {
         if (oldTab is MinorTab) {
             oldTab.deselected()
         }
@@ -120,7 +119,7 @@ class ToolPane_Impl(override var tool: Tool)
     private fun removeResults(results: Results): Int {
         for ((i, tab) in tabPane.tabs.withIndex()) {
             if (tab is ResultsTab && tab.results === results) {
-                tabPane.tabs.removeAt(i)
+                tabPane.remove(tab)
                 return i
             }
         }
@@ -134,7 +133,7 @@ class ToolPane_Impl(override var tool: Tool)
         for (results in resultsList) {
             children.add(results.node) // Temporarily add to StackPane. A bodge to ensure parent is set
             val resultsTab = ResultsTab(results)
-            tabPane.tabs.add(index, resultsTab)
+            tabPane.add(index, resultsTab)
             index++
             results.attached(this)
         }
@@ -183,7 +182,7 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun toggleParameters() {
-        if (parametersTab.isSelected) {
+        if (parametersTab.isSelected()) {
             tabPane.selectionModel.select(0)
         } else {
             tabPane.selectionModel.select(tabPane.tabs.count() - 1)
@@ -228,7 +227,7 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
 
-    class ParametersTab(val parametersPane: ParametersPane) : Tab(), MinorTab {
+    class ParametersTab(val parametersPane: ParametersPane) : MyTab("Parameters"), MinorTab {
         override fun focus() {
             Platform.runLater {
                 parametersPane.focus()

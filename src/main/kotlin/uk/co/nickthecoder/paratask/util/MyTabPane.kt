@@ -1,14 +1,10 @@
 package uk.co.nickthecoder.paratask.util
 
+import javafx.beans.property.SimpleObjectProperty
 import javafx.event.ActionEvent
-import javafx.geometry.HPos
 import javafx.geometry.Side
-import javafx.geometry.VPos
 import javafx.scene.Node
-import javafx.scene.control.Button
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.MenuItem
-import javafx.scene.control.SingleSelectionModel
+import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
@@ -37,7 +33,9 @@ open class MyTabPane : BorderPane() {
 
     private val moreButton = Button("▼")
 
-    private val moreContextMenu = ContextMenu()
+    private var moreContextMenu = ContextMenu()
+
+    var tabClosingPolicy: TabPane.TabClosingPolicy = TabPane.TabClosingPolicy.SELECTED_TAB
 
     val tabs: List<MyTab> = mutableTabs
 
@@ -54,8 +52,9 @@ open class MyTabPane : BorderPane() {
             selectedTab?.let {
                 it.content.isVisible = false
                 it.styleClass.remove("selected")
-                it.closeButton.isVisible = false
-                it.right = null
+                if (tabClosingPolicy != TabPane.TabClosingPolicy.ALL_TABS) {
+                    it.right = null
+                }
             }
             field = v
             if (v == null) {
@@ -65,8 +64,9 @@ open class MyTabPane : BorderPane() {
             } else {
                 v.content.isVisible = true
                 v.styleClass.add("selected")
-                v.closeButton.isVisible = true
-                v.right = v.closeButton
+                if (tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
+                    v.right = v.closeButton
+                }
             }
             selectionModel.select(v)
         }
@@ -150,7 +150,7 @@ open class MyTabPane : BorderPane() {
             moreContextMenu.hide()
             return
         }
-        moreContextMenu.items.clear()
+        moreContextMenu = ContextMenu()
         tabs.forEach { tab ->
             val menuItem = MenuItem(tab.textProperty().get())
             menuItem.addEventHandler(ActionEvent.ACTION) {
@@ -162,7 +162,7 @@ open class MyTabPane : BorderPane() {
             }
             moreContextMenu.items.add(menuItem)
         }
-        moreContextMenu.show(moreButtonContainer, Side.BOTTOM, 0.0, 0.0)
+        moreContextMenu.show(moreButtonContainer, if (side == Side.TOP) Side.BOTTOM else Side.TOP, 0.0, 0.0)
     }
 
     inner class TabsContainer : HBox() {
