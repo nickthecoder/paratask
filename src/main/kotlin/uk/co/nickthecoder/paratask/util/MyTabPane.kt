@@ -125,7 +125,9 @@ open class MyTabPane : BorderPane() {
         tabsContainer.children.add(index, tab)
         tab.tabPane = this
         contents.children.add(tab.content)
-        selectedTab = tab
+        if (selectedTab == null) {
+            selectedTab = tab
+        }
     }
 
     fun remove(tab: MyTab) {

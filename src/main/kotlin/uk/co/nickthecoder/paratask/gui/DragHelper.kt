@@ -24,6 +24,7 @@ open class DragHelper<T>(
         val dataFormat: DataFormat,
         val source: Node,
         val modes: Array<TransferMode> = TransferMode.ANY,
+        val done: ((DragEvent, T) -> Unit)? = null,
         val obj: () -> (T)) {
 
     init {
@@ -43,7 +44,14 @@ open class DragHelper<T>(
         event.consume()
     }
 
+    fun content(event: DragEvent): T {
+        @Suppress("UNCHECKED_CAST")
+        return event.dragboard.getContent(dataFormat) as T
+    }
+
     open fun onDone(event: DragEvent) {
+
+        done?.let { it(event, content(event)) }
         event.consume()
     }
 }
