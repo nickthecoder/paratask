@@ -20,9 +20,10 @@ package uk.co.nickthecoder.paratask.options
 import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.util.ThreadedDesktop
+import java.io.Serializable
 
 class GroovyOption(var script: String)
-    : AbstractOption() {
+    : AbstractOption(), Serializable {
 
     private var gscript: GroovyScript? = null
 

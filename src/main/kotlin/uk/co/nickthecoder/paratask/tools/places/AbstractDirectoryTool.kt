@@ -62,17 +62,17 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
         override fun acceptDropOnNonRow() = if (isTree()) null else TransferMode.ANY
 
-        override fun droppedFilesOnRow(row: WrappedFile, files: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedFilesOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
-                return fileOperation(row.file, files, transferMode)
+                return fileOperation(row.file, content, transferMode)
             }
             return false
         }
 
-        override fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedFilesOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
             val dir = directory
             if (dir != null) {
-                return fileOperation(dir, files, transferMode)
+                return fileOperation(dir, content, transferMode)
             }
             return false
         }

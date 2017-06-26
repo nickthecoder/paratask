@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
+import java.io.Serializable
+
 abstract class AbstractOption(
         override var code: String = "",
         override var aliases: MutableList<String> = mutableListOf<String>(),
@@ -26,7 +28,7 @@ abstract class AbstractOption(
         override var newTab: Boolean = false,
         override var prompt: Boolean = false,
         override var refresh: Boolean = false
-) : Option {
+) : Option, Serializable {
 
     protected fun copyTo(result: AbstractOption) {
         result.code = code

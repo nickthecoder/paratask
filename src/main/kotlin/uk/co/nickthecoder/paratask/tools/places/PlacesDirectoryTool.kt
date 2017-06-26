@@ -54,15 +54,15 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
         override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
-        override fun droppedFilesOnRow(row: Place, files: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedFilesOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
-                return fileOperation(row.file!!, files, transferMode)
+                return fileOperation(row.file!!, content, transferMode)
             }
             return false
         }
 
-        override fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean {
-            for (file in files) {
+        override fun droppedFilesOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+            for (file in content) {
                 placesFile.places.add(Place(placesFile, Resource(file), file.name))
             }
             placesFile.save()

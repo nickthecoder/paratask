@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.util.FileOperations
 import java.io.File
 
 /**
@@ -15,5 +16,24 @@ import java.io.File
 abstract class TableToolDropFilesHelper<R : Any>(
         tool: AbstractTableTool<R>,
         modes: Array<TransferMode> = TransferMode.ANY)
-    : TableToolDropHelper<List<File>?, R>(dataFormat = DataFormat.FILES, tool = tool, modes = modes) {
+    : TableToolDropHelper<List<File>, R>(dataFormat = DataFormat.FILES, tool = tool, modes = modes) {
+
+
+    fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
+
+        when (transferMode) {
+            TransferMode.COPY -> {
+                FileOperations.instance.copyFiles(files, dest)
+                return true
+            }
+            TransferMode.MOVE -> {
+                FileOperations.instance.moveFiles(files, dest)
+            }
+            TransferMode.LINK -> {
+                FileOperations.instance.linkFiles(files, dest)
+            }
+        }
+        return false
+    }
+
 }

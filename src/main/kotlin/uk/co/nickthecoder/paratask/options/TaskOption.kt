@@ -19,9 +19,10 @@ package uk.co.nickthecoder.paratask.options
 
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
+import java.io.Serializable
 
 class TaskOption(var task: Task)
-    : AbstractOption() {
+    : AbstractOption(), Serializable {
 
     constructor(creationString: String) : this(Task.create(creationString))
 

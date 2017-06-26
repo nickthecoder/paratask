@@ -17,15 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.DragHelper
+import uk.co.nickthecoder.paratask.gui.TableToolDropHelper
 import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.TableResults
 import uk.co.nickthecoder.paratask.util.AutoRefreshTool
 
 class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
@@ -37,6 +41,28 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     val resourceDirectoryP = ResourceParameter("directory", expectFile = false)
 
     var includesTool: IncludesTool = IncludesTool()
+
+    var dropHelper: TableToolDropHelper<List<Option>, Option> = object :
+            TableToolDropHelper<List<Option>, Option>(Option.dataFormat, this, modes = TransferMode.ANY) {
+
+        override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
+
+        override fun acceptDropOnRow(row: Option) = null
+
+        override fun droppedFilesOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
+            return false
+        }
+
+        override fun droppedFilesOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
+            val fileOptions = getFileOptions()
+            for (option in content) {
+                fileOptions.addOption(option.copy())
+            }
+            fileOptions.save()
+            return true
+        }
+    }
+
 
     init {
         taskD.addParameters(optionsNameP, resourceDirectoryP)
@@ -84,14 +110,35 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     }
 
+    override fun createTableResults(): TableResults<Option> {
+        val tableResults = super.createTableResults()
+
+        DragHelper<List<Option>>(Option.dataFormat, tableResults.tableView) {
+            tableResults.tableView.selectionModel.selectedItems.map { it.row }
+        }
+
+        dropHelper.table = tableResults.tableView
+
+        return tableResults
+    }
+
     override fun createResults(): List<Results> {
+
         return super.createResults() + includesTool.createResults() + TaskResults(this, OptionsMetaDataTask())
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
+        dropHelper.attached(toolPane)
     }
+
+    override fun detaching() {
+        super<AbstractTableTool>.detaching()
+        super<AutoRefreshTool>.detaching()
+        dropHelper.detaching()
+    }
+
 
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
 
@@ -120,11 +167,6 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             Thread.sleep(1000)
             super.refresh()
         }).start()
-    }
-
-    override fun detaching() {
-        super<AbstractTableTool>.detaching()
-        super<AutoRefreshTool>.detaching()
     }
 
     fun taskEdit(option: Option): EditOptionTask {

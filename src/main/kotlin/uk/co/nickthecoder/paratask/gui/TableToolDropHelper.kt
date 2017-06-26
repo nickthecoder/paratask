@@ -9,8 +9,6 @@ import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.WrappedRow
-import uk.co.nickthecoder.paratask.util.FileOperations
-import java.io.File
 
 /**
  * A helper class for table tools which can be a drop target for files.
@@ -41,7 +39,7 @@ abstract class TableToolDropHelper<T, R : Any>(
         val halfTab = toolPane.halfTab
         if (halfTab.isLeft()) {
             dropHelperOnTab = DropHelperOnTab(halfTab.projectTab as Node, modes = modes) { event ->
-                droppedFilesOnNonRow(event.dragboard.files, event.transferMode)
+                droppedFilesOnNonRow(dropHelperOnTab!!.content(event), event.transferMode)
             }
         }
     }
@@ -57,10 +55,10 @@ abstract class TableToolDropHelper<T, R : Any>(
 
         val (row, _) = tool.findTableRow(event)
         if (row != null && acceptDropOnRow(row) != null) {
-            return droppedFilesOnRow(row, event.dragboard.files, event.transferMode)
+            return droppedFilesOnRow(row, dropHelperOnTable!!.content(event), event.transferMode)
         }
         if (acceptDropOnNonRow() != null) {
-            return droppedFilesOnNonRow(event.dragboard.files, event.transferMode)
+            return droppedFilesOnNonRow(dropHelperOnTable!!.content(event), event.transferMode)
         }
         return false
     }
@@ -69,32 +67,14 @@ abstract class TableToolDropHelper<T, R : Any>(
 
     open fun acceptDropOnRow(row: R): Array<TransferMode>? = modes
 
-    abstract fun droppedFilesOnRow(row: R, files: List<File>, transferMode: TransferMode): Boolean
+    abstract fun droppedFilesOnRow(row: R, content: T, transferMode: TransferMode): Boolean
 
-    abstract fun droppedFilesOnNonRow(files: List<File>, transferMode: TransferMode): Boolean
-
-
-    fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
-
-        when (transferMode) {
-            TransferMode.COPY -> {
-                FileOperations.instance.copyFiles(files, dest)
-                return true
-            }
-            TransferMode.MOVE -> {
-                FileOperations.instance.moveFiles(files, dest)
-            }
-            TransferMode.LINK -> {
-                FileOperations.instance.linkFiles(files, dest)
-            }
-        }
-        return false
-    }
+    abstract fun droppedFilesOnNonRow(content: T, transferMode: TransferMode): Boolean
 
     inner class DropHelperOnTab(target: Node,
-                               source: Node = target,
-                               modes: Array<TransferMode> = TransferMode.ANY,
-                               dropped: (DragEvent) -> Boolean)
+                                source: Node = target,
+                                modes: Array<TransferMode> = TransferMode.ANY,
+                                dropped: (DragEvent) -> Boolean)
         : DropHelper<T>(dataFormat, target, source, modes, dropped) {
 
         override fun accept(event: DragEvent): Array<TransferMode>? {
@@ -106,10 +86,10 @@ abstract class TableToolDropHelper<T, R : Any>(
      * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
      */
     inner class DropHelperOnTable(target: Node,
-                                 source: Node = target,
-                                 modes: Array<TransferMode> = TransferMode.ANY,
-                                 dropped: (DragEvent) -> Boolean)
-        : DropHelper<T>( dataFormat, target, source, modes, dropped) {
+                                  source: Node = target,
+                                  modes: Array<TransferMode> = TransferMode.ANY,
+                                  dropped: (DragEvent) -> Boolean)
+        : DropHelper<T>(dataFormat, target, source, modes, dropped) {
 
         override fun styleableNode(event: DragEvent): Styleable? {
             val (row, tableRow) = tool.findTableRow(event)

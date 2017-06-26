@@ -21,9 +21,9 @@ import javafx.scene.Node
 import javafx.scene.input.*
 
 open class DragHelper<T>(
+        val dataFormat: DataFormat,
         val source: Node,
         val modes: Array<TransferMode> = TransferMode.ANY,
-        val dataFormat: DataFormat,
         val obj: () -> (T)) {
 
     init {
