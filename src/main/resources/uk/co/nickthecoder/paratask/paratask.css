@@ -297,7 +297,7 @@
 
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button {
     -fx-background-color: -fx-mark-color;
-    -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z";
+    -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z"; /* An "x" shape */
     -fx-scale-shape: false;
     -fx-effect: dropshadow(two-pass-box , rgba(255, 255, 255, 0.4), 1, 0.0 , 0, 1);
 }
@@ -306,6 +306,14 @@
 }
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button:hover {
     -fx-background-color: derive(-fx-mark-color, -30%);
+}
+.my-tab-pane > .tab-header-area > .more-button-container {
+    -fx-padding: 0 0 4px 8px;
+}
+.my-tab-pane > .tab-header-area > .more-button-container > .more-button {
+    -fx-font-size: 0.7em;
+    -fx-padding: 5px 7px 5px 7px;
+    -fx-background-radius: 10;
 }
 
 /****************************************************

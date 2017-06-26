@@ -10,14 +10,6 @@ I think I'm using Drag/DropFiles source incorrectly.
 	If I set it to the parent directory for DirectoryTool, to PlacesFile for PlacesTool and the TextField for FileField
 	Then the DropFiles need to perform a custom check.
 
-Drag from PlacesTool
-
-MyTabPane
-	Create a pulldown menu of hidden tabs when there are too many for them all to be visible
-	Scroll the tabs so that the selected tab is always visible
-		Maybe scroll in proportion to the tab index of the selected tab???
-		Or, scroll just enough for the selected tab to be visible
-
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 

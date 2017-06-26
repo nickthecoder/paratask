@@ -61,4 +61,12 @@ open class MyTab(content: Node = Label("Empty"), text: String = "", graphic: Nod
         }
         return false
     }
+
+    override fun computeMinWidth(height: Double): Double {
+        return computePrefWidth(height)
+    }
+
+    override fun computeMinHeight(width: Double): Double {
+        return computePrefHeight(width)
+    }
 }

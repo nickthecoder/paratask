@@ -1,10 +1,19 @@
 package uk.co.nickthecoder.paratask.util
 
+import javafx.event.ActionEvent
+import javafx.geometry.HPos
 import javafx.geometry.Side
+import javafx.geometry.VPos
+import javafx.scene.Node
+import javafx.scene.control.Button
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
 import javafx.scene.control.SingleSelectionModel
+import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
+import javafx.scene.shape.Rectangle
 
 /**
  * My version of a TabPane, which differs from the standard JavaFX TabPane, by exposing the tabs as Nodes,
@@ -18,11 +27,17 @@ open class MyTabPane : BorderPane() {
 
     internal val contents = StackPane()
 
-    private val tabHeaderArea = HBox()
+    private val tabHeaderArea = BorderPane()
 
-    private val tabsContainer = HBox()
+    private val tabsContainer = TabsContainer()
 
     private val mutableTabs = mutableListOf<MyTab>()
+
+    private val moreButtonContainer = StackPane()
+
+    private val moreButton = Button("▼")
+
+    private val moreContextMenu = ContextMenu()
 
     val tabs: List<MyTab> = mutableTabs
 
@@ -78,12 +93,21 @@ open class MyTabPane : BorderPane() {
     init {
         center = contents
         top = tabHeaderArea
-        tabHeaderArea.children.add(tabsContainer)
+        tabHeaderArea.center = tabsContainer
+        tabHeaderArea.right = moreButtonContainer
+        moreButtonContainer.children.add(moreButton)
+        tabsContainer.minWidth = 0.0
 
         styleClass.add("my-tab-pane")
         tabHeaderArea.styleClass.add("tab-header-area")
         tabsContainer.styleClass.add("tabs-container")
         contents.styleClass.add("contents")
+        moreButtonContainer.styleClass.add("more-button-container")
+        moreButton.styleClass.add("more-button")
+
+        moreButton.addEventHandler(ActionEvent.ACTION) {
+            showMoreContextMenu()
+        }
 
         side = Side.TOP
     }
@@ -118,6 +142,78 @@ open class MyTabPane : BorderPane() {
                 // Select the previous tab (when removing the first tab, then selected the next one)
                 selectedTab = tabs[if (index == 0) 0 else index - 1]
             }
+        }
+    }
+
+    fun showMoreContextMenu() {
+        if (moreContextMenu.isShowing) {
+            moreContextMenu.hide()
+            return
+        }
+        moreContextMenu.items.clear()
+        tabs.forEach { tab ->
+            val menuItem = MenuItem(tab.textProperty().get())
+            menuItem.addEventHandler(ActionEvent.ACTION) {
+                selectedTab = tab
+            }
+            val graphic = tab.graphic
+            if (graphic is ImageView) {
+                menuItem.graphic = ImageView(graphic.image)
+            }
+            moreContextMenu.items.add(menuItem)
+        }
+        moreContextMenu.show(moreButtonContainer, Side.BOTTOM, 0.0, 0.0)
+    }
+
+    inner class TabsContainer : HBox() {
+
+        var offsetX = 0.0
+
+        override fun layoutChildren() {
+            super.layoutChildren()
+
+            val tab = selectedTab
+            if (tab != null) {
+                val bounds = tab.boundsInParent
+
+                val left = bounds.minX + offsetX - insets.left
+                if (left < 0.0) {
+                    offsetX -= left
+                }
+                val right = width - insets.right - bounds.maxX - offsetX
+                if (right < 0.0) {
+                    offsetX += right
+                }
+
+            }
+
+            var showMore = offsetX != 0.0
+
+            // Check if there is space on the right of the last tab (due to window being expanded)
+            val lastTab = tabs.lastOrNull()
+            if (lastTab != null) {
+                val bounds = lastTab.boundsInParent
+                val right = width - insets.right - bounds.maxX - offsetX
+                if (offsetX < 0.0 && right > 0.0) { // Left edge is cropped, and yet there is space on the right
+                    offsetX += right
+                    if (offsetX > 0.0) {
+                        offsetX = 0.0
+                    }
+                }
+                if (right < 0.0) { // Right edge is cropped
+                    showMore = true
+                }
+            }
+            moreButton.isVisible = showMore
+
+            // Move all tabs based on the offset
+            if (offsetX != 0.0) {
+                getManagedChildren<Node>().forEach { child ->
+                    child.layoutX += offsetX
+                }
+            }
+            // Ensure that the tabs do not overlap the moreButton
+            clip = Rectangle(0.0, 0.0, width, height)
         }
     }
 }
