@@ -59,4 +59,8 @@ class ThreadedDesktop {
         browse(file.toURI())
     }
 
+    fun browse(address: String) {
+        browse(URL(address))
+    }
+
 }

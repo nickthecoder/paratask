@@ -30,7 +30,7 @@ import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.DragFiles
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
@@ -54,7 +54,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
     fun createControl(): Node {
         val main = buildTextField()
 
-        DragFiles(icon) { getFile()?.let { listOf(it) } }
+        DragFilesHelper(icon) { getFile()?.let { listOf(it) } }
         DropFiles(textField, icon, modes = arrayOf(TransferMode.LINK)) { event ->
             for (file in event.dragboard.files) {
                 textField.text = file.path

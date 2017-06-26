@@ -23,7 +23,11 @@ import java.net.URL
 
 class PlacesFile(val file: File) {
 
-    val places = file.readLines().map { parseLine(it) }.toMutableList()
+    val places = if (file.exists()) {
+        file.readLines().map { parseLine(it) }.toMutableList()
+    } else {
+        mutableListOf<Place>()
+    }
 
     fun save() {
         file.writeText(places.joinToString(separator = "\n", postfix = "\n"))

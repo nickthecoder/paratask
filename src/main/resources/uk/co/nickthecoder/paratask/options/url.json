@@ -7,7 +7,7 @@
     "options": [
         {
             "type": "groovy",
-            "script": "desktop.browser( row.url )",
+            "script": "desktop.browse( row.url )",
             "code": ".",
             "label": "Open in Web Browser",
             "isRow": true,
@@ -17,6 +17,23 @@
             "refresh": false,
             "aliases": [
                 "o"
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.WebTool",
+            "code": "web",
+            "label": "Open with built-in Browser",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "address",
+                    "expression": "row.url.toString()"
+                }
             ]
         }
     ]

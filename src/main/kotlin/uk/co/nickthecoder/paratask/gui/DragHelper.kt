@@ -17,18 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.scene.Cursor
 import javafx.scene.Node
-import javafx.scene.input.ClipboardContent
-import javafx.scene.input.DragEvent
-import javafx.scene.input.MouseEvent
-import javafx.scene.input.TransferMode
-import java.io.File
+import javafx.scene.input.*
 
-open class DragFiles(
+open class DragHelper<T>(
         val source: Node,
         val modes: Array<TransferMode> = TransferMode.ANY,
-        val files: () -> (List<File>?)) {
+        val dataFormat: DataFormat,
+        val obj: () -> (T)) {
 
     init {
         source.setOnDragDetected { onDragDetected(it) }
@@ -38,9 +34,9 @@ open class DragFiles(
     open fun onDragDetected(event: MouseEvent) {
         val dragboard = source.startDragAndDrop(* modes)
 
-        files()?.let {
+        obj()?.let {
             val content = ClipboardContent()
-            content.putFiles(it)
+            content.put(dataFormat, it)
             dragboard.setContent(content)
 
         }

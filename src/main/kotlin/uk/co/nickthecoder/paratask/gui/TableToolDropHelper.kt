@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.css.Styleable
 import javafx.scene.Node
 import javafx.scene.control.TableView
+import javafx.scene.input.DataFormat
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.project.ToolPane
@@ -13,23 +14,24 @@ import java.io.File
 
 /**
  * A helper class for table tools which can be a drop target for files.
- * The files can either be dropped onto the tab, or onto the table (i.e. this class has TWO DropFiles instances).
+ * The files can either be dropped onto the tab, or onto the table (i.e. this class has TWO DropHelper instances).
  * When dropping onto the table, you can distiguish between dropping to the table as a whole,
  * or dropping to a single row of the table.
  * R is the type or Row
  */
-abstract class ToolDropFiles<R : Any>(
+abstract class TableToolDropHelper<T, R : Any>(
+        val dataFormat: DataFormat,
         val tool: AbstractTableTool<R>,
         val modes: Array<TransferMode> = TransferMode.ANY) {
 
-    var dropFilesOnTab: DropFiles? = null
+    var dropHelperOnTab: DropHelperOnTab? = null
 
-    var dropFilesOnTable: DropFilesOnTable? = null
+    var dropHelperOnTable: DropHelperOnTable? = null
 
     var table: TableView<WrappedRow<R>>? = null
         set(v) {
             v?.let {
-                dropFilesOnTable = DropFilesOnTable(v, modes = modes) { event ->
+                dropHelperOnTable = DropHelperOnTable(v, modes = modes) { event ->
                     droppedFilesOnTable(event)
                 }
             }
@@ -38,16 +40,16 @@ abstract class ToolDropFiles<R : Any>(
     fun attached(toolPane: ToolPane) {
         val halfTab = toolPane.halfTab
         if (halfTab.isLeft()) {
-            dropFilesOnTab = DropFilesOnTab(halfTab.projectTab as Node, modes = modes) { event ->
+            dropHelperOnTab = DropHelperOnTab(halfTab.projectTab as Node, modes = modes) { event ->
                 droppedFilesOnNonRow(event.dragboard.files, event.transferMode)
             }
         }
     }
 
     fun detaching() {
-        dropFilesOnTab?.let {
+        dropHelperOnTab?.let {
             it.cancel()
-            dropFilesOnTab = null
+            dropHelperOnTab = null
         }
     }
 
@@ -89,11 +91,11 @@ abstract class ToolDropFiles<R : Any>(
         return false
     }
 
-    inner class DropFilesOnTab(target: Node,
+    inner class DropHelperOnTab(target: Node,
                                source: Node = target,
                                modes: Array<TransferMode> = TransferMode.ANY,
                                dropped: (DragEvent) -> Boolean)
-        : DropFiles(target, source, modes, dropped) {
+        : DropHelper<T>(dataFormat, target, source, modes, dropped) {
 
         override fun accept(event: DragEvent): Array<TransferMode>? {
             return acceptDropOnNonRow()
@@ -103,11 +105,11 @@ abstract class ToolDropFiles<R : Any>(
     /**
      * Style a ROW when dragging files to a directory, otherwise, style the table as a whole
      */
-    inner class DropFilesOnTable(target: Node,
+    inner class DropHelperOnTable(target: Node,
                                  source: Node = target,
                                  modes: Array<TransferMode> = TransferMode.ANY,
                                  dropped: (DragEvent) -> Boolean)
-        : DropFiles(target, source, modes, dropped) {
+        : DropHelper<T>( dataFormat, target, source, modes, dropped) {
 
         override fun styleableNode(event: DragEvent): Styleable? {
             val (row, tableRow) = tool.findTableRow(event)

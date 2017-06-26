@@ -22,8 +22,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.gui.DragFiles
-import uk.co.nickthecoder.paratask.gui.ToolDropFiles
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.gui.TableToolDropFilesHelper
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.AbstractTableTool
@@ -37,11 +37,11 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
-    val fileP = FileParameter("file", value = homeDirectory.child(".config", "gtk-3.0", "bookmarks"))
+    val fileP = FileParameter("file", mustExist = null, value = homeDirectory.child(".config", "gtk-3.0", "bookmarks"))
 
     lateinit var placesFile: PlacesFile
 
-    var dropFiles: ToolDropFiles<Place> = object : ToolDropFiles<Place>(this, modes = TransferMode.ANY) {
+    var dropHelper: TableToolDropFilesHelper<Place> = object : TableToolDropFilesHelper<Place>(this, modes = TransferMode.ANY) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
 
@@ -78,11 +78,11 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
 
-        DragFiles(tableResults.tableView) {
+        DragFilesHelper(tableResults.tableView) {
             tableResults.tableView.selectionModel.selectedItems.filter { it.row.isFileOrDirectory() }.map { it.row.file!! }
         }
 
-        dropFiles.table = tableResults.tableView
+        dropHelper.table = tableResults.tableView
         return tableResults
     }
 
@@ -94,14 +94,14 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropFiles.attached(toolPane)
+        dropHelper.attached(toolPane)
     }
 
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<AbstractTableTool>.detaching()
-        dropFiles.detaching()
+        dropHelper.detaching()
     }
 
     fun taskNew() = placesFile.taskNew()

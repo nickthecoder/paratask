@@ -20,8 +20,8 @@ package uk.co.nickthecoder.paratask.tools.places
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.gui.DragFiles
-import uk.co.nickthecoder.paratask.gui.ToolDropFiles
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.gui.TableToolDropFilesHelper
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
@@ -56,7 +56,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override val directory: File? by directoryP
 
-    var dropFiles: ToolDropFiles<WrappedFile> = object : ToolDropFiles<WrappedFile>(this) {
+    var dropHelper: TableToolDropFilesHelper<WrappedFile> = object : TableToolDropFilesHelper<WrappedFile>(this) {
 
         override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
 
@@ -95,12 +95,12 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropFiles.attached(toolPane)
+        dropHelper.attached(toolPane)
     }
 
     override fun detaching() {
         super.detaching()
-        dropFiles.detaching()
+        dropHelper.detaching()
     }
 
     fun createImageView(row: WrappedFile): ImageView {
@@ -129,11 +129,11 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     override fun createTableResults(): TableResults<WrappedFile> {
         val tableResults = super.createTableResults()
 
-        DragFiles(tableResults.tableView) {
+        DragFilesHelper(tableResults.tableView) {
             tableResults.tableView.selectionModel.selectedItems.map { it.row.file }
         }
 
-        dropFiles.table = tableResults.tableView
+        dropHelper.table = tableResults.tableView
 
         return tableResults
     }

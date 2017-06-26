@@ -182,25 +182,30 @@
 * DropFiles                 *\
 *****************************/
 
+.root {
+    drop-copy: #FFBB7C;
+    drop-move: #7EFF67;
+    drop-link: #DE97E8;
+}
+
 .drop-copy {
-    -fx-control-inner-background: #8f8;
+    -fx-control-inner-background: drop-copy;
 }
 .drop-move {
-    -fx-control-inner-background: #ff8;
+    -fx-control-inner-background: drop-move;
 }
 .drop-link{
-    -fx-control-inner-background: #faf;
+    -fx-control-inner-background: drop-link;
 }
-
 
 .my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-copy {
-    -fx-background-color: -fx-outer-border, -fx-inner-border, #8f8 !important;
+    -fx-background-color: -fx-outer-border, -fx-inner-border, drop-copy !important;
 }
 .my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-move {
-    -fx-background-color: -fx-outer-border, -fx-inner-border, #ff8 !important;
+    -fx-background-color: -fx-outer-border, -fx-inner-border, drop-move !important;
 }
 .my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-link {
-    -fx-background-color: -fx-outer-border, -fx-inner-border, #faf !important;
+    -fx-background-color: -fx-outer-border, -fx-inner-border, drop-link !important;
 }
 
 /****************************
