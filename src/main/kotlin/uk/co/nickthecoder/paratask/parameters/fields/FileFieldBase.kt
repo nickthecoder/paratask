@@ -71,6 +71,15 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         borderPane.styleClass.add("file-field")
         icon.styleClass.add("icon")
 
+        parameter.listen {
+            val error = parameter.errorMessage()
+            if (error == null) {
+                clearError()
+            } else {
+                showError(error)
+            }
+        }
+
         return borderPane
     }
 
@@ -79,20 +88,11 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
         with(textField) {
 
             text = parameter.stringValue
-            textProperty().addListener({ _, _, _: String ->
-                val error = parameter.errorMessage()
-                if (error == null) {
-                    clearError()
-                } else {
-                    showError(error)
-                }
-            })
 
             addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
             addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
             addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
         }
-
         return textField
     }
 

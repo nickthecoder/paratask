@@ -51,18 +51,19 @@ open class FileParameter(
         }
 
         override fun toString(file: File?): String {
+            if (file == null) {
+                return ""
+            }
+
+            // Should we put a trailing "/" to indicate it is a directory?
+            val suffix = if (file.isDirectory() && file.path != File.separator) File.separator else ""
+
             baseDirectory?.let {
-                file?.relativeToOrNull(it)?.let {
-                    // Add a trailing "/" to indicate it is a directory
-                    // But don't add ANOTHER "/" to root directory ("/").
-                    if (it.isDirectory() && it.path != File.separator) {
-                        return it.path + File.separator
-                    } else {
-                        return it.path
-                    }
+                file.relativeToOrNull(it)?.let {
+                    return it.path + suffix
                 }
             }
-            return file?.path ?: ""
+            return file.path + suffix
         }
     }
 

@@ -13,10 +13,6 @@ I think I'm using Drag/DropFiles source incorrectly.
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 
-Drag an drop options
-	Make a generic base class for DragFiles and DropFiles
-	Only useful once drag and drop is allowed on a TabPane's Tab, which isn't possible. Grr.
-
 Bug. FileField is one behind on the updates when typing filenames.
 
 Bug. Adding an include to an empty options file threw an expection
