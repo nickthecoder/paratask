@@ -55,10 +55,8 @@ class ToolPane_Impl(override var tool: Tool)
 
         headerRowsBox.styleClass.add("header")
 
-        // Adding the ParametersPane to the stack first (and then adding to the TabPane later) is a bodge
-        // because TabPane doesn't set the parent of its child tabs immediately, and I need the ParametersPane
-        // to be part of the Scene graph earlier than it otherwise would.
-        children.addAll(borderPane, parametersPane as Node)
+        children.addAll(borderPane)
+
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
@@ -130,19 +128,16 @@ class ToolPane_Impl(override var tool: Tool)
         val replaceIndex = removeOldResults(oldResultsList)
 
         var index = replaceIndex
+        var found = false
         for (results in resultsList) {
-            children.add(results.node) // Temporarily add to StackPane. A bodge to ensure parent is set
             val resultsTab = ResultsTab(results)
             tabPane.add(index, resultsTab)
+            if (!found) {
+                found = true
+                tabPane.selectedTab = resultsTab
+            }
             index++
             results.attached(this)
-        }
-        tabPane.selectionModel.select(0)
-        if (replaceIndex >= 0 && replaceIndex < tabPane.tabs.size) {
-            val tab = tabPane.tabs[replaceIndex]
-            if (tab is ResultsTab) {
-                tabPane.selectionModel.select(replaceIndex)
-            }
         }
     }
 

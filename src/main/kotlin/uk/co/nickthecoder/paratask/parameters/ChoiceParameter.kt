@@ -45,8 +45,8 @@ open class ChoiceParameter<T>(
 
     override val converter = object : StringConverter<T?>() {
 
-        override fun fromString(label: String): T? {
-            return keyToValueMap[label]
+        override fun fromString(str: String): T? {
+            return keyToValueMap[str]
         }
 
         override fun toString(obj: T?): String {

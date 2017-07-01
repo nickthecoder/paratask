@@ -127,6 +127,8 @@ open class MyTabPane : BorderPane() {
         contents.children.add(tab.content)
         if (selectedTab == null) {
             selectedTab = tab
+        } else {
+            tab.content.isVisible = false
         }
     }
 

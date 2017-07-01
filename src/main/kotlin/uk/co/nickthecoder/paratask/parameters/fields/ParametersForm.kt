@@ -31,7 +31,6 @@ import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ParentParameter
-import uk.co.nickthecoder.paratask.util.focusNext
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).

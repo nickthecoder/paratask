@@ -27,6 +27,11 @@ import uk.co.nickthecoder.paratask.util.process.Exec
 /**
  * Used to process operating system command line arguments, and then either run the Task directly, or start up the
  * GUI to prompt the parameters. If prompting, then ParaTaskApp is used to start JavaFX.
+ *
+ * Note, this can also support command line auto-completion (pressing the tab key once or twice from the bash shell).
+ * Then the 1st argument must be "--autocomplete", the 2nd is the 1-based index of the argument to be completed,
+ * the 3rd is the name of the program, and the remaining arguments are the "regular" arguments.
+ *
  */
 class TaskParser(val task: Task) {
 
@@ -41,6 +46,12 @@ class TaskParser(val task: Task) {
 
     private val helpP = BooleanParameter("help", description = "Print this help text")
 
+    private var autoComplete = false
+
+    private var autoCompleteIndex = 0
+
+    private var autoCompleteValue = ""
+
     init {
         metaTaskD.addParameters(promptP, helpP)
     }
@@ -50,13 +61,38 @@ class TaskParser(val task: Task) {
         arguments = args.toList()
 
         try {
+            if (arguments.size >= 2 && arguments[0] == "--autocomplete") {
+                autoComplete = true
+                autoCompleteIndex = Integer.parseInt(arguments[1]) - 1
+                if (arguments.size >= 3) {
+                    arguments = arguments.slice(3..arguments.size - 1)
+                    if (arguments.size > autoCompleteIndex) {
+                        autoCompleteValue = arguments[autoCompleteIndex]
+                    } else {
+                        autoCompleteValue = ""
+                    }
+                } else {
+                    arguments = mutableListOf()
+                    autoCompleteValue = ""
+                }
+            }
+
             parseRegularArguments()
             if (arguments.isNotEmpty()) {
-                parseExtraArguments()
+                if (autoComplete && autoCompleteIndex > 0) {
+                    // TODO Autocomplete the extra
+                } else {
+                    // Some Tasks allow for a single argument at the end without the "--parameter-name" part.
+                    parseExtraArguments()
+                }
             }
         } catch (e: Exception) {
             // Error while parsing arguments.
             println(e)
+            return
+        }
+
+        if (autoComplete) {
             return
         }
 
@@ -114,13 +150,27 @@ class TaskParser(val task: Task) {
         }
     }
 
+    private fun autoCompleteParameterNames() {
+        arguments = mutableListOf()
+        println(task.parameters().filter {
+            ("--" + it.name).startsWith(autoCompleteValue)
+        }.map { "--" + it.name }.joinToString(separator = " "))
+    }
+
     private fun parseRegularArguments() {
+
+        if (autoComplete && autoCompleteIndex == 0) {
+            autoCompleteParameterNames()
+            return
+        }
+
         while (arguments.isNotEmpty()) {
             val arg = arguments[0]
             val arg2 = if (arguments.size > 1) arguments[1] else null
 
             val remove = parseArgument(arg, arg2)
             arguments = arguments.slice(remove..arguments.size - 1)
+            autoCompleteIndex -= remove
 
             if (remove == 0 || endOfArgs) return
         }

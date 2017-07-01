@@ -1,3 +1,9 @@
+
+Bug. Tabs need to HIDE the content when added, until they become the current tab.
+
+Bug. Drag and Drop url places doesn't do anything, but suggests it will!
+	I haven't coded drag and drop for Resources :-(
+
 FileOperations
 	Make file dialog pretier
 	Report errors
@@ -12,8 +18,6 @@ I think I'm using Drag/DropFiles source incorrectly.
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
-
-Bug. FileField is one behind on the updates when typing filenames.
 
 Bug. Adding an include to an empty options file threw an expection
 
