@@ -22,7 +22,6 @@ import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
@@ -32,9 +31,7 @@ import uk.co.nickthecoder.paratask.util.MyTabPane
 
 class ToolPane_Impl(override var tool: Tool)
 
-    : ToolPane, StackPane() {
-
-    val borderPane = BorderPane()
+    : ToolPane, BorderPane() {
 
     private val tabPane = MyTabPane()
 
@@ -49,13 +46,11 @@ class ToolPane_Impl(override var tool: Tool)
     val headerRows: List<HeaderRow>
 
     init {
-        borderPane.center = tabPane
+        center = tabPane
 
         headerRows = tool.createHeaderRows()
 
         headerRowsBox.styleClass.add("header")
-
-        children.addAll(borderPane)
 
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
@@ -88,7 +83,7 @@ class ToolPane_Impl(override var tool: Tool)
             newTab.selected()
             newTab.focus()
         }
-        borderPane.top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
+        top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
 
     }
 
