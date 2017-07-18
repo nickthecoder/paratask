@@ -74,4 +74,6 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
     override fun computeMinHeight(width: Double): Double {
         return computePrefHeight(width)
     }
+
+    open fun removed() {}
 }

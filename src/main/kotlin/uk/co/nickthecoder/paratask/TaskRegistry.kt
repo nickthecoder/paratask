@@ -41,6 +41,8 @@ object TaskRegistry {
     val projectData = GroupParameter("projectData")
 
     init {
+        register(ParaTaskCore.instance)
+
         addGroup(home)
         addGroup(topLevel)
         addGroup(misc)

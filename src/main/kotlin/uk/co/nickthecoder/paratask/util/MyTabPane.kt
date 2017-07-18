@@ -40,14 +40,14 @@ open class MyTabPane : BorderPane() {
     val tabs: List<MyTab> = mutableTabs
 
     val selectionModel = object : SingleSelectionModel<MyTab>() {
-        override fun getItemCount(): Int = if (selectedTab == null) 0 else 1
+        override fun getItemCount(): Int = tabs.size
 
         override fun getModelItem(index: Int): MyTab? {
-            return tabs[index]
+            return if (index < 0 || index >= tabs.size) null else tabs[index]
         }
     }
 
-    internal var selectedTab: MyTab? = null
+    var selectedTab: MyTab? = null
         set(v) {
             selectedTab?.let {
                 it.content.isVisible = false
@@ -146,6 +146,14 @@ open class MyTabPane : BorderPane() {
                 // Select the previous tab (when removing the first tab, then selected the next one)
                 selectedTab = tabs[if (index == 0) 0 else index - 1]
             }
+        }
+        tab.removed()
+    }
+
+    fun clear() {
+        while (tabs.isNotEmpty()) {
+            val tab = tabs[0]
+            remove(tab)
         }
     }
 
