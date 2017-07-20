@@ -77,7 +77,6 @@ abstract class AbstractTool : Tool {
         }
         toolPane = null
         resultsList = listOf<Results>()
-        resolver = CompoundParameterResolver()
     }
 
     override fun check() {

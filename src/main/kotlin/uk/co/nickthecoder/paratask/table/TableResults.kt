@@ -40,7 +40,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     val data = WrappedList(list)
 
-    var tableView: TableView<WrappedRow<R>> = TableView()
+    val tableView: TableView<WrappedRow<R>> = TableView()
 
     override val node = tableView
 
@@ -78,13 +78,6 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
                 tableRow
             }
         }
-    }
-
-    override fun detaching() {
-        println("detatching TableResults ${this}")
-        super.detaching()
-        data.clear()
-        tableView = TableView()
     }
 
     override fun deselected() {
@@ -232,10 +225,5 @@ class WrappedList<R>(list: List<R>) :
 
     override fun get(index: Int): WrappedRow<R> = list[index]
 
-    override var size = list.size
-
-    override fun clear() {
-        list = listOf<WrappedRow<R>>()
-        size = 0
-    }
+    override val size = list.size
 }
