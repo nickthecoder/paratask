@@ -40,7 +40,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     val data = WrappedList(list)
 
-    val tableView: TableView<WrappedRow<R>> = TableView()
+    var tableView: TableView<WrappedRow<R>> = TableView()
 
     override val node = tableView
 
@@ -50,6 +50,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     override fun attached(toolPane: ToolPane) {
 
+        super.attached(toolPane)
         with(codeColumn) {
             setCellValueFactory { p -> p.value.codeProperty }
             isEditable = true
@@ -79,7 +80,12 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
-    override fun detaching() {}
+    override fun detaching() {
+        println("detatching TableResults ${this}")
+        super.detaching()
+        data.clear()
+        tableView = TableView()
+    }
 
     override fun deselected() {
         tableView.edit(-1, null) // Stop editing
@@ -216,16 +222,20 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             }
         }
     }
-
 }
 
 
 class WrappedList<R>(list: List<R>) :
         ImmutableObservableList<WrappedRow<R>>() {
 
-    val list = list.map { row: R -> WrappedRow(row) }
+    var list = list.map { row: R -> WrappedRow(row) }
 
     override fun get(index: Int): WrappedRow<R> = list[index]
 
-    override val size = list.size
+    override var size = list.size
+
+    override fun clear() {
+        list = listOf<WrappedRow<R>>()
+        size = 0
+    }
 }

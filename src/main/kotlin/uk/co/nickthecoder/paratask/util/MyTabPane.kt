@@ -139,6 +139,7 @@ open class MyTabPane : BorderPane() {
         }
         mutableTabs.remove(tab)
         tabsContainer.children.remove(tab)
+        contents.children.remove(tab.content)
         if (selectedTab === tab) {
             if (tabs.isEmpty()) {
                 selectedTab = null

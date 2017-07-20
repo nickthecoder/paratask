@@ -75,7 +75,9 @@ abstract class AbstractTool : Tool {
         for (results in resultsList) {
             results.detaching()
         }
-        this.toolPane = null
+        toolPane = null
+        resultsList = listOf<Results>()
+        resolver = CompoundParameterResolver()
     }
 
     override fun check() {
@@ -97,9 +99,13 @@ abstract class AbstractTool : Tool {
     open fun iconName(): String = taskD.name
 
     override fun updateResults() {
+        val oldResults = resultsList
         val newResults = createResults()
         toolPane?.replaceResults(newResults, resultsList)
         resultsList = newResults
+        for (results in oldResults) {
+            results.detaching()
+        }
     }
 
     protected fun singleResults(results: Results) = listOf(results)

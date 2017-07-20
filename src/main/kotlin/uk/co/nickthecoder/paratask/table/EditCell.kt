@@ -31,18 +31,26 @@ import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.project.Actions
 import uk.co.nickthecoder.paratask.util.RequestFocus
+import java.lang.ref.WeakReference
 
 class EditCell<S, T>(
-        val tableResults: TableResults<*>,
+        tableResults: TableResults<*>,
         val converter: StringConverter<T>)
 
     : TableCell<S, T>() {
+
+    // In order to prevent/hunt down memory leaks, I've made this a weak reference
+    val tableResultsRef = WeakReference(tableResults)
 
     // Text field for editing
     private val textField = TextField()
 
     init {
-        textField.contextMenu = tableResults.contextMenu
+        create()
+    }
+
+    fun create() {
+        textField.contextMenu = tableResultsRef.get()?.contextMenu
         textField.styleClass.add("edit-cell")
         itemProperty().addListener { _, _, newItem ->
             if (newItem == null) {
@@ -77,7 +85,7 @@ class EditCell<S, T>(
                 event.consume()
                 move(1)
             } else if (Actions.CONTEXT_MENU.match(event)) {
-                tableResults.showContextMenu(textField, event)
+                tableResultsRef.get()?.showContextMenu(textField, event)
                 event.consume()
             }
         }
@@ -89,8 +97,8 @@ class EditCell<S, T>(
 
     fun onMouse(event: MouseEvent) {
         if (event.isPopupTrigger) {
-            tableResults.showContextMenu(textField, event)
-            tableResults.contextMenu.show(textField, Side.LEFT, event.x, event.y)
+            tableResultsRef.get()?.showContextMenu(textField, event)
+            tableResultsRef.get()?.contextMenu?.show(textField, Side.LEFT, event.x, event.y)
             event.consume()
         }
     }
