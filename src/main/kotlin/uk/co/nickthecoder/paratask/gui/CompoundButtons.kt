@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.control.Button
+import javafx.scene.control.ToggleButton
+import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.HBox
 
 /**
@@ -27,7 +29,7 @@ import javafx.scene.layout.HBox
  * Note, this class isn't well developed. It cannot handle removing buttons, not making the first/last buttons
  * invisible.
  */
-class ButtonGroup : HBox() {
+class CompoundButtons : HBox() {
 
     init {
         styleClass.add("button-group")
@@ -46,4 +48,15 @@ class ButtonGroup : HBox() {
         }
         children.add(button)
     }
+
+    fun createToggleGroup(): ToggleGroup {
+        val group = ToggleGroup()
+        children.forEach { child ->
+            if (child is ToggleButton) {
+                group.toggles.add(child)
+            }
+        }
+        return group
+    }
 }
+

@@ -1,8 +1,18 @@
 
-Bug. Tabs need to HIDE the content when added, until they become the current tab.
+Bugs
+	Drag and Drop url places doesn't do anything, but suggests it will!
+		I haven't coded drag and drop for Resources :-(
+	Adding an include to an empty options file threw an expection
+	"" and "tt" are PASSES in sgf, but I'm not using them!
+		Also, I have a note that passes are not supported - remove it!
 
-Bug. Drag and Drop url places doesn't do anything, but suggests it will!
-	I haven't coded drag and drop for Resources :-(
+Joseki
+	Add buttons to move through the game tree
+		Buttons for next/previous branch point
+
+Drag and drop tabs. With the tabs container to reorder, outside of the window to tear off.
+	allowReordering, allowTearOff boolean
+	tearOff callback.
 
 FileOperations
 	Make file dialog pretier
@@ -18,8 +28,6 @@ I think I'm using Drag/DropFiles source incorrectly.
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
-
-Bug. Adding an include to an empty options file threw an expection
 
 Implement command line tab completion
 

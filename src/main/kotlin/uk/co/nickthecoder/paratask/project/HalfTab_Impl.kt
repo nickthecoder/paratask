@@ -29,7 +29,7 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.ButtonGroup
+import uk.co.nickthecoder.paratask.gui.CompoundButtons
 import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
 
@@ -69,7 +69,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             contextMenu = optionsContextMenu
         }
 
-        val historyGroup = ButtonGroup()
+        val historyGroup = CompoundButtons()
         val backButton = Actions.HISTORY_BACK.createButton(shortcuts) { history.undo() }
         val forwardButton = Actions.HISTORY_FORWARD.createButton(shortcuts) { history.redo() }
         backButton.disableProperty().bind(history.canUndoProperty.not())
