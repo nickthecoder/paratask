@@ -1,10 +1,12 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.ActionEvent
+import javafx.geometry.Point2D
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
@@ -167,6 +169,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
                 selectedTab = tabs[if (index == 0) 0 else index - 1]
             }
         }
+        tab.tabPane = null
         tab.removed()
     }
 
@@ -197,9 +200,47 @@ open class MyTabPane<T : MyTab> : BorderPane() {
         moreContextMenu.show(moreButtonContainer, if (side == Side.TOP) Side.BOTTOM else Side.TOP, 0.0, 0.0)
     }
 
+
+    internal fun onDraggedTab(event: MouseEvent, tab: MyTab) {
+
+        val bounds = tab.boundsInParent
+        val containerX = event.x + bounds.minX
+        val containerY = event.y + bounds.minY
+        val point = Point2D(containerX, containerY)
+        var index = -1
+        if (tabHeaderArea.contains(point)) {
+            for (child in tabs) {
+                val childBounds = child.boundsInParent
+                if (containerX < childBounds.minX) {
+                    break
+                }
+                index++
+            }
+            val oldIndex = tabs.indexOf(tab)
+            if (oldIndex != index) {
+                if (index > oldIndex) {
+                    //index--
+                }
+                mutableTabs.remove(tab)
+                mutableTabs.add(index, tab as T)
+                tabsContainer.requestLayout()
+            }
+        }
+
+    }
+
     inner class TabsContainer : HBox() {
 
         var offsetX = 0.0
+
+        /**
+         * So that we can change the order of the tabs (when dragging) without adding and removing the nodes.
+         */
+        override fun <E : Node?> getManagedChildren(): MutableList<E> {
+            val result = mutableListOf<E>()
+            mutableTabs.forEach { result.add(it as E) }
+            return result
+        }
 
         override fun layoutChildren() {
             super.layoutChildren()

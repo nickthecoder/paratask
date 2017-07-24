@@ -68,6 +68,9 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
         addEventHandler(MouseEvent.MOUSE_PRESSED) { tabPane?.let { it.untypedSelectedTab = this } }
         closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED) { remove() }
         closeButton.isVisible = canClose
+
+        addEventHandler(MouseEvent.MOUSE_DRAGGED) { tabPane?.onDraggedTab(it, this) }
+        addEventHandler(MouseEvent.MOUSE_RELEASED) { onReleased(it) }
     }
 
     fun textProperty() = label.textProperty()
@@ -92,4 +95,15 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
     }
 
     open fun removed() {}
+
+    fun onReleased(event: MouseEvent) {
+        val scene = this.scene
+        val sceneX = event.sceneX
+        val sceneY = event.sceneY
+        if (sceneX < 0 || sceneY < 0 || sceneX > scene.width || sceneY > scene.height) {
+            tearOffTab(event)
+        }
+    }
+
+    open fun tearOffTab(event: MouseEvent) {}
 }

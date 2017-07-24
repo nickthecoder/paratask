@@ -17,13 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import com.sun.javafx.stage.StageHelper
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
+import javafx.scene.input.DataFormat
+import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.StackPane
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.MyTab
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
@@ -153,5 +159,34 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     override fun changed() {
         updateTab()
         projectTabs.projectWindow.toolChanged(left.toolPane.tool)
+    }
+
+    override fun tearOffTab(event: MouseEvent) {
+
+        val screenX = event.screenX
+        val screenY = event.screenY
+
+        var projectWindow: ProjectWindow? = null
+
+        for (stage in StageHelper.getStages()) {
+            val window = stage.scene.window
+            if (stage.scene.userData is ProjectWindow) {
+                if (screenX >= window.x && screenY >= window.y && screenX <= window.x + window.width && screenY <= window.y + window.height) {
+                    projectWindow = stage.scene.userData as ProjectWindow
+                    stage.toFront()
+                    break
+                }
+            }
+        }
+        if (projectWindow == null) {
+            projectWindow = ProjectWindow()
+            projectWindow.placeOnStage(Stage())
+        }
+        val projectTab = projectWindow.addTool(left.toolPane.tool.copy())
+        right?.let {
+            projectTab.split(it.toolPane.tool.copy())
+        }
+
+        remove()
     }
 }

@@ -47,6 +47,8 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
     init {
+        scene.userData = this
+
         with(borderPane) {
             center = tabs as Node
             top = toolBar
