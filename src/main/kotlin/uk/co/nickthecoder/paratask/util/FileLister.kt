@@ -78,14 +78,14 @@ class FileLister(
             return result
         }
 
-        fun listSingle(directory: File, level: Int) {
+        fun listSingle(dir: File, level: Int) {
             if (stopping || depth < level) return
 
             val filesAndDirectories: Array<File>
             try {
-                filesAndDirectories = directory.listFiles(this)
+                filesAndDirectories = dir.listFiles(this)
                 if (filesAndDirectories == null) {
-                    throw IOException("Failed to list directory $directory")
+                    throw IOException("Failed to list directory $dir")
                 }
 
                 val files = filesAndDirectories.filter { !it.isDirectory }

@@ -22,14 +22,11 @@ import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
-import javafx.scene.input.DataFormat
 import javafx.scene.input.MouseEvent
-import javafx.scene.input.TransferMode
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.MyTab
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
