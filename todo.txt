@@ -6,14 +6,6 @@ Bugs
 	"" and "tt" are PASSES in sgf, but I'm not using them!
 		Also, I have a note that passes are not supported - remove it!
 
-Joseki
-	Add buttons to move through the game tree
-		Buttons for next/previous branch point
-
-Drag and drop tabs. With the tabs container to reorder, outside of the window to tear off.
-	allowReordering, allowTearOff boolean
-	tearOff callback.
-
 FileOperations
 	Make file dialog pretier
 	Report errors

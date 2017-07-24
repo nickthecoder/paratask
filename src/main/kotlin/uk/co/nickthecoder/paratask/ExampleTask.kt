@@ -36,6 +36,9 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
 
+    val doubleP = DoubleParameter("double")
+    val optionalDoubleP = DoubleParameter("optionalDouble", required = false)
+
     val simpleStringP = StringParameter("simpleString", value = "Hello")
     val yesNoP = BooleanParameter("yesNo", label = "Yes / No")
     val yesNoMaybeP = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
@@ -69,8 +72,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val taskP = TaskParameter("task")
 
     init {
-        //taskD.addParameters(dateP, isoDateP)
-        taskD.addParameters(
+        taskD.addParameters(doubleP, optionalDoubleP,
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
                 fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 

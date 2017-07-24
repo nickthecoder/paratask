@@ -19,80 +19,67 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.parameters.fields.DoubleField
 import uk.co.nickthecoder.paratask.parameters.fields.IntField
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
 
-open class IntParameter(
+open class DoubleParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: Int? = null,
+        value: Double? = null,
         required: Boolean = true,
-        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE))
+        var minValue: Double = 0.0,
+        var maxValue: Double = Double.MAX_VALUE)
 
-    : AbstractValueParameter<Int?>(
+    : AbstractValueParameter<Double?>(
         name = name,
         label = label,
         description = description,
         value = value,
         required = required) {
 
-    override val converter = object : StringConverter<Int?>() {
-        override fun fromString(str: String): Int? {
+    override val converter = object : StringConverter<Double?>() {
+        override fun fromString(str: String): Double? {
             val trimmed = str.trim()
 
             if (trimmed.isEmpty()) {
                 return null
             }
             try {
-                return Integer.parseInt(trimmed)
+                return trimmed.toDouble()
             } catch (e: Exception) {
-                throw ParameterException(this@IntParameter, "Not an integer")
+                throw ParameterException(this@DoubleParameter, "Not a number")
             }
         }
 
-        override fun toString(obj: Int?): String {
+        override fun toString(obj: Double?): String {
             return obj?.toString() ?: ""
         }
 
     }
 
-    override fun errorMessage(v: Int?): String? {
+    override fun errorMessage(v: Double?): String? {
         if (isProgrammingMode()) return null
 
         if (v == null) {
             return super.errorMessage(v)
         }
 
-        if (!range.contains(v)) {
-            if (range.start == Int.MIN_VALUE) {
-                return "Cannot be more than ${range.endInclusive}"
-            } else if (range.endInclusive == Int.MAX_VALUE) {
-                return "Cannot be less than ${range.start}"
-            } else {
-                return "Must be in the range ${range.start}..${range.endInclusive}"
-            }
+        if (v < minValue) {
+            return "Cannot be less than ${minValue}"
+        } else if (v > maxValue) {
+            return "Cannot be more than ${maxValue}"
         }
-
         return null
-    }
-
-    fun min(minimum: Int): IntParameter {
-        range = minimum..range.endInclusive
-        return this
-    }
-
-    fun max(maximum: Int): IntParameter {
-        range = range.start..maximum
-        return this
     }
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = IntField(this)
+    override fun createField(): LabelledField = DoubleField(this)
 
-    override fun toString(): String = "Int" + super.toString()
+    override fun toString(): String = "Double" + super.toString()
 
-    override fun copy() = IntParameter(name = name, label = label, description = description, value = value, required = required, range = range)
+    override fun copy() = DoubleParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue)
 }
