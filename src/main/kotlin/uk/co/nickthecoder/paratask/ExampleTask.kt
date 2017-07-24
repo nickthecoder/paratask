@@ -36,6 +36,9 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
 
+    val durationP = ScaledDoubleParameter("time",
+            scales = mapOf<String, Double>("seconds" to 1.0, "minutes" to 60.0, "hours" to 60.0 * 60))
+
     val doubleP = DoubleParameter("double")
     val optionalDoubleP = DoubleParameter("optionalDouble", required = false)
 
@@ -72,9 +75,10 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val taskP = TaskParameter("task")
 
     init {
-        taskD.addParameters(doubleP, optionalDoubleP,
-                taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
-                fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
+        taskD.addParameters(durationP, doubleP, optionalDoubleP)
+
+        //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
+        //fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
         groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)
@@ -84,6 +88,8 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
         println("Example Parameter values : ")
 
         println(taskD.toString())
+
+        println("Duration scaled value=${durationP.scaledValue} string=${durationP.stringValue} (${durationP.value} ${durationP.scaleString})")
     }
 
     override fun customCheck() {

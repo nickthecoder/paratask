@@ -40,7 +40,7 @@ open class DoubleParameter(
         value = value,
         required = required) {
 
-    override val converter = object : StringConverter<Double?>() {
+    val plainConverter = object : StringConverter<Double?>() {
         override fun fromString(str: String): Double? {
             val trimmed = str.trim()
 
@@ -57,8 +57,9 @@ open class DoubleParameter(
         override fun toString(obj: Double?): String {
             return obj?.toString() ?: ""
         }
-
     }
+
+    override val converter = plainConverter
 
     override fun errorMessage(v: Double?): String? {
         if (isProgrammingMode()) return null

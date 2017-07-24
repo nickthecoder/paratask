@@ -24,18 +24,18 @@ import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.parameters.DoubleParameter
 
 
-class DoubleField(override val parameter: DoubleParameter) : LabelledField(parameter) {
+open class DoubleField(override val parameter: DoubleParameter) : LabelledField(parameter) {
 
     private var dirty = false
 
     init {
-        this.control = createControl()
+        control = createSpinner()
     }
 
-    private fun createControl(): Node {
-        val spinner = createSpinner()
+    protected fun createSpinner(): Node {
+        val spinner = createSimpleSpinner()
 
-        spinner.valueFactory.converter = parameter.converter
+        spinner.valueFactory.converter = parameter.plainConverter
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -88,7 +88,7 @@ class DoubleField(override val parameter: DoubleParameter) : LabelledField(param
         defaultRunnable?.let { defaultRunnable.run() }
     }
 
-    private fun createSpinner(): Spinner<*> {
+    private fun createSimpleSpinner(): Spinner<*> {
         val initialValue: Double? = if (parameter.value == null && parameter.required) {
             if (parameter.minValue >= 0.0) {
                 parameter.minValue
