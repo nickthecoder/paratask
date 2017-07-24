@@ -17,7 +17,7 @@ class MyTabPaneDemo : Application() {
     override fun start(primaryStage: Stage) {
         primaryStage.setTitle("Hello World!")
 
-        val tabPane = MyTabPane()
+        val tabPane = MyTabPane<MyTab>()
 
         val button1 = Button("Hello")
         val button2 = Button("World")

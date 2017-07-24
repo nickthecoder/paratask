@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.gui.MyTabPane
 
 class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
-    : ProjectTabs, MyTabPane() {
+    : ProjectTabs, MyTabPane<ProjectTab_Impl>() {
 
     init {
         selectionModel.selectedItemProperty().addListener {
@@ -71,7 +71,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun currentTab(): ProjectTab? {
-        return selectionModel.selectedItem as ProjectTab
+        return selectionModel.selectedItem
     }
 
     override fun removeTab(projectTab: ProjectTab) {

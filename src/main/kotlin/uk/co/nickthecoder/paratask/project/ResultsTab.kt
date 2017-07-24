@@ -20,7 +20,8 @@ package uk.co.nickthecoder.paratask.project
 import uk.co.nickthecoder.paratask.gui.MyTab
 
 
-class ResultsTab(val results: Results) : MyTab(results.label, results.node), MinorTab {
+class ResultsTab(val results: Results) : MinorTab(results.label, results.node) {
+
     init {
         this.textProperty().bind(results.labelProperty)
     }

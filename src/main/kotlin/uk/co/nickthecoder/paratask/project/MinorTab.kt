@@ -17,11 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-interface MinorTab {
+import javafx.scene.Node
+import javafx.scene.control.Label
+import uk.co.nickthecoder.paratask.gui.MyTab
 
-    fun selected()
+abstract class MinorTab(text: String = "", content: Node = Label("Empty"), graphic: Node? = null)
+    : MyTab(text, content, graphic) {
 
-    fun deselected()
+    abstract fun selected()
 
-    fun focus()
+    abstract fun deselected()
+
+    abstract fun focus()
 }

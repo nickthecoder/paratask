@@ -25,15 +25,15 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.MyTabPane
+import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 
 class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, BorderPane() {
 
-    private val tabPane = MyTabPane()
+    private val tabPane = MyTabPane<MinorTab>()
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
@@ -217,7 +217,7 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
 
-    class ParametersTab(val parametersPane: ParametersPane) : MyTab("Parameters"), MinorTab {
+    class ParametersTab(val parametersPane: ParametersPane) : MinorTab("Parameters") {
         override fun focus() {
             Platform.runLater {
                 parametersPane.focus()

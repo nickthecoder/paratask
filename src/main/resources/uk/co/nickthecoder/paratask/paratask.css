@@ -262,21 +262,19 @@
 }
 
 /****************************************************
-*   MyTabPane :                                      *
+*   MyTabPane :                                     *
 * This was copied from the regular TabPane css, and *
 * tweaked for MyTabPane's structure.                *
 *****************************************************/
 
 .my-tab-pane > .tab-header-area {
-    -fx-background-color: -fx-outer-border, -fx-text-box-border, linear-gradient(from 0px 0px to 0px 5px, -fx-text-box-border, derive(-fx-text-box-border, 30%));
+    -fx-background-color: linear-gradient(from 0px 0px to 0px 4px, -fx-text-box-border, derive(-fx-text-box-border, 30%));
 }
 .my-tab-pane.top > .tab-header-area {
     -fx-padding: 0.416667em 0.416667em 0 0.416667em; /* 5 5 0 5 */
-    -fx-background-insets: 0, 0 0 1 0, 1;
 }
 .my-tab-pane.bottom > .tab-header-area {
     -fx-padding: 0 0.416667em 0.416667em 0.416667em; /* 0 5 5 5 */
-    -fx-background-insets: 0, 1 0 0 0, 1;
 }
 
 .my-tab-pane > .tab-header-area > .tabs-container > .tab {
@@ -298,13 +296,21 @@
 }
 
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button {
-    -fx-background-color: -fx-mark-color;
-    -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z"; /* An "x" shape */
-    -fx-scale-shape: false;
-    -fx-effect: dropshadow(two-pass-box , rgba(255, 255, 255, 0.4), 1, 0.0 , 0, 1);
+    -fx-background-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-padding: 7px 2px 5px 0px;
+    -fx-text-fill: #888;
 }
+
+.my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button:hover,
+.my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button:armed {
+    -fx-background-color: transparent !important;
+    -fx-text-fill: -fx-dark-text-color;
+}
+
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-label {
     -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 6px 4px 6px 0;
 }
 .my-tab-pane > .tab-header-area > .tabs-container > .tab > .tab-close-button:hover {
     -fx-background-color: derive(-fx-mark-color, -30%);

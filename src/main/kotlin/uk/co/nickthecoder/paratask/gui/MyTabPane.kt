@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle
  * Also, TabPane also has an annoying "feature", whereby the tab contents are NOT correctly added to the Scene
  * in a timely manner. (I think anything that uses getItems() rather than getChildren() has this bug).
  */
-open class MyTabPane : BorderPane() {
+open class MyTabPane<T : MyTab> : BorderPane() {
 
     internal val contents = StackPane()
 
@@ -26,7 +26,7 @@ open class MyTabPane : BorderPane() {
 
     private val tabsContainer = TabsContainer()
 
-    private val mutableTabs = mutableListOf<MyTab>()
+    private val mutableTabs = mutableListOf<T>()
 
     private val moreButtonContainer = StackPane()
 
@@ -36,18 +36,38 @@ open class MyTabPane : BorderPane() {
 
     var tabClosingPolicy: TabPane.TabClosingPolicy = TabPane.TabClosingPolicy.SELECTED_TAB
 
-    val tabs: List<MyTab> = mutableTabs
+    val tabs: List<T> = mutableTabs
 
-    val selectionModel = object : SingleSelectionModel<MyTab>() {
+    val selectionModel = object : SingleSelectionModel<T>() {
         override fun getItemCount(): Int = tabs.size
 
-        override fun getModelItem(index: Int): MyTab? {
+        override fun getModelItem(index: Int): T? {
             return if (index < 0 || index >= tabs.size) null else tabs[index]
         }
     }
 
-    var selectedTab: MyTab? = null
+    /**
+     * Used within MyTab to get around the complexities with generics
+     */
+    internal var untypedSelectedTab: MyTab?
         set(v) {
+            selectedTab = tabs.filter { it === v }.firstOrNull()
+        }
+        get() {
+            return selectedTab
+        }
+
+    var selectedTab: T? = null
+        set(v) {
+            if (v == null) {
+                if (tabs.isNotEmpty()) {
+                    throw IllegalArgumentException("Current Tab cannot be null")
+                }
+            } else {
+                if (!tabs.contains(v)) {
+                    throw IllegalArgumentException("Tab not part of this TabPane")
+                }
+            }
             selectedTab?.let {
                 it.content.isVisible = false
                 it.styleClass.remove("selected")
@@ -55,21 +75,20 @@ open class MyTabPane : BorderPane() {
                     it.right = null
                 }
             }
+
             field = v
-            if (v == null) {
-                if (tabs.isNotEmpty()) {
-                    throw IllegalArgumentException("Current Tab cannot be null")
-                }
-            } else {
+
+            if (v != null) {
                 v.content.isVisible = true
                 v.styleClass.add("selected")
-                if (tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
+                if (v.canClose && tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
                     v.right = v.closeButton
                 }
                 v.content.requestFocus()
             }
             selectionModel.select(v)
         }
+
 
     var side: Side = Side.TOP
         set(v) {
@@ -112,11 +131,11 @@ open class MyTabPane : BorderPane() {
         side = Side.TOP
     }
 
-    fun add(tab: MyTab) {
+    fun add(tab: T) {
         add(tabs.size, tab)
     }
 
-    fun add(index: Int, tab: MyTab) {
+    fun add(index: Int, tab: T) {
         if (tab.parent != null) {
             throw IllegalStateException("The tab is already owned by a MyTabPane")
         }
