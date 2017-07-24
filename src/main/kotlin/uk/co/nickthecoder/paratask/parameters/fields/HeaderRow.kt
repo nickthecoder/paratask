@@ -32,7 +32,7 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
 class HeaderRow() : Region(), FocusListener {
@@ -67,7 +67,7 @@ class HeaderRow() : Region(), FocusListener {
     }
 
     fun addRunButton(tool: Tool, scene: Scene) {
-        val button = Actions.TOOL_RUN.createButton() { tool.toolPane!!.parametersPane.run() }
+        val button = ParataskActions.TOOL_RUN.createButton() { tool.toolPane!!.parametersPane.run() }
         with(button) {
             button.setDefaultButton(true)
             goButton = this

@@ -24,6 +24,7 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
 import uk.co.nickthecoder.paratask.tools.ExceptionTool
@@ -53,14 +54,14 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         }
 
         with(toolBar.items) {
-            add(Actions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
-            add(Actions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
-            add(Actions.QUIT.createButton(shortcuts) { onQuit() })
-            add(Actions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
-            add(Actions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
-            add(Actions.DUPLICATE_TAB.createButton(shortcuts) { tabs.duplicateTab() })
-            add(Actions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
-            add(Actions.APPLICATION_ABOUT.createButton(shortcuts) { onAbout() })
+            add(ParataskActions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
+            add(ParataskActions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
+            add(ParataskActions.QUIT.createButton(shortcuts) { onQuit() })
+            add(ParataskActions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
+            add(ParataskActions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
+            add(ParataskActions.DUPLICATE_TAB.createButton(shortcuts) { tabs.duplicateTab() })
+            add(ParataskActions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
+            add(ParataskActions.APPLICATION_ABOUT.createButton(shortcuts) { onAbout() })
         }
     }
 

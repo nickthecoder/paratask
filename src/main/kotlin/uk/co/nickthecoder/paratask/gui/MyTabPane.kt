@@ -1,6 +1,5 @@
-package uk.co.nickthecoder.paratask.util
+package uk.co.nickthecoder.paratask.gui
 
-import javafx.beans.property.SimpleObjectProperty
 import javafx.event.ActionEvent
 import javafx.geometry.Side
 import javafx.scene.Node
@@ -67,6 +66,7 @@ open class MyTabPane : BorderPane() {
                 if (tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
                     v.right = v.closeButton
                 }
+                v.content.requestFocus()
             }
             selectionModel.select(v)
         }
@@ -200,7 +200,7 @@ open class MyTabPane : BorderPane() {
 
             }
 
-            var showMore = offsetX != 0.0
+            var showMore = offsetX < 0.0
 
             // Check if there is space on the right of the last tab (due to window being expanded)
             val lastTab = tabs.lastOrNull()

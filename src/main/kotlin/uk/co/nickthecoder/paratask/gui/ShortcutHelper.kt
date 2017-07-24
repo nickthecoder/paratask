@@ -15,20 +15,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package uk.co.nickthecoder.paratask.project
+package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
 import javafx.scene.input.KeyEvent
 
-class ShortcutHelper(val name: String, val node: Node) {
+class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = true) {
 
-    val actions = mutableListOf<Pair<Action, () -> Unit>>()
+    val actions = mutableListOf<Pair<ApplicationAction, () -> Unit>>()
 
     init {
-        node.addEventFilter(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+        if (filter) {
+            node.addEventFilter(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+        } else {
+            node.addEventHandler(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+        }
     }
 
-    fun add(action: Action, func: () -> Unit) {
+    fun add(action: ApplicationAction, func: () -> Unit) {
         actions.add(Pair(action, func))
     }
 

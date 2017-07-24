@@ -30,6 +30,7 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.CompoundButtons
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
 
@@ -70,24 +71,24 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         }
 
         val historyGroup = CompoundButtons()
-        val backButton = Actions.HISTORY_BACK.createButton(shortcuts) { history.undo() }
-        val forwardButton = Actions.HISTORY_FORWARD.createButton(shortcuts) { history.redo() }
+        val backButton = ParataskActions.HISTORY_BACK.createButton(shortcuts) { history.undo() }
+        val forwardButton = ParataskActions.HISTORY_FORWARD.createButton(shortcuts) { history.redo() }
         backButton.disableProperty().bind(history.canUndoProperty.not())
         forwardButton.disableProperty().bind(history.canRedoProperty.not())
         historyGroup.children.addAll(backButton, forwardButton)
 
         val runStopStack = StackPane()
-        stopButton = Actions.TOOL_STOP.createButton(shortcuts) { onStop() }
-        runButton = Actions.TOOL_RUN.createButton(shortcuts) { onRun() }
+        stopButton = ParataskActions.TOOL_STOP.createButton(shortcuts) { onStop() }
+        runButton = ParataskActions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
 
         with(toolBar.items) {
             add(optionsField)
             add(runStopStack)
-            add(Actions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
-            add(Actions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
+            add(ParataskActions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
+            add(ParataskActions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
             add(historyGroup)
-            add(Actions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
+            add(ParataskActions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
         }
 
         bindButtons()
@@ -174,17 +175,17 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val tool = toolPane.resultsTool()
         val runner = tool.optionsRunner
 
-        if (Actions.OPTION_RUN.match(event)) {
+        if (ParataskActions.OPTION_RUN.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = false, newTab = false)
-        } else if (Actions.OPTION_RUN_NEW_TAB.match(event)) {
+        } else if (ParataskActions.OPTION_RUN_NEW_TAB.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = false, newTab = true)
 
-        } else if (Actions.OPTION_PROMPT.match(event)) {
+        } else if (ParataskActions.OPTION_PROMPT.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = true, newTab = false)
-        } else if (Actions.OPTION_PROMPT_NEW_TAB.match(event)) {
+        } else if (ParataskActions.OPTION_PROMPT_NEW_TAB.match(event)) {
             done = runner.runNonRow(optionsField.text, prompt = true, newTab = true)
 
-        } else if (Actions.CONTEXT_MENU.match(event)) {
+        } else if (ParataskActions.CONTEXT_MENU.match(event)) {
             onOptionsContextMenu()
             event.consume()
         }

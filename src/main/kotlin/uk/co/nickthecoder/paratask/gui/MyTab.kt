@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.util
+package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
 import javafx.scene.control.Button

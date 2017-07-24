@@ -21,8 +21,8 @@ import javafx.application.Platform
 import javafx.scene.control.*
 import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
-import uk.co.nickthecoder.paratask.project.Actions
-import uk.co.nickthecoder.paratask.project.ShortcutHelper
+import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 
 class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBar(), FocusListener {
 
@@ -43,15 +43,15 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
     init {
         val shortcuts = ShortcutHelper("FindBar", this)
 
-        shortcuts.add(Actions.ESCAPE, { editorResults.onEscape() })
+        shortcuts.add(ParataskActions.ESCAPE, { editorResults.onEscape() })
 
-        goButton = Actions.EDIT_FIND_GO.createButton { searcher.beginFind() }
+        goButton = ParataskActions.EDIT_FIND_GO.createButton { searcher.beginFind() }
 
         with(items) {
             add(searchTextField)
             add(goButton)
-            add(Actions.EDIT_FIND_PREV.createButton(shortcuts) { searcher.onFindPrev() })
-            add(Actions.EDIT_FIND_NEXT.createButton(shortcuts) { searcher.onFindNext() })
+            add(ParataskActions.EDIT_FIND_PREV.createButton(shortcuts) { searcher.onFindPrev() })
+            add(ParataskActions.EDIT_FIND_NEXT.createButton(shortcuts) { searcher.onFindNext() })
             add(matchPositionLabel)
             add(regexCheck)
             add(caseCheck)

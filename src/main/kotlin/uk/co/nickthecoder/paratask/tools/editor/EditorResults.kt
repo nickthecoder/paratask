@@ -26,8 +26,8 @@ import javafx.scene.layout.StackPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.project.Actions
-import uk.co.nickthecoder.paratask.project.ShortcutHelper
+import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.ToolPane
 import java.io.File
 
@@ -66,20 +66,20 @@ class EditorResults(
 
         val shortcuts = ShortcutHelper("EditorTool", node)
 
-        shortcuts.add(Actions.EDIT_FIND_PREV) { searcher.onFindPrev() }
-        shortcuts.add(Actions.EDIT_FIND_NEXT) { searcher.onFindNext() }
+        shortcuts.add(ParataskActions.EDIT_FIND_PREV) { searcher.onFindPrev() }
+        shortcuts.add(ParataskActions.EDIT_FIND_NEXT) { searcher.onFindNext() }
 
-        shortcuts.add(Actions.EDIT_CUT) { onCut() }
-        shortcuts.add(Actions.EDIT_COPY) { onCopy() }
-        shortcuts.add(Actions.EDIT_PASTE) { onPaste() }
-        shortcuts.add(Actions.ESCAPE) { onEscape() }
+        shortcuts.add(ParataskActions.EDIT_CUT) { onCut() }
+        shortcuts.add(ParataskActions.EDIT_COPY) { onCopy() }
+        shortcuts.add(ParataskActions.EDIT_PASTE) { onPaste() }
+        shortcuts.add(ParataskActions.ESCAPE) { onEscape() }
 
         with(toolBar.items)
         {
-            val save = Actions.FILE_SAVE.createButton(shortcuts) { onSave() }
-            val undo = Actions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
-            val redo = Actions.EDIT_REDO.createButton(shortcuts) { onRedo() }
-            val find = Actions.EDIT_FIND.createButton(shortcuts) { onFind() }
+            val save = ParataskActions.FILE_SAVE.createButton(shortcuts) { onSave() }
+            val undo = ParataskActions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
+            val redo = ParataskActions.EDIT_REDO.createButton(shortcuts) { onRedo() }
+            val find = ParataskActions.EDIT_FIND.createButton(shortcuts) { onFind() }
 
             undo.disableProperty().bind(Bindings.not(codeArea.undoAvailableProperty()))
             redo.disableProperty().bind(Bindings.not(codeArea.redoAvailableProperty()))

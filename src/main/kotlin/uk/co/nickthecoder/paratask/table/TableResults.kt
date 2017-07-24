@@ -27,7 +27,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
-import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.options.Option
@@ -134,29 +134,29 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
     val contextMenu = ContextMenu()
 
     open fun onKeyPressed(event: KeyEvent) {
-        if (Actions.acceleratorUp.match(event)) {
+        if (ParataskActions.acceleratorUp.match(event)) {
             if (!move(-1)) event.consume()
 
-        } else if (Actions.acceleratorDown.match(event)) {
+        } else if (ParataskActions.acceleratorDown.match(event)) {
             if (!move(1)) event.consume()
 
-        } else if (Actions.OPTION_RUN.match(event)) {
+        } else if (ParataskActions.OPTION_RUN.match(event)) {
             runTableOptions()
             event.consume()
 
-        } else if (Actions.OPTION_RUN_NEW_TAB.match(event)) {
+        } else if (ParataskActions.OPTION_RUN_NEW_TAB.match(event)) {
             runTableOptions(newTab = true)
             event.consume()
 
-        } else if (Actions.OPTION_PROMPT.match(event)) {
+        } else if (ParataskActions.OPTION_PROMPT.match(event)) {
             runTableOptions()
             event.consume()
 
-        } else if (Actions.OPTION_PROMPT_NEW_TAB.match(event)) {
+        } else if (ParataskActions.OPTION_PROMPT_NEW_TAB.match(event)) {
             runTableOptions(newTab = true)
             event.consume()
 
-        } else if (Actions.acceleratorEscape.match(event)) {
+        } else if (ParataskActions.acceleratorEscape.match(event)) {
             event.consume()
         }
     }

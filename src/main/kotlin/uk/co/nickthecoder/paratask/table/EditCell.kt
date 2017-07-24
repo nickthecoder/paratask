@@ -29,7 +29,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.RequestFocus
 import java.lang.ref.WeakReference
 
@@ -73,18 +73,18 @@ class EditCell<S, T>(
         }
 
         textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
-            if (Actions.acceleratorEscape.match(event)) {
+            if (ParataskActions.acceleratorEscape.match(event)) {
                 // I don't think this EVER gets called. Hmmm.
                 textField.text = converter.toString(item)
                 cancelEdit()
                 event.consume()
-            } else if (Actions.acceleratorUp.match(event)) {
+            } else if (ParataskActions.acceleratorUp.match(event)) {
                 event.consume()
                 move(-1)
-            } else if (Actions.acceleratorDown.match(event)) {
+            } else if (ParataskActions.acceleratorDown.match(event)) {
                 event.consume()
                 move(1)
-            } else if (Actions.CONTEXT_MENU.match(event)) {
+            } else if (ParataskActions.CONTEXT_MENU.match(event)) {
                 tableResultsRef.get()?.showContextMenu(textField, event)
                 event.consume()
             }

@@ -19,8 +19,8 @@ package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.util.MyTab
-import uk.co.nickthecoder.paratask.util.MyTabPane
+import uk.co.nickthecoder.paratask.gui.MyTab
+import uk.co.nickthecoder.paratask.gui.MyTabPane
 
 class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 

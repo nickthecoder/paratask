@@ -23,7 +23,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class StringField(override val parameter: StringParameter) : LabelledField(parameter) {
@@ -64,10 +64,10 @@ class StringField(override val parameter: StringParameter) : LabelledField(param
     }
 
     fun onKeyTyped(event: KeyEvent) {
-        if ( Actions.FOCUS_NEXT.match(event)) {
+        if ( ParataskActions.FOCUS_NEXT.match(event)) {
             textField.focusNext()
             event.consume()
-        } else if ( Actions.INSERT_TAB.match(event) ) {
+        } else if ( ParataskActions.INSERT_TAB.match(event) ) {
             textField.insertText(textField.caretPosition, "    ")
             event.consume()
         }

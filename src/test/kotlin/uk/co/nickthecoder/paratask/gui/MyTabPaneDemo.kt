@@ -4,12 +4,9 @@ import javafx.application.Application
 import javafx.geometry.Side
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.Label
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.util.MyTab
-import uk.co.nickthecoder.paratask.util.MyTabPane
 
 
 /**

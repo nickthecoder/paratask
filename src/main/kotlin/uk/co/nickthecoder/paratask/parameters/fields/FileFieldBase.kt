@@ -34,7 +34,7 @@ import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
-import uk.co.nickthecoder.paratask.project.Actions
+import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
@@ -161,13 +161,13 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
     }
 
     private fun onKeyPressed(event: KeyEvent) {
-        if (Actions.UP_DIRECTORY.match(event)) {
+        if (ParataskActions.UP_DIRECTORY.match(event)) {
             getFile()?.parentFile?.let { setFile(it) }
             event.consume()
-        } else if (Actions.COMPLETE_FILE.match(event)) {
+        } else if (ParataskActions.COMPLETE_FILE.match(event)) {
             onCompleteFile()
             event.consume()
-        } else if (Actions.CONTEXT_MENU.match(event)) {
+        } else if (ParataskActions.CONTEXT_MENU.match(event)) {
             onContextMenu()
             event.consume()
         }

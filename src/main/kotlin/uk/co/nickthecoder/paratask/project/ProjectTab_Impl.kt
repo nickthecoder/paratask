@@ -24,7 +24,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.util.MyTab
+import uk.co.nickthecoder.paratask.gui.MyTab
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
