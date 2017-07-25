@@ -24,50 +24,56 @@ import javafx.stage.Stage
  * My application may close the last remaining JavaFX stage, and then try to create another one.
  * This class ensures that JavaFX does not terminate when it shouldn't
  */
-class AutoExit {
-    companion object {
+object AutoExit {
 
-        val log = false
+    val log = false
 
-        init {
-            Platform.setImplicitExit(false)
-        }
+    private var enabled = true
 
-        var resourceCounter = 0
+    init {
+        Platform.setImplicitExit(false)
+    }
 
-        fun inc(message: String) {
-            privateInc()
-            if (log) printLog("inc $message $resourceCounter")
-        }
+    var resourceCounter = 0
 
-        private fun privateInc() {
-            resourceCounter++
-        }
+    fun disable() {
+        Platform.setImplicitExit(true)
+        enabled = false
+    }
 
-        fun dec(message: String) {
-            privateDec()
-            if (log) printLog("dec $message $resourceCounter")
-        }
+    fun inc(message: String) {
+        privateInc()
+        if (log) printLog("inc $message $resourceCounter")
+    }
 
-        private fun privateDec() {
-            resourceCounter--
-            if (resourceCounter == 0) {
-                Platform.exit()
-            }
-        }
+    private fun privateInc() {
+        resourceCounter++
+    }
 
-        fun show(stage: Stage) {
-            privateInc()
-            stage.show()
-            if (log) printLog("Show $resourceCounter $stage")
-            stage.setOnHiding {
-                privateDec()
-                if (log) printLog("Hide $resourceCounter $stage")
-            }
-        }
+    fun dec(message: String) {
+        privateDec()
+        if (log) printLog("dec $message $resourceCounter")
+    }
 
-        fun printLog(message: String) {
-            println(message)
+    private fun privateDec() {
+        resourceCounter--
+        if (resourceCounter == 0 && enabled) {
+            Platform.exit()
         }
     }
+
+    fun show(stage: Stage) {
+        privateInc()
+        stage.show()
+        if (log) printLog("Show $resourceCounter $stage")
+        stage.setOnHiding {
+            privateDec()
+            if (log) printLog("Hide $resourceCounter $stage")
+        }
+    }
+
+    fun printLog(message: String) {
+        println(message)
+    }
+
 }
