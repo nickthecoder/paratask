@@ -21,10 +21,10 @@ import javafx.scene.Node
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyEvent
-import uk.co.nickthecoder.paratask.parameters.DoubleParameter
+import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-
-open class DoubleField(override val parameter: DoubleParameter) : LabelledField(parameter) {
+open class DoubleField(override val parameter: ValueParameter<*>, val adaptor : DoubleAdaptor) : LabelledField(parameter) {
 
     private var dirty = false
 
@@ -35,7 +35,7 @@ open class DoubleField(override val parameter: DoubleParameter) : LabelledField(
     protected fun createSpinner(): Node {
         val spinner = createSimpleSpinner()
 
-        spinner.valueFactory.converter = parameter.plainConverter
+        spinner.valueFactory.converter = adaptor.converter
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -61,14 +61,14 @@ open class DoubleField(override val parameter: DoubleParameter) : LabelledField(
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = parameter.converter.fromString(newValue)
+                val v = adaptor.converter.fromString(newValue)
                 if (parameter.expression == null) {
                     spinner.valueFactory.value = v
                 }
-                showOrClearError(parameter.errorMessage(v))
+                showOrClearError(adaptor.errorMessage(v))
                 dirty = false
             } catch (e: Exception) {
-                showError("Not an integer")
+                showError("Not a number")
                 dirty = true
             }
         })
@@ -89,26 +89,15 @@ open class DoubleField(override val parameter: DoubleParameter) : LabelledField(
     }
 
     private fun createSimpleSpinner(): Spinner<*> {
-        val initialValue: Double? = if (parameter.value == null && parameter.required) {
-            if (parameter.minValue >= 0.0) {
-                parameter.minValue
-            } else if (parameter.maxValue <= 0.0) {
-                parameter.maxValue
-            } else {
-                0.0
-            }
+        val initialValue: Double? = adaptor.initialValue()
 
-        } else {
-            parameter.value
-        }
-
-        val factory = DoubleSpinnerValueFactory(parameter.minValue, parameter.maxValue, initialValue)
+        val factory = DoubleSpinnerValueFactory(adaptor.minValue, adaptor.maxValue, initialValue)
         val spinner = Spinner(factory)
         if (parameter.expression == null) {
-            parameter.value = spinner.valueFactory.value
+            adaptor.value = spinner.valueFactory.value
         }
 
-        spinner.valueFactory.valueProperty().bindBidirectional(parameter.valueProperty)
+        spinner.valueFactory.valueProperty().bindBidirectional(adaptor.valueProperty)
         return spinner
     }
 

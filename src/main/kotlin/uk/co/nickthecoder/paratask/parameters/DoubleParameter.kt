@@ -40,7 +40,7 @@ open class DoubleParameter(
         value = value,
         required = required) {
 
-    val plainConverter = object : StringConverter<Double?>() {
+    override val converter = object : StringConverter<Double?>() {
         override fun fromString(str: String): Double? {
             val trimmed = str.trim()
 
@@ -59,8 +59,6 @@ open class DoubleParameter(
         }
     }
 
-    override val converter = plainConverter
-
     override fun errorMessage(v: Double?): String? {
         if (isProgrammingMode()) return null
 
@@ -78,7 +76,7 @@ open class DoubleParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = DoubleField(this)
+    override fun createField(): LabelledField = DoubleField(this, DoubleParameterAdaptor(this))
 
     override fun toString(): String = "Double" + super.toString()
 

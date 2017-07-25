@@ -6,6 +6,16 @@ Bugs
 	"" and "tt" are PASSES in sgf, but I'm not using them!
 		Also, I have a note that passes are not supported - remove it!
 
+Save multiple parameters better (values=[...,...] instead of one long value="..."), but keep backward compatable ;-)
+
+Space out the ScaleDouble fields.
+Consider reversing the key/value pairs of ScaledDoubleParameter's scales.
+Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm.
+	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
+	Or add a list of ScaledDoubleParameters???
+	Or make ScaledValue imutable???
+	
+
 FileOperations
 	Make file dialog pretier
 	Report errors

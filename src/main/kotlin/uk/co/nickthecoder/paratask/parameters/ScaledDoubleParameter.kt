@@ -2,9 +2,32 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ScaledDoubleField
 import uk.co.nickthecoder.paratask.util.uncamel
+
+data class ScaledValue(var value: Double, var scale: Double = 1.0) {
+
+    var scaledValue: Double
+        get() = value * scale
+        set(v) {
+            value = v / scale
+        }
+
+    override fun toString() = "$value $scale"
+
+    companion object {
+        fun fromString(str: String): ScaledValue {
+            val space = str.indexOf(' ')
+            if (space < 0) {
+                //println("Parsing unit $str")
+                return ScaledValue(str.toDouble())
+            } else {
+                //println("Parsing ${str.substring(0, space)} and ${str.substring(space + 1)}")
+                return ScaledValue(str.substring(0, space).toDouble(), str.substring(space + 1).toDouble())
+            }
+        }
+    }
+}
 
 /**
  */
@@ -12,72 +35,50 @@ class ScaledDoubleParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: Double? = null,
-        required: Boolean = true,
-        minValue: Double = 0.0,
-        maxValue: Double = Double.MAX_VALUE,
-        scales: Map<String, Double>,
-        currentScale: Double = 1.0)
+        value: ScaledValue = ScaledValue(0.0, 1.0),
+        scales: Map<String, Double>)
 
-    : DoubleParameter(name, label, description, value, required, minValue, maxValue) {
+    : AbstractValueParameter<ScaledValue>(
+        name = name,
+        label = label,
+        description = description,
+        value = value,
+        required = true) {
 
     val scales = mutableMapOf<String, Double>()
 
-    var currentScale: Double = currentScale
-
-    var scaledValue
-        get() = this.value?.times(currentScale)
+    var scaleString: String
+        get() = scales.filter { (_, scale) -> scale == value.scale }.map { (key, _) -> key }.firstOrNull() ?: ""
         set(v) {
-            value = v?.div(currentScale)
-        }
-
-    var scaleString: String?
-        get() = scales.filter { (_, scale) -> scale == currentScale }.map { (key, _) -> key }.firstOrNull()
-        set(v) {
-            currentScale = scales[v] ?: 1.0
+            value.scale = scales[v] ?: 1.0
         }
 
     init {
         this.scales.putAll(scales)
     }
 
-    override val converter = object : StringConverter<Double?>() {
-        override fun fromString(str: String): Double? {
-            val trimmed = str.trim()
+    override val converter = object : StringConverter<ScaledValue>() {
+        override fun fromString(str: String): ScaledValue {
 
-            if (trimmed.isEmpty()) {
-                return null
-            }
-            var nString = trimmed
-            var scale = 1.0
-            scales.filter { (str, _) ->
-                trimmed.endsWith(str)
-            }.forEach { (str, aScale) ->
-                nString = trimmed.substring(0, trimmed.length - str.length).trim()
-                scale = aScale
-            }
             try {
-                return nString.toDouble() * scale
+                return ScaledValue.fromString(str)
             } catch (e: Exception) {
                 throw ParameterException(this@ScaledDoubleParameter, "Not a number")
             }
         }
 
-        override fun toString(obj: Double?): String {
-            if (obj == null) {
-                return ""
-            } else {
-                val str = scaleString
-                if (str == null) {
-                    // Current scale wasn't found in the map, so lets ignore it
-                    return obj.toString()
-                } else {
-                    return "${(obj / currentScale).toString()} $str"
-                }
-            }
+        override fun toString(obj: ScaledValue): String {
+            return obj.toString()
         }
-
     }
 
-    override fun createField() = ScaledDoubleField(this)
+    override fun isStretchy() = false
+
+    override fun toString(): String = "ScaledDouble" + super.toString()
+
+    override fun copy(): ScaledDoubleParameter {
+        return ScaledDoubleParameter(name, label, description, value, scales)
+    }
+
+    override fun createField() = ScaledDoubleField(this, ScaledDoubleParameterAdaptor(this))
 }

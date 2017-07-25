@@ -4,13 +4,12 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import org.junit.Assert.assertEquals
-import org.junit.Test
 import org.loadui.testfx.GuiTest
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.fields.GroupField
-import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.fields.GroupField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 
 class FormTest : GuiTest() {
 

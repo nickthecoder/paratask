@@ -3,11 +3,12 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
 import uk.co.nickthecoder.paratask.parameters.ScaledDoubleParameter
 
 /**
  */
-class ScaledDoubleField(val scaledParameter: ScaledDoubleParameter) : DoubleField(scaledParameter) {
+class ScaledDoubleField(val scaledParameter: ScaledDoubleParameter, adaptor: DoubleAdaptor) : DoubleField(scaledParameter, adaptor) {
 
     val combo = ComboBox<String>()
 

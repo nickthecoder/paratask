@@ -33,7 +33,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 private val FAKE_NULL = "FAKE_NULL"
 
-class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField(parameter) {
+class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField(parameter), ParameterListener {
 
     private var dirty = false
 
@@ -95,4 +95,11 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
     }
 
     override fun isDirty(): Boolean = dirty
+
+    override fun parameterChanged(event: ParameterEvent) {
+        if (event.type == ParameterEventType.STRUCTURAL) {
+            updateChoices()
+        }
+    }
+
 }

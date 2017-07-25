@@ -89,7 +89,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 
         println(taskD.toString())
 
-        println("Duration scaled value=${durationP.scaledValue} string=${durationP.stringValue} (${durationP.value} ${durationP.scaleString})")
+        println("Duration scaled value=${durationP.value.scaledValue} string=${durationP.stringValue} (${durationP.value} ${durationP.scaleString})")
     }
 
     override fun customCheck() {
