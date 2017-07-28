@@ -63,7 +63,7 @@ class TaskParameter(
         override fun fromString(str: String): Task? {
             val lines = (if (str.endsWith('\n')) str.substring(0, str.length - 1) else str).split('\n')
             val task = taskFactory.creationStringToTask.get(lines[0])
-            for (i in 1..lines.size - 2) {
+            for (i in 1..lines.size - 1) {
                 var line = lines[i]
                 var isExpression = false
                 if (line.startsWith("=")) {
