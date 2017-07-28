@@ -113,9 +113,9 @@ interface TaskFactory {
 
     val creationStringToTask: Map<String, Task>
 
-    fun topLevelTasks(): List<Task>
+    val topLevelTasks: List<Task>
 
-    fun taskGroups(): List<TaskGroup>
+    val taskGroups: List<TaskGroup>
 
 }
 
@@ -123,23 +123,21 @@ class RegisteredTaskFactory : TaskFactory {
 
     override val creationStringToTask = mutableMapOf<String, Task>()
 
+    override val topLevelTasks: List<Task>
+
+    override val taskGroups: List<TaskGroup> = TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel }
+
     init {
         TaskRegistry.listGroups().forEach { group ->
             group.listToolsAndTasks().forEach { task ->
                 creationStringToTask.put(task.creationString(), task)
             }
         }
-    }
 
-    override fun topLevelTasks(): List<Task> {
         val list = mutableListOf<Task>()
         list.addAll(TaskRegistry.topLevel.listTools())
         list.addAll(TaskRegistry.topLevel.listTasks())
-        return list
-    }
-
-    override fun taskGroups(): List<TaskGroup> {
-        return TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel }
+        topLevelTasks = list
     }
 
     companion object {

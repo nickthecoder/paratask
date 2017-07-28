@@ -64,9 +64,9 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     }
 
     private fun buildContextMenu() {
-        parameter.taskFactory.topLevelTasks().forEach { addTask(it) }
+        parameter.taskFactory.topLevelTasks.forEach { addTask(it) }
         contextMenu.items.add(SeparatorMenuItem())
-        parameter.taskFactory.taskGroups().forEach { addGroup(it) }
+        parameter.taskFactory.taskGroups.forEach { addGroup(it) }
     }
 
     private fun addGroup(taskGroup: TaskGroup) {
