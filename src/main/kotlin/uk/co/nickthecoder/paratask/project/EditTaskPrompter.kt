@@ -20,7 +20,7 @@ package uk.co.nickthecoder.paratask.project
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 
-open class ProgrammingModeTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
+open class EditTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
 
 
     val doneButton = Button("Done")

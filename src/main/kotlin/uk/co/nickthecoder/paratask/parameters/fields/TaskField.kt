@@ -24,9 +24,8 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskGroup
-import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.parameters.TaskParameter
-import uk.co.nickthecoder.paratask.project.ProgrammingModeTaskPrompter
+import uk.co.nickthecoder.paratask.project.EditTaskPrompter
 
 class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {
 
@@ -56,24 +55,21 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     private fun onEditParameters() {
         val task = parameter.value
         if (task != null) {
-            task.taskD.programmingMode = true
-            val taskPrompter = ProgrammingModeTaskPrompter(task)
+            if ( parameter.programmable ) {
+                task.taskD.programmingMode = true
+            }
+            val taskPrompter = EditTaskPrompter(task)
             taskPrompter.placeOnStage(Stage())
         }
     }
 
     private fun buildContextMenu() {
-        TaskRegistry.topLevel.listTools().forEach { addTask(it) }
-        TaskRegistry.topLevel.listTasks().forEach { addTask(it) }
-
+        parameter.taskFactory.topLevelTasks().forEach { addTask(it) }
         contextMenu.items.add(SeparatorMenuItem())
-        TaskRegistry.listGroups().forEach { addGroup(it) }
+        parameter.taskFactory.taskGroups().forEach { addGroup(it) }
     }
 
     private fun addGroup(taskGroup: TaskGroup) {
-        // Skip the top-level tools as these are added as top-leve items
-        if (taskGroup === TaskRegistry.topLevel) return
-
         val menu = Menu(taskGroup.label)
         taskGroup.listTools().forEach { addTask(it, menu) }
         taskGroup.listTasks().forEach { addTask(it, menu) }

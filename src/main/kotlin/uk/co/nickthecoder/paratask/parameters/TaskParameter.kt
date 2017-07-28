@@ -19,13 +19,13 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskGroup
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.TaskField
 import uk.co.nickthecoder.paratask.util.escapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
 import uk.co.nickthecoder.paratask.util.unescapeNL
-import java.util.regex.Pattern
 
 /**
  * Allows a Task to be chosen from a list of tasks, and shows a button, which when pressed, allows
@@ -37,7 +37,9 @@ class TaskParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: Task? = null,
-        required: Boolean = true)
+        required: Boolean = true,
+        val programmable: Boolean = true,
+        val taskFactory: TaskFactory = RegisteredTaskFactory.instance)
 
     : AbstractValueParameter<Task?>(
         name = name,
@@ -45,16 +47,6 @@ class TaskParameter(
         description = description,
         value = value,
         required = required) {
-
-    val creationStringToTask = mutableMapOf<String, Task>()
-
-    init {
-        TaskRegistry.listGroups().forEach { group ->
-            group.listToolsAndTasks().forEach { task ->
-                creationStringToTask.put(task.creationString(), task)
-            }
-        }
-    }
 
     /**
      * Format is a set of lines. The first line is the creation string.
@@ -70,7 +62,7 @@ class TaskParameter(
     override val converter = object : StringConverter<Task?>() {
         override fun fromString(str: String): Task? {
             val lines = (if (str.endsWith('\n')) str.substring(0, str.length - 1) else str).split('\n')
-            val task = creationStringToTask.get(lines[0])
+            val task = taskFactory.creationStringToTask.get(lines[0])
             for (i in 1..lines.size - 2) {
                 var line = lines[i]
                 var isExpression = false
@@ -114,5 +106,43 @@ class TaskParameter(
 
     override fun toString(): String = "Task" + super.toString()
 
-    override fun copy() = TaskParameter(name = name, label = label, description = description, value = value, required = required)
+    override fun copy() = TaskParameter(name = name, label = label, description = description, value = value, required = required, taskFactory = taskFactory)
+}
+
+interface TaskFactory {
+
+    val creationStringToTask: Map<String, Task>
+
+    fun topLevelTasks(): List<Task>
+
+    fun taskGroups(): List<TaskGroup>
+
+}
+
+class RegisteredTaskFactory : TaskFactory {
+
+    override val creationStringToTask = mutableMapOf<String, Task>()
+
+    init {
+        TaskRegistry.listGroups().forEach { group ->
+            group.listToolsAndTasks().forEach { task ->
+                creationStringToTask.put(task.creationString(), task)
+            }
+        }
+    }
+
+    override fun topLevelTasks(): List<Task> {
+        val list = mutableListOf<Task>()
+        list.addAll(TaskRegistry.topLevel.listTools())
+        list.addAll(TaskRegistry.topLevel.listTasks())
+        return list
+    }
+
+    override fun taskGroups(): List<TaskGroup> {
+        return TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel }
+    }
+
+    companion object {
+        val instance = RegisteredTaskFactory()
+    }
 }
