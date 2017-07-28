@@ -62,10 +62,11 @@ open class DateParameter(
         return null
     }
 
-    fun date(): Date? {
-        value?.let { return Date.from(it.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()) }
-        return null
-    }
+    var date: Date?
+        get() = value?.let { return Date.from(it.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()) }
+        set(v) {
+            value = v?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
+        }
 
     override fun isStretchy() = false
 
