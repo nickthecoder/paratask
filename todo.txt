@@ -1,5 +1,7 @@
 
 Bugs
+	Refresh GitLog puts "FirstCommit" at the front of the last commit (problem with reader keeping state from previous read?)
+
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection

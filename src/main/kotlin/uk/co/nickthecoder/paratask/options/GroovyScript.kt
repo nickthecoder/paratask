@@ -37,7 +37,8 @@ class GroovyScript(val source: String) {
                 "uk.co.nickthecoder.paratask.tools.git",
                 "uk.co.nickthecoder.paratask.tools.places",
                 "uk.co.nickthecoder.paratask.tools.editor",
-                "uk.co.nickthecoder.paratask.util")
+                "uk.co.nickthecoder.paratask.util",
+                "uk.co.nickthecoder.paratask.util.process")
 
         val configuration = CompilerConfiguration()
         configuration.addCompilationCustomizers(importCustomizer)
