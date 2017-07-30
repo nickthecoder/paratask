@@ -28,6 +28,7 @@ import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.util.JsonHelper
 import java.io.*
 
 class Project(val projectWindow: ProjectWindow) {
@@ -91,15 +92,7 @@ class Project(val projectWindow: ProjectWindow) {
         jroot.set("width", projectWindow.scene.width)
         jroot.set("height", projectWindow.scene.height)
 
-        val jprojectData = JsonArray()
-        projectDataP.descendants().forEach { parameter ->
-            if (parameter is ValueParameter<*>) {
-                val jparameter = JsonObject()
-                jparameter.set("name", parameter.name)
-                jparameter.set("value", parameter.stringValue)
-                jprojectData.add(jparameter)
-            }
-        }
+        val jprojectData = JsonHelper.parametersAsJsonArray(projectDataP)
         jroot.add("projectData", jprojectData)
 
         val jtabs = JsonArray()
@@ -130,14 +123,7 @@ class Project(val projectWindow: ProjectWindow) {
         val tool = halfTab.toolPane.tool
         jhalfTab.set("tool", tool.creationString())
 
-        val jparameters = JsonArray()
-
-        for (parameter in tool.valueParameters()) {
-            val jparameter = JsonObject()
-            jparameter.set("name", parameter.name)
-            jparameter.set("value", parameter.stringValue)
-            jparameters.add(jparameter)
-        }
+        val jparameters = JsonHelper.parametersAsJsonArray(tool)
         jhalfTab.add("parameters", jparameters)
 
         return jhalfTab
@@ -162,17 +148,7 @@ class Project(val projectWindow: ProjectWindow) {
 
             val jprojectData = jroot.get("projectData")
             if (jprojectData != null) {
-                for (jitem in jprojectData.asArray()) {
-                    val ji = jitem.asObject()
-                    val name = ji.getString("name", null)
-                    val value = ji.getString("value", null)
-                    if (name != null && value != null) {
-                        val parameter = project.projectDataP.find(name)
-                        if (parameter is ValueParameter<*>) {
-                            parameter.stringValue = value
-                        }
-                    }
-                }
+                JsonHelper.read(jprojectData.asArray(), project.projectDataP)
             }
 
             val jtabs = jroot.get("tabs")
@@ -200,14 +176,9 @@ class Project(val projectWindow: ProjectWindow) {
             val creationString = jhalfTab.get("tool").asString()
             val tool = TaskRegistry.createTool(creationString)
 
-            val jparameters = jhalfTab.get("parameters").asArray()
-            for (jparameter in jparameters.map { it.asObject() }) {
-                val name = jparameter.get("name").asString()
-                val value = jparameter.get("value").asString()
-                val parameter = tool.taskD.root.find(name)
-                if (parameter != null && parameter is ValueParameter<*>) {
-                    parameter.stringValue = value
-                }
+            val jparameters = jhalfTab.get("parameters")
+            if (jparameters != null) {
+                JsonHelper.read(jparameters.asArray(), tool)
             }
             return tool
         }

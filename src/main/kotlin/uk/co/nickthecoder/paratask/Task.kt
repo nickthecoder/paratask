@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
+import com.eclipsesource.json.JsonArray
+import com.eclipsesource.json.JsonObject
 import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.options.Helper
