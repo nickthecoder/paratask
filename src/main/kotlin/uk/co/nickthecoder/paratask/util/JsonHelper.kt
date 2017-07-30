@@ -37,6 +37,15 @@ object JsonHelper {
                     jvalues.add(inner.stringValue)
                 }
             }
+        } else if (parameter is TaskParameter) {
+            val task = parameter.value
+            if (task != null) {
+                jparameter.set("task", task.creationString())
+                val jps = parametersAsJsonArray(task)
+                jparameter.set("parameters", jps)
+            } else {
+                println("Ignoring null task from TaskParameter $parameter.name")
+            }
         } else {
             jparameter.set("value", parameter.stringValue)
         }
@@ -66,8 +75,20 @@ object JsonHelper {
                                 }
                                 newValue.stringValue = jvalue.asString()
                             }
+                            continue
                         }
-                        continue
+
+                    } else if (parameter is TaskParameter) {
+                        val creationString = ji.getString("task", null)
+                        if (creationString != null) {
+                            val task = Task.create(creationString)
+                            val jps = ji.get("parameters")
+                            if (jps != null) {
+                                read(jps.asArray(), task)
+                            }
+                            parameter.value = task
+                            continue
+                        }
                     }
 
                     val value = ji.getString("value", null)
@@ -76,10 +97,9 @@ object JsonHelper {
                     }
                 }
             }
+
         }
-
     }
-
 
     fun read(jparameters: JsonArray, task: Task) {
         read(jparameters, task.taskD.root)
