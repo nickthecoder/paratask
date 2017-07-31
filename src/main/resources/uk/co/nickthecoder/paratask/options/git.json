@@ -18,7 +18,7 @@
             ],
             "parameters": [
                 {
-                    "name": "messge",
+                    "name": "message",
                     "value": ""
                 },
                 {
@@ -27,7 +27,11 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -43,7 +47,7 @@
             "refresh": true,
             "parameters": [
                 {
-                    "name": "messge",
+                    "name": "message",
                     "value": ""
                 },
                 {
@@ -52,7 +56,11 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -84,7 +92,11 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -116,7 +128,11 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -133,7 +149,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "files",
@@ -163,6 +179,26 @@
                             "value": "./.gitignore"
                         }
                     ]
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "value": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
                 }
             ]
         },
@@ -194,7 +230,11 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
@@ -226,7 +266,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 }
             ]
         },
@@ -243,7 +283,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "maxItems",
@@ -306,7 +346,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 }
             ]
         },
@@ -335,7 +375,32 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitRMTask",
+            "code": "rmf",
+            "label": "Git Remove (-f)",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "files",
+                    "expression": "rows.file"
+                },
+                {
+                    "name": "option",
+                    "value": "-f"
                 }
             ]
         }
