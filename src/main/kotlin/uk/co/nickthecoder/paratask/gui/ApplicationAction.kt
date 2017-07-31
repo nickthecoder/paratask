@@ -49,9 +49,12 @@ abstract class ApplicationAction(
         tooltip?.let { result.append(it) }
 
         if (tooltip != null && keyCodeCombination != null) {
-            result.append(" ")
+            result.append(" (")
         }
         keyCodeCombination?.let { result.append(it.displayText) }
+        if (tooltip != null && keyCodeCombination != null) {
+            result.append(")")
+        }
 
         return Tooltip(result.toString())
     }
