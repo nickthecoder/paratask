@@ -71,7 +71,10 @@ abstract class ApplicationAction(
     fun createToggleButton(shortcuts: ShortcutHelper? = null, action: () -> Unit): ToggleButton {
 
         val button = ToggleButton()
-        shortcuts?.add(this, { button.isSelected = true; action() })
+        shortcuts?.add(this, {
+            button.isSelected = !button.isSelected;
+            action()
+        })
 
         updateButton(button, action)
         return button

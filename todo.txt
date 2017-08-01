@@ -7,11 +7,21 @@ Bugs
 	Adding an include to an empty options file threw an expection
 	"" and "tt" are PASSES in sgf, but I'm not using them!
 		Also, I have a note that passes are not supported - remove it!
+	FileParameter extension is horrible and broken. Either remove the pull down, or fix it.
 
-Save multiple parameters better (values=[...,...] instead of one long value="..."), but keep backward compatable ;-)
+FileParameter to have an "optional" More (...) button to open a "File Open" dialog.
+
+MyTabPane to have ability to have a "+" button on the right to add a new tab.
+	It is up to the client to determine what happens when the button is clicked.
+	In ParaTask, open "Home", in KoGo, also open "Home"
+		Can then allow the Home tab to be closed.
+
+Split into two pieces : core and project (so that apps can include just core)
 
 Space out the ScaleDouble fields.
+
 Consider reversing the key/value pairs of ScaledDoubleParameter's scales.
+
 Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm.
 	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
 	Or add a list of ScaledDoubleParameters???
@@ -50,7 +60,7 @@ New Tasks
 	Audio tasks
 		Encode a file to mp3/ogg/flac etc
 		Tag the file
-	mmv (multiple move)
+	mmv (multiple move) - Is this already done?
 
 ---
 
@@ -109,7 +119,6 @@ Editor - Open a file in a new lower tab
 	i.e. When opening a new text file, if there is already an Editor open, then use it, adding a new minor tab
 	    (or showing the minor tab if it is already open)
 
-
 Terminal isn't HasDirectory yet
 
 A "lazy" terminal tool, only adds itself to the GUI if the command returns output.
@@ -117,11 +126,11 @@ A "lazy" terminal tool, only adds itself to the GUI if the command returns outpu
 Delete the 1 from "100" in a spinner throws. My code isn't in the stack trace :-(
 
 
-Write a DB tool
+Write a generic DB tool
 	Work with Tables
 	Work with Users
 	Work with Rows
-Ideally, it would work with at least MariaDB/MySQL, SQLLite and Progres
+Ideally, it would work with at least MariaDB/MySQL, SQLLite and ProgresSql
 
 
 Hard Bugs
