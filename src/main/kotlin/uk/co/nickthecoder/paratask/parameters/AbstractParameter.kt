@@ -34,6 +34,13 @@ abstract class AbstractParameter(
     }
 
     override var hidden: Boolean = false
+        set(v) {
+            val old = field
+            field = v
+            if (old != v) {
+                parent?.parameterListeners?.fireVisibilityChanged(this)
+            }
+        }
 
     override var parent: Parameter? = null
 

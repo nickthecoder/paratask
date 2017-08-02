@@ -56,5 +56,12 @@ class ParameterListeners {
         }
     }
 
+    fun fireVisibilityChanged(parameter: Parameter) {
+        val event = ParameterEvent(parameter, ParameterEventType.VISIBILITY)
+        listeners.forEach {
+            it.parameterChanged(event)
+        }
+    }
+
     fun count(): Int = listeners.size
 }

@@ -34,6 +34,10 @@ class TaskForm(val task: Task) {
         form.buildContent()
     }
 
+    fun tidyUp() {
+        form.tidyUp()
+    }
+
     fun check(): Boolean {
 
         val programming = task.taskD.programmingMode

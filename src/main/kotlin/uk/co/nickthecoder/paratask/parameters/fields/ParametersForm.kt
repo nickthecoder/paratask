@@ -29,15 +29,14 @@ import javafx.scene.layout.Region
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.ParentParameter
+import uk.co.nickthecoder.paratask.parameters.*
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  * This is the base class for GroupParmetersForm and MultipleField.
  */
 open class ParametersForm(val parentParameter: ParentParameter)
-    : Region(), FieldParent, HasChildFields {
+    : Region(), FieldParent, HasChildFields, ParameterListener {
 
     override val columns = mutableListOf<FieldColumn>()
 
@@ -45,6 +44,21 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     init {
         styleClass.add("parametersForm")
+        parentParameter.parameterListeners.add(this)
+
+        columns.add(FieldColumn(0.0)) // Label
+        columns.add(FieldColumn(0.0)) // Expression button
+        columns.add(FieldColumn()) // Main Control
+        styleClass.add("form")
+    }
+
+    fun tidyUp() {
+        parentParameter.parameterListeners.remove(this)
+        fieldSet.forEach {
+            if (it is ParametersForm) {
+                it.tidyUp()
+            }
+        }
     }
 
     open fun buildContent() {
@@ -143,13 +157,6 @@ open class ParametersForm(val parentParameter: ParentParameter)
         override fun invalidated() {
             requestLayout()
         }
-    }
-
-    init {
-        columns.add(FieldColumn(0.0)) // Label
-        columns.add(FieldColumn(0.0)) // Expression button
-        columns.add(FieldColumn()) // Main Control
-        styleClass.add("form")
     }
 
     override fun calculateColumnPreferences() {
@@ -286,4 +293,14 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     }
 
+    override fun parameterChanged(event: ParameterEvent) {
+        if (event.type == ParameterEventType.VISIBILITY) {
+            val hidden = event.parameter.hidden
+            val field = fieldSet.filter { it.parameter === event.parameter }.firstOrNull()
+            if (field != null) {
+                field.isVisible = !hidden
+                requestLayout()
+            }
+        }
+    }
 }
