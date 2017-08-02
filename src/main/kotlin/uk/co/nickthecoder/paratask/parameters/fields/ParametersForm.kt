@@ -77,10 +77,8 @@ open class ParametersForm(val parentParameter: ParentParameter)
     open fun buildChildren() {
         var index = 0
         parentParameter.children.forEach { child ->
-            if ((!child.hidden) || parentParameter.isProgrammingMode()) {
-                addParameter(child, index)
-                index++
-            }
+            addParameter(child, index)
+            index++
         }
     }
 
@@ -108,6 +106,9 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
         children.add(node)
 
+        if (parameter.hidden) {
+            parameterField.isVisible = false
+        }
         parameterField.styleClass.add("field-${parameter.name}")
         parameterField.form = this
         fieldSet.add(parameterField)
