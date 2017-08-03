@@ -72,10 +72,12 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 
     val multipleP = MultipleParameter("multiple") { StringParameter("", required = true) }
 
+    val buttonP = ButtonParameter("button", buttonText = "Click Me", action = { println("Clicked!") })
+
     val taskP = TaskParameter("task")
 
     init {
-        taskD.addParameters(fileP, doubleP, groupP)
+        taskD.addParameters(fileP, doubleP, groupP, buttonP)
         //durationP, doubleP, optionalDoubleP,
 
         //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,

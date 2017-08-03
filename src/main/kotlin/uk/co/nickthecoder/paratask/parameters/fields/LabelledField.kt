@@ -28,7 +28,7 @@ import javafx.scene.control.Tooltip
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-open class LabelledField(parameter: ValueParameter<*>, label: String = parameter.label) : ParameterField(parameter) {
+open class LabelledField(parameter: Parameter, label: String = parameter.label) : ParameterField(parameter) {
 
     var label: Node
 
@@ -47,7 +47,7 @@ open class LabelledField(parameter: ValueParameter<*>, label: String = parameter
         styleClass.add("field")
 
         expressionField.styleClass.add("expression")
-        if (parameter.isProgrammingMode()) {
+        if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
             expressionButton = ToggleButton("=")
             children.add(expressionButton)
             expressionField.textProperty().bindBidirectional(parameter.expressionProperty)

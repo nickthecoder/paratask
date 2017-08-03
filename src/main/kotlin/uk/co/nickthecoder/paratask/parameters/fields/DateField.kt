@@ -26,17 +26,17 @@ import uk.co.nickthecoder.paratask.parameters.DateParameter
 import java.time.LocalDate
 
 
-class DateField(override val parameter: DateParameter) : LabelledField(parameter) {
+class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter) {
 
     val datePicker = DatePicker()
 
     val converter = object : StringConverter<LocalDate?>() {
         override fun fromString(str: String): LocalDate? {
             if (str == "") return null
-            return LocalDate.parse(str, parameter.dateFormat)
+            return LocalDate.parse(str, dateParameter.dateFormat)
         }
 
-        override fun toString(obj: LocalDate?): String = if (obj == null) "" else parameter.dateFormat.format(obj)
+        override fun toString(obj: LocalDate?): String = if (obj == null) "" else dateParameter.dateFormat.format(obj)
     }
 
     /**
@@ -51,12 +51,12 @@ class DateField(override val parameter: DateParameter) : LabelledField(parameter
     init {
         this.control = datePicker
         datePicker.converter = converter
-        datePicker.valueProperty().bindBidirectional(parameter.valueProperty)
+        datePicker.valueProperty().bindBidirectional(dateParameter.valueProperty)
 
         // Bodge. SEE ABOVE
         editorText = datePicker.editor.text
         parameter.listen {
-            editorText = converter.toString(parameter.value)
+            editorText = converter.toString(dateParameter.value)
         }
         // End bodge
 
@@ -92,7 +92,7 @@ class DateField(override val parameter: DateParameter) : LabelledField(parameter
     override fun isDirty(): Boolean {
         try {
             val v = datePicker.converter.fromString(editorText)
-            showOrClearError(parameter.errorMessage(v))
+            showOrClearError(dateParameter.errorMessage(v))
             return false
         } catch (e: Exception) {
             showError("Not a valid date")

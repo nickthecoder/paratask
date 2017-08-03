@@ -33,7 +33,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 private val FAKE_NULL = "FAKE_NULL"
 
-class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField(parameter), ParameterListener {
+class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>) : LabelledField(choiceParameter), ParameterListener {
 
     private var dirty = false
 
@@ -42,24 +42,24 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
     val converter = object : StringConverter<Any?>() {
 
         override fun fromString(label: String): Any? {
-            return parameter.getValueForLabel(label) ?: FAKE_NULL
+            return choiceParameter.getValueForLabel(label) ?: FAKE_NULL
         }
 
         override fun toString(obj: Any?): String {
             @Suppress("UNCHECKED_CAST")
-            return parameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T) ?: ""
+            return choiceParameter.getLabelForValue(if (obj === FAKE_NULL) null else obj as T) ?: ""
         }
     }
 
     val bodgeProperty = object : SimpleObjectProperty <Any?>(FAKE_NULL) {
-        override fun get(): Any? = parameter.value ?: FAKE_NULL
+        override fun get(): Any? = choiceParameter.value ?: FAKE_NULL
         override fun set(value: Any?) {
             if (value === FAKE_NULL) {
-                parameter.value = null
+                choiceParameter.value = null
 
             } else {
                 @Suppress("UNCHECKED_CAST")
-                parameter.value = value as T?
+                choiceParameter.value = value as T?
             }
         }
     }
@@ -79,7 +79,7 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
             if (event.type == ParameterEventType.STRUCTURAL) {
                 updateChoices()
             } else if (event.type == ParameterEventType.VALUE) {
-                comboBox.value = parameter.value
+                comboBox.value = choiceParameter.value
             }
         }
         return comboBox
@@ -87,10 +87,10 @@ class ChoiceField<T>(override val parameter: ChoiceParameter<T>) : LabelledField
 
     private fun updateChoices() {
         comboBox.items.clear()
-        for (value: T? in parameter.choiceValues()) {
+        for (value: T? in choiceParameter.choiceValues()) {
             comboBox.items.add(value ?: FAKE_NULL)
         }
-        comboBox.value = parameter.value ?: FAKE_NULL
+        comboBox.value = choiceParameter.value ?: FAKE_NULL
 
     }
 

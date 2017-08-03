@@ -26,32 +26,32 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.focusNext
 
-class StringField(override val parameter: StringParameter) : LabelledField(parameter) {
+class StringField(val stringParameter: StringParameter) : LabelledField(stringParameter) {
 
     lateinit var textField: TextInputControl
 
     private fun createControl(): Node {
         val textField: TextInputControl
 
-        if (parameter.rows > 1) {
+        if (stringParameter.rows > 1) {
             textField = TextArea()
-            if (parameter.columns > 0) {
-                textField.prefColumnCount = parameter.columns
+            if (stringParameter.columns > 0) {
+                textField.prefColumnCount = stringParameter.columns
             }
-            textField.prefRowCount = parameter.rows
+            textField.prefRowCount = stringParameter.rows
             textField.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyTyped(it) }
         } else {
             textField = TextField()
-            if (parameter.columns > 0) {
-                textField.prefColumnCount = parameter.columns
+            if (stringParameter.columns > 0) {
+                textField.prefColumnCount = stringParameter.columns
             }
         }
-        parameter.style?.let { textField.styleClass.add(it) }
+        stringParameter.style?.let { textField.styleClass.add(it) }
 
-        textField.text = parameter.value
-        textField.textProperty().bindBidirectional(parameter.valueProperty)
+        textField.text = stringParameter.value
+        textField.textProperty().bindBidirectional(stringParameter.valueProperty)
         textField.textProperty().addListener({ _, _, _: String ->
-            val error = parameter.errorMessage()
+            val error = stringParameter.errorMessage()
             if (error == null) {
                 clearError()
             } else {

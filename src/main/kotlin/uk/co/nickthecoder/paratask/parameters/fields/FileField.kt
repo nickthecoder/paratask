@@ -21,7 +21,7 @@ import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import java.io.File
 
-class FileField(override val parameter: FileParameter) : FileFieldBase(parameter) {
+class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter) {
 
     init {
         control = createControl()
@@ -29,14 +29,14 @@ class FileField(override val parameter: FileParameter) : FileFieldBase(parameter
 
     override fun buildTextField(): Node {
         super.buildTextField()
-        textField.textProperty().bindBidirectional(parameter.valueProperty, parameter.converter)
+        textField.textProperty().bindBidirectional(fileParameter.valueProperty, fileParameter.converter)
         return textField
     }
 
-    override fun getFile(): File? = parameter.value
+    override fun getFile(): File? = fileParameter.value
 
     override fun setFile(file: File?) {
-        parameter.value = file
+        fileParameter.value = file
         textField.positionCaret(textField.text.length)
     }
 }

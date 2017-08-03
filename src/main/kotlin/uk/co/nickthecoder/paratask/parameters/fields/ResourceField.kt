@@ -21,7 +21,7 @@ import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import java.io.File
 
-class ResourceField(override val parameter: ResourceParameter) :FileFieldBase(parameter) {
+class ResourceField(val resourceParameter: ResourceParameter) :FileFieldBase(resourceParameter) {
 
     init {
         control = createControl()
@@ -29,13 +29,13 @@ class ResourceField(override val parameter: ResourceParameter) :FileFieldBase(pa
 
     override fun buildTextField() : Node {
         with(textField) {
-            textProperty().bindBidirectional(parameter.valueProperty, parameter.converter)
+            textProperty().bindBidirectional(resourceParameter.valueProperty, resourceParameter.converter)
         }
         return super.buildTextField()
     }
 
 
-    override fun getFile(): File? = parameter.value?.file
+    override fun getFile(): File? = resourceParameter.value?.file
 
     override fun setFile(file: File?) {
         val suffix = if (file?.isDirectory ?: false) File.separator else ""

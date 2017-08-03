@@ -27,7 +27,7 @@ import uk.co.nickthecoder.paratask.TaskGroup
 import uk.co.nickthecoder.paratask.parameters.TaskParameter
 import uk.co.nickthecoder.paratask.project.EditTaskPrompter
 
-class TaskField(override val parameter: TaskParameter) : LabelledField(parameter) {
+class TaskField(val taskParameter: TaskParameter) : LabelledField(taskParameter) {
 
     private val taskButton = Button("...")
 
@@ -49,13 +49,13 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
         button.addEventHandler(ActionEvent.ACTION) { onEditParameters() }
         buildContextMenu()
         taskButton.contextMenu = contextMenu
-        parameter.value?.let { taskLabel.text = it.taskD.label }
+        taskParameter.value?.let { taskLabel.text = it.taskD.label }
     }
 
     private fun onEditParameters() {
-        val task = parameter.value
+        val task = taskParameter.value
         if (task != null) {
-            if ( parameter.programmable ) {
+            if ( taskParameter.programmable ) {
                 task.taskD.programmingMode = true
             }
             val taskPrompter = EditTaskPrompter(task)
@@ -64,9 +64,9 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     }
 
     private fun buildContextMenu() {
-        parameter.taskFactory.topLevelTasks.forEach { addTask(it) }
+        taskParameter.taskFactory.topLevelTasks.forEach { addTask(it) }
         contextMenu.items.add(SeparatorMenuItem())
-        parameter.taskFactory.taskGroups.forEach { addGroup(it) }
+        taskParameter.taskFactory.taskGroups.forEach { addGroup(it) }
     }
 
     private fun addGroup(taskGroup: TaskGroup) {
@@ -79,7 +79,7 @@ class TaskField(override val parameter: TaskParameter) : LabelledField(parameter
     private fun addTask(task: Task, parent: Any = contextMenu) {
         val menuItem = MenuItem(task.taskD.label)
         menuItem.addEventHandler(ActionEvent.ACTION) {
-            parameter.value = task
+            taskParameter.value = task
             taskLabel.text = task.taskD.label
         }
 

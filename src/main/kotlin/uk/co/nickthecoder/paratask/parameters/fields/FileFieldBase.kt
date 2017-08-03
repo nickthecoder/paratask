@@ -39,7 +39,7 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-abstract class FileFieldBase(override val parameter: ValueParameter<*>) : LabelledField(parameter) {
+abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledField(valueParameter) {
 
     val textField = TextField()
 
@@ -87,7 +87,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
         with(textField) {
 
-            text = parameter.stringValue
+            text = valueParameter.stringValue
 
             addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
             addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }

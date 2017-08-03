@@ -24,7 +24,7 @@ import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-open class DoubleField(override val parameter: ValueParameter<*>, val adaptor : DoubleAdaptor) : LabelledField(parameter) {
+open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor : DoubleAdaptor) : LabelledField(doubleParameter) {
 
     private var dirty = false
 
@@ -62,7 +62,7 @@ open class DoubleField(override val parameter: ValueParameter<*>, val adaptor : 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
                 val v = adaptor.converter.fromString(newValue)
-                if (parameter.expression == null) {
+                if (doubleParameter.expression == null) {
                     spinner.valueFactory.value = v
                 }
                 showOrClearError(adaptor.errorMessage(v))
@@ -93,7 +93,7 @@ open class DoubleField(override val parameter: ValueParameter<*>, val adaptor : 
 
         val factory = DoubleSpinnerValueFactory(adaptor.minValue, adaptor.maxValue, initialValue)
         val spinner = Spinner(factory)
-        if (parameter.expression == null) {
+        if (doubleParameter.expression == null) {
             adaptor.value = spinner.valueFactory.value
         }
 

@@ -22,7 +22,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.parameters.Parameter
 
-open class ParameterField(open val parameter: Parameter) : Region() {
+open class ParameterField(val parameter: Parameter) : Region() {
 
     lateinit var form: FieldParent
 

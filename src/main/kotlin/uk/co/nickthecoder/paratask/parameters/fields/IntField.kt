@@ -31,7 +31,7 @@ val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
 
 val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
-class IntField(override val parameter: IntParameter) : LabelledField(parameter) {
+class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
 
     private var dirty = false
 
@@ -42,7 +42,7 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
     private fun createControl(): Node {
         val spinner = createSpinner()
 
-        spinner.valueFactory.converter = parameter.converter
+        spinner.valueFactory.converter = intParameter.converter
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -68,11 +68,11 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = parameter.converter.fromString(newValue)
-                if (parameter.expression == null) {
+                val v = intParameter.converter.fromString(newValue)
+                if (intParameter.expression == null) {
                     spinner.valueFactory.value = v
                 }
-                showOrClearError(parameter.errorMessage(v))
+                showOrClearError(intParameter.errorMessage(v))
                 dirty = false
             } catch (e: Exception) {
                 showError("Not an integer")
@@ -96,25 +96,25 @@ class IntField(override val parameter: IntParameter) : LabelledField(parameter) 
     }
 
     private fun createSpinner(): Spinner<*> {
-        val initialValue = if (parameter.value == null && parameter.required) {
-            if (parameter.range.start > 0) {
-                parameter.range.start
-            } else if (parameter.range.endInclusive < 0) {
-                parameter.range.endInclusive
+        val initialValue = if (intParameter.value == null && intParameter.required) {
+            if (intParameter.range.start > 0) {
+                intParameter.range.start
+            } else if (intParameter.range.endInclusive < 0) {
+                intParameter.range.endInclusive
             } else {
                 0
             }
 
         } else {
-            parameter.value
+            intParameter.value
         }
 
-        val spinner = Spinner(IntSpinnerValueFactory(parameter.range, initialValue))
-        if (parameter.expression == null) {
-            parameter.value = spinner.valueFactory.value
+        val spinner = Spinner(IntSpinnerValueFactory(intParameter.range, initialValue))
+        if (intParameter.expression == null) {
+            intParameter.value = spinner.valueFactory.value
         }
 
-        spinner.valueFactory.valueProperty().bindBidirectional(parameter.valueProperty)
+        spinner.valueFactory.valueProperty().bindBidirectional(intParameter.valueProperty)
         return spinner
     }
 
