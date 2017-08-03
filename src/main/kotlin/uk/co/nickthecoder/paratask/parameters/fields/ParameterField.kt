@@ -50,6 +50,9 @@ open class ParameterField(open val parameter: Parameter) : Region() {
     fun showError(message: String) {
         error.text = message
         error.visibleProperty().value = true
+        // Without this, the layout sometimes screwed up. I found this form the GoKo project,
+        // Its TimeLimits preferences did't layout correctly when OK was pressed from a *different* preferences tab.
+        requestLayout()
     }
 
     fun clearError() {
