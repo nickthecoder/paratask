@@ -43,6 +43,10 @@ class FileLister(
     companion object {
 
         fun matchesExtensions(file: File, extensions: List<String>): Boolean {
+            if (file.isDirectory) {
+                // We do NOT exclude directories based on file extensions.
+                return true
+            }
             val lastDot = file.name.lastIndexOf('.')
             if (lastDot < 0) {
                 return false
@@ -120,7 +124,6 @@ class FileLister(
     }
 
     override fun accept(file: File): Boolean {
-
         val isDirectory = file.isDirectory
 
         if (onlyFiles == false && !isDirectory) {

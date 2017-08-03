@@ -109,6 +109,7 @@ abstract class FileFieldBase(override val parameter: ValueParameter<*>) : Labell
 
             // List siblings of current file
             val children = listFiles(parent, file.name.startsWith("."))
+
             if (children.isNotEmpty()) {
                 if (subMenu != null) {
                     contextMenu.items.add(subMenu)

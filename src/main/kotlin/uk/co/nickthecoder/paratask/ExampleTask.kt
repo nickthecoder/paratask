@@ -45,7 +45,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val simpleStringP = StringParameter("simpleString", value = "Hello")
     val yesNoP = BooleanParameter("yesNo", label = "Yes / No")
     val yesNoMaybeP = BooleanParameter("yesNoManybe", label = "Yes / No / Maybe", required = false)
-    val fileP = FileParameter("file")
+    val fileP = FileParameter("file", extensions = listOf("txt"))
     val directoryP = FileParameter("directory", expectFile = false)
 
     val resourceP = ResourceParameter("resource", value = Resource(homeDirectory))
@@ -75,7 +75,7 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val taskP = TaskParameter("task")
 
     init {
-        taskD.addParameters(doubleP,groupP)
+        taskD.addParameters(fileP, doubleP, groupP)
         //durationP, doubleP, optionalDoubleP,
 
         //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
