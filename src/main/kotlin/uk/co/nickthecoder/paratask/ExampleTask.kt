@@ -70,12 +70,13 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val aP = StringParameter("a")
     val bP = IntParameter("b")
 
-    val multipleP = MultipleParameter("multiple") { StringParameter("") }
+    val multipleP = MultipleParameter("multiple") { StringParameter("", required = true) }
 
     val taskP = TaskParameter("task")
 
     init {
-        taskD.addParameters(durationP, doubleP, optionalDoubleP)
+        taskD.addParameters(doubleP,groupP)
+        //durationP, doubleP, optionalDoubleP,
 
         //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
         //fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)

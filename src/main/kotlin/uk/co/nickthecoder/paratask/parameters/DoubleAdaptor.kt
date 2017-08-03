@@ -68,7 +68,7 @@ class ScaledDoubleParameterAdaptor(val scaledDoubleParameter: ScaledDoubleParame
         }
 
     override val converter = object : StringConverter<Double?>() {
-        override fun fromString(string: String): Double? = string?.toDouble()
+        override fun fromString(string: String): Double? = string.toDouble()
         override fun toString(obj: Double?): String = obj.toString()
     }
 
