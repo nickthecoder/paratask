@@ -10,7 +10,7 @@ object JsonHelper {
     fun parametersAsJsonArray(group: AbstractGroupParameter): JsonArray {
         val jparameters = JsonArray()
         for (parameter in group.descendants()) {
-            if (parameter is ValueParameter<*>) {
+            if (parameter is ValueParameter<*> && !parameter.hidden) {
                 val jparameter = JsonObject()
                 jparameter.set("name", parameter.name)
                 saveValue(parameter, jparameter)

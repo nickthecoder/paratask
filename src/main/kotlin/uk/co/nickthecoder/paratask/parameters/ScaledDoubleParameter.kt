@@ -36,7 +36,9 @@ class ScaledDoubleParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: ScaledValue = ScaledValue(0.0, 1.0),
-        scales: Map<String, Double>)
+        scales: Map<String, Double>,
+        val minValue: Double = 0.0,
+        val maxValue: Double = Double.MAX_VALUE)
 
     : AbstractValueParameter<ScaledValue>(
         name = name,
@@ -70,6 +72,21 @@ class ScaledDoubleParameter(
         override fun toString(obj: ScaledValue): String {
             return obj.toString()
         }
+    }
+
+    override fun errorMessage(v: ScaledValue?): String? {
+        if (isProgrammingMode()) return null
+
+        if (v == null) {
+            return super.errorMessage(v)
+        }
+
+        if (v.scaledValue < minValue) {
+            return "Cannot be less than ${minValue / v.scale}"
+        } else if (v.scaledValue > maxValue) {
+            return "Cannot be more than ${maxValue / v.scale}"
+        }
+        return null
     }
 
     override fun isStretchy() = false

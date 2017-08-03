@@ -28,6 +28,9 @@ interface ParentParameter : Parameter {
     }
 
     fun checkChild(parameter: Parameter) {
+        if (parameter.hidden) {
+            return
+        }
         if (parameter is ParentParameter) {
             parameter.check()
         } else {
