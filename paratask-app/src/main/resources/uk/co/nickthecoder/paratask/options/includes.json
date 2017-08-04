@@ -1,0 +1,40 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "code": ".",
+            "label": "Work with Options",
+            "script": "new OptionsTool(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "code": "-",
+            "label": "Remove Incude",
+            "script": "tool.removeInclude(row)",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "groovy",
+            "code": "+",
+            "label": "Add Incude",
+            "script": "tool.taskEditIncludes()",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
+    ]
+}

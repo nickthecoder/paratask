@@ -1,1 +1,1 @@
-include 'core', 'app'
+include 'paratask-core', 'paratask-app'

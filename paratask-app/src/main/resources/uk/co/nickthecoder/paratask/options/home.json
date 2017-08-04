@@ -1,0 +1,24 @@
+{
+         "include" : [ "foo", "bar" ],
+         "options" : [
+             {
+                "type" : "groovy",
+                "code" : ".",
+                "label" : "Use the Tool",
+                "script" : "row",
+                "isRow" : true,
+                "isMultiple" : false,
+                "refresh" : false
+             },
+             {
+                "type" : "groovy",
+                "code" : "x",
+                "label" : "Test",
+                "script" : "println(4+1)",
+                "isRow" : false,
+                "isMultiple" : false,
+                "refresh" : false
+             }
+         ] 
+
+    }
