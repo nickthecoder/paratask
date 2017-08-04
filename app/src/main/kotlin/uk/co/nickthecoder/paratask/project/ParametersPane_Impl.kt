@@ -26,7 +26,6 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.FocusHelper
 import uk.co.nickthecoder.paratask.gui.FocusListener
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
-import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.focusNext
 

@@ -18,14 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
-import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.util.FileLister
-import java.io.File
 
 /**
  * Note, unlike more Tasks, this CANNOT be run from the command line, use StartTask instead. This is because it

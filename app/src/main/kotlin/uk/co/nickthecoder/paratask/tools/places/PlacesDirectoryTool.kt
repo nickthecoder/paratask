@@ -22,8 +22,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.gui.TableToolDropFilesHelper
+import uk.co.nickthecoder.paratask.table.TableToolDropFilesHelper
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.fields.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane

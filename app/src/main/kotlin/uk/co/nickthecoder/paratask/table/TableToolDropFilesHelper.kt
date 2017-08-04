@@ -1,8 +1,7 @@
-package uk.co.nickthecoder.paratask.gui
+package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.util.FileOperations
 import java.io.File
 

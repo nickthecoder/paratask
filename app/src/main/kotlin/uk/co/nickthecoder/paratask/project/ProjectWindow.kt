@@ -22,6 +22,7 @@ import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
@@ -86,7 +87,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     fun placeOnStage(stage: Stage) {
         GlobalShortcuts(scene, this)
 
-        ParaTaskApp.style(scene)
+        ParaTask.style(scene)
 
         stage.title = "ParaTask"
         stage.scene = scene

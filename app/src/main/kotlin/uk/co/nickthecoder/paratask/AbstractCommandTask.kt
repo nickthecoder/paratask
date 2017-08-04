@@ -25,7 +25,6 @@ import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.enumChoices
 import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.tools.ExecTool
-import uk.co.nickthecoder.paratask.tools.TerminalTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.process.Exec

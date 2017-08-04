@@ -19,7 +19,6 @@ package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.AbstractTool
-import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand

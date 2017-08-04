@@ -21,6 +21,7 @@ import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
@@ -64,7 +65,7 @@ abstract class AbstractTaskPrompter(val task: Task) {
 
         val scene = Scene(root)
 
-        ParaTaskApp.style(scene)
+        ParaTask.style(scene)
 
         stage.scene = scene
         AutoExit.show(stage)

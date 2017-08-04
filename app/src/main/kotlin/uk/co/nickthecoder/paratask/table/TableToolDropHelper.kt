@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.gui
+package uk.co.nickthecoder.paratask.table
 
 import javafx.css.Styleable
 import javafx.scene.Node
@@ -6,9 +6,8 @@ import javafx.scene.control.TableView
 import javafx.scene.input.DataFormat
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
-import uk.co.nickthecoder.paratask.table.WrappedRow
 
 /**
  * A helper class for table tools which can be a drop target for files.

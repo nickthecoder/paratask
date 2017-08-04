@@ -73,7 +73,7 @@ class HeaderRow() : Region(), FocusListener {
             goButton = this
         }
         children.add(goButton)
-        focusHelper = FocusHelper(this.parent, this, scene = scene, name="HeaderRow")
+        focusHelper = FocusHelper(this.parent, this, scene = scene, name = "HeaderRow")
     }
 
     override fun focusChanged(gained: Boolean) {

@@ -92,7 +92,7 @@ abstract class AbstractTool : Tool {
 
 
     override val icon: Image? by lazy {
-        ParaTaskApp.imageResource("tools/${iconName()}.png")
+        ParaTask.imageResource("tools/${iconName()}.png")
     }
 
     open fun iconName(): String = taskD.name

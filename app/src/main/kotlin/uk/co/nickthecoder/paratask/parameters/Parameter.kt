@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
-import com.sun.corba.se.impl.resolver.FileResolverImpl
-import uk.co.nickthecoder.paratask.DirectoryResolver
 import uk.co.nickthecoder.paratask.ParameterResolver
 import uk.co.nickthecoder.paratask.PlainDirectoryResolver
 import uk.co.nickthecoder.paratask.TaskDescription

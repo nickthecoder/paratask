@@ -17,13 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.scene.image.Image
-import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.Resource
-import java.io.File
-import java.net.URI
-import java.net.URL
 
 class Place(val placesFile: PlacesFile, val resource: Resource, val label: String) {
 

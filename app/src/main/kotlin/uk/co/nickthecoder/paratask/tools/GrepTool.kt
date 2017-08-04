@@ -25,7 +25,6 @@ import uk.co.nickthecoder.paratask.table.NumberColumn
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable
-import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
 /**

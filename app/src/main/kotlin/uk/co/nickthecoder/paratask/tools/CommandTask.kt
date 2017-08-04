@@ -38,7 +38,7 @@ class CommandTask : AbstractCommandTask() {
         taskD.addParameters(programP, argumentsP, directoryP, outputP)
     }
 
-    override fun createCommand() :OSCommand {
+    override fun createCommand() : OSCommand {
         val command = OSCommand(programP.value)
         argumentsP.value.forEach { arg ->
             command.addArgument(arg)

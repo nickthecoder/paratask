@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
@@ -47,7 +48,7 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
 
     val iconContainer = HBox()
 
-    val icon = ImageView(ParaTaskApp.imageResource("filetypes/file.png"))
+    val icon = ImageView(ParaTask.imageResource("filetypes/file.png"))
 
     protected val borderPane = BorderPane()
 

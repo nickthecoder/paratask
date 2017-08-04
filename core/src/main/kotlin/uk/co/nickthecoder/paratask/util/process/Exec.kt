@@ -131,7 +131,7 @@ class Exec {
 
     fun waitFor(duration: Long = 0, units: TimeUnit = TimeUnit.SECONDS, killOnTimeout: Boolean = false): Int {
 
-        val timeoutThread = Exec.Timeout(units.toMillis(duration))
+        val timeoutThread = Timeout(units.toMillis(duration))
         if (duration > 0) {
             timeoutThread.start()
         }

@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.util
 
 import javafx.scene.image.Image
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import java.io.File
 import java.net.URL
@@ -33,7 +34,7 @@ class Resource(val url: URL) {
         } else {
             "web"
         }
-        ParaTaskApp.imageResource("filetypes/${type}.png")
+        ParaTask.imageResource("filetypes/${type}.png")
     }
 
     constructor(file: File) : this(toURL(file))

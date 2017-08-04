@@ -43,7 +43,7 @@ object AutoExit {
 
     fun inc(message: String) {
         privateInc()
-        if (log) printLog("inc $message $resourceCounter")
+        if (log) printLog("inc $message ${resourceCounter}")
     }
 
     private fun privateInc() {
@@ -52,7 +52,7 @@ object AutoExit {
 
     fun dec(message: String) {
         privateDec()
-        if (log) printLog("dec $message $resourceCounter")
+        if (log) printLog("dec $message ${resourceCounter}")
     }
 
     private fun privateDec() {
@@ -65,10 +65,10 @@ object AutoExit {
     fun show(stage: Stage) {
         privateInc()
         stage.show()
-        if (log) printLog("Show $resourceCounter $stage")
+        if (log) printLog("Show ${resourceCounter} $stage")
         stage.setOnHiding {
             privateDec()
-            if (log) printLog("Hide $resourceCounter $stage")
+            if (log) printLog("Hide ${resourceCounter} $stage")
         }
     }
 

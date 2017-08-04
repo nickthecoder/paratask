@@ -23,7 +23,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.DragHelper
-import uk.co.nickthecoder.paratask.gui.TableToolDropHelper
+import uk.co.nickthecoder.paratask.table.TableToolDropHelper
 import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*

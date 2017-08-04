@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
+import uk.co.nickthecoder.paratask.util.Stoppable
 import java.io.File
 import java.io.FileFilter
 import java.io.IOException
@@ -32,7 +33,7 @@ class FileLister(
         val depth: Int = 1,
         val onlyFiles: Boolean? = true, // true for files, false for directories, null for either
         val extensions: List<String>? = null,
-        val fileComparator: (Comparator<File>)? = CASE_INSENSITIVE,
+        val fileComparator: (Comparator<File>)? = FileLister.CASE_INSENSITIVE,
         val directoryComparator: (Comparator<File>)? = fileComparator,
         val includeHidden: Boolean = false,
         val enterHidden: Boolean = includeHidden,

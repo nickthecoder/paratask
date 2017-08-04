@@ -23,7 +23,6 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
-import java.io.File
 
 class TerminalTool : AbstractTerminalTool {
 

@@ -7,7 +7,10 @@ import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.util.AutoExit
+import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.process.BufferedSink
 import uk.co.nickthecoder.paratask.util.process.Exec
 import java.io.File
@@ -150,7 +153,7 @@ class FileOperations {
             stage.title = "File Copy/Move Operations"
             stage.scene = Scene(whole)
 
-            ParaTaskApp.style(stage.scene)
+            ParaTask.style(stage.scene)
 
             buildContent()
 

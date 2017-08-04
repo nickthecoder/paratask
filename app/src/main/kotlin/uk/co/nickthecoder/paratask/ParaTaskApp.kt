@@ -77,24 +77,6 @@ class ParaTaskApp : Application() {
 
         private var initialFunction: (() -> Unit)? = null
 
-        private val imageMap = mutableMapOf<String, Image?>()
-
-        fun style(scene: Scene) {
-            val resource = ParaTaskApp::class.java.getResource("paratask.css")
-            scene.stylesheets.add(resource.toExternalForm())
-        }
-
-        fun imageResource(name: String): Image? {
-            val image = imageMap[name]
-            if (image == null) {
-                val imageStream = ParaTaskApp::class.java.getResourceAsStream(name)
-                val newImage = if (imageStream == null) null else Image(imageStream)
-                imageMap.put(name, newImage)
-                return newImage
-            }
-            return image
-        }
-
         fun logAttach(@Suppress("UNUSED_PARAMETER") string: String) {
             // println( string )
         }

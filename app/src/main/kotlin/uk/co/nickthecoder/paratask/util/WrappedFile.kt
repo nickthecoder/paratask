@@ -17,12 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import java.io.File
 
 open class WrappedFile(val file: File) {
     val icon by lazy {
-        ParaTaskApp.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
+        ParaTask.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
     }
 
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and

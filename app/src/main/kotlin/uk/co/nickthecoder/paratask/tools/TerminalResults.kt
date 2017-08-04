@@ -23,7 +23,6 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
 
 class TerminalResults(
