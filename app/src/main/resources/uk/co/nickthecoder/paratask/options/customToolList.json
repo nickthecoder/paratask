@@ -1,0 +1,18 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "row.tool.evaluate( tool, row, null )",
+            "code": ".",
+            "label": "Run Tool",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        }
+    ]
+}
