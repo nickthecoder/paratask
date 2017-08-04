@@ -1,10 +1,4 @@
 
-Splitting
-	Task.evaluate has been moved to Tool.evaluateTask
-	Commented out TaskGroup Register stuff.
-	TaskGroup had a list of Tool, replaced by list of Task.
-	TaskField commented out Tool references.
-
 Bugs
 	Refresh GitLog puts "FirstCommit" at the front of the last commit (problem with reader keeping state from previous read?)
 
