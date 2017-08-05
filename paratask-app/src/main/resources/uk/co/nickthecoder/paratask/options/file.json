@@ -124,7 +124,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "output",
@@ -193,7 +193,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "output",
@@ -297,6 +297,78 @@
                 {
                     "name": "directory",
                     "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "png",
+            "label": "Convert Image to PNG",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "convert"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file.name"
+                        },
+                        {
+                            "expression": "row.file.name + \".png\""
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "jpg",
+            "label": "Convert Image to JPG",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "convert"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file.name"
+                        },
+                        {
+                            "expression": "row.file.name + \".jpg\""
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.parentFile"
                 },
                 {
                     "name": "output",

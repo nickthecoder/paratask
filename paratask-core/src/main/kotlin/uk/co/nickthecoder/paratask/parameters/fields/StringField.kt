@@ -30,6 +30,10 @@ class StringField(val stringParameter: StringParameter) : LabelledField(stringPa
 
     lateinit var textField: TextInputControl
 
+    init {
+        control = createControl()
+    }
+
     private fun createControl(): Node {
         val textField: TextInputControl
 
@@ -64,16 +68,13 @@ class StringField(val stringParameter: StringParameter) : LabelledField(stringPa
     }
 
     fun onKeyTyped(event: KeyEvent) {
-        if ( ShortcutHelper.FOCUS_NEXT.match(event)) {
+        if (ShortcutHelper.FOCUS_NEXT.match(event)) {
             textField.focusNext()
             event.consume()
-        } else if ( ShortcutHelper.INSERT_TAB.match(event) ) {
+        } else if (ShortcutHelper.INSERT_TAB.match(event)) {
             textField.insertText(textField.caretPosition, "    ")
             event.consume()
         }
     }
 
-    init {
-        control = createControl()
-    }
 }

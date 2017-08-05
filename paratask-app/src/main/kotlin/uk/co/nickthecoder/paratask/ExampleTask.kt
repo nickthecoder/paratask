@@ -76,8 +76,10 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 
     val taskP = TaskParameter("task", taskFactory = RegisteredTaskFactory())
 
+    val informationP = InformationParameter("information", "Use information parameters to add arbitrary text to a form.")
+
     init {
-        taskD.addParameters(fileP, doubleP, groupP, buttonP)
+        taskD.addParameters(fileP, informationP, doubleP, groupP, buttonP)
         //durationP, doubleP, optionalDoubleP,
 
         //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
