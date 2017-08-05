@@ -27,6 +27,8 @@ class ExampleTask : AbstractTask() {
 
     override val taskD = TaskDescription(
             name = "example",
+            width = 700,
+            height = 700,
             description = """
 This is an example showing various types of parameters. You can look at the source code on git hub :
 

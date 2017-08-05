@@ -32,6 +32,8 @@ class TaskForm(val task: Task) {
     init {
         scrollPane.fitToWidthProperty().set(true)
         form.buildContent()
+        task.taskD.width?.let { scrollPane.prefWidth = it.toDouble() }
+        task.taskD.height?.let { scrollPane.prefHeight = it.toDouble() }
     }
 
     fun tidyUp() {

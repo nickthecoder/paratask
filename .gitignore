@@ -18,5 +18,7 @@
 /paratask.iws
 /app/out
 /core/out
-/paratask-core/out/
-/paratask-app/out/
+/paratask-core/out
+/paratask-app/out
+/paratask-core/build
+/paratask-app/build

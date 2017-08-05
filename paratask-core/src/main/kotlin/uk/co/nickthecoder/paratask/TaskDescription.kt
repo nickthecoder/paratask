@@ -28,7 +28,9 @@ import java.lang.Integer.min
 class TaskDescription(
         val name: String = "",
         override val label: String = name.uncamel(),
-        val description: String = "") : Labelled {
+        val description: String = "",
+        val width: Int? = null,
+        val height: Int? = null) : Labelled {
 
     val root: RootParameter = RootParameter(taskD = this, description = description)
 
