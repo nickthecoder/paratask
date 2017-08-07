@@ -2,14 +2,20 @@
 Bugs
 	Refresh GitLog puts "FirstCommit" at the front of the last commit (problem with reader keeping state from previous read?)
 
+	Newly created tabs are not becoming the current tab. e.g. git "push", brings up a terminal, but can be missed!
+
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection
-	"" and "tt" are PASSES in sgf, but I'm not using them!
-		Also, I have a note that passes are not supported - remove it!
-	FileParameter extension is horrible and broken. Either remove the pull down, or fix it.
+
+	Cannot resize "Places" column widths
+	"Depth" in DirectoryTreeTool header is too wide.
 
 FileParameter to have an "optional" More (...) button to open a "File Open" dialog.
+	Maybe this should be a global option, so that 3rd party apps can turn it on and off.
+	Also allow the drag icon to be turned off. 
+
+Tabs to allow the text to be customised. e.g. "Resources" and "Code" for two directory tabs.
 
 MyTabPane to have ability to have a "+" button on the right to add a new tab.
 	It is up to the client to determine what happens when the button is clicked.

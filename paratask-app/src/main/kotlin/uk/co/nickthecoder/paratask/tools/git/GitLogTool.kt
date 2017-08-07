@@ -94,23 +94,23 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
         sinceP.value?.let { command.addArgument("--since=${dateFormat.format(it)}") }
         untilP.value?.let { command.addArgument("--until=${dateFormat.format(it)}") }
 
-        state = GitLogTool.ParseState.head
+        state = GitLogTool.ParseState.HEAD
 
         return command
     }
 
-    private enum class ParseState { head, message }
+    private enum class ParseState { HEAD, MESSAGE }
 
-    private var state = GitLogTool.ParseState.head
+    private var state = GitLogTool.ParseState.HEAD
     private var commit: String = ""
     private var author: String = ""
     private var message: String = ""
     private var date: String = ""
 
     override fun processLine(line: String) {
-        if (state == GitLogTool.ParseState.head) {
+        if (state == GitLogTool.ParseState.HEAD) {
             if (line == "") {
-                state = GitLogTool.ParseState.message
+                state = GitLogTool.ParseState.MESSAGE
             } else if (line.startsWith("commit ")) {
                 commit = line.substring(7)
             } else if (line.startsWith("Author: ")) {
@@ -118,9 +118,9 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
             } else if (line.startsWith("Date:   ")) {
                 date = line.substring(8)
             }
-        } else if (state == GitLogTool.ParseState.message) {
+        } else if (state == GitLogTool.ParseState.MESSAGE) {
             if (line == "") {
-                state = GitLogTool.ParseState.head
+                state = GitLogTool.ParseState.HEAD
                 list.add(GitLogTool.GitLogRow(commit, author, message, date))
                 commit = ""
                 author = ""
@@ -130,6 +130,10 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
                 message += line.trim()
             }
         }
+    }
+
+    override fun execFinished() {
+        processLine("") // Fake an extra blank line to finish iff the last message.
     }
 
     data class GitLogRow(val commit: String, val author: String, val message: String, val date: String)

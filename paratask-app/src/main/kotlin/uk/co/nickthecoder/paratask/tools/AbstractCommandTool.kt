@@ -23,7 +23,7 @@ import uk.co.nickthecoder.paratask.util.process.BufferedSink
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
 
-abstract class AbstractCommandTool<T :Any> : AbstractTableTool<T>(), Stoppable {
+abstract class AbstractCommandTool<T : Any> : AbstractTableTool<T>(), Stoppable {
 
     protected var exec: Exec? = null
 
@@ -34,6 +34,7 @@ abstract class AbstractCommandTool<T :Any> : AbstractTableTool<T>(), Stoppable {
         val exec = Exec(createCommand())
         exec.outSink = BufferedSink { processLine(it) }
         exec.start().waitFor()
+        execFinished()
     }
 
     override fun stop() {
@@ -41,6 +42,8 @@ abstract class AbstractCommandTool<T :Any> : AbstractTableTool<T>(), Stoppable {
     }
 
     abstract fun processLine(line: String)
+
+    open fun execFinished() {}
 
     abstract fun createCommand(): OSCommand
 }
