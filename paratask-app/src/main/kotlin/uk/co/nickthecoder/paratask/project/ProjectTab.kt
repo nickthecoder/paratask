@@ -29,13 +29,13 @@ interface ProjectTab {
 
     val right: HalfTab?
 
-    var tabTemplate : String
+    var tabTemplate: String
 
     fun attached(projectTabs: ProjectTabs)
 
     fun detaching()
 
-    fun isSelected() : Boolean
+    fun isSelected(): Boolean
 
     fun select()
 
@@ -45,7 +45,7 @@ interface ProjectTab {
 
     fun remove(toolPane: ToolPane)
 
-    fun split(tool: Tool)
+    fun split(tool: Tool, run: Boolean = true)
 
     fun split()
 

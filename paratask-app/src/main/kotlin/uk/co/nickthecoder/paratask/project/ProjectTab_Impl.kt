@@ -160,9 +160,16 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         splitPane.items.add(left as Node)
     }
 
-    override fun split(tool: Tool) {
+    override fun split(tool: Tool, run: Boolean) {
         if (right == null) {
             add(tool)
+        }
+        if (run) {
+            try {
+                tool.check()
+                tool.taskRunner.run()
+            } catch (e: Exception) {
+            }
         }
     }
 
