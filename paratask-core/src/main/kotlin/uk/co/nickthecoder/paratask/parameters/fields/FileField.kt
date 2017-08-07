@@ -17,7 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.event.EventHandler
 import javafx.scene.Node
+import javafx.stage.DirectoryChooser
+import javafx.stage.FileChooser
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import java.io.File
 
@@ -25,6 +29,11 @@ class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter)
 
     init {
         control = createControl()
+
+        if (FileParameter.showOpenButton) {
+            openButton.onAction = EventHandler { onOpen() }
+            iconContainer.children.add(0, openButton)
+        }
     }
 
     override fun buildTextField(): Node {
@@ -39,4 +48,45 @@ class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter)
         fileParameter.value = file
         textField.positionCaret(textField.text.length)
     }
+
+    fun onOpen() {
+
+        if (fileParameter.expectFile == false) {
+
+            val dirChooser = DirectoryChooser()
+            dirChooser.title = "Choose Directory"
+            fileParameter.value?.let {
+                dirChooser.initialDirectory = it
+            }
+            val file = dirChooser.showDialog(Stage())
+            file?.let { fileParameter.value = file }
+
+        } else {
+
+            val fileChooser = FileChooser()
+            fileChooser.title = "Choose File"
+            fileParameter.extensions?.let {
+                it.forEach {
+                    fileChooser.extensionFilters.add(FileChooser.ExtensionFilter("*.$it", it))
+                }
+            }
+            fileParameter.value?.let {
+                if (it.isDirectory) {
+                    fileChooser.initialDirectory = it
+                } else {
+                    fileChooser.initialDirectory = it.parentFile
+                    fileChooser.initialFileName = it.name
+                }
+            }
+
+            val file: File?
+            if (fileParameter.mustExist == true) {
+                file = fileChooser.showOpenDialog(Stage())
+            } else {
+                file = fileChooser.showSaveDialog(Stage())
+            }
+            file?.let { fileParameter.value = file }
+        }
+    }
+
 }

@@ -19,12 +19,12 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.input.*
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.ParaTask
@@ -38,6 +38,7 @@ import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
+
 abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledField(valueParameter) {
 
     val textField = TextField()
@@ -47,6 +48,8 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
     val iconContainer = HBox()
 
     val icon = ImageView(ParaTask.imageResource("core/file.png"))
+
+    val openButton = Button("…")
 
     protected val borderPane = BorderPane()
 
@@ -63,7 +66,10 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
             true
         }
 
-        iconContainer.children.add(icon)
+        if (FileParameter.showDragIcon) {
+            iconContainer.children.add(icon)
+        }
+
         iconContainer.styleClass.add("icon")
         borderPane.right = iconContainer
         borderPane.center = main
@@ -92,6 +98,8 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
             addEventHandler(MouseEvent.MOUSE_PRESSED) { onMouse(it) }
             addEventHandler(MouseEvent.MOUSE_RELEASED) { onMouse(it) }
         }
+        textField.contextMenu = contextMenu
+
         return textField
     }
 

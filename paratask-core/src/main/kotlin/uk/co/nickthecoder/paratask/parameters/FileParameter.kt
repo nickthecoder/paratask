@@ -56,7 +56,7 @@ open class FileParameter(
             }
 
             // Should we put a trailing "/" to indicate it is a directory?
-            val suffix = if (file.isDirectory() && file.path != File.separator) File.separator else ""
+            val suffix = if (file.isDirectory && file.path != File.separator) File.separator else ""
 
             baseDirectory?.let {
                 file.relativeToOrNull(it)?.let {
@@ -140,4 +140,9 @@ open class FileParameter(
 
     override fun copy() = FileParameter(name = name, label = label, description = description, value = value,
             required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile, extensions = extensions)
+
+    companion object {
+        var showDragIcon: Boolean = true
+        var showOpenButton: Boolean = false
+    }
 }
