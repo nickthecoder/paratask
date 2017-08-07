@@ -23,8 +23,7 @@ import uk.co.nickthecoder.paratask.parameters.fields.IntField
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
 
-open class IntParameter(
-        name: String,
+open class IntParameter(name: String,
         label: String = name.uncamel(),
         description: String = "",
         value: Int? = null,

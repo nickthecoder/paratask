@@ -29,6 +29,8 @@ interface ProjectTab {
 
     val right: HalfTab?
 
+    var tabTemplate : String
+
     fun attached(projectTabs: ProjectTabs)
 
     fun detaching()

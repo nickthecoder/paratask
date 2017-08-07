@@ -18,9 +18,9 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
     var label = Label(text)
 
     var text: String
-        get() = label.text
+        get() = textProperty().get()
         set(v) {
-            label.text = text
+            textProperty().set(v)
         }
 
     var graphic: Node?

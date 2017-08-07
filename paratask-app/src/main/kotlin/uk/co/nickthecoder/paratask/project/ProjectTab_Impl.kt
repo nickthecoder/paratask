@@ -18,20 +18,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import com.sun.javafx.stage.StageHelper
+import javafx.application.Platform
+import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.scene.Node
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
+import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import java.text.MessageFormat
 
 class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
-    : ProjectTab, MyTab() {
+    : ProjectTab, MyTab("Tab") {
 
     override lateinit var projectTabs: ProjectTabs
 
@@ -43,16 +55,33 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     val stackPane = StackPane(splitPane)
 
+    val titleListener = TitleListener()
+
+    override var tabTemplate = "{0}"
+        set(v) {
+            field = v
+            titleListener.update()
+        }
+
     init {
         content = stackPane
         stackPane.children.add(left as Node)
         splitPane.items.add(left as Node)
         splitPane.orientation = Orientation.HORIZONTAL
         updateTab()
+
+        val menu = ContextMenu()
+        val properties = MenuItem("Properties")
+        properties.onAction = EventHandler { onEditTabProperties() }
+        val close = MenuItem("Close")
+        close.onAction = EventHandler { close() }
+        menu.items.addAll(properties, close)
+
+        label.contextMenu = menu
     }
 
     private fun updateTab() {
-        textProperty().bind(left.toolPane.tool.shortTitleProperty)
+        titleListener.listen(left.toolPane.tool.shortTitleProperty)
         val imageView = left.toolPane.tool.icon?.let { ImageView(it) }
         graphic = imageView
     }
@@ -189,5 +218,49 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         }
 
         remove()
+    }
+
+    fun onEditTabProperties() {
+        TaskPrompter(EditTabProperties()).placeOnStage(Stage())
+    }
+
+    inner class EditTabProperties : AbstractTask() {
+        override val taskD = TaskDescription("Tab Properties")
+
+        val tabTemmplateP = StringParameter("tabTemplate", value = tabTemplate)
+
+        init {
+            taskD.addParameters(tabTemmplateP)
+        }
+
+        override fun run() {
+            Platform.runLater {
+                tabTemplate = tabTemmplateP.value
+            }
+        }
+    }
+
+    /**
+     * Listens to a StringProperty, and changes the tab's title based on the titleTemplate.
+     */
+    inner class TitleListener : ChangeListener<String> {
+        var prop: StringProperty? = null
+
+        override fun changed(observable: ObservableValue<out String>?, oldValue: String?, newValue: String?) {
+            update()
+        }
+
+        fun update() {
+            prop?.get()?.let {
+                text = MessageFormat.format(tabTemplate, it)
+            }
+        }
+
+        fun listen(property: StringProperty) {
+            prop?.removeListener(this)
+            prop = property
+            property.addListener(this)
+            update()
+        }
     }
 }

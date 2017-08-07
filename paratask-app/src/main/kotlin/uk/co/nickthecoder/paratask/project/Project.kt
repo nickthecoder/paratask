@@ -71,6 +71,7 @@ class Project(val projectWindow: ProjectWindow) {
      ],
      "tabs" : [
          {
+            "tabTemplate"="{0}",
              "left" = {
                 "tool" : "uk.co.nickthecoder.paratask.whatever",
                 "parameters" : [
@@ -99,6 +100,8 @@ class Project(val projectWindow: ProjectWindow) {
         for (tab in projectWindow.tabs.listTabs()) {
             val jtab = JsonObject()
             jtabs.add(jtab)
+
+            jtab.set("tabTemplate", tab.tabTemplate)
 
             val jleft = createHalfTab(tab.left)
             jtab.set("left", jleft)
@@ -155,6 +158,7 @@ class Project(val projectWindow: ProjectWindow) {
             jtabs?.let {
                 for (jtab in jtabs.asArray().map { it.asObject() }) {
 
+
                     val jleft = jtab.get("left").asObject()
                     jleft?.let {
                         val tool = loadTool(jleft)
@@ -164,6 +168,11 @@ class Project(val projectWindow: ProjectWindow) {
                         if (jright != null) {
                             val toolR = loadTool(jright.asObject())
                             projectTab.split(toolR)
+                        }
+
+                        val jtabTemplate = jtab.get("tabTemplate")
+                        jtabTemplate?.let {
+                            projectTab.tabTemplate = jtabTemplate.asString()
                         }
                     }
                 }
