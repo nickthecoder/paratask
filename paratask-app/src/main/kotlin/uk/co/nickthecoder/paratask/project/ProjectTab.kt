@@ -35,6 +35,8 @@ interface ProjectTab {
 
     fun isSelected() : Boolean
 
+    fun select()
+
     fun close()
 
     fun add(tool: Tool)

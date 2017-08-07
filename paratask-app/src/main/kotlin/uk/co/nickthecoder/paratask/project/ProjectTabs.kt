@@ -44,4 +44,6 @@ interface ProjectTabs {
     fun prevTab()
 
     fun selectTab(index: Int)
+
+    fun selectTab(projectTab: ProjectTab)
 }

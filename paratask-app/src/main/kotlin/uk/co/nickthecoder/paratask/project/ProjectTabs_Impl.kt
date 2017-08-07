@@ -119,5 +119,8 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         }
     }
 
+    override fun selectTab(projectTab: ProjectTab) {
+        selectedTab = projectTab as ProjectTab_Impl
+    }
 
 }

@@ -83,6 +83,10 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         projectTabs.removeTab(this)
     }
 
+    override fun select() {
+        projectTabs.selectTab(this)
+    }
+
     internal fun selected() {
         left.toolPane.selected()
     }

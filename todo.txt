@@ -1,9 +1,5 @@
 
 Bugs
-	Refresh GitLog puts "FirstCommit" at the front of the last commit (problem with reader keeping state from previous read?)
-
-	Newly created tabs are not becoming the current tab. e.g. git "push", brings up a terminal, but can be missed!
-
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection
