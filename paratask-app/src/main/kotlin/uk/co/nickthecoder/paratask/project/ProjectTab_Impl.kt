@@ -21,11 +21,9 @@ import com.sun.javafx.stage.StageHelper
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
-import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.ContextMenu
-import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
@@ -36,6 +34,7 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.parameters.ShortcutParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
@@ -61,6 +60,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var tabTemplate by tabProperties.tabTemplateP
 
+    private val shortcuts = ShortcutHelper("ProjectTab", splitPane)
+
     init {
         tabTemplate = "{0}"
         content = stackPane
@@ -70,10 +71,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         updateTab()
 
         val menu = ContextMenu()
-        val properties = MenuItem("Properties")
-        properties.onAction = EventHandler { onEditTabProperties() }
-        val close = MenuItem("Close")
-        close.onAction = EventHandler { close() }
+        val properties = ParataskActions.TAB_PROPERTIES.createMenuItem { onEditTabProperties() }
+        val close = ParataskActions.CLOSE_TAB.createMenuItem(shortcuts, { close() })
         menu.items.addAll(properties, close)
 
         label.contextMenu = menu

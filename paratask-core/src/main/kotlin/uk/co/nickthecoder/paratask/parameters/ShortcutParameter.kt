@@ -13,7 +13,7 @@ class ShortcutParameter(
         value: KeyCodeCombination? = null)
     : GroupParameter(name, label, description) {
 
-    val keyP = ChoiceParameter<KeyCode?>("shortcutKey", label = "Key", value = null).nullableEnumChoices()
+    val keyP = ChoiceParameter<KeyCode?>("shortcutKey", label = "Key", required = false, value = null).nullableEnumChoices()
 
     val controlP = BooleanParameter("control", required = false, value = false)
     val shiftP = BooleanParameter("shift", required = false, value = false)

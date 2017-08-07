@@ -26,10 +26,12 @@ object Preferences {
 
     val optionsPath = mutableListOf<Resource>()
 
-    var projectsDirectory = homeDirectory.child(".config", "paratask", "projects")
+    var configDirectory = homeDirectory.child(".config", "paratask")
+
+    var projectsDirectory = configDirectory.child("projects")
 
     init {
-        optionsPath.add(Resource(homeDirectory.child(".config", "paratask", "options")))
+        optionsPath.add(Resource(configDirectory.child("options")))
         //optionsPath.add(Resource(ParaTaskApp::class.java.getResource("options")))
     }
 
@@ -37,7 +39,7 @@ object Preferences {
             name: String = "directory",
             required: Boolean = false,
             defaultFirst: Boolean = required,
-            onlyDirectories :Boolean = false
+            onlyDirectories: Boolean = false
 
     ): ChoiceParameter<Resource?> {
 
@@ -47,7 +49,7 @@ object Preferences {
         }
 
         optionsPath.forEach { resource ->
-            if ( resource.isFileOrDirectory() || ! onlyDirectories ) {
+            if (resource.isFileOrDirectory() || !onlyDirectories) {
                 val str = resource.toString()
 
                 result.choice(str, resource, resource.directoryName)

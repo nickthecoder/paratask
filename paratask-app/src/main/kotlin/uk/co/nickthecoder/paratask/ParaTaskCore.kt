@@ -44,7 +44,8 @@ class ParaTaskCore : Registers {
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),
                 OptionsFilesTool(), OptionsTool(),
-                MythRecordedTool()
+                MythRecordedTool(),
+                ShortcutsTool()
         )
 
         TaskRegistry.topLevel.addTools(TerminalTool())

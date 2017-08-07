@@ -1,10 +1,7 @@
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.event.EventHandler
-import javafx.scene.control.Button
-import javafx.scene.control.ButtonBase
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.Tooltip
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
@@ -26,13 +23,20 @@ abstract class ApplicationAction(
         val label: String? = null
 ) {
 
-    val keyCodeCombination: KeyCodeCombination? = if (keyCode == null) {
-        null
-    } else {
-        createKeyCodeCombination(keyCode, shift, control, alt, meta, shortcut)
-    }
+    private val defaultKeyCodeCombination: KeyCodeCombination? =
+            keyCode?.let { createKeyCodeCombination(keyCode, shift, control, alt, meta, shortcut) }
+
+    var keyCodeCombination = defaultKeyCodeCombination
 
     abstract val image: Image?
+
+    fun revert() {
+        keyCodeCombination = defaultKeyCodeCombination
+    }
+
+    fun isChanged(): Boolean = keyCodeCombination != defaultKeyCodeCombination
+
+    fun shortcutString(): String = if (keyCodeCombination?.code == null) "" else keyCodeCombination.toString()
 
     fun match(event: KeyEvent): Boolean {
         return keyCodeCombination?.match(event) == true
@@ -57,6 +61,16 @@ abstract class ApplicationAction(
         return Tooltip(result.toString())
     }
 
+    fun createMenuItem(shortcuts: ShortcutHelper? = null, action: () -> Unit): MenuItem {
+        shortcuts?.add(this, action)
+
+        val menuItem = MenuItem(label)
+        menuItem.onAction = EventHandler { action() }
+        image?.let { menuItem.graphic = ImageView(it) }
+        menuItem.accelerator = keyCodeCombination
+        return menuItem
+    }
+
     fun createButton(shortcuts: ShortcutHelper? = null, action: () -> Unit): Button {
 
         shortcuts?.add(this, action)
@@ -70,7 +84,7 @@ abstract class ApplicationAction(
 
         val button = ToggleButton()
         shortcuts?.add(this, {
-            button.isSelected = !button.isSelected;
+            button.isSelected = !button.isSelected
             action()
         })
 

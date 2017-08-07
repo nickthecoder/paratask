@@ -6,11 +6,10 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
-import uk.co.nickthecoder.paratask.ParaTask
-import uk.co.nickthecoder.paratask.TaskRegistry
-import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.ApplicationAction
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.parameters.ShortcutParameter
 import uk.co.nickthecoder.paratask.tools.HomeTool
 
 class ParataskAction(
@@ -37,6 +36,27 @@ class ParataskAction(
         split.tooltip = createTooltip()
 
         return split
+    }
+
+    fun editTask(): Task = EditShortcut(this)
+
+    private class EditShortcut(val action: ParataskAction) : AbstractTask() {
+
+        override val taskD = TaskDescription("editShortcut",
+                description = "You will need to restart the application for new shortcuts to take effect. Sorry.")
+
+        val shortcutP = ShortcutParameter("shortcut")
+
+        init {
+            shortcutP.keyCodeCombination = action.keyCodeCombination
+
+            taskD.addParameters(shortcutP)
+        }
+
+        override fun run() {
+            action.keyCodeCombination = shortcutP.keyCodeCombination
+            ParataskActions.save()
+        }
     }
 
     class ToolSplitMenuButton(label: String, icon: Image?, val action: (Tool) -> Unit)

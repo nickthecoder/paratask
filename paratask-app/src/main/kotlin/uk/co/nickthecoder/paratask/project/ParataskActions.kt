@@ -17,12 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import com.eclipsesource.json.Json
+import com.eclipsesource.json.JsonArray
+import com.eclipsesource.json.JsonObject
+import com.eclipsesource.json.PrettyPrint
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
+import uk.co.nickthecoder.paratask.util.child
+import java.io.*
 
 object ParataskActions {
 
-    private val nameToActionMap = mutableMapOf<String, ParataskAction>()
+    val nameToActionMap = mutableMapOf<String, ParataskAction>()
 
     // ProjectWindow
     val OPEN_PROJECT = ParataskAction("project.open", KeyCode.O, alt = true, tooltip = "Open Project")
@@ -35,6 +42,10 @@ object ParataskActions {
     val SPLIT_TAB_TOGGLE = ParataskAction("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = ParataskAction("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
+    // ProjectTab
+    val TAB_PROPERTIES = ParataskAction("tab.properties", null, label = "Properties")
+    val CLOSE_TAB = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
+
     // HalfTab
     val SPLIT_TOOL_TOGGLE = ParataskAction("tool.toggleParameters", KeyCode.F9, tooltip = "Show/Hide Parameters")
 
@@ -42,7 +53,7 @@ object ParataskActions {
     val TOOL_RUN = ParataskAction("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
     val TOOL_SELECT = ParataskAction("tool.select", KeyCode.HOME, control = true, tooltip = "Select a Tool")
-    val TOOL_CLOSE = ParataskAction("tool.close", KeyCode.W, control = true, tooltip = "Close Tool")
+    val TOOL_CLOSE = ParataskAction("tool.close", KeyCode.W, control = true, shift = true, tooltip = "Close Tool")
 
     val HISTORY_BACK = ParataskAction("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
     val HISTORY_FORWARD = ParataskAction("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
@@ -109,8 +120,85 @@ object ParataskActions {
     val acceleratorUp = KeyCodeCombination(KeyCode.UP)
     val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
 
+    init {
+        load()
+    }
 
     fun add(action: ParataskAction) {
         nameToActionMap.put(action.name, action)
     }
+
+    fun shortcutPrefencesFile() = Preferences.configDirectory.child("shortcuts.json")
+
+    fun save() {
+
+        val jroot = JsonObject()
+        val jshortcuts = JsonArray()
+
+        nameToActionMap.values.forEach { action ->
+            if (action.isChanged()) {
+                val jshortcut = JsonObject()
+
+                jshortcut.add("name", action.name)
+                jshortcut.add("keycode", action.keyCodeCombination?.code?.toString() ?: "")
+                addModifier(jshortcut, "control", action.keyCodeCombination?.control)
+                addModifier(jshortcut, "shift", action.keyCodeCombination?.shift)
+                addModifier(jshortcut, "alt", action.keyCodeCombination?.alt)
+
+                jshortcuts.add(jshortcut)
+            }
+        }
+        jroot.add("shortcuts", jshortcuts)
+
+        BufferedWriter(OutputStreamWriter(FileOutputStream(shortcutPrefencesFile()))).use {
+            jroot.writeTo(it, PrettyPrint.indentWithSpaces(4))
+        }
+    }
+
+    fun addModifier(jparent: JsonObject, name: String, mod: KeyCombination.ModifierValue?) {
+        mod?.let { jparent.add(name, mod.toString()) }
+    }
+
+    fun load() {
+
+        val file = shortcutPrefencesFile()
+        if (!file.exists()) {
+            return
+        }
+
+        val jroot = Json.parse(InputStreamReader(FileInputStream(file))).asObject()
+        val jshortcutsObj = jroot.get("shortcuts")
+        jshortcutsObj?.let {
+            val jshortcuts = it.asArray()
+            jshortcuts.forEach {
+                val jshortcut = it.asObject()
+                val name = jshortcut.getString("name", "")
+                val action = nameToActionMap[name]
+                action?.let {
+                    val keyCodeS = jshortcut.getString("keycode", "")
+                    val controlS = jshortcut.getString("control", "ANY")
+                    val shiftS = jshortcut.getString("shift", "ANY")
+                    val altS = jshortcut.getString("alt", "ANY")
+
+                    val control = KeyCombination.ModifierValue.valueOf(controlS)
+                    val shift = KeyCombination.ModifierValue.valueOf(shiftS)
+                    val alt = KeyCombination.ModifierValue.valueOf(altS)
+
+                    if (keyCodeS == "") {
+                        it.keyCodeCombination = null
+                    } else {
+                        val keyCode = KeyCode.valueOf(keyCodeS)
+                        it.keyCodeCombination = KeyCodeCombination(
+                                keyCode,
+                                control,
+                                shift,
+                                alt,
+                                KeyCombination.ModifierValue.UP,
+                                KeyCombination.ModifierValue.UP)
+                    }
+                }
+            }
+        }
+    }
+
 }

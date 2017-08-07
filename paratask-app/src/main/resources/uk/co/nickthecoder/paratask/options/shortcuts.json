@@ -1,0 +1,18 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "row.editTask()",
+            "code": ".",
+            "label": "Edit Shortcut",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true
+        }
+    ]
+}

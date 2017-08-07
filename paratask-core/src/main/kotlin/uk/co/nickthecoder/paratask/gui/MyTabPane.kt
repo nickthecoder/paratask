@@ -46,6 +46,14 @@ open class MyTabPane<T : MyTab> : BorderPane() {
         override fun getModelItem(index: Int): T? {
             return if (index < 0 || index >= tabs.size) null else tabs[index]
         }
+
+        override fun select(index: Int) {
+            super.select(index)
+            val tab = getModelItem(index)
+            if (tab?.isSelected == false) {
+                tab.isSelected = true
+            }
+        }
     }
 
     /**
