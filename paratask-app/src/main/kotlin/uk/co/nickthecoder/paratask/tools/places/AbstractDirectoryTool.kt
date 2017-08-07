@@ -41,7 +41,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
 
-    val depthP = IntParameter("depth", value = 1, range = 1..Int.MAX_VALUE)
+    val depthP = IntParameter("depth", value = 1, range = 1..Int.MAX_VALUE, columnCount = 3)
 
     val onlyFilesP = BooleanParameter("onlyFiles", required = false, value = null)
 

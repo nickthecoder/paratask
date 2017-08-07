@@ -114,6 +114,12 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
             intParameter.value = spinner.valueFactory.value
         }
 
+        // Grr. I've had to add 2 to the columnCount, because it doesn't work otherwise!
+        // It's as if this number is used to calculate the width of the control IGNORING the space that the
+        // spinner buttons take up. Useless! I assume this is a bug in Spinner.
+        // Assuming a later version of JavaFX fixes this, then we'll need an IF based on version numbers to
+        // keep the control approximately the right size. Grrr.
+        spinner.editor.prefColumnCount = intParameter.columnCount + 2
         spinner.valueFactory.valueProperty().bindBidirectional(intParameter.valueProperty)
         return spinner
     }

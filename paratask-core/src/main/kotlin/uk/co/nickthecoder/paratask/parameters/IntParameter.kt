@@ -29,7 +29,8 @@ open class IntParameter(
         description: String = "",
         value: Int? = null,
         required: Boolean = true,
-        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE))
+        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE),
+        val columnCount: Int = 6)
 
     : AbstractValueParameter<Int?>(
         name = name,

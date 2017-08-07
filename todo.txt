@@ -5,7 +5,6 @@ Bugs
 	Adding an include to an empty options file threw an expection
 
 	Cannot resize "Places" column widths
-	"Depth" in DirectoryTreeTool header is too wide.
 
 FileParameter to have an "optional" More (...) button to open a "File Open" dialog.
 	Maybe this should be a global option, so that 3rd party apps can turn it on and off.
