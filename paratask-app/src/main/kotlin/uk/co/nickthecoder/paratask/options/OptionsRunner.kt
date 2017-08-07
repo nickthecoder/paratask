@@ -141,7 +141,7 @@ open class OptionsRunner(val tool: Tool) {
         if (newTab) {
 
             val tab = projectTabs?.addAfter(tool.toolPane!!.halfTab.projectTab, newTool, run = !prompt)
-            tab?.select()
+            tab?.isSelected
 
         } else {
             halfTab?.changeTool(newTool, prompt)

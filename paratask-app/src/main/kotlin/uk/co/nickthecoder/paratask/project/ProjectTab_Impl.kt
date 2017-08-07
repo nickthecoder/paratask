@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import com.sun.javafx.stage.StageHelper
-import javafx.application.Platform
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -38,6 +37,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.parameters.ShortcutParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.text.MessageFormat
 
@@ -57,13 +57,12 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     val titleListener = TitleListener()
 
-    override var tabTemplate = "{0}"
-        set(v) {
-            field = v
-            titleListener.update()
-        }
+    override val tabProperties = TabProperties()
+
+    override var tabTemplate by tabProperties.tabTemplateP
 
     init {
+        tabTemplate = "{0}"
         content = stackPane
         stackPane.children.add(left as Node)
         splitPane.items.add(left as Node)
@@ -110,10 +109,6 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override fun close() {
         projectTabs.removeTab(this)
-    }
-
-    override fun select() {
-        projectTabs.selectTab(this)
     }
 
     internal fun selected() {
@@ -228,22 +223,21 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     fun onEditTabProperties() {
-        TaskPrompter(EditTabProperties()).placeOnStage(Stage())
+        TaskPrompter(tabProperties).placeOnStage(Stage())
     }
 
-    inner class EditTabProperties : AbstractTask() {
-        override val taskD = TaskDescription("Tab Properties")
+    inner class TabProperties : AbstractTask() {
+        override val taskD = TaskDescription("tabProperties")
 
-        val tabTemmplateP = StringParameter("tabTemplate", value = tabTemplate)
+        val tabTemplateP = StringParameter("tabTemplate")
+        val shortcutP = ShortcutParameter("shortcut")
 
         init {
-            taskD.addParameters(tabTemmplateP)
+            taskD.addParameters(tabTemplateP, shortcutP)
+            tabTemplateP.listen { titleListener.update() }
         }
 
         override fun run() {
-            Platform.runLater {
-                tabTemplate = tabTemmplateP.value
-            }
         }
     }
 

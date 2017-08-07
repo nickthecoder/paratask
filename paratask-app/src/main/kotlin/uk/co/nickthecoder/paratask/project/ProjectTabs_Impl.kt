@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
@@ -30,6 +31,16 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         selectionModel.selectedItemProperty().addListener {
             _, oldTab, newTab ->
             onTabChanged(oldTab as ProjectTab_Impl?, newTab as ProjectTab_Impl?)
+        }
+        addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
+    }
+
+    private fun onKeyPressed(event: KeyEvent) {
+        tabs.forEach { tab ->
+            if (tab.tabProperties.shortcutP.keyCodeCombination?.match(event) == true) {
+                event.consume()
+                tab.isSelected = true
+            }
         }
     }
 

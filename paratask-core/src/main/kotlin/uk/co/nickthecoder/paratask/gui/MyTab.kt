@@ -37,7 +37,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
     var canClose: Boolean = canClose
         set(v) {
             field = v
-            if (isSelected() && v && tabPane?.tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
+            if (isSelected && v && tabPane?.tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
                 right = closeButton
             } else {
                 right = null
@@ -49,7 +49,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
             tabPane?.let {
                 it.contents.children.remove(field)
                 it.contents.children.add(v)
-                if (isSelected()) {
+                if (isSelected) {
                     // Ensure that the new content is displayed
                     it.untypedSelectedTab = this
                 }
@@ -79,12 +79,18 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
         tabPane?.remove(this)
     }
 
-    fun isSelected(): Boolean {
-        tabPane?.let {
-            return it.selectedTab === this
+    var isSelected: Boolean
+        get() {
+            tabPane?.let {
+                return it.selectedTab === this
+            }
+            return false
         }
-        return false
-    }
+        set(v) {
+            tabPane?.let {
+                (it as MyTabPane<MyTab>).selectedTab = this
+            }
+        }
 
     override fun computeMinWidth(height: Double): Double {
         return computePrefWidth(height)

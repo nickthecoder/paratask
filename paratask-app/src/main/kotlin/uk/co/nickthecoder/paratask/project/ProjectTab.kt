@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
 
 interface ProjectTab {
@@ -31,13 +32,13 @@ interface ProjectTab {
 
     var tabTemplate: String
 
+    val tabProperties: Task
+
     fun attached(projectTabs: ProjectTabs)
 
     fun detaching()
 
-    fun isSelected(): Boolean
-
-    fun select()
+    var isSelected: Boolean
 
     fun close()
 

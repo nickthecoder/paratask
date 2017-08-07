@@ -171,7 +171,7 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun toggleParameters() {
-        if (parametersTab.isSelected()) {
+        if (parametersTab.isSelected) {
             tabPane.selectionModel.select(0)
         } else {
             tabPane.selectionModel.select(tabPane.tabs.count() - 1)

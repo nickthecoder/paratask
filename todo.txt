@@ -1,5 +1,7 @@
 
 Bugs
+	The "Show Parameters" button hides the tool header.
+		Get rid of the button, and add a tooltip to the parameters tab (with a shortcut).
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection

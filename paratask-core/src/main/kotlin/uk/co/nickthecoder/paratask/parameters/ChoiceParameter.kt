@@ -135,6 +135,14 @@ open class ChoiceParameter<T>(
 
 }
 
+inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(): ChoiceParameter<T?> {
+    enumValues<T>().forEach { item ->
+        val label = if (item is Labelled) item.label else item.name
+        this.choice(key = item.name, value = item, label = label)
+    }
+    return this
+}
+
 inline fun <reified T : Enum<T>> ChoiceParameter<T>.enumChoices(): ChoiceParameter<T> {
     enumValues<T>().forEach { item ->
         val label = if (item is Labelled) item.label else item.name
