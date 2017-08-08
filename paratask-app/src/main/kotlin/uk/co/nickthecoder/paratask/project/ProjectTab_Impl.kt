@@ -107,6 +107,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun close() {
+        println("ProjectTab_Impl.close()")
         projectTabs.removeTab(this)
     }
 
@@ -218,7 +219,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             projectTab.split(it.toolPane.tool.copy())
         }
 
-        remove()
+        close()
     }
 
     fun onEditTabProperties() {

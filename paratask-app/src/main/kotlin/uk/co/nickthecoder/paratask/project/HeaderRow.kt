@@ -29,8 +29,8 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.FocusHelper
-import uk.co.nickthecoder.paratask.gui.FocusListener
+import uk.co.nickthecoder.paratask.gui.DefaultButtonUpdater
+import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.fields.FieldColumn
 import uk.co.nickthecoder.paratask.parameters.fields.FieldParent
@@ -38,13 +38,11 @@ import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
-class HeaderRow() : Region(), FocusListener {
+class HeaderRow : Region() {
 
     val fieldPositions = mutableListOf<FieldPosition>()
 
     private var goButton: Button? = null
-
-    var focusHelper: FocusHelper? = null
 
     init {
         styleClass.add("header-row")
@@ -70,21 +68,16 @@ class HeaderRow() : Region(), FocusListener {
     }
 
     fun addRunButton(tool: Tool, scene: Scene) {
-        val button = ParataskActions.TOOL_RUN.createButton() { tool.toolPane!!.parametersPane.run() }
+        val button = ParataskActions.TOOL_RUN.createButton { tool.toolPane!!.parametersPane.run() }
         with(button) {
-            button.setDefaultButton(true)
             goButton = this
         }
         children.add(goButton)
-        focusHelper = FocusHelper(this.parent, this, scene = scene, name = "HeaderRow")
-    }
-
-    override fun focusChanged(gained: Boolean) {
-        goButton?.setDefaultButton(gained)
+        goButton?.defaultWhileFocusWithin(this.parent, "HeaderRow", scene)
     }
 
     fun detaching() {
-        focusHelper?.let { it.remove() }
+        println("Detatching header row")
     }
 
     val spacing: Double
@@ -97,6 +90,10 @@ class HeaderRow() : Region(), FocusListener {
 
     fun focus() {
         fireTabToFocusNext()
+    }
+
+    protected fun finalize() {
+        println("Finalizing HeaderRow")
     }
 
     companion object {
@@ -157,7 +154,7 @@ class HeaderRow() : Region(), FocusListener {
         var slack = width - insets.left - insets.right + spacing
         goButton?.let { slack -= spacing + it.prefWidth(-1.0) }
 
-        fieldPositions.forEach() {
+        fieldPositions.forEach {
             val field = it.field
 
             it.calculateColumnPreferences()

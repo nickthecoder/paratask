@@ -66,7 +66,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
         graphic?.let { children.add(it) }
         center = label
         addEventHandler(MouseEvent.MOUSE_PRESSED) { tabPane?.let { it.untypedSelectedTab = this } }
-        closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED) { remove() }
+        closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED) { close() }
         closeButton.isVisible = canClose
 
         addEventHandler(MouseEvent.MOUSE_DRAGGED) { tabPane?.onDraggedTab(it, this) }
@@ -75,7 +75,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
 
     fun textProperty() = label.textProperty()
 
-    open fun remove() {
+    open fun close() {
         tabPane?.remove(this)
     }
 

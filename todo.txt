@@ -6,6 +6,8 @@ Search for KeyCodeCombination and put them ALL in ParaTaskActions
 Consider VISIBILITY event being sent to the parameter, not its parent.
 
 Bugs
+	Memory leak when CLOSING tabs.
+		Changing tools doesn't leak.
 	The "Show Parameters" button hides the tool header.
 		Get rid of the button, and add a tooltip to the parameters tab (with a shortcut).
 	Drag and Drop url places doesn't do anything, but suggests it will!
