@@ -35,7 +35,8 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
     override val fieldSet: List<ParameterField>
         get() = parametersForm.fieldSet
 
-    init {
+    override fun createControl(): ParametersForm {
+
         control = parametersForm
         parameter.parameterListeners.add(this)
 
@@ -45,6 +46,9 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         addButton.tooltip = Tooltip("Add")
 
         parametersForm.styleClass.add("multiple")
+
+        buildContent()
+        return parametersForm
     }
 
     fun buildContent() {

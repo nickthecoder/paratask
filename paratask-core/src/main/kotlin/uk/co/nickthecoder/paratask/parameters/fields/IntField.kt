@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.scene.Node
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyCode
@@ -35,11 +34,7 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
 
     private var dirty = false
 
-    init {
-        this.control = createControl()
-    }
-
-    private fun createControl(): Node {
+    override fun createControl(): Spinner<*> {
         val spinner = createSpinner()
 
         spinner.valueFactory.converter = intParameter.converter

@@ -58,7 +58,7 @@ class BooleanParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = BooleanField(this)
+    override fun createField(): BooleanField = BooleanField(this).build() as BooleanField
 
     override fun toString(): String = "Boolean" + super.toString()
 

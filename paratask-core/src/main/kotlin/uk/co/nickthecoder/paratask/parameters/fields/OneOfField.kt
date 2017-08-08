@@ -34,8 +34,7 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     private var wrappedField: WrappedField? = null
 
-    init {
-        control = parametersForm
+    override fun createControl() : ParametersForm {
 
         for (child in oneOfParameter.children) {
             choiceP.choice(child.name, child, child.label)
@@ -43,6 +42,9 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
         choiceP.listen { onChanged() }
         choiceP.parent = oneOfParameter
+
+        buildContent()
+        return parametersForm
     }
 
     fun buildContent() {

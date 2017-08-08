@@ -48,8 +48,8 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
      */
     private var editorText: String = ""
 
-    init {
-        this.control = datePicker
+    override fun createControl(): DatePicker {
+
         datePicker.converter = converter
         datePicker.valueProperty().bindBidirectional(dateParameter.valueProperty)
 
@@ -87,6 +87,7 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
         }
         // end bodge
 
+        return datePicker
     }
 
     override fun isDirty(): Boolean {

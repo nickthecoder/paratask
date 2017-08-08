@@ -74,7 +74,11 @@ open class ChoiceParameter<T>(
         return null
     }
 
-    override fun createField(): ChoiceField<T> = ChoiceField(this)
+    override fun createField(): ChoiceField<T> {
+        val result = ChoiceField(this)
+        result.build()
+        return result
+    }
 
     override fun toString(): String = "Choice" + super.toString()
 

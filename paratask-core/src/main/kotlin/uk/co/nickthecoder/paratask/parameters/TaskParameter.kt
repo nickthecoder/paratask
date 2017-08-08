@@ -20,11 +20,10 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskGroup
-import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.TaskField
+import uk.co.nickthecoder.paratask.util.escapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
 import uk.co.nickthecoder.paratask.util.unescapeNL
-import uk.co.nickthecoder.paratask.util.escapeNL
 
 /**
  * Allows a Task to be chosen from a list of tasks, and shows a button, which when pressed, allows
@@ -101,7 +100,7 @@ class TaskParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = TaskField(this)
+    override fun createField(): TaskField = TaskField(this).build() as TaskField
 
     override fun toString(): String = "Task" + super.toString()
 

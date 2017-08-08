@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.paratask.parameters
 
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.util.StringConverter
 

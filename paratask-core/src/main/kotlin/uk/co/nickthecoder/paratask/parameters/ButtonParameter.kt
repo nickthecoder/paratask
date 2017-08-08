@@ -19,7 +19,7 @@ class ButtonParameter(
 
     override fun copy(): ButtonParameter = ButtonParameter(name, label, buttonText, description, action)
 
-    override fun createField(): ParameterField = ButtonField(this)
+    override fun createField(): ButtonField = ButtonField(this).build() as ButtonField
 
     override fun errorMessage(): String? = null
 }

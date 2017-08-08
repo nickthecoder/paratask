@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.scene.Node
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
@@ -30,11 +29,9 @@ class StringField(val stringParameter: StringParameter) : LabelledField(stringPa
 
     lateinit var textField: TextInputControl
 
-    init {
-        control = createControl()
-    }
 
-    private fun createControl(): Node {
+    override fun createControl(): TextInputControl {
+
         val textField: TextInputControl
 
         if (stringParameter.rows > 1) {

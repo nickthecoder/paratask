@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
@@ -25,7 +24,8 @@ import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 class BooleanField(val booleanParameter: BooleanParameter)
     : LabelledField(booleanParameter, label = if (booleanParameter.labelOnLeft) booleanParameter.label else "") {
 
-    private fun createControl(): Node {
+    override fun createControl(): CheckBox {
+
         val checkBox = CheckBox(if (booleanParameter.labelOnLeft) "" else parameter.label)
         checkBox.isAllowIndeterminate = !booleanParameter.required
         if (booleanParameter.value == null) {
@@ -46,10 +46,6 @@ class BooleanField(val booleanParameter: BooleanParameter)
         })
 
         return checkBox
-    }
-
-    init {
-        control = createControl()
     }
 
 }

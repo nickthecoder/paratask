@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.beans.property.SimpleObjectProperty
-import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
@@ -64,11 +63,7 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>) : LabelledField(ch
         }
     }
 
-    init {
-        this.control = createControl()
-    }
-
-    private fun createControl(): Node {
+    override fun createControl(): ComboBox<*> {
 
         comboBox.converter = converter
         comboBox.valueProperty().bindBidirectional(bodgeProperty)

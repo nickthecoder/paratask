@@ -8,17 +8,15 @@ import uk.co.nickthecoder.paratask.parameters.ScaledDoubleParameter
 
 /**
  */
-class ScaledDoubleField(val scaledParameter: ScaledDoubleParameter, adaptor: DoubleAdaptor) : DoubleField(scaledParameter, adaptor) {
+class ScaledDoubleField(val scaledParameter: ScaledDoubleParameter, adaptor: DoubleAdaptor)
+
+    : DoubleField(scaledParameter, adaptor) {
 
     val combo = ComboBox<String>()
 
-    init {
-        control = createControl()
-    }
-
-    fun createControl(): Node {
+    override fun createControl(): BorderPane {
         val border = BorderPane()
-        border.center = control
+        border.center = super.createControl()
         border.right = combo
 
         scaledParameter.scales.forEach { key, _ ->

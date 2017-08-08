@@ -7,7 +7,7 @@ class InformationField(val informationParameter: InformationParameter) : Paramet
 
     val label = Label(informationParameter.information)
 
-    init {
+    override fun createControl(): Label {
 
         label.isWrapText = true
         label.styleClass.add("information")
@@ -17,7 +17,7 @@ class InformationField(val informationParameter: InformationParameter) : Paramet
             oldValue?.let { label.styleClass.remove(it) }
             newValue?.let { label.styleClass.add(it) }
         })
-
+        return label
     }
 
 }

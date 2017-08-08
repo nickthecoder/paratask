@@ -54,7 +54,7 @@ class StringParameter(
         return null
     }
 
-    override fun createField(): StringField = StringField(this)
+    override fun createField(): StringField = StringField(this).build() as StringField
 
     override fun toString() = "String" + super.toString()
 

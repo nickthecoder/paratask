@@ -54,7 +54,7 @@ class OneOfParameter(
 
     override fun createField(): OneOfField {
         val result = OneOfField(this)
-        result.buildContent()
+        result.build()
         return result
     }
 

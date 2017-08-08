@@ -146,10 +146,9 @@ class MultipleParameter<T>(
 
     override fun createField(): MultipleField<T> {
         val result = MultipleField(this)
-        result.buildContent()
+        result.build()
         return result
     }
-
 
     fun clear() {
         innerParameters.clear()

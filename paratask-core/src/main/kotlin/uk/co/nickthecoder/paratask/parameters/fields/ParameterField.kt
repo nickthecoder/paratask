@@ -25,19 +25,11 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
-open class ParameterField(val parameter: Parameter) : Region(), ParameterListener {
+abstract class ParameterField(val parameter: Parameter) : Region(), ParameterListener {
 
     lateinit var form: FieldParent
 
     val error = Label()
-
-    init {
-        error.isVisible = false
-        error.styleClass.add("error")
-
-        children.add(error)
-        parameter.parameterListeners.add(this)
-    }
 
     open var control: Node? = null
         set(v) {
@@ -50,6 +42,20 @@ open class ParameterField(val parameter: Parameter) : Region(), ParameterListene
                 children.add(v)
             }
         }
+
+    open fun build(): ParameterField {
+
+        error.isVisible = false
+        error.styleClass.add("error")
+
+        children.add(error)
+        parameter.parameterListeners.add(this)
+
+        control = createControl()
+        return this
+    }
+
+    abstract fun createControl(): Node
 
     fun showError(message: String) {
         error.text = message

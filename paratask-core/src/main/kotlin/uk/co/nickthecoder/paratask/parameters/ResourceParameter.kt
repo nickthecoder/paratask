@@ -62,7 +62,7 @@ class ResourceParameter(
 
     override fun isStretchy(): Boolean = true
 
-    override fun createField() = ResourceField(this)
+    override fun createField() = ResourceField(this).build() as ResourceField
 
     override fun toString() = "Resource" + super.toString()
 

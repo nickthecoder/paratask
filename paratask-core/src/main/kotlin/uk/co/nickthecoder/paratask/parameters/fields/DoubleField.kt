@@ -28,11 +28,8 @@ open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor : Dou
 
     private var dirty = false
 
-    init {
-        control = createSpinner()
-    }
+    override fun createControl(): Node {
 
-    protected fun createSpinner(): Node {
         val spinner = createSimpleSpinner()
 
         spinner.valueFactory.converter = adaptor.converter

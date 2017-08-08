@@ -75,7 +75,8 @@ open class DoubleParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = DoubleField(this, DoubleParameterAdaptor(this))
+    override fun createField(): DoubleField =
+            DoubleField(this, DoubleParameterAdaptor(this)).build() as DoubleField
 
     override fun toString(): String = "Double" + super.toString()
 

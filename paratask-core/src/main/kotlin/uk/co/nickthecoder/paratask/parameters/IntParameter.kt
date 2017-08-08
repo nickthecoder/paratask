@@ -90,7 +90,7 @@ open class IntParameter(name: String,
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField = IntField(this)
+    override fun createField(): IntField = IntField(this).build() as IntField
 
     override fun toString(): String = "Int" + super.toString()
 

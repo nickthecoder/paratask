@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.event.EventHandler
 import javafx.scene.Node
+import javafx.scene.control.TextField
+import javafx.scene.layout.BorderPane
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
 import javafx.stage.Stage
@@ -27,17 +29,15 @@ import java.io.File
 
 class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter) {
 
-    init {
-        control = createControl()
-
+    override fun createControl(): BorderPane {
         if (FileParameter.showOpenButton) {
             openButton.onAction = EventHandler { onOpen() }
             iconContainer.children.add(0, openButton)
         }
-        updateEnabled()
+        return super.createControl()
     }
 
-    override fun buildTextField(): Node {
+    override fun buildTextField(): TextField {
         super.buildTextField()
         textField.textProperty().bindBidirectional(fileParameter.valueProperty, fileParameter.converter)
         return textField

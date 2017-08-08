@@ -34,11 +34,7 @@ open class GroupParameter(
      * When used to group parameters it is wrapped in a box, but when used as the root,
      * it is not wrapped in a box.
      */
-    override fun createField(): GroupField {
-        val result = GroupField(this)
-        result.buildContent()
-        return result
-    }
+    override fun createField(): GroupField = GroupField(this).build() as GroupField
 
     override fun errorMessage(): String? = null
 

@@ -136,7 +136,7 @@ open class FileParameter(
 
     override fun isStretchy(): Boolean = true
 
-    override fun createField() = FileField(this)
+    override fun createField() = FileField(this).build() as FileField
 
     override fun toString() = "File" + super.toString()
 

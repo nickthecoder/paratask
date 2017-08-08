@@ -28,39 +28,48 @@ import javafx.scene.control.Tooltip
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-open class LabelledField(parameter: Parameter, label: String = parameter.label) : ParameterField(parameter) {
+abstract class LabelledField(parameter: Parameter, label: String = parameter.label) : ParameterField(parameter) {
 
-    var label: Node
+    var label: Node = Label(label)
 
-    val expressionButton: ToggleButton?
+    protected var expressionButton: ToggleButton? = null
 
-    val expressionField = TextField()
+    protected var expressionField: TextField? = null
 
-    init {
-        val lab = Label(label)
-        this.label = lab
+    override var control: Node?
+        get() = super.control
+        set(v) {
+            super.control = v
+            if (expressionButton?.isSelected == true) {
+                v?.isVisible = false
+            }
+        }
+
+    override fun build(): LabelledField {
+        super.build()
+
         if (parameter.description != "") {
-            lab.tooltip = Tooltip(parameter.description)
+            (label as Label).tooltip = Tooltip(parameter.description)
         }
 
         children.add(this.label)
         styleClass.add("field")
 
-        expressionField.styleClass.add("expression")
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
+            expressionField = TextField()
+            expressionField?.styleClass?.add("expression")
             expressionButton = ToggleButton("=")
+            expressionField?.textProperty()?.bindBidirectional(parameter.expressionProperty)
+
             children.add(expressionButton)
-            expressionField.textProperty().bindBidirectional(parameter.expressionProperty)
+
             if (parameter.expression != null) {
-                expressionButton.isSelected = true
+                expressionButton?.isSelected = true
                 children.add(expressionField)
             }
-            expressionButton.addEventHandler(ActionEvent.ACTION) { onExpression() }
-
-        } else {
-            expressionButton = null
+            expressionButton?.addEventHandler(ActionEvent.ACTION) { onExpression() }
         }
-
+        return this
     }
 
     /**
@@ -72,14 +81,6 @@ open class LabelledField(parameter: Parameter, label: String = parameter.label) 
         children.add(label)
     }
 
-    override var control: Node?
-        get() = super.control
-        set(v) {
-            super.control = v
-            if (expressionButton?.isSelected == true) {
-                v?.isVisible = false
-            }
-        }
 
     private fun controlOrExpression(): Node? = if (expressionButton?.isSelected == true) expressionField else control
 
@@ -191,10 +192,10 @@ open class LabelledField(parameter: Parameter, label: String = parameter.label) 
     fun onExpression() {
         if (expressionButton?.isSelected == true) {
             children.add(expressionField)
-            expressionField.text = ""
+            expressionField?.text = ""
         } else {
             children.remove(expressionField)
-            expressionField.text = null
+            expressionField?.text = null
         }
         control?.isVisible = expressionButton?.isSelected == false
     }

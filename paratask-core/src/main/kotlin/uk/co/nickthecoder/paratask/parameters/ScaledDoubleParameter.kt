@@ -97,5 +97,6 @@ class ScaledDoubleParameter(
         return ScaledDoubleParameter(name, label, description, value, scales)
     }
 
-    override fun createField() = ScaledDoubleField(this, ScaledDoubleParameterAdaptor(this))
+    override fun createField() =
+            ScaledDoubleField(this, ScaledDoubleParameterAdaptor(this)).build() as ScaledDoubleField
 }

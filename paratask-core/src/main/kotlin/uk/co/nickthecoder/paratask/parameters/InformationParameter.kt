@@ -25,7 +25,7 @@ class InformationParameter(
 
     override fun isStretchy(): Boolean = true
 
-    override fun createField() = InformationField(this)
+    override fun createField() = InformationField(this).build() as InformationField
 
     override fun copy(): InformationParameter {
         return InformationParameter(name, information, style)

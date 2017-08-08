@@ -37,7 +37,7 @@ class TaskField(val taskParameter: TaskParameter) : LabelledField(taskParameter)
 
     val button = Button("Parameters")
 
-    init {
+    override fun createControl(): HBox {
 
         val box = HBox()
         box.styleClass.add("task-field")
@@ -50,6 +50,8 @@ class TaskField(val taskParameter: TaskParameter) : LabelledField(taskParameter)
         buildContextMenu()
         taskButton.contextMenu = contextMenu
         taskParameter.value?.let { taskLabel.text = it.taskD.label }
+
+        return box
     }
 
     private fun onEditParameters() {

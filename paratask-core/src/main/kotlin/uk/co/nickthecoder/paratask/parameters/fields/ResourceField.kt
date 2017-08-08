@@ -18,16 +18,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.scene.Node
+import javafx.scene.control.TextField
+import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import java.io.File
 
 class ResourceField(val resourceParameter: ResourceParameter) :FileFieldBase(resourceParameter) {
 
-    init {
-        control = createControl()
+    override fun createControl(): BorderPane {
+        return super.createControl()
     }
 
-    override fun buildTextField() : Node {
+    override fun buildTextField() : TextField {
         with(textField) {
             textProperty().bindBidirectional(resourceParameter.valueProperty, resourceParameter.converter)
         }

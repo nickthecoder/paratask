@@ -70,7 +70,7 @@ open class DateParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): DateField = DateField(this)
+    override fun createField(): DateField = DateField(this).build() as DateField
 
     override fun toString(): String = "Date" + super.toString()
 

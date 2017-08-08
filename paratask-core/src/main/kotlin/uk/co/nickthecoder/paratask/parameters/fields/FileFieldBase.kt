@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.geometry.Side
-import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
@@ -32,7 +31,10 @@ import uk.co.nickthecoder.paratask.gui.ApplicationAction
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.ParameterEventType
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
@@ -53,7 +55,8 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
 
     protected val borderPane = BorderPane()
 
-    fun createControl(): Node {
+    override fun createControl(): BorderPane {
+
         val main = buildTextField()
 
         DragFilesHelper(icon) { getFile()?.let { listOf(it) } }
@@ -79,7 +82,7 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
         return borderPane
     }
 
-    open fun buildTextField(): Node {
+    open fun buildTextField(): TextField {
 
         with(textField) {
 
