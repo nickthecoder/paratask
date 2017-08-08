@@ -1,6 +1,4 @@
 
-Search for KeyCodeCombination and put them ALL in ParaTaskActions
-
 Consider VISIBILITY event being sent to the parameter, not its parent.
 
 Bugs
@@ -31,7 +29,7 @@ Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm
 	Or add a list of ScaledDoubleParameters???
 	Or make ScaledValue imutable???
 	
-Implement a PROPER terminal (as well as the simple one?)
+Implement a PROPER terminal (as well as the simple one?)4
 	Perhaps put it in its own sub-project to isolate it from the rest due to it's large number of dependencies.
 	OR, create a new project just for it, and use a "plugin" system to include it.
 

@@ -38,7 +38,7 @@ import uk.co.nickthecoder.paratask.parameters.*
 open class ParametersForm(val parentParameter: ParentParameter)
     : Region(), FieldParent, HasChildFields, ParameterListener {
 
-    override val columns = mutableListOf<FieldColumn>()
+    override final val columns = mutableListOf<FieldColumn>()
 
     override val fieldSet = mutableListOf<ParameterField>()
 
