@@ -5,20 +5,9 @@
     "options": [
         {
             "type": "groovy",
-            "code": ".",
-            "label": "Work with Options",
-            "script": "new OptionsTool(row)",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
+            "script": "tool.removeInclude(row)",
             "code": "-",
             "label": "Remove Incude",
-            "script": "tool.removeInclude(row)",
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
@@ -27,14 +16,25 @@
         },
         {
             "type": "groovy",
+            "script": "tool.taskEditIncludes()",
             "code": "+",
             "label": "Add Incude",
-            "script": "tool.taskEditIncludes()",
             "isRow": false,
             "isMultiple": false,
             "prompt": true,
             "newTab": false,
             "refresh": true
+        },
+        {
+            "type": "groovy",
+            "script": "new OptionsTool(row)",
+            "code": ".",
+            "label": "Work with Options",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }
