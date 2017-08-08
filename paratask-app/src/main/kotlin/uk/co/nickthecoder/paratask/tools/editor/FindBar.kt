@@ -19,20 +19,16 @@ package uk.co.nickthecoder.paratask.tools.editor
 
 import javafx.application.Platform
 import javafx.scene.control.*
-import uk.co.nickthecoder.paratask.gui.FocusHelper
-import uk.co.nickthecoder.paratask.gui.FocusListener
-import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.gui.DefaultButtonUpdater
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
+import uk.co.nickthecoder.paratask.project.ParataskActions
 
-class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBar(), FocusListener {
-
-    val codeArea = editorResults.codeArea
+class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBar() {
 
     val searchTextField = TextField()
 
     val goButton: Button
-
-    private var focusHelper: FocusHelper? = null
 
     val matchPositionLabel = Label()
 
@@ -72,6 +68,8 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
         focus()
     }
 
+    var defaultButtonUpdater: DefaultButtonUpdater? = null
+
     fun focus() {
         // The very first time I press ctrl+F, searchTextField.scene returns null, which causes requestFocsus to fail.
         // After way too much time trying to debug this (with intermittent results), I decided this was the "easiest"
@@ -84,8 +82,8 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
         fun innerFocus() {
             Platform.runLater {
                 if (focusDone && searchTextField.scene != null) {
-                    if ( focusHelper == null) {
-                        focusHelper = FocusHelper(this, this, name = "FindBar")
+                    if (defaultButtonUpdater == null) {
+                        defaultButtonUpdater = goButton.defaultWhileFocusWithin(this, "FindBar Go")
                     }
                     searchTextField.requestFocus()
                     focusDone = false
@@ -112,12 +110,6 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
     }
 
     fun detaching() {
-        focusHelper?.remove()
-        focusHelper = null
-    }
-
-    override fun focusChanged(gained: Boolean) {
-        goButton.setDefaultButton(gained)
     }
 
 }

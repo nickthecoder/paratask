@@ -16,6 +16,7 @@ class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<
     val changeListener = ChangeListener<Node> { _, _, newValue -> onFocusChanged(newValue) }
 
     init {
+        println("Created DfaultButtonUpdater $name $instanceCount")
         instanceCount++
         scene?.focusOwnerProperty()?.addListener(changeListener)
 
@@ -30,7 +31,6 @@ class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<
         //println("DBU.onFocusChanged $ancestor")
 
         if (ancestor == null) {
-            println("Remove FocusHelper ${name} because of garbage collector.")
             remove()
         } else {
 
@@ -76,7 +76,7 @@ class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<
 
     protected fun finalize() {
         instanceCount--
-        println("Finilizing DefautButtonUpdater $instanceCount")
+        println("Finilizing DefautButtonUpdater $name #$instanceCount")
     }
 }
 

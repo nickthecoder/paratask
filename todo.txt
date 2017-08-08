@@ -16,6 +16,8 @@ Bugs
 
 	Cannot resize "Places" column widths
 	Double click an Option's include, and it does NOT run the tool.
+	FindBar stays when changing tool.
+	FindBar is not being gc'd ??
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 
