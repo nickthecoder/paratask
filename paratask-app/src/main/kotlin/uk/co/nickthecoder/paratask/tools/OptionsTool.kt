@@ -242,8 +242,10 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             scriptOrTaskP.addParameters(script, taskP)
             isRow.listen {
                 shortcutP.hidden = isRow.value == true
+                isMultiple.hidden = isRow.value == false
             }
             shortcutP.hidden = isRow.value == true
+            isMultiple.hidden = isRow.value == false
         }
 
         override fun run() {
