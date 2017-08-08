@@ -81,6 +81,8 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     val informationP = InformationParameter("information", "Use information parameters to add arbitrary text to a form.")
 
     init {
+        rangeFromP.enabled = false
+        
         taskD.addParameters(fileP, informationP, doubleP, groupP, buttonP)
         //durationP, doubleP, optionalDoubleP,
 

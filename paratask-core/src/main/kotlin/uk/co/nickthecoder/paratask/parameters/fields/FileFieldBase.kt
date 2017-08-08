@@ -32,14 +32,14 @@ import uk.co.nickthecoder.paratask.gui.ApplicationAction
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 
-abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledField(valueParameter) {
+abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
+    : LabelledField(valueParameter) {
 
     val textField = TextField()
 
@@ -75,15 +75,6 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
         borderPane.center = main
         borderPane.styleClass.add("file-field")
         icon.styleClass.add("icon")
-
-        parameter.listen {
-            val error = parameter.errorMessage()
-            if (error == null) {
-                clearError()
-            } else {
-                showError(error)
-            }
-        }
 
         return borderPane
     }
@@ -136,6 +127,24 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>) : LabelledFi
                 }
             }
         }
+    }
+
+    override fun parameterChanged(event: ParameterEvent) {
+        super.parameterChanged(event)
+
+        if (event.type == ParameterEventType.VALUE) {
+            val error = parameter.errorMessage()
+            if (error == null) {
+                clearError()
+            } else {
+                showError(error)
+            }
+        }
+    }
+
+    override fun updateEnabled() {
+        super.updateEnabled()
+        textField.isDisable = !parameter.enabled
     }
 
     abstract protected fun getFile(): File?

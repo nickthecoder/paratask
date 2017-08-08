@@ -29,7 +29,7 @@ class RenameFileTask() : AbstractTask() {
 
     override val taskD = TaskDescription("renameFile")
 
-    val fileP = FileParameter("file", mustExist = true)
+    val fileP = FileParameter("file", mustExist = true, enabled = false)
 
     val newNameP = StringParameter("newName")
 

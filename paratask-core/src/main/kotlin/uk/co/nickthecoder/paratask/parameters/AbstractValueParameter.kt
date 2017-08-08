@@ -29,9 +29,17 @@ abstract class AbstractValueParameter<T>(
         label: String,
         description: String,
         value: T,
-        var required: Boolean = false)
+        var required: Boolean = false,
+        hidden: Boolean = false,
+        enabled: Boolean = true)
 
-    : AbstractParameter(name, label = label, description = description), PropertyValueParameter<T> {
+    : AbstractParameter(
+        name, label = label,
+        description = description,
+        hidden = hidden,
+        enabled = enabled),
+
+        PropertyValueParameter<T> {
 
     override abstract val converter: StringConverter<T>
 

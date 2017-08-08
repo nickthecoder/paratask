@@ -34,6 +34,7 @@ class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter)
             openButton.onAction = EventHandler { onOpen() }
             iconContainer.children.add(0, openButton)
         }
+        updateEnabled()
     }
 
     override fun buildTextField(): Node {
@@ -47,6 +48,11 @@ class FileField(val fileParameter: FileParameter) : FileFieldBase(fileParameter)
     override fun setFile(file: File?) {
         fileParameter.value = file
         textField.positionCaret(textField.text.length)
+    }
+
+    override fun updateEnabled() {
+        super.updateEnabled()
+        openButton.isDisable = !parameter.enabled
     }
 
     fun onOpen() {

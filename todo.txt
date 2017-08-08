@@ -1,4 +1,8 @@
 
+
+Implement weak refs for parameter listeners
+Look for parameter.listen {...}. Fields should override the method on listener instead.
+
 Bugs
 	The "Show Parameters" button hides the tool header.
 		Get rid of the button, and add a tooltip to the parameters tab (with a shortcut).
@@ -7,6 +11,7 @@ Bugs
 	Adding an include to an empty options file threw an expection
 
 	Cannot resize "Places" column widths
+	Double click an Option's include, and it does NOT run the tool.
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 

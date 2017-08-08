@@ -20,7 +20,10 @@ package uk.co.nickthecoder.paratask.parameters
 abstract class AbstractParameter(
         override val name: String,
         override val label: String,
-        override val description: String)
+        override val description: String,
+        hidden: Boolean = false,
+        enabled: Boolean = true)
+
     : Parameter {
 
     override val parameterListeners = ParameterListeners()
@@ -33,12 +36,21 @@ abstract class AbstractParameter(
         })
     }
 
-    override var hidden: Boolean = false
+    override var hidden: Boolean = hidden
         set(v) {
             val old = field
             field = v
             if (old != v) {
                 parent?.parameterListeners?.fireVisibilityChanged(this)
+            }
+        }
+
+    override var enabled: Boolean = enabled
+        set(v) {
+            val old = field
+            field = v
+            if (old != v) {
+                parameterListeners.fireEnabledChanged(this)
             }
         }
 

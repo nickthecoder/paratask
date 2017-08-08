@@ -21,8 +21,11 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.ParameterEventType
+import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
-open class ParameterField(val parameter: Parameter) : Region() {
+open class ParameterField(val parameter: Parameter) : Region(), ParameterListener {
 
     lateinit var form: FieldParent
 
@@ -33,6 +36,7 @@ open class ParameterField(val parameter: Parameter) : Region() {
         error.styleClass.add("error")
 
         children.add(error)
+        parameter.parameterListeners.add(this)
     }
 
     open var control: Node? = null
@@ -61,4 +65,13 @@ open class ParameterField(val parameter: Parameter) : Region() {
 
     open fun isDirty(): Boolean = false
 
+    open fun updateEnabled() {
+        control?.isDisable = !parameter.enabled
+    }
+
+    override fun parameterChanged(event: ParameterEvent) {
+        if (event.type == ParameterEventType.ENABLED) {
+            updateEnabled()
+        }
+    }
 }

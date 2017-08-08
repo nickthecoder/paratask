@@ -35,6 +35,8 @@ interface Parameter : Labelled {
 
     var hidden: Boolean
 
+    var enabled: Boolean
+
     fun listen(listener: (event: ParameterEvent) -> Unit)
 
     fun isStretchy(): Boolean

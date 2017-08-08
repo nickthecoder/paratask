@@ -29,6 +29,7 @@ open class FileParameter(
         label: String = name.uncamel(),
         description: String = "",
         required: Boolean = true,
+        enabled: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         value: File? = if (expectFile == false && mustExist == true) currentDirectory else null,
@@ -41,7 +42,8 @@ open class FileParameter(
         label = label,
         description = description,
         value = value,
-        required = required) {
+        required = required,
+        enabled = enabled) {
 
     override val converter = object : StringConverter<File?>() {
 

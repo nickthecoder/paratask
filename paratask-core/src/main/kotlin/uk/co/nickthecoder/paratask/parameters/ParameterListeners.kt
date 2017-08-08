@@ -63,5 +63,12 @@ class ParameterListeners {
         }
     }
 
+    fun fireEnabledChanged(parameter: Parameter) {
+        val event = ParameterEvent(parameter, ParameterEventType.ENABLED)
+        listeners.forEach {
+            it.parameterChanged(event)
+        }
+    }
+
     fun count(): Int = listeners.size
 }

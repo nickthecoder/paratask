@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters
 
 enum class ParameterEventType {
-    VALUE, STRUCTURAL, INNER, VISIBILITY
+    VALUE, STRUCTURAL, INNER, VISIBILITY, ENABLED
 }
 
 data class ParameterEvent(
