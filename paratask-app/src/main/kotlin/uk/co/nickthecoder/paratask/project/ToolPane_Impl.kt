@@ -150,7 +150,7 @@ class ToolPane_Impl(override var tool: Tool)
         val lastRowIndex = headerRows.size - 1
         if (lastRowIndex >= 0) {
             val lastRow = headerRows[lastRowIndex]
-            lastRow.addRunButton(tool, scene)
+            lastRow.addRunButton(tool)
         }
 
         ParaTaskApp.logAttach("ToolPane.attached")

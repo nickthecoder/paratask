@@ -17,13 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.application.Platform
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.OneOfParameter
 import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 
 class OneOfField(val oneOfParameter: OneOfParameter)
     : ParameterField(oneOfParameter), WrappableField {
@@ -34,13 +34,12 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     private var wrappedField: WrappedField? = null
 
-    override fun createControl() : ParametersForm {
+    override fun createControl(): ParametersForm {
 
         for (child in oneOfParameter.children) {
             choiceP.choice(child.name, child, child.label)
         }
         choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
-        choiceP.listen { onChanged() }
         choiceP.parent = oneOfParameter
 
         buildContent()
@@ -60,10 +59,9 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         }
     }
 
-    fun onChanged() {
-        Platform.runLater {
-            buildContent()
-        }
+    override fun parameterChanged(event: ParameterEvent) {
+        super.parameterChanged(event)
+        buildContent()
     }
 
     override fun computePrefHeight(width: Double): Double {

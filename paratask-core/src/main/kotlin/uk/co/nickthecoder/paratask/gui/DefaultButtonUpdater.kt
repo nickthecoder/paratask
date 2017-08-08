@@ -6,29 +6,52 @@ import javafx.scene.Scene
 import javafx.scene.control.Button
 import java.lang.ref.WeakReference
 
-private var instanceCount = 0
+//private var instanceCount = 0
 
-class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<not known>", val scene: Scene? = button.scene) {
+/**
+ * Changes the "default" property of a Button when the focus is somewhere within one of its ancestor nodes.
+ * This allows multiple "default" buttons within a single Scene, and their "default" property will change
+ * appropriately.
+ *
+ * Note, we use WeakReferences, to prevent memory leaks without having to manually remove the focus listener.
+ * This will NOT prevent the Button nor its ancestor being garbage collected, and the listener will be removed
+ * from the scene once the button or the ancestor ARE garbage collected.
+ */
+class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<not known>") {
 
     val weakParent = WeakReference(ancestor)
     val weakButton = WeakReference(button)
 
     val changeListener = ChangeListener<Node> { _, _, newValue -> onFocusChanged(newValue) }
 
-    init {
-        println("Created DfaultButtonUpdater $name $instanceCount")
-        instanceCount++
-        scene?.focusOwnerProperty()?.addListener(changeListener)
+    var weakScene: WeakReference<Scene>? = null
 
-        if (scene == null) {
-            debugAncestors()
+    init {
+        // println("Created DefaultButtonUpdater $name $instanceCount")
+        // instanceCount++
+
+        // Some controls, such as Toolbar and TabPane do NOT update the parent or scene of child nodes straight away.
+        // I think this is all parents that use "items" rather than "children" to manage their child nodes.
+        // And it is realted to how the control's Skin is initialised later than you might expect.
+        // This code listens for when the scene is set, and adds the focusOwner listener then.
+        val sceneNow = button.scene
+        if (sceneNow == null) {
+            button.sceneProperty().addListener { _, _, newScene ->
+                if (newScene != null) {
+                    newScene.focusOwnerProperty().addListener(changeListener)
+                    weakScene = WeakReference(newScene)
+                }
+            }
+        } else {
+            sceneNow.focusOwnerProperty().addListener(changeListener)
+            weakScene = WeakReference(sceneNow)
         }
     }
+
 
     private fun onFocusChanged(newValue: Node?) {
 
         val ancestor = weakParent.get()
-        //println("DBU.onFocusChanged $ancestor")
 
         if (ancestor == null) {
             remove()
@@ -49,20 +72,9 @@ class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<
         }
     }
 
-    fun debugAncestors() {
-        Thread.dumpStack()
-        println("Focus Listener could not find the Scene for $name. Ancestors :")
-        var node: Node? = weakParent.get()
-        while (node != null) {
-            println(node)
-            node = node.parent
-        }
-        println()
-    }
-
     fun remove() {
-        println("Removing DefaultButtonUpdater ${name}")
-        scene?.focusOwnerProperty()?.removeListener(changeListener)
+        // println("Removing DefaultButtonUpdater ${name}")
+        weakScene?.get()?.focusOwnerProperty()?.removeListener(changeListener)
     }
 
     private fun focusChanged(gained: Boolean) {
@@ -74,12 +86,12 @@ class DefaultButtonUpdater(button: Button, ancestor: Node, val name: String = "<
         }
     }
 
-    protected fun finalize() {
-        instanceCount--
-        println("Finilizing DefautButtonUpdater $name #$instanceCount")
-    }
+    //protected fun finalize() {
+    //    instanceCount--
+    //    println("Finilizing DefautButtonUpdater $name #$instanceCount")
+    //}
 }
 
-fun Button.defaultWhileFocusWithin(ancestor: Node, name: String = "<not named>", scene: Scene = this.scene): DefaultButtonUpdater {
-    return DefaultButtonUpdater(this, ancestor, name = name, scene = scene)
+fun Button.defaultWhileFocusWithin(ancestor: Node, name: String = "<not named>"): DefaultButtonUpdater {
+    return DefaultButtonUpdater(this, ancestor, name = name)
 }

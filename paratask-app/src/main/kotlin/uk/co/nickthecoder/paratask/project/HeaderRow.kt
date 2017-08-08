@@ -67,13 +67,13 @@ class HeaderRow : Region() {
         return this
     }
 
-    fun addRunButton(tool: Tool, scene: Scene) {
+    fun addRunButton(tool: Tool) {
         val button = ParataskActions.TOOL_RUN.createButton { tool.toolPane!!.parametersPane.run() }
         with(button) {
             goButton = this
         }
         children.add(goButton)
-        goButton?.defaultWhileFocusWithin(this.parent, "HeaderRow", scene)
+        goButton?.defaultWhileFocusWithin(this.parent, "HeaderRow")
     }
 
     fun detaching() {

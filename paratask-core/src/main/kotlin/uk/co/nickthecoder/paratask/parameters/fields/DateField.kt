@@ -23,6 +23,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.DateParameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import java.time.LocalDate
 
 
@@ -55,9 +56,6 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
 
         // Bodge. SEE ABOVE
         editorText = datePicker.editor.text
-        parameter.listen {
-            editorText = converter.toString(dateParameter.value)
-        }
         // End bodge
 
         datePicker.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -111,4 +109,9 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 
+    override fun parameterChanged(event: ParameterEvent) {
+        super.parameterChanged(event)
+
+        editorText = converter.toString(dateParameter.value)
+    }
 }

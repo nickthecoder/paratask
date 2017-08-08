@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
-import javafx.application.Platform
 import javafx.scene.control.*
-import uk.co.nickthecoder.paratask.gui.DefaultButtonUpdater
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.project.ParataskActions
@@ -43,15 +41,13 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
 
         goButton = ParataskActions.EDIT_FIND_GO.createButton { searcher.beginFind() }
 
-        with(items) {
-            add(searchTextField)
-            add(goButton)
-            add(ParataskActions.EDIT_FIND_PREV.createButton(shortcuts) { searcher.onFindPrev() })
-            add(ParataskActions.EDIT_FIND_NEXT.createButton(shortcuts) { searcher.onFindNext() })
-            add(matchPositionLabel)
-            add(regexCheck)
-            add(caseCheck)
-        }
+        items.addAll(searchTextField,
+                goButton,
+                ParataskActions.EDIT_FIND_PREV.createButton(shortcuts) { searcher.onFindPrev() },
+                ParataskActions.EDIT_FIND_NEXT.createButton(shortcuts) { searcher.onFindNext() },
+                matchPositionLabel,
+                regexCheck,
+                caseCheck)
 
         matchPositionLabel.textProperty().bind(searcher.matchPositionProperty)
         regexCheck.selectedProperty().bindBidirectional(searcher.useRegexProperty)
@@ -60,52 +56,22 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
         searchTextField.textProperty().bindBidirectional(searcher.searchStringProperty)
     }
 
-
-    // Part of the "bodge" in focus() method. See below for details.
-    private var focusDone: Boolean = false
-
     fun attached() {
         focus()
+        //goButton.defaultWhileFocusWithin(this, "FindBar Go", scene = editorResults.codeArea.scene)
+        goButton.defaultWhileFocusWithin(this, "FindBar Go")
     }
 
-    var defaultButtonUpdater: DefaultButtonUpdater? = null
-
     fun focus() {
-        // The very first time I press ctrl+F, searchTextField.scene returns null, which causes requestFocsus to fail.
-        // After way too much time trying to debug this (with intermittent results), I decided this was the "easiest"
-        // way to fix the problem.
-        // While spawning a thread is a big hammer to crack a tiny nut, it WORKS!
-        // So far, it *always* succeeds on the 2nd iteration of the loop
-        // Subsequent ctrl+F's don't require the Thread.
-        // PS, a simple "Platform.runLater" only worked INTERMITTENTLY, so don't replace this code, unless you are sure
-        // that the replacement ALWAYS works!
-        fun innerFocus() {
-            Platform.runLater {
-                if (focusDone && searchTextField.scene != null) {
-                    if (defaultButtonUpdater == null) {
-                        defaultButtonUpdater = goButton.defaultWhileFocusWithin(this, "FindBar Go")
-                    }
+        if (searchTextField.scene == null) {
+            // The text field isn't part of the scene yet, so request focus when it is...
+            goButton.sceneProperty().addListener { _, _, newValue ->
+                if (newValue != null) {
                     searchTextField.requestFocus()
-                    focusDone = false
                 }
             }
-        }
-
-        if (searchTextField.scene == null) {
-            focusDone = true
-            // Try 5 times, for upto 1/2 second, and then give up.
-            Thread(Runnable {
-                for (i in 0..4) {
-                    innerFocus()
-                    if (!focusDone) {
-                        break
-                    }
-                    Thread.sleep(100)
-                }
-            }).start()
         } else {
-            focusDone = true
-            innerFocus()
+            searchTextField.requestFocus()
         }
     }
 
