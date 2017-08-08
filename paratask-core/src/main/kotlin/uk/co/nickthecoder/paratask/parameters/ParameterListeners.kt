@@ -17,58 +17,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
-class ParameterListeners {
+import uk.co.nickthecoder.paratask.util.Listeners
 
-    private val listeners = mutableListOf<ParameterListener>()
-
-    val size: Int
-        get() = listeners.size
-
-    fun add(listener: ParameterListener) {
-        listeners.add(listener)
-    }
-
-    fun remove(listener: ParameterListener) {
-        listeners.remove(listener)
-    }
-
-    // LATER. Many ParameterEvent will be created, so it may be worth while creating a pool of reusable
-    // ParameterEvents, rather than creating a new one every time.
+class ParameterListeners : Listeners<ParameterListener>() {
 
     fun fireValueChanged(parameter: Parameter) {
         val event = ParameterEvent(parameter, ParameterEventType.VALUE)
-        listeners.forEach {
+        forEach {
             it.parameterChanged(event)
         }
     }
 
     fun fireStructureChanged(parameter: Parameter) {
         val event = ParameterEvent(parameter, ParameterEventType.STRUCTURAL)
-        listeners.forEach {
+        forEach {
             it.parameterChanged(event)
         }
     }
 
     fun fireInnerParameterChanged(parameter: Parameter, innerParameter: Parameter) {
         val event = ParameterEvent(parameter, ParameterEventType.INNER, innerParameter)
-        listeners.forEach {
+        forEach {
             it.parameterChanged(event)
         }
     }
 
     fun fireVisibilityChanged(parameter: Parameter) {
         val event = ParameterEvent(parameter, ParameterEventType.VISIBILITY)
-        listeners.forEach {
+        forEach {
             it.parameterChanged(event)
         }
     }
 
     fun fireEnabledChanged(parameter: Parameter) {
         val event = ParameterEvent(parameter, ParameterEventType.ENABLED)
-        listeners.forEach {
+        forEach {
             it.parameterChanged(event)
         }
     }
-
-    fun count(): Int = listeners.size
 }

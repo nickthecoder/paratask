@@ -1,6 +1,4 @@
 
-
-Implement weak refs for parameter listeners
 Look for parameter.listen {...}. Fields should override the method on listener instead.
 
 Search for KeyCodeCombination and put them ALL in ParaTaskActions
