@@ -99,26 +99,27 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         tableView.edit(index, codeColumn)
     }
 
-    open fun onRowClicked(event: MouseEvent, tabelRow: TableRow<WrappedRow<R>>) {
+    open fun onRowClicked(event: MouseEvent, tableRow: TableRow<WrappedRow<R>>) {
         contextMenu.hide()
+        if (tableRow.item != null) {
 
-        if (event.button == MouseButton.PRIMARY) {
-            when (event.clickCount) {
-                1 -> { // Edit the tabelRow's option field
-                    editOption(tabelRow.index)
+            if (event.button == MouseButton.PRIMARY) {
+                when (event.clickCount) {
+                    1 -> { // Edit the tabelRow's option field
+                        editOption(tableRow.index)
+                    }
+                    2 -> {
+                        runner.runDefault(tableRow.item.row)
+                    }
                 }
-                2 -> {
-                    runner.runDefault(tabelRow.item.row)
-                }
+
+            } else if (event.button == MouseButton.MIDDLE) {
+                runner.runDefault(tableRow.item.row, newTab = true)
+
+            } else if (event.button == MouseButton.SECONDARY) {
+                showContextMenu(tableView, event)
             }
-
-        } else if (event.button == MouseButton.MIDDLE) {
-            runner.runDefault(tabelRow.item.row, newTab = true)
-
-        } else if (event.button == MouseButton.SECONDARY) {
-            showContextMenu(tableView, event)
         }
-
     }
 
     fun showContextMenu(node: Node, event: Any) {
