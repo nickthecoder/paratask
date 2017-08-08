@@ -6,17 +6,6 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "desktop.open( tool.directory )",
-            "code": "o",
-            "label": "Open Directory",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
             "code": "^",
@@ -68,6 +57,17 @@
                     "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( tool.directory )",
+            "code": "o",
+            "label": "Open Directory",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

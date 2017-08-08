@@ -107,7 +107,11 @@ open class ParametersForm(val parentParameter: ParentParameter)
         children.add(node)
 
         if (parameter.hidden) {
-            parameterField.isVisible = false
+            if (parameterField is WrappableField) {
+                parameterField.wrapper().isVisible = false
+            } else {
+                parameterField.isVisible = false
+            }
         }
         parameterField.styleClass.add("field-${parameter.name}")
         parameterField.form = this

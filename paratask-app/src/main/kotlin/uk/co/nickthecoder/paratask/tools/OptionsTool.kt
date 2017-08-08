@@ -222,11 +222,11 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
         val shortcutP = ShortcutParameter("shortcut", value = option.shortcut)
 
-        val scriptOrTaskP = OneOfParameter("typeOfAction")
-
         var script = StringParameter("script",
                 rows = 10, columns = 40, style = "script",
                 value = if (option is GroovyOption) option.script else "")
+
+        val scriptOrTaskP = OneOfParameter("typeOfAction")
 
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
 
@@ -238,7 +238,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
                 taskP.value = option.task.copy()
                 scriptOrTaskP.value = taskP
             }
-            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, shortcutP, scriptOrTaskP)
+            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
             scriptOrTaskP.addParameters(script, taskP)
             isRow.listen {
                 shortcutP.hidden = isRow.value == true

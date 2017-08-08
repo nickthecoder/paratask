@@ -11,7 +11,7 @@ class ShortcutParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: KeyCodeCombination? = null)
-    : CompoundParameter(name, label, description) {
+    : GroupParameter(name, label, description) {
 
     val keyP = ChoiceParameter<KeyCode?>("shortcutKey", label = "Key", required = false, value = null).nullableEnumChoices()
 

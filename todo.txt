@@ -15,6 +15,10 @@ MyTabPane to have ability to have a "+" button on the right to add a new tab.
 	In ParaTask, open "Home", in KoGo, also open "Home"
 		Can then allow the Home tab to be closed.
 
+Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane.
+	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
+	The children would need to SHARE one error message label.
+
 Space out the ScaleDouble fields.
 
 Consider reversing the key/value pairs of ScaledDoubleParameter's scales.

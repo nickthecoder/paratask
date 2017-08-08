@@ -9,11 +9,6 @@ import uk.co.nickthecoder.paratask.util.unescapeNL
 
 /**
  * Very similar to a GroupParameter, but is specially designed to be used as the children of MultipleParameter
- * During save/load instead of each parameter being saved individually, the values will be saved in one go,
- * with this parameter's stringValue being in the form :
- *   name1=value1
- *   name2=value2
- * etc
  *
  * The 'value' of this parameter is always 'this'.
  */
