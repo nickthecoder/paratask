@@ -24,15 +24,11 @@ import uk.co.nickthecoder.paratask.RegisteredTaskFactory
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.DragHelper
-import uk.co.nickthecoder.paratask.table.TableToolDropHelper
+import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
 import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
-import uk.co.nickthecoder.paratask.table.BooleanColumn
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.TableResults
-import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
+import uk.co.nickthecoder.paratask.table.*
 
 class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
@@ -224,6 +220,8 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
         var prompt = BooleanParameter("prompt", value = option.prompt)
 
+        val shortcutP = ShortcutParameter("shortcut", value = option.shortcut)
+
         val scriptOrTaskP = OneOfParameter("typeOfAction")
 
         var script = StringParameter("script",
@@ -240,7 +238,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
                 taskP.value = option.task.copy()
                 scriptOrTaskP.value = taskP
             }
-            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP)
+            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, shortcutP, scriptOrTaskP)
             scriptOrTaskP.addParameters(script, taskP)
         }
 
@@ -265,6 +263,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             newOption.refresh = refresh.value == true
             newOption.newTab = newTab.value == true
             newOption.prompt = prompt.value == true
+            newOption.shortcut = shortcutP.keyCodeCombination
 
             return newOption
         }
@@ -328,4 +327,3 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
         }
     }
 }
-

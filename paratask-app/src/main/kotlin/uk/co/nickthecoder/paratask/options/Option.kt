@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.options
 
 import javafx.scene.input.DataFormat
+import javafx.scene.input.KeyCodeCombination
 import uk.co.nickthecoder.paratask.Tool
 
 interface Option {
@@ -37,6 +38,8 @@ interface Option {
     var newTab: Boolean
 
     var prompt: Boolean
+
+    var shortcut : KeyCodeCombination?
 
     fun run(tool: Tool, row: Any): Any?
 

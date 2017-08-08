@@ -22,6 +22,9 @@ import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.misc.FileListener
@@ -201,6 +204,23 @@ class FileOptions(val resource: Resource) : FileListener {
                     prompt = joption.getBoolean("prompt", false)
                     refresh = joption.getBoolean("refresh", false)
                 }
+
+                val keyCodeS = joption.getString("keyCode", "")
+                if (keyCodeS == "") {
+                    option.shortcut = null
+                } else {
+                    val keyCode = KeyCode.valueOf(keyCodeS)
+                    val shiftS = joption.getString("shift", "UP")
+                    val controlS = joption.getString("control", "UP")
+                    val altS = joption.getString("alt", "UP")
+
+                    val shift = KeyCombination.ModifierValue.valueOf(shiftS)
+                    val control = KeyCombination.ModifierValue.valueOf(controlS)
+                    val alt = KeyCombination.ModifierValue.valueOf(altS)
+
+                    option.shortcut = KeyCodeCombination(keyCode, shift, control, alt, KeyCombination.ModifierValue.UP, KeyCombination.ModifierValue.UP)
+                }
+
                 val jaliases = joption.get("aliases")
                 jaliases?.let {
                     option.aliases = jaliases.asArray().map { it.asString() }.toMutableList()
@@ -293,7 +313,16 @@ class FileOptions(val resource: Resource) : FileListener {
                 set("prompt", option.prompt)
                 set("newTab", option.newTab)
                 set("refresh", option.refresh)
+
+                option.shortcut?.let {
+                    set("keyCode", it.code.toString())
+                    saveModifier(joption, "shift", it.shift)
+                    saveModifier(joption, "control", it.control)
+                    saveModifier(joption, "alt", it.alt)
+                }
             }
+
+
             if (option.aliases.size > 0) {
                 val jaliases = JsonArray()
                 for (alias in option.aliases) {
@@ -343,6 +372,12 @@ class FileOptions(val resource: Resource) : FileListener {
             }
         } finally {
             saving = false
+        }
+    }
+
+    private fun saveModifier(joption: JsonObject, name: String, mod: KeyCombination.ModifierValue) {
+        if (mod != KeyCombination.ModifierValue.UP) {
+            joption.set(name, mod.toString())
         }
     }
 }

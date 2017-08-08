@@ -17,7 +17,7 @@ import uk.co.nickthecoder.paratask.util.unescapeNL
  *
  * The 'value' of this parameter is always 'this'.
  */
-class CompoundParameter(name: String,
+open class CompoundParameter(name: String,
                         override val label: String = name.uncamel(),
                         description: String = "")
 

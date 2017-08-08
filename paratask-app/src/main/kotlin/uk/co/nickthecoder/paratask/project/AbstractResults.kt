@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleStringProperty
+import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.options.OptionsManager
 
 abstract class AbstractResults(
         override val tool: Tool,
@@ -38,7 +40,23 @@ abstract class AbstractResults(
         this.label = label
     }
 
-    override fun attached(toolPane: ToolPane) {}
+    override fun attached(toolPane: ToolPane) {
+        node.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
+            val topLevelOptions = OptionsManager.getTopLevelOptions(tool.optionsName)
+            topLevelOptions.listFileOptions().forEach { fileOptions ->
+                fileOptions.listOptions().forEach{ option ->
+                    if (option.isRow == false) {
+                        option.shortcut?.let {
+                            if ( it.match(event) ) {
+                                event.consume()
+                                tool.optionsRunner.runNonRow( option )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override fun detaching() {}
 

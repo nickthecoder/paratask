@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
+import javafx.scene.input.KeyCodeCombination
 import java.io.Serializable
 
 abstract class AbstractOption(
@@ -27,7 +28,8 @@ abstract class AbstractOption(
         override var isMultiple: Boolean = false,
         override var newTab: Boolean = false,
         override var prompt: Boolean = false,
-        override var refresh: Boolean = false
+        override var refresh: Boolean = false,
+        override var shortcut: KeyCodeCombination? = null
 ) : Option, Serializable {
 
     protected fun copyTo(result: AbstractOption) {
@@ -39,5 +41,6 @@ abstract class AbstractOption(
         result.newTab = newTab
         result.prompt = prompt
         result.refresh = refresh
+        result.shortcut = shortcut
     }
 }
