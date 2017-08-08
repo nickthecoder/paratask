@@ -30,7 +30,7 @@ open class GroupField(val groupParameter: AbstractGroupParameter)
 
     val parametersForm = ParametersForm(groupParameter)
 
-    lateinit var wrappedField: WrappedField
+    private var wrappedField: WrappedField? = null
 
     init {
         control = parametersForm
@@ -43,9 +43,11 @@ open class GroupField(val groupParameter: AbstractGroupParameter)
         parametersForm.buildContent()
     }
 
-    override fun wrap(): Node {
-        wrappedField = WrappedField(this)
-        return wrappedField
+    override fun wrapper(): WrappedField {
+        if (wrappedField == null) {
+            wrappedField = WrappedField(this)
+        }
+        return wrappedField!!
     }
 
     override fun computePrefHeight(width: Double): Double {
@@ -61,6 +63,6 @@ open class GroupField(val groupParameter: AbstractGroupParameter)
     }
 
     override fun addAndRemoveButtons(buttons: Node) {
-        wrappedField.addAndRemoveButtons(buttons)
+        wrapper().addAndRemoveButtons(buttons)
     }
 }

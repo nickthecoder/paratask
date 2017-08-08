@@ -8,11 +8,6 @@ Bugs
 
 	Cannot resize "Places" column widths
 
-
-Non-Row Options to have a shortcut
-	For example, Alt+UP on a directory based tool runs the "^" option.
-	e.g. Alt+P to Push from GitTool Alt+O to check Out Alt+A check out All etc.
-
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 
 MyTabPane to have ability to have a "+" button on the right to add a new tab.

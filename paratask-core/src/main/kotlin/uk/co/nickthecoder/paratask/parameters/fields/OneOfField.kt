@@ -32,7 +32,7 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     val parametersForm = ParametersForm(oneOfParameter)
 
-    lateinit var wrappedField: WrappedField
+    private var wrappedField: WrappedField? = null
 
     init {
         control = parametersForm
@@ -76,12 +76,14 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         layoutInArea(control, insets.left, insets.top, width - insets.left - insets.right, height - insets.left - insets.right, 0.0, HPos.LEFT, VPos.CENTER)
     }
 
-    override fun wrap(): Node {
-        wrappedField = WrappedField(this)
-        return wrappedField
+    override fun wrapper(): WrappedField {
+        if (wrappedField == null) {
+            wrappedField = WrappedField(this)
+        }
+        return wrappedField!!
     }
 
     override fun addAndRemoveButtons(buttons: Node) {
-        wrappedField.addAndRemoveButtons(buttons)
+        wrapper().addAndRemoveButtons(buttons)
     }
 }

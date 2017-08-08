@@ -99,7 +99,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
         val parameterField = parameter.createField()
 
         val node = if (parameterField is WrappableField) {
-            parameterField.wrap()
+            parameterField.wrapper()
         } else {
             parameterField
         }
@@ -299,7 +299,11 @@ open class ParametersForm(val parentParameter: ParentParameter)
             val hidden = event.parameter.hidden
             val field = fieldSet.filter { it.parameter === event.parameter }.firstOrNull()
             if (field != null) {
-                field.isVisible = !hidden
+                if (field is WrappableField) {
+                    field.wrapper().isVisible = !hidden
+                } else {
+                    field.isVisible = !hidden
+                }
                 requestLayout()
             }
         }

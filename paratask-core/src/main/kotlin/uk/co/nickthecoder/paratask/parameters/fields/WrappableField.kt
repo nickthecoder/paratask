@@ -21,7 +21,7 @@ import javafx.scene.Node
 
 interface WrappableField {
 
-    fun wrap(): Node
+    fun wrapper(): WrappedField
 
     fun addAndRemoveButtons(buttons: Node)
 
