@@ -131,6 +131,11 @@ class EditorResults(
         }
     }
 
+    override fun detaching() {
+        super.detaching()
+        hideToolBar()
+    }
+
     fun hideToolBar() {
         findBar.detaching()
         findBar.isVisible = false
