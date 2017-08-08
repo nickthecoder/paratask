@@ -37,8 +37,6 @@ interface ToolPane {
 
     fun selected()
 
-    fun toggleParameters()
-
     fun nextTab()
 
     fun prevTab()

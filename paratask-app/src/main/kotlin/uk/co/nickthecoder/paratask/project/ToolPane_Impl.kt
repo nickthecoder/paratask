@@ -170,14 +170,6 @@ class ToolPane_Impl(override var tool: Tool)
         ParaTaskApp.logAttach("ToolPane detached")
     }
 
-    override fun toggleParameters() {
-        if (parametersTab.isSelected) {
-            tabPane.selectionModel.select(0)
-        } else {
-            tabPane.selectionModel.select(tabPane.tabs.count() - 1)
-        }
-    }
-
     override fun nextTab() {
         if (tabPane.tabs.isNotEmpty()) {
             var index = tabPane.selectionModel.selectedIndex + 1

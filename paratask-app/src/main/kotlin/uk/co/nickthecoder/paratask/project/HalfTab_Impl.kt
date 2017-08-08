@@ -82,14 +82,12 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton = ParataskActions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
 
-        with(toolBar.items) {
-            add(optionsField)
-            add(runStopStack)
-            add(ParataskActions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) })
-            add(ParataskActions.SPLIT_TOOL_TOGGLE.createButton(shortcuts) { toolPane.toggleParameters() })
-            add(historyGroup)
-            add(ParataskActions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
-        }
+        toolBar.items.addAll(
+                optionsField,
+                runStopStack,
+                ParataskActions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) },
+                historyGroup,
+                ParataskActions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
 
         bindButtons()
     }

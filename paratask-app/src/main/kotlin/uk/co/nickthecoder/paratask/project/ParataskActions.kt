@@ -47,8 +47,6 @@ object ParataskActions {
     val CLOSE_TAB = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
 
     // HalfTab
-    val SPLIT_TOOL_TOGGLE = ParataskAction("tool.toggleParameters", KeyCode.F9, tooltip = "Show/Hide Parameters")
-
     val TOOL_STOP = ParataskAction("tool.stop", KeyCode.ESCAPE, shift = true, tooltip = "Stop the Tool")
     val TOOL_RUN = ParataskAction("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 

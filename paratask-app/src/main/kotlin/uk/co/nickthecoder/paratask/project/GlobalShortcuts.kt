@@ -24,7 +24,6 @@ import uk.co.nickthecoder.paratask.tools.HomeTool
 class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
 
     init {
-        put(ParataskActions.SPLIT_TAB_TOGGLE) { toolPane()?.toggleParameters() }
         put(ParataskActions.TOOL_STOP) { halfTab()?.onStop() }
         put(ParataskActions.TOOL_RUN) { halfTab()?.onRun() }
         put(ParataskActions.TOOL_SELECT) { projectWindow.addTool(HomeTool()) }

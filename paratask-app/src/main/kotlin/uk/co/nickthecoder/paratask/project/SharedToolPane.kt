@@ -41,10 +41,6 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
 
     override fun selected() {}
 
-    override fun toggleParameters() {
-        shared.toggleParameters()
-    }
-
     override fun nextTab() {
         shared.nextTab()
     }
