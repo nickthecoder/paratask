@@ -20,23 +20,25 @@ package uk.co.nickthecoder.paratask.tools.places
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
+import java.io.File
 
 class RenameFileTask() : AbstractTask() {
 
     override val taskD = TaskDescription("renameFile")
 
-    val fromP = FileParameter("from", mustExist = true)
+    val fileP = FileParameter("file", mustExist = true)
 
-    val toP = FileParameter("to", mustExist = false)
+    val newNameP = StringParameter("newName")
 
     init {
-        taskD.addParameters(fromP, toP)
+        taskD.addParameters(fileP, newNameP)
     }
 
     override fun run() {
-        val command = OSCommand("mv", "--", fromP.value, toP.value!!)
+        val command = OSCommand("mv", "--", fileP.value, File(fileP.value!!.parentFile, newNameP.value))
         Exec(command).start().waitFor()
     }
 }

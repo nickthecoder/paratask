@@ -375,6 +375,27 @@
                     "value": "INHERRIT"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.RenameFileTask",
+            "code": "r",
+            "label": "Rename",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "newName",
+                    "expression": "row.file.name"
+                }
+            ]
         }
     ]
 }
