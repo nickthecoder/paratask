@@ -114,9 +114,8 @@ object ParataskActions {
 
     val MINOR_TABS = listOf(MINOR_TAB_1, MINOR_TAB_2, MINOR_TAB_3, MINOR_TAB_4, MINOR_TAB_5, MINOR_TAB_6, MINOR_TAB_7, MINOR_TAB_8, MINOR_TAB_9)
 
-    val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
-    val acceleratorUp = KeyCodeCombination(KeyCode.UP)
-    val acceleratorEscape = KeyCodeCombination(KeyCode.ESCAPE)
+    val NEXT_ROW = ParataskAction("row.next", KeyCode.DOWN)
+    val PREV_ROW = ParataskAction("row.previous", KeyCode.UP)
 
     init {
         load()

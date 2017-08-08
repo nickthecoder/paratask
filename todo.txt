@@ -9,7 +9,6 @@ Bugs
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection
-
 	Cannot resize "Places" column widths
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
@@ -32,6 +31,9 @@ Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm
 	Or add a list of ScaledDoubleParameters???
 	Or make ScaledValue imutable???
 	
+Implement a PROPER terminal (as well as the simple one?)
+	Perhaps put it in its own sub-project to isolate it from the rest due to it's large number of dependencies.
+	OR, create a new project just for it, and use a "plugin" system to include it.
 
 FileOperations
 	Make file dialog pretier

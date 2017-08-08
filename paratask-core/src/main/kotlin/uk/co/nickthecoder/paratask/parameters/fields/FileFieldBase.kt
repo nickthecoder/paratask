@@ -20,14 +20,13 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.geometry.Side
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.ParaTask
-import uk.co.nickthecoder.paratask.gui.ApplicationAction
+import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
@@ -180,14 +179,11 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
         }
     }
 
-    val UP_DIRECTORY = ApplicationAction.createKeyCodeCombination(KeyCode.UP, alt = true)
-    val COMPLETE_FILE = ApplicationAction.createKeyCodeCombination(KeyCode.DOWN, alt = true)
-
     private fun onKeyPressed(event: KeyEvent) {
-        if (UP_DIRECTORY.match(event)) {
+        if (ApplicationActions.UP_DIRECTORY.match(event)) {
             getFile()?.parentFile?.let { setFile(it) }
             event.consume()
-        } else if (COMPLETE_FILE.match(event)) {
+        } else if (ApplicationActions.COMPLETE_FILE.match(event)) {
             onCompleteFile()
             event.consume()
         } else if (ShortcutHelper.CONTEXT_MENU.match(event)) {

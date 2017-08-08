@@ -135,10 +135,10 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
     val contextMenu = ContextMenu()
 
     open fun onKeyPressed(event: KeyEvent) {
-        if (ParataskActions.acceleratorUp.match(event)) {
+        if (ParataskActions.PREV_ROW.match(event)) {
             if (!move(-1)) event.consume()
 
-        } else if (ParataskActions.acceleratorDown.match(event)) {
+        } else if (ParataskActions.NEXT_ROW.match(event)) {
             if (!move(1)) event.consume()
 
         } else if (ParataskActions.OPTION_RUN.match(event)) {
@@ -157,7 +157,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             runTableOptions(newTab = true)
             event.consume()
 
-        } else if (ParataskActions.acceleratorEscape.match(event)) {
+        } else if (ParataskActions.ESCAPE.match(event)) {
             event.consume()
         }
     }

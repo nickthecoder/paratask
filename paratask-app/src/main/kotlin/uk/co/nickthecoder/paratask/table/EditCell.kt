@@ -73,15 +73,15 @@ class EditCell<S, T>(
         }
 
         textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
-            if (ParataskActions.acceleratorEscape.match(event)) {
+            if (ParataskActions.ESCAPE.match(event)) {
                 // I don't think this EVER gets called. Hmmm.
                 textField.text = converter.toString(item)
                 cancelEdit()
                 event.consume()
-            } else if (ParataskActions.acceleratorUp.match(event)) {
+            } else if (ParataskActions.PREV_ROW.match(event)) {
                 event.consume()
                 move(-1)
-            } else if (ParataskActions.acceleratorDown.match(event)) {
+            } else if (ParataskActions.NEXT_ROW.match(event)) {
                 event.consume()
                 move(1)
             } else if (ParataskActions.CONTEXT_MENU.match(event)) {

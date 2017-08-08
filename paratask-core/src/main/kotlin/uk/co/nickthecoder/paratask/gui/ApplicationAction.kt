@@ -11,7 +11,7 @@ import javafx.scene.input.KeyEvent
 
 /**
  */
-abstract class ApplicationAction(
+open class ApplicationAction(
         val name: String,
         keyCode: KeyCode?,
         shift: Boolean? = false,
@@ -28,7 +28,7 @@ abstract class ApplicationAction(
 
     var keyCodeCombination = defaultKeyCodeCombination
 
-    abstract val image: Image?
+    open val image: Image? = null
 
     fun revert() {
         keyCodeCombination = defaultKeyCodeCombination

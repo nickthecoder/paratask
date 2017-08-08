@@ -19,16 +19,9 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyEvent
+import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.IntParameter
-
-val acceleratorEnter = KeyCodeCombination(KeyCode.ENTER)
-
-val acceleratorDown = KeyCodeCombination(KeyCode.DOWN)
-
-val acceleratorUp = KeyCodeCombination(KeyCode.UP)
 
 class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
 
@@ -41,21 +34,21 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
-            if (acceleratorUp.match(event)) {
+            if (ApplicationActions.SPINNER_INCREMENT.match(event)) {
                 try {
                     spinner.increment(1)
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
                 event.consume()
-            } else if (acceleratorDown.match(event)) {
+            } else if (ApplicationActions.SPINNER_DECREMENT.match(event)) {
                 try {
                     spinner.decrement(1)
                 } catch (e: Exception) {
                     // Do nothing when spinner's editor contains an invalid number
                 }
                 event.consume()
-            } else if (acceleratorEnter.match(event)) {
+            } else if (ApplicationActions.ENTER.match(event)) {
                 processEnter()
                 event.consume()
             }
@@ -86,7 +79,7 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
      * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
      */
     private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(acceleratorEnter)
+        val defaultRunnable = scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 

@@ -22,6 +22,7 @@ import javafx.scene.control.DatePicker
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.DateParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import java.time.LocalDate
@@ -60,7 +61,7 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
 
         datePicker.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
 
-            if (acceleratorEnter.match(event)) {
+            if (ApplicationActions.ENTER.match(event)) {
                 processEnter()
                 event.consume()
             }
@@ -105,7 +106,7 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
      * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
      */
     private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(acceleratorEnter)
+        val defaultRunnable = scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 
