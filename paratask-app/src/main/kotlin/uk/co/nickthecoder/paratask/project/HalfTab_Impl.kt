@@ -103,6 +103,12 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     override fun detaching() {
         ParaTaskApp.logAttach("HalfTab.detaching ToolPane")
         toolPane.detaching()
+        center = null
+        bottom = null
+        toolBars.children.clear()
+        toolBar.items.clear()
+        shortcuts.clear()
+        optionsContextMenu.items.clear()
         ParaTaskApp.logAttach("HalfTab.detached ToolPane")
     }
 
@@ -215,4 +221,5 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         other?.toolPane?.focusResults()
     }
+
 }

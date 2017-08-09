@@ -77,7 +77,6 @@ class HeaderRow : Region() {
     }
 
     fun detaching() {
-        println("Detatching header row")
     }
 
     val spacing: Double
@@ -90,10 +89,6 @@ class HeaderRow : Region() {
 
     fun focus() {
         fireTabToFocusNext()
-    }
-
-    protected fun finalize() {
-        println("Finalizing HeaderRow")
     }
 
     companion object {

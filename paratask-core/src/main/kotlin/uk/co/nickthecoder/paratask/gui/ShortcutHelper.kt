@@ -46,6 +46,10 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
         }
     }
 
+    fun clear() {
+        actions.clear()
+    }
+
     companion object {
         val CONTEXT_MENU = ApplicationAction.createKeyCodeCombination(KeyCode.CONTEXT_MENU)
         val FOCUS_NEXT = ApplicationAction.createKeyCodeCombination(KeyCode.TAB)

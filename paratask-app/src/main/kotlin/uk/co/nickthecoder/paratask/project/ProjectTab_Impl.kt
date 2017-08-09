@@ -104,10 +104,11 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             it.detaching()
             ParaTaskApp.logAttach("ProjectTab.detached right HalfTab")
         }
+        splitPane.items.clear()
+        stackPane.children.clear()
     }
 
     override fun close() {
-        println("ProjectTab_Impl.close()")
         projectTabs.removeTab(this)
     }
 
