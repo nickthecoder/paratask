@@ -3,8 +3,13 @@ package uk.co.nickthecoder.paratask.misc
 import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.Scene
+import javafx.scene.control.Control
 import javafx.scene.control.Label
+import javafx.scene.control.ScrollPane
+import javafx.scene.control.Tooltip
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTask
@@ -15,6 +20,7 @@ import uk.co.nickthecoder.paratask.util.process.BufferedSink
 import uk.co.nickthecoder.paratask.util.process.Exec
 import java.io.File
 import java.util.concurrent.ConcurrentLinkedQueue
+
 
 /**
  * Copies and moves files, showing a progress dialog when the operation takes a long time.
@@ -28,7 +34,7 @@ class FileOperations {
 
     private var thread: Thread? = null
 
-    private val notQueued = ConcurrentLinkedQueue<FileOperation>() // Currently active, and failed operations.
+    private val notQueued = ConcurrentLinkedQueue<FileOperation>() // Currently active, paused, and failed operations.
 
     private val queue = ConcurrentLinkedQueue<FileOperation>()
 
@@ -37,7 +43,7 @@ class FileOperations {
     companion object {
         /**
          * A shared instance, so that all operations are perfomed from a single queue.
-         * However, you may create other instances, if you want a separate queue.
+         * However, you may create other instances if you want multiple queues, each with their own dialog box.
          */
         val instance = FileOperations()
     }
@@ -74,24 +80,26 @@ class FileOperations {
     private fun add(operation: FileOperation) {
         queue.add(operation)
         if (thread == null) {
-            thread = object : Thread() {
-                override fun run() {
-                    var op = queue.poll()
-                    while (op != null) {
-                        notQueued.add(op)
-                        if (op.activate()) {
-                            notQueued.remove(op)
-                        }
-                        op = queue.poll()
-                    }
-                    thread = null
-                    maybeHideDialog()
-                }
-            }
-            thread?.name = "FileOperations"
+            thread = FileOperationThread()
             thread?.start()
         }
         delayShowDialog()
+    }
+
+    inner class FileOperationThread : Thread("FileOperation") {
+
+        override fun run() {
+            var op = queue.poll()
+            while (op != null) {
+                notQueued.add(op)
+                if (op.activate()) {
+                    notQueued.remove(op)
+                }
+                op = queue.poll()
+            }
+            thread = null
+            maybeHideDialog()
+        }
     }
 
     /**
@@ -122,9 +130,9 @@ class FileOperations {
     private fun maybeHideDialog() {
         dialog?.let {
             if (queue.size + notQueued.size == 0) {
+                dialog = null
                 Platform.runLater {
                     it.stage.hide()
-                    dialog = null
                 }
             }
         }
@@ -134,28 +142,30 @@ class FileOperations {
 
         lateinit var stage: Stage
 
-        lateinit var whole: BorderPane
+        val whole = ScrollPane()
 
-        lateinit var list: VBox
+        val list = VBox()
 
         fun placeOnStage() {
             // This may be the first JavaFX window, therefore we have to jump through hoops to initialise JavaFX
             // in its annoying way. Grr.
+            // (We may have run a task from the COMMAND LINE without prompting the task).
             ParaTaskApp.runFunction { build() }
         }
 
         private fun build() {
-            whole = BorderPane()
-            list = VBox()
-            whole.center = list
+            whole.isFitToWidth = true
 
-            stage = Stage()
-            stage.title = "File Copy/Move Operations"
-            stage.scene = Scene(whole)
-
-            ParaTask.style(stage.scene)
+            list.styleClass.add("file-operations")
+            whole.content = list
 
             buildContent()
+
+            stage = Stage()
+            stage.title = "File Operations"
+            stage.scene = Scene(whole, 600.0, 200.0)
+
+            ParaTask.style(stage.scene)
 
             stage.sizeToScene()
             AutoExit.show(stage)
@@ -169,49 +179,75 @@ class FileOperations {
         }
 
         private fun addOp(op: FileOperation) {
-            val node = op.createNode()
-            list.children.add(node)
+            list.children.add(op.build())
         }
     }
 }
 
 interface FileOperation : Runnable {
-    // TODO Add progress method, cancel method
 
-    fun message(): String
+    val operationLabel: String
 
-    fun tooltip(): String?
+    fun build(): Node
 
     fun activate(): Boolean // Return false on failure
-
-    fun createNode(): Node
 }
 
-abstract class AbstractOperation : FileOperation {
+abstract class AbstractOperation(val sources: List<File>, val destinationDirectory: File) : FileOperation {
 
-    var started = false
+    protected var started = false
 
-    var stopping = false
+    protected var stopping = false
 
-    var exec: Exec? = null
+    protected var exec: Exec? = null
 
-    val errors = StringBuilder()
+    protected val errors = StringBuilder()
 
-    var label: Label? = null
+    protected val borderPane = BorderPane()
 
-    override fun createNode(): Node {
-        label = Label(message())
-        return label!!
+    private val messageLabel = Label("")
+
+    override fun build(): Node {
+        borderPane.styleClass.add("file-operation")
+        val box = HBox()
+
+        box.children.addAll(
+                Label(operationLabel + " "),
+                fromNode(),
+                Label(" to "),
+                toNode())
+        borderPane.center = box
+        return borderPane
+    }
+
+    protected fun message(message: String?) {
+        Platform.runLater {
+            if (message == null) {
+                borderPane.bottom = null
+            } else {
+                messageLabel.text = message
+                borderPane.bottom = messageLabel
+            }
+        }
     }
 
     override fun activate(): Boolean {
+        Platform.runLater {
+            borderPane.styleClass.add("active")
+        }
         started = true
         try {
             run()
 
         } catch(e: Exception) {
-            // TODO Handle exception
+            Platform.runLater {
+                borderPane.styleClass.add("error")
+            }
             return false
+        } finally {
+            Platform.runLater {
+                borderPane.styleClass.remove("active")
+            }
         }
         return true
     }
@@ -230,9 +266,62 @@ abstract class AbstractOperation : FileOperation {
             }
         }
     }
+
+    fun fromNode(): Node {
+        val label: Label
+        if (sources.isEmpty()) {
+            label = Label("Nothing")
+        } else if (sources.size == 1) {
+            label = Label(sources[0].name)
+            label.tooltip = Tooltip(sources[0].path)
+        } else {
+            val fileCount = sources.filter { !it.isDirectory }.count()
+            val directoryCount = sources.filter { it.isDirectory }.count()
+            if (fileCount == 0) {
+                label = Label("$directoryCount directories")
+            } else if (directoryCount == 0) {
+                label = Label("$fileCount files")
+            } else {
+                label = Label("${sources.size} objects")
+                //label = Label("$fileCount files, $directoryCount directories")
+            }
+            if (sources.size > 10) {
+                val subset = sources.subList(0, 9)
+                val list = subset.joinToString(separator = "\n")
+                label.tooltip = Tooltip(list + "\n…")
+            } else {
+                label.tooltip = Tooltip(sources.joinToString(separator = "\n"))
+            }
+        }
+        clickToShowTooltip(label)
+        return label
+    }
+
+    fun toNode(): Node {
+        val label = Label(destinationDirectory.name)
+        label.tooltip = Tooltip(destinationDirectory.path)
+        clickToShowTooltip(label)
+        return label
+    }
+
+    private fun clickToShowTooltip(label: Label) {
+        label.styleClass.add("files")
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED) { showTooltip(label) }
+    }
+
+    fun showTooltip(control: Control) {
+        val p = control.localToScene(0.0, control.height)
+        val scene = control.scene
+        val window = scene.window
+        control.tooltip.isAutoHide = true
+        control.tooltip.show(window,
+                p.x + scene.x + window.x,
+                p.y + scene.y + window.y)
+    }
 }
 
-abstract class AbstractListOperation(val sources: List<File>) : AbstractOperation() {
+abstract class AbstractListOperation(sources: List<File>, destinationDirectory: File)
+    : AbstractOperation(sources, destinationDirectory) {
 
     var index = 0
 
@@ -258,95 +347,72 @@ abstract class AbstractListOperation(val sources: List<File>) : AbstractOperatio
 /**
  * Copies a list of files (not directories - does not recurse)
  */
-class CopyFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+class CopyFilesOperation(sources: List<File>, destinationDirectory: File)
+    : AbstractListOperation(sources = sources, destinationDirectory = destinationDirectory) {
+
+    override val operationLabel = "Copy"
 
     override fun createExec(i: Int): Exec {
+        message("${i + 1} of ${sources.size} : ${sources[i].name}")
         return Exec("cp", "-f", "--", sources[i], File(destinationDirectory, sources[i].name))
     }
-
-    override fun message(): String =
-            if (started) {
-                if (sources.size == 1) {
-                    "Copying ${sources[0].name} to ${destinationDirectory.name}"
-                } else {
-                    "Copying file $index of ${sources.size} to ${destinationDirectory.name}"
-                }
-            } else {
-                "Queued : Copy ${sources.size} files to ${destinationDirectory.name}"
-            }
-
-    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
 
 /**
  * Moves a list of files (not directories - does not recurse)
  */
-class MoveFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+class MoveFilesOperation(sources: List<File>, destinationDirectory: File)
+    : AbstractListOperation(sources, destinationDirectory) {
+
+    override val operationLabel = "Move"
 
     override fun createExec(i: Int): Exec {
+        message("${i + 1} of ${sources.size} : ${sources[i].name}")
         return Exec("mv", "--", sources[i], File(destinationDirectory, sources[i].name))
     }
-
-    override fun message(): String =
-            if (started) {
-                if (sources.size == 1) {
-                    "Moving ${sources[0].name} to ${destinationDirectory.name}"
-                } else {
-                    "Moving file $index of ${sources.size} to ${destinationDirectory.name}"
-                }
-            } else {
-                "Queued : Move ${sources.size} files to ${destinationDirectory.name}"
-            }
-
-    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
 /**
  * Links a list of files or directories - does not recurse
  */
-class LinkFilesOperation(sources: List<File>, val destinationDirectory: File) : AbstractListOperation(sources = sources) {
+class LinkFilesOperation(sources: List<File>, destinationDirectory: File)
+    : AbstractListOperation(sources, destinationDirectory) {
+
+    override val operationLabel = "Link"
 
     override fun createExec(i: Int): Exec {
+        message("${i + 1} of ${sources.size} : ${sources[i].name}")
         return Exec("ln", "-s", "--", sources[i], File(destinationDirectory, sources[i].name))
     }
-
-    override fun message(): String =
-            if (started) {
-                if (sources.size == 1) {
-                    "Linking ${sources[0].name} to ${destinationDirectory.name}"
-                } else {
-                    "Linking file $index of ${sources.size} to ${destinationDirectory.name}"
-                }
-            } else {
-                "Queued : Link ${sources.size} files to ${destinationDirectory.name}"
-            }
-
-    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
-abstract class RecusriveFileOperation(val destinationDirectory: File) : AbstractOperation() {
-
-    var latestFile: String? = null
-
-    var copyCount = 0
-
-    var expectedCount = 1
+abstract class RecusriveFileOperation(sources: List<File>, destinationDirectory: File)
+    : AbstractOperation(sources, destinationDirectory) {
 
     override fun run() {
+        println( "Runninf recursive")
+        var copyCount = 1
         val lister = FileLister(depth = 10, onlyFiles = false)
-        expectedCount = lister.listFiles(destinationDirectory).size
-
-        label?.let { it.text = message() }
+        val expectedCount = lister.listFiles(destinationDirectory).size
 
         exec = createExec()
-        exec?.outSink = object : BufferedSink() {
-            override fun sink(line: String) {
+        println( "Created exec $exec")
+        exec?.outSink = BufferedSink { line ->
+
+            println("Line : $line")
+            if (!line.startsWith("removed")) {
+                message("$copyCount of ${expectedCount} : $line")
                 copyCount++
             }
         }
+        println( "Created outSink")
+
+        println("Recursive. Exec = $exec")
         exec?.start()
+        println("Started")
         exec?.waitFor()
+        println("Finished")
 
     }
 
@@ -356,47 +422,22 @@ abstract class RecusriveFileOperation(val destinationDirectory: File) : Abstract
 /**
  * Copies a list of directories (recursively)
  */
-class CopyDirectoriesOperation(val sources: List<File>, destinationDirectory: File)
-    : RecusriveFileOperation(destinationDirectory = destinationDirectory) {
+class CopyDirectoriesOperation(sources: List<File>, destinationDirectory: File)
+    : RecusriveFileOperation(sources, destinationDirectory) {
+
+    override val operationLabel = "Copy"
 
     override fun createExec() = Exec("cp", "-rfv", "--", sources, destinationDirectory)
-
-    override fun message(): String =
-            if (started) {
-                if (copyCount == 0) {
-                    "Preparing"
-                } else {
-                    "Copying $latestFile (#$copyCount of about $expectedCount)"
-                }
-            } else {
-                "Queued : Copy ${sources.size} directories to ${destinationDirectory.name}"
-            }
-
-    override fun tooltip(): String = "Destination = $destinationDirectory"
 }
 
 /**
  * Moves a list of directories (recursively)
  */
-class MoveDirectoriesOperation(val sources: List<File>, destinationDirectory: File)
-    : RecusriveFileOperation(destinationDirectory = destinationDirectory) {
+class MoveDirectoriesOperation(sources: List<File>, destinationDirectory: File)
+    : RecusriveFileOperation(sources, destinationDirectory) {
 
+    override val operationLabel = "Move"
 
     override fun createExec() = Exec("mv", "-v", "--", sources, destinationDirectory)
 
-    override fun message(): String =
-            if (started) {
-                if (copyCount == 0) {
-                    "Preparing"
-                } else {
-                    "Copying $latestFile (#$copyCount of about $expectedCount)"
-                }
-            } else {
-                "Queued : Move ${sources.size} directories to ${destinationDirectory.name}"
-            }
-
-    override fun tooltip(): String = "Destination = $destinationDirectory"
-
 }
-
-

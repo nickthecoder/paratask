@@ -328,6 +328,35 @@
 }
 
 /****************************************************
+*   File Operations :                               *
+*****************************************************/
+
+.file-operations {
+    -fx-padding: 10px;
+    -fx-spacing: 4px;
+}
+
+.file-operation {
+    -fx-padding: 14px;
+    -fx-background-color: #ccc;
+    -fx-background-radius: 6px;
+}
+
+.file-operation.active {
+    -fx-background-color: -fx-faint-focus-color;
+}
+
+.file-operation.error {
+    -fx-background-color: #c33;
+}
+
+.file-operation .files {
+    -fx-underline: true;
+    -fx-font-weight: bold;
+}
+
+
+/****************************************************
 *   Testing :                                       *
 *****************************************************/
 

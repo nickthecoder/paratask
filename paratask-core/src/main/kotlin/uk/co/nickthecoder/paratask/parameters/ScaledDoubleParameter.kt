@@ -30,6 +30,9 @@ data class ScaledValue(var value: Double, var scale: Double = 1.0) {
 }
 
 /**
+ * The design of this class is poor, and the API will change, as soon as I have the time to fix it!
+ * Use at your own risk! The values of ScaledValue do NOT fire change events to the parameter, and therefore the
+ * GUI and the data can become out of sync.
  */
 class ScaledDoubleParameter(
         name: String,

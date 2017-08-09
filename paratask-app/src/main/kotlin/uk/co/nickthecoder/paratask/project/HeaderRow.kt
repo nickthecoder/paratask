@@ -23,13 +23,11 @@ import javafx.css.Styleable
 import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
 import javafx.geometry.VPos
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.DefaultButtonUpdater
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.fields.FieldColumn

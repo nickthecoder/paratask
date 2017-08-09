@@ -1,10 +1,28 @@
 
+Recursive Move/Copy does not update the message line. All the sink lines are coming in one batch after the process has ended.
 
 Bugs
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection
 	Cannot resize "Places" column widths
+
+	EditOptionTask doesn't hide/show script/task (OneOffParameter?)
+
+	Dragging while a move is taking place threw this :
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:136)
+	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:35)
+	at uk.co.nickthecoder.paratask.gui.DragHelper.onDragDetected(DragHelper.kt:38)
+	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
+
+FileOperations
+	Make file dialog pretier
+	Report errors
+	Include a cancel button
+	Progress bar
+	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
+	And ctrl+X/ctrl+V to move files
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 
@@ -26,17 +44,9 @@ Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm
 	Or add a list of ScaledDoubleParameters???
 	Or make ScaledValue imutable???
 	
-Implement a PROPER terminal (as well as the simple one?)4
+Implement a PROPER terminal (as well as the simple one?)
 	Perhaps put it in its own sub-project to isolate it from the rest due to it's large number of dependencies.
 	OR, create a new project just for it, and use a "plugin" system to include it.
-
-FileOperations
-	Make file dialog pretier
-	Report errors
-	Include a cancel button
-	Progress bar
-	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
-	And ctrl+X/ctrl+V to move files
 
 I think I'm using Drag/DropFiles source incorrectly.
 	If I set it to the parent directory for DirectoryTool, to PlacesFile for PlacesTool and the TextField for FileField
@@ -44,6 +54,7 @@ I think I'm using Drag/DropFiles source incorrectly.
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
+	Maybe put it in a different (sub) project, as it is by no means a core feature.
 
 Implement command line tab completion
 

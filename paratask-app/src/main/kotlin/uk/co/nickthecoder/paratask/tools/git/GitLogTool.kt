@@ -133,7 +133,7 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
     }
 
     override fun execFinished() {
-        processLine("") // Fake an extra blank line to finish iff the last message.
+        processLine("") // Fake an extra blank line to finish off the last message.
     }
 
     data class GitLogRow(val commit: String, val author: String, val message: String, val date: String)
