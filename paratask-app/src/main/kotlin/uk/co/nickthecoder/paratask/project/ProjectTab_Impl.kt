@@ -27,7 +27,6 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -52,8 +51,6 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     val splitPane = SplitPane()
 
-    val stackPane = StackPane(splitPane)
-
     val titleListener = TitleListener()
 
     override val tabProperties = TabProperties()
@@ -63,9 +60,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     private val shortcuts = ShortcutHelper("ProjectTab", splitPane)
 
     init {
+        content = splitPane
         tabTemplate = "{0}"
-        content = stackPane
-        stackPane.children.add(left as Node)
         splitPane.items.add(left as Node)
         splitPane.orientation = Orientation.HORIZONTAL
         updateTab()
@@ -105,7 +101,6 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             ParaTaskApp.logAttach("ProjectTab.detached right HalfTab")
         }
         splitPane.items.clear()
-        stackPane.children.clear()
     }
 
     override fun close() {
@@ -125,7 +120,6 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val r = HalfTab_Impl(ToolPane_Impl(tool))
 
-        stackPane.children.add(r)
         splitPane.items.add(r)
         r.attached(this)
         right = r
