@@ -2,6 +2,7 @@
 Consider VISIBILITY event being sent to the parameter, not its parent.
 
 Bugs
+	isRow's listener of EditOptionTask is not firing at times.
 	Memory leak when CLOSING tabs.
 		Changing tools doesn't leak.
 	Drag and Drop url places doesn't do anything, but suggests it will!

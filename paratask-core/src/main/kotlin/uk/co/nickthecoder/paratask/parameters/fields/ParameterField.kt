@@ -79,5 +79,8 @@ abstract class ParameterField(val parameter: Parameter) : Region(), ParameterLis
         if (event.type == ParameterEventType.ENABLED) {
             updateEnabled()
         }
+        if (event.type == ParameterEventType.VISIBILITY) {
+            form.updateVisibility(this)
+        }
     }
 }

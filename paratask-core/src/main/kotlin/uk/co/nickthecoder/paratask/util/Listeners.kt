@@ -7,11 +7,16 @@ open class Listeners<T : Any> : Iterable<T> {
 
     private var listeners = CopyOnWriteArrayList<WeakReference<T>>()
 
+    private var strongListeners = CopyOnWriteArrayList<T>()
+
     val size: Int
         get() = listeners.size
 
-    fun add(listener: T) {
+    fun add(listener: T, weak: Boolean = true) {
         listeners.add(WeakReference(listener))
+        if (!weak) {
+            strongListeners.add(listener)
+        }
     }
 
     open fun remove(listener: T) {
@@ -20,6 +25,7 @@ open class Listeners<T : Any> : Iterable<T> {
                 listeners.remove(it)
             }
         }
+        strongListeners.remove(listener)
     }
 
     open fun forEach(action: (T) -> Unit) {

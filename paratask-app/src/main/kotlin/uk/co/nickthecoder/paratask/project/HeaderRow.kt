@@ -196,7 +196,6 @@ class HeaderRow : Region() {
         }
     }
 
-
     data class FieldPosition(val headerRow: HeaderRow, val field: ParameterField) : FieldParent {
 
         override val spacing: Double

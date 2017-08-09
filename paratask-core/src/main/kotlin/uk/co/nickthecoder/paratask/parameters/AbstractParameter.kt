@@ -33,7 +33,7 @@ abstract class AbstractParameter(
             override fun parameterChanged(event: ParameterEvent) {
                 listener(event)
             }
-        })
+        }, false)
     }
 
     override var hidden: Boolean = hidden
@@ -41,7 +41,7 @@ abstract class AbstractParameter(
             val old = field
             field = v
             if (old != v) {
-                parent?.parameterListeners?.fireVisibilityChanged(this)
+                parameterListeners.fireVisibilityChanged(this)
             }
         }
 

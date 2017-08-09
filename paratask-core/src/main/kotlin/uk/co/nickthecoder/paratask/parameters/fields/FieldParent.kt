@@ -19,11 +19,21 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 interface FieldParent {
 
-    val spacing : Double
+    val spacing: Double
 
-    val columns : List<FieldColumn>
+    val columns: List<FieldColumn>
 
     fun calculateColumnPreferences()
 
     fun calculateColumnWidths()
+
+    fun updateVisibility(field: ParameterField) {
+        if (field is WrappableField) {
+            field.wrapper().isVisible = !field.parameter.hidden
+            field.wrapper().parent.requestLayout()
+        } else {
+            field.isVisible = !field.parameter.hidden
+            field.control?.parent?.requestLayout()
+        }
+    }
 }

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 
 interface ParentParameter : Parameter {
 

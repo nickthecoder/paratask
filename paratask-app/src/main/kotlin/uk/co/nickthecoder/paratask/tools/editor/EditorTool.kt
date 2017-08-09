@@ -30,15 +30,15 @@ class EditorTool() : AbstractTool() {
 
     val fileP = MultipleParameter("file") { FileParameter("") }
 
-    val initialTextP = StringParameter("initialText", required = false)
+    val initialTextP = StringParameter("initialText", required = false, hidden = true)
 
-    val findTextP = StringParameter("findText", required = false)
+    val findTextP = StringParameter("findText", required = false, hidden = true)
 
-    val matchCaseP = BooleanParameter("matchCase", value = false)
+    val matchCaseP = BooleanParameter("matchCase", value = false, hidden = true)
 
-    val useRegexP = BooleanParameter("useRegex", value = false)
+    val useRegexP = BooleanParameter("useRegex", value = false, hidden = true)
 
-    val goToLineP = IntParameter("goToLine", required = false)
+    val goToLineP = IntParameter("goToLine", required = false, hidden = true)
 
     constructor(file: File) : this() {
         fileP.addValue(file)
@@ -62,11 +62,6 @@ class EditorTool() : AbstractTool() {
 
     init {
         taskD.addParameters(fileP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
-        initialTextP.hidden = true
-        goToLineP.hidden = true
-        findTextP.hidden = true
-        matchCaseP.hidden = true
-        useRegexP.hidden = true
     }
 
 

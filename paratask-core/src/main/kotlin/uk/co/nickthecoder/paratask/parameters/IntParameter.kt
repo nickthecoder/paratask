@@ -20,23 +20,27 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.IntField
-import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
 
-open class IntParameter(name: String,
+open class IntParameter(
+        name: String,
         label: String = name.uncamel(),
         description: String = "",
         value: Int? = null,
         required: Boolean = true,
         var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE),
-        val columnCount: Int = 6)
+        val columnCount: Int = 6,
+        hidden: Boolean = false,
+        enabled: Boolean = true)
 
     : AbstractValueParameter<Int?>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required) {
+        required = required,
+        hidden = hidden,
+        enabled = enabled) {
 
     override val converter = object : StringConverter<Int?>() {
         override fun fromString(str: String): Int? {
