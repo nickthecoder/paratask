@@ -75,7 +75,7 @@ open class CompoundParameter(name: String,
 
     override fun createField(): GroupField {
         val result = GroupField(this)
-        result.buildContent()
+        result.build()
         return result
     }
 
