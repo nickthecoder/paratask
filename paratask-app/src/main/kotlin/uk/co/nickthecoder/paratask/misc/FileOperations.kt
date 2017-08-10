@@ -387,32 +387,47 @@ class LinkFilesOperation(sources: List<File>, destinationDirectory: File)
     }
 }
 
+/**
+ * Copy/Move files recursively.
+ * I attempt to listen to the results of the mv/cp command to give feedback on the
+ * number of files processed, and to show the current file being processed.
+ * However, when I do this across nfs using my (slow) wifi, stdout isn't read until the end (so no feedback is given).
+ * When copying large files locally, this doesn't happen
+ * I've tried ionice and renice on the mv/cp command, and also removed the "outSink" stuff, and the output
+ * from stdout STILL doesn't appear till the process finishes. Many hours later, and I've given up.
+ */
 abstract class RecusriveFileOperation(sources: List<File>, destinationDirectory: File)
     : AbstractOperation(sources, destinationDirectory) {
 
     override fun run() {
-        println( "Runninf recursive")
-        var copyCount = 1
-        val lister = FileLister(depth = 10, onlyFiles = false)
-        val expectedCount = lister.listFiles(destinationDirectory).size
-
+        val lister = FileLister(depth = 10, onlyFiles = null, includeHidden = true, includeBase = true)
+        var expectedCount = 0
+        sources.forEach {
+            expectedCount += lister.listFiles(it).size
+        }
+        message("$expectedCount files/directories")
         exec = createExec()
-        println( "Created exec $exec")
+
+        var copyCount = 1
+
         exec?.outSink = BufferedSink { line ->
 
-            println("Line : $line")
             if (!line.startsWith("removed")) {
-                message("$copyCount of ${expectedCount} : $line")
+                println(line)
+                val middle = line.indexOf("’ -> ‘")
+                if (middle > 0) {
+                    message("$copyCount of ${expectedCount} : ${line.substring(middle + 6, line.length - 1)}")
+                } else {
+                    message("$copyCount of ${expectedCount} : $line")
+                }
                 copyCount++
             }
         }
-        println( "Created outSink")
 
-        println("Recursive. Exec = $exec")
         exec?.start()
-        println("Started")
+        //val foo = exec?.unixIoniceIdle()
+        //val bar = exec?.unixRenice(10)
         exec?.waitFor()
-        println("Finished")
 
     }
 
@@ -428,6 +443,7 @@ class CopyDirectoriesOperation(sources: List<File>, destinationDirectory: File)
     override val operationLabel = "Copy"
 
     override fun createExec() = Exec("cp", "-rfv", "--", sources, destinationDirectory)
+    //override fun createExec() = Exec("/home/nick/bin/test.sh")
 }
 
 /**

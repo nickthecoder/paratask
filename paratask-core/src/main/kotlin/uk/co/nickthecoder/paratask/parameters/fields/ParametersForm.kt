@@ -92,9 +92,9 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     open fun addParameter(parameter: Parameter, index: Int): Node {
 
-        if (parameter.parent == null) {
-            throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
-        }
+        //if (parameter.parent == null) {
+        //    throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
+        //}
         val parameterField = parameter.createField()
 
         val node = if (parameterField is WrappableField) {
@@ -105,7 +105,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
         children.add(node)
 
-        if (parameter.hidden) {
+        if (parameter.hidden && !parameter.isProgrammingMode()) {
             if (parameterField is WrappableField) {
                 parameterField.wrapper().isVisible = false
             } else {

@@ -29,13 +29,14 @@ open class FileParameter(
         label: String = name.uncamel(),
         description: String = "",
         required: Boolean = true,
-        enabled: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
         value: File? = if (expectFile == false && mustExist == true) currentDirectory else null,
         var baseDirectory: File? = null,
         val baseDirectoryP: FileParameter? = null,
-        val extensions: List<String>? = null)
+        val extensions: List<String>? = null,
+        hidden: Boolean = false,
+        enabled: Boolean = true)
 
     : AbstractValueParameter<File?>(
         name = name,
@@ -43,6 +44,7 @@ open class FileParameter(
         description = description,
         value = value,
         required = required,
+        hidden = hidden,
         enabled = enabled) {
 
     override val converter = object : StringConverter<File?>() {

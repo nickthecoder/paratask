@@ -36,6 +36,8 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     override fun createControl(): ParametersForm {
 
+        choiceP.parameterListeners.add(this)
+
         for (child in oneOfParameter.children) {
             choiceP.choice(child.name, child, child.label)
         }
@@ -60,7 +62,6 @@ class OneOfField(val oneOfParameter: OneOfParameter)
     }
 
     override fun parameterChanged(event: ParameterEvent) {
-        super.parameterChanged(event)
         buildContent()
     }
 

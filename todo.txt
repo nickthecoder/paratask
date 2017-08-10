@@ -7,8 +7,6 @@ Bugs
 	Adding an include to an empty options file threw an expection
 	Cannot resize "Places" column widths
 
-	EditOptionTask doesn't hide/show script/task (OneOffParameter?)
-
 	Dragging while a move is taking place threw this :
 Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
 	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:136)
@@ -16,13 +14,20 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
 	at uk.co.nickthecoder.paratask.gui.DragHelper.onDragDetected(DragHelper.kt:38)
 	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
 
+Allow shortcuts for row options too.
+	DELETE key for "rm" for example.
+
+Parameters to have aliases, so that a parameter can be renamed without breaking saved tasks.
+	Also use the aliases when parsing command lines.
+	Change name of "task/script" on EditOptionsTask???
+
 FileOperations
-	Make file dialog pretier
 	Report errors
 	Include a cancel button
-	Progress bar
-	Allow ctrl+C and ctrl+V to copy files from one DirectoryTool to another.
-	And ctrl+X/ctrl+V to move files
+	Inlucde a pause button. Pause the thread AND the process
+	Allow ctrl+C  / ctrl+X and ctrl+V to copy/move files from one DirectoryTool to another.
+		Implement as options when rows have shortcuts?
+		Or maybe use the Drag/Drop infrastructure, which may allow copy/paste of other types of data, such as Places.
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 

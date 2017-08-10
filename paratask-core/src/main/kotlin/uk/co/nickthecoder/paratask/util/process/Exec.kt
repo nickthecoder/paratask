@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask.util.process
 
 import java.io.File
 import java.util.concurrent.TimeUnit
+import java.lang.reflect.AccessibleObject.setAccessible
+
 
 val NOT_STARTED = -1000
 
@@ -158,6 +160,54 @@ class Exec {
         }
 
         return NOT_STARTED
+    }
+
+    /**
+     * Attempts to get the process ID. This is not cross platform, as the name suggests.
+     */
+    fun unixPID(): Long? {
+
+        try {
+            if (process?.javaClass?.name == "java.lang.UNIXProcess") {
+                val field = process?.javaClass?.getDeclaredField("pid")
+                field?.isAccessible = true
+                val pid = field?.getLong(process)
+                field?.isAccessible = false
+                return pid
+            }
+        } catch (e: Exception) {
+            // Do nothing
+        }
+
+        return null
+    }
+
+    /**
+     * Runs ionice -c 3 -p [PID of this.process].
+     * Returns the Exec of the ionice command, or null if the PID could not be found.
+     */
+    fun unixIoniceIdle(): Exec? {
+        val pid = unixPID()
+        if (pid != null) {
+            val exec = Exec("ionice", "-c", "3", "-p", pid)
+            exec.start()
+            return exec
+        }
+        return null
+    }
+
+    /**
+     * Runs the unix renice command for this exec's process
+     * Returns the Exec of the renice command, or null if the PID could not be found.
+     */
+    fun unixRenice(priority: Int = 10): Exec? {
+        val pid = unixPID()
+        if (pid != null) {
+            val exec = Exec("renice", "-n", priority, "-p", pid)
+            exec.start()
+            return exec
+        }
+        return null
     }
 
     override fun toString(): String {

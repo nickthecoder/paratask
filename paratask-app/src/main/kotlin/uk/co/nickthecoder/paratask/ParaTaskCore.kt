@@ -29,9 +29,6 @@ import java.io.File
  */
 class ParaTaskCore : Registers {
 
-    internal constructor() {
-    }
-
     override fun register() {
 
         val directoryP = FileParameter("directory", expectFile = false, required = true, value = File("").absoluteFile)
@@ -55,7 +52,7 @@ class ParaTaskCore : Registers {
 
         val files = TaskAndToolGroup("Files")
         files.addTools(DirectoryTool(), DirectoryTreeTool(), GrepTool())
-        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask())
+        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val git = TaskAndToolGroup("Git")
         git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
