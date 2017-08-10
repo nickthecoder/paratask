@@ -91,7 +91,7 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
         doRow(option, row, prompt = prompt, newTab = newTab)
     }
 
-    private fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
+    fun runRows(option: Option, rows: List<R>, prompt: Boolean = false, newTab: Boolean = false) {
         val batchRefresher = BatchRefresher()
         refresher = batchRefresher
 

@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.project
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 
 abstract class AbstractResults(
@@ -41,16 +42,26 @@ abstract class AbstractResults(
     }
 
     override fun attached(toolPane: ToolPane) {
-        node.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
-            val topLevelOptions = OptionsManager.getTopLevelOptions(tool.optionsName)
-            topLevelOptions.listFileOptions().forEach { fileOptions ->
-                fileOptions.listOptions().forEach{ option ->
+        // This must be a FILTER, otherwise the option edit field will consume the keystrokes before we get a go.
+        node.addEventFilter(KeyEvent.KEY_PRESSED) { checkOptionShortcuts(it) }
+    }
+
+    /**
+     * Checks the key event for all non-row options with a matching shortcut, and runs the option if found.
+     * TableResults overrides this to handle row options.
+     */
+    open fun checkOptionShortcuts(event: KeyEvent) {
+
+        val topLevelOptions = OptionsManager.getTopLevelOptions(tool.optionsName)
+        topLevelOptions.listFileOptions().forEach { fileOptions ->
+            fileOptions.listOptions().forEach { option ->
+
+                option.shortcut?.let { shortcut ->
                     if (option.isRow == false) {
-                        option.shortcut?.let {
-                            if ( it.match(event) ) {
-                                event.consume()
-                                tool.optionsRunner.runNonRow( option )
-                            }
+                        if (shortcut.match(event)) {
+                            tool.optionsRunner.runNonRow(option)
+                            event.consume()
+                            return
                         }
                     }
                 }

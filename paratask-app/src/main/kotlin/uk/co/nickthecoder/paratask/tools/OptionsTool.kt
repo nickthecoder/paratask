@@ -241,10 +241,8 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
             scriptOrTaskP.addParameters(script, taskP)
             isRow.listen {
-                shortcutP.hidden = isRow.value == true
                 isMultiple.hidden = isRow.value == false
             }
-            shortcutP.hidden = isRow.value == true
             isMultiple.hidden = isRow.value == false
         }
 

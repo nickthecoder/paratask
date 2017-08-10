@@ -125,7 +125,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "output",
@@ -385,6 +385,8 @@
             "prompt": true,
             "newTab": false,
             "refresh": false,
+            "keyCode": "DELETE",
+            "shift": "DOWN",
             "parameters": [
                 {
                     "name": "program",
@@ -406,7 +408,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
                 },
                 {
                     "name": "output",

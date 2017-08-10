@@ -2,6 +2,8 @@
 Recursive Move/Copy does not update the message line. All the sink lines are coming in one batch after the process has ended.
 
 Bugs
+	Deleting multiple files/directories auto-Lrefreshes the list before all files have been deleted, but does NOT refresh
+		the list again when remaining items are deleted.
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
 	Adding an include to an empty options file threw an expection

@@ -134,6 +134,42 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     val contextMenu = ContextMenu()
 
+    /**
+     * Looks for shortcuts for the row-options, and passes control to super if no row-base options were found.
+     * If the option found only matches SOME of the selected rows, then the rows that match will be unselected,
+     * leaving the unmatches rows selected. For example, using a shortcut that has different options for files and
+     * directories, it will only process one half.
+     * The user can then hit the shortcut again to apply the other half.
+     */
+    override fun checkOptionShortcuts(event: KeyEvent) {
+
+        val tableRows = tableView.selectionModel.selectedItems
+        if (tableRows.isEmpty()) {
+            return
+        }
+
+        val topLevelOptions = OptionsManager.getTopLevelOptions(tool.optionsName)
+        topLevelOptions.listFileOptions().forEach { fileOptions ->
+            fileOptions.listOptions().forEach { option ->
+                if (option.isRow) {
+                    option.shortcut?.let { shortcut ->
+                        if (shortcut.match(event) && fileOptions.acceptRow(tableRows[0].row)) {
+                            val acceptedRows = tableRows.filter { fileOptions.acceptRow(it.row) }
+                            tableView.selectionModel.clearSelection()
+                            tableRows.filter { !acceptedRows.contains(it) }.forEach {
+                                tableView.selectionModel.select(it)
+                            }
+                            runner.runRows(option, acceptedRows.map { it.row })
+                            return
+                        }
+                    }
+                }
+            }
+        }
+
+        super.checkOptionShortcuts(event)
+    }
+
     open fun onKeyPressed(event: KeyEvent) {
         if (ParataskActions.PREV_ROW.match(event)) {
             if (!move(-1)) event.consume()
@@ -150,11 +186,11 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             event.consume()
 
         } else if (ParataskActions.OPTION_PROMPT.match(event)) {
-            runTableOptions()
+            runTableOptions(prompt = true)
             event.consume()
 
         } else if (ParataskActions.OPTION_PROMPT_NEW_TAB.match(event)) {
-            runTableOptions(newTab = true)
+            runTableOptions(prompt = true, newTab = true)
             event.consume()
 
         } else if (ParataskActions.ESCAPE.match(event)) {
@@ -216,6 +252,8 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             }
         }
     }
+
+
 }
 
 
