@@ -98,6 +98,10 @@ abstract class AbstractGroupParameter(
     }
 
     fun find(name: String): Parameter? {
+        return findWithoutAliases(name) ?: findWithAliases(name)
+    }
+
+    fun findWithoutAliases(name: String): Parameter? {
         children.forEach { child ->
             if (child.name == name) {
                 return child
@@ -107,6 +111,19 @@ abstract class AbstractGroupParameter(
             }
             if (child is GroupParameter) {
                 child.find(name)?.let { return it }
+            }
+        }
+
+        return null
+    }
+
+    fun findWithAliases(name: String): Parameter? {
+        children.forEach { child ->
+            if (child.aliases.contains(name)) {
+                return child
+            }
+            if (child is GroupParameter) {
+                child.findWithAliases(name)?.let { return it }
             }
         }
 

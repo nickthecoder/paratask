@@ -27,6 +27,8 @@ interface Parameter : Labelled {
 
     val name: String
 
+    val aliases: List<String>
+
     val description: String
 
     var parent: Parameter?
@@ -49,11 +51,11 @@ interface Parameter : Labelled {
         return parent?.findRoot()
     }
 
-    fun resolver() : ParameterResolver = findRoot()?.taskD?.resolver ?: PlainDirectoryResolver.instance
+    fun resolver(): ParameterResolver = findRoot()?.taskD?.resolver ?: PlainDirectoryResolver.instance
 
     fun findTaskD(): TaskDescription? = parent?.findTaskD()
 
     fun isProgrammingMode(): Boolean = findTaskD()?.programmingMode ?: false
 
-    fun copy() : Parameter
+    fun copy(): Parameter
 }

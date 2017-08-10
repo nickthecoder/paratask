@@ -79,6 +79,8 @@
             "prompt": true,
             "newTab": false,
             "refresh": false,
+            "keyCode": "D",
+            "alt": "DOWN",
             "parameters": [
                 {
                     "name": "parentDirectory",

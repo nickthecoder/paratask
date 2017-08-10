@@ -226,7 +226,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
                 rows = 10, columns = 40, style = "script",
                 value = if (option is GroovyOption) option.script else "")
 
-        val scriptOrTaskP = OneOfParameter("typeOfAction")
+        val scriptOrTaskP = OneOfParameter("action", message = "Action Type")
 
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
 

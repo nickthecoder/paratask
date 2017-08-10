@@ -1,6 +1,4 @@
 
-Recursive Move/Copy does not update the message line. All the sink lines are coming in one batch after the process has ended.
-
 Bugs
 	Deleting multiple files/directories auto-Lrefreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
@@ -15,9 +13,6 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
 	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:35)
 	at uk.co.nickthecoder.paratask.gui.DragHelper.onDragDetected(DragHelper.kt:38)
 	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
-
-Allow shortcuts for row options too.
-	DELETE key for "rm" for example.
 
 Parameters to have aliases, so that a parameter can be renamed without breaking saved tasks.
 	Also use the aliases when parsing command lines.
