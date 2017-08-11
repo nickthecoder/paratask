@@ -22,7 +22,7 @@ import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.gui.AbstractTaskPrompter
 
-open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
+open class TaskPrompter(task: Task, val showApply: Boolean = false) : AbstractTaskPrompter(task) {
 
     val okButton = Button("OK")
 
@@ -53,7 +53,10 @@ open class TaskPrompter(task: Task) : AbstractTaskPrompter(task) {
             visibleProperty().bind(task.taskRunner.showRunProperty)
         }
 
-        buttons.children.addAll( okButton, cancelButton, applyButton)
+        buttons.children.addAll(okButton, cancelButton)
+        if (showApply) {
+            buttons.children.add(applyButton)
+        }
     }
 
     fun onCancel() {
