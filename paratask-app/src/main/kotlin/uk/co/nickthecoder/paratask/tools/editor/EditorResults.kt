@@ -21,13 +21,11 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.ToolBar
-import javafx.scene.layout.BorderPane
-import javafx.scene.layout.StackPane
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ParataskActions
-import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.ToolPane
 import java.io.File
 
@@ -37,11 +35,11 @@ class EditorResults(
 
     : AbstractResults(tool, file?.name ?: "New File") {
 
-    override val node = BorderPane()
-
     val toolBar = ToolBar()
 
     val codeArea = CodeArea()
+
+    override val node = codeArea
 
     val searcher = Searcher(codeArea)
 
@@ -56,13 +54,8 @@ class EditorResults(
             label = (if (value) "*" else "") + (file?.name ?: "New File")
         }
 
-    val dummyParent = StackPane()
-
     init {
         codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
-
-        node.bottom = toolBar
-        node.center = codeArea
 
         val shortcuts = ShortcutHelper("EditorTool", node)
 
@@ -99,21 +92,33 @@ class EditorResults(
     }
 
     override fun selected() {
+        super.selected()
         tool.toolPane?.halfTab?.toolBars?.left = toolBar
         file?.path?.let { tool.longTitle = "Editor $it" }
     }
 
     override fun deselected() {
         hideToolBar()
-        dummyParent.children.add(toolBar)
     }
 
+    // Bodge. See focus().
+    private var isAttached: Boolean = false
+
     override fun focus() {
-        codeArea.requestFocus()
+        // This is a bodge - The half tab wasn't rendering if I just called requestFocus without the if and the runLater.
+        // Problem only happened during initial load when the editor was not the last tab.
+        // Don't know why, but I just needed something quick and dirty to fix it temporarily.
+        // TODO Try to remove this bodge!
+        if (isAttached) {
+            Platform.runLater {
+                codeArea.requestFocus()
+            }
+        }
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
+        isAttached = true
 
         tool.goToLineP.value?.let {
             codeArea.positionCaret(codeArea.position(it - 1, 0).toOffset())
@@ -124,7 +129,8 @@ class EditorResults(
             searcher.matchCase = tool.matchCaseP.value == true
             searcher.useRegex = tool.useRegexP.value == true
 
-            Platform.runLater { // Without the run later, the selection stays off screen.
+            Platform.runLater {
+                // Without the run later, the selection stays off screen.
                 searcher.beginFind()
                 showFindBar()
             }
@@ -133,6 +139,7 @@ class EditorResults(
 
     override fun detaching() {
         super.detaching()
+        isAttached = false
         hideToolBar()
     }
 
@@ -140,6 +147,7 @@ class EditorResults(
         findBar.detaching()
         findBar.isVisible = false
         tool.toolPane?.halfTab?.toolBars?.bottom = null
+        tool.toolPane?.halfTab?.toolBars?.left = null
         codeArea.requestFocus()
     }
 
@@ -160,6 +168,7 @@ class EditorResults(
     }
 
     fun load(file: File) {
+        println("Edit Loading")
         load(file.readText())
         codeArea.undoManager.forgetHistory()
         dirty = false
