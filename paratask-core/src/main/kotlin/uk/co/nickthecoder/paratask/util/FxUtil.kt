@@ -55,7 +55,7 @@ fun runAndWait(action: () -> Unit) {
 
 }
 
-fun runLater(millis: Long, action: () -> Unit) {
+fun runAfterDelay(millis: Long, action: () -> Unit) {
     Timeline(KeyFrame(Duration.millis(millis.toDouble()), EventHandler({ action() }))).play()
 }
 
