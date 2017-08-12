@@ -60,7 +60,12 @@ open class GroupField(groupParameter: AbstractGroupParameter)
     }
 
     override fun layoutChildren() {
-        layoutInArea(control, insets.left, insets.top, width - insets.left - insets.right, height - insets.left - insets.right, 0.0, HPos.LEFT, VPos.CENTER)
+        layoutInArea(
+                control,
+                insets.left, insets.top,
+                width - insets.left - insets.right,
+                height - insets.top - insets.bottom,
+                0.0, HPos.LEFT, VPos.CENTER)
     }
 
     override fun addAndRemoveButtons(buttons: Node) {

@@ -1,6 +1,6 @@
 {
-    "comments": "Must define row.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)\n\nNot to be confused with the \"directory\" options file, which is for the\nDirectoryTool (and DirectoryTreeTool) only.",
-    "rowFilterScript": "row.isDirectory()",
+    "comments": "Must define row.file.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)",
+    "rowFilterScript": "row.file.isDirectory()",
     "includes": [
         
     ],
@@ -94,42 +94,6 @@
                 {
                     "name": "autoRefresh",
                     "value": "true"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "play",
-            "label": "Play Music",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "aliases": [
-                "|>"
-            ],
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "audacious"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "expression": "row.file.toString()"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": "./"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
                 }
             ]
         },
@@ -409,6 +373,42 @@
                 {
                     "name": "directory",
                     "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "play",
+            "label": "Play Music",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                ">"
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "audacious"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file.toString()"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
                 },
                 {
                     "name": "output",

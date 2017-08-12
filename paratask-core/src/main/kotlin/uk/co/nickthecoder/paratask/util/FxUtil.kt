@@ -64,3 +64,11 @@ fun Node.fireTabToFocusNext() {
     val tab = KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "\t", KeyCode.TAB, false, false, false, false)
     Event.fireEvent(this, tab)
 }
+
+fun Node.dumpAncestors() {
+    var node: Node? = this
+    while (node != null) {
+        println(node)
+        node = node.parent
+    }
+}

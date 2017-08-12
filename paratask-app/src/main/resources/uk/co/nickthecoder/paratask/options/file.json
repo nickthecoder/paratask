@@ -460,6 +460,42 @@
                     "value": "IGNORE"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "play",
+            "label": "Play Music",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                ">"
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "audacious"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file.toString()"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
         }
     ]
 }

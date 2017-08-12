@@ -26,7 +26,9 @@ import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.project.ProjectTabs_Impl
 import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.util.dumpAncestors
 import java.io.File
 
 class EditorResults(
@@ -101,24 +103,12 @@ class EditorResults(
         hideToolBar()
     }
 
-    // Bodge. See focus().
-    private var isAttached: Boolean = false
-
     override fun focus() {
-        // This is a bodge - The half tab wasn't rendering if I just called requestFocus without the if and the runLater.
-        // Problem only happened during initial load when the editor was not the last tab.
-        // Don't know why, but I just needed something quick and dirty to fix it temporarily.
-        // TODO Try to remove this bodge!
-        if (isAttached) {
-            Platform.runLater {
-                codeArea.requestFocus()
-            }
-        }
+        codeArea.requestFocus()
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        isAttached = true
 
         tool.goToLineP.value?.let {
             codeArea.positionCaret(codeArea.position(it - 1, 0).toOffset())
@@ -139,7 +129,6 @@ class EditorResults(
 
     override fun detaching() {
         super.detaching()
-        isAttached = false
         hideToolBar()
     }
 

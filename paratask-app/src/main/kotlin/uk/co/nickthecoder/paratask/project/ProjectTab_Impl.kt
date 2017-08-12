@@ -21,10 +21,8 @@ import com.sun.javafx.stage.StageHelper
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
-import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.ContextMenu
-import javafx.scene.control.SplitPane
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
@@ -32,6 +30,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.MySplitPane
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
@@ -49,7 +48,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     override var right: HalfTab? = null
 
-    val splitPane = SplitPane()
+    val splitPane = MySplitPane()
 
     val titleListener = TitleListener()
 
@@ -61,9 +60,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     init {
         content = splitPane
+        splitPane.left = left as Node
+
         tabTemplate = "{0}"
-        splitPane.items.add(left as Node)
-        splitPane.orientation = Orientation.HORIZONTAL
         updateTab()
 
         val menu = ContextMenu()
@@ -100,7 +99,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             it.detaching()
             ParaTaskApp.logAttach("ProjectTab.detached right HalfTab")
         }
-        splitPane.items.clear()
+        splitPane.left = null
+        splitPane.right = null
     }
 
     override fun close() {
@@ -120,7 +120,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val r = HalfTab_Impl(ToolPane_Impl(tool))
 
-        splitPane.items.add(r)
+        splitPane.right = r
         r.attached(this)
         right = r
     }
@@ -145,9 +145,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
                 throw RuntimeException("Attempt to remove a toolPane not belonging to this tab.")
             }
         }
-        splitPane.items.clear()
+        splitPane.right = null
+        splitPane.left = left as Node
         right = null
-        splitPane.items.add(left as Node)
     }
 
     override fun split(tool: Tool, run: Boolean) {

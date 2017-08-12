@@ -81,6 +81,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
             selectedTab?.let {
                 it.content.isVisible = false
                 it.styleClass.remove("selected")
+                // Hide the "x" on the old selected tab
                 if (tabClosingPolicy != TabPane.TabClosingPolicy.ALL_TABS) {
                     it.right = null
                 }

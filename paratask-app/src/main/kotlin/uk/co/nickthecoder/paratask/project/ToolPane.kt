@@ -37,6 +37,8 @@ interface ToolPane {
 
     fun selected()
 
+    fun isAttached() : Boolean
+
     fun nextTab()
 
     fun prevTab()

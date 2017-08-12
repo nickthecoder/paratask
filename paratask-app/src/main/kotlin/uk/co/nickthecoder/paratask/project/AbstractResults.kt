@@ -72,7 +72,9 @@ abstract class AbstractResults(
     override fun detaching() {}
 
     override fun selected() {
-        focus()
+        if (tool.toolPane?.halfTab?.projectTab?.isSelected == true) {
+            focus()
+        }
     }
 
     override fun deselected() {}

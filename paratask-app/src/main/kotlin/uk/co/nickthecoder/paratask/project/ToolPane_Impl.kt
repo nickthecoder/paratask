@@ -80,7 +80,6 @@ class ToolPane_Impl(override var tool: Tool)
         }
         if (newTab is MinorTab) {
             newTab.selected()
-            newTab.focus()
         }
         top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
 
@@ -135,6 +134,12 @@ class ToolPane_Impl(override var tool: Tool)
         }
     }
 
+    private var attached: Boolean = false
+
+    override fun isAttached(): Boolean {
+        return attached
+    }
+
     override fun attached(halfTab: HalfTab) {
         this.halfTab = halfTab
 
@@ -154,9 +159,11 @@ class ToolPane_Impl(override var tool: Tool)
         }
 
         ParaTaskApp.logAttach("ToolPane.attached")
+        attached = true
     }
 
     override fun detaching() {
+        attached = false
         ParaTaskApp.logAttach("ToolPane detaching")
         parametersPane.detaching()
         tool.detaching()

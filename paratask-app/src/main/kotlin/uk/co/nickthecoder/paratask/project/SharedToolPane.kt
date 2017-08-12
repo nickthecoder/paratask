@@ -41,6 +41,8 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
 
     override fun selected() {}
 
+    override fun isAttached() = shared.isAttached()
+
     override fun nextTab() {
         shared.nextTab()
     }
