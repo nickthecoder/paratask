@@ -1,6 +1,6 @@
 
 Bugs
-	Deleting multiple files/directories auto-Lrefreshes the list before all files have been deleted, but does NOT refresh
+	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 	Drag and Drop url places doesn't do anything, but suggests it will!
 		I haven't coded drag and drop for Resources :-(
@@ -14,9 +14,20 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
 	at uk.co.nickthecoder.paratask.gui.DragHelper.onDragDetected(DragHelper.kt:38)
 	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
 
-Parameters to have aliases, so that a parameter can be renamed without breaking saved tasks.
-	Also use the aliases when parsing command lines.
-	Change name of "task/script" on EditOptionsTask???
+Give a default max height to tasks scenes
+
+Tooltip on FileField's text field, to explain shortcuts.
+
+Drag and Drop Resources
+	Drag to PlacesTool (e.g. from another PlaceTool) will create a new Place
+	Drag from PlacesTool to a DirectoryTool will COPY
+		Initially just open the stream
+
+FTP Tool?
+	Only if I can still drag and drop.
+	The list will be of type Resource?
+		So I need to be able to drag Resources to a DirectoryTool
+		And drag files to the FTPTool.	
 
 FileOperations
 	Report errors
@@ -29,6 +40,7 @@ FileOperations
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 
 MyTabPane to have ability to have a "+" button on the right to add a new tab.
+	Should not LOOK like a tab.
 	It is up to the client to determine what happens when the button is clicked.
 	In ParaTask, open "Home", in KoGo, also open "Home"
 		Can then allow the Home tab to be closed.

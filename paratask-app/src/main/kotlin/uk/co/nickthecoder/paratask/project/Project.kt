@@ -162,7 +162,7 @@ class Project(val projectWindow: ProjectWindow) {
                     val jleft = jtab.get("left").asObject()
                     jleft?.let {
                         val tool = loadTool(jleft)
-                        val projectTab = projectWindow.addTool(tool)
+                        val projectTab = projectWindow.addTool(tool, select = false)
 
                         val jright = jtab.get("right")
                         if (jright != null) {

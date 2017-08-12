@@ -23,9 +23,9 @@ interface ProjectTabs {
 
     val projectWindow: ProjectWindow
 
-    fun addTool(tool: Tool, run: Boolean = true): ProjectTab
+    fun addTool(tool: Tool, run: Boolean = true, select: Boolean = true): ProjectTab
 
-    fun addAfter(after: ProjectTab, tool: Tool, run: Boolean = true): ProjectTab
+    fun addAfter(after: ProjectTab, tool: Tool, run: Boolean = true, select: Boolean = true): ProjectTab
 
     fun removeTab(projectTab: ProjectTab)
 

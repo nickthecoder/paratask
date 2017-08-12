@@ -95,8 +95,8 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         this.stage = stage
     }
 
-    fun addTool(tool: Tool): ProjectTab {
-        return tabs.addTool(tool)
+    fun addTool(tool: Tool, select: Boolean = true): ProjectTab {
+        return tabs.addTool(tool, select = select)
     }
 
     fun onAbout() {

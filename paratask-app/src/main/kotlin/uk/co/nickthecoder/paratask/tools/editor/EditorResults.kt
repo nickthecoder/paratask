@@ -168,7 +168,6 @@ class EditorResults(
     }
 
     fun load(file: File) {
-        println("Edit Loading")
         load(file.readText())
         codeArea.undoManager.forgetHistory()
         dirty = false
