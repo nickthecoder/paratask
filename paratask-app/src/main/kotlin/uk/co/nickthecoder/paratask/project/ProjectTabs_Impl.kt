@@ -105,7 +105,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun listTabs(): List<ProjectTab> {
-        return tabs.map { it as ProjectTab }
+        return tabs.map { it }
     }
 
     override fun nextTab() {
