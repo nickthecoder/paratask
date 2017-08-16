@@ -17,15 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.table
 
-import javafx.application.Platform
 import javafx.event.Event
 import javafx.geometry.Side
-import javafx.scene.control.ContentDisplay
-import javafx.scene.control.TableCell
-import javafx.scene.control.TableColumn
+import javafx.scene.control.*
 import javafx.scene.control.TableColumn.CellEditEvent
-import javafx.scene.control.TablePosition
-import javafx.scene.control.TextField
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
@@ -81,6 +76,9 @@ class EditCell<S, T>(
             } else if (ParataskActions.CONTEXT_MENU.match(event)) {
                 tableResultsRef.get()?.showContextMenu(textField, event)
                 event.consume()
+            } else if (ParataskActions.SELECT_ROW_DOWN.match(event) || ParataskActions.SELECT_ROW_UP.match(event)) {
+                // Save the code, so that TableResults can copy the code into the next/prev row.
+                saveCode()
             }
         }
 
@@ -109,6 +107,10 @@ class EditCell<S, T>(
     override fun cancelEdit() {
         super.cancelEdit()
         contentDisplay = ContentDisplay.TEXT_ONLY
+    }
+
+    fun saveCode() {
+        (tableView.items[tableRow.index] as WrappedRow<*>).code = textField.text
     }
 
     // commits the edit. Update property if possible and revert to text display

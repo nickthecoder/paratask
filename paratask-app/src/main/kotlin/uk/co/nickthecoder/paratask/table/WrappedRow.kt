@@ -31,6 +31,15 @@ class WrappedRow<out R>(val row: R) {
             codeProperty.set(value)
         }
 
+    /*
+    init {
+        codeProperty.addListener { observable, oldValue, newValue ->
+            Thread.dumpStack()
+            println("Code changed from $oldValue to $newValue")
+        }
+    }
+    */
+
     val observables = mutableMapOf<String, ObservableValue<Any?>>()
 
     fun clearOption() {

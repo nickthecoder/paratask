@@ -80,8 +80,12 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
+    fun stopEditing() {
+        tableView.edit(-1, null)
+    }
+
     override fun deselected() {
-        tableView.edit(-1, null) // Stop editing
+        stopEditing()
         super.deselected()
     }
 
@@ -105,7 +109,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
     fun editOption(rowIndex: Int = -1) {
         val index = if (rowIndex >= 0) rowIndex else tableView.selectionModel.focusedIndex
 
-        tableView.edit(-1, null) // Stop editing
+        stopEditing()
         tableView.edit(index, codeColumn)
     }
 
@@ -216,15 +220,24 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     fun move(delta: Int, clearSelection: Boolean = true): Boolean {
         val row = tableView.selectionModel.focusedIndex + delta
+
         if (row < 0 || row >= tableView.items.size) {
             return false
         }
-        if (clearSelection) {
-            tableView.selectionModel.clearSelection()
+
+        // We need to run later so the EditCell has a chance to save the textfield to the WrappedRow.code
+        Platform.runLater {
+            if (clearSelection) {
+                tableView.selectionModel.clearSelection()
+            } else {
+                // Copy the code from the old focused row.
+                val code = tableView.items[row - delta].code
+                tableView.items[row].code = code
+            }
+            tableView.selectionModel.select(row)
+            tableView.selectionModel.focus(row)
+            editOption(row)
         }
-        tableView.selectionModel.select(row)
-        tableView.selectionModel.focus(row)
-        Platform.runLater { editOption(row) }
         return true
     }
 
