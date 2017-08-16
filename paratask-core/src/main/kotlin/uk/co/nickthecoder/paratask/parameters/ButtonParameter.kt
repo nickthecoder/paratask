@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.parameters
 
+import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.parameters.fields.ButtonField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -9,7 +10,7 @@ class ButtonParameter(
         label: String = name.uncamel(),
         val buttonText: String,
         description: String = "",
-        val action: () -> Unit)
+        val action: (ButtonField) -> Unit)
     : AbstractParameter(
         name = name,
         label = label,

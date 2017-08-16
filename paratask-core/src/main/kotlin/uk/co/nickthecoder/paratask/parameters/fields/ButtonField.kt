@@ -6,9 +6,11 @@ import uk.co.nickthecoder.paratask.parameters.ButtonParameter
 
 class ButtonField(val buttonParameter: ButtonParameter) : LabelledField(buttonParameter) {
 
+    var button: Button? = null
+
     override fun createControl(): Button {
-        val button = Button(buttonParameter.buttonText)
-        button.addEventHandler(ActionEvent.ACTION) { buttonParameter.action() }
-        return button
+        button = Button(buttonParameter.buttonText)
+        button!!.addEventHandler(ActionEvent.ACTION) { buttonParameter.action(this) }
+        return button!!
     }
 }

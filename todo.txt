@@ -1,12 +1,12 @@
 
+
+Non-row options split into sub-menus
+
++ Button on MyTabPane header.
+
 Bugs
-	Cannot serialize Option, and therefore can't drag and drop it.
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
-	Drag and Drop url places doesn't do anything, but suggests it will!
-		I haven't coded drag and drop for Resources :-(
-	Adding an include to an empty options file threw an expection
-	Cannot resize "Places" column widths
 
 	Dragging while a move is taking place threw this :
 Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
@@ -16,13 +16,6 @@ Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
 	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
 
 Give a default max height to tasks scenes
-
-Tooltip on FileField's text field, to explain shortcuts.
-
-Drag and Drop Resources
-	Drag to PlacesTool (e.g. from another PlaceTool) will create a new Place
-	Drag from PlacesTool to a DirectoryTool will COPY
-		Initially just open the stream
 
 FTP Tool?
 	Only if I can still drag and drop.
@@ -40,19 +33,11 @@ FileOperations
 
 Remember closed tabs, so that they can be re-opened using ctrl+shift+T
 
-MyTabPane to have ability to have a "+" button on the right to add a new tab.
-	Should not LOOK like a tab.
-	It is up to the client to determine what happens when the button is clicked.
-	In ParaTask, open "Home", in KoGo, also open "Home"
-		Can then allow the Home tab to be closed.
-
 Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane / GridPane / HBox.
 	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
 	The children would need to SHARE one error message label.
 
 Space out the ScaleDouble fields.
-
-Consider reversing the key/value pairs of ScaledDoubleParameter's scales.
 
 Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm.
 	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
@@ -63,17 +48,13 @@ Implement a PROPER terminal (as well as the simple one?)
 	Perhaps put it in its own sub-project to isolate it from the rest due to it's large number of dependencies.
 	OR, create a new project just for it, and use a "plugin" system to include it.
 
-I think I'm using Drag/DropFiles source incorrectly.
-	If I set it to the parent directory for DirectoryTool, to PlacesFile for PlacesTool and the TextField for FileField
-	Then the DropFiles need to perform a custom check.
-
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 	Maybe put it in a different (sub) project, as it is by no means a core feature.
 
 Implement command line tab completion
 
-Make git diff its own command (with boolean for Use Diff Tool)
+Make git diff its own Task (with boolean for Use Diff Tool)
 	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.
 		Maybe even create special Parameters for the "positions"
 			A button to pop-up a list of stashes, commits etc.
