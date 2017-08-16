@@ -78,12 +78,6 @@ class EditCell<S, T>(
                 textField.text = converter.toString(item)
                 cancelEdit()
                 event.consume()
-            } else if (ParataskActions.PREV_ROW.match(event)) {
-                event.consume()
-                move(-1)
-            } else if (ParataskActions.NEXT_ROW.match(event)) {
-                event.consume()
-                move(1)
             } else if (ParataskActions.CONTEXT_MENU.match(event)) {
                 tableResultsRef.get()?.showContextMenu(textField, event)
                 event.consume()
@@ -101,20 +95,6 @@ class EditCell<S, T>(
             tableResultsRef.get()?.contextMenu?.show(textField, Side.LEFT, event.x, event.y)
             event.consume()
         }
-    }
-
-    fun move(delta: Int) {
-        commitEdit(converter.fromString(textField.text))
-        val row = tableView.selectionModel.focusedIndex + delta
-        if (row < 0 || row >= tableView.items.size) {
-            return
-        }
-
-        tableView.selectionModel.focus(row)
-        Platform.runLater {
-            tableView.edit(row, tableView.columns[0])
-        }
-
     }
 
     // set the text of the text field and display the graphic

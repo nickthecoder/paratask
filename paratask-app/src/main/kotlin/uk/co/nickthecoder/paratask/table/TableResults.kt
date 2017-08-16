@@ -87,8 +87,18 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
     override fun focus() {
         Platform.runLater {
-            tableView.requestFocus()
-            editOption()
+            if (tableView.items.isNotEmpty()) {
+                tableView.requestFocus()
+                val index = tableView.selectionModel.focusedIndex
+                if (index < 0) {
+                    tableView.selectionModel.clearAndSelect(0)
+                    tableView.selectionModel.focus(0)
+                    editOption(0)
+                } else {
+                    tableView.selectionModel.select(index)
+                    editOption(index)
+                }
+            }
         }
     }
 
@@ -177,6 +187,12 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         } else if (ParataskActions.NEXT_ROW.match(event)) {
             if (!move(1)) event.consume()
 
+        } else if (ParataskActions.SELECT_ROW_UP.match(event)) {
+            if (!move(-1, false)) event.consume()
+
+        } else if (ParataskActions.SELECT_ROW_DOWN.match(event)) {
+            if (!move(1, false)) event.consume()
+
         } else if (ParataskActions.OPTION_RUN.match(event)) {
             runTableOptions()
             event.consume()
@@ -198,12 +214,17 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
-    fun move(delta: Int): Boolean {
+    fun move(delta: Int, clearSelection: Boolean = true): Boolean {
         val row = tableView.selectionModel.focusedIndex + delta
         if (row < 0 || row >= tableView.items.size) {
             return false
         }
-        Platform.runLater { editOption() }
+        if (clearSelection) {
+            tableView.selectionModel.clearSelection()
+        }
+        tableView.selectionModel.select(row)
+        tableView.selectionModel.focus(row)
+        Platform.runLater { editOption(row) }
         return true
     }
 

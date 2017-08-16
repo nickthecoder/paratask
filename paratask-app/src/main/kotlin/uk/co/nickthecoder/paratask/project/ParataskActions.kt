@@ -116,6 +116,8 @@ object ParataskActions {
 
     val NEXT_ROW = ParataskAction("row.next", KeyCode.DOWN)
     val PREV_ROW = ParataskAction("row.previous", KeyCode.UP)
+    val SELECT_ROW_DOWN = ParataskAction("row.select.down", KeyCode.DOWN, shift = true)
+    val SELECT_ROW_UP = ParataskAction("row.select.up", KeyCode.UP, shift = true)
 
     init {
         load()
