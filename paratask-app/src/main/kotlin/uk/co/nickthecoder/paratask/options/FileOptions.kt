@@ -22,11 +22,6 @@ import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.misc.FileListener
 import uk.co.nickthecoder.paratask.misc.FileWatcher
 import uk.co.nickthecoder.paratask.util.Resource
@@ -180,93 +175,7 @@ class FileOptions(val resource: Resource) : FileListener {
         joptions?.let {
             for (joption1 in joptions.asArray()) {
                 val joption = joption1.asObject()
-                val type = joption.getString("type", "groovy")
-
-                val option: Option
-                when (type) {
-                    "groovy" -> {
-                        option = GroovyOption(joption.getString("script", ""))
-                    }
-                    "task" -> {
-                        option = TaskOption(joption.getString("task", ""))
-                    }
-                    else -> {
-                        throw RuntimeException("Unknown option type : " + type)
-                    }
-                }
-
-                with(option) {
-                    code = joption.getString("code", "?")
-                    label = joption.getString("label", "")
-                    isRow = joption.getBoolean("isRow", false)
-                    isMultiple = joption.getBoolean("isMultiple", false)
-                    newTab = joption.getBoolean("newTab", false)
-                    prompt = joption.getBoolean("prompt", false)
-                    refresh = joption.getBoolean("refresh", false)
-                }
-
-                val keyCodeS = joption.getString("keyCode", "")
-                if (keyCodeS == "") {
-                    option.shortcut = null
-                } else {
-                    val keyCode = KeyCode.valueOf(keyCodeS)
-                    val shiftS = joption.getString("shift", "UP")
-                    val controlS = joption.getString("control", "UP")
-                    val altS = joption.getString("alt", "UP")
-
-                    val shift = KeyCombination.ModifierValue.valueOf(shiftS)
-                    val control = KeyCombination.ModifierValue.valueOf(controlS)
-                    val alt = KeyCombination.ModifierValue.valueOf(altS)
-
-                    option.shortcut = KeyCodeCombination(keyCode, shift, control, alt, KeyCombination.ModifierValue.UP, KeyCombination.ModifierValue.UP)
-                }
-
-                val jaliases = joption.get("aliases")
-                jaliases?.let {
-                    option.aliases = jaliases.asArray().map { it.asString() }.toMutableList()
-                }
-
-                // Load parameter values/expressions for TaskOption
-                if (option is TaskOption) {
-                    val jparameters = joption.get("parameters").asArray()
-                    for (jp in jparameters) {
-                        val jparameter = jp.asObject()
-                        val name = jparameter.getString("name", "")
-                        val parameter = option.task.taskD.root.find(name)
-                        val jexpression = jparameter.get("expression")
-                        if (parameter is MultipleParameter<*> && jexpression == null) {
-                            // Special handling, because it contains multiple values
-                            val jvalues1 = jparameter.get("values")
-                            if (jvalues1 == null) {
-                                println("Values not found for option '${option.code}' parameter '${parameter.name}' in $resource. Skipping")
-                                continue
-                            }
-                            val jvalues = jparameter.get("values").asArray()
-                            for (jvaluesItem in jvalues) {
-                                val innerParameter = parameter.newValue()
-                                val jvi = jvaluesItem.asObject()
-                                val jvalue = jvi.get("value")
-                                if (jvalue == null) {
-                                    innerParameter.expression = jvi.getString("expression", "?missing value?")
-                                } else {
-                                    innerParameter.stringValue = jvalue.asString()
-                                }
-                            }
-                            // Note, the above cannot handle MultipleParameters inside MultipleParameters!!
-                            // Should refactor with a "loadParameter" method, and use recursion.
-                            continue
-                        }
-                        if (parameter is ValueParameter<*>) {
-                            val jvalue = jparameter.get("value")
-                            if (jvalue == null) {
-                                parameter.expression = jparameter.getString("expression", "?missing value?")
-                            } else {
-                                parameter.stringValue = jvalue.asString()
-                            }
-                        }
-                    }
-                }
-
+                val option = Option.fromJson(joption)
                 addOption(option)
             }
         }
@@ -290,77 +199,8 @@ class FileOptions(val resource: Resource) : FileListener {
 
         val joptions = JsonArray()
         for (option in listOptions()) {
-            val joption = JsonObject()
 
-            when (option) {
-                is GroovyOption -> {
-                    joption.set("type", "groovy")
-                    joption.set("script", option.script)
-                }
-                is TaskOption -> {
-                    joption.set("type", "task")
-                    joption.set("task", option.task.creationString())
-                }
-                else -> {
-                    throw RuntimeException("Unknown Option : ${option.javaClass}")
-                }
-            }
-            with(joption) {
-                set("code", option.code)
-                set("label", option.label)
-                set("isRow", option.isRow)
-                set("isMultiple", option.isMultiple)
-                set("prompt", option.prompt)
-                set("newTab", option.newTab)
-                set("refresh", option.refresh)
-
-                option.shortcut?.let {
-                    set("keyCode", it.code.toString())
-                    saveModifier(joption, "shift", it.shift)
-                    saveModifier(joption, "control", it.control)
-                    saveModifier(joption, "alt", it.alt)
-                }
-            }
-
-
-            if (option.aliases.size > 0) {
-                val jaliases = JsonArray()
-                for (alias in option.aliases) {
-                    jaliases.add(alias)
-                }
-                joption.add("aliases", jaliases)
-            }
-            if (option is TaskOption) {
-                val jparameters = JsonArray()
-                for (parameter in option.task.valueParameters()) {
-                    val jparameter = JsonObject()
-                    jparameter.add("name", parameter.name)
-
-                    if (parameter is MultipleParameter<*> && parameter.expression == null) {
-                        val jvalues = JsonArray()
-                        jparameter.add("values", jvalues)
-                        for (innerParameter in parameter.innerParameters) {
-                            val jobj = JsonObject()
-                            if (innerParameter.expression == null) {
-                                jobj.add("value", innerParameter.stringValue)
-                            } else {
-                                jobj.add("expression", innerParameter.expression)
-                            }
-                            jvalues.add(jobj)
-                        }
-                    } else {
-                        if (parameter.expression == null) {
-                            jparameter.add("value", parameter.stringValue)
-                        } else {
-                            jparameter.add("expression", parameter.expression ?: "")
-                        }
-                    }
-                    jparameters.add(jparameter)
-                }
-                joption.add("parameters", jparameters)
-            }
-
-            joptions.add(joption)
+            joptions.add(option.toJson())
 
         }
         jroot.add("options", joptions)
@@ -372,12 +212,6 @@ class FileOptions(val resource: Resource) : FileListener {
             }
         } finally {
             saving = false
-        }
-    }
-
-    private fun saveModifier(joption: JsonObject, name: String, mod: KeyCombination.ModifierValue) {
-        if (mod != KeyCombination.ModifierValue.UP) {
-            joption.set(name, mod.toString())
         }
     }
 }

@@ -19,12 +19,18 @@ package uk.co.nickthecoder.paratask.options
 
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.tools.NullTask
 import java.io.Serializable
 
 class TaskOption(var task: Task)
     : AbstractOption(), Serializable {
 
     constructor(creationString: String) : this(Task.create(creationString))
+
+    /**
+     * For serialization
+     */
+    constructor() : this(NullTask())
 
     override fun run(tool: Tool, row: Any) = tool.evaluateTask(task, row, null)
 

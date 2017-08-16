@@ -415,6 +415,19 @@
                     "value": "INHERRIT"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "println",
+            "code": "test script",
+            "label": "Testing script",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "PAUSE",
+            "control": "DOWN"
         }
     ]
 }

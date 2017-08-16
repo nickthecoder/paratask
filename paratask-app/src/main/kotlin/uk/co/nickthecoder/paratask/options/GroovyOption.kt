@@ -25,6 +25,11 @@ import java.io.Serializable
 class GroovyOption(var script: String)
     : AbstractOption(), Serializable {
 
+    /**
+     * For serialization
+     */
+    constructor() : this("")
+
     private var gscript: GroovyScript? = null
 
     fun getScript(): GroovyScript {

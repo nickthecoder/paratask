@@ -496,6 +496,25 @@
                     "value": "INHERRIT"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitTool",
+            "code": "test task",
+            "label": "Testing Task",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "PAUSE",
+            "alt": "DOWN",
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "/home/nick/projects/paratask/"
+                }
+            ]
         }
     ]
 }
