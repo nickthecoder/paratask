@@ -30,7 +30,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
 
     private val mutableTabs = mutableListOf<T>()
 
-    private val moreButtonContainer = StackPane()
+    private val extraContainer = HBox()
 
     private val moreButton = Button("▼")
 
@@ -55,6 +55,13 @@ open class MyTabPane<T : MyTab> : BorderPane() {
             }
         }
     }
+
+    var extraControl: Node? = null
+        set(v) {
+            field?.let { extraContainer.children.remove(it) }
+            field = v
+            v?.let { extraContainer.children.add(it) }
+        }
 
     /**
      * Used within MyTab to get around the complexities with generics
@@ -123,23 +130,34 @@ open class MyTabPane<T : MyTab> : BorderPane() {
     init {
         center = contents
         top = tabHeaderArea
-        tabHeaderArea.center = tabsContainer
-        tabHeaderArea.right = moreButtonContainer
-        moreButtonContainer.children.add(moreButton)
-        tabsContainer.minWidth = 0.0
-
         styleClass.add("my-tab-pane")
-        tabHeaderArea.styleClass.add("tab-header-area")
-        tabsContainer.styleClass.add("tabs-container")
-        contents.styleClass.add("contents")
-        moreButtonContainer.styleClass.add("more-button-container")
-        moreButton.styleClass.add("more-button")
+        side = Side.TOP
 
-        moreButton.addEventHandler(ActionEvent.ACTION) {
-            showMoreContextMenu()
+        with(tabHeaderArea) {
+            center = tabsContainer
+            right = extraContainer
+            styleClass.add("tab-header-area")
         }
 
-        side = Side.TOP
+        with(extraContainer) {
+            children.add(moreButton)
+            styleClass.add("extra-container")
+        }
+
+        with(tabsContainer) {
+            minWidth = 0.0
+            styleClass.add("tabs-container")
+        }
+
+        contents.styleClass.add("contents")
+
+        with(moreButton) {
+            styleClass.add("more-button")
+            addEventHandler(ActionEvent.ACTION) {
+                showMoreContextMenu()
+            }
+        }
+
     }
 
     fun add(tab: T) {
@@ -206,9 +224,18 @@ open class MyTabPane<T : MyTab> : BorderPane() {
             }
             moreContextMenu.items.add(menuItem)
         }
-        moreContextMenu.show(moreButtonContainer, if (side == Side.TOP) Side.BOTTOM else Side.TOP, 0.0, 0.0)
+        moreContextMenu.show(extraContainer, if (side == Side.TOP) Side.BOTTOM else Side.TOP, 0.0, 0.0)
     }
 
+    fun createAddTabButton(action: (ActionEvent) -> Unit): Button {
+        val button = Button("+")
+        with(button) {
+            addEventHandler(ActionEvent.ACTION) { action(it) }
+            styleClass.add("add-tab")
+        }
+        extraControl = button
+        return button
+    }
 
     internal fun onDraggedTab(event: MouseEvent, tab: MyTab) {
 

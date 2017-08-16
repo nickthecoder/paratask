@@ -17,8 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.event.EventHandler
+import javafx.geometry.Side
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.MyTabPane
@@ -27,12 +33,17 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     : ProjectTabs, MyTabPane<ProjectTab_Impl>() {
 
+    val addTabContextMenu = ContextMenu()
+
     init {
         selectionModel.selectedItemProperty().addListener {
             _, oldTab, newTab ->
             onTabChanged(oldTab as ProjectTab_Impl?, newTab as ProjectTab_Impl?)
         }
         addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
+
+        createAddTabButton { onAddTab() }
+        buildContextMenu()
     }
 
     private fun onKeyPressed(event: KeyEvent) {
@@ -134,6 +145,23 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     override fun selectTab(projectTab: ProjectTab) {
         selectedTab = projectTab as ProjectTab_Impl
+    }
+
+    private fun buildContextMenu() {
+
+        TaskRegistry.home.listTools().forEach { tool ->
+            val imageView = tool.icon?.let { ImageView(it) }
+            val item = MenuItem(tool.shortTitle, imageView)
+
+            item.onAction = EventHandler {
+                addTool(tool.copy())
+            }
+            addTabContextMenu.items.add(item)
+        }
+    }
+
+    fun onAddTab() {
+        addTabContextMenu.show(extraControl, Side.BOTTOM, 0.0, 0.0)
     }
 
 }
