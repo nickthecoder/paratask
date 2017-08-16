@@ -20,10 +20,7 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.Node
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameters.OneOfParameter
-import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.*
 
 class OneOfField(val oneOfParameter: OneOfParameter)
     : ParameterField(oneOfParameter), WrappableField {
@@ -62,7 +59,9 @@ class OneOfField(val oneOfParameter: OneOfParameter)
     }
 
     override fun parameterChanged(event: ParameterEvent) {
-        buildContent()
+        if (event.type == ParameterEventType.VALUE) {
+            buildContent()
+        }
     }
 
     override fun computePrefHeight(width: Double): Double {
