@@ -99,7 +99,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropHelper.attached(toolPane)
+        dropHelper.attachToolPane(toolPane)
     }
 
     override fun detaching() {
@@ -137,7 +137,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     override fun createTableResults(): TableResults<WrappedFile> {
         val tableResults = super.createTableResults()
 
-        dropHelper.table = tableResults.tableView
+        dropHelper.attachTableResults(tableResults)
 
         return tableResults
     }

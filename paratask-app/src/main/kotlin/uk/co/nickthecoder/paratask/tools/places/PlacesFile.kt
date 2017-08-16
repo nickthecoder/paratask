@@ -29,6 +29,11 @@ class PlacesFile(val file: File) {
         mutableListOf<Place>()
     }
 
+    fun remove(place: Place) {
+        val foundPlace: Place? = places.filter { it.label == place.label && it.resource == place.resource }.firstOrNull()
+        foundPlace?.let { places.remove(it) }
+    }
+
     fun save() {
         file.writeText(places.joinToString(separator = "\n", postfix = "\n"))
     }

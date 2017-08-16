@@ -17,9 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.input.DataFormat
 import uk.co.nickthecoder.paratask.util.Resource
+import java.io.Serializable
 
-class Place(val placesFile: PlacesFile, val resource: Resource, val label: String) {
+class Place(
+        @Transient val placesFile: PlacesFile,
+        val resource: Resource,
+        val label: String)
+
+    : Serializable {
 
     val name: String
         get() = if (resource.isFileOrDirectory()) resource.file!!.name else resource.toString()
@@ -52,4 +59,8 @@ class Place(val placesFile: PlacesFile, val resource: Resource, val label: Strin
     fun taskRemove() = RemovePlaceTask(this)
 
     override fun toString() = "$resource $label"
+
+    companion object {
+        val dataFormat = DataFormat("application/x-java-paratask-place-list")
+    }
 }

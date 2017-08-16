@@ -21,20 +21,28 @@ import javafx.scene.image.Image
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParaTask
 import java.io.File
+import java.io.Serializable
 import java.net.URL
 
-class Resource(val url: URL) {
+class Resource(val url: URL) : Serializable {
 
     val file: File? = toFile(url)
 
-    val icon: Image? by lazy {
-        val type = if (isFileOrDirectory()) {
-            if (file?.isDirectory == true) "directory" else "file"
-        } else {
-            "web"
+    @Transient
+    private var imageCache: Image? = null
+
+    val icon: Image?
+        get() {
+            if (imageCache == null) {
+                val type = if (isFileOrDirectory()) {
+                    if (file?.isDirectory == true) "directory" else "file"
+                } else {
+                    "web"
+                }
+                imageCache = ParaTask.imageResource("filetypes/${type}.png")
+            }
+            return imageCache
         }
-        ParaTask.imageResource("filetypes/${type}.png")
-    }
 
     constructor(file: File) : this(toURL(file))
 
@@ -87,7 +95,7 @@ class Resource(val url: URL) {
 
     fun isFileOrDirectory() = file != null
 
-    fun   isFile() = file?.isFile() == true
+    fun isFile() = file?.isFile() == true
 
     fun isDirectory() = file?.isDirectory() == true
 

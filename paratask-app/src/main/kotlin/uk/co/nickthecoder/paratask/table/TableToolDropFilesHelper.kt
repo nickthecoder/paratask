@@ -14,8 +14,16 @@ import java.io.File
  */
 abstract class TableToolDropFilesHelper<R : Any>(
         tool: AbstractTableTool<R>,
-        modes: Array<TransferMode> = TransferMode.ANY)
-    : TableToolDropHelper<List<File>, R>(dataFormat = DataFormat.FILES, tool = tool, modes = modes) {
+        allowCopy: Boolean = true,
+        allowMove: Boolean = true,
+        allowLink: Boolean = true)
+
+    : TableToolDropHelper<List<File>, R>(
+        dataFormat = DataFormat.FILES,
+        tool = tool,
+        allowCopy = allowCopy,
+        allowMove = allowMove,
+        allowLink = allowLink) {
 
 
     fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {

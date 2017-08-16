@@ -1,5 +1,6 @@
 
 Bugs
+	Cannot serialize Option, and therefore can't drag and drop it.
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 	Drag and Drop url places doesn't do anything, but suggests it will!

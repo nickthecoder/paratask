@@ -24,11 +24,10 @@ import javafx.scene.input.TransferMode
 import java.io.File
 
 open class DropFiles(
-        target: Node,
-        source: Node = target,
         modes: Array<TransferMode> = TransferMode.ANY,
-        dropped: (DragEvent) -> Boolean
-) : DropHelper<List<File>?>(dataFormat = DataFormat.FILES, target = target, source = source, modes = modes, dropped = dropped) {
+        dropped: (DragEvent) -> Boolean)
 
-}
-
+    : DropHelper<List<File>?>(
+        dataFormat = DataFormat.FILES,
+        modes = modes,
+        dropped = dropped)

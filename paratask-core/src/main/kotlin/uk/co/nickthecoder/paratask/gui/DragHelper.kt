@@ -28,42 +28,29 @@ open class DragHelper<T>(
         val onMoved: ((T) -> Unit)? = null,
         val obj: () -> (T)) {
 
-    val modes: Array<TransferMode>
-
-    init {
-        val set = mutableSetOf<TransferMode>()
-        if (allowCopy) {
-            set.add(TransferMode.COPY)
-        }
-        if (allowMove) {
-            set.add(TransferMode.MOVE)
-        }
-        if (allowLink) {
-            set.add(TransferMode.LINK)
-        }
-        modes = set.toTypedArray()
-    }
+    val modes = modes(allowCopy, allowMove, allowLink)
 
     fun applyTo(node: Node) {
         node.setOnDragDetected { onDragDetected(it) }
         node.setOnDragDone { onDone(it) }
     }
 
+    fun addContentToClipboard(clipboard: ClipboardContent): Boolean {
+        obj()?.let {
+            clipboard.put(dataFormat, it)
+            return true
+        }
+        return false
+    }
+
     open fun onDragDetected(event: MouseEvent) {
         val dragboard = event.pickResult.intersectedNode.startDragAndDrop(* modes)
 
-        obj()?.let {
-            val content = ClipboardContent()
-            content.put(dataFormat, it)
-            dragboard.setContent(content)
-
+        val clipboard = ClipboardContent()
+        if (addContentToClipboard(clipboard)) {
+            dragboard.setContent(clipboard)
         }
         event.consume()
-    }
-
-    fun content(event: DragEvent): T? {
-        @Suppress("UNCHECKED_CAST")
-        return event.dragboard.getContent(dataFormat) as T
     }
 
     open fun onDone(event: DragEvent) {
@@ -78,4 +65,25 @@ open class DragHelper<T>(
         event.consume()
     }
 
+
+    fun content(event: DragEvent): T? {
+        @Suppress("UNCHECKED_CAST")
+        return event.dragboard.getContent(dataFormat) as T
+    }
+
+    companion object {
+        fun modes(allowCopy: Boolean, allowMove: Boolean, allowLink: Boolean): Array<TransferMode> {
+            val set = mutableSetOf<TransferMode>()
+            if (allowCopy) {
+                set.add(TransferMode.COPY)
+            }
+            if (allowMove) {
+                set.add(TransferMode.MOVE)
+            }
+            if (allowLink) {
+                set.add(TransferMode.LINK)
+            }
+            return set.toTypedArray()
+        }
+    }
 }

@@ -41,7 +41,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     var includesTool: IncludesTool = IncludesTool()
 
     var dropHelper: TableToolDropHelper<List<Option>, Option> = object :
-            TableToolDropHelper<List<Option>, Option>(Option.dataFormat, this, modes = TransferMode.ANY) {
+            TableToolDropHelper<List<Option>, Option>(Option.dataFormat, this) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
 
@@ -115,7 +115,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     override fun createTableResults(): TableResults<Option> {
         val tableResults = super.createTableResults()
 
-        dropHelper.table = tableResults.tableView
+        dropHelper.attachTableResults(tableResults)
 
         return tableResults
     }
@@ -142,7 +142,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
-        dropHelper.attached(toolPane)
+        dropHelper.attachToolPane(toolPane)
     }
 
     override fun detaching() {

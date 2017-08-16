@@ -49,7 +49,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     lateinit var placesFile: PlacesFile
 
 
-    var dropHelper: TableToolDropFilesHelper<Place> = object : TableToolDropFilesHelper<Place>(this, modes = TransferMode.ANY) {
+    var dropHelper: TableToolDropFilesHelper<Place> = object : TableToolDropFilesHelper<Place>(this) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
 
@@ -95,7 +95,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
 
-        dropHelper.table = tableResults.tableView
+        dropHelper.attachTableResults(tableResults)
         return tableResults
     }
 
@@ -115,7 +115,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropHelper.attached(toolPane)
+        dropHelper.attachToolPane(toolPane)
     }
 
     override fun detaching() {
