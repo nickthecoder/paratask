@@ -85,7 +85,6 @@ project(':paratask-core') {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile 'org.codehaus.groovy:groovy-all:2.4.9'
         compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
-
     }
 
     defaultTasks 'install'

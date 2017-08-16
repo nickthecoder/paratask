@@ -31,6 +31,8 @@ abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
 
     open val resultsName = "Results"
 
+    var tableResults: TableResults<R>? = null
+
     abstract fun createColumns()
 
     override fun createResults(): List<Results> {
@@ -40,13 +42,18 @@ abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
     }
 
     open fun createTableResults(): TableResults<R> {
-        return TableResults(this, list, resultsName)
+        tableResults = TableResults(this, list, resultsName)
+        return tableResults!!
     }
 
     open fun updateRow(tableRow: TableRow<WrappedRow<R>>, row: R) {
     }
 
     override fun createRow(): TableRow<WrappedRow<R>> = CustomTableRow()
+
+    override fun selectedRows(): List<R> {
+        return tableResults?.tableView?.selectionModel?.selectedItems?.map { it.row } ?: listOf()
+    }
 
     fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?> {
         var node = event.pickResult.intersectedNode

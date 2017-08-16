@@ -25,4 +25,7 @@ interface TableTool<R> : Tool {
     val columns: List<Column<R, *>>
 
     fun createRow(): TableRow<WrappedRow<R>>
+
+    fun selectedRows(): List<R>
+
 }

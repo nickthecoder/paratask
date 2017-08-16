@@ -22,8 +22,14 @@ import javafx.scene.input.*
 import java.io.File
 
 open class DragFilesHelper(
-        source: Node,
-        modes: Array<TransferMode> = TransferMode.ANY,
+        allowCopy: Boolean = true,
+        allowMove: Boolean = true,
+        allowLink: Boolean = true,
         files: () -> (List<File>?))
-    : DragHelper<List<File>?>(source = source, modes = modes, obj = files, dataFormat = DataFormat.FILES) {
-}
+
+    : DragHelper<List<File>?>(
+        allowCopy = allowCopy,
+        allowMove = allowMove,
+        allowLink = allowLink,
+        obj = files,
+        dataFormat = DataFormat.FILES)

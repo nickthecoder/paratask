@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import javafx.scene.input.DragEvent
+import javafx.scene.control.TableRow
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.RegisteredTaskFactory
@@ -108,26 +108,30 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     }
 
+    val dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
+        selectedRows()
+    }
+
     override fun createTableResults(): TableResults<Option> {
         val tableResults = super.createTableResults()
-
-        DragHelper<List<Option>>(Option.dataFormat, tableResults.tableView, done = { event, content -> onDragComplete(event, content) }) {
-            tableResults.tableView.selectionModel.selectedItems.map { it.row }
-        }
 
         dropHelper.table = tableResults.tableView
 
         return tableResults
     }
 
-    fun onDragComplete(event: DragEvent, content: List<Option>) {
-        if (event.acceptedTransferMode == TransferMode.MOVE) {
-            val fileOptions = getFileOptions()
-            content.map { fileOptions.find(it.code) }.filterNotNull().forEach {
-                fileOptions.removeOption(it)
-            }
-            fileOptions.save()
+    override fun createRow(): TableRow<WrappedRow<Option>> {
+        val row = super.createRow()
+        dragHelper.applyTo(row)
+        return row
+    }
+
+    fun onMoved(content: List<Option>) {
+        val fileOptions = getFileOptions()
+        content.map { fileOptions.find(it.code) }.filterNotNull().forEach {
+            fileOptions.removeOption(it)
         }
+        fileOptions.save()
     }
 
     override fun createResults(): List<Results> {

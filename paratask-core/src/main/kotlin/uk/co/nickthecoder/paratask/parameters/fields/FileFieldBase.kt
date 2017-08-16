@@ -58,7 +58,7 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
 
         val main = buildTextField()
 
-        DragFilesHelper(icon) { getFile()?.let { listOf(it) } }
+        DragFilesHelper { getFile()?.let { listOf(it) } }.applyTo(icon)
         DropFiles(textField, icon, modes = arrayOf(TransferMode.LINK)) { event ->
             for (file in event.dragboard.files) {
                 textField.text = file.path

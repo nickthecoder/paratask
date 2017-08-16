@@ -29,17 +29,6 @@
         },
         {
             "type": "groovy",
-            "script": "row.taskRemove()",
-            "code": "-",
-            "label": "Remove Place",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "row.taskCopy()",
             "code": "=",
             "label": "Copy Place",
@@ -162,6 +151,19 @@
                     "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "row.taskRemove()",
+            "code": "-",
+            "label": "Remove Place",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "DELETE",
+            "shift": "DOWN"
         }
     ]
 }

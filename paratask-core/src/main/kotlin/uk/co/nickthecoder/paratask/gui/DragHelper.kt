@@ -22,18 +22,35 @@ import javafx.scene.input.*
 
 open class DragHelper<T>(
         val dataFormat: DataFormat,
-        val source: Node,
-        val modes: Array<TransferMode> = TransferMode.ANY,
-        val done: ((DragEvent, T) -> Unit)? = null,
+        allowCopy: Boolean = true,
+        allowMove: Boolean = true,
+        allowLink: Boolean = true,
+        val onMoved: ((T) -> Unit)? = null,
         val obj: () -> (T)) {
 
+    val modes: Array<TransferMode>
+
     init {
-        source.setOnDragDetected { onDragDetected(it) }
-        source.setOnDragDone { onDone(it) }
+        val set = mutableSetOf<TransferMode>()
+        if (allowCopy) {
+            set.add(TransferMode.COPY)
+        }
+        if (allowMove) {
+            set.add(TransferMode.MOVE)
+        }
+        if (allowLink) {
+            set.add(TransferMode.LINK)
+        }
+        modes = set.toTypedArray()
+    }
+
+    fun applyTo(node: Node) {
+        node.setOnDragDetected { onDragDetected(it) }
+        node.setOnDragDone { onDone(it) }
     }
 
     open fun onDragDetected(event: MouseEvent) {
-        val dragboard = source.startDragAndDrop(* modes)
+        val dragboard = event.pickResult.intersectedNode.startDragAndDrop(* modes)
 
         obj()?.let {
             val content = ClipboardContent()
@@ -44,14 +61,21 @@ open class DragHelper<T>(
         event.consume()
     }
 
-    fun content(event: DragEvent): T {
+    fun content(event: DragEvent): T? {
         @Suppress("UNCHECKED_CAST")
         return event.dragboard.getContent(dataFormat) as T
     }
 
     open fun onDone(event: DragEvent) {
 
-        done?.let { it(event, content(event)) }
+        val content = content(event)
+
+        if (content != null && event.transferMode == TransferMode.MOVE) {
+            onMoved?.let {
+                it(content)
+            }
+        }
         event.consume()
     }
+
 }

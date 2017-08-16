@@ -18,21 +18,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.control.OverrunStyle
+import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.table.TableToolDropFilesHelper
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.TableResults
-import uk.co.nickthecoder.paratask.table.TruncatedStringColumn
 import uk.co.nickthecoder.paratask.misc.*
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
@@ -90,15 +87,22 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
         return listOf(HeaderRow().addAll(directoryP, filenameP))
     }
 
+
+    val dragHelper = DragFilesHelper {
+        selectedRows().map { it.file!! }
+    }
+
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
 
-        DragFilesHelper(tableResults.tableView) {
-            tableResults.tableView.selectionModel.selectedItems.filter { it.row.isFileOrDirectory() }.map { it.row.file!! }
-        }
-
         dropHelper.table = tableResults.tableView
         return tableResults
+    }
+
+    override fun createRow(): TableRow<WrappedRow<Place>> {
+        val row = super.createRow()
+        dragHelper.applyTo(row)
+        return row
     }
 
     override fun run() {

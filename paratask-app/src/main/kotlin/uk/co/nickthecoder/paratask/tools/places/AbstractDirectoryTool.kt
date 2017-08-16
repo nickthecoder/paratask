@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -129,16 +130,22 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
 
+    val dragHelper = DragFilesHelper {
+        selectedRows().map { it.file }
+    }
+
     override fun createTableResults(): TableResults<WrappedFile> {
         val tableResults = super.createTableResults()
-
-        DragFilesHelper(tableResults.tableView) {
-            tableResults.tableView.selectionModel.selectedItems.map { it.row.file }
-        }
 
         dropHelper.table = tableResults.tableView
 
         return tableResults
+    }
+
+    override fun createRow(): TableRow<WrappedRow<WrappedFile>> {
+        val row = super.createRow()
+        dragHelper.applyTo(row)
+        return row
     }
 
     override fun run() {
