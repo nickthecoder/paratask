@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import com.sun.javafx.collections.ImmutableObservableList
+import com.sun.javafx.scene.control.skin.TableViewSkin
+import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.application.Platform
 import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
@@ -27,12 +29,13 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
-import uk.co.nickthecoder.paratask.project.ParataskActions
-import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.options.RowOptionsRunner
+import uk.co.nickthecoder.paratask.project.AbstractResults
+import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.project.ToolPane
+
 
 open class TableResults<R : Any>(final override val tool: TableTool<R>, val list: List<R>, label: String = "Results") :
 
@@ -47,6 +50,20 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn("")
 
     val runner = RowOptionsRunner<R>(tool)
+
+    /**
+     * Used to ensure that the currently selected row is always visible. See move()
+     */
+    var virtualFlow: VirtualFlow<*>? = null
+
+    init {
+        // Find the VitualFlow as soon as the tableView's skin has been set
+        tableView.skinProperty().addListener { _, _, skin ->
+            if (skin is TableViewSkin<*>) {
+                virtualFlow = skin.children.filterIsInstance<VirtualFlow<*>>().firstOrNull()
+            }
+        }
+    }
 
     override fun attached(toolPane: ToolPane) {
 
@@ -236,6 +253,16 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             }
             tableView.selectionModel.select(row)
             tableView.selectionModel.focus(row)
+
+            // Ensure the new row is visible
+            virtualFlow?.let {
+                val first = it.firstVisibleCell.getIndex()
+                val last = it.lastVisibleCell.getIndex()
+
+                if (row < first || row > last) {
+                    it.show(row)
+                }
+            }
             editOption(row)
         }
         return true
