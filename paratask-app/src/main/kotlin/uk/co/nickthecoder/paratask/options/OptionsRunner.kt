@@ -48,12 +48,12 @@ open class OptionsRunner(val tool: Tool) {
             val optionsList = fileOptions.listOptions().filter { !it.isRow }
 
             if (optionsList.isNotEmpty()) {
+
                 if (count > 0 && count + optionsList.size > 15) {
                     val subMenu = Menu(fileOptions.name)
                     items = subMenu.items
                     if (!addedSubMenus) {
                         contextMenu.items.add(SeparatorMenuItem())
-                        addedSubMenus = true
                     }
                     contextMenu.items.add(subMenu)
                     addedSubMenus = true
@@ -65,11 +65,10 @@ open class OptionsRunner(val tool: Tool) {
                 }
 
                 for (option in optionsList) {
-                    count++
                     val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { runNonRow(option) }
                     items.add(menuItem)
-
+                    count++
                 }
             }
         }

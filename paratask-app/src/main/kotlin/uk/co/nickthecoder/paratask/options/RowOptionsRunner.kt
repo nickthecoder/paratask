@@ -17,9 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
+import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Menu
+import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.table.WrappedRow
@@ -35,23 +37,38 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
         val optionsName = tool.optionsName
         val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
 
-        var needSep = false
+        var addedSubMenus = false
+        var count = 0
 
         topLevelOptions.listFileOptions().filter { it.acceptRow(firstRow) }.forEach { fileOptions ->
-            var added = false
-            for (option in fileOptions.listOptions()) {
-                if (option.isRow) {
-                    if (needSep) {
-                        needSep = false
+
+            val items: ObservableList<MenuItem>
+            val optionsList = fileOptions.listOptions().filter { it.isRow }
+
+            if (optionsList.isNotEmpty()) {
+
+                if (count > 0 && count + optionsList.size > 15) {
+                    val subMenu = Menu(fileOptions.name)
+                    items = subMenu.items
+                    if (!addedSubMenus) {
                         contextMenu.items.add(SeparatorMenuItem())
                     }
+                    contextMenu.items.add(subMenu)
+                    addedSubMenus = true
+                } else {
+                    items = contextMenu.items
+                    if (items.isNotEmpty()) {
+                        items.add(SeparatorMenuItem())
+                    }
+                }
+
+                for (option in optionsList) {
                     val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { runRows(option, rows) }
-                    contextMenu.items.add(menuItem)
-                    added = true
+                    items.add(menuItem)
+                    count++
                 }
             }
-            needSep = needSep || added
         }
 
         if (contextMenu.items.count() > 0) {
@@ -60,6 +77,7 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
             createNonRowOptionsMenu(temp)
             menu.items.addAll(temp.items)
             contextMenu.items.add(0, menu)
+            contextMenu.items.add(1, SeparatorMenuItem())
         } else {
             createNonRowOptionsMenu(contextMenu)
         }
