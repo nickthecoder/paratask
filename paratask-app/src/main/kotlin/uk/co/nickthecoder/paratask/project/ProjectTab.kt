@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.scene.input.KeyCodeCombination
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
 
@@ -32,7 +33,7 @@ interface ProjectTab {
 
     var tabTemplate: String
 
-    val tabProperties: Task
+    var tabShortcut: KeyCodeCombination?
 
     fun attached(projectTabs: ProjectTabs)
 

@@ -75,7 +75,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
 
     fun textProperty() = label.textProperty()
 
-    open fun close() {
+    open fun  close() {
         tabPane?.remove(this)
     }
 

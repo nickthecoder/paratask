@@ -36,7 +36,8 @@ object ParataskActions {
     val SAVE_PROJECT = ParataskAction("project.save", KeyCode.S, alt = true, tooltip = "Save Project")
     val QUIT = ParataskAction("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = ParataskAction("window.new", KeyCode.N, control = true, tooltip = "New Window")
-    val NEW_TAB = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
+    val NEW_TAB = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab")
+    val RESTORE_TAB = ParataskAction("tab.new", KeyCode.T, shift = true, control = true, label = "Restore Tab")
 
     val SPLIT_TAB_TOGGLE = ParataskAction("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = ParataskAction("application.about", KeyCode.F1, tooltip = "About ParaTask")

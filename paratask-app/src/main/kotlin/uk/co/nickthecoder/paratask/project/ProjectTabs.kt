@@ -23,11 +23,17 @@ interface ProjectTabs {
 
     val projectWindow: ProjectWindow
 
+    fun indexOf(projectTab: ProjectTab): Int
+
+    fun addTool(index : Int, tool: Tool, run: Boolean = true, select: Boolean = true): ProjectTab
+
     fun addTool(tool: Tool, run: Boolean = true, select: Boolean = true): ProjectTab
 
     fun addAfter(after: ProjectTab, tool: Tool, run: Boolean = true, select: Boolean = true): ProjectTab
 
     fun removeTab(projectTab: ProjectTab)
+
+    fun restoreTab()
 
     fun currentTab(): ProjectTab?
 

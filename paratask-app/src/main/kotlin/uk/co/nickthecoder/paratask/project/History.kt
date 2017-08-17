@@ -20,12 +20,12 @@ package uk.co.nickthecoder.paratask.project
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Tool
 
-class History(val halfTab: HalfTab) {
+class History(var halfTab: HalfTab) {
 
     private val moments = mutableListOf<Moment>()
 
     /*
-     * The points to the moements index, at the currently active Tool/Values combo.
+     * The points to the moments index, at the currently active Tool/Values combo.
      * Will be -1, before a tool has ran
      * Will be 0 after a tool has ran, and placed in the list.
      * Will point to the penultimate item on the first undo.
@@ -75,6 +75,14 @@ class History(val halfTab: HalfTab) {
         update()
     }
 
+    fun currentMoment(): Moment? {
+        if (index >= 0) {
+            return moments[index]
+        } else {
+            return null
+        }
+    }
+
     fun push(tool: Tool) {
         if (using) {
             return
@@ -96,6 +104,23 @@ class History(val halfTab: HalfTab) {
         moments.add(newMoment)
         index = moments.size - 1
 
+        update()
+    }
+
+    /**
+     * Used when closing a tab, remembering its history so that it can be un-closed.
+     */
+    fun save(): Pair<List<Moment>, Int> {
+        return Pair(moments.toList(), index)
+    }
+
+    /**
+     * Used when un-closing a tab.
+     */
+    fun restore( mos : List<Moment>, index : Int ) {
+        moments.clear()
+        moments.addAll( mos )
+        this.index = index
         update()
     }
 

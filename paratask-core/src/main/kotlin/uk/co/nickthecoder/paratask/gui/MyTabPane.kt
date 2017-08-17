@@ -180,7 +180,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
         }
     }
 
-    fun remove(tab: MyTab) {
+    open fun remove(tab: MyTab) {
         val index = tabs.indexOf(tab)
         if (index < 0) {
             return
@@ -228,7 +228,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
     }
 
     fun createAddTabButton(action: (ActionEvent) -> Unit): Button {
-        val button = Button("✚") // This is a Heavy Greek Cross, not a plus symbol. ✚ vs +
+        val button = Button("✚") // This is a Heavy Greek Cross, not a plus symbol. ✚
         with(button) {
             addEventHandler(ActionEvent.ACTION) { action(it) }
             styleClass.add("add-tab")

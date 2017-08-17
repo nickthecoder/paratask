@@ -35,6 +35,8 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     val addTabContextMenu = ContextMenu()
 
+    val closedHistory = ClosedHistory()
+
     init {
         selectionModel.selectedItemProperty().addListener {
             _, oldTab, newTab ->
@@ -48,7 +50,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     private fun onKeyPressed(event: KeyEvent) {
         tabs.forEach { tab ->
-            if (tab.tabProperties.shortcutP.keyCodeCombination?.match(event) == true) {
+            if (tab.tabShortcut?.match(event) == true) {
                 event.consume()
                 tab.isSelected = true
             }
@@ -61,7 +63,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         newTab?.left?.toolPane?.tool?.let { projectWindow.toolChanged(it) }
     }
 
-    private fun addTool(index: Int, tool: Tool, run: Boolean, select: Boolean = true): ProjectTab {
+    override fun addTool(index: Int, tool: Tool, run: Boolean, select: Boolean): ProjectTab {
         val toolPane = ToolPane_Impl(tool)
         val newProjectTab = ProjectTab_Impl(this, toolPane)
         add(index, newProjectTab)
@@ -85,12 +87,17 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
         return newProjectTab
     }
 
+    override fun indexOf(projectTab: ProjectTab): Int {
+        return tabs.indexOf(projectTab as MyTab)
+    }
+
     override fun addTool(tool: Tool, run: Boolean, select: Boolean): ProjectTab {
         return addTool(tabs.size, tool, run = run, select = select)
     }
 
+
     override fun addAfter(after: ProjectTab, tool: Tool, run: Boolean, select: Boolean): ProjectTab {
-        val index = tabs.indexOf(after as MyTab)
+        val index = indexOf(after)
         return addTool(index + 1, tool, run = run, select = select)
     }
 
@@ -99,8 +106,20 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
     }
 
     override fun removeTab(projectTab: ProjectTab) {
-        projectTab.detaching()
         remove(projectTab as MyTab)
+    }
+
+    override fun remove(tab: MyTab) {
+        val projectTab = (tab as ProjectTab)
+        closedHistory.remember(projectTab)
+        projectTab.detaching()
+        super.remove(tab)
+    }
+
+    override fun restoreTab() {
+        if (closedHistory.canRestore()) {
+            closedHistory.restore(this)
+        }
     }
 
     override fun split() {

@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.Node
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
+import java.util.*
 
 class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = true) {
 
@@ -38,11 +39,15 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
     }
 
     fun keyPressed(event: KeyEvent) {
-        actions.forEach { (action, func) ->
-            if (action.keyCodeCombination?.match(event) == true) {
-                event.consume()
-                func()
+        try {
+            actions.forEach { (action, func) ->
+                if (action.keyCodeCombination?.match(event) == true) {
+                    event.consume()
+                    func()
+                }
             }
+        } catch (e: ConcurrentModificationException) {
+            // Do nothing
         }
     }
 

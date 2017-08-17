@@ -101,7 +101,7 @@ class Project(val projectWindow: ProjectWindow) {
             val jtab = JsonObject()
             jtabs.add(jtab)
 
-            val jtabProperties = JsonHelper.parametersAsJsonArray(tab.tabProperties)
+            val jtabProperties = JsonHelper.parametersAsJsonArray((tab as ProjectTab_Impl).tabProperties)
             jtab.add("properties", jtabProperties)
 
             val jleft = createHalfTab(tab.left)
@@ -172,7 +172,7 @@ class Project(val projectWindow: ProjectWindow) {
 
                         val jtabProperties = jtab.get("properties")
                         jtabProperties?.let {
-                            JsonHelper.read(jtabProperties as JsonArray, projectTab.tabProperties)
+                            JsonHelper.read(jtabProperties as JsonArray, (projectTab as ProjectTab_Impl).tabProperties)
                         }
                     }
                 }

@@ -18,16 +18,8 @@ repositories {
     mavenCentral()
     mavenLocal()
     jcenter()
-    maven {
-        url "https://github.com/rahmanusta/terminalfx/raw/master/releases"
-    }
-    flatDir {
-        dirs 'libs'
-    }
 }
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply plugin: 'application'
 
 mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
@@ -54,9 +46,6 @@ subprojects {
         mavenCentral()
         mavenLocal()
         jcenter()
-        maven {
-            url "https://github.com/rahmanusta/terminalfx/raw/master/releases"
-        }
     }
 
 }
@@ -69,6 +58,7 @@ project(':paratask-app') {
         compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
         compile 'org.fxmisc.richtext:richtextfx:0.6.10'
         compile 'mysql:mysql-connector-java:5.1.6'
+
         compile project(':paratask-core')
 
         testCompile 'junit:junit:4.11'

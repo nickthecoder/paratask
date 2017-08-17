@@ -24,6 +24,7 @@ import javafx.beans.value.ObservableValue
 import javafx.scene.Node
 import javafx.scene.control.ContextMenu
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
@@ -52,11 +53,18 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     val titleListener = TitleListener()
 
-    override val tabProperties = TabProperties()
+    val tabProperties = TabProperties()
 
     override var tabTemplate by tabProperties.tabTemplateP
 
+    override var tabShortcut: KeyCodeCombination?
+        get() = tabProperties.shortcutP.keyCodeCombination
+        set(v) {
+            tabProperties.shortcutP.keyCodeCombination = v
+        }
+
     private val shortcuts = ShortcutHelper("ProjectTab", splitPane)
+
 
     init {
         content = splitPane

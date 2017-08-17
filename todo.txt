@@ -27,8 +27,6 @@ FileOperations
 		Implement as options when rows have shortcuts?
 		Or maybe use the Drag/Drop infrastructure, which may allow copy/paste of other types of data, such as Places.
 
-Remember closed tabs, so that they can be re-opened using ctrl+shift+T
-
 Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane / GridPane / HBox.
 	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
 	The children would need to SHARE one error message label.
