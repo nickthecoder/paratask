@@ -1,7 +1,5 @@
 
 
-Non-row options split into sub-menus
-
 Bugs
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.

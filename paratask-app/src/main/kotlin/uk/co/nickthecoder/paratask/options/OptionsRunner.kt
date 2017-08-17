@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
+import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
@@ -38,23 +39,39 @@ open class OptionsRunner(val tool: Tool) {
         val optionsName = tool.optionsName
         val topLevelOptions = OptionsManager.getTopLevelOptions(optionsName)
 
-        var needSep = false
+        var addedSubMenus = false
+        var count = 0
 
         for (fileOptions in topLevelOptions.listFileOptions()) {
-            var added = false
-            for (option in fileOptions.listOptions()) {
-                if (!option.isRow) {
-                    if (needSep) {
-                        needSep = false
+
+            val items: ObservableList<MenuItem>
+            val optionsList = fileOptions.listOptions().filter { !it.isRow }
+
+            if (optionsList.isNotEmpty()) {
+                if (count > 0 && count + optionsList.size > 15) {
+                    val subMenu = Menu(fileOptions.name)
+                    items = subMenu.items
+                    if (!addedSubMenus) {
                         contextMenu.items.add(SeparatorMenuItem())
+                        addedSubMenus = true
                     }
+                    contextMenu.items.add(subMenu)
+                    addedSubMenus = true
+                } else {
+                    items = contextMenu.items
+                    if (items.isNotEmpty()) {
+                        items.add(SeparatorMenuItem())
+                    }
+                }
+
+                for (option in optionsList) {
+                    count++
                     val menuItem = createMenuItem(option)
                     menuItem.addEventHandler(ActionEvent.ACTION) { runNonRow(option) }
-                    contextMenu.items.add(menuItem)
-                    added = true
+                    items.add(menuItem)
+
                 }
             }
-            needSep = needSep || added
         }
 
     }
