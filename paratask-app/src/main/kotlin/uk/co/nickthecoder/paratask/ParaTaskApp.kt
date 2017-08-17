@@ -106,7 +106,7 @@ class ParaTaskApp : Application() {
 
         fun openProjects(projectFiles: List<File>) {
             if (started) {
-                openProjects(projectFiles)
+                startOpenProjects(projectFiles)
             } else {
                 started = true
                 this.initialProjectFiles = projectFiles

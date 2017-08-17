@@ -1,6 +1,3 @@
-version = '0.1'
-group = 'uk.co.nickthecoder'
-
 buildscript {
     ext.kotlin_version = '1.1.2-2'
     repositories {
@@ -14,30 +11,9 @@ buildscript {
     }
 }
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    jcenter()
-}
-
-apply plugin: 'application'
-
-mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'org.codehaus.groovy:groovy-all:2.4.9'
-    compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
-    compile 'org.fxmisc.richtext:richtextfx:0.6.10'
-    compile 'mysql:mysql-connector-java:5.1.6'
-
-    compile project(':paratask-core')
-    compile project(':paratask-app')
-}
+apply plugin: 'idea'
 
 subprojects {
-    apply plugin: 'kotlin'
-    apply plugin: 'maven'
 
     version = '0.1'
     group = 'uk.co.nickthecoder'
@@ -46,11 +22,17 @@ subprojects {
         mavenCentral()
         mavenLocal()
         jcenter()
+        flatDir dirs: ['libs']
     }
 
 }
 
 project(':paratask-app') {
+
+    apply plugin: 'kotlin'
+    apply plugin: 'maven'
+    apply plugin: 'application'
+    mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -70,6 +52,9 @@ project(':paratask-app') {
 }
 
 project(':paratask-core') {
+
+    apply plugin: 'kotlin'
+    apply plugin: 'maven'
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
