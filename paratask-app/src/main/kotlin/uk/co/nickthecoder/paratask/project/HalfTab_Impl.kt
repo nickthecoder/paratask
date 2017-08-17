@@ -87,6 +87,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
                 runStopStack,
                 ParataskActions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) },
                 historyGroup,
+                ParataskActions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { projectTab.splitToggle() },
                 ParataskActions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
 
         bindButtons()

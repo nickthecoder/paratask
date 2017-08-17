@@ -41,6 +41,7 @@ class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
         put(ParataskActions.FOCUS_OPTION) { halfTab()?.focusOption() }
 
         put(ParataskActions.FOCUS_OTHER_SPLIT) { halfTab()?.focusOtherHalf() }
+        put(ParataskActions.NEW_TAB) { projectWindow.tabs.addTool(HomeTool()) }
 
         for ((index, action) in ParataskActions.MAJOR_TABS.withIndex()) {
             put(action) { projectWindow.tabs.selectTab(index) }

@@ -228,7 +228,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
     }
 
     fun createAddTabButton(action: (ActionEvent) -> Unit): Button {
-        val button = Button("+")
+        val button = Button("✚") // This is a Heavy Greek Cross, not a plus symbol. ✚ vs +
         with(button) {
             addEventHandler(ActionEvent.ACTION) { action(it) }
             styleClass.add("add-tab")

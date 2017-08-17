@@ -67,8 +67,9 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val menu = ContextMenu()
         val properties = ParataskActions.TAB_PROPERTIES.createMenuItem { onEditTabProperties() }
+        val duplicate = ParataskActions.DUPLICATE_TAB.createMenuItem { projectTabs.duplicateTab() }
         val close = ParataskActions.CLOSE_TAB.createMenuItem(shortcuts, { close() })
-        menu.items.addAll(properties, close)
+        menu.items.addAll(properties, duplicate, close)
 
         label.contextMenu = menu
     }

@@ -61,9 +61,6 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
             add(ParataskActions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
             add(ParataskActions.QUIT.createButton(shortcuts) { onQuit() })
             add(ParataskActions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
-            add(ParataskActions.NEW_TAB.createToolButton(shortcuts) { tool -> onNewTab(tool) })
-            add(ParataskActions.DUPLICATE_TAB.createButton(shortcuts) { tabs.duplicateTab() })
-            add(ParataskActions.SPLIT_TAB_TOGGLE.createButton(shortcuts) { tabs.splitToggle() })
             add(ParataskActions.APPLICATION_ABOUT.createButton(shortcuts) { onAbout() })
         }
     }
@@ -76,12 +73,6 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         val newWindow = ProjectWindow()
         newWindow.placeOnStage(Stage())
         newWindow.addTool(HomeTool())
-    }
-
-    fun onNewTab(tool: Tool = HomeTool()) {
-        val newTool = tool.copy()
-        newTool.resolveParameters(project.resolver)
-        addTool(newTool)
     }
 
     fun placeOnStage(stage: Stage) {

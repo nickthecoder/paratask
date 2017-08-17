@@ -37,13 +37,13 @@ object ParataskActions {
     val QUIT = ParataskAction("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val NEW_WINDOW = ParataskAction("window.new", KeyCode.N, control = true, tooltip = "New Window")
     val NEW_TAB = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab", tooltip = "New Tab")
-    val DUPLICATE_TAB = ParataskAction("tab.duplicate", KeyCode.D, control = true, tooltip = "Duplicate Tab")
 
     val SPLIT_TAB_TOGGLE = ParataskAction("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = ParataskAction("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
     // ProjectTab
     val TAB_PROPERTIES = ParataskAction("tab.properties", null, label = "Properties")
+    val DUPLICATE_TAB = ParataskAction("tab.duplicate", KeyCode.D, control = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
     val CLOSE_TAB = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
 
     // HalfTab
