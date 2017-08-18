@@ -20,7 +20,7 @@ package uk.co.nickthecoder.paratask
 import javafx.application.Platform
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.gui.PlainWindow
-import uk.co.nickthecoder.paratask.gui.SimpleTerminal
+import uk.co.nickthecoder.paratask.tools.terminal.SimpleTerminal
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.enumChoices
 import uk.co.nickthecoder.paratask.project.ProjectWindow

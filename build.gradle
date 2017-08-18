@@ -12,42 +12,30 @@ buildscript {
 }
 
 apply plugin: 'idea'
+apply plugin: 'application'
+mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
+
+defaultTasks 'installApp'
+
+dependencies {
+    compile  project(':paratask-app')
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    flatDir dirs: ['jediterm']
+}
 
 subprojects {
-
-    version = '0.1'
-    group = 'uk.co.nickthecoder'
 
     repositories {
         mavenCentral()
         mavenLocal()
         jcenter()
-        flatDir dirs: ['libs']
+        flatDir dirs: ['../jediterm']
     }
-
-}
-
-project(':paratask-app') {
-
-    apply plugin: 'kotlin'
-    apply plugin: 'maven'
-    apply plugin: 'application'
-    mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
-
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        compile 'org.codehaus.groovy:groovy-all:2.4.9'
-        compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
-        compile 'org.fxmisc.richtext:richtextfx:0.6.10'
-        compile 'mysql:mysql-connector-java:5.1.6'
-
-        compile project(':paratask-core')
-
-        testCompile 'junit:junit:4.11'
-        testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
-    }
-
-    defaultTasks 'install'
 
 }
 
@@ -56,6 +44,9 @@ project(':paratask-core') {
     apply plugin: 'kotlin'
     apply plugin: 'maven'
 
+    version = '0.1'
+    group = 'uk.co.nickthecoder'
+
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile 'org.codehaus.groovy:groovy-all:2.4.9'
@@ -63,4 +54,39 @@ project(':paratask-core') {
     }
 
     defaultTasks 'install'
+}
+
+project(':paratask-app') {
+
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile 'org.codehaus.groovy:groovy-all:2.4.9'
+        compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
+        compile 'org.fxmisc.richtext:richtextfx:0.6.10'
+        compile 'mysql:mysql-connector-java:5.1.6'
+
+        compile  project(':paratask-core')
+        
+        compile ':annotations'
+        compile ':javac2'
+        compile ':jediterm-pty:2.2'
+        compile ':jediterm-ssh:2.2'
+        compile ':jediterm-ssh-connector:2.2'
+        compile ':jna-platform'
+        compile ':jna'
+        compile ':jsch:0.1.51'
+        compile ':jzlib:1.1.1'
+        compile ':guava:14.0.1'
+        compile ':log4j:1.2.14'
+        compile ':pty4j:0.7.2'
+        compile ':purejavacomm:0.0.17'
+
+        testCompile 'junit:junit:4.11'
+        testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
+    }
+
+    defaultTasks 'jar'
+
 }

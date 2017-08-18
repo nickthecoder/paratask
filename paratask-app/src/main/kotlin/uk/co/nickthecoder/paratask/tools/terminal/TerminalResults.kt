@@ -15,14 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package uk.co.nickthecoder.paratask.tools
+package uk.co.nickthecoder.paratask.tools.terminal
 
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.SimpleTerminal
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.Stoppable
-import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.util.process.Exec
 
 class TerminalResults(

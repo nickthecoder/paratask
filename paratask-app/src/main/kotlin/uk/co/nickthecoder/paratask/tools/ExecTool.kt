@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.tools.terminal.TerminalResults
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.Exec
 

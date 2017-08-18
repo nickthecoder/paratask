@@ -30,7 +30,7 @@ object TaskRegistry {
      * This allows tools to be renamed without breaking existing project files.
      * Used by Project.load
      */
-    private val toolAliases = mutableMapOf<String, String>()
+    private val taskAliases = mutableMapOf<String, String>()
 
     val home = TaskAndToolGroup("Home")
 
@@ -62,11 +62,16 @@ object TaskRegistry {
     }
 
     fun aliasTool(tool: Tool, alias: String) {
-        toolAliases.put(alias, tool.creationString())
+        taskAliases.put(alias, tool.creationString())
     }
 
     fun createTool(creationString: String): Tool {
-        val cs = toolAliases.get(creationString) ?: creationString
+        val cs = taskAliases.get(creationString) ?: creationString
         return Tool.create(cs)
+    }
+
+    fun createTask(creationString: String): Task {
+        val cs = taskAliases.get(creationString) ?: creationString
+        return Task.create(cs)
     }
 }
