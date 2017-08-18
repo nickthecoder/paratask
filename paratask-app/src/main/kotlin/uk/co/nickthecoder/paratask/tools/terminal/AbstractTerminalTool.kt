@@ -17,11 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.terminal
 
-import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.AbstractTool
-import uk.co.nickthecoder.paratask.tools.terminal.TerminalResults
+import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.util.Stoppable
-import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.runAndWait
 
@@ -39,26 +37,28 @@ abstract class AbstractTerminalTool(
 
     override fun run() {
         stop()
-        val command = createCommand()
 
+        terminalResults = createTerminalResults()
         runAndWait {
-            terminalResults = TerminalResults(this, Exec(command), showCommand = showCommand, allowInput = allowInput)
-
-            toolPane?.replaceResults(createResults(), resultsList)
-
+            updateResults()
+            //toolPane?.replaceResults(createResults(), resultsList)
         }
-        terminalResults?.start()
+        val command = createCommand()
+        terminalResults?.start(command)
         terminalResults?.waitFor()
+
+        // TODO Do we want to clear the results when the process finishes?
+        // Maybe make this an option.
+        terminalResults = null
     }
 
-    override fun updateResults() {
-        // We updated the results in run, because run will block till the osCommand ends
+    private fun createTerminalResults(): TerminalResults {
+        return SimpleTerminalResults(this, showCommand = showCommand, allowInput = allowInput)
+        //return RealTerminalResults(this)
     }
 
-    override fun createResults(): List<Results> = singleResults(terminalResults!!)
-
-    fun getOutput() :String {
-        return terminalResults?.simpleTerminal?.textArea?.text ?: ""
+    override fun createResults(): List<Results> {
+        return singleResults(terminalResults)
     }
 
     override fun stop() {

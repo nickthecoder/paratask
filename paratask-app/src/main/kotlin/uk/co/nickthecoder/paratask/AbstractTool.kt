@@ -71,8 +71,10 @@ abstract class AbstractTool : Tool {
     }
 
     override fun detaching() {
+        println("AbstractTool detatching")
 
         for (results in resultsList) {
+            println("AbstractTool detatching results ${results}")
             results.detaching()
         }
         toolPane = null
@@ -90,7 +92,6 @@ abstract class AbstractTool : Tool {
 
     override fun customCheck() {}
 
-
     override val icon: Image? by lazy {
         ParaTask.imageResource("tools/${iconName()}.png")
     }
@@ -107,7 +108,13 @@ abstract class AbstractTool : Tool {
         }
     }
 
-    protected fun singleResults(results: Results) = listOf(results)
+    protected fun singleResults(results: Results?): List<Results> {
+        if (results == null) {
+            return listOf()
+        } else {
+            return listOf(results)
+        }
+    }
 
     override fun toString(): String {
         return "Tool : $taskD"

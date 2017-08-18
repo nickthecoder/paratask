@@ -24,7 +24,6 @@ import uk.co.nickthecoder.paratask.tools.git.*
 import uk.co.nickthecoder.paratask.tools.places.*
 import uk.co.nickthecoder.paratask.tools.terminal.GroovyTool
 import uk.co.nickthecoder.paratask.tools.terminal.PythonTool
-import uk.co.nickthecoder.paratask.tools.terminal.RealTerminalTool
 import uk.co.nickthecoder.paratask.tools.terminal.TerminalTool
 import java.io.File
 
@@ -41,7 +40,6 @@ class ParaTaskCore : Registers {
         TaskRegistry.home.addTools(
                 HomeTool(), CustomToolListTool(),
                 DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
-                RealTerminalTool(),
                 TerminalTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),
@@ -67,7 +65,9 @@ class ParaTaskCore : Registers {
         TaskRegistry.addGroup(files)
 
         TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
-        TaskRegistry.aliasTool(RealTerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
+        TaskRegistry.aliasTool(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
+        TaskRegistry.aliasTool(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")
+        TaskRegistry.aliasTool(PythonTool(), "uk.co.nickthecoder.paratask.tools.PythonTool")
     }
 
     companion object {

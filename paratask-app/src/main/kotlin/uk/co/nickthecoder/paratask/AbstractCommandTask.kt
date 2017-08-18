@@ -17,15 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask
 
-import javafx.application.Platform
-import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.gui.PlainWindow
 import uk.co.nickthecoder.paratask.tools.terminal.SimpleTerminal
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.enumChoices
 import uk.co.nickthecoder.paratask.project.ProjectWindow
-import uk.co.nickthecoder.paratask.tools.ExecTool
-import uk.co.nickthecoder.paratask.util.AutoExit
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -39,7 +35,7 @@ abstract class AbstractCommandTask() : AbstractTask() {
     var exec: Exec? = null
 
     enum class Output(override val label: String) : Labelled {
-        INHERRIT("Pass through"), WINDOW("New Window"), TOOL("New Tool"), IGNORE("Ignore")
+        INHERRIT("Pass through"), WINDOW("New Window"), IGNORE("Ignore")
     }
 
     val outputP = ChoiceParameter<Output>("output", value = Output.INHERRIT).enumChoices()
@@ -60,10 +56,7 @@ abstract class AbstractCommandTask() : AbstractTask() {
         this.exec = exec
 
         when (output) {
-            Output.TOOL -> {
-                // Must run it through ParaTaskApp, to ensure that JavaFX is started. Grrr.
-                ParaTaskApp.runFunction { openTool() }
-            }
+
             Output.WINDOW -> {
                 // Must run it through ParaTaskApp, to ensure that JavaFX is started. Grrr.
                 ParaTaskApp.runFunction { openSimpleTerminal() }
@@ -88,21 +81,6 @@ abstract class AbstractCommandTask() : AbstractTask() {
             val terminal = SimpleTerminal(exec!!)
             PlainWindow(taskD.label, terminal)
             terminal.start()
-        }
-    }
-
-    fun openTool() {
-        AutoExit.inc("Open ExecTool from ${taskD.label}")
-        Platform.runLater {
-            val tool = ExecTool(exec!!)
-
-            var projectWindow = this.projectWindow
-            if (projectWindow == null) {
-                projectWindow = ProjectWindow()
-                projectWindow.placeOnStage(Stage())
-            }
-            projectWindow.addTool(tool)
-            AutoExit.dec("Open ExecTool from ${taskD.label}")
         }
     }
 

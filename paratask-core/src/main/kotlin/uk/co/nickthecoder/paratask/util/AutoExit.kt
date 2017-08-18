@@ -17,8 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
+import com.sun.java.accessibility.util.SwingEventMonitor
 import javafx.application.Platform
+import javafx.embed.swing.SwingFXUtils
 import javafx.stage.Stage
+import sun.swing.SwingUtilities2
+import javax.swing.SwingUtilities
 
 /**
  * My application may close the last remaining JavaFX stage, and then try to create another one.
@@ -59,6 +63,8 @@ object AutoExit {
         resourceCounter--
         if (resourceCounter == 0 && enabled) {
             Platform.exit()
+            // I need this when using Swing from within JavaFX. JEditTerm uses Swing.
+            System.exit(0)
         }
     }
 

@@ -21,10 +21,9 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class TerminalTool : AbstractTerminalTool {
+class TerminalTool : AbstractTerminalTool(showCommand = true, allowInput = true) {
 
     override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
 
@@ -34,34 +33,12 @@ class TerminalTool : AbstractTerminalTool {
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
-    constructor() : super(showCommand = true, allowInput = true)
-
-    constructor( exec : Exec) : this(exec.osCommand) {
-
-    }
-
-    constructor(osCommand: OSCommand) : this() {
-        programP.value = osCommand.program
-        argumentsP.value = osCommand.arguments
-        directoryP.value = osCommand.directory
-    }
-
-    constructor(program: String, vararg arguments: Any?) : this() {
-        programP.value = program
-        argumentsP.value = arguments.filter { it != null }.map { it.toString() }
-    }
-
     init {
         taskD.addParameters(programP, argumentsP, directoryP)
     }
 
     fun input(value: Boolean): TerminalTool {
         allowInput = value
-        return this
-    }
-
-    fun showCommand(value: Boolean): TerminalTool {
-        showCommand = value
         return this
     }
 

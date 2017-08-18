@@ -8,18 +8,14 @@ import com.pty4j.PtyProcess
 import javafx.embed.swing.SwingNode
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.nio.charset.Charset
 import javax.swing.JComponent
+import javax.swing.SwingUtilities
 
-class RealTerminalResults(
-        tool: Tool,
-        val osCommand: OSCommand,
-        val showCommand: Boolean = true,
-        val allowInput: Boolean = false)
+class RealTerminalResults(tool: Tool)
 
-    : AbstractResults(tool, "Terminal"), Stoppable {
+    : AbstractResults(tool, "Terminal"), TerminalResults {
 
     override val node = SwingNode()
 
@@ -29,16 +25,18 @@ class RealTerminalResults(
 
     var triedStopping: Boolean = false
 
-    fun start() {
+    override fun start(osCommand: OSCommand) {
         triedStopping = false
-        node.content = createJWidget()
+        SwingUtilities.invokeAndWait {
+            node.content = createJWidget(osCommand)
+        }
     }
 
     fun copyEnv(): MutableMap<String, String> {
         return System.getenv().toMutableMap()
     }
 
-    fun createJWidget(): JComponent {
+    fun createJWidget(osCommand: OSCommand): JComponent {
         val cmd = mutableListOf<String>()
         cmd.add(osCommand.program)
         cmd.addAll(osCommand.arguments)
@@ -51,26 +49,27 @@ class RealTerminalResults(
 
         val console = false
 
-        println("Creating process : $cmd, $env, $dir, $console, $charset")
         process = PtyProcess.exec(cmd.toTypedArray(), env, dir, console)
-        println("Created process $process")
 
         val connector = PtyProcessTtyConnector(process, charset)
         val settings = DefaultSettingsProvider()
         val result = JediTermWidget(settings)
         session = result.createTerminalSession(connector)
         session?.start()
-        println("Running? ${process?.isRunning}");
         return result
     }
 
-    fun waitFor(): Int {
-        println("Waiting for process $process")
+    override fun waitFor(): Int {
         return process?.waitFor() ?: -12
     }
 
+    override fun detaching() {
+        node.content = null
+        super.detaching()
+        stop()
+    }
+
     override fun stop() {
-        println("Stopping ReakTerminalResults $process $session")
         if (triedStopping) {
             process?.destroyForcibly()
         } else {

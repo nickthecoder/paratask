@@ -44,7 +44,7 @@ object ParataskActions {
 
     // ProjectTab
     val TAB_PROPERTIES = ParataskAction("tab.properties", null, label = "Properties")
-    val DUPLICATE_TAB = ParataskAction("tab.duplicate", KeyCode.D, control = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
+    val DUPLICATE_TAB = ParataskAction("tab.duplicate", KeyCode.D, alt = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
     val CLOSE_TAB = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
 
     // HalfTab
