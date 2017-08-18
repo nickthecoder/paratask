@@ -22,6 +22,8 @@ import uk.co.nickthecoder.paratask.tools.*
 import uk.co.nickthecoder.paratask.tools.editor.EditorTool
 import uk.co.nickthecoder.paratask.tools.git.*
 import uk.co.nickthecoder.paratask.tools.places.*
+import uk.co.nickthecoder.paratask.tools.terminal.GroovyTool
+import uk.co.nickthecoder.paratask.tools.terminal.PythonTool
 import uk.co.nickthecoder.paratask.tools.terminal.RealTerminalTool
 import uk.co.nickthecoder.paratask.tools.terminal.TerminalTool
 import java.io.File

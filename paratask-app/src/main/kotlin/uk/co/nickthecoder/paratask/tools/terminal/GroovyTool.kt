@@ -15,24 +15,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package uk.co.nickthecoder.paratask.tools
+package uk.co.nickthecoder.paratask.tools.terminal
 
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class PythonTool : AbstractTerminalTool(allowInput = true, showCommand = true) {
+class GroovyTool : AbstractTerminalTool(allowInput = true, showCommand = true) {
 
-    override val taskD = TaskDescription("python", description = "Interactive Python Shell")
-
-    val versionP = StringParameter("version", required = false)
-
-    init {
-        taskD.addParameters(versionP)
-    }
+    override val taskD = TaskDescription("groovy", description = "Interactive Groovy Shell")
 
     override fun createCommand(): OSCommand {
-        return OSCommand("python" + versionP.value, "-i")
+        return OSCommand("groovysh")
+        // I tried disabling the colors, but groovysh 2.2.2 throws whenever I use --color argument :-(
     }
 }
 
