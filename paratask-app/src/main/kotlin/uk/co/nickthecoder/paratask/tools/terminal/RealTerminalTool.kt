@@ -7,13 +7,14 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class RealTerminalTool : AbstractTool() {
+class RealTerminalTool : AbstractTool(), Stoppable {
 
     override val taskD = TaskDescription("realTerminal")
 
-    val programP = StringParameter("program", value = "bash")
+    val programP = StringParameter("program", value = "sh")
 
     val argumentsP = MultipleParameter("arguments") { StringParameter("", required = false) }
 
@@ -21,16 +22,52 @@ class RealTerminalTool : AbstractTool() {
 
     var results: RealTerminalResults? = null
 
+    var isStopping: Boolean = false
+
     init {
         taskD.addParameters(programP, argumentsP, directoryP)
     }
 
     override fun run() {
+        println("Enter run")
+        isStopping = false
+        results = null
+
         Platform.runLater {
             results = RealTerminalResults(this, createCommand())
             toolPane?.replaceResults(createResults(), resultsList)
-            results?.start()
         }
+        // Wait for the results to be created (which must be done on the JavaFX thread, and we can't block that.
+        while (!isStopping) {
+            if (results != null) {
+                break
+            }
+            Thread.sleep(100)
+        }
+        println("Starting results $results")
+        results?.start()
+
+        // Now wait for the process to finish.
+        if (isStopping) {
+            results?.stop()
+        } else {
+            println("Waiting for process to finish")
+            val exitStatus = results?.waitFor()
+            println("Process has finished $exitStatus")
+        }
+
+        println("Exit run")
+    }
+
+    override fun detaching() {
+        super.detaching()
+        stop()
+    }
+
+    override fun stop() {
+        println("Stopping ReakTerminalTool")
+        isStopping = true
+        results?.stop()
     }
 
     override fun updateResults() {
