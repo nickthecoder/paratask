@@ -1,6 +1,7 @@
 {
     "includes": [
-        
+        "file",
+        "dir"
     ],
     "options": [
         {
@@ -240,7 +241,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "d",
             "label": "Git Diff",
             "isRow": true,
@@ -317,7 +318,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "push",
             "label": "Git Push",
             "isRow": false,
@@ -352,7 +353,7 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "dall",
             "label": "Git Diff All",
             "isRow": false,

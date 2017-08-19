@@ -116,6 +116,12 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
 
         val path: String
 
+        // Allows "file" options to be included
+        fun isFile(): Boolean = file.isFile()
+
+        // Allows "dir" options to be included
+        fun isDirectory(): Boolean = file.isDirectory()
+
         init {
             val filePath = file.path
             val prefix = directory!!.path + File.separatorChar
