@@ -18,9 +18,9 @@ mainClassName = "uk.co.nickthecoder.paratask.StartTaskKt"
 defaultTasks 'installApp'
 
 dependencies {
-    compile  project(':paratask-app')
+    compile project(':paratask-app')
     // Comment out the following line, and also the line in settings.gradle to compile paratask without jediterm.
-    compile  project(':paratask-jediterm')
+    compile project(':paratask-jediterm')
 }
 
 repositories {
@@ -69,7 +69,7 @@ project(':paratask-app') {
         compile 'org.fxmisc.richtext:richtextfx:0.6.10'
         compile 'mysql:mysql-connector-java:5.1.6'
 
-        compile  project(':paratask-core')
+        compile project(':paratask-core')
 
         testCompile 'junit:junit:4.11'
         testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
@@ -85,23 +85,35 @@ project(':paratask-jediterm') {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-        compile  project(':paratask-app')
-        compile  project(':paratask-core')
-        
-        compile ':annotations'
-        compile ':javac2'
+        compile project(':paratask-app')
+        compile project(':paratask-core')
+
         compile ':jediterm-pty:2.2'
         compile ':jediterm-ssh:2.2'
         compile ':jediterm-ssh-connector:2.2'
-        compile ':jna-platform'
-        compile ':jna'
-        compile ':jsch:0.1.51'
-        compile ':jzlib:1.1.1'
-        compile ':guava:14.0.1'
-        compile ':log4j:1.2.14'
         compile ':pty4j:0.7.2'
         compile ':purejavacomm:0.0.17'
+
+        //compile ':annotations'
+        //compile ':javac2'
+        //compile ':jna-platform'
+        //compile ':jna'
+        //compile ':jsch:0.1.51'
+        //compile ':jzlib:1.1.1'
+        //compile ':guava:14.0.1'
+        // compile ':log4j:1.2.14'
+
+
+        compile 'com.github.purejavacomm:purejavacomm:1.0.2.RELEASE'
+        compile 'net.java.dev.jna:jna:4.2.2'
+        compile 'net.java.dev.jna:jna-platform:4.2.2'
+        compile 'com.intellij:javac2:7.0.3'
+        compile 'com.intellij:annotations:12.0'
+        compile 'com.google.guava:guava:14.0.1'
+        compile 'com.jcraft:jsch:0.1.51'
+        compile 'log4j:log4j:1.2.14'
+        compile 'com.jcraft:jzlib:1.1.1'
     }
-    
+
     defaultTasks 'jar'
 }

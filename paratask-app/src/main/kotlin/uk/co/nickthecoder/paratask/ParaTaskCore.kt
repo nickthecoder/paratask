@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.tools.git.*
 import uk.co.nickthecoder.paratask.tools.places.*
 import uk.co.nickthecoder.paratask.tools.terminal.GroovyTool
 import uk.co.nickthecoder.paratask.tools.terminal.PythonTool
+import uk.co.nickthecoder.paratask.tools.terminal.SSHTool
 import uk.co.nickthecoder.paratask.tools.terminal.TerminalTool
 import java.io.File
 
@@ -40,7 +41,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.home.addTools(
                 HomeTool(), CustomToolListTool(),
                 DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
-                TerminalTool(), PythonTool(), GroovyTool(),
+                TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(),
                 OptionsFilesTool(), OptionsTool(),

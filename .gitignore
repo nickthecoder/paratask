@@ -25,3 +25,4 @@
 /paratask-app/build
 /paratask-jediterm/build
 /jediterm
+/src/dist/lib/*
