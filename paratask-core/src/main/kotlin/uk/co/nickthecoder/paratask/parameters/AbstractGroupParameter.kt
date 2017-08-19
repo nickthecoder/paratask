@@ -109,7 +109,7 @@ abstract class AbstractGroupParameter(
             if (child is BooleanParameter && child.oppositeName == name) {
                 return child
             }
-            if (child is GroupParameter) {
+            if (child is AbstractGroupParameter) {
                 child.find(name)?.let { return it }
             }
         }
@@ -122,7 +122,7 @@ abstract class AbstractGroupParameter(
             if (child.aliases.contains(name)) {
                 return child
             }
-            if (child is GroupParameter) {
+            if (child is AbstractGroupParameter) {
                 child.findWithAliases(name)?.let { return it }
             }
         }

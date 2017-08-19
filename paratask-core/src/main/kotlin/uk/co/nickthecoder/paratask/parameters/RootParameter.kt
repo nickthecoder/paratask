@@ -30,12 +30,12 @@ class RootParameter(val taskD: TaskDescription, description: String)
     fun valueParameters(): List<ValueParameter<*>> {
         val result = mutableListOf<ValueParameter<*>>()
 
-        fun addAll(group: GroupParameter) {
+        fun addAll(group: AbstractGroupParameter) {
             group.children.forEach { child ->
                 if (child is ValueParameter<*>) {
                     result.add(child)
                 }
-                if (child is GroupParameter) {
+                if (child is AbstractGroupParameter) {
                     addAll(child)
                 }
             }

@@ -1,0 +1,204 @@
+{
+    "rowFilterScript": "row.isFile()",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "ink",
+            "label": "Open in Inkscape",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "inkscape"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "gimp",
+            "label": "Open in GIMP",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gimp"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        ""
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "ei",
+            "label": "Edit Image",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gimp"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        ""
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.FlipImageTask",
+            "code": "flip",
+            "label": "Flip Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "direction",
+                    "value": "x"
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( row.file.parentFile, \"flipped-\" + row.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.RotateImageTask",
+            "code": "rot",
+            "label": "Rotate Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "rotation",
+                    "value": "90"
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( row.file.parentFile, \"rotated-\" + row.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.ResizeImageTask",
+            "code": "size",
+            "label": "Resize Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "resizeOption",
+                    "value": "size"
+                },
+                {
+                    "name": "width",
+                    "value": "100"
+                },
+                {
+                    "name": "height",
+                    "value": "100"
+                },
+                {
+                    "name": "keepAspectRatio",
+                    "value": "true"
+                },
+                {
+                    "name": "percentage",
+                    "value": ""
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( row.file.parentFile, \"resized-\" + row.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        }
+    ]
+}

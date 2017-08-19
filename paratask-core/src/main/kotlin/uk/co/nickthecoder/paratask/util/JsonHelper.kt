@@ -34,7 +34,12 @@ object JsonHelper {
                     val jArray = parametersAsJsonArray(inner)
                     jvalues.add(jArray)
                 } else {
-                    jvalues.add(inner.stringValue)
+                    if (inner.expression == null) {
+                        jvalues.add(inner.stringValue)
+                    } else {
+                        val jexpression = JsonObject()
+                        jexpression.add("expression", inner.expression!!)
+                    }
                 }
             }
         } else if (parameter is TaskParameter) {
@@ -47,7 +52,11 @@ object JsonHelper {
                 println("Ignoring null task from TaskParameter $parameter.name")
             }
         } else {
-            jparameter.set("value", parameter.stringValue)
+            if (parameter.expression == null) {
+                jparameter.set("value", parameter.stringValue)
+            } else {
+                jparameter.set("expression", parameter.expression)
+            }
         }
     }
 
@@ -66,14 +75,15 @@ object JsonHelper {
                             val jvaluesArray = jvalues.asArray()
                             for (jvalue in jvaluesArray) {
                                 val newValue = parameter.newValue()
-                                if (newValue is CompoundParameter) {
-                                    if (jvalue.isArray) {
-                                        val jvalueArray = jvalue.asArray()
-                                        read(jvalueArray, newValue)
-                                        continue
-                                    }
+                                if (jvalue.isString) {
+                                    newValue.stringValue = jvalue.asString()
+                                } else if (jvalue.isArray && newValue is CompoundParameter) {
+                                    val jvalueArray = jvalue.asArray()
+                                    read(jvalueArray, newValue)
+                                } else if (jvalue.isObject) {
+                                    val expression = jvalue.asObject().getString("expression", "")
+                                    newValue.expression = expression
                                 }
-                                newValue.stringValue = jvalue.asString()
                             }
                             continue
                         }
@@ -91,9 +101,14 @@ object JsonHelper {
                         }
                     }
 
-                    val value = ji.getString("value", null)
-                    if (value != null) {
-                        parameter.stringValue = value
+                    val expression = ji.getString("expression", null)
+                    if (expression == null) {
+                        val value = ji.getString("value", null)
+                        if (value != null) {
+                            parameter.stringValue = value
+                        }
+                    } else {
+                        parameter.expression = expression
                     }
                 }
             }

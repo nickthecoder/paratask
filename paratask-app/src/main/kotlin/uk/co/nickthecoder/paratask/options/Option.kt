@@ -24,10 +24,8 @@ import javafx.scene.input.DataFormat
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
-import jdk.nashorn.internal.runtime.ScriptObject
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.util.JsonHelper
 import java.io.Externalizable
 import java.io.ObjectInput
 import java.io.ObjectOutput
@@ -102,34 +100,8 @@ interface Option : Externalizable {
             joption.add("aliases", jaliases)
         }
         if (this is TaskOption) {
-            val jparameters = JsonArray()
-            for (parameter in task.valueParameters()) {
-                val jparameter = JsonObject()
-                jparameter.add("name", parameter.name)
-
-                if (parameter is MultipleParameter<*> && parameter.expression == null) {
-                    val jvalues = JsonArray()
-                    jparameter.add("values", jvalues)
-                    for (innerParameter in parameter.innerParameters) {
-                        val jobj = JsonObject()
-                        if (innerParameter.expression == null) {
-                            jobj.add("value", innerParameter.stringValue)
-                        } else {
-                            jobj.add("expression", innerParameter.expression)
-                        }
-                        jvalues.add(jobj)
-                    }
-                } else {
-                    if (parameter.expression == null) {
-                        jparameter.add("value", parameter.stringValue)
-                    } else {
-                        jparameter.add("expression", parameter.expression ?: "")
-                    }
-                }
-                jparameters.add(jparameter)
-            }
+            val jparameters = JsonHelper.parametersAsJsonArray(task)
             joption.add("parameters", jparameters)
-
         }
         return joption
     }
@@ -220,43 +192,7 @@ interface Option : Externalizable {
             // Load parameter values/expressions for TaskOption
             if (option is TaskOption) {
                 val jparameters = joption.get("parameters").asArray()
-                for (jp in jparameters) {
-                    val jparameter = jp.asObject()
-                    val name = jparameter.getString("name", "")
-                    val parameter = option.task.taskD.root.find(name)
-                    val jexpression = jparameter.get("expression")
-                    if (parameter is MultipleParameter<*> && jexpression == null) {
-                        // Special handling, because it contains multiple values
-                        val jvalues1 = jparameter.get("values")
-                        if (jvalues1 == null) {
-                            println("Values not found for option '${option.code}' parameter '${parameter.name}'. Skipping")
-                            continue
-                        }
-                        val jvalues = jparameter.get("values").asArray()
-                        for (jvaluesItem in jvalues) {
-                            val innerParameter = parameter.newValue()
-                            val jvi = jvaluesItem.asObject()
-                            val jvalue = jvi.get("value")
-                            if (jvalue == null) {
-                                innerParameter.expression = jvi.getString("expression", "?missing value?")
-                            } else {
-                                innerParameter.stringValue = jvalue.asString()
-                            }
-                        }
-                        // Note, the above cannot handle MultipleParameters inside MultipleParameters!!
-                        // Should refactor with a "loadParameter" method, and use recursion.
-                        continue
-                    }
-                    if (parameter is ValueParameter<*>) {
-                        val jvalue = jparameter.get("value")
-                        if (jvalue == null) {
-                            parameter.expression = jparameter.getString("expression", "?missing value?")
-                        } else {
-                            parameter.stringValue = jvalue.asString()
-                        }
-                    }
-                }
-
+                JsonHelper.read(jparameters, option.task)
             }
             return option
         }

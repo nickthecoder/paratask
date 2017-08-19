@@ -54,11 +54,19 @@ interface ValueParameter<T>
         if (v is Iterable<*> && parent is MultipleParameter<*>) {
             parent.evaluateMultiple(this, v)
         } else {
-            @Suppress("UNCHECKED_CAST")
-            // TODO We really need to throw an exception is the type isn't correct. How?
-            value = v as T
+            coerce(v)
         }
         expression = null
+    }
+
+    /**
+     * Used when evaluating expressions, the value is coerced to fit the required data type. For example,
+     * DoubleParameter can coerce all numbers types to doubles. However, the default behaviour is to
+     * convert the value to a string, and set the parameter via stringValue. Therefore DoubleParameter doesn't NEED
+     * to override this method, but it would be more efficient if it did.
+     */
+    fun coerce(v: Any?) {
+        stringValue = v.toString()
     }
 
     override fun errorMessage(): String? = errorMessage(value)

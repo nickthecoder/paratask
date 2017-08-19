@@ -50,7 +50,7 @@ class MythRecordedTool : AbstractTableTool<MythRecordedTool.RecordedLine>() {
 
     val passwordP = StringParameter("password", value = "mythtv")
 
-    val directoryP = FileParameter("direcotry", expectFile = false, value = File("/video/myth/"))
+    val directoryP = FileParameter("directory", expectFile = false, value = File("/video/myth/"))
 
     init {
         Class.forName("com.mysql.jdbc.Driver")

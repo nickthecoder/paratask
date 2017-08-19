@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.tasks.FlipImageTask
+import uk.co.nickthecoder.paratask.tasks.ResizeImageTask
+import uk.co.nickthecoder.paratask.tasks.RotateImageTask
 import uk.co.nickthecoder.paratask.tools.*
 import uk.co.nickthecoder.paratask.tools.editor.EditorTool
 import uk.co.nickthecoder.paratask.tools.git.*
@@ -62,8 +65,14 @@ class ParaTaskCore : Registers {
         git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
         git.addTasks(GitCommitTask(), GitRMTask())
 
+        val images = TaskAndToolGroup("Images")
+        images.addTasks(ResizeImageTask())
+        images.addTasks(RotateImageTask())
+        images.addTasks(FlipImageTask())
+
         TaskRegistry.addGroup(git)
         TaskRegistry.addGroup(files)
+        TaskRegistry.addGroup(images)
 
         TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
         TaskRegistry.aliasTool(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")

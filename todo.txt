@@ -1,4 +1,7 @@
 
+Image resize
+Image Rotate
+Fix "ei" EditImage, as it currently needs a "toString" rows.collect{ file }
 
 Bugs
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
@@ -37,10 +40,6 @@ Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm
 	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
 	Or add a list of ScaledDoubleParameters???
 	Or make ScaledValue imutable???
-	
-Implement a PROPER terminal (as well as the simple one?)
-	Perhaps put it in its own sub-project to isolate it from the rest due to it's large number of dependencies.
-	OR, create a new project just for it, and use a "plugin" system to include it.
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.

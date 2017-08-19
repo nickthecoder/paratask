@@ -42,11 +42,6 @@ abstract class AbstractCommandTask() : AbstractTask() {
 
     var output by outputP
 
-    /*
-     * Only used when output is TOOL (so we know which project window to create a new output tool).
-     */
-    var projectWindow: ProjectWindow? = null
-
     abstract fun createCommand(): OSCommand
 
     override fun run() {
