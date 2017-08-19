@@ -22,12 +22,12 @@ import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.project.Preferences
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
 
-class OptionsFilesTool : AbstractTableTool<FileOptions>() {
+class OptionsFilesTool : ListTableTool<FileOptions>() {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with Option Files (does not include those in the jar file)")
 
@@ -39,9 +39,13 @@ class OptionsFilesTool : AbstractTableTool<FileOptions>() {
         taskD.addParameters(directoryP)
     }
 
-    override fun createColumns() {
+    override fun createColumns(): List<Column<FileOptions, *>> {
+        val columns = mutableListOf<Column<FileOptions, *>>()
+
         columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.resource.nameWithoutExtension })
         columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.resource.path })
+
+        return columns
     }
 
     override fun run() {

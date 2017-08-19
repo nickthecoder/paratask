@@ -21,7 +21,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
 import java.io.BufferedReader
@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat
 /**
  *
  */
-class MythRecordedTool : AbstractTableTool<MythRecordedTool.RecordedLine>() {
+class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
 
     override val taskD = TaskDescription("mythRecorded")
 
@@ -58,13 +58,18 @@ class MythRecordedTool : AbstractTableTool<MythRecordedTool.RecordedLine>() {
         taskD.addParameters(serverP, databaseP, userP, passwordP, directoryP)
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<RecordedLine, *>> {
+        val columns = mutableListOf<Column<RecordedLine, *>>()
+
         columns.add(Column<RecordedLine, String>("channel") { it.channel })
         columns.add(Column<RecordedLine, Date>("start") { it.start })
         columns.add(Column<RecordedLine, String>("title") { it.title })
         columns.add(Column<RecordedLine, String>("subtitle") { it.subtitle })
         columns.add(Column<RecordedLine, String>("description") { it.description })
         columns.add(BaseFileColumn<RecordedLine>("file", base = directoryP.value!!) { it.file })
+
+        return columns
     }
 
     override fun run() {

@@ -65,7 +65,13 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
     }
 
+    fun selectedRows(): List<R> {
+        return tableView.selectionModel.selectedItems.map { it.row }
+    }
+
     override fun attached(toolPane: ToolPane) {
+
+        val columns = tool.createColumns()
 
         super.attached(toolPane)
         with(codeColumn) {
@@ -76,7 +82,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         }
         tableView.columns.add(codeColumn)
 
-        for (column in tool.columns) {
+        for (column in columns) {
             tableView.columns.add(column)
         }
 

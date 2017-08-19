@@ -22,7 +22,7 @@ import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
 
 class DirectoryTool() :
         AbstractDirectoryTool("directory", "Work with a Single Directory"),
-        uk.co.nickthecoder.paratask.misc.AutoRefreshTool {
+        AutoRefreshTool {
 
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
@@ -33,7 +33,7 @@ class DirectoryTool() :
     }
 
     constructor(file: java.io.File) : this() {
-        directoryP.value = file
+        directoriesP.value = listOf(file)
     }
 
     override fun run() {

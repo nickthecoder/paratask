@@ -18,12 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.util.Stoppable
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.util.process.BufferedSink
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
 
-abstract class AbstractCommandTool<T : Any> : AbstractTableTool<T>(), Stoppable {
+abstract class AbstractCommandTool<T : Any> : ListTableTool<T>(), Stoppable {
 
     protected var exec: Exec? = null
 

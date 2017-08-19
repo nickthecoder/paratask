@@ -81,8 +81,13 @@ object JsonHelper {
                                     val jvalueArray = jvalue.asArray()
                                     read(jvalueArray, newValue)
                                 } else if (jvalue.isObject) {
-                                    val expression = jvalue.asObject().getString("expression", "")
-                                    newValue.expression = expression
+                                    val value = jvalue.asObject().getString("value", null)
+                                    if ( value != null ) {
+                                        newValue.stringValue = value
+                                    } else {
+                                        val expression = jvalue.asObject().getString("expression", null)
+                                        newValue.expression = expression
+                                    }
                                 }
                             }
                             continue

@@ -65,7 +65,7 @@ abstract class AbstractTerminalTool(
             return constructor.newInstance(this) as TerminalResults
 
         } catch (e: Exception) {
-            println(e)
+            // println(e)
             // Fall back to using the naff, SimpleTerminalResults
             return SimpleTerminalResults(this, showCommand = showCommand, allowInput = allowInput)
         }

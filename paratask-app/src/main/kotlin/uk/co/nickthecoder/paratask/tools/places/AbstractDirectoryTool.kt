@@ -21,14 +21,13 @@ import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.table.TableToolDropFilesHelper
+import uk.co.nickthecoder.paratask.misc.Thumbnailer
+import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
-import uk.co.nickthecoder.paratask.misc.*
+import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
@@ -37,10 +36,16 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     : AbstractTableTool<WrappedFile>(), HasDirectory {
 
-
     final override val taskD = TaskDescription(name = name, description = description)
 
+    /**
+     * For backward compatability only. directoriesP now supercedes directoyrP
+     */
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
+
+    val directoriesP = MultipleParameter("directories") {
+        FileParameter("dir", label = "Directory", expectFile = false, mustExist = true)
+    }
 
     val depthP = IntParameter("depth", value = 1, range = 1..Int.MAX_VALUE, columnCount = 3)
 
@@ -58,7 +63,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     val thumbnailer = Thumbnailer()
 
-    override val directory: File? by directoryP
+    override val directory: File?
+        get() = directoriesP.value.firstOrNull()
 
     var dropHelper: TableToolDropFilesHelper<WrappedFile> = object : TableToolDropFilesHelper<WrappedFile>(this) {
 
@@ -82,11 +88,21 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         }
     }
 
+    /**
+     * The results Map of directory to list of files listed for the directory.
+     */
+    var lists = mutableMapOf<File, List<WrappedFile>>()
+
+
     init {
-        taskD.addParameters(directoryP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
+        taskD.addParameters(directoryP, directoriesP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
+        directoryP.hidden = true
+        directoryP.listen { directoriesP.value = listOf(directoryP.value) }
     }
 
-    override fun createColumns() {
+    override fun createColumns(): List<Column<WrappedFile, *>> {
+        val columns = mutableListOf<Column<WrappedFile, *>>()
+
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { createImageView(it) })
         if (isTree()) {
             columns.add(BaseFileColumn<WrappedFile>("path", base = directoryP.value!!) { it.file })
@@ -95,6 +111,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         }
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
+
+        return columns
     }
 
     override fun attached(toolPane: ToolPane) {
@@ -128,23 +146,32 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         return result
     }
 
-    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
+    open fun createHeaderRows(dirP: FileParameter): HeaderRows = HeaderRows(this, listOf(HeaderRow().addAll(dirP)))
 
-    val dragHelper = DragFilesHelper {
-        selectedRows().map { it.file }
-    }
+    var dragHelper: DragFilesHelper? = null
 
-    override fun createTableResults(): TableResults<WrappedFile> {
-        val tableResults = super.createTableResults()
+    fun createResults(dirP: FileParameter): Results {
+        val dir = dirP.value!!
+        val list = lists[dir]!!
+        val tableResults = TableResults(this, list, dir.name)
 
         dropHelper.attachTableResults(tableResults)
+        dragHelper = DragFilesHelper {
+            tableResults.selectedRows().map { it.file }
+        }
 
-        return tableResults
+        return HeadedResults(tableResults, createHeaderRows(dirP))
+    }
+
+    override fun createResults(): List<Results> {
+        return directoriesP.innerParameters.filter { it.value != null }.map { dirP ->
+            createResults(dirP as FileParameter)
+        }
     }
 
     override fun createRow(): TableRow<WrappedRow<WrappedFile>> {
         val row = super.createRow()
-        dragHelper.applyTo(row)
+        dragHelper?.applyTo(row)
         return row
     }
 
@@ -152,17 +179,19 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         shortTitle = directory?.name ?: "Directory"
         longTitle = "Directory ${directory?.path}"
 
-        val lister = FileLister(
-                depth = depthP.value!!,
-                onlyFiles = onlyFilesP.value,
-                includeHidden = includeHiddenP.value!!,
-                enterHidden = enterHiddenP.value!!,
-                includeBase = includeBaseP.value!!,
-                extensions = extensionsP.value
-        )
+        directoriesP.value.filterNotNull().forEach { dir ->
+            val lister = FileLister(
+                    depth = depthP.value!!,
+                    onlyFiles = onlyFilesP.value,
+                    includeHidden = includeHiddenP.value!!,
+                    enterHidden = enterHiddenP.value!!,
+                    includeBase = includeBaseP.value!!,
+                    extensions = extensionsP.value
+            )
 
-        list.clear()
-        list.addAll(lister.listFiles(directoryP.value!!).map { WrappedFile(it) })
+            lists[dir] = lister.listFiles(dir).map { WrappedFile(it) }
+        }
+
     }
 
     open fun isTree(): Boolean = false

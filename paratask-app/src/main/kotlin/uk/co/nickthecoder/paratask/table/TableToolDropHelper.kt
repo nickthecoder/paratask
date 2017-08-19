@@ -10,7 +10,7 @@ import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.project.ToolPane
 
-class CompoundToolDropHelper<R : Any>(val tool: AbstractTableTool<R>, vararg helpers: TableToolDropHelper<*, R>) {
+class CompoundToolDropHelper<R : Any>(val tool: ListTableTool<R>, vararg helpers: TableToolDropHelper<*, R>) {
 
     val dropHelpers: List<TableToolDropHelper<*, R>> = helpers.toList()
 
@@ -51,7 +51,7 @@ class CompoundToolDropHelper<R : Any>(val tool: AbstractTableTool<R>, vararg hel
  */
 abstract class TableToolDropHelper<T, R : Any>(
         val dataFormat: DataFormat,
-        val tool: AbstractTableTool<R>,
+        val tool: TableTool<R>,
         allowCopy: Boolean = true,
         allowMove: Boolean = true,
         allowLink: Boolean = true) {
@@ -64,12 +64,11 @@ abstract class TableToolDropHelper<T, R : Any>(
 
     fun createHelperOnTable() = DropHelperOnTable(this, modes = modes)
 
-    fun createHelperOnTab() = DropHelperOnTab<T>(this, modes = modes)
+    fun createHelperOnTab() = DropHelperOnTab(this, modes = modes)
 
     fun attachTableResults(tableResults: TableResults<R>) {
-        dropHelperOnTable?.let {
-            it.cancel()
-        }
+        dropHelperOnTable?.cancel()
+
         dropHelperOnTable = createHelperOnTable()
         dropHelperOnTable!!.applyTo(tableResults.tableView)
     }
@@ -156,9 +155,7 @@ class DropHelperOnTable<T, R : Any>(
     override fun onDropped(event: DragEvent): Boolean {
 
         val content = content(event)
-        if (content == null) {
-            return false
-        }
+        content ?: return false
 
         val (row, _) = parent.tool.findTableRow(event)
         if (row != null && parent.acceptDropOnRow(row) != null) {

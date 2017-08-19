@@ -13,7 +13,7 @@ import java.io.File
  * R is the type or Row
  */
 abstract class TableToolDropFilesHelper<R : Any>(
-        tool: AbstractTableTool<R>,
+        tool: TableTool<R>,
         allowCopy: Boolean = true,
         allowMove: Boolean = true,
         allowLink: Boolean = true)

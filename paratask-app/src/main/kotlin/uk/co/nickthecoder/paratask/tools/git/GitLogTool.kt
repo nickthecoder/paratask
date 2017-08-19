@@ -64,10 +64,15 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<GitLogRow, *>> {
+        val columns = mutableListOf<Column<GitLogRow, *>>()
+
         columns.add(Column<GitLogRow, String>("date") { it.date })
         columns.add(Column<GitLogRow, String>("message", width = 400) { it.message })
         columns.add(Column<GitLogRow, String>("author") { it.author })
+
+        return columns
     }
 
     override fun createCommand(): OSCommand {

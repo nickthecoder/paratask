@@ -30,7 +30,7 @@ import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 
-class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
+class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -90,7 +90,10 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
         resourceDirectoryP.value = Preferences.optionsPath[0]
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<Option, *>> {
+        val columns = mutableListOf<Column<Option, *>>()
+
         columns.add(Column<Option, String>("code") { it.code })
         columns.add(Column<Option, String>("label") { it.label })
         columns.add(BooleanColumn<Option>("isRow") { it.isRow })
@@ -106,15 +109,17 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
             }
         })
 
+        return columns
     }
 
-    val dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
-        selectedRows()
-    }
+    var dragHelper: DragHelper<List<Option>>? = null
 
     override fun createTableResults(): TableResults<Option> {
         val tableResults = super.createTableResults()
 
+        dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
+            tableResults.selectedRows()
+        }
         dropHelper.attachTableResults(tableResults)
 
         return tableResults
@@ -122,7 +127,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
 
     override fun createRow(): TableRow<WrappedRow<Option>> {
         val row = super.createRow()
-        dragHelper.applyTo(row)
+        dragHelper?.applyTo(row)
         return row
     }
 
@@ -146,7 +151,7 @@ class OptionsTool : AbstractTableTool<Option>, AutoRefreshTool {
     }
 
     override fun detaching() {
-        super<AbstractTableTool>.detaching()
+        super<ListTableTool>.detaching()
         super<AutoRefreshTool>.detaching()
         dropHelper.detaching()
     }

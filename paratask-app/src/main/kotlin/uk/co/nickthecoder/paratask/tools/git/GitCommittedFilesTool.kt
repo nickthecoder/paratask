@@ -51,9 +51,13 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
     }
 
 
-    override fun createColumns() {
+    override fun createColumns(): List<Column<WrappedFile, *>> {
+        val columns = mutableListOf<Column<WrappedFile, *>>()
+
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
         columns.add(BaseFileColumn<WrappedFile>("path", base = directory!!) { it.file })
+
+        return columns
     }
 
     override fun createCommand(): OSCommand {

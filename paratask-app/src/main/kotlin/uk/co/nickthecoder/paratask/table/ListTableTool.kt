@@ -18,14 +18,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.control.TableRow
+import javafx.scene.control.TableView
 import javafx.scene.input.DragEvent
-import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.project.Results
 
-interface TableTool<R : Any> : Tool {
+abstract class ListTableTool<R : Any> : AbstractTableTool<R>() {
 
-    fun createColumns(): List<Column<R, *>>
+    var list = mutableListOf<R>()
 
-    fun createRow(): TableRow<WrappedRow<R>>
+    open val resultsName = "Results"
 
-    fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?>
+    open fun createTableResults(): TableResults<R> {
+        return TableResults(this, list, resultsName)
+    }
+
+    override fun createResults(): List<Results> {
+        return listOf(createTableResults())
+    }
+
 }

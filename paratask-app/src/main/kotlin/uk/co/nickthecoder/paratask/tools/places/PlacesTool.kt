@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
+class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
@@ -84,37 +84,52 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
         taskD.addParameters(fileP)
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<Place, *>> {
+        val columns = mutableListOf<Column<Place, *>>()
+
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
         columns.add(Column<Place, String>("label") { it.label })
         columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
         columns.add(Column<Place, String>("location") { it.resource.path })
+
+        return columns
     }
 
-    var filesDragHelper = DragFilesHelper {
-        selectedRows().filter { it.isFile() }.map { it.file!! }
-    }
-    var placesDragHelper = DragHelper<List<Place>>(Place.dataFormat, onMoved = { list ->
-        println("Moved $list")
-        list.forEach {
-            placesFile.remove(it)
-        }
-        placesFile.save()
-    }) {
-        selectedRows()
-    }
-    var compoundDragHelper = CompoundDragHelper(placesDragHelper, filesDragHelper)
+    var filesDragHelper: DragFilesHelper? = null
+
+    var placesDragHelper: DragHelper<List<Place>>? = null
+
+
+    var compoundDragHelper: CompoundDragHelper? = null
+
 
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
 
+        filesDragHelper = DragFilesHelper {
+            tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }
+        }
+
+        placesDragHelper = DragHelper<List<Place>>(Place.dataFormat, onMoved = { list ->
+            println("Moved $list")
+            list.forEach {
+                placesFile.remove(it)
+            }
+            placesFile.save()
+        }) {
+            tableResults.selectedRows()
+        }
+
+        compoundDragHelper = CompoundDragHelper(placesDragHelper!!, filesDragHelper!!)
         compoundDropHelper.attachTableResults(tableResults)
+
         return tableResults
     }
 
     override fun createRow(): TableRow<WrappedRow<Place>> {
         val row = super.createRow()
-        compoundDragHelper.applyTo(row)
+        compoundDragHelper?.applyTo(row)
         return row
     }
 
@@ -132,7 +147,7 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
-        super<AbstractTableTool>.detaching()
+        super<ListTableTool>.detaching()
         compoundDropHelper.detaching()
     }
 

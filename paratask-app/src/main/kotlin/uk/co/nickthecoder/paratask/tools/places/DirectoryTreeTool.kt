@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
+import uk.co.nickthecoder.paratask.project.HeaderRows
 import java.io.File
 
 class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a Directory Tree") {
@@ -30,10 +32,10 @@ class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a 
     }
 
     constructor(directory: File) : this() {
-        this.directoryP.value = directory
+        this.directoriesP.value = listOf(directory)
     }
 
-    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().addAll(directoryP, depthP))
+    override fun createHeaderRows(dirP: FileParameter): HeaderRows = HeaderRows(this, listOf(HeaderRow().addAll(dirP, depthP)))
 
     override fun isTree() = depthP.value != 1
 }

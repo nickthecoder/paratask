@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
+class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
 
     override val taskD = TaskDescription("placesDirectory", description = "Places Directory")
 
@@ -76,11 +76,16 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
         taskD.addParameters(directoryP, filenameP)
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<Place, *>> {
+        val columns = mutableListOf<Column<Place, *>>()
+
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
         columns.add(Column<Place, String>("label") { it.label })
         columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
         columns.add(Column<Place, String>("location") { it.resource.path })
+
+        return columns
     }
 
     override fun createHeaderRows(): List<HeaderRow> {
@@ -88,12 +93,14 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
     }
 
 
-    val dragHelper = DragFilesHelper {
-        selectedRows().map { it.file!! }
-    }
+    var dragHelper : DragFilesHelper? = null
 
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()
+
+        dragHelper = DragFilesHelper {
+            tableResults.selectedRows().map { it.file!! }
+        }
 
         dropHelper.attachTableResults(tableResults)
         return tableResults
@@ -101,7 +108,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun createRow(): TableRow<WrappedRow<Place>> {
         val row = super.createRow()
-        dragHelper.applyTo(row)
+        dragHelper?.applyTo(row)
         return row
     }
 
@@ -120,7 +127,7 @@ class PlacesDirectoryTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
-        super<AbstractTableTool>.detaching()
+        super<ListTableTool>.detaching()
         dropHelper.detaching()
     }
 

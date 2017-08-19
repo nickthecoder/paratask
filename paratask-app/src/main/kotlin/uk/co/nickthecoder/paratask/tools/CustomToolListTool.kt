@@ -22,11 +22,11 @@ import uk.co.nickthecoder.paratask.RegisteredTaskFactory
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class CustomToolListTool : AbstractTableTool<CustomToolRow>() {
+class CustomToolListTool : ListTableTool<CustomToolRow>() {
 
     override val taskD = TaskDescription("customToolList", description = "Create a list of customised tools")
 
@@ -42,11 +42,16 @@ class CustomToolListTool : AbstractTableTool<CustomToolRow>() {
         taskD.addParameters(toolsP)
     }
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<CustomToolRow, *>> {
+        val columns = mutableListOf<Column<CustomToolRow, *>>()
+        
         columns.add(Column<CustomToolRow, String>("label") { row -> row.label })
         columns.add(Column<CustomToolRow, ImageView>("icon", label = "") { row -> ImageView(row.tool.icon) })
         columns.add(Column<CustomToolRow, String>("toolName") { row -> row.tool.taskD.name.uncamel() })
         columns.add(Column<CustomToolRow, String>("parameters") { row -> parameters(row.tool) })
+
+        return columns
     }
 
     override fun run() {

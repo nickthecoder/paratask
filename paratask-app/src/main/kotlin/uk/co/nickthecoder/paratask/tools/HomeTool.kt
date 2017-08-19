@@ -22,18 +22,23 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class HomeTool : AbstractTableTool<Tool>() {
+class HomeTool : ListTableTool<Tool>() {
 
     override val taskD = TaskDescription("home", description = "Lists available Tools")
 
-    override fun createColumns() {
+
+    override fun createColumns(): List<Column<Tool, *>> {
+        val columns = mutableListOf<Column<Tool, *>>()
+
         columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })
         columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name.uncamel() })
         columns.add(Column<Tool, String>("description") { tool -> tool.taskD.description })
+
+        return columns
     }
 
     override fun run() {

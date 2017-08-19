@@ -45,11 +45,14 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
         grepTask.additionalOptionsP.hidden = true
     }
 
-    override fun createColumns() {
+    override fun createColumns(): List<Column<GrepRow, *>> {
+        val columns = mutableListOf<Column<GrepRow, *>>()
+
         columns.add(FileNameColumn<GrepRow>("name") { it.file })
         columns.add(NumberColumn<GrepRow, Int>("lineNumber", label = "#") { it.lineNumber })
         columns.add(Column<GrepRow, String>("line") { it.line })
 
+        return columns
     }
 
     override fun createHeaderRows(): List<HeaderRow> {

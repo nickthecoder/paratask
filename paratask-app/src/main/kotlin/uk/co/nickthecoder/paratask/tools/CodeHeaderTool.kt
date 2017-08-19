@@ -26,7 +26,7 @@ import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.table.AbstractTableTool
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import java.io.File
 
-class CodeHeaderTool : AbstractTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory, Registers {
+class CodeHeaderTool : ListTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory, Registers {
 
     override val taskD = TaskDescription("codeHeader", description = "Adds a Copyright notice to the top of source code file")
 
@@ -82,10 +82,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         TaskRegistry.projectData.addParameters(headerTextP.copy())
     }
 
-    override fun createColumns() {
+    override fun createColumns() : List<Column<ProcessedFile,*>> {
+        val columns = mutableListOf<Column<ProcessedFile,*>>()
+
         columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
         columns.add(Column<ProcessedFile, String>("name") { it.file.name })
         columns.add(BaseFileColumn<ProcessedFile>("path", base = directory!!) { it.file })
+
+        return columns
     }
 
     override fun attached(toolPane: ToolPane) {
