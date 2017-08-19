@@ -20,6 +20,8 @@
 /core/out
 /paratask-core/out
 /paratask-app/out
+/paratask-jediterm/out
 /paratask-core/build
 /paratask-app/build
+/paratask-jediterm/build
 /jediterm

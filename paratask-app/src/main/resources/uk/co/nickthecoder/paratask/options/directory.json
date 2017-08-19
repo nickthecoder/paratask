@@ -91,6 +91,35 @@
                     "value": ""
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "term",
+            "label": "Terminal",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "keyCode": "T",
+            "alt": "DOWN",
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "bash"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                }
+            ]
         }
     ]
 }

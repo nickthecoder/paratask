@@ -19,6 +19,8 @@ defaultTasks 'installApp'
 
 dependencies {
     compile  project(':paratask-app')
+    // Comment out the following line, and also the line in settings.gradle to compile paratask without jediterm.
+    compile  project(':paratask-jediterm')
 }
 
 repositories {
@@ -68,6 +70,23 @@ project(':paratask-app') {
         compile 'mysql:mysql-connector-java:5.1.6'
 
         compile  project(':paratask-core')
+
+        testCompile 'junit:junit:4.11'
+        testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
+    }
+
+    defaultTasks 'jar'
+
+}
+
+project(':paratask-jediterm') {
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+        compile  project(':paratask-app')
+        compile  project(':paratask-core')
         
         compile ':annotations'
         compile ':javac2'
@@ -82,11 +101,7 @@ project(':paratask-app') {
         compile ':log4j:1.2.14'
         compile ':pty4j:0.7.2'
         compile ':purejavacomm:0.0.17'
-
-        testCompile 'junit:junit:4.11'
-        testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'
     }
-
+    
     defaultTasks 'jar'
-
 }

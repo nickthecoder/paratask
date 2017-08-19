@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.terminal
 
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -53,8 +54,21 @@ abstract class AbstractTerminalTool(
     }
 
     private fun createTerminalResults(): TerminalResults {
-        return SimpleTerminalResults(this, showCommand = showCommand, allowInput = allowInput)
-        //return RealTerminalResults(this)
+        // Let's try to create a RealTerminalResults, but do it using reflection so that this code can be compiled
+        // without all of the bloat required by JediTerm. Therefore, we have a choice of lots of bloat, but an
+        // excellent terminal, or no bloat, and a naff terminal.
+        try {
+            // The following is a reflection version of : return RealTerminalResults(this)
+
+            val realResultsClass = Class.forName("uk.co.nickthecoder.paratask.tools.terminal.RealTerminalResults")
+            val constructor = realResultsClass.getConstructor(Tool::class.java)
+            return constructor.newInstance(this) as TerminalResults
+
+        } catch (e: Exception) {
+            println(e)
+            // Fall back to using the naff, SimpleTerminalResults
+            return SimpleTerminalResults(this, showCommand = showCommand, allowInput = allowInput)
+        }
     }
 
     override fun createResults(): List<Results> {
