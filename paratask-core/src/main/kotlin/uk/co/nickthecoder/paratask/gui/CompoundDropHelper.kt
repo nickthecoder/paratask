@@ -4,34 +4,36 @@ import javafx.css.Styleable
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 
-class CompoundDropHelper(vararg helpers: DropHelper<*>) : AbstractDropHelper(modes = TransferMode.ANY) {
+class CompoundDropHelper(vararg helpers: DropHelper<*>) : AbstractDropHelper() {
 
     val dropHelpers = helpers.toMutableList()
 
-    override fun accept(event: DragEvent): Array<TransferMode>? {
-        dropHelpers.forEach {
-            val modes = it.accept(event)
-            if (modes != null) {
-                return modes
-            }
-        }
-        return null
-    }
-
+    var currentHelper: DropHelper<*>? = null
 
     override fun onDragOver(event: DragEvent): Boolean {
         dropHelpers.forEach {
             if (it.onDragOver(event) == true) {
+                currentHelper = it
                 return true
             }
         }
+        currentHelper = null
         return false
     }
 
-    override fun onDropped(event: DragEvent): Boolean {
-        dropHelpers.filter { event.dragboard.contentTypes.contains(it.dataFormat) }.firstOrNull()?.let {
-            return it.onDropped(event)
+
+    override fun onDragExited(event: DragEvent) {
+        currentHelper?.let {
+            it.onDragExited(event)
         }
-        return false
+        currentHelper = null
     }
+
+    override fun onDragDropped(event: DragEvent) {
+        currentHelper?.let {
+            it.onDragDropped(event)
+        }
+        currentHelper = null
+    }
+
 }

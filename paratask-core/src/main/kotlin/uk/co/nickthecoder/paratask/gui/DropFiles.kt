@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.scene.Node
 import javafx.scene.input.DataFormat
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
@@ -25,7 +24,7 @@ import java.io.File
 
 open class DropFiles(
         modes: Array<TransferMode> = TransferMode.ANY,
-        dropped: (DragEvent) -> Boolean)
+        dropped: (DragEvent, List<File>?) -> Boolean)
 
     : DropHelper<List<File>?>(
         dataFormat = DataFormat.FILES,

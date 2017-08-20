@@ -7,24 +7,18 @@ import java.io.File
 
 /**
  * A helper class for table tools which can be a drop target for files.
- * The files can either be dropped onto the tab, or onto the table (i.e. this class has TWO DropHelper instances).
  * When dropping onto the table, you can distiguish between dropping to the table as a whole,
  * or dropping to a single row of the table.
  * R is the type or Row
  */
-abstract class TableToolDropFilesHelper<R : Any>(
+abstract class TableDropFilesHelper<R : Any>(
         tool: TableTool<R>,
-        allowCopy: Boolean = true,
-        allowMove: Boolean = true,
-        allowLink: Boolean = true)
+        modes: Array<TransferMode> = TransferMode.ANY)
 
-    : TableToolDropHelper<List<File>, R>(
+    : TableDropHelper<List<File>, R>(
         dataFormat = DataFormat.FILES,
         tool = tool,
-        allowCopy = allowCopy,
-        allowMove = allowMove,
-        allowLink = allowLink) {
-
+        modes = modes) {
 
     fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {
 

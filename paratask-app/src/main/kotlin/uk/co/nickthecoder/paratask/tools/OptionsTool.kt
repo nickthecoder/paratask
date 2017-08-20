@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
+import javafx.scene.Node
 import javafx.scene.control.TableRow
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTask
@@ -40,18 +41,18 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
 
     var includesTool: IncludesTool = IncludesTool()
 
-    var dropHelper: TableToolDropHelper<List<Option>, Option> = object :
-            TableToolDropHelper<List<Option>, Option>(Option.dataFormat, this) {
+    var dropHelper: TableDropHelper<List<Option>, Option> = object :
+            TableDropHelper<List<Option>, Option>(Option.dataFormat, this) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
 
         override fun acceptDropOnRow(row: Option) = null
 
-        override fun droppedFilesOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
+        override fun droppedOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
             return false
         }
 
-        override fun droppedFilesOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
+        override fun droppedOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
             val fileOptions = getFileOptions()
             for (option in content) {
                 fileOptions.addOption(option.copy())
@@ -120,7 +121,7 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
         dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()
         }
-        dropHelper.attachTableResults(tableResults)
+        dropHelper.applyTo(tableResults.tableView)
 
         return tableResults
     }
@@ -147,13 +148,13 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
-        dropHelper.attachToolPane(toolPane)
+        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
     }
 
     override fun detaching() {
         super<ListTableTool>.detaching()
         super<AutoRefreshTool>.detaching()
-        dropHelper.detaching()
+        dropHelper.cancel()
     }
 
 

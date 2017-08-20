@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.Node
 import javafx.scene.control.OverrunStyle
 import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
@@ -29,7 +30,6 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.misc.*
-import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
@@ -50,20 +50,20 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
     lateinit var placesFile: PlacesFile
 
 
-    var dropHelper: TableToolDropFilesHelper<Place> = object : TableToolDropFilesHelper<Place>(this) {
+    var dropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>(this) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
 
         override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
-        override fun droppedFilesOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
                 return fileOperation(row.file!!, content, transferMode)
             }
             return false
         }
 
-        override fun droppedFilesOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
             for (file in content) {
                 placesFile.places.add(Place(placesFile, Resource(file), file.name))
             }
@@ -103,7 +103,7 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
             tableResults.selectedRows().map { it.file!! }
         }
 
-        dropHelper.attachTableResults(tableResults)
+        dropHelper.applyTo(tableResults.tableView)
         return tableResults
     }
 
@@ -123,13 +123,13 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropHelper.attachToolPane(toolPane)
+        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
     }
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<ListTableTool>.detaching()
-        dropHelper.detaching()
+        dropHelper.cancel()
     }
 
     fun taskNew() = placesFile.taskNew()

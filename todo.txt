@@ -1,7 +1,6 @@
 
 
 DropHelpers should be applied to the minor tabs.
-Don't work on Major tabs either!!!
 
 Focus on Header - if there is none, then check if 1st/current results is a HeadedResults, and focus on its header.
 Use HeaderRows in ToolPane_Impl

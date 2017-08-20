@@ -17,15 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.Node
 import javafx.scene.control.OverrunStyle
 import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.gui.CompoundDragHelper
-import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.gui.DragHelper
+import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
@@ -43,20 +42,20 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     lateinit var placesFile: PlacesFile
 
-    var filesDropHelper: TableToolDropFilesHelper<Place> = object : TableToolDropFilesHelper<Place>(this) {
+    var filesDropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>(this) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
 
         override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
-        override fun droppedFilesOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
                 return fileOperation(row.file!!, content, transferMode)
             }
             return false
         }
 
-        override fun droppedFilesOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
             for (file in content) {
                 placesFile.places.add(Place(placesFile, Resource(file), file.name))
             }
@@ -66,19 +65,17 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     }
 
-    var placesDropHelper: TableToolDropHelper<List<Place>, Place> =
-            object : TableToolDropHelper<List<Place>, Place>(Place.dataFormat, this, allowLink = false) {
+    var placesDropHelper = DropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
 
-                override fun droppedFilesOnNonRow(content: List<Place>, transferMode: TransferMode): Boolean {
-                    content.forEach {
-                        placesFile.places.add(Place(placesFile, it.resource, it.label))
-                    }
-                    placesFile.save()
-                    return true
-                }
-            }
+        content.forEach {
+            placesFile.places.add(Place(placesFile, it.resource, it.label))
+        }
+        placesFile.save()
+        true
+    }
 
-    val compoundDropHelper = CompoundToolDropHelper<Place>(this, placesDropHelper, filesDropHelper)
+
+    val compoundDropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
 
     init {
         taskD.addParameters(fileP)
@@ -122,7 +119,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
         }
 
         compoundDragHelper = CompoundDragHelper(placesDragHelper!!, filesDragHelper!!)
-        compoundDropHelper.attachTableResults(tableResults)
+        compoundDropHelper.applyTo(tableResults.tableView)
 
         return tableResults
     }
@@ -141,14 +138,14 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        compoundDropHelper.attachToolPane(toolPane)
+        compoundDropHelper.applyTo(toolPane.halfTab.projectTab as Node)
     }
 
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<ListTableTool>.detaching()
-        compoundDropHelper.detaching()
+        compoundDropHelper.cancel()
     }
 
     fun taskNew() = placesFile.taskNew()

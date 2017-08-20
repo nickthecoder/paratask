@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.Node
 import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
@@ -61,20 +62,20 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     override val directory: File?
         get() = directoriesP.value.firstOrNull()
 
-    var dropHelper: TableToolDropFilesHelper<WrappedFile> = object : TableToolDropFilesHelper<WrappedFile>(this) {
+    var dropHelper: TableDropFilesHelper<WrappedFile> = object : TableDropFilesHelper<WrappedFile>(this) {
 
         override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
 
         override fun acceptDropOnNonRow() = if (isTree()) null else TransferMode.ANY
 
-        override fun droppedFilesOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
                 return fileOperation(row.file, content, transferMode)
             }
             return false
         }
 
-        override fun droppedFilesOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
             val dir = directory
             if (dir != null) {
                 return fileOperation(dir, content, transferMode)
@@ -123,12 +124,12 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropHelper.attachToolPane(toolPane)
+        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
     }
 
     override fun detaching() {
         super.detaching()
-        dropHelper.detaching()
+        dropHelper.cancel()
     }
 
     fun createImageView(row: WrappedFile): ImageView {
@@ -161,7 +162,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         val list = lists[dir]!!
         val tableResults = TableResults(this, list, dir.name, createColumns(dir))
 
-        dropHelper.attachTableResults(tableResults)
+        dropHelper.applyTo(tableResults.tableView)
         dragHelper = DragFilesHelper {
             tableResults.selectedRows().map { it.file }
         }
