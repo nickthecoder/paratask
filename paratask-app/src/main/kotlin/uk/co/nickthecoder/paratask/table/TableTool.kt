@@ -23,8 +23,6 @@ import uk.co.nickthecoder.paratask.Tool
 
 interface TableTool<R : Any> : Tool {
 
-    fun createColumns(): List<Column<R, *>>
-
     fun createRow(): TableRow<WrappedRow<R>>
 
     fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?>

@@ -20,7 +20,7 @@ class CompoundToolDropHelper<R : Any>(val tool: ListTableTool<R>, vararg helpers
 
     fun attachTableResults(tableResults: TableResults<R>) {
         dropHelpers.forEach {
-            dropHelpersOnTable.dropHelpers.add(it.createHelperOnTable())
+            dropHelpersOnTable.dropHelpers.add(it.createHelperOnTable(tableResults))
         }
         dropHelpersOnTable.applyTo(tableResults.tableView)
     }
@@ -62,14 +62,23 @@ abstract class TableToolDropHelper<T, R : Any>(
 
     var dropHelperOnTable: DropHelperOnTable<T, R>? = null
 
-    fun createHelperOnTable() = DropHelperOnTable(this, modes = modes)
+    fun createHelperOnTable(tableResults: TableResults<R>): DropHelperOnTable<T, R> {
+        val dhot = DropHelperOnTable(this, modes = modes)
+        dhot.target = tableResults.tableView
+        return dhot
+    }
 
-    fun createHelperOnTab() = DropHelperOnTab(this, modes = modes)
+    fun createHelperOnTab(): DropHelperOnTab<T> {
+        val dhot = DropHelperOnTab(this, modes = modes)
+        dhot.target = tool.toolPane?.halfTab?.projectTab as Node
+        return dhot
+    }
 
     fun attachTableResults(tableResults: TableResults<R>) {
+        tableResults.dropHelper = dropHelperOnTable
         dropHelperOnTable?.cancel()
 
-        dropHelperOnTable = createHelperOnTable()
+        dropHelperOnTable = createHelperOnTable(tableResults)
         dropHelperOnTable!!.applyTo(tableResults.tableView)
     }
 

@@ -29,12 +29,14 @@ abstract class ListTableTool<R : Any> : AbstractTableTool<R>() {
 
     open val resultsName = "Results"
 
-    open fun createTableResults(): TableResults<R> {
-        return TableResults(this, list, resultsName)
+    open fun createTableResults(columns: List<Column<R, *>>): TableResults<R> {
+        return TableResults(this, list, resultsName, columns)
     }
 
+    abstract fun createColumns(): List<Column<R, *>>
+
     override fun createResults(): List<Results> {
-        return listOf(createTableResults())
+        return listOf(createTableResults(createColumns()))
     }
 
 }

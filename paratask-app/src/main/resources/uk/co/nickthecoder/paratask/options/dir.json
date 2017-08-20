@@ -1,6 +1,6 @@
 {
-    "comments": "Must define row.file.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)",
-    "rowFilterScript": "row.file.isDirectory()",
+    "comments": "Must define row.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)",
+    "rowFilterScript": "row.isDirectory()",
     "includes": [
         
     ],
@@ -31,12 +31,12 @@
             ],
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
-                },
-                {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "onlyFiles",
@@ -85,8 +85,12 @@
             ],
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "depth",
@@ -132,8 +136,12 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "depth",
@@ -179,8 +187,12 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "depth",
@@ -226,12 +238,12 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
-                },
-                {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "onlyFiles",
@@ -277,8 +289,12 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "row.file"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
                 },
                 {
                     "name": "depth",

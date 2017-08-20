@@ -34,11 +34,12 @@ object JsonHelper {
                     val jArray = parametersAsJsonArray(inner)
                     jvalues.add(jArray)
                 } else {
+                    val jvalue = JsonObject()
+                    jvalues.add(jvalue)
                     if (inner.expression == null) {
-                        jvalues.add(inner.stringValue)
+                        jvalue.add("value", inner.stringValue)
                     } else {
-                        val jexpression = JsonObject()
-                        jexpression.add("expression", inner.expression!!)
+                        jvalue.add("expression", inner.expression!!)
                     }
                 }
             }
@@ -60,68 +61,75 @@ object JsonHelper {
         }
     }
 
-    fun read(jparameters: JsonArray, group: AbstractGroupParameter) {
+    fun read(jparameters: JsonArray, group: AbstractGroupParameter, task: Task? = null) {
         for (jitem in jparameters.asArray()) {
 
             val ji = jitem.asObject()
             val name = ji.getString("name", null)
             if (name != null) {
                 val parameter = group.find(name)
-                if (parameter is ValueParameter<*>) {
 
-                    if (parameter is MultipleParameter<*>) {
-                        val jvalues = ji.get("values")
-                        if (jvalues != null) {
-                            val jvaluesArray = jvalues.asArray()
-                            for (jvalue in jvaluesArray) {
-                                val newValue = parameter.newValue()
-                                if (jvalue.isString) {
-                                    newValue.stringValue = jvalue.asString()
-                                } else if (jvalue.isArray && newValue is CompoundParameter) {
-                                    val jvalueArray = jvalue.asArray()
-                                    read(jvalueArray, newValue)
-                                } else if (jvalue.isObject) {
-                                    val value = jvalue.asObject().getString("value", null)
-                                    if ( value != null ) {
-                                        newValue.stringValue = value
-                                    } else {
-                                        val expression = jvalue.asObject().getString("expression", null)
-                                        newValue.expression = expression
-                                    }
+                if (parameter is MultipleParameter<*>) {
+                    val jvalues = ji.get("values")
+                    if (jvalues != null) {
+                        val jvaluesArray = jvalues.asArray()
+                        for (jvalue in jvaluesArray) {
+                            val newValue = parameter.newValue()
+                            if (jvalue.isString) {
+                                // Backward compatability.
+                                newValue.stringValue = jvalue.asString()
+                            } else if (jvalue.isArray && newValue is CompoundParameter) {
+                                val jvalueArray = jvalue.asArray()
+                                read(jvalueArray, newValue, task)
+                            } else if (jvalue.isObject) {
+                                val value = jvalue.asObject().getString("value", null)
+                                if (value != null) {
+                                    newValue.stringValue = value
+                                } else {
+                                    val expression = jvalue.asObject().getString("expression", null)
+                                    newValue.expression = expression
                                 }
                             }
-                            continue
                         }
-
-                    } else if (parameter is TaskParameter) {
-                        val creationString = ji.getString("task", null)
-                        if (creationString != null) {
-                            val task = Task.create(creationString)
-                            val jps = ji.get("parameters")
-                            if (jps != null) {
-                                read(jps.asArray(), task)
-                            }
-                            parameter.value = task
-                            continue
-                        }
+                        continue
                     }
 
-                    val expression = ji.getString("expression", null)
-                    if (expression == null) {
-                        val value = ji.getString("value", null)
-                        if (value != null) {
-                            parameter.stringValue = value
+                } else if (parameter is TaskParameter) {
+                    val creationString = ji.getString("task", null)
+                    if (creationString != null) {
+                        val task2 = Task.create(creationString)
+                        val jps = ji.get("parameters")
+                        if (jps != null) {
+                            read(jps.asArray(), task2)
                         }
-                    } else {
-                        parameter.expression = expression
+                        parameter.value = task2
+                        continue
+                    }
+                } else {
+                    val expression = ji.getString("expression", null)
+                    val value = ji.getString("value", null)
+
+                    if (parameter is ValueParameter<*>) {
+
+                        if (expression == null) {
+                            if (value != null) {
+                                parameter.stringValue = value
+                            }
+                        } else {
+                            parameter.expression = expression
+                        }
+
+                    } else if (task != null) {
+                        task.loadProblem(name, expression, value)
                     }
                 }
             }
-
         }
+
+
     }
 
     fun read(jparameters: JsonArray, task: Task) {
-        read(jparameters, task.taskD.root)
+        read(jparameters, task.taskD.root, task)
     }
 }

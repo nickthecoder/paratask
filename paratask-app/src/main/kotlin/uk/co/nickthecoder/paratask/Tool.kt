@@ -78,6 +78,7 @@ interface Tool : Task {
         for (parameter in copy.valueParameters()) {
             evaluateParameter(parameter, row = row, rows = rows)
         }
+
         return copy
     }
 

@@ -114,8 +114,8 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
 
     var dragHelper: DragHelper<List<Option>>? = null
 
-    override fun createTableResults(): TableResults<Option> {
-        val tableResults = super.createTableResults()
+    override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
+        val tableResults = super.createTableResults(columns)
 
         dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()

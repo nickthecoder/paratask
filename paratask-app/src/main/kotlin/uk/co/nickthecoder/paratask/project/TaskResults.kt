@@ -21,6 +21,7 @@ import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.AbstractTaskPrompter
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class TaskResults(tool: Tool, val task: Task) : AbstractResults(tool, "Meta Data") {

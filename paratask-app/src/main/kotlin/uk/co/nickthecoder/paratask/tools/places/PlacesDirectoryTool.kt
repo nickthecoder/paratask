@@ -29,6 +29,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.misc.*
+import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
@@ -93,10 +94,10 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
     }
 
 
-    var dragHelper : DragFilesHelper? = null
+    var dragHelper: DragFilesHelper? = null
 
-    override fun createTableResults(): TableResults<Place> {
-        val tableResults = super.createTableResults()
+    override fun createTableResults(columns: List<Column<Place, *>>): TableResults<Place> {
+        val tableResults = super.createTableResults(columns)
 
         dragHelper = DragFilesHelper {
             tableResults.selectedRows().map { it.file!! }

@@ -104,8 +104,8 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
     var compoundDragHelper: CompoundDragHelper? = null
 
 
-    override fun createTableResults(): TableResults<Place> {
-        val tableResults = super.createTableResults()
+    override fun createTableResults(columns: List<Column<Place, *>>): TableResults<Place> {
+        val tableResults = super.createTableResults(columns)
 
         filesDragHelper = DragFilesHelper {
             tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }

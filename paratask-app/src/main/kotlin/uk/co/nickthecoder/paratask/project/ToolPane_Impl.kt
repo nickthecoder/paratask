@@ -129,6 +129,9 @@ class ToolPane_Impl(override var tool: Tool)
                 found = true
                 tabPane.selectedTab = resultsTab
             }
+            results.dropHelper?.let {
+                //it.applyTo(resultsTab)
+            }
             index++
             results.attached(this)
         }

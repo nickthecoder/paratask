@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.css.Styleable
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 
@@ -15,6 +16,16 @@ class CompoundDropHelper(vararg helpers: DropHelper<*>) : AbstractDropHelper(mod
             }
         }
         return null
+    }
+
+
+    override fun onDragOver(event: DragEvent): Boolean {
+        dropHelpers.forEach {
+            if (it.onDragOver(event) == true) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun onDropped(event: DragEvent): Boolean {

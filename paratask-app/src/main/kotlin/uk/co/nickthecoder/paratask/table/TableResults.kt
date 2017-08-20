@@ -37,7 +37,7 @@ import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.project.ToolPane
 
 
-open class TableResults<R : Any>(final override val tool: TableTool<R>, val list: List<R>, label: String = "Results") :
+open class TableResults<R : Any>(final override val tool: TableTool<R>, val list: List<R>, label: String = "Results", val columns: List<Column<R, *>>) :
 
         AbstractResults(tool, label) {
 
@@ -70,8 +70,6 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
     }
 
     override fun attached(toolPane: ToolPane) {
-
-        val columns = tool.createColumns()
 
         super.attached(toolPane)
         with(codeColumn) {

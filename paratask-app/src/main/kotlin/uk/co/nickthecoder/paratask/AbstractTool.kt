@@ -71,10 +71,7 @@ abstract class AbstractTool : Tool {
     }
 
     override fun detaching() {
-        println("AbstractTool detatching")
-
         for (results in resultsList) {
-            println("AbstractTool detatching results ${results}")
             results.detaching()
         }
         toolPane = null

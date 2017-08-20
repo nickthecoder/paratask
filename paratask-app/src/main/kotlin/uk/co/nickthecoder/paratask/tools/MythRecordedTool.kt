@@ -56,6 +56,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         Class.forName("com.mysql.jdbc.Driver")
 
         taskD.addParameters(serverP, databaseP, userP, passwordP, directoryP)
+        directoryP.aliases.add("direcotry")
     }
 
 

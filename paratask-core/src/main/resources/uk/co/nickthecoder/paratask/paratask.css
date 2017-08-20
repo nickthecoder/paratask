@@ -179,7 +179,7 @@
 }
 
 /****************************
-* DropFiles                 *\
+* Drag and Drop             *\
 *****************************/
 
 .root {
@@ -196,6 +196,17 @@
 }
 .drop-link{
     -fx-control-inner-background: drop-link;
+}
+
+/** Important to override the ":selected" color. */
+.table-row-cell.drop-copy {
+    -fx-background: drop-copy !important;
+}
+.table-row-cell.drop-move {
+    -fx-background: drop-move !important;
+}
+.table-row-cell.drop-link {
+    -fx-background: drop-link !important;
 }
 
 .my-tab-pane > .tab-header-area > .tabs-container > .tab.drop-copy {

@@ -38,11 +38,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     final override val taskD = TaskDescription(name = name, description = description)
 
-    /**
-     * For backward compatability only. directoriesP now supercedes directoyrP
-     */
-    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
-
     val directoriesP = MultipleParameter("directories") {
         FileParameter("dir", label = "Directory", expectFile = false, mustExist = true)
     }
@@ -95,17 +90,28 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
 
     init {
-        taskD.addParameters(directoryP, directoriesP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
-        directoryP.hidden = true
-        directoryP.listen { directoriesP.value = listOf(directoryP.value) }
+        taskD.addParameters(directoriesP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
     }
 
-    override fun createColumns(): List<Column<WrappedFile, *>> {
+    override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
+        if (parameterName == "directory") {
+            if (expression != null) {
+                val inner = directoriesP.newValue()
+                inner.expression = expression
+            } else {
+                directoriesP.addValue(File(stringValue))
+            }
+        } else {
+            super.loadProblem(parameterName, expression, stringValue)
+        }
+    }
+
+    fun createColumns(directory: File): List<Column<WrappedFile, *>> {
         val columns = mutableListOf<Column<WrappedFile, *>>()
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { createImageView(it) })
         if (isTree()) {
-            columns.add(BaseFileColumn<WrappedFile>("path", base = directoryP.value!!) { it.file })
+            columns.add(BaseFileColumn<WrappedFile>("path", base = directory) { it.file })
         } else {
             columns.add(FileNameColumn<WrappedFile>("name") { it.file })
         }
@@ -153,7 +159,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     fun createResults(dirP: FileParameter): Results {
         val dir = dirP.value!!
         val list = lists[dir]!!
-        val tableResults = TableResults(this, list, dir.name)
+        val tableResults = TableResults(this, list, dir.name, createColumns(dir))
 
         dropHelper.attachTableResults(tableResults)
         dragHelper = DragFilesHelper {

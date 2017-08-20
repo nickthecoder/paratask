@@ -69,7 +69,7 @@ abstract class AbstractDropHelper(val modes: Array<TransferMode> = TransferMode.
         return event.transferMode
     }
 
-    open fun onDragOver(event: DragEvent) {
+    open fun onDragOver(event: DragEvent): Boolean {
         val acceptedModes = accept(event)
 
         if (acceptedModes != null) {
@@ -77,11 +77,12 @@ abstract class AbstractDropHelper(val modes: Array<TransferMode> = TransferMode.
             // We set the styles here, because onDragEntered is only called once, even if the transfer mode changes
             // (by holding down combinations of shift and ctrl)
             setDropStyle(styleableNode(event), eventTransferMode(acceptedModes, event))
+            return true
         } else {
             // Ensures that the old style is removed when dragging over a table where only some rows accept the drop.
             setDropStyle(null, null)
+            return false
         }
-        event.consume()
     }
 
     open fun onDragEntered(event: DragEvent) {

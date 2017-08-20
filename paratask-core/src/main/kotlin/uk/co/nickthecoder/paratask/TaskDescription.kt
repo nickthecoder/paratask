@@ -90,7 +90,7 @@ class TaskDescription(
         builder.appendln()
         for (parameter in valueParameters()) {
             if (parameter is MultipleParameter<*> && parameter.expression == null) {
-                builder.appendln("    MultipleParameter")
+                builder.appendln("    ${parameter.name} = MultipleParameter size ${parameter.innerParameters.size} ${parameter.value.size}")
                 for (innerParameter in parameter.innerParameters) {
                     if (innerParameter.expression == null) {
                         builder.appendln("        ${innerParameter.value}")

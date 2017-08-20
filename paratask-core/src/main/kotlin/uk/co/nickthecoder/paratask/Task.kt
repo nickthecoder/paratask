@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import java.io.IOException
 
 interface Task {
 
@@ -78,6 +79,10 @@ interface Task {
     }
 
     fun creationString(): String = this::class.java.name
+
+    fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
+        throw IOException("Parameter name $parameterName not found in task : $this")
+    }
 
     companion object {
         fun create(creationString: String): Task {

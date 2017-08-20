@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.project
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 
@@ -36,6 +37,8 @@ abstract class AbstractResults(
         set(value) {
             labelProperty.set(value)
         }
+
+    override var dropHelper : DropHelper<*>? = null
 
     init {
         this.label = label

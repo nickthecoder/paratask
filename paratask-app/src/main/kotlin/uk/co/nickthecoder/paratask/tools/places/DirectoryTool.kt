@@ -39,7 +39,9 @@ class DirectoryTool() :
     override fun run() {
         super.run()
         if (autoRefreshP.value == true) {
-            watch(directory!!)
+            directoriesP.value.filterNotNull().forEach {
+                watch(it)
+            }
         }
     }
 
