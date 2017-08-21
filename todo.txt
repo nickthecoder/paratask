@@ -1,6 +1,8 @@
 
 Move DragHelper and DropHelper into TableResults?
 
+Use TableResults Drop and Drag Helpers from all tools that use drag and drop.
+
 Bugs
 	Directory name in window title not updated correctly.
 	Cannot drag from the 1st of many minor tabs of DirectoryTool

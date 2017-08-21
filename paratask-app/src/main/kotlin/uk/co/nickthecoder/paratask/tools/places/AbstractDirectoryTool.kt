@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -137,16 +136,10 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     open fun createHeaderRows(dirP: FileParameter): Header = Header(this, dirP)
 
-    var dragHelper: DragFilesHelper? = null
-
     fun createResults(dirP: FileParameter): Results {
         val dir = dirP.value!!
         val list = lists[dir]!!
         val tableResults = DirectoryTableResults(dir, list)
-
-        dragHelper = DragFilesHelper {
-            tableResults.selectedRows().map { it.file }
-        }
 
         return ResultsWithHeader(tableResults, createHeaderRows(dirP))
     }
@@ -155,12 +148,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         return directoriesP.innerParameters.filter { it.value != null }.map { dirP ->
             createResults(dirP as FileParameter)
         }
-    }
-
-    override fun createRow(): TableRow<WrappedRow<WrappedFile>> {
-        val row = super.createRow()
-        dragHelper?.applyTo(row)
-        return row
     }
 
     override fun run() {
@@ -208,6 +195,11 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
         init {
             dropHelper = DirectoryDropHelper(directory)
+
+            dragHelper = DragFilesHelper {
+                selectedRows().map { it.file }
+            }
+
         }
     }
 }

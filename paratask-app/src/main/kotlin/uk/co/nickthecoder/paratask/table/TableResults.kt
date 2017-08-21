@@ -30,6 +30,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
+import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
@@ -65,6 +66,8 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             field = v
             v?.applyTo(tableView)
         }
+
+    var dragHelper: DragHelper? = null
 
     init {
         // Find the VitualFlow as soon as the tableView's skin has been set
@@ -105,6 +108,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             tableView.addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
             rowFactory = Callback {
                 val tableRow = tool.createRow()
+                dragHelper?.applyTo(tableRow)
                 tableRow.setOnMouseClicked { onRowClicked(it, tableRow) }
                 tableRow
             }
