@@ -41,28 +41,6 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
 
     var includesTool: IncludesTool = IncludesTool()
 
-    var dropHelper: TableDropHelper<List<Option>, Option> = object :
-            TableDropHelper<List<Option>, Option>(Option.dataFormat) {
-
-        override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
-
-        override fun acceptDropOnRow(row: Option) = null
-
-        override fun droppedOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
-            return false
-        }
-
-        override fun droppedOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
-            val fileOptions = getFileOptions()
-            for (option in content) {
-                fileOptions.addOption(option.copy())
-            }
-            fileOptions.save()
-            return true
-        }
-    }
-
-
     init {
         taskD.addParameters(optionsNameP, resourceDirectoryP)
     }
@@ -113,23 +91,34 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
         return columns
     }
 
-    var dragHelper: SimpleDragHelper<List<Option>>? = null
-
     override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
         val tableResults = super.createTableResults(columns)
 
-        dragHelper = SimpleDragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
+        tableResults.dragHelper = SimpleDragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()
         }
-        dropHelper.applyTo(tableResults.tableView)
+
+        tableResults.dropHelper = object : TableDropHelper<List<Option>, Option>(Option.dataFormat) {
+
+            override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
+
+            override fun acceptDropOnRow(row: Option) = null
+
+            override fun droppedOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
+                return false
+            }
+
+            override fun droppedOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
+                val fileOptions = getFileOptions()
+                for (option in content) {
+                    fileOptions.addOption(option.copy())
+                }
+                fileOptions.save()
+                return true
+            }
+        }
 
         return tableResults
-    }
-
-    override fun createRow(): TableRow<WrappedRow<Option>> {
-        val row = super.createRow()
-        dragHelper?.applyTo(row)
-        return row
     }
 
     fun onMoved(content: List<Option>) {
@@ -148,13 +137,11 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         includesTool.toolPane = SharedToolPane(this)
-        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
     }
 
     override fun detaching() {
         super<ListTableTool>.detaching()
         super<AutoRefreshTool>.detaching()
-        dropHelper.cancel()
     }
 
 

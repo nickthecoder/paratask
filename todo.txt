@@ -3,6 +3,11 @@ Move DragHelper and DropHelper into TableResults?
 
 Use TableResults Drop and Drag Helpers from all tools that use drag and drop.
 
+PlacesDirectoryTool doesn't do D&D for Places (only files).
+	Need same features as PlacesTool.
+
+Allow Drag files to Editor
+
 Bugs
 	Directory name in window title not updated correctly.
 	Cannot drag from the 1st of many minor tabs of DirectoryTool

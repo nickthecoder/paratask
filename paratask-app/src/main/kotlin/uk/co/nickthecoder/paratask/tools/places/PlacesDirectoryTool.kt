@@ -24,8 +24,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
@@ -50,30 +50,6 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
 
     lateinit var placesFile: PlacesFile
 
-
-    var dropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>() {
-
-        override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
-
-        override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
-
-        override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
-            if (row.isDirectory()) {
-                return fileOperation(row.file!!, content, transferMode)
-            }
-            return false
-        }
-
-        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
-            for (file in content) {
-                placesFile.places.add(Place(placesFile, Resource(file), file.name))
-            }
-            placesFile.save()
-            return true
-        }
-
-    }
-
     init {
         taskD.addParameters(directoryP, filenameP)
     }
@@ -92,23 +68,62 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
 
     override fun createHeader() = Header(this, directoryP, filenameP)
 
-    var dragHelper: DragFilesHelper? = null
-
     override fun createTableResults(columns: List<Column<Place, *>>): TableResults<Place> {
         val tableResults = super.createTableResults(columns)
 
-        dragHelper = DragFilesHelper {
-            tableResults.selectedRows().map { it.file!! }
+
+        val filesDragHelper = DragFilesHelper {
+            tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }
         }
 
-        dropHelper.applyTo(tableResults.tableView)
-        return tableResults
-    }
+        val placesDragHelper = SimpleDragHelper<List<Place>>(Place.dataFormat, onMoved = { list ->
+            list.forEach {
+                placesFile.remove(it)
+            }
+            placesFile.save()
+        }) {
+            tableResults.selectedRows()
+        }
 
-    override fun createRow(): TableRow<WrappedRow<Place>> {
-        val row = super.createRow()
-        dragHelper?.applyTo(row)
-        return row
+        tableResults.dragHelper = CompoundDragHelper(placesDragHelper, filesDragHelper)
+
+
+        val filesDropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>() {
+
+            override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
+
+            override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
+
+            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
+                if (row.isDirectory()) {
+                    return fileOperation(row.file!!, content, transferMode)
+                }
+                return false
+            }
+
+            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+                for (file in content) {
+                    placesFile.places.add(Place(placesFile, Resource(file), file.name))
+                }
+                placesFile.save()
+                return true
+            }
+
+        }
+
+        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
+
+            content.forEach {
+                placesFile.places.add(Place(placesFile, it.resource, it.label))
+            }
+            placesFile.save()
+            true
+        }
+
+        tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
+
+
+        return tableResults
     }
 
     override fun run() {
@@ -118,16 +133,9 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
         watch(file)
     }
 
-
-    override fun attached(toolPane: ToolPane) {
-        super.attached(toolPane)
-        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
-    }
-
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
         super<ListTableTool>.detaching()
-        dropHelper.cancel()
     }
 
     fun taskNew() = placesFile.taskNew()

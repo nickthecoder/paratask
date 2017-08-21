@@ -25,7 +25,6 @@ import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.*
-import javafx.scene.input.DragEvent
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
