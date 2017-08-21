@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.layout.BorderPane
-import uk.co.nickthecoder.paratask.gui.DropHelper
 
 class HeadedResults(val results: Results, headerRows: HeaderRows) : Results {
 

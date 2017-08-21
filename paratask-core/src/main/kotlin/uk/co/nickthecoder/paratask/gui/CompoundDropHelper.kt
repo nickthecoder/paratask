@@ -1,18 +1,16 @@
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.css.Styleable
 import javafx.scene.input.DragEvent
-import javafx.scene.input.TransferMode
 
-class CompoundDropHelper(vararg helpers: DropHelper<*>) : AbstractDropHelper() {
+class CompoundDropHelper(vararg helpers: SimpleDropHelper<*>) : AbstractDropHelper() {
 
     val dropHelpers = helpers.toMutableList()
 
-    var currentHelper: DropHelper<*>? = null
+    var currentHelper: SimpleDropHelper<*>? = null
 
     override fun onDragOver(event: DragEvent): Boolean {
         dropHelpers.forEach {
-            if (it.onDragOver(event) == true) {
+            if (it.onDragOver(event)) {
                 currentHelper = it
                 return true
             }
@@ -21,18 +19,13 @@ class CompoundDropHelper(vararg helpers: DropHelper<*>) : AbstractDropHelper() {
         return false
     }
 
-
     override fun onDragExited(event: DragEvent) {
-        currentHelper?.let {
-            it.onDragExited(event)
-        }
+        currentHelper?.onDragExited(event)
         currentHelper = null
     }
 
     override fun onDragDropped(event: DragEvent) {
-        currentHelper?.let {
-            it.onDragDropped(event)
-        }
+        currentHelper?.onDragDropped(event)
         currentHelper = null
     }
 

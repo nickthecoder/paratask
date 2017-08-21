@@ -3,14 +3,13 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.Node
 import javafx.scene.input.DragEvent
 
-abstract class AbstractDropHelper {
+abstract class AbstractDropHelper : DropHelper {
 
     var targets = mutableSetOf<Node>()
 
     var excludes = mutableSetOf<Node>()
 
-
-    fun applyTo(target: Node): AbstractDropHelper {
+    override fun applyTo(target: Node): AbstractDropHelper {
         target.setOnDragOver { onDragOver(it) }
         target.setOnDragEntered { onDragEntered(it) }
         target.setOnDragExited { onDragExited(it) }
@@ -19,24 +18,24 @@ abstract class AbstractDropHelper {
         return this
     }
 
-    fun unapplyTo(target: Node) {
+    override fun unapplyTo(target: Node) {
         target.onDragOver = null
         target.onDragEntered = null
         target.onDragExited = null
         target.onDragDropped = null
     }
 
-    fun exclude(node: Node): AbstractDropHelper {
+    override fun exclude(node: Node): AbstractDropHelper {
         excludes.add(node)
         return this
     }
 
-    fun cancel() {
+    override fun cancel() {
         targets.forEach {
-            it.setOnDragOver(null)
-            it.setOnDragEntered(null)
-            it.setOnDragExited(null)
-            it.setOnDragDropped(null)
+            it.onDragOver = null
+            it.onDragEntered = null
+            it.onDragExited = null
+            it.onDragDropped = null
         }
     }
 

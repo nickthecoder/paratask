@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
-import javafx.scene.Node
 import javafx.scene.input.*
 import java.io.File
 
@@ -27,7 +26,7 @@ open class DragFilesHelper(
         allowLink: Boolean = true,
         files: () -> (List<File>?))
 
-    : DragHelper<List<File>?>(
+    : SimpleDragHelper<List<File>?>(
         allowCopy = allowCopy,
         allowMove = allowMove,
         allowLink = allowLink,

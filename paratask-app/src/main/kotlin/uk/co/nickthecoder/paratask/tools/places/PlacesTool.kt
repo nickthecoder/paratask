@@ -65,7 +65,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     }
 
-    var placesDropHelper = DropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
+    var placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
 
         content.forEach {
             placesFile.places.add(Place(placesFile, it.resource, it.label))
@@ -95,7 +95,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     var filesDragHelper: DragFilesHelper? = null
 
-    var placesDragHelper: DragHelper<List<Place>>? = null
+    var placesDragHelper: SimpleDragHelper<List<Place>>? = null
 
 
     var compoundDragHelper: CompoundDragHelper? = null
@@ -108,7 +108,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
             tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }
         }
 
-        placesDragHelper = DragHelper<List<Place>>(Place.dataFormat, onMoved = { list ->
+        placesDragHelper = SimpleDragHelper<List<Place>>(Place.dataFormat, onMoved = { list ->
             println("Moved $list")
             list.forEach {
                 placesFile.remove(it)

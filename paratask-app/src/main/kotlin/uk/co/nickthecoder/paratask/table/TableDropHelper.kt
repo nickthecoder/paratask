@@ -6,7 +6,7 @@ import javafx.scene.control.TableView
 import javafx.scene.input.DataFormat
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.gui.DropHelper
+import uk.co.nickthecoder.paratask.gui.SimpleDropHelper
 
 /**
  * T is the type of data send during drag and drop (it must be Serializable)
@@ -16,7 +16,7 @@ abstract class TableDropHelper<T, R : Any>(
         dataFormat: DataFormat,
         modes: Array<TransferMode> = TransferMode.ANY)
 
-    : DropHelper<T>(dataFormat, modes, null) {
+    : SimpleDropHelper<T>(dataFormat, modes, null) {
 
     open fun acceptDropOnNonRow(): Array<TransferMode>? = modes
 

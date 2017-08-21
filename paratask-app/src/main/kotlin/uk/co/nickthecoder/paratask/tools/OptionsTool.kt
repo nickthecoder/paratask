@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.RegisteredTaskFactory
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.DragHelper
+import uk.co.nickthecoder.paratask.gui.SimpleDragHelper
 import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
 import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
@@ -113,12 +113,12 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
         return columns
     }
 
-    var dragHelper: DragHelper<List<Option>>? = null
+    var dragHelper: SimpleDragHelper<List<Option>>? = null
 
     override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
         val tableResults = super.createTableResults(columns)
 
-        dragHelper = DragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
+        dragHelper = SimpleDragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()
         }
         dropHelper.applyTo(tableResults.tableView)

@@ -26,7 +26,7 @@ open class DropFiles(
         modes: Array<TransferMode> = TransferMode.ANY,
         dropped: (DragEvent, List<File>?) -> Boolean)
 
-    : DropHelper<List<File>?>(
+    : SimpleDropHelper<List<File>?>(
         dataFormat = DataFormat.FILES,
         modes = modes,
         dropped = dropped)

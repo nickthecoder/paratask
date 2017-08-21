@@ -6,22 +6,22 @@ import javafx.scene.input.DragEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 
-class CompoundDragHelper(vararg helpers: DragHelper<*>) {
+class CompoundDragHelper(vararg helpers: SimpleDragHelper<*>) : DragHelper {
 
-    private val dragHelpers: List<DragHelper<*>>
+    private val dragHelpers: List<SimpleDragHelper<*>>
 
     val modes: Array<TransferMode>
 
     init {
         val set = mutableSetOf<TransferMode>()
-        dragHelpers = helpers.asList<DragHelper<*>>()
+        dragHelpers = helpers.asList<SimpleDragHelper<*>>()
         dragHelpers.forEach {
             it.modes.forEach { set.add(it) }
         }
         modes = set.toTypedArray()
     }
 
-    fun applyTo(node: Node) {
+    override fun applyTo(node: Node) {
         node.setOnDragDetected { onDragDetected(it) }
         node.setOnDragDone { onDone(it) }
     }
