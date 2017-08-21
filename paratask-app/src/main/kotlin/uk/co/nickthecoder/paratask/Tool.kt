@@ -22,13 +22,10 @@ import javafx.beans.property.StringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.options.Helper
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.options.OptionsRunner
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
-import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.project.Project
+import uk.co.nickthecoder.paratask.project.*
 
 interface Tool : Task {
 
@@ -65,7 +62,7 @@ interface Tool : Task {
 
     fun detaching()
 
-    fun createHeaderRows(): List<HeaderRow> = listOf()
+    fun createHeader(): Header? = null
 
     override fun copy(): Tool = super.copy() as Tool
 

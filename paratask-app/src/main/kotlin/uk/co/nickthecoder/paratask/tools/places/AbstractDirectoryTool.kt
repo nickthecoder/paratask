@@ -134,7 +134,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         return result
     }
 
-    open fun createHeaderRows(dirP: FileParameter): HeaderRows = HeaderRows(this, listOf(HeaderRow().addAll(dirP)))
+    open fun createHeaderRows(dirP: FileParameter): Header = Header(this, dirP)
 
     var dragHelper: DragFilesHelper? = null
 
@@ -147,7 +147,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             tableResults.selectedRows().map { it.file }
         }
 
-        return HeadedResults(tableResults, createHeaderRows(dirP))
+        return ResultsWithHeader(tableResults, createHeaderRows(dirP))
     }
 
     override fun createResults(): List<Results> {

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.FileNameColumn
@@ -55,14 +56,14 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
         return columns
     }
 
-    override fun createHeaderRows(): List<HeaderRow> {
+    override fun createHeader(): Header? {
         val row1 = HeaderRow()
         row1.add(grepTask.filesP)
         val row2 = HeaderRow()
         row2.add(grepTask.patternsP)
         row2.add(grepTask.typeP)
         row2.add(grepTask.matchCaseP)
-        return listOf(row1, row2)
+        return Header(this, row1, row2)
     }
 
 

@@ -40,16 +40,11 @@ class ToolPane_Impl(override var tool: Tool)
 
     val parametersTab = ParametersTab(parametersPane)
 
-    val headerRowsBox = VBox()
-
-    val headerRows: List<HeaderRow>
+    val header: Header? = tool.createHeader()
 
     init {
         center = tabPane
-
-        headerRows = tool.createHeaderRows()
-
-        headerRowsBox.styleClass.add("header")
+        top = header
 
         tabPane.side = Side.BOTTOM
         tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
@@ -81,7 +76,7 @@ class ToolPane_Impl(override var tool: Tool)
         if (newTab is MinorTab) {
             newTab.selected()
         }
-        top = if (newTab === parametersTab) null else if (headerRowsBox.children.isEmpty()) null else headerRowsBox
+        top = if (newTab === parametersTab) null else header
 
     }
 
@@ -149,16 +144,6 @@ class ToolPane_Impl(override var tool: Tool)
 
         tool.attached(this)
 
-        headerRows.forEach() {
-            headerRowsBox.children.add(it)
-        }
-
-        val lastRowIndex = headerRows.size - 1
-        if (lastRowIndex >= 0) {
-            val lastRow = headerRows[lastRowIndex]
-            lastRow.addRunButton(tool)
-        }
-
         ParaTaskApp.logAttach("ToolPane.attached")
         attached = true
     }
@@ -171,9 +156,7 @@ class ToolPane_Impl(override var tool: Tool)
         parametersPane.detaching()
         removeOldResults(tool.resultsList)
 
-        headerRows.forEach() {
-            it.detaching()
-        }
+        header?.detatching()
 
         ParaTaskApp.logAttach("ToolPane detached")
     }
@@ -203,11 +186,11 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun focusHeader() {
-        if (headerRows.isNotEmpty()) {
-            headerRows[0].focus()
+        if (header != null) {
+            header.focus()
         } else {
             val results = currentResults()
-            if ( results is HeadedResults ) {
+            if (results is ResultsWithHeader) {
                 results.headerRows.focus()
             }
         }

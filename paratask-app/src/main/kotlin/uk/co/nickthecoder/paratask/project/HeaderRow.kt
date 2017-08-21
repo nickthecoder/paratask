@@ -36,7 +36,7 @@ import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
-class HeaderRow : Region() {
+class HeaderRow(vararg parameters: Parameter) : Region() {
 
     val fieldPositions = mutableListOf<FieldPosition>()
 
@@ -44,6 +44,7 @@ class HeaderRow : Region() {
 
     init {
         styleClass.add("header-row")
+        addAll(*parameters)
     }
 
     fun addAll(vararg parameters: Parameter): HeaderRow {

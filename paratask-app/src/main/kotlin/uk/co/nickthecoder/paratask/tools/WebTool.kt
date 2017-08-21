@@ -25,6 +25,7 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 
 class WebTool() : AbstractTool() {
@@ -41,7 +42,7 @@ class WebTool() : AbstractTool() {
         taskD.addParameters(addressP)
     }
 
-    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(addressP))
+    override fun createHeader() = Header(this, addressP)
 
     override fun run() {
     }
@@ -54,7 +55,7 @@ class WebResults(override val tool: WebTool, address: String) : AbstractResults(
 
     override val node = WebView()
 
-    val webEngine : WebEngine = node.engine
+    val webEngine: WebEngine = node.engine
 
     init {
         webEngine.load(address)

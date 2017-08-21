@@ -21,6 +21,7 @@ import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -61,7 +62,7 @@ class GitTool() : AbstractCommandTool<GitStatusRow>(), HasDirectory {
         return columns
     }
 
-    override fun createHeaderRows(): List<HeaderRow> = listOf(HeaderRow().add(directoryP))
+    override fun createHeader() = Header(this, directoryP)
 
     override fun createCommand(): OSCommand {
         longTitle = "Git ${directory}"

@@ -30,6 +30,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.misc.*
+import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
@@ -89,10 +90,7 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
         return columns
     }
 
-    override fun createHeaderRows(): List<HeaderRow> {
-        return listOf(HeaderRow().addAll(directoryP, filenameP))
-    }
-
+    override fun createHeader() = Header(this, directoryP, filenameP)
 
     var dragHelper: DragFilesHelper? = null
 

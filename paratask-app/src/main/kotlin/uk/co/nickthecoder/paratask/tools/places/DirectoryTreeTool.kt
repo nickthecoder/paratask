@@ -19,8 +19,7 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.project.HeaderRows
+import uk.co.nickthecoder.paratask.project.Header
 import java.io.File
 
 class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a Directory Tree") {
@@ -35,7 +34,7 @@ class DirectoryTreeTool() : AbstractDirectoryTool("directoryTree", "Work with a 
         this.directoriesP.value = listOf(directory)
     }
 
-    override fun createHeaderRows(dirP: FileParameter): HeaderRows = HeaderRows(this, listOf(HeaderRow().addAll(dirP, depthP)))
+    override fun createHeaderRows(dirP: FileParameter): Header = Header(this, dirP, depthP)
 
     override fun isTree() = depthP.value != 1
 }
