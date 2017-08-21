@@ -30,6 +30,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.options.RowOptionsRunner
@@ -57,6 +58,13 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
      * Used to ensure that the currently selected row is always visible. See move()
      */
     var virtualFlow: VirtualFlow<*>? = null
+
+    var dropHelper: DropHelper? = null
+        set(v) {
+            field?.cancel()
+            field = v
+            v?.applyTo(tableView)
+        }
 
     init {
         // Find the VitualFlow as soon as the tableView's skin has been set
@@ -101,15 +109,29 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
                 tableRow
             }
         }
+        dropHelper?.applyTo(resultsTab)
+
     }
 
-    fun stopEditing() {
-        tableView.edit(-1, null)
+    override fun detaching() {
+        super.detaching()
+        dropHelper?.cancel()
+    }
+
+    override fun selected() {
+        super.selected()
+        dropHelper?.applyTo(tool.toolPane?.halfTab?.projectTab as Node)
     }
 
     override fun deselected() {
         stopEditing()
+        dropHelper?.unapplyTo(tool.toolPane?.halfTab?.projectTab as Node)
         super.deselected()
+    }
+
+
+    fun stopEditing() {
+        tableView.edit(-1, null)
     }
 
     override fun focus() {
@@ -319,6 +341,7 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             }
         }
     }
+
 
 }
 

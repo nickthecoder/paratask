@@ -17,17 +17,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.scene.Node
 import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.project.*
+import uk.co.nickthecoder.paratask.project.Header
+import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.project.ResultsWithHeader
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
@@ -205,33 +206,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
         : TableResults<WrappedFile>(this@AbstractDirectoryTool, list, directory.name, createColumns(directory)) {
 
-        val directoryDropHelper = DirectoryDropHelper(directory)
-
-        var tab: MyTab? = null
-
         init {
-            directoryDropHelper.applyTo(tableView)
+            dropHelper = DirectoryDropHelper(directory)
         }
-
-        override fun selected() {
-            super.selected()
-            directoryDropHelper.applyTo(toolPane?.halfTab?.projectTab as Node)
-        }
-
-        override fun deselected() {
-            super.deselected()
-            directoryDropHelper.unapplyTo(toolPane?.halfTab?.projectTab as Node)
-        }
-
-        override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
-            super.attached(resultsTab, toolPane)
-            directoryDropHelper.applyTo(resultsTab)
-        }
-
-        override fun detaching() {
-            super.detaching()
-            directoryDropHelper.cancel()
-        }
-
     }
 }
