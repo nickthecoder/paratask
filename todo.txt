@@ -1,7 +1,4 @@
 
-Use HeaderRows in ToolPane_Impl
-Change the method createHeaderRows to return a HeaderRows rather than a List<HeaderRow>
-
 Move DragHelper and DropHelper into TableResults?
 
 Bugs

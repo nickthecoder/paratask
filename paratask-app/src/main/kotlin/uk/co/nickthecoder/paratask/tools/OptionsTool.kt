@@ -249,7 +249,7 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
                 scriptOrTaskP.value = taskP
             }
             taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
-            scriptOrTaskP.addParameters(script, taskP)
+            scriptOrTaskP.addParameters(taskP, script)
             isRow.listen {
                 isMultiple.hidden = isRow.value == false
             }
@@ -290,7 +290,7 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
     }
 
     open class NewOptionTask(fileOptions: FileOptions, tool: Tool?)
-        : EditOptionTask(fileOptions, GroovyOption(""), name = "newOption", tool = tool) {
+        : EditOptionTask(fileOptions, TaskOption(NullTask()), name = "newOption", tool = tool) {
 
         override fun save(newOption: Option) {
             fileOptions.addOption(newOption)
