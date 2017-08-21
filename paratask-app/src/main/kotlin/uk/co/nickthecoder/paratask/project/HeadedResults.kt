@@ -2,7 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.layout.BorderPane
 
-class HeadedResults(val results: Results, headerRows: HeaderRows) : Results {
+class HeadedResults(val results: Results, val headerRows: HeaderRows) : Results {
 
     override val tool
         get() = results.tool

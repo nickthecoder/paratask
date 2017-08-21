@@ -205,6 +205,11 @@ class ToolPane_Impl(override var tool: Tool)
     override fun focusHeader() {
         if (headerRows.isNotEmpty()) {
             headerRows[0].focus()
+        } else {
+            val results = currentResults()
+            if ( results is HeadedResults ) {
+                results.headerRows.focus()
+            }
         }
     }
 

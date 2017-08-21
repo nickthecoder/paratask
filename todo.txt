@@ -1,6 +1,4 @@
 
-
-Focus on Header - if there is none, then check if 1st/current results is a HeadedResults, and focus on its header.
 Use HeaderRows in ToolPane_Impl
 Change the method createHeaderRows to return a HeaderRows rather than a List<HeaderRow>
 
@@ -25,7 +23,8 @@ HideOption
 Allow a tab to be merged with another to form a single split paned tab.
 	Maybe a (toggle?) button to merge two adjascent tabs, and then to separate them again.
 
-Directory tool to allow multiple results
+Other tools to have multiple minor tabs
+	Places, Terminal, SSH
 
 Give a default max height to tasks scenes
 
