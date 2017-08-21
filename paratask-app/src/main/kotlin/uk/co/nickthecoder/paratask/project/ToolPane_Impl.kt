@@ -32,7 +32,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     : ToolPane, BorderPane() {
 
-    private val tabPane = MyTabPane<MinorTab>()
+    override val tabPane = MyTabPane<MinorTab>()
 
     override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
 
@@ -129,11 +129,9 @@ class ToolPane_Impl(override var tool: Tool)
                 found = true
                 tabPane.selectedTab = resultsTab
             }
-            results.dropHelper?.let {
-                //it.applyTo(resultsTab)
-            }
+
             index++
-            results.attached(this)
+            results.attached(resultsTab,this)
         }
     }
 

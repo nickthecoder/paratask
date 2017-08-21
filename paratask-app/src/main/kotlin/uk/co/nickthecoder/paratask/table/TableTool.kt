@@ -25,5 +25,4 @@ interface TableTool<R : Any> : Tool {
 
     fun createRow(): TableRow<WrappedRow<R>>
 
-    fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?>
 }

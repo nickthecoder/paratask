@@ -19,6 +19,13 @@ abstract class AbstractDropHelper {
         return this
     }
 
+    fun unapplyTo(target: Node) {
+        target.onDragOver = null
+        target.onDragEntered = null
+        target.onDragExited = null
+        target.onDragDropped = null
+    }
+
     fun exclude(node: Node): AbstractDropHelper {
         excludes.add(node)
         return this

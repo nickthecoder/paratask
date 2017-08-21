@@ -42,7 +42,7 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
     var includesTool: IncludesTool = IncludesTool()
 
     var dropHelper: TableDropHelper<List<Option>, Option> = object :
-            TableDropHelper<List<Option>, Option>(Option.dataFormat, this) {
+            TableDropHelper<List<Option>, Option>(Option.dataFormat) {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.COPY, TransferMode.MOVE)
 

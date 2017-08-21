@@ -24,10 +24,7 @@ import javafx.scene.control.ToolBar
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.project.ParataskActions
-import uk.co.nickthecoder.paratask.project.ProjectTabs_Impl
-import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.dumpAncestors
 import java.io.File
 
@@ -107,8 +104,8 @@ class EditorResults(
         codeArea.requestFocus()
     }
 
-    override fun attached(toolPane: ToolPane) {
-        super.attached(toolPane)
+    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
+        super.attached(resultsTab, toolPane)
 
         tool.goToLineP.value?.let {
             codeArea.positionCaret(codeArea.position(it - 1, 0).toOffset())

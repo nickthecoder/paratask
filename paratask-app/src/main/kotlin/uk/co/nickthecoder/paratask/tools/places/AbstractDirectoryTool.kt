@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
@@ -30,6 +31,7 @@ import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.currentDirectory
 import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
@@ -61,28 +63,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override val directory: File?
         get() = directoriesP.value.firstOrNull()
-
-    var dropHelper: TableDropFilesHelper<WrappedFile> = object : TableDropFilesHelper<WrappedFile>(this) {
-
-        override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
-
-        override fun acceptDropOnNonRow() = if (isTree()) null else TransferMode.ANY
-
-        override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
-            if (row.isDirectory()) {
-                return fileOperation(row.file, content, transferMode)
-            }
-            return false
-        }
-
-        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
-            val dir = directory
-            if (dir != null) {
-                return fileOperation(dir, content, transferMode)
-            }
-            return false
-        }
-    }
 
     /**
      * The results Map of directory to list of files listed for the directory.
@@ -124,12 +104,6 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        dropHelper.applyTo(toolPane.halfTab.projectTab as Node)
-    }
-
-    override fun detaching() {
-        super.detaching()
-        dropHelper.cancel()
     }
 
     fun createImageView(row: WrappedFile): ImageView {
@@ -160,9 +134,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     fun createResults(dirP: FileParameter): Results {
         val dir = dirP.value!!
         val list = lists[dir]!!
-        val tableResults = TableResults(this, list, dir.name, createColumns(dir))
+        val tableResults = DirectoryTableResults(dir, list)
 
-        dropHelper.applyTo(tableResults.tableView)
         dragHelper = DragFilesHelper {
             tableResults.selectedRows().map { it.file }
         }
@@ -202,5 +175,56 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     open fun isTree(): Boolean = false
-}
 
+
+    inner class DirectoryDropHelper(val directory: File) : TableDropFilesHelper<WrappedFile>() {
+
+        override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
+
+        override fun acceptDropOnNonRow() = if (isTree()) null else TransferMode.ANY
+
+        override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
+            if (row.isDirectory()) {
+                return fileOperation(row.file, content, transferMode)
+            }
+            return false
+        }
+
+        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+            return fileOperation(directory, content, transferMode)
+        }
+    }
+
+    inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
+        : TableResults<WrappedFile>(this@AbstractDirectoryTool, list, directory.name, createColumns(directory)) {
+
+        val directoryDropHelper = DirectoryDropHelper(directory)
+
+        var tab: MyTab? = null
+
+        init {
+            directoryDropHelper.applyTo(tableView)
+        }
+
+        override fun selected() {
+            super.selected()
+            directoryDropHelper.applyTo(toolPane?.halfTab?.projectTab as Node)
+        }
+
+        override fun deselected() {
+            super.deselected()
+            directoryDropHelper.unapplyTo(toolPane?.halfTab?.projectTab as Node)
+        }
+
+        override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
+            super.attached(resultsTab, toolPane)
+            directoryDropHelper.applyTo(resultsTab)
+        }
+
+        override fun detaching() {
+            super.detaching()
+            directoryDropHelper.cancel()
+        }
+
+    }
+}

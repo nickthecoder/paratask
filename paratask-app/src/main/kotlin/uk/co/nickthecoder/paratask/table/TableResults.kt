@@ -25,6 +25,7 @@ import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.*
+import javafx.scene.input.DragEvent
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
@@ -34,6 +35,7 @@ import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.options.RowOptionsRunner
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.project.ResultsTab
 import uk.co.nickthecoder.paratask.project.ToolPane
 
 
@@ -69,9 +71,9 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
         return tableView.selectionModel.selectedItems.map { it.row }
     }
 
-    override fun attached(toolPane: ToolPane) {
+    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
 
-        super.attached(toolPane)
+        super.attached(resultsTab, toolPane)
         with(codeColumn) {
             setCellValueFactory { p -> p.value.codeProperty }
             isEditable = true
@@ -317,7 +319,6 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
             }
         }
     }
-
 
 }
 

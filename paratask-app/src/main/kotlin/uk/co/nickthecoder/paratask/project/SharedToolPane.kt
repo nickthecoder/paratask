@@ -18,10 +18,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.MyTabPane
 
 class SharedToolPane(override var tool: Tool) : ToolPane {
 
     val shared: ToolPane = tool.toolPane!!
+
+    override val tabPane: MyTabPane<MinorTab>
+        get() = shared.tabPane
 
     override val halfTab: HalfTab
         get() = shared.halfTab

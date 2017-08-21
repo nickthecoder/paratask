@@ -42,7 +42,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
     lateinit var placesFile: PlacesFile
 
-    var filesDropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>(this) {
+    var filesDropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>() {
 
         override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
 

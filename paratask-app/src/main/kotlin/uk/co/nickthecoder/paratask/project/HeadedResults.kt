@@ -16,19 +16,13 @@ class HeadedResults(val results: Results, headerRows: HeaderRows) : Results {
     override val labelProperty
         get() = results.labelProperty
 
-    override var dropHelper: DropHelper<*>?
-        get() = results.dropHelper
-        set(value) {
-            results.dropHelper = value
-        }
-
     init {
         node.center = results.node
         node.top = headerRows
     }
 
-    override fun attached(toolPane: ToolPane) {
-        results.attached(toolPane)
+    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
+        results.attached(resultsTab, toolPane)
     }
 
     override fun detaching() {

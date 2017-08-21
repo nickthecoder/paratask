@@ -12,12 +12,10 @@ import java.io.File
  * R is the type or Row
  */
 abstract class TableDropFilesHelper<R : Any>(
-        tool: TableTool<R>,
         modes: Array<TransferMode> = TransferMode.ANY)
 
     : TableDropHelper<List<File>, R>(
         dataFormat = DataFormat.FILES,
-        tool = tool,
         modes = modes) {
 
     fun fileOperation(dest: File, files: List<File>, transferMode: TransferMode): Boolean {

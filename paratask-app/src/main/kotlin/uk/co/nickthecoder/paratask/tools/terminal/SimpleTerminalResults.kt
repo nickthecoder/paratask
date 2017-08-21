@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.project.AbstractResults
+import uk.co.nickthecoder.paratask.project.ResultsTab
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.Exec
@@ -64,9 +65,9 @@ class SimpleTerminalResults(tool: Tool)
         exec?.kill(false)
     }
 
-    override fun attached(toolPane: ToolPane) {
+    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
         ParaTaskApp.logAttach("TerminalResults.attaching")
-        super.attached(toolPane)
+        super.attached(resultsTab, toolPane)
         simpleTerminal?.attached()
         ParaTaskApp.logAttach("TerminalResults.attached")
     }

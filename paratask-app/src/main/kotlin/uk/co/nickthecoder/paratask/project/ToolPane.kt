@@ -18,10 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.MyTabPane
 
 interface ToolPane {
 
     var tool: Tool
+
+    val tabPane: MyTabPane<MinorTab>
 
     val halfTab: HalfTab
 
@@ -37,7 +40,7 @@ interface ToolPane {
 
     fun selected()
 
-    fun isAttached() : Boolean
+    fun isAttached(): Boolean
 
     fun nextTab()
 

@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.Node
 import javafx.scene.control.TableRow
+import javafx.scene.control.TableView
 import javafx.scene.input.DataFormat
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
@@ -13,7 +14,6 @@ import uk.co.nickthecoder.paratask.gui.DropHelper
  */
 abstract class TableDropHelper<T, R : Any>(
         dataFormat: DataFormat,
-        val tool: TableTool<R>,
         modes: Array<TransferMode> = TransferMode.ANY)
 
     : DropHelper<T>(dataFormat, modes, null) {
@@ -25,7 +25,7 @@ abstract class TableDropHelper<T, R : Any>(
     override fun acceptTarget(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
 
         val node = event.gestureTarget
-        val r = tool.findTableRow(event)
+        val r = findTableRow(event)
         val row = r.first
         val tableRow = r.second
 
@@ -46,7 +46,7 @@ abstract class TableDropHelper<T, R : Any>(
 
     override fun onDropped(event: DragEvent, target: Node?): Boolean {
         if (target is TableRow<*>) {
-            val r = tool.findTableRow(event)
+            val r = findTableRow(event)
             if (r.first != null) {
                 return droppedOnRow(r.first!!, content(event), event.transferMode)
             }
@@ -58,4 +58,24 @@ abstract class TableDropHelper<T, R : Any>(
     abstract fun droppedOnRow(row: R, content: T, transferMode: TransferMode): Boolean
 
     abstract fun droppedOnNonRow(content: T, transferMode: TransferMode): Boolean
+
+
+    fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?> {
+        var node = event.pickResult.intersectedNode
+        while (node != null) {
+            if (node is TableView<*>) {
+                return Pair(null, null)
+            }
+            if (node is TableRow<*>) {
+                val tableRow = node as TableRow<WrappedRow<R>>
+                if (tableRow.isEmpty) {
+                    return Pair(null, null)
+                }
+                return Pair(tableRow.item.row, tableRow)
+            }
+            node = node.parent
+        }
+        return Pair(null, null)
+    }
+
 }

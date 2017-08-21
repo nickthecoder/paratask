@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.project
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.util.Labelled
 
 interface Results : Labelled {
@@ -31,9 +30,7 @@ interface Results : Labelled {
 
     val labelProperty: StringProperty
 
-    var dropHelper: DropHelper<*>?
-
-    fun attached(toolPane: ToolPane)
+    fun attached(resultsTab: ResultsTab, toolPane: ToolPane)
 
     fun detaching()
 

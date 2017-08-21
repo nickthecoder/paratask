@@ -20,8 +20,6 @@ package uk.co.nickthecoder.paratask.project
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.DropHelper
-import uk.co.nickthecoder.paratask.options.Option
 import uk.co.nickthecoder.paratask.options.OptionsManager
 
 abstract class AbstractResults(
@@ -38,13 +36,11 @@ abstract class AbstractResults(
             labelProperty.set(value)
         }
 
-    override var dropHelper : DropHelper<*>? = null
-
     init {
         this.label = label
     }
 
-    override fun attached(toolPane: ToolPane) {
+    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
         // This must be a FILTER, otherwise the option edit field will consume the keystrokes before we get a go.
         node.addEventFilter(KeyEvent.KEY_PRESSED) { checkOptionShortcuts(it) }
     }
