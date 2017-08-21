@@ -131,7 +131,7 @@ class ToolPane_Impl(override var tool: Tool)
             }
 
             index++
-            results.attached(resultsTab,this)
+            results.attached(resultsTab, this)
         }
     }
 
@@ -215,6 +215,13 @@ class ToolPane_Impl(override var tool: Tool)
         }
     }
 
+    override fun currentResults(): Results? {
+        val tab = tabPane.selectedTab
+        if (tab is ResultsTab) {
+            return tab.results
+        }
+        return null
+    }
 
     class ParametersTab(val parametersPane: ParametersPane) : MinorTab("Parameters") {
         override fun focus() {

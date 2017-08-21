@@ -41,7 +41,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     final override val taskD = TaskDescription(name = name, description = description)
 
-    val directoriesP = MultipleParameter("directories") {
+    val directoriesP = MultipleParameter("directories", value = listOf(currentDirectory)) {
         FileParameter("dir", label = "Directory", expectFile = false, mustExist = true)
     }
 
@@ -62,7 +62,13 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     val thumbnailer = Thumbnailer()
 
     override val directory: File?
-        get() = directoriesP.value.firstOrNull()
+        get() {
+            val results = toolPane?.currentResults()
+            if (results is DirectoryTableResults) {
+                return results.directory
+            }
+            return null
+        }
 
     /**
      * The results Map of directory to list of files listed for the directory.
@@ -76,6 +82,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
         if (parameterName == "directory") {
+            directoriesP.clear()
             if (expression != null) {
                 val inner = directoriesP.newValue()
                 inner.expression = expression

@@ -72,6 +72,7 @@ object JsonHelper {
                 if (parameter is MultipleParameter<*>) {
                     val jvalues = ji.get("values")
                     if (jvalues != null) {
+                        parameter.clear()
                         val jvaluesArray = jvalues.asArray()
                         for (jvalue in jvaluesArray) {
                             val newValue = parameter.newValue()

@@ -1,23 +1,26 @@
 
 
-
 Focus on Header - if there is none, then check if 1st/current results is a HeadedResults, and focus on its header.
 Use HeaderRows in ToolPane_Impl
 Change the method createHeaderRows to return a HeaderRows rather than a List<HeaderRow>
 
+Move DragHelper and DropHelper into TableResults?
+
 Bugs
+	Directory name in window title not updated correctly.
 	Cannot drag from the 1st of many minor tabs of DirectoryTool
 	Split pane with Directory on the right. History is wrong. Work with subdirectory, can't go BACK.
 
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 
-	Dragging while a move is taking place threw this :
-Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
-	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:136)
-	at uk.co.nickthecoder.paratask.tools.places.AbstractDirectoryTool$createTableResults$1.invoke(AbstractDirectoryTool.kt:35)
-	at uk.co.nickthecoder.paratask.gui.DragHelper.onDragDetected(DragHelper.kt:38)
-	at uk.co.nickthecoder.paratask.gui.DragHelper$1.handle(DragHelper.kt:31)
+OptionsTool to have a header where the name of the options can be chosen from a ComboBox (i.e. make the options name a ChoiceParameter).
+
+Make "Task" the default option type (is currently Script, but these are hardly used).
+	Create tasks for "desktop" scripts "open", "browser" etc.
+
+HideOption
+	Allows an option to be hidden (so that other options with the same code/shortcut in the options path are no longer useable)
 
 Allow a tab to be merged with another to form a single split paned tab.
 	Maybe a (toggle?) button to merge two adjascent tabs, and then to separate them again.

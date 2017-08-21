@@ -66,4 +66,8 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
     override fun focusResults() {
         shared.focusResults()
     }
+
+    override fun currentResults(): Results? {
+        return shared.currentResults()
+    }
 }

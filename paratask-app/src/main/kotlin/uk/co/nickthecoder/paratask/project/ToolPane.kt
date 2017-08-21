@@ -52,4 +52,5 @@ interface ToolPane {
 
     fun focusResults()
 
+    fun currentResults(): Results?
 }
