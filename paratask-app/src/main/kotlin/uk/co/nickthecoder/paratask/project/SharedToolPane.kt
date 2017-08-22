@@ -39,6 +39,10 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
         shared.replaceResults(resultsList, oldResultsList)
     }
 
+    override fun addResults(results: Results, index: Int) : ResultsTab {
+        return shared.addResults(results, index)
+    }
+
     override fun attached(halfTab: HalfTab) {}
 
     override fun detaching() {}

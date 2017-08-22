@@ -198,6 +198,16 @@
     -fx-control-inner-background: drop-link;
 }
 
+.button.drop-copy {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, drop-copy;
+}
+.button.drop-move {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, drop-move;
+}
+.button.drop-link {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, drop-link;
+}
+
 /** Important to override the ":selected" color. */
 .table-row-cell.drop-copy {
     -fx-background: drop-copy !important;
@@ -342,6 +352,7 @@
     -fx-padding: 5px 7px 5px 7px;
     -fx-background-radius: 10;
 }
+
 
 
 /****************************************************

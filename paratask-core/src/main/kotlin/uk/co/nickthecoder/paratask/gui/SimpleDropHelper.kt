@@ -31,21 +31,22 @@ open class SimpleDropHelper<T>(
 ) : AbstractDropHelper() {
 
     fun accept(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
+        debugPrintln("accept Target ${event.gestureTarget}")
         if (!event.dragboard.hasContent(dataFormat)) {
+            debugPrintln("Not accepted : No data of the correct type")
             return null
         }
         val source = event.gestureSource
         if (excludes.contains(source)) {
+            debugPrintln("Not accepted : Excluded node")
             return null
         }
         return acceptTarget(event)
     }
 
     open fun acceptTarget(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
-        if ( event.gestureTarget == null) {
-            return null
-        }
-        return Pair(event.gestureTarget as Node, modes)
+        debugPrintln("Accepted : $modes")
+        return Pair(event.gestureTarget as Node?, modes)
     }
 
     override fun onDragDropped(event: DragEvent) {
@@ -54,6 +55,8 @@ open class SimpleDropHelper<T>(
 
         if (accepted != null) {
             success = onDropped(event, accepted.first)
+
+            debugPrintln("Accepted : $modes")
         }
 
         event.isDropCompleted = success
@@ -62,8 +65,10 @@ open class SimpleDropHelper<T>(
 
     open fun onDropped(event: DragEvent, target: Node?): Boolean {
         dropped?.let {
+            debugPrintln("Dropped. Calling dropped lambda")
             return it(event, content(event))
         }
+        debugPrintln("Dropped. But no dropped lambda")
         return false
     }
 

@@ -1,7 +1,4 @@
 
-
-DirectoryTool to allow its ResultsTabs to be closed (removes that dir from directoriesP and re-runs/updates histiry without re-running)
-
 Allow Drag files to Editor
 	Also allow Editor to close its ResultsTabs
 

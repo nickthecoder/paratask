@@ -112,23 +112,21 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
-        val replaceIndex = removeOldResults(oldResultsList)
+        removeOldResults(oldResultsList)
 
-        var index = replaceIndex
-        var found = false
         for (results in resultsList) {
-            val resultsTab = ResultsTab(results)
-            resultsTab.canClose = results.canClose
-
-            tabPane.add(index, resultsTab)
-            if (!found) {
-                found = true
-                tabPane.selectedTab = resultsTab
-            }
-
-            index++
-            results.attached(resultsTab, this)
+            addResults(results)
         }
+        tabPane.selectionModel.select(0)
+    }
+
+    override fun addResults(results: Results, index: Int): ResultsTab {
+        val resultsTab = ResultsTab(results)
+        resultsTab.canClose = results.canClose
+
+        tabPane.add(index, resultsTab)
+        results.attached(resultsTab, this)
+        return resultsTab
     }
 
     private var attached: Boolean = false

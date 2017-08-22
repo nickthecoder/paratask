@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.misc.ThreadedDesktop
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
@@ -108,6 +109,30 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
+        val button = toolPane.tabPane.createAddTabButton {
+            onAddDirectory()
+        }
+        val dropHelper = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
+            files?.filter { it.isDirectory }?.forEach {
+                addDirectory(it)
+            }
+            true
+        }
+        dropHelper.applyTo(button)
+    }
+
+    fun onAddDirectory() {
+        // TODO Use an "Open Directory" dialog.
+        val newDirectory = currentDirectory
+        addDirectory(newDirectory)
+    }
+
+    fun addDirectory(directory: File) {
+        val innerP = directoriesP.addValue(directory) as FileParameter
+        listDirectory(directory)
+        val results = createResults(innerP)
+        toolPane?.addResults(results)?.isSelected = true
+        toolPane?.halfTab?.pushHistory()
     }
 
     fun createImageView(row: WrappedFile): ImageView {
@@ -152,17 +177,21 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         longTitle = "Directory ${directory?.path}"
 
         directoriesP.value.filterNotNull().forEach { dir ->
-            val lister = FileLister(
-                    depth = depthP.value!!,
-                    onlyFiles = onlyFilesP.value,
-                    includeHidden = includeHiddenP.value!!,
-                    enterHidden = enterHiddenP.value!!,
-                    includeBase = includeBaseP.value!!,
-                    extensions = extensionsP.value
-            )
-
-            lists[dir] = lister.listFiles(dir).map { WrappedFile(it) }
+            listDirectory(dir)
         }
+    }
+
+    fun listDirectory(directory: File) {
+        val lister = FileLister(
+                depth = depthP.value!!,
+                onlyFiles = onlyFilesP.value,
+                includeHidden = includeHiddenP.value!!,
+                enterHidden = enterHiddenP.value!!,
+                includeBase = includeBaseP.value!!,
+                extensions = extensionsP.value
+        )
+
+        lists[directory] = lister.listFiles(directory).map { WrappedFile(it) }
 
     }
 

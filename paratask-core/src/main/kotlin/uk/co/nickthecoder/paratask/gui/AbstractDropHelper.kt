@@ -9,6 +9,14 @@ abstract class AbstractDropHelper : DropHelper {
 
     var excludes = mutableSetOf<Node>()
 
+    var debug = false
+
+    fun debugPrintln(str: String) {
+        if (debug) {
+            println(str)
+        }
+    }
+
     override fun applyTo(target: Node): AbstractDropHelper {
         target.setOnDragOver { onDragOver(it) }
         target.setOnDragEntered { onDragEntered(it) }
