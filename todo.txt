@@ -25,6 +25,20 @@ Bugs
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 
+Need new way(s) to add an extra directory to DirectoryTool minor tabs.
+	"+" button, which opens a FileDialog
+	but dragging a directory to it also works ;-)
+
+Replace DirectoryTreeTool with a proper tree
+	Split Results in two, a tree on the left, and a single directory on the right.
+	In fact, maybe only have ONE DirectoryTool, with a shortcut & button to hide/show the tree.
+	Saving the state of expanded nodes is only feasible with a single directoryP, not with directoriesP. Hmmm.
+	So maybe we need a new feature, which allows a HalfTab to have a SplitPane, the left is shared by all results.
+
+Editor
+	Button in bottom toolbar to open file in Kate (or other editor).
+	While selected, it auto-reloads when the file changes, and prevents editing.
+
 OptionsTool to have a header where the name of the options can be chosen from a ComboBox (i.e. make the options name a ChoiceParameter).
 
 Make "Task" the default option type (is currently Script, but these are hardly used).

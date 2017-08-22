@@ -64,11 +64,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override val directory: File?
         get() {
-            val results = toolPane?.currentResults()
-            if (results is DirectoryTableResults) {
-                return results.directory
-            }
-            return null
+            return selectedDirectoryTableResults()?.directory
         }
 
     /**
