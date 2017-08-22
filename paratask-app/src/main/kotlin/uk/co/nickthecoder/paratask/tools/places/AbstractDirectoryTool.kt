@@ -191,7 +191,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
-        : TableResults<WrappedFile>(this@AbstractDirectoryTool, list, directory.name, createColumns(directory)) {
+        : TableResults<WrappedFile>(this@AbstractDirectoryTool, list, directory.name, createColumns(directory), canClose = true) {
 
         init {
             dropHelper = DirectoryDropHelper(directory)
@@ -199,7 +199,12 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             dragHelper = DragFilesHelper {
                 selectedRows().map { it.file }
             }
+        }
 
+        override fun closed() {
+            directoriesP.remove(directory)
+            // Hitting "Back" will un-close the tab ;-)
+            toolPane?.halfTab?.pushHistory()
         }
     }
 }

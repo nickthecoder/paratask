@@ -40,9 +40,14 @@ import uk.co.nickthecoder.paratask.project.ResultsTab
 import uk.co.nickthecoder.paratask.project.ToolPane
 
 
-open class TableResults<R : Any>(final override val tool: TableTool<R>, val list: List<R>, label: String = "Results", val columns: List<Column<R, *>>) :
+open class TableResults<R : Any>(
+        final override val tool: TableTool<R>,
+        val list: List<R>,
+        label: String = "Results",
+        val columns: List<Column<R, *>>,
+        canClose: Boolean = false) :
 
-        AbstractResults(tool, label) {
+        AbstractResults(tool, label, canClose = canClose) {
 
     val data = WrappedList(list)
 
@@ -287,8 +292,8 @@ open class TableResults<R : Any>(final override val tool: TableTool<R>, val list
 
             // Ensure the new row is visible
             virtualFlow?.let {
-                val first = it.firstVisibleCell.getIndex()
-                val last = it.lastVisibleCell.getIndex()
+                val first = it.firstVisibleCell.index
+                val last = it.lastVisibleCell.index
 
                 if (row < first || row > last) {
                     it.show(row)

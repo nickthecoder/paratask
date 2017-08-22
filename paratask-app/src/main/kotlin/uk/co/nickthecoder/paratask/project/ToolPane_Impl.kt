@@ -22,7 +22,6 @@ import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
@@ -47,8 +46,8 @@ class ToolPane_Impl(override var tool: Tool)
         top = header
 
         tabPane.side = Side.BOTTOM
-        tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
+        parametersTab.canClose = false
         parametersTab.content = parametersPane as Node
 
         tabPane.add(parametersTab)
@@ -119,6 +118,8 @@ class ToolPane_Impl(override var tool: Tool)
         var found = false
         for (results in resultsList) {
             val resultsTab = ResultsTab(results)
+            resultsTab.canClose = results.canClose
+
             tabPane.add(index, resultsTab)
             if (!found) {
                 found = true

@@ -24,7 +24,8 @@ import uk.co.nickthecoder.paratask.options.OptionsManager
 
 abstract class AbstractResults(
         override val tool: Tool,
-        label: String = "Results")
+        label: String = "Results",
+        override val canClose: Boolean = false)
 
     : Results {
 
@@ -77,4 +78,5 @@ abstract class AbstractResults(
     }
 
     override fun deselected() {}
+
 }

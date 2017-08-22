@@ -40,4 +40,12 @@ class ResultsWithHeader(val results: Results, val headerRows: Header) : Results 
         results.focus()
     }
 
+    override val canClose: Boolean
+        get() = results.canClose
+
+    override fun closed() {
+        super.closed()
+        results.closed()
+    }
+
 }

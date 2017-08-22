@@ -37,4 +37,10 @@ class ResultsTab(val results: Results) : MinorTab(results.label, results.node) {
     override fun focus() {
         results.focus()
     }
+
+    override fun close() {
+        super.close()
+        results.closed()
+    }
+
 }

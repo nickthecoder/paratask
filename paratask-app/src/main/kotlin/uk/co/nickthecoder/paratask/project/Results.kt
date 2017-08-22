@@ -30,6 +30,8 @@ interface Results : Labelled {
 
     val labelProperty: StringProperty
 
+    val canClose: Boolean
+
     fun attached(resultsTab: ResultsTab, toolPane: ToolPane)
 
     fun detaching()
@@ -39,4 +41,6 @@ interface Results : Labelled {
     fun deselected()
 
     fun focus()
+
+    fun closed() {}
 }

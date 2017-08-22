@@ -184,6 +184,14 @@ class MultipleParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
+    fun remove(value: T) {
+        val found = innerParameters.filter { it.value == value }.firstOrNull()
+        found?.let {
+            innerParameters.remove(it)
+            parameterListeners.fireStructureChanged(this)
+        }
+    }
+
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
 
     override fun copy(): MultipleParameter<T> {
