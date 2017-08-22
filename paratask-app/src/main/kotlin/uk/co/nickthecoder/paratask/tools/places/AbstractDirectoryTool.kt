@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.misc.ThreadedDesktop
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
@@ -171,6 +172,31 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     open fun isTree(): Boolean = false
 
+    fun selectedDirectoryTableResults(): DirectoryTableResults? {
+        val res = toolPane?.currentResults()
+        if (res is ResultsWithHeader) {
+            val inner = res.results
+            if (inner is DirectoryTableResults) {
+                return inner
+            }
+        }
+        return null
+    }
+
+    /**
+     * Called from the default option - either opens the file, or changes the directory of just the current results tab.
+     * This is needed, because this tool allow for multiple results, and we only want to change directory of ONE.
+     */
+    fun open(file: File) {
+        if (file.isDirectory) {
+            selectedDirectoryTableResults()?.let {
+                directoriesP.replace(it.directory, file)
+                toolPane?.parametersPane?.run()
+            }
+        } else {
+            ThreadedDesktop.instance.open(file)
+        }
+    }
 
     inner class DirectoryDropHelper(val directory: File) : TableDropFilesHelper<WrappedFile>() {
 

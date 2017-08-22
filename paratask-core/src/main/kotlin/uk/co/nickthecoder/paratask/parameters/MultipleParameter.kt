@@ -192,6 +192,13 @@ class MultipleParameter<T>(
         }
     }
 
+    fun replace(value: T, newValue: T) {
+        val found = innerParameters.filter { it.value == value }.firstOrNull()
+        found?.let {
+            found.value = newValue
+        }
+    }
+
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
 
     override fun copy(): MultipleParameter<T> {

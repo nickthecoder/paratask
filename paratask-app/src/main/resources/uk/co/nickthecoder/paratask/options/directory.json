@@ -19,12 +19,12 @@
             "alt": "DOWN",
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "tool.directory.parentFile"
-                },
-                {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.directory.parentFile"
+                        }
+                    ]
                 },
                 {
                     "name": "onlyFiles",
@@ -83,10 +83,6 @@
             "alt": "DOWN",
             "parameters": [
                 {
-                    "name": "parentDirectory",
-                    "expression": "tool.directory"
-                },
-                {
                     "name": "directoryName",
                     "value": ""
                 }
@@ -120,6 +116,17 @@
                     "expression": "tool.directory"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "tool.open( row.file )",
+            "code": ".",
+            "label": "Open",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }
