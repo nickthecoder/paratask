@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.application.Platform
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -26,10 +27,7 @@ import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
-import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.util.currentDirectory
-import uk.co.nickthecoder.paratask.util.isImage
+import uk.co.nickthecoder.paratask.util.*
 import java.io.File
 
 abstract class AbstractDirectoryTool(name: String, description: String)
@@ -119,9 +117,14 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     fun onAddDirectory() {
-        // TODO Use an "Open Directory" dialog.
-        val newDirectory = currentDirectory
-        addDirectory(newDirectory)
+        val newFileP = directoriesP.addValue(null)
+
+        toolPane?.parametersTab?.isSelected = true
+
+        val field = toolPane?.parametersPane?.taskForm?.form?.findField(newFileP)
+        Platform.runLater {
+            field?.focusNext()
+        }
     }
 
     fun addDirectory(directory: File) {

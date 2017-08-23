@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.application.Platform
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
@@ -32,6 +33,7 @@ import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.NullTask
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
+import uk.co.nickthecoder.paratask.util.focusNext
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
@@ -156,6 +158,13 @@ class PlacesTool : AbstractTableTool<Place>() {
         }
     }
 
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        val button = toolPane.tabPane.createAddTabButton {
+            onAddPlacesFile()
+        }
+    }
+
     override fun detaching() {
         autoRefresh.unwatchAll()
         super<AbstractTableTool>.detaching()
@@ -169,13 +178,24 @@ class PlacesTool : AbstractTableTool<Place>() {
         return null
     }
 
+    fun onAddPlacesFile() {
+        val fileP = filesP.addValue(null)
+
+        toolPane?.parametersTab?.isSelected = true
+
+        val field = toolPane?.parametersPane?.taskForm?.form?.findField(fileP)
+        Platform.runLater {
+            field?.focusNext()
+        }
+    }
+
     fun taskNew() {
         val results = selectedPlacesTableResults()
         results?.placesFile?.taskNew() ?: NullTask()
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns()) {
+            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns(), canClose = true) {
         init {
             autoRefresh.watch(placesFile.file)
         }
@@ -190,6 +210,13 @@ class PlacesTool : AbstractTableTool<Place>() {
         override fun detaching() {
             super.detaching()
             autoRefresh.unwatch(placesFile.file)
+        }
+
+
+        override fun closed() {
+            filesP.remove(placesFile.file)
+            // Hitting "Back" will un-close the tab ;-)
+            toolPane?.halfTab?.pushHistory()
         }
     }
 

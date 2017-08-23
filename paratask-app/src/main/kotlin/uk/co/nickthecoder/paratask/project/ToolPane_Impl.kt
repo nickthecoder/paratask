@@ -37,7 +37,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     override lateinit var halfTab: HalfTab
 
-    val parametersTab = ParametersTab(parametersPane)
+    override val parametersTab = ParametersTab(parametersPane)
 
     val header: Header? = tool.createHeader()
 

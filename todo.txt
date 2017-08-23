@@ -16,9 +16,6 @@ Bugs
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 
-Make the selected row be the same colour as the <whatever the other selection style>
-	so that the tables don't FLASH while selecting more rows with ctrl+left mouse
-
 Drag a filename from a TerminalTool
 	Test if the selected text forms a valid, existing file.
 
