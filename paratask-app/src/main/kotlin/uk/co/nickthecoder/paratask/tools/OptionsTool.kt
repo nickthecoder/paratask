@@ -17,21 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import javafx.scene.Node
-import javafx.scene.control.TableRow
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.RegisteredTaskFactory
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.SimpleDragHelper
-import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
 import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 
-class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
+class OptionsTool : ListTableTool<Option> {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -40,6 +38,8 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
     val resourceDirectoryP = ResourceParameter("directory", expectFile = false)
 
     var includesTool: IncludesTool = IncludesTool()
+
+    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
 
     init {
         taskD.addParameters(optionsNameP, resourceDirectoryP)
@@ -68,7 +68,6 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
         optionsNameP.value = optionsName
         resourceDirectoryP.value = Preferences.optionsPath[0]
     }
-
 
     override fun createColumns(): List<Column<Option, *>> {
         val columns = mutableListOf<Column<Option, *>>()
@@ -141,7 +140,7 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
 
     override fun detaching() {
         super<ListTableTool>.detaching()
-        super<AutoRefreshTool>.detaching()
+        autoRefresh.unwatchAll()
     }
 
 
@@ -160,18 +159,10 @@ class OptionsTool : ListTableTool<Option>, AutoRefreshTool {
         includesTool.resourceDirectoryP.value = resourceDirectoryP.value
         includesTool.run()
 
-        optionsFile.resource.file?.let { watch(it) }
-    }
-
-    override fun refresh() {
-        // Ahh what a bodge ;-)
-        // There is a race condition between FileOptions reloading itself, and OptionsTool refreshing.
-        // By sleeping for a second, it is likely that FileOptions will win the race, and the results
-        // will be as expected. Obviously, by no means fool proof, but good enough for me!
-        Thread(Runnable {
-            Thread.sleep(1000)
-            super.refresh()
-        }).start()
+        autoRefresh.unwatchAll()
+        optionsFile.resource.file?.let {
+            autoRefresh.watch(it)
+        }
     }
 
     fun taskEdit(option: Option): EditOptionTask {

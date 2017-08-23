@@ -24,10 +24,7 @@ import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.ResultsWithHeader
-import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
@@ -71,6 +68,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
      */
     var lists = mutableMapOf<File, List<WrappedFile>>()
 
+    // Used to select the correct ResultsTab when refreshing the tool
+    var latestDirectory: File? = null
 
     init {
         taskD.addParameters(directoriesP, depthP, onlyFilesP, extensionsP, includeHiddenP, enterHiddenP, includeBaseP, thumbnailHeightP)
@@ -111,7 +110,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             onAddDirectory()
         }
         val dropHelper = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
-            files?.filter { it.isDirectory }?.forEach {
+            files.filter { it.isDirectory }.forEach {
                 addDirectory(it)
             }
             true
@@ -176,6 +175,8 @@ abstract class AbstractDirectoryTool(name: String, description: String)
     }
 
     override fun run() {
+        latestDirectory = selectedDirectoryTableResults()?.directory
+
         directoriesP.value.filterNotNull().forEach { dir ->
             listDirectory(dir)
         }
@@ -252,6 +253,13 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
             dragHelper = DragFilesHelper {
                 selectedRows().map { it.file }
+            }
+        }
+
+        override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
+            super.attached(resultsTab, toolPane)
+            if (latestDirectory == directory) {
+                resultsTab.isSelected = true
             }
         }
 

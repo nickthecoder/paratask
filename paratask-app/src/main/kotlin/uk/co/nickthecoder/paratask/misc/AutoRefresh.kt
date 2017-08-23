@@ -21,26 +21,29 @@ import uk.co.nickthecoder.paratask.Tool
 import java.io.File
 import java.nio.file.Path
 
-interface AutoRefreshTool : Tool, FileListener {
+class AutoRefresh(val onRefresh: () -> Unit) : FileListener {
 
     override fun fileChanged(path: Path) {
         refresh()
     }
 
     fun refresh() {
-        taskRunner.runIfNotAlready()
+        onRefresh()
     }
 
-    fun watch( file : File) {
-        unwatch()
+    fun watch(file: File) {
         FileWatcher.instance.register(file, this)
     }
 
-    fun unwatch() {
+    fun unwatchAll() {
         FileWatcher.instance.unregister(this)
     }
 
-    override fun detaching() {
-        unwatch()
+    fun unwatch(file: File) {
+        FileWatcher.instance.unregister(file.toPath(), this)
+    }
+
+    fun unwatch(path: Path) {
+        FileWatcher.instance.unregister(path, this)
     }
 }

@@ -114,10 +114,13 @@ class ToolPane_Impl(override var tool: Tool)
     override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
         removeOldResults(oldResultsList)
 
-        for (results in resultsList) {
+        resultsList.forEach { results ->
             addResults(results)
         }
-        tabPane.selectionModel.select(0)
+        // Select the first tab, unless another tab selected itself while being added.
+        if (parametersTab.isSelected) {
+            tabPane.selectionModel.select(0)
+        }
     }
 
     override fun addResults(results: Results, index: Int): ResultsTab {

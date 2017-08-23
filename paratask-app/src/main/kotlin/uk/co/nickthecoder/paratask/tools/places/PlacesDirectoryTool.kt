@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
-import javafx.scene.Node
 import javafx.scene.control.OverrunStyle
-import javafx.scene.control.TableRow
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -27,8 +25,6 @@ import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
@@ -37,7 +33,7 @@ import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
+class PlacesDirectoryTool : ListTableTool<Place>() {
 
     override val taskD = TaskDescription("placesDirectory", description = "Places Directory")
 
@@ -49,6 +45,8 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
     val filenameP = directoryP.createFileChoicesParameter(fileLister)
 
     lateinit var placesFile: PlacesFile
+
+    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
 
     init {
         taskD.addParameters(directoryP, filenameP)
@@ -131,11 +129,12 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
         val file = File(directoryP.value!!, filenameP.value!!)
         placesFile = PlacesFile(file)
         list = placesFile.places
-        watch(file)
+        autoRefresh.unwatchAll()
+        autoRefresh.watch(file)
     }
 
     override fun detaching() {
-        super<AutoRefreshTool>.detaching()
+        autoRefresh.unwatchAll()
         super<ListTableTool>.detaching()
     }
 

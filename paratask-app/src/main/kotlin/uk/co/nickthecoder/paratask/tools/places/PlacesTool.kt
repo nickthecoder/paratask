@@ -23,13 +23,11 @@ import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
-import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
 import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.ResultsWithHeader
+import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.NullTask
 import uk.co.nickthecoder.paratask.util.Resource
@@ -37,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
+class PlacesTool : AbstractTableTool<Place>() {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
@@ -46,6 +44,11 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
     }
 
     val placesFilesMap = mutableMapOf<File, PlacesFile>()
+
+    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
+
+    // Used to select the correct ResultsTab when refreshing the tool
+    var latestFile: PlacesFile? = null
 
     init {
         taskD.addParameters(filesP)
@@ -141,24 +144,24 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
         }
 
         tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
-        //tableResults.dropHelper = filesDropHelper
         return tableResults
     }
 
     override fun run() {
+        latestFile = selectedPlacesTableResults()?.placesFile
+
         filesP.value.filterNotNull().forEach { file ->
             val placesFile = PlacesFile(file)
             placesFilesMap[file] = placesFile
-            watch(file)
         }
     }
 
     override fun detaching() {
-        super<AutoRefreshTool>.detaching()
+        autoRefresh.unwatchAll()
         super<AbstractTableTool>.detaching()
     }
 
-    fun currentPlacesTableResults(): PlacesTableResults? {
+    fun selectedPlacesTableResults(): PlacesTableResults? {
         val results = toolPane?.currentResults()
         if (results is ResultsWithHeader) {
             return results.results as PlacesTableResults
@@ -167,12 +170,28 @@ class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
     }
 
     fun taskNew() {
-        val results = currentPlacesTableResults()
+        val results = selectedPlacesTableResults()
         results?.placesFile?.taskNew() ?: NullTask()
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns())
+            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns()) {
+        init {
+            autoRefresh.watch(placesFile.file)
+        }
+
+        override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
+            super.attached(resultsTab, toolPane)
+            if (latestFile?.file == placesFile.file) {
+                resultsTab.isSelected = true
+            }
+        }
+
+        override fun detaching() {
+            super.detaching()
+            autoRefresh.unwatch(placesFile.file)
+        }
+    }
 
 }
 

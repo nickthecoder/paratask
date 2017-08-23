@@ -18,14 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
 
 class DirectoryTool() :
-        AbstractDirectoryTool("directory", "Work with a Single Directory"),
-        AutoRefreshTool {
+        AbstractDirectoryTool("directory", "Work with a Single Directory") {
 
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
+
+    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
 
     init {
         depthP.hidden = true
@@ -38,15 +39,16 @@ class DirectoryTool() :
 
     override fun run() {
         super.run()
+        autoRefresh.unwatchAll()
         if (autoRefreshP.value == true) {
             directoriesP.value.filterNotNull().forEach {
-                watch(it)
+                autoRefresh.watch(it)
             }
         }
     }
 
     override fun detaching() {
-        super<AutoRefreshTool>.detaching()
+        autoRefresh.unwatchAll()
         super<AbstractDirectoryTool>.detaching()
     }
 
