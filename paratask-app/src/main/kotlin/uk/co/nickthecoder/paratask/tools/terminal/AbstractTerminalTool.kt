@@ -57,7 +57,6 @@ abstract class AbstractTerminalTool(
         stop()
 
         terminalResults = createTerminalResults()
-        terminalResults?.node?.let { tabDropHelper?.applyTo(it) }
 
         runAndWait {
             updateResults()
@@ -69,7 +68,6 @@ abstract class AbstractTerminalTool(
 
         // TODO Do we want to clear the results when the process finishes? Maybe make this an option.
 
-        terminalResults?.node?.let { tabDropHelper?.unapplyTo(it) }
         terminalResults = null
     }
 

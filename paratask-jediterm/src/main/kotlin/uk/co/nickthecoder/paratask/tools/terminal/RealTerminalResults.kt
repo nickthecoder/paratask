@@ -6,7 +6,13 @@ import com.jediterm.terminal.ui.TerminalSession
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider
 import com.pty4j.PtyProcess
 import javafx.embed.swing.SwingNode
+import javafx.scene.input.DataFormat
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.CompoundDropHelper
+import uk.co.nickthecoder.paratask.gui.DropFiles
+import uk.co.nickthecoder.paratask.gui.DropHelper
+import uk.co.nickthecoder.paratask.gui.SimpleDropHelper
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.nio.charset.Charset
@@ -25,6 +31,26 @@ class RealTerminalResults(tool: Tool)
 
     var triedStopping: Boolean = false
 
+    var termWidget: JediTermWidget? = null
+
+    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { event, text ->
+        sendText(text)
+        true
+    }
+    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { event, files ->
+        val text = files.map { quoteFilenameIfNeeded(it.path) }.joinToString(separator = " ")
+        sendText(text)
+        true
+    }
+    val compoundDropHelper = CompoundDropHelper(filesDropHelper, textDropHelper)
+
+    fun quoteFilenameIfNeeded(filename: String): String {
+        if (filename.matches(Regex("[a-zA-Z0-9,._+:@%/-]*"))) {
+            return filename
+        }
+        return "'" + filename.replace("//", "////").replace("'", "\\'") + "'"
+    }
+
     override fun start(osCommand: OSCommand) {
         triedStopping = false
         SwingUtilities.invokeAndWait {
@@ -36,7 +62,8 @@ class RealTerminalResults(tool: Tool)
         return System.getenv().toMutableMap()
     }
 
-    fun createJWidget(osCommand: OSCommand): JComponent {
+
+    fun createJWidget(osCommand: OSCommand): JediTermWidget {
         val cmd = mutableListOf<String>()
         cmd.add(osCommand.program)
         cmd.addAll(osCommand.arguments)
@@ -53,10 +80,18 @@ class RealTerminalResults(tool: Tool)
 
         val connector = PtyProcessTtyConnector(process, charset)
         val settings = DefaultSettingsProvider()
-        val result = JediTermWidget(settings)
-        session = result.createTerminalSession(connector)
+        termWidget = JediTermWidget(settings)
+        session = termWidget!!.createTerminalSession(connector)
         session?.start()
-        return result
+
+        compoundDropHelper.applyTo(node)
+
+        return termWidget!!
+    }
+
+    fun sendText(text: String) {
+        termWidget?.terminalStarter?.sendString(text)
+
     }
 
     override fun waitFor(): Int {
