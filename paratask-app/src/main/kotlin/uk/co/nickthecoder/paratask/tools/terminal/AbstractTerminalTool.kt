@@ -68,7 +68,7 @@ abstract class AbstractTerminalTool(
         terminalResults?.waitFor()
 
         // TODO Do we want to clear the results when the process finishes? Maybe make this an option.
-        
+
         terminalResults?.node?.let { tabDropHelper?.unapplyTo(it) }
         terminalResults = null
     }

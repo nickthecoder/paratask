@@ -68,13 +68,6 @@ class SimpleTerminalResults(tool: Tool)
         exec?.kill(false)
     }
 
-    override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
-        ParaTaskApp.logAttach("TerminalResults.attaching")
-        super.attached(resultsTab, toolPane)
-        simpleTerminal?.attached()
-        ParaTaskApp.logAttach("TerminalResults.attached")
-    }
-
     override fun detaching() {
         ParaTaskApp.logAttach("TerminalResults.detaching")
         super.detaching()

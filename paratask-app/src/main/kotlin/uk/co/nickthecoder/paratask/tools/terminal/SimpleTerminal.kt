@@ -83,6 +83,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
                 center = inputField
                 left = terminateButton
                 right = submitButton
+                submitButton.defaultWhileFocusWithin(inputPane, name = "SimpleTerminal")
             }
 
         } else {
@@ -97,6 +98,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
 
             listeners.add(this@SimpleTerminal)
         }
+
     }
 
     fun start() {
@@ -111,12 +113,6 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         textArea.deselect()
         inputField.text = ""
         //textArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
-    }
-
-    fun attached() {
-        if (inputPane != null) {
-            submitButton.defaultWhileFocusWithin(inputPane, name = "SimpleTerminal")
-        }
     }
 
     fun detaching() {
