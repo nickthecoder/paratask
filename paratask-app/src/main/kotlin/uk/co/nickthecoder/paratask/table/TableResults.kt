@@ -142,6 +142,14 @@ open class TableResults<R : Any>(
         tableView.edit(-1, null)
     }
 
+    init {
+        tableView.focusedProperty().addListener { _, _, newValue ->
+            if (newValue == true) {
+                editOption()
+            }
+        }
+    }
+
     override fun focus() {
         Platform.runLater {
             if (tableView.items.isNotEmpty()) {
