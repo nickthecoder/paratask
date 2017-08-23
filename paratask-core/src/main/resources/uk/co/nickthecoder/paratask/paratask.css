@@ -282,6 +282,17 @@
     -fx-text-fill: #080;
 }
 
+/*
+ Make the table's selected rows stay the same colour regardless of focus, so that the table doesn't FLASH
+ when changing the selection using ctrl+left mouse button.
+ The table never stay in a focuses state, because the code's cell takes the focus, so the focus color isn't
+ important anyway!
+*/
+.table-view:focused > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
+    -fx-background: -fx-selection-bar-non-focused;
+    -fx-table-cell-border-color: derive(-fx-selection-bar-non-focused, 20%);
+}
+
 /****************************************************
 *   MyTabPane :                                     *
 * This was copied from the regular TabPane css, and *
