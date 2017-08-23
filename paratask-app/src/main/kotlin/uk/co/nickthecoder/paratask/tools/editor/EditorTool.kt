@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
-import javafx.scene.Node
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
@@ -26,7 +25,6 @@ import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.ToolPane
 import java.io.File
 
 class EditorTool() : AbstractTool() {
@@ -46,7 +44,7 @@ class EditorTool() : AbstractTool() {
     val goToLineP = IntParameter("goToLine", required = false, hidden = true)
 
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
-        files?.filter { it.isFile() }?.forEach { addFile(it) }
+        files.filter { it.isFile() }.forEach { addFile(it) }
         toolPane?.halfTab?.projectTab?.isSelected = true
         true
     }
@@ -88,7 +86,6 @@ class EditorTool() : AbstractTool() {
     }
 
     fun addFile(file: File) {
-        val innerP = fileP.addValue(file) as FileParameter
         val results = EditorResults(this, file)
         toolPane?.addResults(results)?.isSelected = true
         toolPane?.halfTab?.pushHistory()

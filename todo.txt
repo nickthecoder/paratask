@@ -1,9 +1,5 @@
 
 
-Exec - remove printlns.
-droppedFiles is List<File>? - can we get rid of the "?" ?
-
-SimpleTerminalResults doesn't default the submit button.
 
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).

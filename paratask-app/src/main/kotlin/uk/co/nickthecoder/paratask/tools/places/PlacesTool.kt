@@ -98,7 +98,7 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
         }
 
-        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
+        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
             content.forEach {
                 placesFile.places.add(Place(placesFile, it.resource, it.label))
