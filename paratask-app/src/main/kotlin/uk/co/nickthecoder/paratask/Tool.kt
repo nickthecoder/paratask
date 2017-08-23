@@ -18,8 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import groovy.lang.Binding
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.image.Image
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.options.Helper
 import uk.co.nickthecoder.paratask.options.OptionsRunner
@@ -46,6 +48,10 @@ interface Tool : Task {
     val optionsRunner: OptionsRunner
 
     var resultsList: List<Results>
+
+    var tabDropHelper: DropHelper?
+
+    val tabDropHelperProperty: ObjectProperty<DropHelper?>
 
     val project: Project?
         get() = toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow?.project

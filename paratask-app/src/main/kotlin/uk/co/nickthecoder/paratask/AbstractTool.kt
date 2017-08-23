@@ -18,8 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import javafx.application.Platform
+import javafx.beans.property.ReadOnlyObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
+import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.OptionsRunner
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.HasDirectory
@@ -55,6 +58,14 @@ abstract class AbstractTool : Tool {
 
     override var resolver: ParameterResolver = CompoundParameterResolver()
 
+    override var tabDropHelper: DropHelper?
+        get() = tabDropHelperProperty.get()
+        set(v) {
+            tabDropHelperProperty.set(v)
+        }
+
+    override val tabDropHelperProperty = SimpleObjectProperty<DropHelper>()
+
     protected fun defaultShortTitle() = taskD.name.uncamel()
 
     protected fun defaultLongTitle() = taskD.name.uncamel()
@@ -71,6 +82,7 @@ abstract class AbstractTool : Tool {
     }
 
     override fun detaching() {
+        tabDropHelper?.cancel()
         for (results in resultsList) {
             results.detaching()
         }

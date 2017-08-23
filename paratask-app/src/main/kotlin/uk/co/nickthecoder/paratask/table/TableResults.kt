@@ -128,12 +128,12 @@ open class TableResults<R : Any>(
 
     override fun selected() {
         super.selected()
-        dropHelper?.applyTo(tool.toolPane?.halfTab?.projectTab as Node)
+        tool.tabDropHelper = dropHelper
     }
 
     override fun deselected() {
         stopEditing()
-        dropHelper?.unapplyTo(tool.toolPane?.halfTab?.projectTab as Node)
+        tool.tabDropHelper = null
         super.deselected()
     }
 

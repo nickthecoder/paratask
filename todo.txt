@@ -2,6 +2,10 @@
 Allow Drag files to Editor
 	Also allow Editor to close its ResultsTabs
 
+Tool to have a tabDropHelper, which is automatically attached and detatched to/from the ProjectTab
+	Otherwise it is too tricy to keep track of left/right.
+	Use this in EditorTool and TableResults.
+	
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
 	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.

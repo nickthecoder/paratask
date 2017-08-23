@@ -32,7 +32,7 @@ class EditorResults(
         override val tool: EditorTool,
         val file: File?)
 
-    : AbstractResults(tool, file?.name ?: "New File") {
+    : AbstractResults(tool, file?.name ?: "New File", canClose = true) {
 
     val toolBar = ToolBar()
 
@@ -127,6 +127,11 @@ class EditorResults(
     override fun detaching() {
         super.detaching()
         hideToolBar()
+    }
+
+    override fun closed() {
+        super.closed()
+        tool.fileP.remove(file)
     }
 
     fun hideToolBar() {

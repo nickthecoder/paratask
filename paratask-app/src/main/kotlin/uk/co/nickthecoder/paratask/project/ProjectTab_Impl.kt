@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import com.sun.javafx.stage.StageHelper
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -31,10 +32,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.MySplitPane
-import uk.co.nickthecoder.paratask.gui.MyTab
-import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.parameters.ShortcutParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.text.MessageFormat
@@ -65,13 +63,25 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
     private val shortcuts = ShortcutHelper("ProjectTab", splitPane)
 
+    private var tabDropHelperProperty: ObjectProperty<DropHelper?>? = null
+
+    private var tabDropHelper: DropHelper? = null
+        set(v) {
+            field?.unapplyTo(this)
+            field = v
+            v?.applyTo(this)
+        }
+
+    private var tabDropHelperListener: ChangeListener<DropHelper?>? = null
 
     init {
         content = splitPane
         splitPane.left = left as Node
 
         tabTemplate = "{0}"
+
         updateTab()
+        updateTabDropHelper()
 
         val menu = ContextMenu()
         val properties = ParataskActions.TAB_PROPERTIES.createMenuItem { onEditTabProperties() }
@@ -82,6 +92,17 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         label.contextMenu = menu
     }
 
+    private fun updateTabDropHelper() {
+        tabDropHelperProperty?.removeListener(tabDropHelperListener)
+
+        tabDropHelperProperty = left.toolPane.tool.tabDropHelperProperty
+        tabDropHelper = tabDropHelperProperty?.get()
+        tabDropHelperListener = ChangeListener<DropHelper?> { _, _, newValue ->
+            tabDropHelper = newValue
+        }
+        tabDropHelperProperty?.addListener(tabDropHelperListener!!)
+    }
+
     private fun updateTab() {
         titleListener.listen(left.toolPane.tool.shortTitleProperty)
         val imageView = left.toolPane.tool.icon?.let { ImageView(it) }
@@ -89,6 +110,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun attached(projectTabs: ProjectTabs) {
+        tabDropHelper = left.toolPane.tool.tabDropHelper
+
         this.projectTabs = projectTabs
 
         ParaTaskApp.logAttach("ProjectTab.attaching HalfTab")
@@ -97,6 +120,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun detaching() {
+        tabDropHelper = null
         this.projectTabs = projectTabs
 
         ParaTaskApp.logAttach("ProjectTab.detaching left HalfTab")
@@ -143,6 +167,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
                     return
                 } else {
                     left = right!! // Must be in the JavaFX thread, so this can never fail
+                    tabDropHelper = left.toolPane.tool.tabDropHelper
                 }
             }
             right?.toolPane -> {
@@ -157,6 +182,7 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         splitPane.right = null
         splitPane.left = left as Node
         right = null
+        updateTab()
     }
 
     override fun split(tool: Tool, run: Boolean) {

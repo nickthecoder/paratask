@@ -65,7 +65,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
     override val directory: File?
         get() {
-            return selectedDirectoryTableResults()?.directory
+            return selectedDirectoryTableResults()?.directory ?: directoriesP.value.firstOrNull()
         }
 
     /**
@@ -172,13 +172,16 @@ abstract class AbstractDirectoryTool(name: String, description: String)
         }
     }
 
-    override fun run() {
+    fun updateTitle() {
         shortTitle = directory?.name ?: "Directory"
         longTitle = "Directory ${directory?.path}"
+    }
 
+    override fun run() {
         directoriesP.value.filterNotNull().forEach { dir ->
             listDirectory(dir)
         }
+        updateTitle()
     }
 
     fun listDirectory(directory: File) {
@@ -250,6 +253,11 @@ abstract class AbstractDirectoryTool(name: String, description: String)
             dragHelper = DragFilesHelper {
                 selectedRows().map { it.file }
             }
+        }
+
+        override fun selected() {
+            super.selected()
+            updateTitle()
         }
 
         override fun closed() {
