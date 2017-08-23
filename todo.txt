@@ -1,9 +1,4 @@
 
-Hmm, should the DirectoryTool's tab accept drops?
-	Does it mean "copy the file/directory", or does it mean "Add the directory to the list"?
-
-	Maybe all project tabs should select the tab when a drag is HOVERED over it. Allowing user to drop into a part of the tool.
-		So, Create a HoverDropHelper, which overrides onDragOver to select the tab, and then ProjectTab has a 
 
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
@@ -18,8 +13,6 @@ Dialog box to ask if Editor's buffers should be saved
 		If every group has only ONE question, then we don't need to show as groups.
 
 Bugs
-	Directory name in window title not updated correctly.
-	Cannot drag from the 1st of many minor tabs of DirectoryTool
 	Split pane with Directory on the right. History is wrong. Work with subdirectory, can't go BACK.
 
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh

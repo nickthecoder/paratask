@@ -53,6 +53,9 @@ interface ProjectTab {
 
     fun splitToggle()
 
+
+    fun mergeToggle()
+
     fun duplicateTab()
 
     fun changed()

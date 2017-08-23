@@ -91,8 +91,8 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
 
         val menu = ContextMenu()
         val properties = ParataskActions.TAB_PROPERTIES.createMenuItem { onEditTabProperties() }
-        val duplicate = ParataskActions.DUPLICATE_TAB.createMenuItem { projectTabs.duplicateTab() }
-        val close = ParataskActions.CLOSE_TAB.createMenuItem(shortcuts, { close() })
+        val duplicate = ParataskActions.TAB_DUPLICATE.createMenuItem { projectTabs.duplicateTab() }
+        val close = ParataskActions.TAB_CLOSE.createMenuItem(shortcuts, { close() })
         menu.items.addAll(properties, duplicate, close)
 
         label.contextMenu = menu
@@ -192,9 +192,11 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     }
 
     override fun split(tool: Tool, run: Boolean) {
-        if (right == null) {
-            add(tool)
+        if (right != null) {
+            throw IllegalStateException("Cannot split - already split")
         }
+        add(tool)
+        tool.toolPane?.halfTab?.pushHistory()
         if (run) {
             try {
                 tool.check()
@@ -216,6 +218,30 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
         }
 
         split()
+    }
+
+    override fun mergeToggle() {
+        right?.let {
+            val tool = it.toolPane.tool
+            remove(it.toolPane)
+            projectTabs.addAfter(this, tool, select = false)
+            return
+        }
+
+        // Can we merge the tab on the right with this tab (which is NOT split)
+        val index = projectTabs.indexOf(this)
+        if (index >= projectTabs.size - 1) {
+            // No tab on the right
+            return
+        }
+        val rightTab = projectTabs.listTabs()[index + 1]
+        if (rightTab.right != null) {
+            // No. The right tab is already split. Can only merge two un-split tabs.
+            return
+        }
+        val rightTool = rightTab.left.toolPane.tool
+        rightTab.close()
+        split(rightTool)
     }
 
     override fun duplicateTab() {

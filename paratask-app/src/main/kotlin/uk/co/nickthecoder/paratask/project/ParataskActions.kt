@@ -32,20 +32,20 @@ object ParataskActions {
     val nameToActionMap = mutableMapOf<String, ParataskAction>()
 
     // ProjectWindow
-    val OPEN_PROJECT = ParataskAction("project.open", KeyCode.O, alt = true, tooltip = "Open Project")
-    val SAVE_PROJECT = ParataskAction("project.save", KeyCode.S, alt = true, tooltip = "Save Project")
+    val PROJECT_OPEN = ParataskAction("project.open", KeyCode.O, alt = true, tooltip = "Open Project")
+    val PROJECT_SAVE = ParataskAction("project.save", KeyCode.S, alt = true, tooltip = "Save Project")
     val QUIT = ParataskAction("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
-    val NEW_WINDOW = ParataskAction("window.new", KeyCode.N, control = true, tooltip = "New Window")
-    val NEW_TAB = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab")
-    val RESTORE_TAB = ParataskAction("tab.new", KeyCode.T, shift = true, control = true, label = "Restore Tab")
+    val WINDOW_NEW = ParataskAction("window.new", KeyCode.N, control = true, tooltip = "New Window")
+    val TAB_NEW = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab")
+    val TAB_RESTORE = ParataskAction("tab.restore", KeyCode.T, shift = true, control = true, label = "Restore Tab")
 
-    val SPLIT_TAB_TOGGLE = ParataskAction("split.tab.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
+    val TAB_SPLIT_TOGGLE = ParataskAction("tab.split.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = ParataskAction("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
     // ProjectTab
     val TAB_PROPERTIES = ParataskAction("tab.properties", null, label = "Properties")
-    val DUPLICATE_TAB = ParataskAction("tab.duplicate", KeyCode.D, alt = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
-    val CLOSE_TAB = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
+    val TAB_DUPLICATE = ParataskAction("tab.duplicate", KeyCode.D, alt = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
+    val TAB_CLOSE = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
 
     // HalfTab
     val TOOL_STOP = ParataskAction("tool.stop", KeyCode.ESCAPE, shift = true, tooltip = "Stop the Tool")
@@ -56,6 +56,7 @@ object ParataskActions {
 
     val HISTORY_BACK = ParataskAction("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
     val HISTORY_FORWARD = ParataskAction("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
+    val TAB_MERGE_TOGGLE = ParataskAction("tab.merge.toggle", null, tooltip = "Split / Merge with the Tab to the right")
 
     // AbstractTableResults
     val OPTION_RUN = ParataskAction("actions.run", KeyCode.ENTER)

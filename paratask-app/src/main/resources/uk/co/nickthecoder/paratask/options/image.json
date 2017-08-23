@@ -6,99 +6,6 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "ink",
-            "label": "Open in Inkscape",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "inkscape"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "row.file.parentFile"
-                },
-                {
-                    "name": "output",
-                    "value": "IGNORE"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "gimp",
-            "label": "Open in GIMP",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "gimp"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        ""
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "row.file.parentFile"
-                },
-                {
-                    "name": "output",
-                    "value": "IGNORE"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "ei",
-            "label": "Edit Image",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "gimp"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        ""
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": ""
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tasks.FlipImageTask",
             "code": "flip",
             "label": "Flip Image",
@@ -197,6 +104,70 @@
                 {
                     "name": "output",
                     "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "gimp",
+            "label": "Open in GIMP",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gimp"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "rows.collect{ it.file }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "ink",
+            "label": "Open in Inkscape",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "inkscape"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
                 }
             ]
         }

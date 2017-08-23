@@ -57,10 +57,10 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         }
 
         with(toolBar.items) {
-            add(ParataskActions.OPEN_PROJECT.createButton(shortcuts) { onOpenProject() })
-            add(ParataskActions.SAVE_PROJECT.createButton(shortcuts) { onSaveProject() })
+            add(ParataskActions.PROJECT_OPEN.createButton(shortcuts) { onOpenProject() })
+            add(ParataskActions.PROJECT_SAVE.createButton(shortcuts) { onSaveProject() })
             add(ParataskActions.QUIT.createButton(shortcuts) { onQuit() })
-            add(ParataskActions.NEW_WINDOW.createButton(shortcuts) { onNewWindow() })
+            add(ParataskActions.WINDOW_NEW.createButton(shortcuts) { onNewWindow() })
             add(ParataskActions.APPLICATION_ABOUT.createButton(shortcuts) { onAbout() })
         }
     }
