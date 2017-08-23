@@ -96,7 +96,8 @@ class PlacesDirectoryTool : ListTableTool<Place>(), AutoRefreshTool {
 
             override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
                 if (row.isDirectory()) {
-                    return fileOperation(row.file!!, content, transferMode)
+                    FileOperations.instance.fileOperation(content, row.file!!, transferMode)
+                    return true
                 }
                 return false
             }

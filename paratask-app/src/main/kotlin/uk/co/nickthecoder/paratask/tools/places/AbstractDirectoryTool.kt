@@ -22,9 +22,7 @@ import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
-import uk.co.nickthecoder.paratask.misc.ThreadedDesktop
-import uk.co.nickthecoder.paratask.misc.Thumbnailer
-import uk.co.nickthecoder.paratask.misc.WrappedFile
+import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Results
@@ -234,13 +232,15 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
         override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
-                return fileOperation(row.file, content, transferMode)
+                FileOperations.instance.fileOperation(content, row.file, transferMode)
+                return true
             }
             return false
         }
 
         override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
-            return fileOperation(directory, content, transferMode)
+            FileOperations.instance.fileOperation(content, directory, transferMode)
+            return true
         }
     }
 

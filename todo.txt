@@ -1,5 +1,10 @@
 
 
+Exec - remove printlns.
+droppedFiles is List<File>? - can we get rid of the "?" ?
+
+SimpleTerminalResults doesn't default the submit button.
+
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
 	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
@@ -18,6 +23,7 @@ Bugs
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 
+
 Replace DirectoryTreeTool with a proper tree
 	Split Results in two, a tree on the left, and a single directory on the right.
 	In fact, maybe only have ONE DirectoryTool, with a shortcut & button to hide/show the tree.
@@ -35,9 +41,6 @@ Make "Task" the default option type (is currently Script, but these are hardly u
 
 HideOption
 	Allows an option to be hidden (so that other options with the same code/shortcut in the options path are no longer useable)
-
-Allow a tab to be merged with another to form a single split paned tab.
-	Maybe a (toggle?) button to merge two adjascent tabs, and then to separate them again.
 
 Other tools to have multiple minor tabs
 	Places, Terminal, SSH

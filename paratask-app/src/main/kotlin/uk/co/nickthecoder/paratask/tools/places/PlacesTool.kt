@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
+import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
@@ -81,7 +82,8 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
 
             override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
                 if (row.isDirectory()) {
-                    return fileOperation(row.file!!, content, transferMode)
+                    FileOperations.instance.fileOperation(content, row.file!!, transferMode)
+                    return true
                 }
                 return false
             }

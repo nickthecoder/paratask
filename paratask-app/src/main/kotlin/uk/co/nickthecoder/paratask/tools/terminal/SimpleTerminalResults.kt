@@ -47,6 +47,9 @@ class SimpleTerminalResults(tool: Tool)
 
     private var exec: Exec? = null
 
+    override val process
+        get() = exec?.process
+
     override fun start(osCommand: OSCommand) {
         exec = Exec(osCommand)
         runAndWait {

@@ -8,6 +8,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.Tooltip
 import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -46,6 +47,24 @@ class FileOperations {
          * However, you may create other instances if you want multiple queues, each with their own dialog box.
          */
         val instance = FileOperations()
+    }
+
+    /**
+     * Useful in combination with DropFiles.
+     */
+    fun fileOperation(files: List<File>, dest: File, transferMode: TransferMode) {
+
+        when (transferMode) {
+            TransferMode.COPY -> {
+                copyFiles(files, dest)
+            }
+            TransferMode.MOVE -> {
+                moveFiles(files, dest)
+            }
+            TransferMode.LINK -> {
+                linkFiles(files, dest)
+            }
+        }
     }
 
     fun copyFiles(sources: List<File>, destinationDirectory: File) {

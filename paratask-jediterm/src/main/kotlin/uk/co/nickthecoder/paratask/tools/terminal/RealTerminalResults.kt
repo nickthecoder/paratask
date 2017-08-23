@@ -19,7 +19,7 @@ class RealTerminalResults(tool: Tool)
 
     override val node = SwingNode()
 
-    var process: PtyProcess? = null
+    override var process: PtyProcess? = null
 
     var session: TerminalSession? = null
 

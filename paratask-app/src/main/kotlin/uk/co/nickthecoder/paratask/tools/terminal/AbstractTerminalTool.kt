@@ -17,24 +17,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.terminal
 
+import javafx.scene.Node
+import javafx.scene.input.DragEvent
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.DropFiles
+import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.OSCommand
+import uk.co.nickthecoder.paratask.util.process.linuxCurrentDirectory
 import uk.co.nickthecoder.paratask.util.runAndWait
+import java.io.File
 
 abstract class AbstractTerminalTool(
         var showCommand: Boolean = true,
         var allowInput: Boolean = false)
 
-    : AbstractTool(), Stoppable {
+    : AbstractTool(), Stoppable, HasDirectory {
 
     private var terminalResults: TerminalResults? = null
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 
     abstract fun createCommand(): OSCommand
+
+    /**
+     * Returns the current working directory of the running process ON LINUX ONLY.
+     * Returns null on other platforms. Also returns null if the process has finished.
+     */
+    override val directory
+        get() = terminalResults?.process?.linuxCurrentDirectory()
+
 
     override fun run() {
         stop()
@@ -77,5 +94,28 @@ abstract class AbstractTerminalTool(
 
     override fun stop() {
         terminalResults?.stop()
+    }
+
+
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+
+        tabDropHelper = object : DropFiles(dropped = { event, files -> droppedFiles(event, files) }) {
+
+            override fun acceptTarget(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
+                // Can't drop files if the process isn't running, or we aren't running on linux!
+                if (directory == null) {
+                    return null
+                }
+                return super.acceptTarget(event)
+            }
+        }
+    }
+
+    private fun droppedFiles(event: DragEvent, files: List<File>?): Boolean {
+        directory?.let {
+            FileOperations.instance.fileOperation(files!!, it, event.transferMode)
+        }
+        return true
     }
 }

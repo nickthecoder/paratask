@@ -10,4 +10,5 @@ interface TerminalResults : Results, Stoppable {
 
     fun waitFor(): Int
 
+    val process : Process?
 }

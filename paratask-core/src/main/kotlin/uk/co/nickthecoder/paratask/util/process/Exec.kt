@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util.process
 
+import uk.co.nickthecoder.paratask.util.child
 import java.io.File
 import java.util.concurrent.TimeUnit
-import java.lang.reflect.AccessibleObject.setAccessible
 
 
 val NOT_STARTED = -1000
@@ -162,56 +162,42 @@ class Exec {
         return NOT_STARTED
     }
 
+
+    override fun toString(): String {
+        return "Exec : $osCommand"
+    }
+
     /**
      * Attempts to get the process ID. This is not cross platform, as the name suggests.
      */
     fun unixPID(): Long? {
+        return process?.unixPID()
+    }
 
-        try {
-            if (process?.javaClass?.name == "java.lang.UNIXProcess") {
-                val field = process?.javaClass?.getDeclaredField("pid")
-                field?.isAccessible = true
-                val pid = field?.getLong(process)
-                field?.isAccessible = false
-                return pid
-            }
-        } catch (e: Exception) {
-            // Do nothing
-        }
-
-        return null
+    /**
+     * Uses /proc/PID/cwd to find the Process's current working directory.
+     * Returns null for non-linux environments
+     * Also returns null if the process has ended, or an error occurs,
+     * such as the user does not own the process.
+     */
+    fun linuxCurrentDirectory(): File? {
+        return process?.linuxCurrentDirectory()
     }
 
     /**
      * Runs ionice -c 3 -p [PID of this.process].
      * Returns the Exec of the ionice command, or null if the PID could not be found.
      */
-    fun unixIoniceIdle(): Exec? {
-        val pid = unixPID()
-        if (pid != null) {
-            val exec = Exec("ionice", "-c", "3", "-p", pid)
-            exec.start()
-            return exec
-        }
-        return null
+    fun unixIoniceIdle() {
+        process?.unixIoniceIdle()
     }
 
     /**
      * Runs the unix renice command for this exec's process
      * Returns the Exec of the renice command, or null if the PID could not be found.
      */
-    fun unixRenice(priority: Int = 10): Exec? {
-        val pid = unixPID()
-        if (pid != null) {
-            val exec = Exec("renice", "-n", priority, "-p", pid)
-            exec.start()
-            return exec
-        }
-        return null
-    }
-
-    override fun toString(): String {
-        return "Exec : $osCommand"
+    fun unixRenice(priority: Int = 10) {
+        process?.unixRenice(priority)
     }
 
     class Timeout(val timeoutMillis: Long) : Thread() {
@@ -231,5 +217,74 @@ class Exec {
             }
         }
     }
+
 }
+
+/**
+ * Attempts to get the process ID. This is not cross platform, as the name suggests.
+ */
+fun Process.unixPID(): Long? {
+
+    try {
+        if (this.javaClass.name == "java.lang.UNIXProcess") {
+            val field = this.javaClass.getDeclaredField("pid")
+            field?.isAccessible = true
+            val pid = field?.getLong(this)
+            field?.isAccessible = false
+            return pid
+        }
+    } catch (e: Exception) {
+        // Do nothing
+    }
+
+    return null
+}
+
+/**
+ * Uses /proc/PID/cwd to find the Process's current working directory.
+ * Returns null for non-linux environments
+ * Also returns null if the process has ended, or an error occurs,
+ * such as the user does not own the process.
+ */
+fun Process.linuxCurrentDirectory(): File? {
+    if (!System.getProperty("os.name").startsWith("Linux")) {
+        return null
+    }
+
+    val cwd = File("/proc").child(unixPID().toString(), "cwd")
+    try {
+        return cwd.canonicalFile
+    } catch (e: Exception) {
+        return null
+    }
+}
+
+/**
+ * Runs ionice -c 3 -p [PID of this.process].
+ * Returns the Exec of the ionice command, or null if the PID could not be found.
+ */
+fun Process.unixIoniceIdle(): Exec? {
+    val pid = unixPID()
+    if (pid != null) {
+        val exec = Exec("ionice", "-c", "3", "-p", pid)
+        exec.start()
+        return exec
+    }
+    return null
+}
+
+/**
+ * Runs the unix renice command for this exec's process
+ * Returns the Exec of the renice command, or null if the PID could not be found.
+ */
+fun Process.unixRenice(priority: Int = 10): Exec? {
+    val pid = unixPID()
+    if (pid != null) {
+        val exec = Exec("renice", "-n", priority, "-p", pid)
+        exec.start()
+        return exec
+    }
+    return null
+}
+
 
