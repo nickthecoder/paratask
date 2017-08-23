@@ -19,6 +19,7 @@ class CompoundDropHelper(vararg helpers: SimpleDropHelper<*>) : AbstractDropHelp
                 return true
             }
         }
+
         currentHelper = null
         return false
     }
@@ -30,7 +31,6 @@ class CompoundDropHelper(vararg helpers: SimpleDropHelper<*>) : AbstractDropHelp
 
     override fun onDragDropped(event: DragEvent) {
         currentHelper?.onDragDropped(event)
-        currentHelper = null
     }
 
 }

@@ -1,6 +1,5 @@
 
 
-
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
 	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
@@ -14,11 +13,12 @@ Dialog box to ask if Editor's buffers should be saved
 		If every group has only ONE question, then we don't need to show as groups.
 
 Bugs
-	Split pane with Directory on the right. History is wrong. Work with subdirectory, can't go BACK.
-
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 
+
+Drag a filename from a TerminalTool
+	Test if the selected text forms a valid, existing file.
 
 Replace DirectoryTreeTool with a proper tree
 	Split Results in two, a tree on the left, and a single directory on the right.
@@ -31,6 +31,7 @@ Editor
 	While selected, it auto-reloads when the file changes, and prevents editing.
 
 OptionsTool to have a header where the name of the options can be chosen from a ComboBox (i.e. make the options name a ChoiceParameter).
+	Can't do this if while supporting loading options from a jar file.
 
 Make "Task" the default option type (is currently Script, but these are hardly used).
 	Create tasks for "desktop" scripts "open", "browser" etc.

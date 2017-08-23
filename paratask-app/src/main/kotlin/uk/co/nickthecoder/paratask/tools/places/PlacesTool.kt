@@ -26,26 +26,46 @@ import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.AutoRefreshTool
 import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.project.Header
+import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.project.ResultsWithHeader
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.tools.NullTask
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
+class PlacesTool : AbstractTableTool<Place>(), AutoRefreshTool {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
-    val fileP = FileParameter("file", mustExist = null, value = homeDirectory.child(".config", "gtk-3.0", "bookmarks"))
-
-    lateinit var placesFile: PlacesFile
-
-    init {
-        taskD.addParameters(fileP)
+    val filesP = MultipleParameter("files", value = listOf(homeDirectory.child(".config", "gtk-3.0", "bookmarks"))) {
+        FileParameter("file", mustExist = null)
     }
 
+    val placesFilesMap = mutableMapOf<File, PlacesFile>()
 
-    override fun createColumns(): List<Column<Place, *>> {
+    init {
+        taskD.addParameters(filesP)
+    }
+
+    override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
+        // Backwards compatability. There used to be a single "file" parameter. Now its a MultipleParameter called "files".
+        if (parameterName == "file") {
+            filesP.clear()
+            if (expression == null) {
+                filesP.addValue(File(stringValue))
+            } else {
+                filesP.newValue().expression = expression
+            }
+            return
+        }
+        super<AbstractTableTool>.loadProblem(parameterName, expression, stringValue)
+    }
+
+    fun createColumns(): List<Column<Place, *>> {
         val columns = mutableListOf<Column<Place, *>>()
 
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
@@ -56,8 +76,21 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
         return columns
     }
 
-    override fun createTableResults(columns: List<Column<Place, *>>): TableResults<Place> {
-        val tableResults = super.createTableResults(columns)
+
+    override fun createResults(): List<Results> {
+        return filesP.innerParameters.filter { it.value != null }.map { fileP ->
+            ResultsWithHeader(createResults(fileP.value!!), createHeader(fileP as FileParameter))
+        }
+    }
+
+    fun createHeader(fileP: FileParameter): Header {
+        return Header(this, fileP)
+    }
+
+    fun createResults(file: File): TableResults<Place> {
+
+        val placesFile = placesFilesMap[file]!!
+        val tableResults = PlacesTableResults(placesFile)
 
         val filesDragHelper = DragFilesHelper {
             tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }
@@ -89,8 +122,8 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
             }
 
             override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
-                for (file in content) {
-                    placesFile.places.add(Place(placesFile, Resource(file), file.name))
+                for (f in content) {
+                    placesFile.places.add(Place(placesFile, Resource(f), f.name))
                 }
                 placesFile.save()
                 return true
@@ -108,25 +141,40 @@ class PlacesTool : ListTableTool<Place>(), AutoRefreshTool {
         }
 
         tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
-
+        //tableResults.dropHelper = filesDropHelper
         return tableResults
     }
 
     override fun run() {
-        placesFile = PlacesFile(fileP.value!!)
-        list = placesFile.places
-        watch(fileP.value!!)
+        filesP.value.filterNotNull().forEach { file ->
+            val placesFile = PlacesFile(file)
+            placesFilesMap[file] = placesFile
+            watch(file)
+        }
     }
-
 
     override fun detaching() {
         super<AutoRefreshTool>.detaching()
-        super<ListTableTool>.detaching()
+        super<AbstractTableTool>.detaching()
     }
 
-    fun taskNew() = placesFile.taskNew()
-}
+    fun currentPlacesTableResults(): PlacesTableResults? {
+        val results = toolPane?.currentResults()
+        if (results is ResultsWithHeader) {
+            return results.results as PlacesTableResults
+        }
+        return null
+    }
 
+    fun taskNew() {
+        val results = currentPlacesTableResults()
+        results?.placesFile?.taskNew() ?: NullTask()
+    }
+
+    inner class PlacesTableResults(val placesFile: PlacesFile) :
+            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns())
+
+}
 
 fun main(args: Array<String>) {
     TaskParser(PlacesTool()).go(args)
