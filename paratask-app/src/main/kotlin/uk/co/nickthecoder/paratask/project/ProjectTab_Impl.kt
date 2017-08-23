@@ -75,6 +75,12 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
     private var tabDropHelperListener: ChangeListener<DropHelper?>? = null
 
     init {
+        // Select the tab when a drag is over it. This will allow the item(s) to be dropped on nodes in the tab's contents
+        // which would otherwise be unavailable (because another tab's content was visible).
+        setOnDragEntered { event ->
+            isSelected = true
+        }
+
         content = splitPane
         splitPane.left = left as Node
 

@@ -1,11 +1,10 @@
 
-Allow Drag files to Editor
-	Also allow Editor to close its ResultsTabs
+Hmm, should the DirectoryTool's tab accept drops?
+	Does it mean "copy the file/directory", or does it mean "Add the directory to the list"?
 
-Tool to have a tabDropHelper, which is automatically attached and detatched to/from the ProjectTab
-	Otherwise it is too tricy to keep track of left/right.
-	Use this in EditorTool and TableResults.
-	
+	Maybe all project tabs should select the tab when a drag is HOVERED over it. Allowing user to drop into a part of the tool.
+		So, Create a HoverDropHelper, which overrides onDragOver to select the tab, and then ProjectTab has a 
+
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
 	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
@@ -25,10 +24,6 @@ Bugs
 
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
-
-Need new way(s) to add an extra directory to DirectoryTool minor tabs.
-	"+" button, which opens a FileDialog
-	but dragging a directory to it also works ;-)
 
 Replace DirectoryTreeTool with a proper tree
 	Split Results in two, a tree on the left, and a single directory on the right.

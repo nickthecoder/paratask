@@ -29,4 +29,10 @@ abstract class MinorTab(text: String = "", content: Node = Label("Empty"), graph
     abstract fun deselected()
 
     abstract fun focus()
+
+    init {
+        // Select the tab when a drag enters the tab, so that the contents become visible, which gives the user
+        // the oppotunity ro drop the item(s) somewhere in the tab's contents which would otherwise be hidden
+        setOnDragEntered { isSelected = true }
+    }
 }

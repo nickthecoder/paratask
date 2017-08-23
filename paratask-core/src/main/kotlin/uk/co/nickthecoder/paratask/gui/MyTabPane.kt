@@ -238,7 +238,6 @@ open class MyTabPane<T : MyTab> : BorderPane() {
     }
 
     internal fun onDraggedTab(event: MouseEvent, tab: MyTab) {
-
         val bounds = tab.boundsInParent
         val containerX = event.x + bounds.minX
         val containerY = event.y + bounds.minY
@@ -254,12 +253,11 @@ open class MyTabPane<T : MyTab> : BorderPane() {
             }
             val oldIndex = tabs.indexOf(tab)
             if (oldIndex != index) {
-                if (index > oldIndex) {
-                    //index--
+                if (index >= 0) {
+                    mutableTabs.remove(tab)
+                    mutableTabs.add(index, tab as T)
+                    tabsContainer.requestLayout()
                 }
-                mutableTabs.remove(tab)
-                mutableTabs.add(index, tab as T)
-                tabsContainer.requestLayout()
             }
         }
 

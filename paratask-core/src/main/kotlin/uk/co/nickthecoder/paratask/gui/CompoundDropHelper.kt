@@ -8,7 +8,11 @@ class CompoundDropHelper(vararg helpers: SimpleDropHelper<*>) : AbstractDropHelp
 
     var currentHelper: SimpleDropHelper<*>? = null
 
-    override fun onDragOver(event: DragEvent): Boolean {
+    override fun onDragOver(event: DragEvent) : Boolean {
+        currentHelper?.let {
+            return it.onDragOver(event)
+        }
+
         dropHelpers.forEach {
             if (it.onDragOver(event)) {
                 currentHelper = it

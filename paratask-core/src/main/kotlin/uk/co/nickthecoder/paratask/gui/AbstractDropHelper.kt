@@ -19,7 +19,6 @@ abstract class AbstractDropHelper : DropHelper {
 
     override fun applyTo(target: Node): AbstractDropHelper {
         target.setOnDragOver { onDragOver(it) }
-        target.setOnDragEntered { onDragEntered(it) }
         target.setOnDragExited { onDragExited(it) }
         target.setOnDragDropped { onDragDropped(it) }
 
@@ -28,7 +27,6 @@ abstract class AbstractDropHelper : DropHelper {
 
     override fun unapplyTo(target: Node) {
         target.onDragOver = null
-        target.onDragEntered = null
         target.onDragExited = null
         target.onDragDropped = null
     }
@@ -41,20 +39,9 @@ abstract class AbstractDropHelper : DropHelper {
     override fun cancel() {
         targets.forEach {
             it.onDragOver = null
-            it.onDragEntered = null
             it.onDragExited = null
             it.onDragDropped = null
         }
     }
-
-    fun onDragEntered(event: DragEvent) {
-        event.consume()
-    }
-
-    abstract fun onDragOver(event: DragEvent): Boolean
-
-    abstract fun onDragExited(event: DragEvent)
-
-    abstract fun onDragDropped(event: DragEvent)
 
 }

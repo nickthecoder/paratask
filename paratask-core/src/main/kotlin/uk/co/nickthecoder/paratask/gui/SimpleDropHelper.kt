@@ -111,7 +111,7 @@ open class SimpleDropHelper<T>(
         return event.transferMode
     }
 
-    override fun onDragOver(event: DragEvent): Boolean {
+    override fun onDragOver(event: DragEvent) : Boolean {
         val accepted = accept(event)
 
         if (accepted != null) {
@@ -127,8 +127,8 @@ open class SimpleDropHelper<T>(
         } else {
             // Ensures that the old style is removed when dragging over a table where only some rows accept the drop.
             setDropStyle(null, null)
-            return false
         }
+        return false
     }
 
     override fun onDragExited(event: DragEvent) {
