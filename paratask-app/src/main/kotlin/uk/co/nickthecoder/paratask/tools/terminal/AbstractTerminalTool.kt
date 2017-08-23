@@ -57,6 +57,8 @@ abstract class AbstractTerminalTool(
         stop()
 
         terminalResults = createTerminalResults()
+        terminalResults?.node?.let { tabDropHelper?.applyTo(it) }
+
         runAndWait {
             updateResults()
             //toolPane?.replaceResults(createResults(), resultsList)
@@ -65,8 +67,9 @@ abstract class AbstractTerminalTool(
         terminalResults?.start(command)
         terminalResults?.waitFor()
 
-        // TODO Do we want to clear the results when the process finishes?
-        // Maybe make this an option.
+        // TODO Do we want to clear the results when the process finishes? Maybe make this an option.
+        
+        terminalResults?.node?.let { tabDropHelper?.unapplyTo(it) }
         terminalResults = null
     }
 
