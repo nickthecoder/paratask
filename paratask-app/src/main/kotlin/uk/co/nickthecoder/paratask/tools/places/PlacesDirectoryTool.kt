@@ -46,7 +46,7 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
     lateinit var placesFile: PlacesFile
 
-    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
     init {
         taskD.addParameters(directoryP, filenameP)

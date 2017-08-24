@@ -47,7 +47,7 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     val placesFilesMap = mutableMapOf<File, PlacesFile>()
 
-    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
     // Used to select the correct ResultsTab when refreshing the tool
     var latestFile: PlacesFile? = null

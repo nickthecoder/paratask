@@ -39,7 +39,7 @@ class OptionsTool : ListTableTool<Option> {
 
     var includesTool: IncludesTool = IncludesTool()
 
-    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
     init {
         taskD.addParameters(optionsNameP, resourceDirectoryP)

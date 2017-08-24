@@ -26,7 +26,7 @@ class DirectoryTool() :
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
 
-    val autoRefresh = AutoRefresh { taskRunner.runIfNotAlready() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
     init {
         depthP.hidden = true
