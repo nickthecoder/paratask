@@ -73,16 +73,13 @@ class Resource(val url: URL) : Serializable {
             return url.toString()
         }
 
-    // TODO Untested! Hmm, looks odd. Either fix it, delete it, or document it!
-    val directoryName: String
-        get() {
-            file?.let { return it.name }
-            val str = toString()
-            file?.name ?: if (str.length > 20) {
-                str.substring(18) + "…"
-            }
-            return str
+    fun shortPath(maxLength: Int = 50): String {
+        val str = path
+        if (str.length > maxLength) {
+            return str.substring(0, maxLength / 2 - 2) + " … " + str.substring(str.length - maxLength / 2 + 2)
         }
+        return str
+    }
 
     val parentFile
         get() = file?.parentFile

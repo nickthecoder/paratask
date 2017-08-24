@@ -67,7 +67,7 @@ open class ChoiceParameter<T>(
 
         if (v == null) return super.errorMessage(v)
 
-        if (valueToKeyMap.get(v) == null) {
+        if (valueToKeyMap[v] == null) {
             return "Invalid choice"
         }
 
@@ -127,12 +127,28 @@ open class ChoiceParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
+    override fun coerce(v: Any?) {
+        // If it is in the map of values, then we can use it without problem
+        if (valueToKeyMap.containsKey(v)) {
+            @Suppress("UNCHECKED_CAST")
+            value = v as T
+
+        } else {
+            val str = v.toString()
+            valueToKeyMap.keys.first { str == it.toString() }?.let {
+                value = it
+                return
+            }
+            super.coerce(v)
+        }
+    }
+
     override fun copy(): ChoiceParameter<T> {
-        val result = ChoiceParameter<T>(name = name, label = label, description = description, value = value!!,
+        val result = ChoiceParameter(name = name, label = label, description = description, value = value!!,
                 required = required)
 
         keyToValueMap.forEach { (key, value) ->
-            result.addChoice(key, value, valueToLabelMap.get(value)!!)
+            result.addChoice(key, value, valueToLabelMap[value]!!)
         }
         return result
     }

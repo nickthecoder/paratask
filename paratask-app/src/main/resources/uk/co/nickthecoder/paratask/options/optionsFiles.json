@@ -15,12 +15,12 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.directory"
+                        }
+                    ]
                 },
                 {
                     "name": "onlyFiles",
@@ -43,6 +43,10 @@
                 {
                     "name": "includeBase",
                     "value": "false"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 },
                 {
                     "name": "autoRefresh",
@@ -73,6 +77,17 @@
                     "expression": "row.resource.parentResource()"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "println( row.resource.parentResource().url )\n",
+            "code": "test",
+            "label": "Test",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

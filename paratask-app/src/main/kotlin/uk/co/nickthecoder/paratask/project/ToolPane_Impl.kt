@@ -43,7 +43,6 @@ class ToolPane_Impl(override var tool: Tool)
 
     init {
         center = tabPane
-        top = header
 
         tabPane.side = Side.BOTTOM
 

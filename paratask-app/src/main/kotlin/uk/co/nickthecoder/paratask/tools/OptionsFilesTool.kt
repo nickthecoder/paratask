@@ -21,6 +21,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
+import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
@@ -47,6 +48,8 @@ class OptionsFilesTool : ListTableTool<FileOptions>() {
 
         return columns
     }
+
+    override fun createHeader() = Header(this, directoryP)
 
     override fun run() {
         list.clear()

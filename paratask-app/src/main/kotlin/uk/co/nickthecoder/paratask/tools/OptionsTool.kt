@@ -35,7 +35,7 @@ class OptionsTool : ListTableTool<Option> {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val resourceDirectoryP = ResourceParameter("directory", expectFile = false)
+    val resourceDirectoryP = Preferences.createOptionsResourceParameter(required = true)
 
     var includesTool: IncludesTool = IncludesTool()
 
@@ -89,6 +89,8 @@ class OptionsTool : ListTableTool<Option> {
 
         return columns
     }
+
+    override fun createHeader() = Header(this, optionsNameP, resourceDirectoryP)
 
     override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
         val tableResults = super.createTableResults(columns)

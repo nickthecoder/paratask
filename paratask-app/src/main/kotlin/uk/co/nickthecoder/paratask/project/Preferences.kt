@@ -43,16 +43,16 @@ object Preferences {
 
     ): ChoiceParameter<Resource?> {
 
-        val result = ChoiceParameter<Resource?>(name, value = null, required = required)
+        val value = if (required) optionsPath.first() else null
+        val result = ChoiceParameter<Resource?>(name, required = required, value = value)
         if (!required) {
             result.choice("", null, "<ALL>")
         }
 
         optionsPath.forEach { resource ->
             if (resource.isFileOrDirectory() || !onlyDirectories) {
-                val str = resource.toString()
 
-                result.choice(str, resource, resource.directoryName)
+                result.choice(resource.path, resource, resource.shortPath())
                 if (defaultFirst && result.value == null) {
                     result.value = resource
                 }

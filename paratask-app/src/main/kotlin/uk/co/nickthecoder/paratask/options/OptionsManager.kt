@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.util.Resource
 
 object OptionsManager {
