@@ -62,7 +62,7 @@ class ParaTaskCore : Registers {
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val git = TaskAndToolGroup("Git")
-        git.addTools(GitTool(), GitLogTool(), GitCommittedFilesTool())
+        git.addTools(GitTool(), GitStatusTool(), GitLogTool(), GitStashTool(), GitCommittedFilesTool())
         git.addTasks(GitCommitTask(), GitRMTask())
 
         val images = TaskAndToolGroup("Images")

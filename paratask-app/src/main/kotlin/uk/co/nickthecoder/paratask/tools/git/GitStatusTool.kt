@@ -22,9 +22,6 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.project.SharedToolPane
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.WrappedRow

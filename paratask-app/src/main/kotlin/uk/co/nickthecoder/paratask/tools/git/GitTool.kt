@@ -32,7 +32,7 @@ import java.io.File
 /**
  * Combines multiple git tools into one.
  */
-class GitTool : AbstractTool() , HasDirectory {
+class GitTool : AbstractTool(), HasDirectory {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
@@ -43,6 +43,8 @@ class GitTool : AbstractTool() , HasDirectory {
     val gitStatus = GitStatusTool()
 
     val gitLog = GitLogTool()
+
+    val gitStash = GitStashTool()
 
     val logGroupP = GroupParameter("gitLog")
 
@@ -56,22 +58,25 @@ class GitTool : AbstractTool() , HasDirectory {
 
     override fun createHeader() = Header(this, directoryP)
 
-
     override fun createResults(): List<Results> {
-        return gitStatus.createResults() + gitLog.createResults()
+        return gitStatus.createResults() + gitLog.createResults() + gitStash.createResults()
     }
 
     override fun run() {
         gitStatus.directoryP.value = directoryP.value
         gitLog.directoryP.value = directoryP.value
+        gitStash.directoryP.value = directoryP.value
+
         gitStatus.run()
         gitLog.run()
+        gitStash.run()
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         gitStatus.toolPane = SharedToolPane(this)
         gitLog.toolPane = SharedToolPane(this)
+        gitStash.toolPane = SharedToolPane(this)
     }
 }
 

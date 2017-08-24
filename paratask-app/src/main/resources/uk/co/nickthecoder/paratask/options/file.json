@@ -318,47 +318,6 @@
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "rm",
-            "label": "Delete File",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false,
-            "keyCode": "DELETE",
-            "shift": "DOWN",
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "rm"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "-f"
-                        },
-                        {
-                            "value": "--"
-                        },
-                        {
-                            "expression": "rows.collect{ it.file.toString() }"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": "./"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "play",
             "label": "Play Music",
             "isRow": true,
@@ -410,6 +369,50 @@
                             "expression": "rows.collect{ it.file }"
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "rm",
+            "label": "Delete File",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "DELETE",
+            "shift": "DOWN",
+            "aliases": [
+                "del"
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "rm"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-f"
+                        },
+                        {
+                            "value": "--"
+                        },
+                        {
+                            "expression": "rows.collect{ it.file.toString() }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }
