@@ -130,7 +130,7 @@ class ParaTaskApp : Application() {
             projectWindow.placeOnStage(stage)
             projectWindow.addTool(tool)
             if (run) {
-                tool.taskRunner.run()
+                tool.toolPane?.parametersPane?.run()
             }
         }
 

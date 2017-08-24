@@ -76,13 +76,13 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
             selectionModel.clearAndSelect(index)
         }
 
-        toolPane.halfTab.pushHistory()
         if (run) {
             try {
-                tool.check()
-                tool.taskRunner.run()
+                tool.toolPane?.parametersPane?.run()
             } catch (e: Exception) {
             }
+        } else {
+            toolPane.halfTab.pushHistory()
         }
         return newProjectTab
     }

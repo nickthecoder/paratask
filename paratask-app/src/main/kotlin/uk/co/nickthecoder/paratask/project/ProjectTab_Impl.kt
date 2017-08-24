@@ -194,13 +194,13 @@ class ProjectTab_Impl(override val tabs: ProjectTabs, toolPane: ToolPane)
             throw IllegalStateException("Cannot split - already split")
         }
         add(tool)
-        tool.toolPane?.halfTab?.pushHistory()
         if (run) {
             try {
-                tool.check()
-                tool.taskRunner.run()
+                tool.toolPane?.parametersPane?.run()
             } catch (e: Exception) {
             }
+        } else {
+            tool.toolPane?.halfTab?.pushHistory()
         }
     }
 

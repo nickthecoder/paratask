@@ -75,6 +75,13 @@ class ParametersPane_Impl(override val tool: Tool)
         return false
     }
 
+    override fun runIfNotAlreadyRunning() : Boolean {
+        if (!tool.taskRunner.isRunning()) {
+            return run()
+        }
+        return false
+    }
+
     private fun onStop() {
         if (tool is Stoppable) {
             tool.stop()

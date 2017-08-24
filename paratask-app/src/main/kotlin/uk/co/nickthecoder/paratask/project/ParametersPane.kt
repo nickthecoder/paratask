@@ -26,7 +26,13 @@ interface ParametersPane {
 
     val taskForm: TaskForm
 
+    /**
+     * This is how all tools should be run, as it checks the parameters, and displays them if there is a problem.
+     * Do NOT call Tool's run method directly, or TaskRunner's run methods either.
+     **/
     fun run(): Boolean
+
+    fun runIfNotAlreadyRunning(): Boolean
 
     fun attached(toolPane: ToolPane)
 

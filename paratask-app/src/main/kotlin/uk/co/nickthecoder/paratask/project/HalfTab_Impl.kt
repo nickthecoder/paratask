@@ -143,7 +143,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             } catch(e: Exception) {
                 return
             }
-            tool.taskRunner.run()
+            toolPane.parametersPane.run()
         }
     }
 

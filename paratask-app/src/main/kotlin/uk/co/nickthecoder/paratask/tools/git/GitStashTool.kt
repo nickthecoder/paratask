@@ -4,9 +4,10 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class GitStashTool : AbstractCommandTool<GitStashRow>() {
+class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
 
     override val taskD = TaskDescription("gitStash")
 
@@ -14,10 +15,11 @@ class GitStashTool : AbstractCommandTool<GitStashRow>() {
 
     override val resultsName = "Stash"
 
+    override val directory by directoryP
+
     init {
         taskD.addParameters(directoryP)
     }
-
 
     override fun createColumns(): List<Column<GitStashRow, *>> {
         val columns = mutableListOf<Column<GitStashRow, *>>()
