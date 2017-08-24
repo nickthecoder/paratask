@@ -13,15 +13,16 @@ Dialog box to ask if Editor's buffers should be saved
 		If every group has only ONE question, then we don't need to show as groups.
 
 Bugs
-	Prompting a new tool (because the parameters are not filled in) shows the Header.
-		It should be hidden whenever the ParametersTab is in use.
-	Clicking an Options file doesn't populate the "directoryP" parameter.
-	
-
+	Refresh didn't happen when adding git files using the combined GitTool.
 	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
 		the list again when remaining items are deleted.
 	JediTerm : ctrl+K doesn't work, and reports an error (not my code. Grrr).
 		Maybe try the "master" rather then the v2.5 tag.
+	IntField doesn't handle nulls ????
+
+OptionsTool - create two header rows.
+
+Git stash and unstash
 
 Replace DirectoryTreeTool with a proper tree
 	Split Results in two, a tree on the left, and a single directory on the right.
@@ -29,19 +30,10 @@ Replace DirectoryTreeTool with a proper tree
 	Saving the state of expanded nodes is only feasible with a single directoryP, not with directoriesP. Hmmm.
 	So maybe we need a new feature, which allows a HalfTab to have a SplitPane, the left is shared by all results.
 
-OptionsTool to have a header where the name of the options can be chosen from a ComboBox (i.e. make the options name a ChoiceParameter).
-	Can't do this if while supporting loading options from a jar file.
-
 HideOption
 	Allows an option to be hidden (so that other options with the same code/shortcut in the options path are no longer useable)
 
 Give a default max height to tasks scenes
-
-FTP Tool?
-	Only if I can still drag and drop.
-	The list will be of type Resource?
-		So I need to be able to drag Resources to a DirectoryTool
-		And drag files to the FTPTool.	
 
 FileOperations
 	Report errors

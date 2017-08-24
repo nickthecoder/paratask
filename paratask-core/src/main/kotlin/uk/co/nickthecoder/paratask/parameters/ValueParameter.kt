@@ -94,4 +94,18 @@ interface ValueParameter<T>
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         this.value = value
     }
+
+    fun link(): ValueParameter<T> {
+        @Suppress("UNCHECKED_CAST")
+        val copy = copy() as ValueParameter<T>
+        copy.value = value
+        copy.listen {
+            this.value = copy.value
+        }
+        this.listen {
+            copy.value = this.value
+        }
+
+        return copy
+    }
 }

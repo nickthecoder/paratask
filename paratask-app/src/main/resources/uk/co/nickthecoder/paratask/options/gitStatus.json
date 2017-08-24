@@ -1,0 +1,203 @@
+{
+    "includes": [
+        "git",
+        "file",
+        "dir"
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "co",
+            "label": "Check Out",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "checkout"
+                        },
+                        {
+                            "expression": "rows.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "a",
+            "label": "Git Add",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "add"
+                        },
+                        {
+                            "expression": "rows.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitRMTask",
+            "code": "rm",
+            "label": "Git Remove",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "files",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "option",
+                    "value": "none"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "dt",
+            "label": "Git Diff Tool",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "difftool"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "d",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "./"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitRMTask",
+            "code": "rmf",
+            "label": "Git Remove (-f)",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "files",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "option",
+                    "value": "-f"
+                }
+            ]
+        }
+    ]
+}

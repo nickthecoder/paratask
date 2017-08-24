@@ -46,7 +46,7 @@ class ParaTaskCore : Registers {
                 DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
-                GrepTool(), GitTool(),
+                GrepTool(), GitTool(), GitStatusTool(),
                 OptionsFilesTool(), OptionsTool(),
                 MythRecordedTool(),
                 ShortcutsTool()

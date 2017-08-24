@@ -35,7 +35,7 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
 
     override val directory by directoryP
 
-    val maxItemsP = IntParameter("maxItems", range = 1..Int.MAX_VALUE)
+    val maxItemsP = IntParameter("maxItems", range = 1..Int.MAX_VALUE, value = 100)
 
     val grepP = StringParameter("grep", required = false)
 
@@ -59,6 +59,8 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
     val untilP = DateParameter("until", required = false)
 
     val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+    override val resultsName = "Log"
 
     init {
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
@@ -126,7 +128,9 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
         } else if (state == GitLogTool.ParseState.MESSAGE) {
             if (line == "") {
                 state = GitLogTool.ParseState.HEAD
-                list.add(GitLogTool.GitLogRow(commit, author, message, date))
+                if (list.size < maxItemsP.value!!) {
+                    list.add(GitLogTool.GitLogRow(commit, author, message, date))
+                }
                 commit = ""
                 author = ""
                 message = ""
