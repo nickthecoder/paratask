@@ -90,7 +90,9 @@ class OptionsTool : ListTableTool<Option> {
         return columns
     }
 
-    override fun createHeader() = Header(this, optionsNameP, resourceDirectoryP)
+    override fun createHeader() = Header(this,
+            HeaderRow(resourceDirectoryP),
+            HeaderRow(optionsNameP))
 
     override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
         val tableResults = super.createTableResults(columns)

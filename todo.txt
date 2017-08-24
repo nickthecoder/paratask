@@ -20,6 +20,7 @@ Bugs
 	JediTerm : ctrl+K doesn't work, and reports an error (not my code. Grrr).
 		Maybe try the "master" rather then the v2.5 tag.
 	IntField doesn't handle nulls ????
+	Don't remove the TerminalResults when the process ends (You cannot see the results of a git push for example!).
 
 
 OptionsTool - create two header rows.
