@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools.places
 import javafx.application.Platform
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
@@ -123,6 +124,7 @@ abstract class AbstractDirectoryTool(name: String, description: String)
 
         val field = toolPane?.parametersPane?.taskForm?.form?.findField(newFileP)
         Platform.runLater {
+            ParaTaskApp.logFocus("AbstractDirectoryTool.onAddDirectory. field?.focusNext()")
             field?.focusNext()
         }
     }

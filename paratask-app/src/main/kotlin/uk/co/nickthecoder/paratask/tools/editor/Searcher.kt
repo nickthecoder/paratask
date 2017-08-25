@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools.editor
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import org.fxmisc.richtext.CodeArea
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import java.util.regex.Pattern
 
 class Searcher(val codeArea: CodeArea) {
@@ -119,6 +120,7 @@ class Searcher(val codeArea: CodeArea) {
         codeArea.selectRange(match.end, match.start)
         matchNumber = index
         matchPosition = "Match ${matchNumber + 1} of " + if (matches.size >= MAX_MATCHES) "at least ${MAX_MATCHES}" else "${matches.size}"
+        ParaTaskApp.logFocus("Searcher.gotoMatch. codeArea.requestFocus()")
         codeArea.requestFocus()
     }
 

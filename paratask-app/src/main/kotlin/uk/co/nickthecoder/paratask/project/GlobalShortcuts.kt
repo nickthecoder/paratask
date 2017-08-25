@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.Node
 import javafx.scene.Scene
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.tools.HomeTool
 
 class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
@@ -36,11 +37,24 @@ class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
         put(ParataskActions.NEXT_MINOR_TAB) { toolPane()?.nextTab() }
         put(ParataskActions.PREV_MINOR_TAB) { toolPane()?.prevTab() }
 
-        put(ParataskActions.FOCUS_HEADER) { toolPane()?.focusHeader() }
-        put(ParataskActions.FOCUS_RESULTS) { toolPane()?.focusResults() }
-        put(ParataskActions.FOCUS_OPTION) { halfTab()?.focusOption() }
+        put(ParataskActions.FOCUS_HEADER) {
+            ParaTaskApp.logFocus("GlobalShortcuts FOCUS_HEADER. toolPane().focusHeader()")
+            toolPane()?.focusHeader()
+        }
+        put(ParataskActions.FOCUS_RESULTS) {
+            ParaTaskApp.logFocus("GlobalShortcuts FOCUS_RESULTS. toolPane().focusResults()")
+            toolPane()?.focusResults()
+        }
+        put(ParataskActions.FOCUS_OPTION) {
+            ParaTaskApp.logFocus("GlobalShortcuts FOCUS_OPTION. halfTab().focusOption()")
+            halfTab()?.focusOption()
+        }
 
-        put(ParataskActions.FOCUS_OTHER_SPLIT) { halfTab()?.focusOtherHalf() }
+        put(ParataskActions.FOCUS_OTHER_SPLIT) {
+            ParaTaskApp.logFocus("GlobalShortcuts FOCUS_OTHER_SPLIT. halfTab().focusOtherHalf()")
+            halfTab()?.focusOtherHalf()
+        }
+
         put(ParataskActions.TAB_NEW) { projectWindow.tabs.addTool(HomeTool()) }
         put(ParataskActions.TAB_RESTORE) { projectWindow.tabs.restoreTab() }
 

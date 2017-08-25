@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
 
 class ResultsWithHeader(val results: Results, val headerRows: Header) : Results {
 
@@ -37,6 +38,7 @@ class ResultsWithHeader(val results: Results, val headerRows: Header) : Results 
     }
 
     override fun focus() {
+        ParaTaskApp.logFocus("ResultsWithHeader focus. results.focus()")
         results.focus()
     }
 

@@ -23,6 +23,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.BufferedSink
@@ -75,6 +76,8 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         if (allowInput) {
             inputPane = BorderPane()
             bottom = inputPane
+
+            ParaTaskApp.logFocus("SimpleTerminal.init. inputField.requestFocus()")
             inputField.requestFocus()
             inputPane.styleClass.add("inputArea")
 
@@ -120,9 +123,13 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
     }
 
     fun focus() {
+        ParaTaskApp.logFocus("SimpleTerminal.focus.")
+
         if (bottom === inputPane) {
+            ParaTaskApp.logFocus("SimpleTerminal.focus. inputField.requestFocus()")
             inputField.requestFocus()
         } else {
+            ParaTaskApp.logFocus("SimpleTerminal.focus. textArea.requestFocus()")
             textArea.requestFocus()
         }
     }
@@ -147,6 +154,7 @@ class SimpleTerminal(val exec: Exec, showCommand: Boolean = true, allowInput: Bo
         with(textField) {
             isEditable = false
             styleClass.add("message")
+            ParaTaskApp.logFocus("SimpleTerminal.message. requestFocus()")
             requestFocus()
             bottom = this
         }

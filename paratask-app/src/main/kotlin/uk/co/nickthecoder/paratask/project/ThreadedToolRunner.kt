@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.application.Platform
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ThreadedTaskRunner
 import uk.co.nickthecoder.paratask.Tool
 
@@ -30,6 +31,7 @@ open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
             Platform.runLater {
                 tool.updateResults()
                 if (tool.toolPane?.halfTab?.projectTab?.isSelected == true) {
+                    ParaTaskApp.logFocus("ThreadedToolRunner runTask. tool.toolPane.focusResults()")
                     tool.toolPane?.focusResults()
                 }
             }

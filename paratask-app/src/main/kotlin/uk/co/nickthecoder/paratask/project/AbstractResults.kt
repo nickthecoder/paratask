@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.input.KeyEvent
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.options.OptionsManager
 
@@ -73,6 +74,7 @@ abstract class AbstractResults(
 
     override fun selected() {
         if (tool.toolPane?.halfTab?.projectTab?.isSelected == true) {
+            ParaTaskApp.logFocus("AbstractResults.selected. focus()")
             focus()
         }
     }

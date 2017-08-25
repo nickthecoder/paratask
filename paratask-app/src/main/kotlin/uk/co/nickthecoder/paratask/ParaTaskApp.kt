@@ -79,6 +79,10 @@ class ParaTaskApp : Application() {
             // println( string )
         }
 
+        fun logFocus(@Suppress("UNUSED_PARAMETER") string: String) {
+            //println(string)
+        }
+
         fun startPromptTask(task: Task) {
             if (started) {
                 if (task is Tool) {

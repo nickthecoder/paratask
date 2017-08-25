@@ -25,6 +25,7 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 
@@ -83,6 +84,7 @@ class WebResults(override val tool: WebTool, address: String) : AbstractResults(
     }
 
     override fun focus() {
+        ParaTaskApp.logFocus("WebTool.focus. node.requestFocus()")
         node.requestFocus()
     }
 }

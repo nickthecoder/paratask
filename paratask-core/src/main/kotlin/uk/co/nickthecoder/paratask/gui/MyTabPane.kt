@@ -103,6 +103,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
                     v.right = v.closeButton
                 }
                 v.content.requestFocus()
+
             }
             selectionModel.select(v)
         }

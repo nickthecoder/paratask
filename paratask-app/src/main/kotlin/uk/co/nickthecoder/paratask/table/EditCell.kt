@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn.CellEditEvent
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.RequestFocus
 import java.lang.ref.WeakReference
@@ -62,7 +63,9 @@ class EditCell<S, T>(
         }
 
         textField.focusedProperty().addListener { _, _, isNowFocused ->
+            ParaTaskApp.logFocus("EditCell focusPropertyChanged to $isNowFocused")
             if (!isNowFocused) {
+                ParaTaskApp.logFocus("EditCell focusPropertyChanged. commitEdit")
                 commitEdit(this.converter.fromString(textField.text))
             }
         }
@@ -100,6 +103,7 @@ class EditCell<S, T>(
         super.startEdit()
         textField.text = converter.toString(item)
         contentDisplay = ContentDisplay.GRAPHIC_ONLY
+        ParaTaskApp.logFocus("EditCell startEdit. RequestFocus.requestFocus(textField)")
         RequestFocus.requestFocus(textField)
     }
 

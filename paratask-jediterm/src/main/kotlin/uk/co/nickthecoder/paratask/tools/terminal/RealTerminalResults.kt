@@ -8,6 +8,7 @@ import com.pty4j.PtyProcess
 import javafx.embed.swing.SwingNode
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.CompoundDropHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
@@ -115,6 +116,7 @@ class RealTerminalResults(tool: Tool)
     }
 
     override fun focus() {
+        ParaTaskApp.logFocus("RealTerminalResults.focus. node.requestFocus()")
         node.requestFocus()
     }
 }

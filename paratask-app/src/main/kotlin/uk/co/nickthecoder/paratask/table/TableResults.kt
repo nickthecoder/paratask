@@ -29,6 +29,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.Option
@@ -142,21 +143,18 @@ open class TableResults<R : Any>(
         tableView.edit(-1, null)
     }
 
-    init {
-        tableView.focusedProperty().addListener { _, _, newValue ->
-            if (newValue == true) {
-                editOption()
-            }
-        }
-    }
-
     override fun focus() {
+        ParaTaskApp.logFocus("TableResults focus. runLater(...)")
+
         Platform.runLater {
             if (tableView.items.isNotEmpty()) {
+                ParaTaskApp.logFocus("TableResults focus. tableView.requestFocus()")
+
                 tableView.requestFocus()
                 val index = tableView.selectionModel.focusedIndex
                 if (index < 0) {
                     tableView.selectionModel.clearAndSelect(0)
+                    ParaTaskApp.logFocus("TableResults focus. tableView.selectionModel.focus(0)")
                     tableView.selectionModel.focus(0)
                     editOption(0)
                 } else {
@@ -296,6 +294,7 @@ open class TableResults<R : Any>(
                 tableView.items[row].code = code
             }
             tableView.selectionModel.select(row)
+            ParaTaskApp.logFocus("TableResults move. tableView.selectionMode.focus(row)")
             tableView.selectionModel.focus(row)
 
             // Ensure the new row is visible
@@ -315,6 +314,7 @@ open class TableResults<R : Any>(
 
     fun runTableOptions(newTab: Boolean = false, prompt: Boolean = false) {
 
+        ParaTaskApp.logFocus("TableResults runTableOptions tableView.requestFocus()")
         // Unfocus from the cell being edited allows it to be committed
         tableView.requestFocus()
         Platform.runLater {

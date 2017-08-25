@@ -21,6 +21,7 @@ import javafx.scene.control.TextArea
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -56,6 +57,7 @@ class ExceptionTool : AbstractTool {
         }
 
         override fun focus() {
+            ParaTaskApp.logFocus("ExceptionTool.focus. node.requestFocus()")
             node.requestFocus()
         }
     }

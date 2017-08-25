@@ -188,10 +188,12 @@ class ToolPane_Impl(override var tool: Tool)
 
     override fun focusHeader() {
         if (header != null) {
+            ParaTaskApp.logFocus("ToolPane_Implt focusHeader. header.focus()")
             header.focus()
         } else {
             val results = currentResults()
             if (results is ResultsWithHeader) {
+                ParaTaskApp.logFocus("ToolPane_Implt focusHeader. results.headerRows.focus()")
                 results.headerRows.focus()
             }
         }
@@ -200,6 +202,7 @@ class ToolPane_Impl(override var tool: Tool)
     override fun focusResults() {
         val tab = tabPane.selectionModel.selectedItem
         if (tab is MinorTab) {
+            ParaTaskApp.logFocus("ToolPane_Implt focusResults. tab.focus()")
             tab.focus()
         }
     }
@@ -215,11 +218,13 @@ class ToolPane_Impl(override var tool: Tool)
     class ParametersTab(val parametersPane: ParametersPane) : MinorTab("Parameters") {
         override fun focus() {
             Platform.runLater {
+                ParaTaskApp.logFocus("ParametersTab.focus. parametersPane.focus()")
                 parametersPane.focus()
             }
         }
 
         override fun selected() {
+            ParaTaskApp.logFocus("ParametersTab.selected focus()")
             focus()
         }
 

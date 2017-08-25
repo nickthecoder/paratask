@@ -22,6 +22,7 @@ import javafx.scene.control.Button
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
@@ -75,7 +76,7 @@ class ParametersPane_Impl(override val tool: Tool)
         return false
     }
 
-    override fun runIfNotAlreadyRunning() : Boolean {
+    override fun runIfNotAlreadyRunning(): Boolean {
         if (!tool.taskRunner.isRunning()) {
             return run()
         }
@@ -101,6 +102,7 @@ class ParametersPane_Impl(override val tool: Tool)
     }
 
     override fun focus() {
+        ParaTaskApp.logFocus("ParametersPane_Impl focus. focusNext()")
         this.focusNext()
     }
 

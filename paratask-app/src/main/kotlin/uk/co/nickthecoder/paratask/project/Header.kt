@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.layout.VBox
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.util.focusNext
@@ -26,6 +27,7 @@ class Header(val tool: Tool, vararg rows: HeaderRow) : VBox() {
     }
 
     fun focus() {
+        ParaTaskApp.logFocus("Header focus. rows.firstOrNull().focusNext()")
         rows.firstOrNull()?.focusNext()
     }
 

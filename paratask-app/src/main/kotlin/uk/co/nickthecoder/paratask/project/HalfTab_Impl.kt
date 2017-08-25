@@ -215,6 +215,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     }
 
     override fun focusOption() {
+        ParaTaskApp.logFocus("HalfTab_Impl focusOption. RequestFocus.requestFocus(optionsField)")
         RequestFocus.requestFocus(optionsField)
     }
 

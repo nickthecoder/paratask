@@ -23,6 +23,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.ToolBar
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.dumpAncestors
@@ -101,6 +102,7 @@ class EditorResults(
     }
 
     override fun focus() {
+        ParaTaskApp.logFocus("EditorResults.focus. codeArea.requestFocus()")
         codeArea.requestFocus()
     }
 
@@ -139,11 +141,13 @@ class EditorResults(
         findBar.isVisible = false
         tool.toolPane?.halfTab?.toolBars?.bottom = null
         tool.toolPane?.halfTab?.toolBars?.left = null
+        ParaTaskApp.logFocus("SimpleTerminal.hideToolBar. codeArea.requestFocus()")
         codeArea.requestFocus()
     }
 
     fun showFindBar() {
         if (findBar.isVisible) {
+            ParaTaskApp.logFocus("SimpleTerminal.showFindBar. findBar.focus()")
             findBar.focus()
         } else {
             findBar.isVisible = true

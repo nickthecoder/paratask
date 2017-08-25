@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTabPane
 
@@ -42,7 +43,7 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
         shared.replaceResults(resultsList, oldResultsList)
     }
 
-    override fun addResults(results: Results, index: Int) : ResultsTab {
+    override fun addResults(results: Results, index: Int): ResultsTab {
         return shared.addResults(results, index)
     }
 
@@ -67,10 +68,12 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
     }
 
     override fun focusHeader() {
+        ParaTaskApp.logFocus("SharedToolPane.focusHeader")
         shared.focusHeader()
     }
 
     override fun focusResults() {
+        ParaTaskApp.logFocus("SharedToolPane.focusResults")
         shared.focusResults()
     }
 

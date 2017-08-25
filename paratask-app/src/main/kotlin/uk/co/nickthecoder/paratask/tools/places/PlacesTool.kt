@@ -21,6 +21,7 @@ import javafx.application.Platform
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
@@ -185,6 +186,7 @@ class PlacesTool : AbstractTableTool<Place>() {
 
         val field = toolPane?.parametersPane?.taskForm?.form?.findField(fileP)
         Platform.runLater {
+            ParaTaskApp.logFocus("PlacesTool.onAddPlacesFile. field?.focusNext()")
             field?.focusNext()
         }
     }

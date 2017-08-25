@@ -26,6 +26,7 @@ import javafx.geometry.VPos
 import javafx.scene.control.Button
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
@@ -87,6 +88,7 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
     }
 
     fun focus() {
+        ParaTaskApp.logFocus("HeaederRow. focus. fireTabToFocusNext()")
         fireTabToFocusNext()
     }
 

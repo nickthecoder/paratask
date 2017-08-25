@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.scene.control.Button
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.AbstractTaskPrompter
@@ -30,6 +31,7 @@ class TaskResults(tool: Tool, val task: Task) : AbstractResults(tool, "Meta Data
     override val node = prompter.root
 
     override fun focus() {
+        ParaTaskApp.logFocus("TaskResults.focus. node.focusNext()")
         node.focusNext()
     }
 

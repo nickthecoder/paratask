@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.editor
 
 import javafx.scene.control.*
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.project.ParataskActions
@@ -57,20 +58,25 @@ class FindBar(val searcher: Searcher, val editorResults: EditorResults) : ToolBa
     }
 
     fun attached() {
+        ParaTaskApp.logFocus("FindBar.attached. focus()")
         focus()
         //goButton.defaultWhileFocusWithin(this, "FindBar Go", scene = editorResults.codeArea.scene)
         goButton.defaultWhileFocusWithin(this, "FindBar Go")
     }
 
     fun focus() {
+        ParaTaskApp.logFocus("FindBar.focus()")
+
         if (searchTextField.scene == null) {
             // The text field isn't part of the scene yet, so request focus when it is...
             goButton.sceneProperty().addListener { _, _, newValue ->
                 if (newValue != null) {
+                    ParaTaskApp.logFocus("FindBar.focus Listener. searchTextField.requestFocus()")
                     searchTextField.requestFocus()
                 }
             }
         } else {
+            ParaTaskApp.logFocus("FindBar.focus. searchTextField.requestFocus()")
             searchTextField.requestFocus()
         }
     }
