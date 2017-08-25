@@ -52,6 +52,9 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
+            "aliases": [
+                "stash"
+            ],
             "parameters": [
                 {
                     "name": "program",
@@ -72,6 +75,34 @@
                 {
                     "name": "output",
                     "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommittedFilesTool",
+            "code": ".",
+            "label": "List Committed Files",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "aliases": [
+                "files"
+            ],
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "commit",
+                    "expression": "row.name"
+                },
+                {
+                    "name": "compareTo",
+                    "value": "HEAD"
                 }
             ]
         }

@@ -33,6 +33,7 @@ class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
 
     override fun createCommand(): OSCommand {
         val command = OSCommand("git", "stash", "list", "--format=full")
+        command.directory = directory
 
         return command
     }
@@ -55,7 +56,8 @@ class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
         } else if (line.startsWith(messagePrefix)) {
             parsedMessage = line.substring(messagePrefix.length)
 
-            list.add(GitStashRow(parsedName, parsedCommit, parsedMessage))
+            val row = GitStashRow(parsedName, parsedCommit, parsedMessage)
+            list.add(row)
 
             parsedName = ""
             parsedCommit = ""

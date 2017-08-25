@@ -41,13 +41,17 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
 
     val commit by commitP
 
+    val compareToP = StringParameter("compareTo", required = false)
+
+    val compareTo by compareToP
+
     constructor(directory: File, commit: String) : this() {
         directoryP.value = directory
         commitP.value = commit
     }
 
     init {
-        taskD.addParameters(directoryP, commitP)
+        taskD.addParameters(directoryP, commitP, compareToP)
     }
 
 
@@ -61,7 +65,11 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
     }
 
     override fun createCommand(): OSCommand {
-        val command = OSCommand("git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit).dir(directory!!)
+        val command = OSCommand("git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit)
+        if (compareTo.isNotEmpty()) {
+            command.addArgument(compareTo)
+        }
+        command.directory = directory!!
         return command
     }
 

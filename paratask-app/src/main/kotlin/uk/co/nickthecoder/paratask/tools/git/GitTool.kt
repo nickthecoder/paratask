@@ -48,6 +48,8 @@ class GitTool : AbstractTool(), HasDirectory {
 
     val logGroupP = GroupParameter("gitLog")
 
+    var resultsTabIndex: Int = 0
+
     init {
         logGroupP.addParameters(
                 gitLog.maxItemsP.link(), gitLog.grepP.link(), gitLog.grepTypeP.link(), gitLog.mergesP.link(),
@@ -62,7 +64,14 @@ class GitTool : AbstractTool(), HasDirectory {
         return gitStatus.createResults() + gitLog.createResults() + gitStash.createResults()
     }
 
+    override fun updateResults() {
+        super.updateResults()
+        toolPane?.tabPane?.selectionModel?.select(resultsTabIndex)
+    }
+
     override fun run() {
+        resultsTabIndex = toolPane?.tabPane?.selectionModel?.selectedIndex ?: 0
+
         gitStatus.directoryP.value = directoryP.value
         gitLog.directoryP.value = directoryP.value
         gitStash.directoryP.value = directoryP.value

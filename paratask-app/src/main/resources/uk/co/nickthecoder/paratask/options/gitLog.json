@@ -38,20 +38,6 @@
         },
         {
             "type": "groovy",
-            "script": "new GitCommittedFilesTool( tool.directory, row.commit )",
-            "code": ".",
-            "label": "List Committed Files",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "aliases": [
-                "files"
-            ]
-        },
-        {
-            "type": "groovy",
             "script": "x",
             "code": "test",
             "label": "test",
@@ -89,7 +75,35 @@
                 },
                 {
                     "name": "directory",
-                    "value": "."
+                    "value": "./"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitCommittedFilesTool",
+            "code": ".",
+            "label": "List Committed Files",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "aliases": [
+                "files"
+            ],
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "commit",
+                    "expression": "row.commit"
                 }
             ]
         }
