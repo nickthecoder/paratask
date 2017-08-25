@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.terminal
 
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
@@ -34,8 +35,16 @@ class TerminalTool : AbstractTerminalTool(showCommand = true, allowInput = true)
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
+    val closeWhenFinishedP = BooleanParameter("closeWhenFinished", value = true)
+
     init {
-        taskD.addParameters(programP, argumentsP, directoryP)
+        taskD.addParameters(programP, argumentsP, directoryP, closeWhenFinishedP)
+    }
+
+    override fun finished() {
+        if (closeWhenFinishedP.value == true) {
+            toolPane?.halfTab?.close()
+        }
     }
 
     fun input(value: Boolean): TerminalTool {

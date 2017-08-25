@@ -28,7 +28,7 @@ class GlobalShortcuts(val scene: Scene, val projectWindow: ProjectWindow) {
         put(ParataskActions.TOOL_STOP) { halfTab()?.onStop() }
         put(ParataskActions.TOOL_RUN) { halfTab()?.onRun() }
         put(ParataskActions.TOOL_SELECT) { projectWindow.addTool(HomeTool()) }
-        put(ParataskActions.TOOL_CLOSE) { halfTab()?.onClose() }
+        put(ParataskActions.TOOL_CLOSE) { halfTab()?.close() }
         put(ParataskActions.HISTORY_BACK) { halfTab()?.history?.undo() }
         put(ParataskActions.HISTORY_FORWARD) { halfTab()?.history?.redo() }
 

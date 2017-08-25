@@ -47,7 +47,7 @@ interface HalfTab {
 
     fun onRun()
 
-    fun onClose()
+    fun close()
 
     fun focusOption()
 

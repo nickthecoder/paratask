@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.terminal
 
+import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
@@ -66,9 +67,13 @@ abstract class AbstractTerminalTool(
         terminalResults?.start(command)
         terminalResults?.waitFor()
 
-        // TODO Do we want to clear the results when the process finishes? Maybe make this an option.
+        Platform.runLater {
+            finished()
+        }
+    }
 
-        terminalResults = null
+    open fun finished() {
+        // Default behaviour is to do nothing.
     }
 
     private fun createTerminalResults(): TerminalResults {

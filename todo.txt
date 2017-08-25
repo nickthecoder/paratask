@@ -12,20 +12,12 @@ Dialog box to ask if Editor's buffers should be saved
 	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS (GroupParameter)
 		If every group has only ONE question, then we don't need to show as groups.
 
-
 Bugs
-	Refresh didn't happen when adding git files using the combined GitTool.
-	Deleting multiple files/directories auto-refreshes the list before all files have been deleted, but does NOT refresh
-		the list again when remaining items are deleted.
 	JediTerm : ctrl+K doesn't work, and reports an error (not my code. Grrr).
 		Maybe try the "master" rather then the v2.5 tag.
 	IntField doesn't handle nulls ????
 	Don't remove the TerminalResults when the process ends (You cannot see the results of a git push for example!).
 
-
-OptionsTool - create two header rows.
-
-Git stash and unstash
 
 Replace DirectoryTreeTool with a proper tree
 	Split Results in two, a tree on the left, and a single directory on the right.

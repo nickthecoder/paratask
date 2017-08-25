@@ -142,6 +142,33 @@
         },
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.git.GitRMTask",
+            "code": "rmf",
+            "label": "Git Remove (-f)",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "value": "./"
+                },
+                {
+                    "name": "files",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "option",
+                    "value": "-f"
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "d",
             "label": "Git Diff",
@@ -169,33 +196,10 @@
                 {
                     "name": "directory",
                     "value": "./"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.git.GitRMTask",
-            "code": "rmf",
-            "label": "Git Remove (-f)",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": true,
-            "newTab": false,
-            "refresh": true,
-            "parameters": [
-                {
-                    "name": "directory",
-                    "value": "./"
                 },
                 {
-                    "name": "files",
-                    "values": [
-                        
-                    ]
-                },
-                {
-                    "name": "option",
-                    "value": "-f"
+                    "name": "closeWhenFinished",
+                    "value": "false"
                 }
             ]
         }

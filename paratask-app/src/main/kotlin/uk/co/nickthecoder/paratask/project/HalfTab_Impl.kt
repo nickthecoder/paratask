@@ -89,7 +89,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
                 historyGroup,
                 ParataskActions.TAB_SPLIT_TOGGLE.createButton(shortcuts) { projectTab.splitToggle() },
                 ParataskActions.TAB_MERGE_TOGGLE.createButton(shortcuts) { projectTab.mergeToggle() },
-                ParataskActions.TOOL_CLOSE.createButton(shortcuts) { onClose() })
+                ParataskActions.TOOL_CLOSE.createButton(shortcuts) { close() })
 
         bindButtons()
     }
@@ -164,7 +164,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         changeTool(newTool)
     }
 
-    override fun onClose() {
+    override fun close() {
         projectTab.remove(toolPane)
     }
 
