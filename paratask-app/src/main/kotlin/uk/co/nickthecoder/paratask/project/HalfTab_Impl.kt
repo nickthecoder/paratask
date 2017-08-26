@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.SidePanel
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.CompoundButtons
 import uk.co.nickthecoder.paratask.gui.MySplitPane
@@ -60,7 +61,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     val optionsContextMenu = ContextMenu()
 
-    override var sideBar: Node? = null
+    var sidePanel: SidePanel? = null
         set(v) {
             if (right != null && left is Styleable) {
                 (left as Styleable).styleClass.remove("sidebar")
@@ -69,7 +70,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
                 right = null
                 left = mainArea
             } else {
-                left = v
+                left = v.node
                 right = mainArea
                 if (v is Styleable) {
                     v.styleClass.add("sidebar")
@@ -77,6 +78,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
             }
             field = v
         }
+
+    val sidePanelToggleButton = ParataskActions.SIDE_PANEL_TOGGLE.createButton(shortcuts) { toggleSidePanel() }
 
     init {
         this.dividerRatio = 0.3
@@ -110,11 +113,14 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         runButton = ParataskActions.TOOL_RUN.createButton(shortcuts) { onRun() }
         runStopStack.children.addAll(stopButton, runButton)
 
+        sidePanelToggleButton.isDisable = !toolPane.tool.hasSidePanel
+
         toolBar.items.addAll(
                 optionsField,
                 runStopStack,
                 ParataskActions.TOOL_SELECT.createToolButton(shortcuts) { tool -> onSelectTool(tool) },
                 historyGroup,
+                sidePanelToggleButton,
                 ParataskActions.TAB_SPLIT_TOGGLE.createButton(shortcuts) { projectTab.splitToggle() },
                 ParataskActions.TAB_MERGE_TOGGLE.createButton(shortcuts) { projectTab.mergeToggle() },
                 ParataskActions.TOOL_CLOSE.createButton(shortcuts) { close() })
@@ -154,6 +160,9 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     }
 
     override fun changeTool(tool: Tool, prompt: Boolean) {
+        val showSidePanel = right != null
+
+        sidePanel = null
         toolPane.detaching()
         children.remove(toolPane as Node)
 
@@ -174,6 +183,12 @@ class HalfTab_Impl(override var toolPane: ToolPane)
                 return
             }
             toolPane.parametersPane.run()
+        }
+
+        sidePanelToggleButton.isDisable = !tool.hasSidePanel
+
+        if (tool.hasSidePanel && showSidePanel) {
+            toggleSidePanel()
         }
     }
 
@@ -253,6 +268,14 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val other = if (projectTab.left === this) projectTab.right else projectTab.left
 
         other?.toolPane?.focusResults()
+    }
+
+    fun toggleSidePanel() {
+        if (sidePanel == null) {
+            sidePanel = toolPane.tool.getSidePanel()
+        } else {
+            sidePanel = null
+        }
     }
 
 }

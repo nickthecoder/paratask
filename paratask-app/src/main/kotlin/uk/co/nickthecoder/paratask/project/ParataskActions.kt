@@ -32,22 +32,23 @@ object ParataskActions {
     val nameToActionMap = mutableMapOf<String, ParataskAction>()
 
     // ProjectWindow
+
     val PROJECT_OPEN = ParataskAction("project.open", KeyCode.O, alt = true, tooltip = "Open Project")
     val PROJECT_SAVE = ParataskAction("project.save", KeyCode.S, alt = true, tooltip = "Save Project")
     val QUIT = ParataskAction("application.quit", KeyCode.Q, alt = true, label = "Quit", tooltip = "Quit Para Task")
     val WINDOW_NEW = ParataskAction("window.new", KeyCode.N, control = true, tooltip = "New Window")
     val TAB_NEW = ParataskAction("tab.new", KeyCode.T, control = true, label = "New Tab")
     val TAB_RESTORE = ParataskAction("tab.restore", KeyCode.T, shift = true, control = true, label = "Restore Tab")
-
-    val TAB_SPLIT_TOGGLE = ParataskAction("tab.split.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
     val APPLICATION_ABOUT = ParataskAction("application.about", KeyCode.F1, tooltip = "About ParaTask")
 
     // ProjectTab
+
     val TAB_PROPERTIES = ParataskAction("tab.properties", null, label = "Properties")
     val TAB_DUPLICATE = ParataskAction("tab.duplicate", KeyCode.D, alt = true, label = "Duplicate Tab", tooltip = "Duplicate Tab")
     val TAB_CLOSE = ParataskAction("tab.close", KeyCode.W, control = true, label = "Close Tab")
 
     // HalfTab
+
     val TOOL_STOP = ParataskAction("tool.stop", KeyCode.ESCAPE, shift = true, tooltip = "Stop the Tool")
     val TOOL_RUN = ParataskAction("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
@@ -56,13 +57,29 @@ object ParataskActions {
 
     val HISTORY_BACK = ParataskAction("history.back", KeyCode.LEFT, alt = true, tooltip = "Back")
     val HISTORY_FORWARD = ParataskAction("history.forward", KeyCode.RIGHT, alt = true, tooltip = "Forward")
-    val TAB_MERGE_TOGGLE = ParataskAction("tab.merge.toggle", null, tooltip = "Split / Merge with the Tab to the right")
 
-    // AbstractTableResults
+    val TAB_MERGE_TOGGLE = ParataskAction("tab.merge.toggle", null, tooltip = "Split / Merge with the Tab to the right")
+    val TAB_SPLIT_TOGGLE = ParataskAction("tab.split.toggle", KeyCode.F3, tooltip = "Split/Un-Split")
+
+    val SIDE_PANEL_TOGGLE = ParataskAction("side.panel.toggle", KeyCode.F9, tooltip = "Show/Hide the side panel")
+
     val OPTION_RUN = ParataskAction("actions.run", KeyCode.ENTER)
     val OPTION_RUN_NEW_TAB = ParataskAction("actions.run.new.tab", KeyCode.ENTER, shift = true)
     val OPTION_PROMPT = ParataskAction("actions.run", KeyCode.F8)
     val OPTION_PROMPT_NEW_TAB = ParataskAction("actions.run.new.tab", KeyCode.F8, shift = true)
+
+    // Table
+
+    val NEXT_ROW = ParataskAction("row.next", KeyCode.DOWN)
+    val PREV_ROW = ParataskAction("row.previous", KeyCode.UP)
+    val SELECT_ROW_DOWN = ParataskAction("row.select.down", KeyCode.DOWN, shift = true)
+    val SELECT_ROW_UP = ParataskAction("row.select.up", KeyCode.UP, shift = true)
+
+    // DirectoryTool
+
+    val DIRECTORY_EDIT_PLACES = ParataskAction("directory.places.edit", null, label = "Edit", tooltip = "Edit Places")
+    val DIRECTORY_CHANGE_PLACES = ParataskAction("directory.places.change", null, label = "Change Places File")
+    val DIRECTORY_CHANGE_TREE_ROOT = ParataskAction("director.change.root", null, label = "Change Root", tooltip = "Change tree's root directory")
 
     // EditorTool
 
@@ -72,6 +89,7 @@ object ParataskActions {
     val EDIT_FIND_PREV = ParataskAction("edit.find.prev", KeyCode.G, control = true, shift = true, tooltip = "Find Next")
 
     // General
+
     val CONTEXT_MENU = ParataskAction("context.menu", KeyCode.CONTEXT_MENU)
     val FILE_SAVE = ParataskAction("file.save", KeyCode.S, control = true, tooltip = "Save")
     val EDIT_CUT = ParataskAction("edit.cut", KeyCode.X, control = true, tooltip = "Cut")
@@ -82,6 +100,7 @@ object ParataskActions {
     val ESCAPE = ParataskAction("escape", KeyCode.ESCAPE)
 
     // GlobalShortcuts
+
     val NEXT_MAJOR_TAB = ParataskAction("tab.major.next", KeyCode.CLOSE_BRACKET, control = true)
     val PREV_MAJOR_TAB = ParataskAction("tab.major.prev", KeyCode.OPEN_BRACKET, control = true)
     val NEXT_MINOR_TAB = ParataskAction("tab.minor.next", KeyCode.CLOSE_BRACKET, control = true, shift = true)
@@ -115,11 +134,6 @@ object ParataskActions {
     val MINOR_TAB_9 = ParataskAction("tab.minor.9", KeyCode.DIGIT9, control = true, shift = true)
 
     val MINOR_TABS = listOf(MINOR_TAB_1, MINOR_TAB_2, MINOR_TAB_3, MINOR_TAB_4, MINOR_TAB_5, MINOR_TAB_6, MINOR_TAB_7, MINOR_TAB_8, MINOR_TAB_9)
-
-    val NEXT_ROW = ParataskAction("row.next", KeyCode.DOWN)
-    val PREV_ROW = ParataskAction("row.previous", KeyCode.UP)
-    val SELECT_ROW_DOWN = ParataskAction("row.select.down", KeyCode.DOWN, shift = true)
-    val SELECT_ROW_UP = ParataskAction("row.select.up", KeyCode.UP, shift = true)
 
     init {
         load()

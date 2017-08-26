@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.util.child
+import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 import java.net.URL
 
@@ -65,6 +67,10 @@ class PlacesFile(val file: File) {
     }
 
     fun taskNew(): NewPlaceTask = NewPlaceTask(this)
+
+    companion object {
+        val defaultFile = homeDirectory.child(".config", "gtk-3.0", "bookmarks")
+    }
 
 }
 

@@ -24,8 +24,10 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.OptionsRunner
+import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.focusNext
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractTool : Tool {
@@ -122,6 +124,17 @@ abstract class AbstractTool : Tool {
             return listOf()
         } else {
             return listOf(results)
+        }
+    }
+
+    fun focusOnParameter(parameter: Parameter) {
+        toolPane?.parametersTab?.isSelected = true
+
+        // Need to run later, otherwise the focus doesn't happen. Another JavaFX weirdness. Grr.
+        Platform.runLater {
+            val field = toolPane?.parametersPane?.taskForm?.form?.findField(parameter)
+            ParaTaskApp.logFocus("AbstractTool.focusOnParameter. field?.focusNext()")
+            field?.focusNext()
         }
     }
 

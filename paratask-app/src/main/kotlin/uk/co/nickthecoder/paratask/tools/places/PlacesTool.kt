@@ -43,7 +43,7 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
-    val filesP = MultipleParameter("files", value = listOf(homeDirectory.child(".config", "gtk-3.0", "bookmarks"))) {
+    val filesP = MultipleParameter("files", value = listOf(PlacesFile.defaultFile)) {
         FileParameter("file", mustExist = null)
     }
 

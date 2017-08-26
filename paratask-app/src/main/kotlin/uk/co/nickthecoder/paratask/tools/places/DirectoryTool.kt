@@ -19,15 +19,17 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.application.Platform
 import javafx.geometry.Side
+import javafx.scene.Node
+import javafx.scene.control.Label
+import javafx.scene.control.TabPane
+import javafx.scene.control.ToolBar
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.ParaTaskApp
+import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.SidePanel
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.gui.DropFiles
-import uk.co.nickthecoder.paratask.gui.MyTab
-import uk.co.nickthecoder.paratask.gui.MyTabPane
+import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
@@ -44,6 +46,8 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     }
 
     val treeRootP = FileParameter("treeRoot", required = false, expectFile = false)
+
+    val placesFileP = FileParameter("placesFile", required = false, expectFile = true)
 
     val filterGroupP = GroupParameter("filter")
 
@@ -67,6 +71,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     val treeRoot: File
         get() = treeRootP.value ?: homeDirectory
 
+    override val hasSidePanel = true
 
     override val directory: File?
         get() {
@@ -87,7 +92,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     init {
         filterGroupP.addParameters(onlyFilesP, extensionsP, includeHiddenP)
-        taskD.addParameters(directoriesP, treeRootP, filterGroupP, foldSingleDirectoriesP, thumbnailHeightP, autoRefreshP)
+        taskD.addParameters(directoriesP, treeRootP, placesFileP, filterGroupP, foldSingleDirectoriesP, thumbnailHeightP, autoRefreshP)
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -121,8 +126,8 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     override fun run() {
         latestDirectory = selectDirectory ?: selectedDirectoryTableResults()?.directory
         selectDirectory = null
-        Platform.runLater{
-            sideBar?.foldSingleDirectories = foldSingleDirectoriesP.value == true
+        Platform.runLater {
+            directorySidePanel?.foldSingleDirectories = foldSingleDirectoriesP.value == true
         }
 
         directoriesP.value.filterNotNull().forEach { dir ->
@@ -138,24 +143,17 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         }
     }
 
-    var sideBar: DirectorySideBar? = null
+    var directorySidePanel: DirectorySidePanel? = null
 
-    fun createSideBar(): DirectorySideBar {
-        return DirectorySideBar()
-    }
-
-    fun showSideBar() {
-        if (sideBar == null) {
-            sideBar = createSideBar()
-        } else {
-            sideBar?.update()
+    override fun getSidePanel(): DirectorySidePanel {
+        if (directorySidePanel == null) {
+            directorySidePanel = DirectorySidePanel()
         }
-        toolPane?.halfTab?.sideBar = sideBar
+        return directorySidePanel!!
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        showSideBar()
 
         val button = toolPane.tabPane.createAddTabButton {
             onAddDirectory()
@@ -178,13 +176,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     fun onAddDirectory() {
         val newFileP = directoriesP.addValue(null)
 
-        toolPane?.parametersTab?.isSelected = true
-
-        val field = toolPane?.parametersPane?.taskForm?.form?.findField(newFileP)
-        Platform.runLater {
-            ParaTaskApp.logFocus("AbstractDirectoryTool.onAddDirectory. field?.focusNext()")
-            field?.focusNext()
-        }
+        focusOnParameter(newFileP)
     }
 
     fun addDirectory(directory: File) {
@@ -278,9 +270,9 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     inner class DirectoryDropHelper(val directory: File) : TableDropFilesHelper<WrappedFile>() {
 
-        override fun acceptDropOnRow(row: WrappedFile) = if (row.isDirectory()) TransferMode.ANY else null
+        override fun acceptDropOnRow(row: WrappedFile): Array<TransferMode>? = if (row.isDirectory()) TransferMode.ANY else null
 
-        override fun acceptDropOnNonRow() = TransferMode.ANY
+        override fun acceptDropOnNonRow(): Array<TransferMode> = TransferMode.ANY
 
         override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
             if (row.isDirectory()) {
@@ -316,9 +308,9 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
         override fun selected() {
             super.selected()
-            // Sync the sideBar's directory with the Results' directory
-            sideBar?.let {
-                it.directoryTree.selectDirectory(directory)?.isExpanded = true
+            // Sync the sidePanel's directory with the Results' directory
+            directorySidePanel?.let {
+                it.treeContent.tree.selectDirectory(directory)?.isExpanded = true
             }
             updateTitle()
         }
@@ -330,17 +322,37 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         }
     }
 
-    inner class DirectorySideBar : MyTabPane<MyTab>() {
 
-        var directoryTree = DirectoryTree(treeRoot, foldSingleDirectories = foldSingleDirectoriesP.value == true)
+    private fun selectDirectory(directory: File) {
 
-        val treeTab = MyTab("Tree", directoryTree)
+        val oldDirectory = selectedDirectoryTableResults()?.directory
+        if (oldDirectory != directory) {
+            directoriesP.replace(oldDirectory, directory)
+            selectDirectory = directory
+            toolPane?.parametersPane?.run()
+        }
+    }
+
+
+    inner class DirectorySidePanel : SidePanel {
+
+        private val tabPane = MyTabPane<MyTab>()
+
+        override val node: Node = tabPane
+
+        var treeContent = TreeTabContent()
+
+        private val treeTab = MyTab("Tree", treeContent)
+
+        private var placesContent = PlacesTabContent()
+
+        private val placesTab = MyTab("Places")
 
         // Dropping a directory onto the "Tree" tab changes the root directory in the sideBars' tree.
-        val treeRootDropHelper = DropFiles() { event, files ->
+        val treeRootDropHelper = DropFiles { _, files ->
             val newRoot = files.firstOrNull { it.isDirectory }
-            if (newRoot != null && newRoot != directoryTree.rootDirectory) {
-                directoryTree.rootDirectory = newRoot
+            if (newRoot != null && newRoot != treeContent.tree.rootDirectory) {
+                treeContent.tree.rootDirectory = newRoot
                 treeRootP.value = newRoot
                 toolPane?.halfTab?.pushHistory()
             }
@@ -348,38 +360,72 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         }
 
         var foldSingleDirectories: Boolean
-            get() = directoryTree.foldSingleDirectories
+            get() = treeContent.tree.foldSingleDirectories
             set(v) {
-                directoryTree.foldSingleDirectories = v
+                treeContent.tree.foldSingleDirectories = v
             }
 
         init {
-            side = Side.BOTTOM
+            tabPane.side = Side.BOTTOM
+            tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
-            directoryTree.onSelected = { directory ->
-                val oldDirectory = selectedDirectoryTableResults()?.directory
-                if (oldDirectory != directory) {
-                    directoriesP.replace(oldDirectory, directory)
-                    selectDirectory = directory
-                    toolPane?.parametersPane?.run()
-                }
-            }
+            treeContent.tree.onSelected = { selectDirectory(it) }
 
             treeRootDropHelper.applyTo(treeTab)
 
-            add(treeTab)
-            // TODO Add a list of "Places"
+            tabPane.add(treeTab)
+
+            placesTab.content = placesContent
+            tabPane.add(placesTab)
+
         }
 
-        fun update() {
-            if (directoryTree.rootDirectory != treeRoot) {
-                directoryTree = DirectoryTree(treeRoot)
-                treeTab.content = directoryTree
-            }
-            // TODO Check if places file has changed.
-        }
     }
 
+    inner class TreeTabContent : BorderPane() {
+        val tree = DirectoryTree(treeRoot, foldSingleDirectories = foldSingleDirectoriesP.value == true)
+
+        init {
+            center = tree
+            val buttons = ToolBar()
+            bottom = buttons
+
+            buttons.items.add(ParataskActions.DIRECTORY_CHANGE_TREE_ROOT.createButton { focusOnParameter(treeRootP) })
+        }
+
+    }
+
+    private inner class PlacesTabContent : BorderPane() {
+
+        var placesListView: PlacesListView? = null
+
+        var shortcuts = ShortcutHelper("Places Tab", this)
+
+        val file = placesFileP.value ?: PlacesFile.defaultFile
+
+        init {
+            val buttons = ToolBar()
+            bottom = buttons
+
+            if (file.exists()) {
+                placesListView = PlacesListView(PlacesFile(file))
+                center = placesListView
+                placesListView?.onSelected = { selectDirectory(it) }
+                buttons.items.add(ParataskActions.DIRECTORY_EDIT_PLACES.createButton(shortcuts) { editPlaces() })
+            } else {
+                center = Label("")
+            }
+
+            buttons.items.add(ParataskActions.DIRECTORY_CHANGE_PLACES.createButton(shortcuts) { focusOnParameter(placesFileP) })
+        }
+
+        fun editPlaces() {
+            val tab = toolPane?.halfTab?.projectTab
+            val tool = PlacesTool()
+            tool.filesP.value = listOf(file)
+            tab?.projectTabs?.addAfter(tab, tool)
+        }
+    }
 
 }
 

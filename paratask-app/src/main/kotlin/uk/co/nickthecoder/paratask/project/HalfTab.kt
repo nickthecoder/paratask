@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.project
 import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
+import uk.co.nickthecoder.paratask.SidePanel
 import uk.co.nickthecoder.paratask.Tool
 
 interface HalfTab {
@@ -31,8 +32,6 @@ interface HalfTab {
     val optionsField: TextField
 
     val toolBars: BorderPane
-
-    var sideBar: Node?
 
     val history: History
 

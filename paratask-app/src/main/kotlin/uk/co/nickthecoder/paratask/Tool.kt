@@ -56,11 +56,16 @@ interface Tool : Task {
     val project: Project?
         get() = toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow?.project
 
+    val hasSidePanel: Boolean
+        get() = false
+
     /**
      * Note, this is separate from run because this must be done in JavaFX's thread, whereas run
      * will typically be done in its own thread.
      */
     fun createResults(): List<Results>
+
+    fun getSidePanel(): SidePanel = throw IllegalStateException("Tool does not have a side panel")
 
     fun updateResults()
 
