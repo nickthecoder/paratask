@@ -373,6 +373,7 @@
 .my-split-pane > .divider {
    -fx-background-color: -fx-box-border, -fx-inner-border-horizontal;
    -fx-background-insets: 0, 0 1 0 1;
+   -fx-cursor: h-resize;
 }
 
 /****************************************************

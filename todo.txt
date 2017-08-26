@@ -1,12 +1,6 @@
 
-Dir Tree Side Planel
-	Watch the places file, and reload when it changes.
-	Allow drop of File/Resources/Places to the Places list.
-
 Bugs
 	IntField doesn't handle nulls ????
-
-MySplitPane to change MousePointer over the split
 
 directory.json to have "+" option to add the subdir as a minor tab.
 	Maybe we need subDirectory.json included in directory.json (above dir.json), and put special directory row stuff in there.
