@@ -43,7 +43,7 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.home.addTools(
                 HomeTool(), CustomToolListTool(),
-                DirectoryTool(), DirectoryTreeTool(), PlacesTool(), PlacesDirectoryTool(),
+                DirectoryTool(), PlacesTool(), PlacesDirectoryTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
                 GrepTool(), GitTool(), GitStatusTool(),
@@ -58,7 +58,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.misc.addTools(CodeHeaderTool())
 
         val files = TaskAndToolGroup("Files")
-        files.addTools(DirectoryTool(), DirectoryTreeTool(), GrepTool())
+        files.addTools(DirectoryTool(), GrepTool())
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val git = TaskAndToolGroup("Git")
@@ -74,6 +74,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.addGroup(files)
         TaskRegistry.addGroup(images)
 
+        TaskRegistry.aliasTool(DirectoryTool(), "uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool")
         TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
         TaskRegistry.aliasTool(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
         TaskRegistry.aliasTool(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")

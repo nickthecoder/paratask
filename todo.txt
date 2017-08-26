@@ -1,4 +1,32 @@
 
+Dir Tree
+	ENTER to work with that dir
+	SPACE to toggle isExpanded
+
+	Option to fold single directories together, so that uk/co/nickthecoder/paratask is ONE line, rather than 4.
+		But would need an "unfold" context menu item, otherwise couldn't work with "uk/co" for example.
+
+	Implement list of "Places" (in its own class!)
+		Watch the file, and reload when it changes.
+		Filter the results to show directories only.
+		Allow drop of File to the Places.
+		Right click "Places" tab : 
+			"Change Places File" focus on Parameter's field
+			"Edit Places" - New PlacesTool.
+
+
+Bugs
+	IntField doesn't handle nulls ????
+	Places "+" option doesn't work (but doesn't throw).
+
+directory.json to have "+" option to add the subdir as a minor tab.
+	Maybe we need subDirectory.json included in directory.json (above dir.json), and put special directory row stuff in there.
+		Then we don't need to bodge of the "." option!
+	Delete directoryTree.json
+
+
+COPY Drag of Files to the same directory make a COPY of the files.
+	Maybe ask first? To prevent accidental drags screwing things up.
 
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
@@ -12,21 +40,13 @@ Dialog box to ask if Editor's buffers should be saved
 	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS (GroupParameter)
 		If every group has only ONE question, then we don't need to show as groups.
 
-Bugs
-	JediTerm : ctrl+K doesn't work, and reports an error (not my code. Grrr).
-		Maybe try the "master" rather then the v2.5 tag.
-	IntField doesn't handle nulls ????
-	Don't remove the TerminalResults when the process ends (You cannot see the results of a git push for example!).
+FileField's drag icon :
+	Show a directory/file icon when the type MUST be one or the other.
+	Change it dynamically when it can be either, and "|*|" when the item doesn't exist.
+	Double click for the "File/Directory Open/Save" dialog when "..." isn't shown.
 
-
-Replace DirectoryTreeTool with a proper tree
-	Split Results in two, a tree on the left, and a single directory on the right.
-	In fact, maybe only have ONE DirectoryTool, with a shortcut & button to hide/show the tree.
-	Saving the state of expanded nodes is only feasible with a single directoryP, not with directoriesP. Hmmm.
-	So maybe we need a new feature, which allows a HalfTab to have a SplitPane, the left is shared by all results.
-
-HideOption
-	Allows an option to be hidden (so that other options with the same code/shortcut in the options path are no longer useable)
+Implement KDE style Places file
+	Check XDG_CURRENT_DESKTOP, if it is KDE, then use the KDE file, otherwise use Gnome's
 
 Give a default max height to tasks scenes
 
@@ -63,6 +83,12 @@ Make git diff its own Task (with boolean for Use Diff Tool)
 
 Task to extract options from the jar file, and place them into ~/.config/paratask/options
 	(Don't overwrite anything, unless the "overwrite" parameter is ticked.
+
+
+PasswordParameter - never saved in json
+	But maybe later retrieve password values from a password safe.
+	So the parameter has an option to TYPE the password OR specify the key in the password safe.
+	For extra flexibility, support multiple password safes (each with their own parameters).
 
 New Tasks
 	ImageMagick tasks
@@ -154,9 +180,6 @@ WebTool does not detect when a redirect occurs.
 
 Notes
 =====
-    
-JavaFX Standard CSS :
-    https://pastebin.com/0PebD9nR
-    https://gist.github.com/maxd/63691840fc372f22f470
+
 JavaFX Shortcuts :
     https://wiki.openjdk.java.net/display/OpenJFX/Keyboard+Navigation

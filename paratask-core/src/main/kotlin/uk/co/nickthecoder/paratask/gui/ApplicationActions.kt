@@ -6,7 +6,7 @@ object ApplicationActions {
     val SPINNER_INCREMENT = ApplicationAction("spinner.increment", KeyCode.UP)
     val SPINNER_DECREMENT = ApplicationAction("spinner.decrement", KeyCode.DOWN)
     val ENTER = ApplicationAction("enter", KeyCode.ENTER)
-
+    val SPACE = ApplicationAction("space", KeyCode.SPACE)
 
     val UP_DIRECTORY = ApplicationAction("directory-up", KeyCode.UP, alt = true)
     val COMPLETE_FILE = ApplicationAction("directory-complete", KeyCode.DOWN, alt = true)

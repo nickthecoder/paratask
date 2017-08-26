@@ -39,7 +39,7 @@ cp -r pty/libs/pty4j-0.7.2.jar pty/libs/purejavacomm-0.0.17.jar ../paratask/jedi
 # Copy pty's native dll/so files.
 # Note, the src/dist directory lets 'gradle installApp' and 'gradle distZip' include them in the distribution.
 mkdir -p ../paratask/src/dist/lib
-cp -r pty/libs/linux/ pty/libs/macosx/ pty/libs/x86/ ../paratask/src/dist/lib/
+cp -r pty/libs/linux/ pty/libs/macosx/ pty/libs/win/ ../paratask/src/dist/lib/
 
 cp ../paratask
 

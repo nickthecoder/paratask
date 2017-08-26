@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.css.Styleable
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -30,13 +31,16 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.CompoundButtons
+import uk.co.nickthecoder.paratask.gui.MySplitPane
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.util.RequestFocus
 import uk.co.nickthecoder.paratask.util.Stoppable
 
 class HalfTab_Impl(override var toolPane: ToolPane)
 
-    : BorderPane(), HalfTab {
+    : MySplitPane(), HalfTab {
+
+    val mainArea = BorderPane()
 
     override val toolBars = BorderPane()
 
@@ -56,11 +60,35 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     val optionsContextMenu = ContextMenu()
 
+    override var sideBar: Node? = null
+        set(v) {
+            if (right != null && left is Styleable) {
+                (left as Styleable).styleClass.remove("sidebar")
+            }
+            if (v == null) {
+                right = null
+                left = mainArea
+            } else {
+                left = v
+                right = mainArea
+                if (v is Styleable) {
+                    v.styleClass.add("sidebar")
+                }
+            }
+            field = v
+        }
+
     init {
+        this.dividerRatio = 0.3
+
         toolBars.center = toolBar
 
-        center = toolPane as Node
-        bottom = toolBars
+        left = mainArea
+
+        with(mainArea) {
+            center = toolPane as Node
+            bottom = toolBars
+        }
 
         with(optionsField) {
             prefColumnCount = 6
@@ -105,8 +133,10 @@ class HalfTab_Impl(override var toolPane: ToolPane)
     override fun detaching() {
         ParaTaskApp.logAttach("HalfTab.detaching ToolPane")
         toolPane.detaching()
-        center = null
-        bottom = null
+        mainArea.center = null
+        mainArea.bottom = null
+        left = null
+        right = null
         toolBars.children.clear()
         toolBar.items.clear()
         shortcuts.clear()
@@ -129,7 +159,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
         toolPane = ToolPane_Impl(tool)
 
-        center = toolPane as Node
+        mainArea.center = toolPane as Node
         toolPane.attached(this)
 
         projectTab.changed()

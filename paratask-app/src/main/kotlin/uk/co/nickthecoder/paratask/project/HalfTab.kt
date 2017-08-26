@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.Tool
@@ -30,6 +31,8 @@ interface HalfTab {
     val optionsField: TextField
 
     val toolBars: BorderPane
+
+    var sideBar: Node?
 
     val history: History
 

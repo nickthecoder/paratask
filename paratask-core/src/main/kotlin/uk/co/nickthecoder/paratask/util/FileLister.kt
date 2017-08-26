@@ -85,7 +85,7 @@ class FileLister(
         fun listSingle(dir: File, level: Int) {
             if (stopping || depth < level) return
 
-            val filesAndDirectories: Array<File>
+            val filesAndDirectories: Array<File>?
             try {
                 filesAndDirectories = dir.listFiles(this)
                 if (filesAndDirectories == null) {
