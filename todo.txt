@@ -17,9 +17,6 @@ Dir Tree
 
 Bugs
 	IntField doesn't handle nulls ????
-	Places "+" option doesn't work (but doesn't throw).
-
-TerminalTool to indicate that the Process has finished. Maybe add "Done" to the tab's label? Minor? Major?
 
 directory.json to have "+" option to add the subdir as a minor tab.
 	Maybe we need subDirectory.json included in directory.json (above dir.json), and put special directory row stuff in there.

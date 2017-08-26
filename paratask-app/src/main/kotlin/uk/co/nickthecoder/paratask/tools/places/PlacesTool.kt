@@ -22,6 +22,7 @@ import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
@@ -191,9 +192,9 @@ class PlacesTool : AbstractTableTool<Place>() {
         }
     }
 
-    fun taskNew() {
+    fun taskNew(): Task {
         val results = selectedPlacesTableResults()
-        results?.placesFile?.taskNew() ?: NullTask()
+        return results?.placesFile?.taskNew() ?: NullTask()
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
