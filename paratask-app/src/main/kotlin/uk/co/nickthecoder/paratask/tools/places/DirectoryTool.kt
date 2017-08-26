@@ -127,7 +127,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         latestDirectory = selectDirectory ?: selectedDirectoryTableResults()?.directory
         selectDirectory = null
         Platform.runLater {
-            directorySidePanel?.foldSingleDirectories = foldSingleDirectoriesP.value == true
+            directorySidePanel?.update()
         }
 
         directoriesP.value.filterNotNull().forEach { dir ->
@@ -141,6 +141,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
                 autoRefresh.watch(it)
             }
         }
+
     }
 
     var directorySidePanel: DirectorySidePanel? = null
@@ -380,6 +381,11 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
         }
 
+        fun update() {
+            foldSingleDirectories = foldSingleDirectoriesP.value == true
+            treeContent.tree.rootDirectory = treeRoot
+            placesContent.file = placesFileP.value
+        }
     }
 
     inner class TreeTabContent : BorderPane() {
@@ -401,21 +407,33 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
         var shortcuts = ShortcutHelper("Places Tab", this)
 
-        val file = placesFileP.value ?: PlacesFile.defaultFile
+        var file: File? = null
+            set(v) {
+                val newValue = v ?: PlacesFile.defaultFile
+                if (newValue != field) {
+                    field = newValue
+                    update()
+                }
+            }
+
+        val buttons = ToolBar()
 
         init {
-            val buttons = ToolBar()
+            file = placesFileP.value
             bottom = buttons
+            placesListView?.onSelected = { selectDirectory(it) }
+            update()
+        }
 
-            if (file.exists()) {
-                placesListView = PlacesListView(PlacesFile(file))
+        fun update() {
+            buttons.items.clear()
+            if (file?.exists() == true) {
+                placesListView = PlacesListView(PlacesFile(file!!))
                 center = placesListView
-                placesListView?.onSelected = { selectDirectory(it) }
                 buttons.items.add(ParataskActions.DIRECTORY_EDIT_PLACES.createButton(shortcuts) { editPlaces() })
             } else {
                 center = Label("")
             }
-
             buttons.items.add(ParataskActions.DIRECTORY_CHANGE_PLACES.createButton(shortcuts) { focusOnParameter(placesFileP) })
         }
 

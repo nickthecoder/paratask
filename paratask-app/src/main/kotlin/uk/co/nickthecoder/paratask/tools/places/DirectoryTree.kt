@@ -19,7 +19,11 @@ class DirectoryTree(
 
     var rootDirectory: File = rootDirectory
         set(v) {
-            root = DirectoryItem(v)
+            if (v != field) {
+                val oldRoot = root
+                root = DirectoryItem(v)
+                reExpand(oldRoot as DirectoryItem)
+            }
         }
 
     var foldSingleDirectories: Boolean = foldSingleDirectories
