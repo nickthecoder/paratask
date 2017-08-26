@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.terminal
 
+import javafx.application.Platform
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
@@ -61,7 +62,11 @@ class SimpleTerminalResults(tool: Tool)
     }
 
     override fun waitFor(): Int {
-        return exec?.waitFor() ?: -12
+        val exitStatus = exec?.waitFor() ?: -12
+        Platform.runLater {
+            labelProperty.set("Finished (Exit Status=$exitStatus)")
+        }
+        return exitStatus
     }
 
     override fun stop() {

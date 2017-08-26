@@ -5,6 +5,7 @@ import com.jediterm.terminal.ui.JediTermWidget
 import com.jediterm.terminal.ui.TerminalSession
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider
 import com.pty4j.PtyProcess
+import javafx.application.Platform
 import javafx.embed.swing.SwingNode
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
@@ -96,7 +97,11 @@ class RealTerminalResults(tool: Tool)
     }
 
     override fun waitFor(): Int {
-        return process?.waitFor() ?: -12
+        val exitStatus = process?.waitFor() ?: -12
+        Platform.runLater {
+            labelProperty.set("Finished (Exit Status=$exitStatus)")
+        }
+        return exitStatus
     }
 
     override fun detaching() {
