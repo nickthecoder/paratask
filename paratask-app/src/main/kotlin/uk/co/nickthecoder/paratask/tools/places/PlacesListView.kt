@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.application.Platform
 import javafx.scene.control.ListView
 import javafx.scene.control.cell.TextFieldListCell
 import javafx.scene.image.ImageView
@@ -9,16 +10,19 @@ import javafx.scene.input.TransferMode
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.gui.*
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 
-class PlacesListView(placesFile: PlacesFile) : ListView<Place>() {
+class PlacesListView(file: File) : ListView<Place>() {
 
     var onSelected: ((File) -> Unit)? = null
 
     val selectedDirectory: File?
         get() = selectionModel.selectedItem.file
 
+
+    var placesFile = PlacesFile(file)
 
     val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
@@ -46,19 +50,32 @@ class PlacesListView(placesFile: PlacesFile) : ListView<Place>() {
         }
     }
 
+    val autoRefresh = AutoRefresh {
+        Platform.runLater {
+            placesFile = PlacesFile(file)
+            buildList()
+        }
+    }
 
     init {
+        autoRefresh.watch(file)
+
         setCellFactory { PlaceListCell() }
 
-        placesFile.places.filter { it.isDirectory() }.forEach {
-            items.add(it)
-        }
+        buildList()
 
         addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
         addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
 
         dropHelper.applyTo(this)
         dragHelper.applyTo(this)
+    }
+
+    fun buildList() {
+        items.clear()
+        placesFile.places.filter { it.isDirectory() }.forEach {
+            items.add(it)
+        }
     }
 
     fun onMouseClicked(event: MouseEvent) {

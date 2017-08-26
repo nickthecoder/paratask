@@ -423,7 +423,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         fun update() {
             buttons.items.clear()
             if (file?.exists() == true) {
-                placesListView = PlacesListView(PlacesFile(file!!))
+                placesListView = PlacesListView(file!!)
                 center = placesListView
                 buttons.items.add(ParataskActions.DIRECTORY_EDIT_PLACES.createButton(shortcuts) { editPlaces() })
             } else {
