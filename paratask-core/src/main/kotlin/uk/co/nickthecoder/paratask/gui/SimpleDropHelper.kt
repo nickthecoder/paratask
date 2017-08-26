@@ -26,7 +26,7 @@ import javafx.scene.input.TransferMode
 open class SimpleDropHelper<T>(
         val dataFormat: DataFormat,
         val modes: Array<TransferMode> = TransferMode.ANY,
-        val dropped: ((DragEvent, T) -> Boolean)? = null
+        val dropped: ((DragEvent, T) -> Unit)? = null
 
 ) : AbstractDropHelper() {
 
@@ -50,26 +50,25 @@ open class SimpleDropHelper<T>(
     }
 
     override fun onDragDropped(event: DragEvent) {
-        var success = false
         val accepted = accept(event)
 
         if (accepted != null) {
-            success = onDropped(event, accepted.first)
-
-            debugPrintln("Accepted : $modes")
+            println("onDragDropped event.tm= ${event.transferMode} accepted: ${accepted.second}")
+            if (accepted.second.contains(event.transferMode)) {
+                onDropped(event, accepted.first)
+                debugPrintln("Accepted : $modes")
+            }
         }
 
-        event.isDropCompleted = success
+        event.isDropCompleted = true
         event.consume()
     }
 
-    open fun onDropped(event: DragEvent, target: Node?): Boolean {
+    open fun onDropped(event: DragEvent, target: Node?) {
         dropped?.let {
             debugPrintln("Dropped. Calling dropped lambda")
-            return it(event, content(event))
+            it(event, content(event))
         }
-        debugPrintln("Dropped. But no dropped lambda")
-        return false
     }
 
     fun content(event: DragEvent): T {
@@ -111,7 +110,7 @@ open class SimpleDropHelper<T>(
         return event.transferMode
     }
 
-    override fun onDragOver(event: DragEvent) : Boolean {
+    override fun onDragOver(event: DragEvent): Boolean {
         val accepted = accept(event)
 
         if (accepted != null) {

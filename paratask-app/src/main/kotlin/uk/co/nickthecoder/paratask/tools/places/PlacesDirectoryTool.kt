@@ -92,31 +92,27 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
             override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
-            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
+            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode) {
                 if (row.isDirectory()) {
                     FileOperations.instance.fileOperation(content, row.file!!, transferMode)
-                    return true
                 }
-                return false
             }
 
-            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
                 for (file in content) {
                     placesFile.places.add(Place(placesFile, Resource(file), file.name))
                 }
                 placesFile.save()
-                return true
             }
 
         }
 
-        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { event, content ->
+        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
             content.forEach {
                 placesFile.places.add(Place(placesFile, it.resource, it.label))
             }
             placesFile.save()
-            true
         }
 
         tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)

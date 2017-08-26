@@ -44,20 +44,21 @@ abstract class TableDropHelper<T, R : Any>(
         return null
     }
 
-    override fun onDropped(event: DragEvent, target: Node?): Boolean {
+    override fun onDropped(event: DragEvent, target: Node?) {
         if (target is TableRow<*>) {
             val r = findTableRow(event)
             if (r.first != null) {
-                return droppedOnRow(r.first!!, content(event), event.transferMode)
+                droppedOnRow(r.first!!, content(event), event.transferMode)
+                return
             }
         }
 
-        return droppedOnNonRow(content(event), event.transferMode)
+        droppedOnNonRow(content(event), event.transferMode)
     }
 
-    abstract fun droppedOnRow(row: R, content: T, transferMode: TransferMode): Boolean
+    abstract fun droppedOnRow(row: R, content: T, transferMode: TransferMode)
 
-    abstract fun droppedOnNonRow(content: T, transferMode: TransferMode): Boolean
+    abstract fun droppedOnNonRow(content: T, transferMode: TransferMode)
 
 
     fun findTableRow(event: DragEvent): Pair<R?, TableRow<WrappedRow<R>>?> {

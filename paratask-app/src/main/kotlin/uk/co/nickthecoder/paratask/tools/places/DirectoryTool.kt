@@ -163,7 +163,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             files.filter { it.isDirectory }.forEach {
                 addDirectory(it)
             }
-            true
         }
         dropHelper.applyTo(button)
     }
@@ -275,17 +274,14 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
         override fun acceptDropOnNonRow(): Array<TransferMode> = TransferMode.ANY
 
-        override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnRow(row: WrappedFile, content: List<File>, transferMode: TransferMode) {
             if (row.isDirectory()) {
                 FileOperations.instance.fileOperation(content, row.file, transferMode)
-                return true
             }
-            return false
         }
 
-        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+        override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
             FileOperations.instance.fileOperation(content, directory, transferMode)
-            return true
         }
     }
 
@@ -357,7 +353,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
                 treeRootP.value = newRoot
                 toolPane?.halfTab?.pushHistory()
             }
-            true
         }
 
         var foldSingleDirectories: Boolean

@@ -1,7 +1,7 @@
 
 Dir Tree Side Planel
 	Watch the places file, and reload when it changes.
-	Allow drop of File to the Places list.
+	Allow drop of File/Resources/Places to the Places list.
 
 Bugs
 	IntField doesn't handle nulls ????

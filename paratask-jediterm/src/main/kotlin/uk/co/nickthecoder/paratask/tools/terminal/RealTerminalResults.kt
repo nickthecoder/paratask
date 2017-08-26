@@ -37,12 +37,10 @@ class RealTerminalResults(tool: Tool)
 
     val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { event, text ->
         sendText(text)
-        true
     }
     val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { event, files ->
         val text = files.map { quoteFilenameIfNeeded(it.path) }.joinToString(separator = " ")
         sendText(text)
-        true
     }
     val compoundDropHelper = CompoundDropHelper(filesDropHelper, textDropHelper)
 

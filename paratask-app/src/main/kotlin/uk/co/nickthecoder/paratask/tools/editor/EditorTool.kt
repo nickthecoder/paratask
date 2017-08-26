@@ -46,7 +46,6 @@ class EditorTool() : AbstractTool() {
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         files.filter { it.isFile() }.forEach { addFile(it) }
         toolPane?.halfTab?.projectTab?.isSelected = true
-        true
     }
 
     constructor(file: File) : this() {

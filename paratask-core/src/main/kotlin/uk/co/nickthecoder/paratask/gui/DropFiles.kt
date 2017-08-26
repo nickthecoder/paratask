@@ -24,7 +24,7 @@ import java.io.File
 
 open class DropFiles(
         modes: Array<TransferMode> = TransferMode.ANY,
-        dropped: ((DragEvent, List<File>) -> Boolean)?)
+        dropped: ((DragEvent, List<File>) -> Unit)?)
 
     : SimpleDropHelper<List<File>>(
         dataFormat = DataFormat.FILES,

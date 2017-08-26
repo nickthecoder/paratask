@@ -65,7 +65,6 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
                 textField.requestFocus()
                 break
             }
-            true
         }.applyTo(textField).exclude(icon)
 
         if (FileParameter.showDragIcon) {

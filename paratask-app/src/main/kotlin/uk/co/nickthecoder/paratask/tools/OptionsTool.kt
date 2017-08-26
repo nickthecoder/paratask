@@ -107,17 +107,15 @@ class OptionsTool : ListTableTool<Option> {
 
             override fun acceptDropOnRow(row: Option) = null
 
-            override fun droppedOnRow(row: Option, content: List<Option>, transferMode: TransferMode): Boolean {
-                return false
+            override fun droppedOnRow(row: Option, content: List<Option>, transferMode: TransferMode) {
             }
 
-            override fun droppedOnNonRow(content: List<Option>, transferMode: TransferMode): Boolean {
+            override fun droppedOnNonRow(content: List<Option>, transferMode: TransferMode) {
                 val fileOptions = getFileOptions()
                 for (option in content) {
                     fileOptions.addOption(option.copy())
                 }
                 fileOptions.save()
-                return true
             }
         }
 

@@ -34,9 +34,7 @@ import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.NullTask
 import uk.co.nickthecoder.paratask.util.Resource
-import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.focusNext
-import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 class PlacesTool : AbstractTableTool<Place>() {
@@ -120,20 +118,17 @@ class PlacesTool : AbstractTableTool<Place>() {
 
             override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
 
-            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode): Boolean {
+            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode) {
                 if (row.isDirectory()) {
                     FileOperations.instance.fileOperation(content, row.file!!, transferMode)
-                    return true
                 }
-                return false
             }
 
-            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode): Boolean {
+            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
                 for (f in content) {
                     placesFile.places.add(Place(placesFile, Resource(f), f.name))
                 }
                 placesFile.save()
-                return true
             }
 
         }
@@ -144,7 +139,6 @@ class PlacesTool : AbstractTableTool<Place>() {
                 placesFile.places.add(Place(placesFile, it.resource, it.label))
             }
             placesFile.save()
-            true
         }
 
         tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
@@ -162,7 +156,7 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        val button = toolPane.tabPane.createAddTabButton {
+        toolPane.tabPane.createAddTabButton {
             onAddPlacesFile()
         }
     }
