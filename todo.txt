@@ -1,11 +1,5 @@
 
 Dir Tree
-	ENTER to work with that dir
-	SPACE to toggle isExpanded
-
-	Option to fold single directories together, so that uk/co/nickthecoder/paratask is ONE line, rather than 4.
-		But would need an "unfold" context menu item, otherwise couldn't work with "uk/co" for example.
-
 	Implement list of "Places" (in its own class!)
 		Watch the file, and reload when it changes.
 		Filter the results to show directories only.

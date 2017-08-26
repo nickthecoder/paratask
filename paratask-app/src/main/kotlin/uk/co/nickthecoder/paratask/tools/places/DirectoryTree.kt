@@ -7,16 +7,25 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.util.FileLister
 import java.io.File
 
-class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden: Boolean = false)
+class DirectoryTree(
+        rootDirectory: File = File.listRoots()[0],
+        val includeHidden: Boolean = false,
+        foldSingleDirectories: Boolean = true)
+
     : TreeView<String>() {
 
     var rootDirectory: File = rootDirectory
         set(v) {
             root = DirectoryItem(v)
+        }
+
+    var foldSingleDirectories: Boolean = foldSingleDirectories
+        set(v) {
+            field = v
+            rebuild()
         }
 
     var onSelected: ((File) -> Unit)? = null
@@ -35,10 +44,13 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
 
 
     init {
+        isEditable = false
         root = DirectoryItem(rootDirectory)
         root.children
+        // Prevent Double Click expanding/contracting the item (as this is used to show the contents of the directory).
+        addEventFilter(MouseEvent.MOUSE_PRESSED) { if (it.clickCount == 2) it.consume() }
         addEventFilter(MouseEvent.MOUSE_CLICKED) { onMouseClicked(it) }
-        addEventHandler(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
+        addEventFilter(KeyEvent.KEY_PRESSED) { onKeyPressed(it) }
 
         root.isExpanded = true
         dragHelper.applyTo(this)
@@ -54,9 +66,11 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
     fun onKeyPressed(event: KeyEvent) {
         if (ApplicationActions.ENTER.match(event)) {
             onSelect()
+            event.consume()
         } else if (ApplicationActions.SPACE.match(event)) {
             selectionModel.selectedItem?.let {
                 it.isExpanded = !it.isExpanded
+                event.consume()
             }
         }
     }
@@ -88,6 +102,7 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
                 parents.add(0, d1)
                 d1 = d1.parentFile
             }
+
             var item: DirectoryItem? = rootItem
             parents.forEach { d2 ->
                 item = item?.children?.filterIsInstance<DirectoryItem>()?.firstOrNull {
@@ -108,7 +123,35 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
         return item
     }
 
-    inner class DirectoryItem(val directory: File) : TreeItem<String>(directory.name) {
+
+    private fun reExpand(oldItem: DirectoryItem) {
+
+        if (oldItem.isExpanded) {
+            val foundItem = findItem(oldItem.directory)
+            foundItem?.isExpanded = true
+            oldItem.children.filterIsInstance<DirectoryItem>().forEach {
+
+                if (!foldSingleDirectories) {
+                    // Exapnd all previously folded items
+                    var parent: File? = oldItem.directory.parentFile
+                    while (parent != oldItem.directory && parent != null) {
+                        findItem(parent)?.isExpanded = true
+                        parent = parent.parentFile
+                    }
+                }
+
+                reExpand(it)
+            }
+        }
+    }
+
+    fun rebuild() {
+        val oldRoot = root as DirectoryItem
+        root = DirectoryItem(rootDirectory)
+        reExpand(oldRoot)
+    }
+
+    inner class DirectoryItem(val directory: File, label: String = directory.name) : TreeItem<String>(label) {
 
         var firstTimeChildren = true
 
@@ -117,11 +160,29 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
             if (firstTimeChildren) {
                 firstTimeChildren = false
                 val lister = FileLister(onlyFiles = false, includeHidden = includeHidden)
-                lister.listFiles(directory).forEach {
-                    superChildren.add(DirectoryItem(it))
+                lister.listFiles(directory).forEach { child ->
+                    superChildren.add(createChild(child))
                 }
             }
+
             return superChildren
+        }
+
+        private fun createChild(subDir: File, prefix: String = ""): DirectoryItem {
+            if (foldSingleDirectories) {
+                val lister = FileLister(onlyFiles = null, includeHidden = includeHidden)
+
+                val grandChildren = lister.listFiles(subDir)
+                if (grandChildren.size == 1 && grandChildren[0].isDirectory) {
+                    val newPrefix = prefix + subDir.name + File.separator
+                    return createChild(grandChildren[0], prefix = newPrefix)
+                }
+            }
+            return DirectoryItem(subDir, prefix + subDir.name)
+        }
+
+        fun isFolded(): Boolean {
+            return (parent as DirectoryItem).directory != directory.parentFile
         }
 
         override fun isLeaf(): Boolean {
@@ -129,5 +190,6 @@ class DirectoryTree(rootDirectory: File = File.listRoots()[0], val includeHidden
         }
 
         override fun toString(): String = directory.name
+
     }
 }

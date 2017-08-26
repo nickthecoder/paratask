@@ -51,10 +51,13 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     val extensionsP = MultipleParameter("extensions", label = "File Extensions") { StringParameter("") }
     val includeHiddenP = BooleanParameter("includeHidden", value = false)
 
+    val foldSingleDirectoriesP = BooleanParameter("foldSingleDirectories", value = true)
+
     val thumbnailHeightP = IntParameter("thumbnailHeight", value = 32)
 
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
+
 
     val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
@@ -79,10 +82,12 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     // Used to select the correct ResultsTab when refreshing the tool
     var latestDirectory: File? = null
 
+    // When a directory is changed, we use this, rather than latestDirectory to choose which ResultsTab to select
+    var selectDirectory: File? = null
 
     init {
         filterGroupP.addParameters(onlyFilesP, extensionsP, includeHiddenP)
-        taskD.addParameters(directoriesP, treeRootP, filterGroupP, thumbnailHeightP, autoRefreshP)
+        taskD.addParameters(directoriesP, treeRootP, filterGroupP, foldSingleDirectoriesP, thumbnailHeightP, autoRefreshP)
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -114,7 +119,11 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     }
 
     override fun run() {
-        latestDirectory = selectedDirectoryTableResults()?.directory
+        latestDirectory = selectDirectory ?: selectedDirectoryTableResults()?.directory
+        selectDirectory = null
+        Platform.runLater{
+            sideBar?.foldSingleDirectories = foldSingleDirectoriesP.value == true
+        }
 
         directoriesP.value.filterNotNull().forEach { dir ->
             listDirectory(dir)
@@ -259,6 +268,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         if (file.isDirectory) {
             selectedDirectoryTableResults()?.let {
                 directoriesP.replace(it.directory, file)
+                selectDirectory = file
                 toolPane?.parametersPane?.run()
             }
         } else {
@@ -322,7 +332,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     inner class DirectorySideBar : MyTabPane<MyTab>() {
 
-        var directoryTree = DirectoryTree(treeRoot)
+        var directoryTree = DirectoryTree(treeRoot, foldSingleDirectories = foldSingleDirectoriesP.value == true)
 
         val treeTab = MyTab("Tree", directoryTree)
 
@@ -337,6 +347,12 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             true
         }
 
+        var foldSingleDirectories: Boolean
+            get() = directoryTree.foldSingleDirectories
+            set(v) {
+                directoryTree.foldSingleDirectories = v
+            }
+
         init {
             side = Side.BOTTOM
 
@@ -344,6 +360,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
                 val oldDirectory = selectedDirectoryTableResults()?.directory
                 if (oldDirectory != directory) {
                     directoriesP.replace(oldDirectory, directory)
+                    selectDirectory = directory
                     toolPane?.parametersPane?.run()
                 }
             }
