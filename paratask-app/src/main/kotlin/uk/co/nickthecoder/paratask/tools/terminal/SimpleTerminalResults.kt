@@ -35,9 +35,9 @@ class SimpleTerminalResults(tool: Tool)
 
     var showCommand: Boolean = true
 
-    var allowInput: Boolean = false
+    var allowInput: Boolean = true
 
-    constructor(tool: Tool, showCommand: Boolean = true, allowInput: Boolean = false) : this(tool) {
+    constructor(tool: Tool, showCommand: Boolean = true, allowInput: Boolean = true) : this(tool) {
         this.showCommand = showCommand
         this.allowInput = allowInput
     }

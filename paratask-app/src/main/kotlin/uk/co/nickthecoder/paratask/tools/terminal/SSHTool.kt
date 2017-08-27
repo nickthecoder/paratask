@@ -16,8 +16,10 @@ class SSHTool : AbstractTerminalTool() {
 
     val xP = BooleanParameter("xForwarding", value = true)
 
+    val commandP = StringParameter("command", required = false)
+
     init {
-        taskD.addParameters(userP, hostP, xP)
+        taskD.addParameters(userP, hostP, xP, commandP)
     }
 
     override fun createCommand(): OSCommand {
@@ -30,6 +32,10 @@ class SSHTool : AbstractTerminalTool() {
         } else {
             command.addArgument(hostP.value)
         }
+        if (commandP.value.isNotEmpty()) {
+            command.addArgument(commandP.value)
+        }
+
         return command
     }
 

@@ -36,7 +36,7 @@ import java.io.File
 
 abstract class AbstractTerminalTool(
         var showCommand: Boolean = true,
-        var allowInput: Boolean = false)
+        var allowInput: Boolean = true)
 
     : AbstractTool(), Stoppable, HasDirectory {
 
