@@ -8,16 +8,13 @@
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
-            "code": ".",
+            "code": "ww",
             "label": "Work with Directory",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "aliases": [
-                "ww"
-            ],
             "parameters": [
                 {
                     "name": "directories",
@@ -60,6 +57,17 @@
                     "expression": "tool.autoRefreshP.value"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "tool.changeDirectory( row.file )",
+            "code": ".",
+            "label": "Change Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

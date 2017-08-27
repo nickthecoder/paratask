@@ -30,7 +30,10 @@ import uk.co.nickthecoder.paratask.SidePanel
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
-import uk.co.nickthecoder.paratask.misc.*
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
+import uk.co.nickthecoder.paratask.misc.FileOperations
+import uk.co.nickthecoder.paratask.misc.Thumbnailer
+import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
@@ -240,7 +243,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     }
 
-
     fun selectedDirectoryTableResults(): DirectoryTableResults? {
         val res = toolPane?.currentResults()
         if (res is ResultsWithHeader) {
@@ -252,21 +254,15 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         return null
     }
 
-    /**
-     * Called from the default option - either opens the file, or changes the directory of just the current results tab.
-     * This is needed, because this tool allow for multiple results, and we only want to change directory of ONE.
-     */
-    fun open(file: File) {
-        if (file.isDirectory) {
-            selectedDirectoryTableResults()?.let {
-                directoriesP.replace(it.directory, file)
-                selectDirectory = file
-                toolPane?.parametersPane?.run()
-            }
-        } else {
-            ThreadedDesktop.instance.open(file)
+    fun changeDirectory( directory : File ) {
+        val oldDirectory = selectedDirectoryTableResults()?.directory
+        if (oldDirectory != directory) {
+            directoriesP.replace(oldDirectory, directory)
+            selectDirectory = directory
+            toolPane?.parametersPane?.run()
         }
     }
+
 
     inner class DirectoryDropHelper(val directory: File) : TableDropFilesHelper<WrappedFile>() {
 
@@ -284,6 +280,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             FileOperations.instance.fileOperation(content, directory, transferMode)
         }
     }
+
 
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
         : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, createColumns(), canClose = true) {
@@ -316,17 +313,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             directoriesP.remove(directory)
             // Hitting "Back" will un-close the tab ;-)
             toolPane?.halfTab?.pushHistory()
-        }
-    }
-
-
-    private fun selectDirectory(directory: File) {
-
-        val oldDirectory = selectedDirectoryTableResults()?.directory
-        if (oldDirectory != directory) {
-            directoriesP.replace(oldDirectory, directory)
-            selectDirectory = directory
-            toolPane?.parametersPane?.run()
         }
     }
 
@@ -365,7 +351,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             tabPane.side = Side.BOTTOM
             tabPane.tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
 
-            treeContent.tree.onSelected = { selectDirectory(it) }
+            treeContent.tree.onSelected = { changeDirectory(it) }
 
             treeRootDropHelper.applyTo(treeTab)
 
@@ -374,6 +360,10 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             placesTab.content = placesContent
             tabPane.add(placesTab)
 
+            // Expand the tree to the current viewed directory.
+            directory?.let {
+                treeContent.tree.selectDirectory(it)?.isExpanded = true
+            }
         }
 
         fun update() {
@@ -382,6 +372,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             placesContent.file = placesFileP.value
         }
     }
+
 
     inner class TreeTabContent : BorderPane() {
         val tree = DirectoryTree(treeRoot, foldSingleDirectories = foldSingleDirectoriesP.value == true)
@@ -395,6 +386,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         }
 
     }
+
 
     private inner class PlacesTabContent : BorderPane() {
 
@@ -416,7 +408,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         init {
             file = placesFileP.value
             bottom = buttons
-            placesListView?.onSelected = { selectDirectory(it) }
+            placesListView?.onSelected = { changeDirectory(it) }
             update()
         }
 
@@ -441,6 +433,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     }
 
 }
+
 
 fun main(args: Array<String>) {
     TaskParser(DirectoryTool()).go(args)

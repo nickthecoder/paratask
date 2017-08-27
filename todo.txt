@@ -23,6 +23,8 @@ Dialog box to ask if Editor's buffers should be saved
 	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS (GroupParameter)
 		If every group has only ONE question, then we don't need to show as groups.
 
+Option to save History and Future of each Tool when saving a Project.
+
 FileField's drag icon :
 	Show a directory/file icon when the type MUST be one or the other.
 	Change it dynamically when it can be either, and "|*|" when the item doesn't exist.

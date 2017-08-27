@@ -97,6 +97,7 @@ class DirectoryTree(
             return rootItem
 
         } else {
+            // List all of the parent directories up to the tree's root.
             val parents = mutableListOf<File>()
             var d1: File? = directory
             while (d1 != null) {
@@ -107,13 +108,16 @@ class DirectoryTree(
                 d1 = d1.parentFile
             }
 
+            // Start at the root node, and look for child nodes that are in the list
             var item: DirectoryItem? = rootItem
-            parents.forEach { d2 ->
-                item = item?.children?.filterIsInstance<DirectoryItem>()?.firstOrNull {
-                    it.directory == d2
+            while (item != null) {
+                val found = item.children.filterIsInstance<DirectoryItem>().filter { parents.contains(it.directory) }.firstOrNull()
+                if (found == null) {
+                    return item
                 }
+                item = found
             }
-            return item
+            return null
         }
     }
 
