@@ -1,0 +1,65 @@
+{
+    "comments": "Used by DirectoryTool, for options on rows of directories.\nNote that \"dir.json\" is used for options on rows of directories\nin a general sense - e.g. from the \"PlacesTool\".",
+    "rowFilterScript": "row.isDirectory()",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": ".",
+            "label": "Work with Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "ww"
+            ],
+            "parameters": [
+                {
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "treeRoot",
+                    "expression": "tool.treeRootP.value"
+                },
+                {
+                    "name": "placesFile",
+                    "expression": "tool.placesFileP.value"
+                },
+                {
+                    "name": "onlyFiles",
+                    "expression": "tool.onlyFilesP.value"
+                },
+                {
+                    "name": "extensions",
+                    "expression": "tool.extensionsP.value"
+                },
+                {
+                    "name": "includeHidden",
+                    "expression": "tool.includeHiddenP.value"
+                },
+                {
+                    "name": "foldSingleDirectories",
+                    "expression": "tool.foldSingleDirectoriesP.value"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "expression": "tool.thumbnailHeightP.value"
+                },
+                {
+                    "name": "autoRefresh",
+                    "expression": "tool.autoRefreshP.value"
+                }
+            ]
+        }
+    ]
+}

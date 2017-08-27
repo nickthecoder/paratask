@@ -199,6 +199,18 @@ class MultipleParameter<T>(
         }
     }
 
+    override fun coerce(v: Any?) {
+        if (v is List<*>) {
+            value = listOf()
+            v.forEach { innerV ->
+                val inner = newValue()
+                inner.coerce(innerV)
+            }
+            return
+        }
+        super.coerce(v)
+    }
+
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
 
     override fun copy(): MultipleParameter<T> {

@@ -64,6 +64,14 @@ class BooleanParameter(
 
     override fun createField(): BooleanField = BooleanField(this).build() as BooleanField
 
+    override fun coerce(v: Any?) {
+        if (v is Boolean?) {
+            value = v
+            return
+        }
+        super.coerce(v)
+    }
+
     override fun toString(): String = "Boolean" + super.toString()
 
     override fun copy() = BooleanParameter(name = name, label = label, description = description, value = value,

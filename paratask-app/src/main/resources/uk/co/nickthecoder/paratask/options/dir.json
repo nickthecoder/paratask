@@ -39,6 +39,14 @@
                     ]
                 },
                 {
+                    "name": "treeRoot",
+                    "value": "/home/nick/projects/paratask/"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
+                },
+                {
                     "name": "onlyFiles",
                     "value": ""
                 },
@@ -53,12 +61,8 @@
                     "value": "false"
                 },
                 {
-                    "name": "enterHidden",
-                    "value": "false"
-                },
-                {
-                    "name": "includeBase",
-                    "value": "false"
+                    "name": "foldSingleDirectories",
+                    "value": "true"
                 },
                 {
                     "name": "thumbnailHeight",
@@ -184,6 +188,10 @@
                 {
                     "name": "directory",
                     "expression": "row.file"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "true"
                 }
             ]
         }
