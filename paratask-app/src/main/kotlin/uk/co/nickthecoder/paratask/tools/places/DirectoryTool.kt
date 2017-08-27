@@ -175,21 +175,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         autoRefresh.unwatchAll()
     }
 
-
-    fun onAddDirectory() {
-        val newFileP = directoriesP.addValue(null)
-
-        focusOnParameter(newFileP)
-    }
-
-    fun addDirectory(directory: File) {
-        val innerP = directoriesP.addValue(directory) as FileParameter
-        listDirectory(directory)
-        val results = createResults(innerP)
-        toolPane?.addResults(results)?.isSelected = true
-        toolPane?.halfTab?.pushHistory()
-    }
-
     fun createImageView(row: WrappedFile): ImageView {
         var result: ImageView? = null
 
@@ -254,7 +239,19 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         return null
     }
 
-    fun changeDirectory( directory : File ) {
+    fun onAddDirectory() {
+        val newFileP = directoriesP.addValue(null)
+
+        focusOnParameter(newFileP)
+    }
+
+    fun addDirectory(directory: File) {
+        directoriesP.addValue(directory) as FileParameter
+        selectDirectory = directory
+        toolPane?.parametersPane?.run()
+    }
+
+    fun changeDirectory(directory: File) {
         val oldDirectory = selectedDirectoryTableResults()?.directory
         if (oldDirectory != directory) {
             directoriesP.replace(oldDirectory, directory)

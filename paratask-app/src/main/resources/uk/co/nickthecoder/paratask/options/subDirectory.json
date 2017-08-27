@@ -68,6 +68,17 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "tool.addDirectory( row.file )",
+            "code": "+",
+            "label": "Add Directory",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }
