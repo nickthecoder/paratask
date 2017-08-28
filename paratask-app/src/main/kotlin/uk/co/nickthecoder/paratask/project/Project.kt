@@ -24,6 +24,7 @@ import com.eclipsesource.json.PrettyPrint
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.util.JsonHelper
@@ -33,16 +34,18 @@ class Project(val projectWindow: ProjectWindow) {
 
     var projectFile: File? = null
 
-    var projectDirectory = FileParameter("directory", expectFile = false, required = true, value = File("").absoluteFile)
+    var projectDirectoryP = FileParameter("directory", expectFile = false, required = true, value = File("").absoluteFile)
+
+    val saveHistoryP = BooleanParameter("saveHistory", value = false)
 
     var projectDataP = GroupParameter("projectData")
 
     init {
-        projectDataP.addParameters(projectDirectory)
+        projectDataP.addParameters(projectDirectoryP, saveHistoryP)
     }
 
     val directoryResolver = object : DirectoryResolver() {
-        override fun directory() = projectDirectory.value
+        override fun directory() = projectDirectoryP.value
     }
 
     val resolver = CompoundParameterResolver(directoryResolver)
@@ -143,6 +146,30 @@ class Project(val projectWindow: ProjectWindow) {
         val jparameters = JsonHelper.parametersAsJsonArray(tool)
         jhalfTab.add("parameters", jparameters)
 
+        if (saveHistoryP.value == true) {
+            // Save the history of this half tab
+            val history = halfTab.history.save()
+            val jhistory = JsonArray()
+            val jfuture = JsonArray()
+
+            history.first.forEachIndexed { i, moment ->
+                if (i != history.second) {
+                    val jpart = if (i < history.second) jhistory else jfuture
+                    val jitem = JsonObject()
+                    jpart.add(jitem)
+                    jitem.add("tool", moment.creationString)
+                    jitem.add("parameters", JsonHelper.parametersAsJsonArray(moment.tool))
+                }
+            }
+
+            if (!jhistory.isEmpty) {
+                jhalfTab.add("history", jhistory)
+            }
+            if (!jfuture.isEmpty) {
+                jhalfTab.add("future", jfuture)
+            }
+        }
+
         return jhalfTab
     }
 
@@ -184,11 +211,13 @@ class Project(val projectWindow: ProjectWindow) {
                     jleft?.let {
                         val tool = loadTool(jleft)
                         val projectTab = projectWindow.addTool(tool, select = false)
+                        updateHistory(jleft, projectTab.left)
 
                         val jright = jtab.get("right")
                         if (jright != null) {
                             val toolR = loadTool(jright.asObject())
                             projectTab.split(toolR)
+                            updateHistory(jright.asObject(), projectTab.right!!)
                         }
 
                         val jtabProperties = jtab.get("properties")
@@ -202,6 +231,31 @@ class Project(val projectWindow: ProjectWindow) {
             return project
         }
 
+        private fun updateHistory(jhalfTab: JsonObject, halfTab: HalfTab) {
+
+            val jhistory = jhalfTab.get("history")
+            val jfuture = jhalfTab.get("future")
+
+            if (jhistory != null) {
+                updatePartHistory(jhistory as JsonArray) { tool ->
+                    halfTab.history.insertHistory(tool)
+                }
+            }
+
+            if (jfuture != null) {
+                updatePartHistory(jfuture as JsonArray) { tool ->
+                    halfTab.history.addFuture(tool)
+                }
+            }
+        }
+
+        private fun updatePartHistory(jhistory: JsonArray, add: (Tool) -> Unit) {
+            jhistory.forEach { jmoment ->
+                val tool = loadTool(jmoment as JsonObject)
+                add(tool)
+            }
+        }
+
         private fun loadTool(jhalfTab: JsonObject): Tool {
             val creationString = jhalfTab.get("tool").asString()
             val tool = TaskRegistry.createTool(creationString)
@@ -210,6 +264,7 @@ class Project(val projectWindow: ProjectWindow) {
             if (jparameters != null) {
                 JsonHelper.read(jparameters.asArray(), tool)
             }
+
             return tool
         }
     }

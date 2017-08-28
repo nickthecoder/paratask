@@ -108,6 +108,25 @@ class History(var halfTab: HalfTab) {
     }
 
     /**
+     * Inserts a Momement just before the current moment in history.
+     * Used when loading history of a HalfTab.
+     */
+    fun insertHistory(tool: Tool) {
+        moments.add(if (index < 0) 0 else index, Moment(tool))
+        index++
+        update()
+    }
+
+    /**
+     * Adds a Momement at the end of the list.
+     * Used when loading history of a HalfTab.
+     */
+    fun addFuture(tool: Tool) {
+        moments.add(Moment(tool))
+        update()
+    }
+
+    /**
      * Used when closing a tab, remembering its history so that it can be un-closed.
      */
     fun save(): Pair<List<Moment>, Int> {
@@ -117,9 +136,9 @@ class History(var halfTab: HalfTab) {
     /**
      * Used when un-closing a tab.
      */
-    fun restore( mos : List<Moment>, index : Int ) {
+    fun restore(mos: List<Moment>, index: Int) {
         moments.clear()
-        moments.addAll( mos )
+        moments.addAll(mos)
         this.index = index
         update()
     }

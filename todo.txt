@@ -1,4 +1,8 @@
 
+
+Load history
+Make save history an option
+
 Bugs
 
 
