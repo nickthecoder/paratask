@@ -2,7 +2,6 @@
 Bugs
 	IntField doesn't handle nulls ????
 
-
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
 
@@ -41,6 +40,10 @@ FileOperations
 Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane / GridPane / HBox.
 	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
 	The children would need to SHARE one error message label.
+
+Allow BooleanParameter to render as a ToggleButton,
+	and also allow this different kind of rendering to be used within a header, even when the ParameterPane shows it as a tick box???
+	I wanted this for "Hidden" files in DirectoryTool.
 
 Space out the ScaleDouble fields.
 

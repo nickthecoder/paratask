@@ -87,9 +87,8 @@ open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: Doub
     }
 
     private fun createSimpleSpinner(): Spinner<*> {
-        val initialValue: Double? = adaptor.initialValue()
 
-        val factory = DoubleSpinnerValueFactory(adaptor.minValue, adaptor.maxValue, initialValue)
+        val factory = DoubleSpinnerValueFactory(adaptor.minValue, adaptor.maxValue, adaptor.value)
         val spinner = Spinner(factory)
         if (doubleParameter.expression == null) {
             adaptor.value = spinner.valueFactory.value

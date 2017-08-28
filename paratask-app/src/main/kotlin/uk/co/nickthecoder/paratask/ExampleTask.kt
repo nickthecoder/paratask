@@ -38,8 +38,9 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 """
     )
 
-    val durationP = ScaledDoubleParameter("time",
-            scales = mapOf<String, Double>("seconds" to 1.0, "minutes" to 60.0, "hours" to 60.0 * 60))
+    val optionalInt = IntParameter("optionalInt", value = null, required = false)
+
+    val requiredInt = IntParameter("requiredInt", value = null)
 
     val doubleP = DoubleParameter("double")
     val optionalDoubleP = DoubleParameter("optionalDouble", required = false)
@@ -63,6 +64,9 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
+    val durationP = ScaledDoubleParameter("time",
+            scales = mapOf<String, Double>("seconds" to 1.0, "minutes" to 60.0, "hours" to 60.0 * 60))
+
     val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
     val rangeFromP = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
     val rangeToP = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
@@ -82,12 +86,11 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
 
     init {
         rangeFromP.enabled = false
-        
-        taskD.addParameters(fileP, informationP, doubleP, groupP, buttonP)
-        //durationP, doubleP, optionalDoubleP,
 
-        //taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
-        //fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
+        taskD.addParameters(requiredInt, optionalInt, doubleP, optionalDoubleP)
+        // fileP, informationP,  groupP, buttonP, durationP,
+        // taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
+        // fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
         groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)

@@ -13,8 +13,6 @@ interface DoubleAdaptor {
 
     fun errorMessage(v: Double?): String?
 
-    fun initialValue(): Double?
-
     val minValue: Double
 
     val maxValue: Double
@@ -34,21 +32,6 @@ class DoubleParameterAdaptor(val doubleParameter: DoubleParameter) : DoubleAdapt
         get() = doubleParameter.converter
 
     override fun errorMessage(v: Double?) = doubleParameter.errorMessage(v)
-
-    override fun initialValue(): Double? {
-        if (doubleParameter.value == null && doubleParameter.required) {
-            if (doubleParameter.minValue >= 0.0) {
-                return doubleParameter.minValue
-            } else if (doubleParameter.maxValue <= 0.0) {
-                return doubleParameter.maxValue
-            } else {
-                return 0.0
-            }
-
-        } else {
-            return doubleParameter.value
-        }
-    }
 
     override val minValue: Double = doubleParameter.minValue
 
@@ -72,8 +55,6 @@ class ScaledDoubleParameterAdaptor(val scaledDoubleParameter: ScaledDoubleParame
     }
 
     override fun errorMessage(v: Double?) = null
-
-    override fun initialValue(): Double = scaledDoubleParameter.value.value
 
     override val minValue: Double = Double.MIN_VALUE
 

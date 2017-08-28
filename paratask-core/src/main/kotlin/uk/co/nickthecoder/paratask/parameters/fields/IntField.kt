@@ -84,20 +84,8 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
     }
 
     private fun createSpinner(): Spinner<*> {
-        val initialValue = if (intParameter.value == null && intParameter.required) {
-            if (intParameter.range.start > 0) {
-                intParameter.range.start
-            } else if (intParameter.range.endInclusive < 0) {
-                intParameter.range.endInclusive
-            } else {
-                0
-            }
 
-        } else {
-            intParameter.value
-        }
-
-        val spinner = Spinner(IntSpinnerValueFactory(intParameter.range, initialValue))
+        val spinner = Spinner(IntSpinnerValueFactory(intParameter.range, intParameter.value))
         if (intParameter.expression == null) {
             intParameter.value = spinner.valueFactory.value
         }
