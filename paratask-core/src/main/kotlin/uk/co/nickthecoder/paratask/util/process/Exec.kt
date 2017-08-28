@@ -225,15 +225,24 @@ class Exec {
  */
 fun Process.unixPID(): Long? {
 
+    // Newer versions of com.pty4j.unix.UnixPtyProcess have a "getPid" method, so let's try that first.
     try {
-        if (this.javaClass.name == "java.lang.UNIXProcess") {
-            val field = this.javaClass.getDeclaredField("pid")
-            field?.isAccessible = true
-            val pid = field?.getLong(this)
-            field?.isAccessible = false
-            return pid
-        }
-    } catch (e: Exception) {
+        val method = this.javaClass.getMethod("getPid")
+        return (method.invoke(this) as Int?)?.toLong()
+    } catch (e1: Exception) {
+        // Do nothing
+    }
+
+    // Ok, now let's see if we can get the "pid" attribute, which is private in java.lang.UNIXProcess and com.pty4j.unix.UnixPtyProcess
+    // Note in UNIXProcess, the pid is a long, whereas in UnixPtyProcess pid is an int.
+    try {
+        val field = this.javaClass.getDeclaredField("pid")
+        field?.isAccessible = true
+        val pid = field?.getLong(this)
+        field?.isAccessible = false
+        return pid
+
+    } catch (e2: Exception) {
         // Do nothing
     }
 
@@ -252,11 +261,13 @@ fun Process.linuxCurrentDirectory(): File? {
     }
 
     val cwd = File("/proc").child(unixPID().toString(), "cwd")
-    try {
-        return cwd.canonicalFile
-    } catch (e: Exception) {
-        return null
+    if (cwd.exists()) {
+        try {
+            return cwd.canonicalFile
+        } catch (e: Exception) {
+        }
     }
+    return null
 }
 
 /**

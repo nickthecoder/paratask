@@ -1,9 +1,6 @@
 
 Bugs
 
-Don't save the Code Header stuff normally - it just looks too weird!
-	Instead, Project to have a GENERAL set of parameters.
-	In fact save them as a set of TASKS, which means paramters will never have name collisions etc.s
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
@@ -22,14 +19,6 @@ Dialog box to ask if Editor's buffers should be saved
 
 Option to save History and Future of each Tool when saving a Project.
 
-FileField's drag icon :
-	Show a directory/file icon when the type MUST be one or the other.
-	Change it dynamically when it can be either, and "|*|" when the item doesn't exist.
-	Double click for the "File/Directory Open/Save" dialog when "..." isn't shown.
-
-Implement KDE style Places file
-	Check XDG_CURRENT_DESKTOP, if it is KDE, then use the KDE file, otherwise use Gnome's
-
 Give a default max height to tasks scenes
 
 FileOperations
@@ -43,10 +32,6 @@ FileOperations
 Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane / GridPane / HBox.
 	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
 	The children would need to SHARE one error message label.
-
-Allow BooleanParameter to render as a ToggleButton,
-	and also allow this different kind of rendering to be used within a header, even when the ParameterPane shows it as a tick box???
-	I wanted this for "Hidden" files in DirectoryTool.
 
 Space out the ScaleDouble fields.
 
@@ -77,8 +62,6 @@ PasswordParameter - never saved in json
 	For extra flexibility, support multiple password safes (each with their own parameters).
 
 New Tasks
-	ImageMagick tasks
-		Resize
 	Audio tasks
 		Encode a file to mp3/ogg/flac etc
 		Tag the file
@@ -97,10 +80,6 @@ Pipeline - As well as "Script", "Task", can also be a Pipeline
 
 Expressions to allow for autocomplete.
 	e.g. row. should autocomplete all public methods/attributes
-
-Check if Places updates across NFS, if not remove FileWatcher, and replace with Options.refresh
-
-Running slow tasks such as GitCommittedFiles needs to give feedback that the option IS running.
 
 Need some way to "hide" weird options such as "GC", printRow etc.
 	Maybe have an "order", and when N options are in the menu, then place the less used options in a sub-menu.

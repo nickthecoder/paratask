@@ -35,6 +35,45 @@
                     "expression": "row.url.toString()"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "pri",
+            "label": "Open new Private Firefox Profile",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "firefox"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-P"
+                        },
+                        {
+                            "value": "private"
+                        },
+                        {
+                            "expression": "row.url"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
         }
     ]
 }

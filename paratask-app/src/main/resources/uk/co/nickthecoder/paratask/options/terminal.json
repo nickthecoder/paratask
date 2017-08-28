@@ -5,9 +5,9 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "e",
-            "label": "Edit Output in Editor",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "dir",
+            "label": "Work With Directory",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
@@ -15,14 +15,46 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "file",
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.directory"
+                        }
+                    ]
+                },
+                {
+                    "name": "treeRoot",
+                    "value": "~"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
                     "values": [
                         
                     ]
                 },
                 {
-                    "name": "initialText",
-                    "expression": "tool.getOutput()"
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "foldSingleDirectories",
+                    "value": "true"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
                 }
             ]
         }
