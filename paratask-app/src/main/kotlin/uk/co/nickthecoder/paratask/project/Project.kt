@@ -22,12 +22,10 @@ import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.CompoundParameterResolver
-import uk.co.nickthecoder.paratask.DirectoryResolver
-import uk.co.nickthecoder.paratask.TaskRegistry
-import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.util.JsonHelper
 import java.io.*
 
@@ -35,24 +33,32 @@ class Project(val projectWindow: ProjectWindow) {
 
     var projectFile: File? = null
 
-    val projectDataP = TaskRegistry.projectData.copy()
+    var projectDirectory = FileParameter("directory", expectFile = false, required = true, value = File("").absoluteFile)
+
+    var projectDataP = GroupParameter("projectData")
+
+    init {
+        projectDataP.addParameters(projectDirectory)
+    }
 
     val directoryResolver = object : DirectoryResolver() {
-        override fun directory() = findProjectData("directory") as File
+        override fun directory() = projectDirectory.value
     }
 
     val resolver = CompoundParameterResolver(directoryResolver)
 
+    private val projectPreferences = mutableMapOf<String, Task>()
+
     val saveProjectTask: SaveProjectTask by lazy { SaveProjectTask(this) }
 
-    fun findProjectData(name: String): Any? {
-        val parameter = projectDataP.find(name)
+    fun storePreferences(task: Task) {
+        projectPreferences[task.creationString()] = task.copy()
+    }
 
-        if (parameter is ValueParameter<*>) {
-            return parameter.value
+    fun retrievePreferences(task: Task) {
+        projectPreferences[task.creationString()]?.let {
+            task.taskD.copyValuesFrom(it.taskD)
         }
-
-        return null
     }
 
     fun save() {
@@ -95,6 +101,13 @@ class Project(val projectWindow: ProjectWindow) {
 
         val jprojectData = JsonHelper.parametersAsJsonArray(projectDataP)
         jroot.add("projectData", jprojectData)
+
+        val jprojectPreferences = JsonArray()
+        jroot.add("preferences", jprojectPreferences)
+        projectPreferences.values.forEach { pref ->
+            val jpref = JsonHelper.parametersAsJsonArray(pref)
+            jprojectPreferences.add(jpref)
+        }
 
         val jtabs = JsonArray()
         for (tab in projectWindow.tabs.listTabs()) {
@@ -152,6 +165,14 @@ class Project(val projectWindow: ProjectWindow) {
             val jprojectData = jroot.get("projectData")
             if (jprojectData != null) {
                 JsonHelper.read(jprojectData.asArray(), project.projectDataP)
+            }
+
+            val jprojectPreferences = jroot.get("preferences")
+            if (jprojectPreferences != null) {
+                (jprojectPreferences as JsonArray).forEach { jpref ->
+                    val task = JsonHelper.readTask(jpref as JsonObject)
+                    project.storePreferences(task)
+                }
             }
 
             val jtabs = jroot.get("tabs")

@@ -38,9 +38,6 @@ class ParaTaskCore : Registers {
 
     override fun register() {
 
-        val directoryP = FileParameter("directory", expectFile = false, required = true, value = File("").absoluteFile)
-        TaskRegistry.projectData.addParameters(directoryP)
-
         TaskRegistry.home.addTools(
                 HomeTool(), CustomToolListTool(),
                 DirectoryTool(), PlacesTool(), PlacesDirectoryTool(),

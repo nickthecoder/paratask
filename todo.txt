@@ -1,6 +1,9 @@
 
 Bugs
-	IntField doesn't handle nulls ????
+
+Don't save the Code Header stuff normally - it just looks too weird!
+	Instead, Project to have a GENERAL set of parameters.
+	In fact save them as a set of TASKS, which means paramters will never have name collisions etc.s
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.

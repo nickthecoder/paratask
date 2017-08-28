@@ -1,3 +1,20 @@
+/*
+ParaTask Copyright (C) 2017  Nick Robinson>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package uk.co.nickthecoder.paratask.util
 
 import com.eclipsesource.json.JsonArray
@@ -62,6 +79,18 @@ object JsonHelper {
             }
         }
     }
+
+    fun readTask(jhalfTab: JsonObject): Task {
+        val creationString = jhalfTab.get("task").asString()
+        val task = Task.create(creationString)
+
+        val jparameters = jhalfTab.get("parameters")
+        if (jparameters != null) {
+            JsonHelper.read(jparameters.asArray(), task)
+        }
+        return task
+    }
+
 
     fun read(jparameters: JsonArray, group: AbstractGroupParameter, task: Task? = null) {
         for (jitem in jparameters.asArray()) {

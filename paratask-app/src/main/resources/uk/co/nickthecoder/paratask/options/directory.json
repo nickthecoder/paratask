@@ -99,7 +99,7 @@
                 },
                 {
                     "name": "placesFile",
-                    "expression": "tool.placesFileP.value"
+                    "value": ""
                 },
                 {
                     "name": "onlyFiles",

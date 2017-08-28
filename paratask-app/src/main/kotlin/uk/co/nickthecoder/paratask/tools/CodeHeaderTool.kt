@@ -17,31 +17,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.Registers
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.TaskRegistry
+import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.table.ListTableTool
-import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.misc.WrappedFile
 import java.io.File
 
-class CodeHeaderTool : ListTableTool<CodeHeaderTool.ProcessedFile>(), HasDirectory, Registers {
+class CodeHeaderTool : ListTableTool<CodeHeaderTool.ProcessedFile>() {
 
     override val taskD = TaskDescription("codeHeader", description = "Adds a Copyright notice to the top of source code file")
 
-    val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
-
-    override val directory by directoryP
+    val directoriesP = MultipleParameter("directories") {
+        FileParameter("directory", expectFile = false, mustExist = true)
+    }
 
     val extensionsP = MultipleParameter("extensions", value = listOf("java", "kt")) { StringParameter("") }
 
@@ -74,20 +70,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     private lateinit var containsText: String
 
     init {
-        taskD.addParameters(directoryP, extensionsP, depthP, headerTestP, withinLinesP, headerTextP)
+        taskD.addParameters(directoriesP, extensionsP, depthP, headerTestP, withinLinesP, headerTextP)
     }
 
-    override fun register() {
-        TaskRegistry.projectData.addParameters(headerTestP.copy())
-        TaskRegistry.projectData.addParameters(headerTextP.copy())
+    override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
+        if (parameterName == "directory") {
+            if (expression == null) {
+                directoriesP.value = listOf(File(stringValue))
+            } else {
+                directoriesP.clear()
+                directoriesP.newValue().expression = expression
+            }
+            return
+        }
+        super.loadProblem(parameterName, expression, stringValue)
     }
 
-    override fun createColumns() : List<Column<ProcessedFile,*>> {
-        val columns = mutableListOf<Column<ProcessedFile,*>>()
+    override fun createColumns(): List<Column<ProcessedFile, *>> {
+        val columns = mutableListOf<Column<ProcessedFile, *>>()
 
         columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
         columns.add(Column<ProcessedFile, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<ProcessedFile>("path", base = directory!!) { it.file })
+        columns.add(Column<ProcessedFile, File>("path") { it.file })
 
         return columns
     }
@@ -95,36 +99,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         // Use the project's standard header if one has been set.
-        project?.projectDataP?.find("headerTextP")?.let {
-            if (it is StringParameter) {
-                headerTextP.value = it.value
-            }
-        }
+        project?.retrievePreferences(this)
     }
 
     override fun run() {
+        project?.storePreferences(this)
 
         if (list.isEmpty()) {
             containsText = headerTestP.value
-            val lister = FileLister(/*extensions = extensionsP.value, */depth = depthP.value!!)
-            list.addAll(lister.listFiles(directory!!).map { ProcessedFile(it) })
+            val lister = FileLister(depth = depthP.value!!, extensions = extensionsP.value)
+            directoriesP.value.forEach {
+                list.addAll(lister.listFiles(it!!).map { ProcessedFile(it) })
+            }
         }
     }
 
     fun isProcessed(file: File): Boolean {
-        println("Checking ${file}")
+        println("Checking $file")
 
         val reader = file.bufferedReader()
-        try {
+        reader.use {
             for (i in 1..withinLinesP.value!!) {
                 val line = reader.readLine()
-                if (line == null) return false
+                line ?: return false
                 if (line.contains(containsText)) {
                     return true
                 }
             }
-        } finally {
-            reader.close()
         }
         return false
     }

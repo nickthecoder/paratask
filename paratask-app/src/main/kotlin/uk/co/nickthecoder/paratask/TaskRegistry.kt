@@ -38,8 +38,6 @@ object TaskRegistry {
 
     val misc = TaskAndToolGroup("Miscellaneous")
 
-    val projectData = GroupParameter("projectData")
-
     init {
         register(ParaTaskCore.instance)
 

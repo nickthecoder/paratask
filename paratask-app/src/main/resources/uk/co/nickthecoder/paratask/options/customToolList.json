@@ -5,13 +5,13 @@
     "options": [
         {
             "type": "groovy",
-            "script": "row.tool.evaluate( tool, row, null )",
+            "script": "tool.evaluateTask( row.tool, row, null )\n",
             "code": ".",
             "label": "Run Tool",
             "isRow": true,
             "isMultiple": false,
             "prompt": false,
-            "newTab": false,
+            "newTab": true,
             "refresh": false
         }
     ]
