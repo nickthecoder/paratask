@@ -243,7 +243,7 @@ fun Process.unixPID(): Long? {
         return pid
 
     } catch (e2: Exception) {
-        // Do nothing
+         // Do nothing
     }
 
     return null

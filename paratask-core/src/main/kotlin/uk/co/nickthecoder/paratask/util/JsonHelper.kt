@@ -24,6 +24,14 @@ import uk.co.nickthecoder.paratask.parameters.*
 
 object JsonHelper {
 
+    fun taskAsJsonObject(task: Task): JsonObject {
+        val jtask = JsonObject()
+        jtask.add("task", task.creationString())
+        jtask.add("parameters", parametersAsJsonArray(task))
+
+        return jtask
+    }
+
     fun parametersAsJsonArray(group: AbstractGroupParameter): JsonArray {
         val jparameters = JsonArray()
         for (parameter in group.descendants()) {
@@ -79,6 +87,7 @@ object JsonHelper {
             }
         }
     }
+
 
     fun readTask(jhalfTab: JsonObject): Task {
         val creationString = jhalfTab.get("task").asString()

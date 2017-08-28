@@ -105,7 +105,7 @@ class Project(val projectWindow: ProjectWindow) {
         val jprojectPreferences = JsonArray()
         jroot.add("preferences", jprojectPreferences)
         projectPreferences.values.forEach { pref ->
-            val jpref = JsonHelper.parametersAsJsonArray(pref)
+            val jpref = JsonHelper.taskAsJsonObject(pref)
             jprojectPreferences.add(jpref)
         }
 
