@@ -1,0 +1,94 @@
+{
+    "comments": "Can be included from any tools which extend HasDirectory. All the options will be non-row options using making use of \"tool.directory\".",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "desktop.open( tool.directory )",
+            "code": "o",
+            "label": "Open Directory",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.FindTool",
+            "code": "find",
+            "label": "Find Files",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": true,
+            "refresh": false,
+            "keyCode": "F",
+            "alt": "DOWN",
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "filename",
+                    "value": ""
+                },
+                {
+                    "name": "matchType",
+                    "value": "CASE_INSENSITIVE"
+                },
+                {
+                    "name": "wholeName",
+                    "value": "false"
+                },
+                {
+                    "name": "user",
+                    "value": ""
+                },
+                {
+                    "name": "group",
+                    "value": ""
+                },
+                {
+                    "name": "type",
+                    "value": "<unknown>"
+                },
+                {
+                    "name": "typeFollowsSymlink",
+                    "value": "true"
+                },
+                {
+                    "name": "emptyFiles",
+                    "value": "false"
+                },
+                {
+                    "name": "newerThanFile",
+                    "value": ""
+                },
+                {
+                    "name": "followSymlinks",
+                    "value": "false"
+                },
+                {
+                    "name": "otherFileSystems",
+                    "value": "true"
+                },
+                {
+                    "name": "minDepth",
+                    "value": ""
+                },
+                {
+                    "name": "maxDepth",
+                    "value": ""
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                }
+            ]
+        }
+    ]
+}

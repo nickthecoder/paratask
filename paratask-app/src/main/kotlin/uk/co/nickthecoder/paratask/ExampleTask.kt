@@ -34,7 +34,7 @@ This is an example showing various types of parameters. You can look at the sour
 
 https://github.com/nickthecoder/paratask/
 
-This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
+This class (Example.kt) can be found in sub-project paratask-app, package uk.co.nickthecoder.paratask.
 """
     )
 
@@ -87,10 +87,10 @@ This class (Example.kt) can be found in package uk.co.nickthecoder.paratask.
     init {
         rangeFromP.enabled = false
 
-        taskD.addParameters(requiredInt, optionalInt, doubleP, optionalDoubleP)
-        // fileP, informationP,  groupP, buttonP, durationP,
-        // taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
-        // fileP, directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
+        taskD.addParameters(requiredInt, optionalInt, doubleP, optionalDoubleP,
+                fileP, informationP, buttonP, durationP,
+                taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
+                directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
         groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)

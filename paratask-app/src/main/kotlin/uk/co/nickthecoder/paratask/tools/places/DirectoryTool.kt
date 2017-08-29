@@ -118,7 +118,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     fun createColumns(): List<Column<WrappedFile, *>> {
         val columns = mutableListOf<Column<WrappedFile, *>>()
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { createImageView(it) })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { it.createImageView(thumbnailer, thumbnailHeightP.value!!) })
         columns.add(FileNameColumn<WrappedFile>("name") { it.file })
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
@@ -173,27 +173,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     override fun detaching() {
         super.detaching()
         autoRefresh.unwatchAll()
-    }
-
-    fun createImageView(row: WrappedFile): ImageView {
-        var result: ImageView? = null
-
-        if (row.file.isImage()) {
-            val thumbnail = thumbnailer.thumbnailImage(row.file)
-            if (thumbnail != null) {
-                result = ImageView()
-                result.image = thumbnail
-                result.fitHeight = thumbnailHeightP.value!!.toDouble()
-                result.isPreserveRatio = true
-                result.isSmooth = true
-            }
-        }
-
-        if (result == null) {
-            result = ImageView(row.icon)
-        }
-
-        return result
     }
 
     fun createHeaderRows(dirP: FileParameter): Header = Header(this, dirP)

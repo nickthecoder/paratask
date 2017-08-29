@@ -164,9 +164,17 @@ inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(nullLab
     return this
 }
 
-inline fun <reified T : Enum<T>> ChoiceParameter<T>.enumChoices(): ChoiceParameter<T> {
+inline fun <reified T : Enum<T>> ChoiceParameter<T>.enumChoices(mixCase: Boolean = false): ChoiceParameter<T> {
     enumValues<T>().forEach { item ->
-        val label = if (item is Labelled) item.label else item.name
+        val label = if (item is Labelled) {
+            item.label
+        } else {
+            if (mixCase) {
+                item.name.split("_").map { it.toLowerCase().capitalize() }.joinToString(separator = " ")
+            } else {
+                item.name
+            }
+        }
         choice(key = item.name, value = item, label = label)
     }
     return this

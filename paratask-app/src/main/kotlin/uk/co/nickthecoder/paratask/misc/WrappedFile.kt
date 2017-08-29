@@ -17,7 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.misc
 
+import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.ParaTask
+import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
 open class WrappedFile(val file: File) {
@@ -32,5 +34,27 @@ open class WrappedFile(val file: File) {
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
     fun isDirectory() = file.isDirectory
+
+
+    fun createImageView(thumbnailer: Thumbnailer, thumbnailHeight: Int): ImageView {
+        var result: ImageView? = null
+
+        if (file.isImage()) {
+            val thumbnail = thumbnailer.thumbnailImage(file)
+            if (thumbnail != null) {
+                result = ImageView()
+                result.image = thumbnail
+                result.fitHeight = thumbnailHeight.toDouble()
+                result.isPreserveRatio = true
+                result.isSmooth = true
+            }
+        }
+
+        if (result == null) {
+            result = ImageView(icon)
+        }
+
+        return result
+    }
 
 }

@@ -1,7 +1,21 @@
 
 
-Load history
-Make save history an option
+FindTool
+
+
+
+
+Ctrl+A selects all rows in the table, copying the current row's code.
+De-selecting a row removes that row's code (if it has one).
+
+Create "directoryTool.json" to be included in all tools which HasDirectory.
+
+All AbstractCommandTools to have a "in terminal" option to run the command in a Terminal.
+	And/Or many just show the command and/or allow copy/paste of the command.
+	Create a .json include for these options???
+
+OptionsTool to list other options paths which have a FileOption with this name.
+	As a new minor tab. Only show it if it isn't empty???
 
 Bugs
 
@@ -20,10 +34,6 @@ Dialog box to ask if Editor's buffers should be saved
 	Cancel sends nothing, and abandons the operation.
 	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS (GroupParameter)
 		If every group has only ONE question, then we don't need to show as groups.
-
-Option to save History and Future of each Tool when saving a Project.
-
-Give a default max height to tasks scenes
 
 FileOperations
 	Report errors

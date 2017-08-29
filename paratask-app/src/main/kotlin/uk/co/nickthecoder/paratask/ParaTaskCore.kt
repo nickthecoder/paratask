@@ -55,7 +55,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.misc.addTools(CodeHeaderTool())
 
         val files = TaskAndToolGroup("Files")
-        files.addTools(DirectoryTool(), GrepTool())
+        files.addTools(DirectoryTool(), GrepTool(), FindTool())
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val git = TaskAndToolGroup("Git")
