@@ -1,10 +1,5 @@
 
 
-FindTool
-
-
-
-
 Ctrl+A selects all rows in the table, copying the current row's code.
 De-selecting a row removes that row's code (if it has one).
 
@@ -18,6 +13,9 @@ OptionsTool to list other options paths which have a FileOption with this name.
 	As a new minor tab. Only show it if it isn't empty???
 
 Bugs
+	None ;-)
+
+Add more filters to the find tool
 
 
 COPY Drag of Files to the same directory make a COPY of the files.

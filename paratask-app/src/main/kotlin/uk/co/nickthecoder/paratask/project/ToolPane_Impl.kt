@@ -39,7 +39,9 @@ class ToolPane_Impl(override var tool: Tool)
 
     override val parametersTab = ParametersTab(parametersPane)
 
-    val header: Header? = tool.createHeader()
+    val header: HeaderOrFooter? = tool.createHeader()
+
+    val footer: HeaderOrFooter? = tool.createFooter()
 
     init {
         center = tabPane
@@ -75,7 +77,7 @@ class ToolPane_Impl(override var tool: Tool)
             newTab.selected()
         }
         top = if (newTab === parametersTab) null else header
-
+        bottom = if (newTab === parametersTab) null else footer
     }
 
     override fun resultsTool(): Tool {

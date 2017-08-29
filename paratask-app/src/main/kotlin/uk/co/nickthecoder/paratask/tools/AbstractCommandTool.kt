@@ -17,21 +17,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import uk.co.nickthecoder.paratask.util.Stoppable
+import uk.co.nickthecoder.paratask.AbstractTask
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameters.ButtonParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.HeaderOrFooter
 import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.tools.terminal.TerminalTool
+import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.BufferedSink
-import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.Exec
+import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 abstract class AbstractCommandTool<T : Any> : ListTableTool<T>(), Stoppable {
 
     protected var exec: Exec? = null
 
+    /**
+     * Used to show the command string in the footer
+     */
+    val footerTask = FooterTask()
+
     override fun run() {
 
         list.clear()
 
-        val exec = Exec(createCommand())
+        val command = createCommand()
+        footerTask.commandP.value = command.toString()
+
+        val exec = Exec(command)
         exec.outSink = BufferedSink { processLine(it) }
         exec.start().waitFor()
         execFinished()
@@ -46,4 +60,27 @@ abstract class AbstractCommandTool<T : Any> : ListTableTool<T>(), Stoppable {
     open fun execFinished() {}
 
     abstract fun createCommand(): OSCommand
+
+    override fun createFooter() = HeaderOrFooter(footerTask.commandP, footerTask.runP)
+
+    inner class FooterTask : AbstractTask() {
+        override val taskD = TaskDescription("command")
+
+        val commandP = StringParameter("command")
+        val runP = ButtonParameter("run", label = "", buttonText = "Run") {
+            val tool = TerminalTool(createCommand())
+            toolPane?.halfTab?.projectTab?.let { projectTab ->
+                projectTab.projectTabs.addAfter(projectTab, tool)
+            }
+        }
+
+        init {
+            taskD.addParameters(commandP, runP)
+        }
+
+        override fun run() {
+
+        }
+    }
+
 }

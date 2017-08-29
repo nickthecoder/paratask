@@ -73,7 +73,9 @@ interface Tool : Task {
 
     fun detaching()
 
-    fun createHeader(): Header? = null
+    fun createHeader(): HeaderOrFooter? = null
+
+    fun createFooter(): HeaderOrFooter? = null
 
     override fun copy(): Tool = super.copy() as Tool
 

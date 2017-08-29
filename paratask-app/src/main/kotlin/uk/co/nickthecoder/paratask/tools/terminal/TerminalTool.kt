@@ -22,10 +22,15 @@ import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class TerminalTool : AbstractTerminalTool(showCommand = true, allowInput = true) {
+class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = true) {
+
+    constructor(command: OSCommand) : this() {
+        programP.value = command.program
+        argumentsP.value = command.arguments
+        directoryP.value = command.directory
+    }
 
     override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
 
@@ -35,7 +40,7 @@ class TerminalTool : AbstractTerminalTool(showCommand = true, allowInput = true)
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
-    val closeWhenFinishedP = BooleanParameter("closeWhenFinished", value = true)
+    val closeWhenFinishedP = BooleanParameter("closeWhenFinished", value = false)
 
     init {
         taskD.addParameters(programP, argumentsP, directoryP, closeWhenFinishedP)
