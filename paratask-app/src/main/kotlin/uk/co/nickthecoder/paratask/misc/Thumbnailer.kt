@@ -18,8 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.misc
 
 import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import uk.co.nickthecoder.paratask.ParaTask
+import uk.co.nickthecoder.paratask.parameters.IntParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
+import uk.co.nickthecoder.paratask.util.isImage
 import uk.co.nickthecoder.paratask.util.process.Exec
 import java.io.File
 import java.math.BigInteger
@@ -30,10 +35,17 @@ import java.util.concurrent.ConcurrentLinkedQueue
 /**
  * Uses ImageMagick to create thumbnail images of files.
  * Note, this is NOT thread safe, so create a new Thumbnailer for each thread that needs thumbnails.
- * Tyically, a Task/Tool that needs thumbnails will create its own Thumbnailer.
+ * Typically, a Task/Tool that needs thumbnails will create its own Thumbnailer.
  * See https://specifications.freedesktop.org/thumbnail-spec/thumbnail-spec-latest.html
+ *
+ * Note that the height attribute is only used when creating ImageViews. The thumbnail files that are created are
+ * 128x128.
  */
-class Thumbnailer {
+class Thumbnailer() {
+
+    val heightP = IntParameter("thumbnailHeight", value = 60)
+
+    val directoryThumbnailP = StringParameter("directoryThumbnail", value = ".thumbnails/default.jpg")
 
     val messageDigest = MessageDigest.getInstance("MD5")
 
@@ -61,6 +73,42 @@ class Thumbnailer {
             }
         }
         return null
+    }
+
+    fun thumbnailImageView(source: File): ImageView {
+
+        var thumbnail: Image? = null
+
+        if (source.isImage()) {
+
+            thumbnail = thumbnailImage(source)
+
+        } else if (source.isDirectory) {
+            if (directoryThumbnailP.value.isNotBlank()) {
+                val dirThumbnail = source.resolve(File(directoryThumbnailP.value))
+                if (dirThumbnail.exists() && dirThumbnail.isFile) {
+                    val i = dirThumbnail.inputStream()
+                    with(i) {
+                        thumbnail = Image(i)
+                    }
+                }
+            }
+        }
+
+        if (thumbnail != null) {
+            val result = ImageView()
+            result.image = thumbnail
+            result.fitHeight = (heightP.value ?: Thumbnailer.DEFAULT_THUMBNAIL_SIZE).toDouble()
+            result.isPreserveRatio = true
+            result.isSmooth = true
+
+            return result
+
+        } else {
+
+            val icon = ParaTask.imageResource("filetypes/${if (source.isDirectory) "directory" else "file"}.png")
+            return ImageView(icon)
+        }
     }
 
     fun thumbnailFile(source: File): File {
@@ -140,5 +188,9 @@ class Thumbnailer {
         convert.waitFor()
         val chmod = Exec("chmod", "600", thumbFile)
         chmod.start()
+    }
+
+    companion object {
+        val DEFAULT_THUMBNAIL_SIZE = 32
     }
 }

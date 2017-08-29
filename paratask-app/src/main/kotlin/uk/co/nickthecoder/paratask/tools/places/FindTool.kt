@@ -64,9 +64,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
     val xtypeP = BooleanParameter("typeFollowsSymlink", value = true)
 
 
-    val thumbnailHeightP = IntParameter("thumbnailHeight", value = 32)
-
-    val thumbnailer = Thumbnailer()
+    val thumbnailer = Thumbnailer( )
 
     override val directory by directoryP
 
@@ -84,7 +82,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
         nameGroupP.addParameters(filenameP, matchTypeP, wholeNameP)
         traverseGroupP.addParameters(followSymlinksP, otherFileSystemsP, minDepthP, maxDepthP)
         filterGroupP.addParameters(userP, groupP, typeP, xtypeP, emptyFilesP, newerThanFileP)
-        taskD.addParameters(directoryP, nameGroupP, filterGroupP, traverseGroupP, thumbnailHeightP)
+        taskD.addParameters(directoryP, nameGroupP, filterGroupP, traverseGroupP, thumbnailer.heightP)
 
         matchTypeP.listen {
             if (matchTypeP.value == MatchType.REGEX_CASE_SENSITIVE || matchTypeP.value == MatchType.REGEX_CASE_INSENSITIVE) {
@@ -97,7 +95,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
         val columns = mutableListOf<Column<WrappedFile, *>>()
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { it.createImageView(thumbnailer, thumbnailHeightP.value!!) })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
         columns.add(BaseFileColumn<WrappedFile>("file", base = directory!!) { it.file })
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })

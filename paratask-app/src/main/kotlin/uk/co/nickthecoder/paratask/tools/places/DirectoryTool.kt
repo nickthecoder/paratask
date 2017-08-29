@@ -60,8 +60,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     val foldSingleDirectoriesP = BooleanParameter("foldSingleDirectories", value = true)
 
-    val thumbnailHeightP = IntParameter("thumbnailHeight", value = 32)
-
     val autoRefreshP = uk.co.nickthecoder.paratask.parameters.BooleanParameter("autoRefresh", value = true,
             description = "Refresh the list when the contents of the directory changes")
 
@@ -95,7 +93,9 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     init {
         filterGroupP.addParameters(onlyFilesP, extensionsP, includeHiddenP)
-        taskD.addParameters(directoriesP, treeRootP, placesFileP, filterGroupP, foldSingleDirectoriesP, thumbnailHeightP, autoRefreshP)
+        taskD.addParameters(
+                directoriesP, treeRootP, placesFileP, filterGroupP, foldSingleDirectoriesP,
+                thumbnailer.heightP, thumbnailer.directoryThumbnailP, autoRefreshP)
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -109,7 +109,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             }
         } else if (parameterName == "depth" || (parameterName == "includeBase") || (parameterName == "enterHidden")) {
             // Do nothing - we no longer use these parameters
-            // The were for the rather naff "DirectoryTreeTool", which no longer exists.
+            // They were for the rather naff "DirectoryTreeTool", which no longer exists.
         } else {
             super.loadProblem(parameterName, expression, stringValue)
         }
@@ -118,7 +118,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
     fun createColumns(): List<Column<WrappedFile, *>> {
         val columns = mutableListOf<Column<WrappedFile, *>>()
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { it.createImageView(thumbnailer, thumbnailHeightP.value!!) })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
         columns.add(FileNameColumn<WrappedFile>("name") { it.file })
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })

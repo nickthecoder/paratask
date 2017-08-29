@@ -23,6 +23,7 @@ import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
 open class WrappedFile(val file: File) {
+
     val icon by lazy {
         ParaTask.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
     }
