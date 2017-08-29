@@ -1,6 +1,6 @@
 {
     "includes": [
-        "file"
+        "fileOrDir"
     ],
     "options": [
         {
@@ -47,14 +47,6 @@
                 {
                     "name": "maxMatches",
                     "expression": "1"
-                },
-                {
-                    "name": "contextLines",
-                    "value": ""
-                },
-                {
-                    "name": "additionalOptions",
-                    "expression": "tool.grepTask.additionalOptionsP.value"
                 },
                 {
                     "name": "output",
@@ -116,26 +108,6 @@
                             "expression": "row.file"
                         }
                     ]
-                },
-                {
-                    "name": "initialText",
-                    "value": ""
-                },
-                {
-                    "name": "goToLine",
-                    "expression": "row.lineNumber"
-                },
-                {
-                    "name": "findText",
-                    "expression": "tool.grepTask.patternsP.value[0]"
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
-                },
-                {
-                    "name": "useRegex",
-                    "expression": "tool.grepTask.typeP.value != \"-F\""
                 }
             ]
         }

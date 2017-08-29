@@ -2,7 +2,7 @@
     "comments": "Must define row.isFile()\nIf this is true, then row.file must be a File object, refering to a file (not a directory)",
     "rowFilterScript": "row.isFile()",
     "includes": [
-        "image"
+        
     ],
     "options": [
         {

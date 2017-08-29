@@ -1,8 +1,7 @@
 {
     "includes": [
         "git",
-        "file",
-        "dir"
+        "fileOrDir"
     ],
     "options": [
         {

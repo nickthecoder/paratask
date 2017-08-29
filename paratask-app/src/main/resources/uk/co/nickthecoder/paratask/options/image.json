@@ -1,5 +1,5 @@
 {
-    "rowFilterScript": "row.isFile()",
+    "rowFilterScript": "row.isFile() && row.file.isImage()",
     "includes": [
         
     ],
@@ -168,6 +168,26 @@
                 {
                     "name": "output",
                     "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.ImageViewerTool",
+            "code": ".",
+            "label": "View Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "view"
+            ],
+            "parameters": [
+                {
+                    "name": "file",
+                    "expression": "row.file"
                 }
             ]
         }

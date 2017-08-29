@@ -2,8 +2,7 @@
     "comments": "Used by the DirectoryTool (and DirectoryTreeTool).\nFor options relating to rows containing a directory, use the \"dir\" file instead.",
     "includes": [
         "subDirectory",
-        "file",
-        "dir",
+        "fileOrDir",
         "hasDirectory"
     ],
     "options": [
@@ -23,64 +22,6 @@
                 {
                     "name": "directoryName",
                     "value": ""
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
-            "code": "^",
-            "label": "Work with Parent Directory",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "keyCode": "UP",
-            "alt": "DOWN",
-            "aliases": [
-                "up"
-            ],
-            "parameters": [
-                {
-                    "name": "directories",
-                    "values": [
-                        {
-                            "expression": "tool.directory.parentFile"
-                        }
-                    ]
-                },
-                {
-                    "name": "treeRoot",
-                    "expression": "tool.treeRootP.value"
-                },
-                {
-                    "name": "placesFile",
-                    "value": ""
-                },
-                {
-                    "name": "onlyFiles",
-                    "expression": "tool.onlyFilesP.value"
-                },
-                {
-                    "name": "extensions",
-                    "expression": "tool.extensionsP.value"
-                },
-                {
-                    "name": "includeHidden",
-                    "expression": "tool.includeHiddenP.value"
-                },
-                {
-                    "name": "foldSingleDirectories",
-                    "expression": "tool.foldSingleDirectoriesP.value"
-                },
-                {
-                    "name": "thumbnailHeight",
-                    "expression": "tool.thumbnailHeightP.value"
-                },
-                {
-                    "name": "autoRefresh",
-                    "expression": "tool.autoRefreshP.value"
                 }
             ]
         },
@@ -114,6 +55,68 @@
                 {
                     "name": "closeWhenFinished",
                     "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "^",
+            "label": "Work with Parent Directory",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "UP",
+            "alt": "DOWN",
+            "aliases": [
+                "up"
+            ],
+            "parameters": [
+                {
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.directory.parentFile"
+                        }
+                    ]
+                },
+                {
+                    "name": "treeRoot",
+                    "expression": "tool.treeRootP.value"
+                },
+                {
+                    "name": "placesFile",
+                    "expression": "tool.placesFileP.value"
+                },
+                {
+                    "name": "onlyFiles",
+                    "expression": "tool.onlyFilesP.value"
+                },
+                {
+                    "name": "extensions",
+                    "expression": "tool.extensionsP.value"
+                },
+                {
+                    "name": "includeHidden",
+                    "expression": "tool.includeHiddenP.value"
+                },
+                {
+                    "name": "foldSingleDirectories",
+                    "expression": "tool.foldSingleDirectoriesP.value"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "expression": "tool.thumbnailer.heightP.value"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "expression": "tool.thumbnailer.directoryThumbnailP.value"
+                },
+                {
+                    "name": "autoRefresh",
+                    "expression": "tool.autoRefreshP.value"
                 }
             ]
         }

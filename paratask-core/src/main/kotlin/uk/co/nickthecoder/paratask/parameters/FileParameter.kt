@@ -136,6 +136,14 @@ open class FileParameter(
         return filenameP
     }
 
+    override fun coerce(v: Any?) {
+        if (v is File?) {
+            value = v
+            return
+        }
+        super.coerce(v)
+    }
+
     override fun isStretchy(): Boolean = true
 
     override fun createField() = FileField(this).build() as FileField

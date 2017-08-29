@@ -1,6 +1,6 @@
 {
     "includes": [
-        
+        "fileOrDir"
     ],
     "options": [
         {
@@ -41,12 +41,16 @@
                 {
                     "name": "directory",
                     "expression": "tool.directory"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.TerminalTool",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "d",
             "label": "Git Diff",
             "isRow": true,
@@ -79,6 +83,10 @@
                 {
                     "name": "directory",
                     "expression": "tool.directory"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
                 }
             ]
         }

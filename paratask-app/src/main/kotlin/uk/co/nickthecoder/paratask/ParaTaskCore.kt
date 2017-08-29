@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.tasks.FlipImageTask
 import uk.co.nickthecoder.paratask.tasks.ResizeImageTask
 import uk.co.nickthecoder.paratask.tasks.RotateImageTask
@@ -29,7 +28,6 @@ import uk.co.nickthecoder.paratask.tools.terminal.GroovyTool
 import uk.co.nickthecoder.paratask.tools.terminal.PythonTool
 import uk.co.nickthecoder.paratask.tools.terminal.SSHTool
 import uk.co.nickthecoder.paratask.tools.terminal.TerminalTool
-import java.io.File
 
 /**
  * The core components of ParaTask
@@ -63,9 +61,8 @@ class ParaTaskCore : Registers {
         git.addTasks(GitCommitTask(), GitRMTask())
 
         val images = TaskAndToolGroup("Images")
-        images.addTasks(ResizeImageTask())
-        images.addTasks(RotateImageTask())
-        images.addTasks(FlipImageTask())
+        images.addTools(ImageViewerTool())
+        images.addTasks(ResizeImageTask(), RotateImageTask(), FlipImageTask())
 
         TaskRegistry.addGroup(git)
         TaskRegistry.addGroup(files)
@@ -76,6 +73,9 @@ class ParaTaskCore : Registers {
         TaskRegistry.aliasTool(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
         TaskRegistry.aliasTool(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")
         TaskRegistry.aliasTool(PythonTool(), "uk.co.nickthecoder.paratask.tools.PythonTool")
+
+        TaskRegistry.aliasTool(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageTool")
+        TaskRegistry.aliasTool(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageViewTool")
     }
 
     companion object {
