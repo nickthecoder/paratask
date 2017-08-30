@@ -118,14 +118,6 @@ class GitStatusTool : AbstractCommandTool<GitStatusTool.GitStatusRow>(), HasDire
 
         val path: String
 
-        // Allows "file" options to be included
-        override fun isFile(): Boolean = file.isFile()
-
-        // Allows "dir" options to be included
-        override fun isDirectory(): Boolean = file.isDirectory()
-
-        override fun isImage() = file.isImage()
-
         init {
             val filePath = file.path
             val prefix = directory!!.path + File.separatorChar

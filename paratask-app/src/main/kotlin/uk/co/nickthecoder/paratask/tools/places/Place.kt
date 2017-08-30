@@ -42,17 +42,7 @@ class Place(
     val url
         get() = resource.url
 
-    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
-    // Place (and any future rows that *may* contain File objects).
-    override fun isFile() = resource.isFile()
-
     fun isFileOrDirectory() = resource.isFileOrDirectory()
-
-    override fun isImage(): Boolean = resource.file?.isImage() ?: false
-
-    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
-    // Place (and any future rows that *may* contain File objects).
-    override fun isDirectory() = resource.isDirectory()
 
     fun isURL() = !resource.isFileOrDirectory()
 

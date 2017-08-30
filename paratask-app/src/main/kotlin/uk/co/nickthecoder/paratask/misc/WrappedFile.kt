@@ -28,15 +28,5 @@ open class WrappedFile(override val file: File) : FileTest {
         ParaTask.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
     }
 
-    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
-    // Place (and any future rows that *may* contain File objects).
-    override fun isFile() = file.isFile
-
-    // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
-    // Place (and any future rows that *may* contain File objects).
-    override fun isDirectory() = file.isDirectory
-
-    override fun isImage() = file.isImage()
-
     override fun toString() = "WrappedFile( $file )"
 }

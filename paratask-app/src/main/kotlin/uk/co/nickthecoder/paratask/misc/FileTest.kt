@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.misc
 
+import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
 /**
@@ -28,17 +29,12 @@ import java.io.File
  */
 interface FileTest {
 
-    /**
-     * Initially I didn't want this attribute in the interface, but without it, groovy interprets "row.file"
-     * as row.isFile(), even when the row has a Kotlin "file" attribute (in the concrete class). i.e.
-     * in the jvm world, there are methods "File getFile()" and "Boolean isFile()".
-     */
     val file: File?
 
-    fun isFile(): Boolean
+    fun isFile(): Boolean = file?.isFile() == true
 
-    fun isDirectory(): Boolean
+    fun isDirectory(): Boolean = file?.isDirectory == true
 
-    fun isImage(): Boolean
+    fun isImage(): Boolean = file?.isImage() == true
 
 }
