@@ -1,18 +1,22 @@
 
 
+Use Kotlin scripts instead of Groovy scripts.
+	Implement it side by side, then add "deprecation" warning when loading groovy scripts, then remove groovy completely.
+
+Bugs
+	None ;-)
+
+CodeHeader Tool to default to showing unprocessed only.
+
+Add more filters to the find tool
+
 Ctrl+A selects all rows in the table, copying the current row's code.
 De-selecting a row removes that row's code (if it has one).
 
 OptionsTool to list other options paths which have a FileOption with this name.
 	As a new minor tab. Only show it if it isn't empty???
 
-Use Kotlin scripts instead of Groovy scripts.
-
-Bugs
-	None ;-)
-
-Add more filters to the find tool
-
+KotlinTool - run kotlin interactively.
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.

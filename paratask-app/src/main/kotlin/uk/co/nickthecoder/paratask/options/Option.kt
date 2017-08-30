@@ -66,6 +66,10 @@ interface Option : Externalizable {
                 joption.set("type", "groovy")
                 joption.set("script", script)
             }
+            is KotlinOption -> {
+                joption.set("type", "kotlin")
+                joption.set("script", script)
+            }
             is TaskOption -> {
                 joption.set("type", "task")
                 joption.set("task", task.creationString())
@@ -126,6 +130,9 @@ interface Option : Externalizable {
         if (this is GroovyOption && option is GroovyOption) {
             script = option.script
         }
+        if (this is KotlinOption && option is KotlinOption) {
+            script = option.script
+        }
     }
 
     override fun writeExternal(out: ObjectOutput) {
@@ -147,6 +154,9 @@ interface Option : Externalizable {
 
             val option: Option
             when (type) {
+                "kotlin" -> {
+                    option = KotlinOption(joption.getString("script", ""))
+                }
                 "groovy" -> {
                     option = GroovyOption(joption.getString("script", ""))
                 }

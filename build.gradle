@@ -1,11 +1,10 @@
 buildscript {
     ext.kotlin_version = '1.1.2-2'
+
     repositories {
         mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -64,6 +63,7 @@ project(':paratask-app') {
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile "org.jetbrains.kotlin:kotlin-script-util:$kotlin_version"
         compile 'org.codehaus.groovy:groovy-all:2.4.9'
         compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
         compile 'org.fxmisc.richtext:richtextfx:0.6.10'
@@ -84,7 +84,6 @@ project(':paratask-jediterm') {
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
         compile project(':paratask-app')
         compile project(':paratask-core')
 
@@ -93,16 +92,6 @@ project(':paratask-jediterm') {
         compile ':jediterm-ssh-connector:2.2'
         compile ':pty4j:0.7.2'
         compile ':purejavacomm:0.0.17'
-
-        //compile ':annotations'
-        //compile ':javac2'
-        //compile ':jna-platform'
-        //compile ':jna'
-        //compile ':jsch:0.1.51'
-        //compile ':jzlib:1.1.1'
-        //compile ':guava:14.0.1'
-        // compile ':log4j:1.2.14'
-
 
         compile 'com.github.purejavacomm:purejavacomm:1.0.2.RELEASE'
         compile 'net.java.dev.jna:jna:4.2.2'

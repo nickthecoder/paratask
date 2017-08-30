@@ -35,6 +35,17 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
+        },
+        {
+            "type": "kotlin",
+            "script": "println(\"K\")",
+            "code": "ktest",
+            "label": "Kotlin Test",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }

@@ -56,7 +56,7 @@ class GroovyScript(val source: String) {
         try {
             return script.run()
         } catch (e: Exception) {
-            throw ScriptException(this, e)
+            throw ScriptException(source, e)
         }
     }
 

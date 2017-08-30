@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
-class ScriptException(val script: GroovyScript, e: Exception) : RuntimeException(e) {
+class ScriptException(val script: String, e: Exception) : RuntimeException(e) {
 
-    override val message = "Error running groovy script.\n\n" + super.message + "\n" + script.source + "\n"
+    override val message = "Error running groovy script.\n\n" + super.message + "\n" + script + "\n"
 
 }

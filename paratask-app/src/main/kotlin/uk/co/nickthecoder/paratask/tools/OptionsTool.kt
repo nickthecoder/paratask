@@ -82,6 +82,7 @@ class OptionsTool : ListTableTool<Option> {
         columns.add(Column<Option, String>("script") {
             when (it) {
                 is GroovyOption -> it.script
+                is KotlinOption -> it.script
                 is TaskOption -> it.task.taskD.name
                 else -> ""
             }
@@ -212,9 +213,13 @@ class OptionsTool : ListTableTool<Option> {
 
         val shortcutP = ShortcutParameter("shortcut", value = option.shortcut)
 
-        var script = StringParameter("script",
+        var groovyScriptP = StringParameter("groovyScript",
                 rows = 10, columns = 40, style = "script",
                 value = if (option is GroovyOption) option.script else "")
+
+        var kotlinScriptP = StringParameter("kotlinScript",
+                rows = 10, columns = 40, style = "script",
+                value = if (option is KotlinOption) option.script else "")
 
         val scriptOrTaskP = OneOfParameter("action", message = "Action Type")
 
@@ -222,14 +227,24 @@ class OptionsTool : ListTableTool<Option> {
 
         init {
             if (option is GroovyOption) {
-                script.value = option.script
-                scriptOrTaskP.value = script
+
+                groovyScriptP.value = option.script
+                scriptOrTaskP.value = groovyScriptP
+
+            } else if (option is KotlinOption) {
+
+                kotlinScriptP.value = option.script
+                scriptOrTaskP.value = kotlinScriptP
+
             } else if (option is TaskOption) {
+
                 taskP.value = option.task.copy()
                 scriptOrTaskP.value = taskP
             }
+
             taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
-            scriptOrTaskP.addParameters(taskP, script)
+            scriptOrTaskP.addParameters(taskP, groovyScriptP, kotlinScriptP)
+
             isRow.listen {
                 isMultiple.hidden = isRow.value == false
             }
@@ -244,11 +259,16 @@ class OptionsTool : ListTableTool<Option> {
         open fun update(): Option {
 
             val newOption: Option
-            if (scriptOrTaskP.value == script) {
-                newOption = GroovyOption(script.value)
+            if (scriptOrTaskP.value == groovyScriptP) {
+                newOption = GroovyOption(groovyScriptP.value)
+
+            } else if (scriptOrTaskP.value == kotlinScriptP) {
+                newOption = KotlinOption(kotlinScriptP.value)
+
             } else {
                 newOption = TaskOption(taskP.value!!.copy())
             }
+
             newOption.code = code.value
             newOption.aliases = aliases.value.toMutableList()
             newOption.label = label.value
