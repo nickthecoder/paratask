@@ -1,6 +1,5 @@
 /*
-<PROGRAM NAME AND DESCRIPTION>
-Copyright (C) <YEAR> <AUTHOR>
+ParaTask Copyright (C) 2017  Nick Robinson
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,6 +26,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.imageExtensions
 import java.io.File
 
 class ImageViewerTool() : AbstractTool() {
@@ -63,44 +63,17 @@ class ImageViewerTool() : AbstractTool() {
 
     override fun createHeader() = Header(this, fileP)
 
-    val lister = FileLister(onlyFiles = true, extensions = listOf("jpg", "jpeg", "png", "bmp"))
-
-    fun nextFile(): File? {
-        val files = lister.listFiles(file!!.parentFile)
-
-        var found = false
-        for (f in files) {
-            if (f == file) {
-                found = true
-            } else if (found) {
-                return f
-            }
-        }
-        return null
-    }
-
-    fun previousFile(): File? {
-        val files = lister.listFiles(file!!.parentFile)
-
-        var found: File? = null
-        for (f in files) {
-            if (f == file) {
-                return found
-            }
-            found = f
-        }
-        return null
-    }
+    val lister = FileLister(onlyFiles = true, extensions = imageExtensions.toList())
 
     fun nextImage(): ImageViewerTool? {
-        nextFile()?.let {
+        lister.nextFile(file!!)?.let {
             return ImageViewerTool(it)
         }
         return null
     }
 
     fun previousImage(): ImageViewerTool? {
-        previousFile()?.let {
+        lister.previousFile(file!!)?.let {
             return ImageViewerTool(it)
         }
         return null

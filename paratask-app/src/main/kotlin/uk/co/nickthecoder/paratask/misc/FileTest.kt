@@ -1,6 +1,5 @@
 /*
-<PROGRAM NAME AND DESCRIPTION>
-Copyright (C) <YEAR> <AUTHOR>
+ParaTask Copyright (C) 2017  Nick Robinson
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.misc
 
 import uk.co.nickthecoder.paratask.util.isImage
+import uk.co.nickthecoder.paratask.util.isVideo
 import java.io.File
 
 /**
@@ -31,10 +31,12 @@ interface FileTest {
 
     val file: File?
 
-    fun isFile(): Boolean = file?.isFile() == true
+    fun isFile(): Boolean = file?.isFile == true
 
     fun isDirectory(): Boolean = file?.isDirectory == true
 
     fun isImage(): Boolean = file?.isImage() == true
+
+    fun isVideo(): Boolean = file?.isVideo() == true
 
 }

@@ -25,6 +25,8 @@ val homeDirectory: File = File(System.getProperty("user.home"))
 
 val imageExtensions = hashSetOf("bmp", "cmyk", "cmyka", "dpf", "eps", "gif", "ico", "jpeg", "jpg", "mng", "pbm", "pcx", "png", "pnm", "ps", "psd", "raw", "rgb", "rgba", "svg", "tga", "tif", "tiff", "webp", "xcf", "xpm")
 
+val videoExtensions = hashSetOf("webm", "mkv", "flv", "vob", "ogv", "ogg", "drc", "avi", "mov", "qt", "wmv", "rm", "mp4", "m4v", "mpg", "mpg2", "mpeg", "mpv", "mpe", "m2v")
+
 fun File.child(vararg names: String): File {
     var f = this
     for (name in names) {
@@ -34,3 +36,5 @@ fun File.child(vararg names: String): File {
 }
 
 fun File.isImage() = this.extension.toLowerCase() in imageExtensions
+
+fun File.isVideo() = this.extension.toLowerCase() in videoExtensions

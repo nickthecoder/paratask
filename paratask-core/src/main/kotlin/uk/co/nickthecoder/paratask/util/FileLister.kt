@@ -150,6 +150,41 @@ class FileLister(
     }
 
     /**
+     * Finds the file immediately before the file given as argument, or null if 'file' was not listed, or
+     * was the first file in the list.
+     */
+    fun nextFile(file: File): File? {
+        val files = listFiles(file.parentFile)
+
+        var found = false
+        for (f in files) {
+            if (f == file) {
+                found = true
+            } else if (found) {
+                return f
+            }
+        }
+        return null
+    }
+
+    /**
+     * Finds the file immediately after the file given as argument, or null is 'file' was not listed, or
+     * was the lst file in the list.
+     */
+    fun previousFile(file: File): File? {
+        val files = listFiles(file.parentFile)
+
+        var found: File? = null
+        for (f in files) {
+            if (f == file) {
+                return found
+            }
+            found = f
+        }
+        return null
+    }
+
+    /**
      * To make it slightly easier to use FileLister from Groovy (and Java)
      */
     class Builder(
@@ -171,6 +206,7 @@ class FileLister(
                 fileComparator = fileComparator,
                 directoryComparator = directoryComparator,
                 includeHidden = includeHidden,
+                enterHidden = enterHidden,
                 includeBase = includeBase,
                 errorHandler = errorHandler)
     }
