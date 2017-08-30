@@ -6,17 +6,6 @@
     "options": [
         {
             "type": "groovy",
-            "script": "def builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef files = lister.listFiles( row.resource.file.parentFile )\n\ndef prevFile = row.resource.file\nfor ( file in files ) {\n    if (file.equals(row.resource.file)) {\n        def edit = row.taskEdit()\n        edit.fileP.value = prevFile\n        edit.run()\n        break\n    }\n    prevFile = file\n}\n",
-            "code": "<",
-            "label": "Move to Previous Video",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "tool.taskNew()",
             "code": "+",
             "label": "New Place",
@@ -45,17 +34,6 @@
             "isRow": true,
             "isMultiple": false,
             "prompt": true,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
-            "script": "desktop.open( row.resource.file )\n\ndef builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\", \"rmvb\"]\n\ndef lister = builder.build()\ndef files = lister.listFiles( row.resource.file.parentFile )\n\ndef found = false\nfor ( file in files ) {\n    if (found) {\n        def edit = row.taskEdit()\n        edit.fileP.value = file\n        edit.run()\n        break\n    }\n    if (file.equals(row.resource.file)) {\n        found = true\n    }\n    prevFile = file\n}\n",
-            "code": ">",
-            "label": "Play Video and Move to Next",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
             "newTab": false,
             "refresh": false
         },
@@ -147,6 +125,28 @@
                     "expression": "tool.filesP.value"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "def builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\"]\n\ndef lister = builder.build()\n\ndef prevFile = lister.previousFile( row.file )\nif (prevFile != null) {\n    def edit = row.taskEdit()\n    edit.fileP.value = prevFile\n    edit.run()\n}\n",
+            "code": "<",
+            "label": "Move to Previous Video",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "desktop.open( row.resource.file )\n\ndef builder = new FileLister.Builder()\nbuilder.extensions = [\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\", \"rmvb\"]\n\ndef lister = builder.build()\n\ndef nextFile = lister.nextFile( row.file )\nif ( nextFile != null ) {\n    def edit = row.taskEdit()\n    edit.fileP.value = nextFile\n    edit.run()\n}\n",
+            "code": ">",
+            "label": "Play Video and Move to Next",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
         }
     ]
 }
