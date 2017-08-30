@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools.git
 import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
@@ -28,6 +29,7 @@ import uk.co.nickthecoder.paratask.table.WrappedRow
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.isImage
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
@@ -109,18 +111,20 @@ class GitStatusTool : AbstractCommandTool<GitStatusTool.GitStatusRow>(), HasDire
     }
 
     inner class GitStatusRow(
-            val file: File,
+            override val file: File,
             val index: Char,
             val work: Char,
-            val renamed: String? = null) {
+            val renamed: String? = null) : FileTest {
 
         val path: String
 
         // Allows "file" options to be included
-        fun isFile(): Boolean = file.isFile()
+        override fun isFile(): Boolean = file.isFile()
 
         // Allows "dir" options to be included
-        fun isDirectory(): Boolean = file.isDirectory()
+        override fun isDirectory(): Boolean = file.isDirectory()
+
+        override fun isImage() = file.isImage()
 
         init {
             val filePath = file.path

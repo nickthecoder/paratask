@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.input.DataFormat
+import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.util.isImage
 import java.io.Serializable
 
 class Place(
@@ -26,7 +28,7 @@ class Place(
         val resource: Resource,
         val label: String)
 
-    : Serializable {
+    : FileTest, Serializable {
 
     val name: String
         get() = if (resource.isFileOrDirectory()) resource.file!!.name else resource.toString()
@@ -34,7 +36,7 @@ class Place(
     val path: String
         get() = if (resource.isFileOrDirectory()) resource.file!!.path else resource.toString()
 
-    val file
+    override val file
         get() = resource.file
 
     val url
@@ -42,13 +44,15 @@ class Place(
 
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
-    fun isFile() = resource.isFile()
+    override fun isFile() = resource.isFile()
 
     fun isFileOrDirectory() = resource.isFileOrDirectory()
 
+    override fun isImage(): Boolean = resource.file?.isImage() ?: false
+
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
-    fun isDirectory() = resource.isDirectory()
+    override fun isDirectory() = resource.isDirectory()
 
     fun isURL() = !resource.isFileOrDirectory()
 

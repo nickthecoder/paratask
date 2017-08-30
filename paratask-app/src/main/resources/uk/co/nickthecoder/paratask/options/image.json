@@ -1,5 +1,5 @@
 {
-    "rowFilterScript": "row.isFile() && row.file.isImage()",
+    "rowFilterScript": "row.isImage()\n",
     "includes": [
         
     ],

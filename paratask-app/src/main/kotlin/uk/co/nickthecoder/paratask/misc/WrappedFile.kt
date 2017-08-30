@@ -22,7 +22,7 @@ import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
-open class WrappedFile(val file: File) {
+open class WrappedFile(override val file: File) : FileTest {
 
     val icon by lazy {
         ParaTask.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")
@@ -30,32 +30,13 @@ open class WrappedFile(val file: File) {
 
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
-    fun isFile() = file.isFile
+    override fun isFile() = file.isFile
 
     // Not only a convenience method, but also so that options can be used interchangably between WrappedFile and
     // Place (and any future rows that *may* contain File objects).
-    fun isDirectory() = file.isDirectory
+    override fun isDirectory() = file.isDirectory
 
+    override fun isImage() = file.isImage()
 
-    fun createImageView(thumbnailer: Thumbnailer, thumbnailHeight: Int): ImageView {
-        var result: ImageView? = null
-
-        if (file.isImage()) {
-            val thumbnail = thumbnailer.thumbnailImage(file)
-            if (thumbnail != null) {
-                result = ImageView()
-                result.image = thumbnail
-                result.fitHeight = thumbnailHeight.toDouble()
-                result.isPreserveRatio = true
-                result.isSmooth = true
-            }
-        }
-
-        if (result == null) {
-            result = ImageView(icon)
-        }
-
-        return result
-    }
-
+    override fun toString() = "WrappedFile( $file )"
 }
