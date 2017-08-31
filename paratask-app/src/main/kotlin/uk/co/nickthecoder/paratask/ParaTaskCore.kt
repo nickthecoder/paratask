@@ -51,6 +51,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.topLevel.addTasks(CommandTask())
 
         TaskRegistry.misc.addTools(CodeHeaderTool())
+        TaskRegistry.misc.addTasks(OpenProjectTask())
 
         val files = TaskAndToolGroup("Files")
         files.addTools(DirectoryTool(), GrepTool(), FindTool())

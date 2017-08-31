@@ -42,7 +42,7 @@ class TaskParser(val task: Task) {
     private lateinit var arguments: List<String>
 
     private val promptP = BooleanParameter("prompt", oppositeName = "no-prompt", value = null,
-            description = "Force the osCommand to be prompted using the GUI.")
+            description = "Prompt command's arguments using a GUI")
 
     private val helpP = BooleanParameter("help", description = "Print this help text")
 

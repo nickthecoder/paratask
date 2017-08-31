@@ -72,4 +72,17 @@ object TaskRegistry {
         val cs = taskAliases.get(creationString) ?: creationString
         return Task.create(cs)
     }
+
+    /**
+     * Finds a registered task by its name.
+     * First, the name is used to look for a registered task with the same creation string.
+     * If none were found, then the name is compared to the registered tasks' TaskDescription's name.
+     */
+    fun findTask(name: String): Task? {
+        return taskGroups.map { taskGroup ->
+            taskGroup.listTasks().firstOrNull { it.creationString() == name } ?:
+                    taskGroup.listTasks().firstOrNull { it.taskD.name == name }
+        }.firstOrNull { it != null }
+    }
+
 }

@@ -37,12 +37,10 @@ import java.io.File
  *
  * And then choose the projects from the gui, rather than from the command line.
  *
- * This is made way too tricky, because JavaFX sucks ;-) There are THREE different scenarios. :
- * The task is prompted, in which case the JavaFX Application has to
  */
-class StartTask : AbstractTask() {
+class OpenProjectTask : AbstractTask() {
 
-    override val taskD = TaskDescription("Open Project")
+    override val taskD = TaskDescription("project")
 
     override var taskRunner: TaskRunner = UnthreadedTaskRunner(this)
 
@@ -72,5 +70,5 @@ class StartTask : AbstractTask() {
 
 
 fun main(args: Array<String>) {
-    TaskParser(StartTask()).go(args)
+    TaskParser(OpenProjectTask()).go(args)
 }

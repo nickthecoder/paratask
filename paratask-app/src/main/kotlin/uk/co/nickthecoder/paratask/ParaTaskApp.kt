@@ -25,9 +25,8 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import java.io.File
 
 /**
- * JavaFX really sucks for this type of application, where there are many differeny program entry points, and
+ * JavaFX really sucks for this type of application, where there are many different program entry points, and
  * especially when the application only *sometimes* needs to start JavaFX.
- * So this is NOT an entry point for the application, just an annoyance that I have to put up with!
  *
  * To make matters worse, I may have a Task, which is NOT prompted (i.e. run directly from the command line), and
  * part of it's run, it needs to pop up a window (such as prompting ANOTHER Task). In this case, it is this second
@@ -149,4 +148,30 @@ class ParaTaskApp : Application() {
 
         }
     }
+}
+
+
+fun main(args: Array<String>) {
+    val taskName: String
+    val taskArgs: Array<String>
+
+    if (args.isEmpty()) {
+        taskName = "help"
+        taskArgs = args
+    } else {
+        taskName = args[0]
+        taskArgs = args.copyOfRange(1, args.size)
+    }
+
+    if (taskName == "help" || taskName == "--help" || taskName == "-h") {
+        TaskParser(HelpTask()).go(taskArgs)
+    } else {
+        val task = TaskRegistry.findTask(taskName)
+        if (task == null) {
+            println("Task '$taskName' not found.")
+        } else {
+            TaskParser(task).go(taskArgs)
+        }
+    }
+
 }
