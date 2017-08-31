@@ -20,10 +20,7 @@ package uk.co.nickthecoder.paratask.tools
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.misc.WrappedFile
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.IntParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
@@ -40,6 +37,8 @@ class CodeHeaderTool : ListTableTool<CodeHeaderTool.ProcessedFile>() {
     }
 
     val extensionsP = MultipleParameter("extensions", value = listOf("java", "kt")) { StringParameter("") }
+
+    val showProcessedFilesP = BooleanParameter("showProcessedFiles", value = false)
 
     val headerTestP = StringParameter("headerTest",
             value = "This program is free software",
@@ -67,10 +66,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """)
 
-    private lateinit var containsText: String
+    private var containsText by headerTestP
 
     init {
-        taskD.addParameters(directoriesP, extensionsP, depthP, headerTestP, withinLinesP, headerTextP)
+        taskD.addParameters(directoriesP, extensionsP, showProcessedFilesP, depthP, headerTestP, withinLinesP, headerTextP)
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -105,13 +104,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     override fun run() {
         project?.storePreferences(this)
 
-        if (list.isEmpty()) {
-            containsText = headerTestP.value
-            val lister = FileLister(depth = depthP.value!!, extensions = extensionsP.value)
-            directoriesP.value.forEach {
-                list.addAll(lister.listFiles(it!!).map { ProcessedFile(it) })
+        list.clear()
+        containsText = headerTestP.value
+        val lister = FileLister(depth = depthP.value!!, extensions = extensionsP.value)
+        directoriesP.value.forEach {
+            val processedFiles = lister.listFiles(it!!).map { ProcessedFile(it) }
+            if (showProcessedFilesP.value == true) {
+                list.addAll(processedFiles)
+            } else {
+                list.addAll(processedFiles.filter { it.processed == false })
             }
         }
+
     }
 
     fun isProcessed(file: File): Boolean {
