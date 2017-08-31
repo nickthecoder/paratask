@@ -6,14 +6,6 @@ Use Kotlin scripts instead of Groovy scripts.
 Bugs
 	None ;-)
 
-Allow tools/tasks to be easily run from the command line
-	Either fix the "postInstall" thingy, or create an entry point that is easy to use, such as :
-		paratask grep [grep arguments]
-		paratask project [project arguments]
-
-
-CodeHeader Tool to default to showing unprocessed only.
-
 Add more filters to the find tool
 
 Ctrl+A selects all rows in the table, copying the current row's code.
