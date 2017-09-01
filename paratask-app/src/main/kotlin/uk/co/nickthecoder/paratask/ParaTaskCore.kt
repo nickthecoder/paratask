@@ -37,14 +37,16 @@ class ParaTaskCore : Registers {
     override fun register() {
 
         TaskRegistry.home.addTools(
-                HomeTool(), CustomToolListTool(),
+                HomeTool(),
                 DirectoryTool(), PlacesTool(), PlacesDirectoryTool(),
+                FindTool(), LocateTool(), GrepTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
-                GrepTool(), GitTool(), GitStatusTool(),
+                CustomToolListTool(),
+                GitTool(), GitStatusTool(),
                 OptionsFilesTool(), OptionsTool(),
-                MythRecordedTool(),
-                ShortcutsTool()
+                ShortcutsTool(),
+                MythRecordedTool()
         )
 
         TaskRegistry.topLevel.addTools(TerminalTool())
@@ -54,7 +56,7 @@ class ParaTaskCore : Registers {
         TaskRegistry.misc.addTasks(OpenProjectTask())
 
         val files = TaskAndToolGroup("Files")
-        files.addTools(DirectoryTool(), GrepTool(), FindTool())
+        files.addTools(DirectoryTool(), GrepTool(), FindTool(), LocateTool())
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val git = TaskAndToolGroup("Git")

@@ -38,7 +38,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     enum class MatchType { GLOB_CASE_SENSITIVE, GLOB_CASE_INSENSITIVE, REGEX_CASE_SENSITIVE, REGEX_CASE_INSENSITIVE }
 
-    override val taskD = TaskDescription("find")
+    override val taskD = TaskDescription("find", description = "Find files using the Unix 'find' command")
 
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
 
@@ -64,7 +64,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
     val xtypeP = BooleanParameter("typeFollowsSymlink", value = true)
 
 
-    val thumbnailer = Thumbnailer( )
+    val thumbnailer = Thumbnailer()
 
     override val directory by directoryP
 

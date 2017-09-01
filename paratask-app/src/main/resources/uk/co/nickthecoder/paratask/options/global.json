@@ -65,6 +65,10 @@
                     "value": "32"
                 },
                 {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
                 }
@@ -141,6 +145,10 @@
                     "value": "32"
                 },
                 {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
                 }
@@ -198,6 +206,10 @@
                     "value": "32"
                 },
                 {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
                 }
@@ -253,6 +265,10 @@
                 {
                     "name": "thumbnailHeight",
                     "value": "32"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
                 },
                 {
                     "name": "autoRefresh",
@@ -442,6 +458,10 @@
                     ]
                 },
                 {
+                    "name": "showProcessedFiles",
+                    "value": "false"
+                },
+                {
                     "name": "depth",
                     "value": "10"
                 },
@@ -456,6 +476,47 @@
                 {
                     "name": "headerText",
                     "value": "<PROGRAM NAME AND DESCRIPTION>\nCopyright (C) <YEAR> <AUTHOR>\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.LocateTool",
+            "code": "loc",
+            "label": "Locate Files",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "pattern",
+                    "values": [
+                        {
+                            "value": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "matchWholePath",
+                    "value": "true"
+                },
+                {
+                    "name": "checkFileExists",
+                    "value": "false"
+                },
+                {
+                    "name": "regularExpressions",
+                    "value": "false"
+                },
+                {
+                    "name": "caseSensitive",
+                    "value": "false"
+                },
+                {
+                    "name": "maxItems",
+                    "value": ""
                 }
             ]
         }

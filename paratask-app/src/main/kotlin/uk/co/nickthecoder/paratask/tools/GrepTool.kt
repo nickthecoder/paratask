@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.table.Column
@@ -98,10 +99,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
         grepTask.check()
     }
 
-    data class GrepRow(val file: File, var lineNumber: Int, var line: String) {
-        // So that file.json can be included
-        fun isFile() = file.isFile()
-    }
+    data class GrepRow(override val file: File, var lineNumber: Int, var line: String) : FileTest
 
 }
 

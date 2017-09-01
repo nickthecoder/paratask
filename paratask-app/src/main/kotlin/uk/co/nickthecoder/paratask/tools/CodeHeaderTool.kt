@@ -119,8 +119,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
 
     fun isProcessed(file: File): Boolean {
-        println("Checking $file")
-
         val reader = file.bufferedReader()
         reader.use {
             for (i in 1..withinLinesP.value!!) {

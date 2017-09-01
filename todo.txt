@@ -6,6 +6,8 @@ Use Kotlin scripts instead of Groovy scripts.
 Bugs
 	None ;-)
 
+ps, mlocate
+
 Add more filters to the find tool
 
 Ctrl+A selects all rows in the table, copying the current row's code.
