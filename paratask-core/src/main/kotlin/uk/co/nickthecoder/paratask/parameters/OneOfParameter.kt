@@ -65,10 +65,14 @@ class OneOfParameter(
     override fun errorMessage(v: Parameter?): String? {
         if (isProgrammingMode()) return null
 
-        if (required && value == null) {
-            return "You must choose an item from the list"
+        if (v == null) {
+            if (required) {
+                return "You must choose an item from the list"
+            }
+            return null
+        } else {
+            return v.errorMessage()
         }
-        return null
     }
 
     override fun check() {

@@ -82,7 +82,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
 
     val taskP = TaskParameter("task", taskFactory = RegisteredTaskFactory())
 
-    val informationP = InformationParameter("information", "Use information parameters to add arbitrary text to a form.")
+    val informationP = InformationParameter("information", information = "Use information parameters to add arbitrary text to a form.")
 
     init {
         rangeFromP.enabled = false
@@ -95,7 +95,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
         groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)
     }
-
+    
     override fun run() {
         println("Example Parameter values : ")
 

@@ -26,10 +26,11 @@ import uk.co.nickthecoder.paratask.util.uncamel
  */
 class InformationParameter(
         name: String,
+        label: String = "",
         val information: String,
         style: String? = null)
 
-    : AbstractParameter(name, "", "") {
+    : AbstractParameter(name, label = label, description = "") {
 
     var style: String? = style
         set(v) {
@@ -38,13 +39,13 @@ class InformationParameter(
 
     val styleProperty = SimpleStringProperty()
 
-    override fun errorMessage(): String = ""
+    override fun errorMessage(): String? = null
 
     override fun isStretchy(): Boolean = true
 
     override fun createField() = InformationField(this).build() as InformationField
 
     override fun copy(): InformationParameter {
-        return InformationParameter(name, information, style)
+        return InformationParameter(name = name, information = information, label = label, style = style)
     }
 }

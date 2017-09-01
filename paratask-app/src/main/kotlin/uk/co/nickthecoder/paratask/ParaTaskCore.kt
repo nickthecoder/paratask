@@ -46,6 +46,7 @@ class ParaTaskCore : Registers {
                 GitTool(), GitStatusTool(),
                 OptionsFilesTool(), OptionsTool(),
                 ShortcutsTool(),
+                ProcessesTool(),
                 MythRecordedTool()
         )
 

@@ -6,7 +6,7 @@ Use Kotlin scripts instead of Groovy scripts.
 Bugs
 	None ;-)
 
-ps, mlocate
+ps
 
 Add more filters to the find tool
 
