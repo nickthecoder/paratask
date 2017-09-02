@@ -6,7 +6,6 @@ New minor tab : Columns : Reorder and select columns for table tools.
 
 Sort out the options path.
 	Is the jar file going to be used, or a directory in the app's path?
-	Add a Parameter to the initial task, so that it can be overridden.
 	Resources to have "isWritable" and use it to filter the options when editing options.
 
 Bugs

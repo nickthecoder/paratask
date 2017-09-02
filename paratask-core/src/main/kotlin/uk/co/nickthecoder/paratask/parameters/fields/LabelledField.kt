@@ -40,7 +40,7 @@ abstract class LabelledField(parameter: Parameter, label: String = parameter.lab
         get() = super.control
         set(v) {
             super.control = v
-            if (expressionButton?.isSelected == true) {
+            if (parameter is ValueParameter<*> && parameter.expression != null) {
                 v?.isVisible = false
             }
         }
