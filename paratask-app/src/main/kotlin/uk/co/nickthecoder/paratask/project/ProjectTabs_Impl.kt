@@ -168,7 +168,7 @@ class ProjectTabs_Impl(override val projectWindow: ProjectWindow)
 
     private fun buildContextMenu() {
 
-        TaskRegistry.home.listTools().forEach { tool ->
+        TaskRegistry.home.listTasks().filterIsInstance<Tool>().forEach { tool ->
             val imageView = tool.icon?.let { ImageView(it) }
             val item = MenuItem(tool.shortTitle, imageView)
 

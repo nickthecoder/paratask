@@ -25,7 +25,7 @@ class RegisteredTaskFactory : TaskFactory {
 
     override val topLevelTasks: List<Task>
 
-    override val taskGroups: List<TaskAndToolGroup> = TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel }
+    override val taskGroups: List<TaskGroup> = TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel }
 
     init {
         TaskRegistry.listGroups().forEach { group ->
@@ -34,10 +34,7 @@ class RegisteredTaskFactory : TaskFactory {
             }
         }
 
-        val list = mutableListOf<Task>()
-        list.addAll(TaskRegistry.topLevel.listTools())
-        list.addAll(TaskRegistry.topLevel.listTasks())
-        topLevelTasks = list
+        topLevelTasks = TaskRegistry.topLevel.listTasks()
     }
 
     companion object {

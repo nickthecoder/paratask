@@ -17,11 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
-
 object TaskRegistry {
 
-    private val taskGroups = mutableListOf<TaskAndToolGroup>()
+    private val taskGroups = mutableListOf<TaskGroup>()
 
     private val registered = mutableSetOf<Registers>()
 
@@ -32,11 +30,11 @@ object TaskRegistry {
      */
     private val taskAliases = mutableMapOf<String, String>()
 
-    val home = TaskAndToolGroup("Home")
+    val home = TaskGroup("Home")
 
-    val topLevel = TaskAndToolGroup("Top Level")
+    val topLevel = TaskGroup("Top Level")
 
-    val misc = TaskAndToolGroup("Miscellaneous")
+    val misc = TaskGroup("Miscellaneous")
 
     init {
         register(ParaTaskCore.instance)
@@ -46,9 +44,9 @@ object TaskRegistry {
         addGroup(misc)
     }
 
-    fun listGroups(): List<TaskAndToolGroup> = taskGroups
+    fun listGroups(): List<TaskGroup> = taskGroups
 
-    fun addGroup(group: TaskAndToolGroup) {
+    fun addGroup(group: TaskGroup) {
         taskGroups.add(group)
     }
 

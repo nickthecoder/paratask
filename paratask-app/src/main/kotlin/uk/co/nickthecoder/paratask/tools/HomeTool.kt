@@ -43,7 +43,7 @@ class HomeTool : ListTableTool<Tool>() {
 
     override fun run() {
         list.clear()
-        list.addAll(TaskRegistry.home.listTools())
+        list.addAll(TaskRegistry.home.listTasks().filterIsInstance<Tool>())
     }
 
 }

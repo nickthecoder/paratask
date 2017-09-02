@@ -36,7 +36,7 @@ class ParaTaskCore : Registers {
 
     override fun register() {
 
-        TaskRegistry.home.addTools(
+        TaskRegistry.home.addTasks(
                 HomeTool(),
                 DirectoryTool(), PlacesTool(), PlacesDirectoryTool(),
                 FindTool(), LocateTool(), GrepTool(),
@@ -50,22 +50,22 @@ class ParaTaskCore : Registers {
                 MythRecordedTool()
         )
 
-        TaskRegistry.topLevel.addTools(TerminalTool())
+        TaskRegistry.topLevel.addTasks(TerminalTool())
         TaskRegistry.topLevel.addTasks(CommandTask())
 
-        TaskRegistry.misc.addTools(CodeHeaderTool())
+        TaskRegistry.misc.addTasks(CodeHeaderTool())
         TaskRegistry.misc.addTasks(OpenProjectTask())
 
-        val files = TaskAndToolGroup("Files")
-        files.addTools(DirectoryTool(), GrepTool(), FindTool(), LocateTool())
+        val files = TaskGroup("Files")
+        files.addTasks(DirectoryTool(), GrepTool(), FindTool(), LocateTool())
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
-        val git = TaskAndToolGroup("Git")
-        git.addTools(GitTool(), GitStatusTool(), GitLogTool(), GitStashTool(), GitCommittedFilesTool())
+        val git = TaskGroup("Git")
+        git.addTasks(GitTool(), GitStatusTool(), GitLogTool(), GitStashTool(), GitCommittedFilesTool())
         git.addTasks(GitCommitTask(), GitRMTask())
 
-        val images = TaskAndToolGroup("Images")
-        images.addTools(ImageViewerTool())
+        val images = TaskGroup("Images")
+        images.addTasks(ImageViewerTool())
         images.addTasks(ResizeImageTask(), RotateImageTask(), FlipImageTask())
 
         TaskRegistry.addGroup(git)
