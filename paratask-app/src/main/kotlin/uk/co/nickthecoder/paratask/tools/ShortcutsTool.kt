@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package uk.co.nickthecoder.paratask.tools.places
+package uk.co.nickthecoder.paratask.tools
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription

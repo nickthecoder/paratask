@@ -1,10 +1,10 @@
-package uk.co.nickthecoder.paratask.tools.places
+package uk.co.nickthecoder.paratask.tools
 
+import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
-import uk.co.nickthecoder.paratask.util.Labelled
+import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.util.regex.Pattern
 
@@ -27,8 +27,10 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
     val choiceP = OneOfParameter("choiceP", value = allP)
 
     init {
+        userP.value = System.getProperty("user.name") ?: ""
+
         taskD.addParameters(choiceP)
-        choiceP.addParameters(allP, userP, groupP, pidsP)
+        choiceP.addParameters(allP, commandP, userP, groupP, pidsP)
     }
 
     override fun createCommand(): OSCommand {
@@ -64,7 +66,7 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
     override fun createColumns(): List<Column<ProcessRow, *>> {
         val columns = mutableListOf<Column<ProcessRow, *>>()
 
-        columns.add(Column<ProcessRow, String>("pid", width = 100) { it.pid })
+        columns.add(Column<ProcessRow, Int>("pid", width = 100) { it.pid })
         columns.add(Column<ProcessRow, String>("user", width = 100) { it.user })
         columns.add(Column<ProcessRow, String>("group", width = 100) { it.group })
         columns.add(Column<ProcessRow, Double>("CPU", width = 70, label = "%CPU") { it.cpu })
@@ -80,7 +82,7 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
         val matcher = linePattern.matcher(line.trim())
         if (matcher.matches()) {
 
-            val pid = matcher.group(1)
+            val pid = matcher.group(1).toInt()
             val user = matcher.group(2)
             val group = matcher.group(3)
             val cpu = matcher.group(4).toDouble()
@@ -95,12 +97,55 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
 
     data class ProcessRow(
-            val pid: String,
+            val pid: Int,
             val user: String,
             val group: String,
             val cpu: Double,
             val mem: Double,
             val cmd: String
-    )
+    ) {
+        fun reniceTask() = ReniceTask(pid)
+    }
+}
 
+class ReniceTask() : AbstractTask() {
+
+    constructor(pid: Int) : this() {
+        pidsP.value = listOf(pid)
+    }
+
+    override val taskD = TaskDescription("renice", description = "Change process's priority")
+
+    val priorityP = IntParameter("priority", range = -20..19, description = """0 is the default priority.
+19 is the 'lowest' priority (the affected processes will run only when nothing else in the system wants to)""")
+
+    val pidsP = MultipleParameter("pids") {
+        IntParameter("pid", label = "PID")
+    }
+
+    val usersP = MultipleParameter("users") {
+        IntParameter("user")
+    }
+
+    init {
+        taskD.addParameters(priorityP, pidsP, usersP)
+    }
+
+    override fun run() {
+        val command = OSCommand("renice", "-n", priorityP.value!!)
+        if (pidsP.value.isNotEmpty()) {
+            command.addArgument("--pid")
+            pidsP.value.forEach {
+                command.addArgument(it)
+            }
+        }
+        if (usersP.value.isNotEmpty()) {
+            command.addArgument("--user")
+            usersP.value.forEach {
+                command.addArgument(it)
+            }
+        }
+
+        Exec(command).start().waitFor()
+    }
 }

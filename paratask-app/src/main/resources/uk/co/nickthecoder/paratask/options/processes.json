@@ -1,0 +1,315 @@
+{
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "hup",
+            "label": "Hang Up",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-HUP"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "-9",
+            "label": "Kill Forcably",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "KILL"
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-9"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "int",
+            "label": "Interrupt",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-INT"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "stop",
+            "label": "Stop",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-STOP"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "cont",
+            "label": "Continue",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-CONT"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "groovy",
+            "script": "println( rows.collect{ it.pid } )",
+            "code": "row",
+            "label": "Print rows.collect { it.pid }",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "row.reniceTask()",
+            "code": "nice",
+            "label": "Change Priority",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.ProcessesTool",
+            "code": "all",
+            "label": "All Processes",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "A",
+            "alt": "DOWN",
+            "parameters": [
+                {
+                    "name": "choiceP",
+                    "value": "all"
+                },
+                {
+                    "name": "command",
+                    "value": ""
+                },
+                {
+                    "name": "user",
+                    "value": "nick"
+                },
+                {
+                    "name": "group",
+                    "value": ""
+                },
+                {
+                    "name": "pids",
+                    "values": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.ProcessesTool",
+            "code": "user",
+            "label": "User Processes",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "U",
+            "alt": "DOWN",
+            "parameters": [
+                {
+                    "name": "choiceP",
+                    "value": "user"
+                },
+                {
+                    "name": "command",
+                    "value": ""
+                },
+                {
+                    "name": "user",
+                    "expression": "System.getProperty(\"user.name\")"
+                },
+                {
+                    "name": "group",
+                    "value": ""
+                },
+                {
+                    "name": "pids",
+                    "values": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "-",
+            "label": "Kill",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "expression": "rows.collect{ it.pid }"
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        }
+    ]
+}

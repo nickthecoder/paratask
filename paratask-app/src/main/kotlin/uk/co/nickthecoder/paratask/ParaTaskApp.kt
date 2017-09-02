@@ -42,22 +42,26 @@ import java.io.File
 class ParaTaskApp : Application() {
 
     override fun start(stage: Stage) {
-        initialTask?.let { task ->
-            startPromptTask(task, stage)
-            initialTask = null
-        }
+        try {
+            initialTask?.let { task ->
+                startPromptTask(task, stage)
+                initialTask = null
+            }
 
-        initialTool?.let { tool ->
-            startOpenTool(tool, initialRun, stage)
-            initialTask = null
-        }
+            initialTool?.let { tool ->
+                startOpenTool(tool, initialRun, stage)
+                initialTask = null
+            }
 
-        initialProjectFiles?.let { files ->
-            startOpenProjects(files)
-            initialProjectFiles = null
-        }
+            initialProjectFiles?.let { files ->
+                startOpenProjects(files)
+                initialProjectFiles = null
+            }
 
-        initialFunction?.let { it() }
+            initialFunction?.let { it() }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     companion object {
