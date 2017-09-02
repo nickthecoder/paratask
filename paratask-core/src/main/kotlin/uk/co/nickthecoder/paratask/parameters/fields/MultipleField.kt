@@ -21,16 +21,27 @@ import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.gui.ApplicationActions
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.ParameterEventType
+import uk.co.nickthecoder.paratask.util.focusNext
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : LabelledField(multipleParameter), ParameterListener, HasChildFields {
+    : LabelledField(multipleParameter), HasChildFields {
 
     val addButton = Button("+")
 
     val parametersForm = ParametersForm(multipleParameter)
+
+    val shortcuts = ShortcutHelper("MultipleField", this, false)
+
+    init {
+        shortcuts.add(ApplicationActions.NEW_ITEM) { extraValue() }
+    }
 
     override val fieldSet: List<ParameterField>
         get() = parametersForm.fieldSet
@@ -38,7 +49,6 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
     override fun createControl(): ParametersForm {
 
         control = parametersForm
-        parameter.parameterListeners.add(this)
 
         addButton.onAction = EventHandler {
             extraValue()
@@ -46,6 +56,12 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         addButton.tooltip = Tooltip("Add")
 
         parametersForm.styleClass.add("multiple")
+
+        // Add 'blank' items, so that the required minumum number of items can be entered.
+        // The most common scenarios, is adding a single 'blank' item when minItems == 1
+        while (multipleParameter.minItems > multipleParameter.value.size) {
+            multipleParameter.newValue()
+        }
 
         buildContent()
         return parametersForm
@@ -95,7 +111,8 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
     }
 
     private fun newValue(index: Int) {
-        multipleParameter.newValue(index)
+        val valueParameter = multipleParameter.newValue(index)
+        parametersForm.findField(valueParameter)?.focusNext()
     }
 
     private fun extraValue() {

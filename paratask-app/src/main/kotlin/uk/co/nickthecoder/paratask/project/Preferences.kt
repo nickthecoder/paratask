@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
@@ -32,7 +33,7 @@ object Preferences {
 
     init {
         optionsPath.add(Resource(configDirectory.child("options")))
-        //optionsPath.add(Resource(ParaTaskApp::class.java.getResource("options")))
+        optionsPath.add(Resource(ParaTaskApp::class.java.getResource("options")))
     }
 
     fun createOptionsResourceParameter(

@@ -19,21 +19,22 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.*
 import java.io.File
 
 /**
  * The most frequently used entry point to the application. Used to open ProjectWindows from the command line.
- * If we assume a script called "paratask" sets up the classpath etc, and then calls this class's main, then a
+ * If we assume a script called "paratask" sets up the classpath etc then a
  * typical command is :
  *
- * paratask myproject myotherproject
+ * paratask project myproject myotherproject
  *
  * Which will load two project files, and open them in two separate ProjectWindows.
  * You can also prompt this command using :
  *
- * paratask --prompt
+ * paratask project --prompt
  *
  * And then choose the projects from the gui, rather than from the command line.
  *
@@ -44,6 +45,11 @@ class OpenProjectTask : AbstractTask() {
 
     override var taskRunner: TaskRunner = UnthreadedTaskRunner(this)
 
+    val projectsP = MultipleParameter("projects", minItems = 1,
+            description = "The names of the projects to load. (Do not include the .json suffix)") {
+        StringParameter("")
+    }
+
     val directoryP = FileParameter(
             "directory",
             mustExist = true,
@@ -51,20 +57,25 @@ class OpenProjectTask : AbstractTask() {
             value = Preferences.projectsDirectory,
             description = "The directory containing the project files\ndefault=${Preferences.projectsDirectory}")
 
-    val projectsP = MultipleParameter("projects", minItems = 1,
-            description = "The names of the projects to load. (Do not include the .json suffix)")
-    { StringParameter("") }
+    val optionsPathP = MultipleParameter("optionsPath", minItems = 1) {
+        ResourceParameter("optionsDirectory", expectFile = false)
+    }
 
     init {
-        taskD.addParameters(directoryP, projectsP)
+        taskD.addParameters(projectsP, directoryP, optionsPathP)
+
         taskD.unnamedParameter = projectsP
+        optionsPathP.value = Preferences.optionsPath
     }
 
     override fun run() {
+        Preferences.optionsPath.clear()
+        Preferences.optionsPath.addAll(optionsPathP.value.filterNotNull())
+
         val projectFiles = projectsP.value.map {
             File(directoryP.value, it + ".json")
         }
-        ParaTaskApp.openProjects( projectFiles )
+        ParaTaskApp.openProjects(projectFiles)
     }
 }
 
