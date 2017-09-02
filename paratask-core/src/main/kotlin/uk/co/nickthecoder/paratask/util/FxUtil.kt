@@ -22,11 +22,13 @@ import javafx.animation.Timeline
 import javafx.application.Platform
 import javafx.event.Event
 import javafx.event.EventHandler
+import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.util.Duration
 import java.util.concurrent.CountDownLatch
+import javafx.scene.control.ScrollBar
 
 
 fun runAndWait(action: () -> Unit) {
@@ -71,4 +73,15 @@ fun Node.dumpAncestors() {
         println(node)
         node = node.parent
     }
+}
+
+fun Node.findScrollbar(orientation: Orientation): ScrollBar? {
+    for (n in lookupAll(".scroll-bar")) {
+        if (n is ScrollBar) {
+            if (n.orientation == orientation) {
+                return n
+            }
+        }
+    }
+    return null
 }

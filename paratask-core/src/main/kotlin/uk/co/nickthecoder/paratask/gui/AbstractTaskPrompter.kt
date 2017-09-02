@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.application.Platform
+import javafx.geometry.Orientation
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
@@ -25,6 +27,7 @@ import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
 import uk.co.nickthecoder.paratask.util.AutoExit
+import uk.co.nickthecoder.paratask.util.findScrollbar
 
 abstract class AbstractTaskPrompter(val task: Task) {
 
@@ -53,6 +56,7 @@ abstract class AbstractTaskPrompter(val task: Task) {
             center = taskForm.scrollPane
             bottom = buttons
         }
+
     }
 
     fun placeOnStage(stage: Stage) {
@@ -67,6 +71,23 @@ abstract class AbstractTaskPrompter(val task: Task) {
         ParaTask.style(scene)
 
         stage.scene = scene
+
+        // Once the stage has been fully created, listen for when the taskForm's scroll bar appears, and
+        // attempt to resize the stage, so that the scroll bar is no longer needed.
+        Platform.runLater {
+            val scrollBar = taskForm.scrollPane.findScrollbar(Orientation.VERTICAL)
+            scrollBar?.visibleProperty()?.addListener { _, _, newValue ->
+                if (newValue == true) {
+                    val extra = taskForm.scrollPane.prefHeight(-1.0) - taskForm.scrollPane.height
+                    if (extra > 0 && stage.height < 700) {
+                        stage.sizeToScene()
+                        Platform.runLater {
+                            taskForm.form.requestLayout()
+                        }
+                    }
+                }
+            }
+        }
         AutoExit.show(stage)
     }
 

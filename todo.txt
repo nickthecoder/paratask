@@ -1,8 +1,5 @@
 TODO
 
-Resize task's window when adding multipleparameter values (or error messages),
-	and the window isn't already too high.
-
 New minor tab : Columns : Reorder and select columns for table tools.
 	Should these be saved to history?
 	Must be saved to project file.
