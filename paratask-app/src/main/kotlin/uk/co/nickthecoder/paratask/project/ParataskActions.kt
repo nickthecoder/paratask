@@ -68,6 +68,9 @@ object ParataskActions {
     val OPTION_PROMPT = ParataskAction("actions.run", KeyCode.F8)
     val OPTION_PROMPT_NEW_TAB = ParataskAction("actions.run.new.tab", KeyCode.F8, shift = true)
 
+    val PARAMETERS_SHOW = ParataskAction("parameters.show", KeyCode.P, control = true, label = "Show Parameters")
+    val RESULTS_SHOW = ParataskAction("results.show", KeyCode.R, control = true, label = "Show Results")
+
     // Table
 
     val NEXT_ROW = ParataskAction("row.next", KeyCode.DOWN)

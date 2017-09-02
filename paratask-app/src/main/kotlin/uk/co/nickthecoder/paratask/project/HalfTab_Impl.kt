@@ -126,6 +126,8 @@ class HalfTab_Impl(override var toolPane: ToolPane)
                 ParataskActions.TOOL_CLOSE.createButton(shortcuts) { close() })
 
         bindButtons()
+        shortcuts.add(ParataskActions.PARAMETERS_SHOW) { onShowParameters() }
+        shortcuts.add(ParataskActions.RESULTS_SHOW) { onShowResults() }
     }
 
     override fun attached(projectTab: ProjectTab) {
@@ -257,6 +259,14 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         val tool = toolPane.resultsTool()
         tool.optionsRunner.createNonRowOptionsMenu(optionsContextMenu)
         optionsContextMenu.show(optionsField, Side.BOTTOM, 0.0, 0.0)
+    }
+
+    fun onShowParameters() {
+        toolPane.parametersTab.isSelected = true
+    }
+
+    fun onShowResults() {
+        toolPane.tabPane.selectionModel.select(0)
     }
 
     override fun focusOption() {
