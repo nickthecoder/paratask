@@ -33,6 +33,14 @@
     -fx-spacing: 20px;
 }
 
+/***********************************
+* Context Menu                     *
+***********************************/
+
+.menu-item .default {
+    -fx-font-weight: bold;
+}
+
 /****************************
 * See classes :             *
 *   TaskPrompter            *
@@ -229,9 +237,9 @@
     -fx-background-color: -fx-outer-border, -fx-inner-border, drop-link !important;
 }
 
-/****************************
-* See classes :             *
-*****************************/
+/*************************************
+* Script and Expression text fields  *
+*************************************/
 
 .script.text-input {
     -fx-font-family: monospace;

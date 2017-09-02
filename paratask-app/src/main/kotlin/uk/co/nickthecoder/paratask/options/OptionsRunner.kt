@@ -45,7 +45,7 @@ open class OptionsRunner(val tool: Tool) {
         for (fileOptions in topLevelOptions.listFileOptions()) {
 
             val items: ObservableList<MenuItem>
-            val optionsList = fileOptions.listOptions().filter { !it.isRow }
+            val optionsList = fileOptions.listOptions().filter { !it.isRow }.sorted()
 
             if (optionsList.isNotEmpty()) {
 
@@ -78,6 +78,9 @@ open class OptionsRunner(val tool: Tool) {
     protected fun createMenuItem(option: Option): MenuItem {
         val box = BorderPane()
         val label = Label(option.label)
+        if (option.code == ".") {
+            label.styleClass.add("default")
+        }
         label.minWidth = 250.0
         box.center = label
         box.right = Label("  " + option.code)

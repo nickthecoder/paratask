@@ -18,6 +18,7 @@ Bugs
 	In "programmingMode", there are extra controls showing, that should not be there.
 	Options Context menu has a duplicate menu item.
 	Exception in Application's start doesn't dump the stack trace.
+	Right click on a row without the code having focus puts the menu on the far right of the row.
 
 When loading a project, collect errors, and show them in a new tab.
 

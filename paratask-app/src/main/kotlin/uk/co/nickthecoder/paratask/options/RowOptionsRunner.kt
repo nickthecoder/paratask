@@ -43,7 +43,8 @@ class RowOptionsRunner<in R : Any>(tool: Tool) : OptionsRunner(tool) {
         topLevelOptions.listFileOptions().filter { it.acceptRow(firstRow) }.forEach { fileOptions ->
 
             val items: ObservableList<MenuItem>
-            val optionsList = fileOptions.listOptions().filter { it.isRow }
+
+            val optionsList: List<Option> = fileOptions.listOptions().filter { it.isRow }.sorted()
 
             if (optionsList.isNotEmpty()) {
 

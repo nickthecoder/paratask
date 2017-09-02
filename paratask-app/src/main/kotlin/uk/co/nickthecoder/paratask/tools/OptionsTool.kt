@@ -166,6 +166,7 @@ class OptionsTool : ListTableTool<Option> {
         optionsFile.resource.file?.let {
             autoRefresh.watch(it)
         }
+        list.sort()
     }
 
     fun taskEdit(option: Option): EditOptionTask {

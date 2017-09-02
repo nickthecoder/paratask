@@ -30,7 +30,7 @@ import java.io.Externalizable
 import java.io.ObjectInput
 import java.io.ObjectOutput
 
-interface Option : Externalizable {
+interface Option : Externalizable, Comparable<Option> {
 
     var code: String
 
@@ -208,4 +208,7 @@ interface Option : Externalizable {
         }
     }
 
+    override fun compareTo(other: Option): Int {
+        return this.label.compareTo(other.label)
+    }
 }
