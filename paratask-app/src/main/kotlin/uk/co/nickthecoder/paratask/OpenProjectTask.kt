@@ -19,9 +19,8 @@ package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.ResourceParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.project.*
+import uk.co.nickthecoder.paratask.project.Preferences
 import java.io.File
 
 /**
@@ -58,7 +57,7 @@ class OpenProjectTask : AbstractTask() {
             description = "The directory containing the project files\ndefault=${Preferences.projectsDirectory}")
 
     val optionsPathP = MultipleParameter("optionsPath", minItems = 1) {
-        ResourceParameter("optionsDirectory", expectFile = false)
+        FileParameter("optionsDirectory", expectFile = false)
     }
 
     init {

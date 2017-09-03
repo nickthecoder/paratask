@@ -17,8 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.options
 
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.util.Resource
+import java.io.File
 
 object OptionsManager {
 
@@ -43,32 +42,32 @@ object OptionsManager {
         return getTopLevelOptions(optionsName).findOptionForRow(code, row)
     }
 
-    private val pathMap = mutableMapOf<Resource, OptionsPath>()
+    private val pathMap = mutableMapOf<File, OptionsPath>()
 
-    private fun getOptionsPath(directoryResource: Resource): OptionsPath {
-        val found = pathMap[directoryResource]
+    private fun getOptionsPath(directory: File): OptionsPath {
+        val found = pathMap[directory]
         if (found == null) {
-            val newOP = OptionsPath(directoryResource)
-            pathMap.put(directoryResource, newOP)
+            val newOP = OptionsPath(directory)
+            pathMap.put(directory, newOP)
             return newOP
         } else {
             return found
         }
     }
 
-    fun getFileOptions(optionsName: String, directoryResource: Resource): FileOptions {
-        return getOptionsPath(directoryResource).getFileOptions(optionsName)
+    fun getFileOptions(optionsName: String, directory: File): FileOptions {
+        return getOptionsPath(directory).getFileOptions(optionsName)
     }
 }
 
-data class OptionsPath(val directoryResource: Resource) {
+data class OptionsPath(val directory: File) {
 
     val fileOptionsMap = mutableMapOf<String, FileOptions>()
 
     fun getFileOptions(optionsName: String): FileOptions {
         val found = fileOptionsMap[optionsName]
         if (found == null) {
-            val result = FileOptions(Resource(directoryResource, optionsName + ".json"))
+            val result = FileOptions(File(directory, optionsName + ".json"))
             fileOptionsMap.put(optionsName, result)
             return result
         } else {

@@ -27,12 +27,13 @@ import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
+import java.io.File
 
 class OptionsFilesTool : ListTableTool<FileOptions>() {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with Option Files (does not include those in the jar file)")
 
-    val directoryP = Preferences.createOptionsResourceParameter(onlyDirectories = true)
+    val directoryP = Preferences.createOptionsFileParameter()
 
     var directory by directoryP
 
@@ -43,8 +44,8 @@ class OptionsFilesTool : ListTableTool<FileOptions>() {
     override fun createColumns(): List<Column<FileOptions, *>> {
         val columns = mutableListOf<Column<FileOptions, *>>()
 
-        columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.resource.nameWithoutExtension })
-        columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.resource.path })
+        columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension })
+        columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.file.path })
 
         return columns
     }
@@ -63,12 +64,11 @@ class OptionsFilesTool : ListTableTool<FileOptions>() {
         }
     }
 
-    private fun add(resourceDirectory: Resource) {
-        val directory = resourceDirectory.file ?: return
+    private fun add(directory: File) {
         val fileLister = FileLister(extensions = listOf("json"))
         val files = fileLister.listFiles(directory)
         files.map { it.nameWithoutExtension }.forEach {
-            list.add(OptionsManager.getFileOptions(it, resourceDirectory))
+            list.add(OptionsManager.getFileOptions(it, directory))
         }
     }
 }

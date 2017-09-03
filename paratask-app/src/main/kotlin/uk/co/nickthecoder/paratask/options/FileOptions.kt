@@ -24,16 +24,12 @@ import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.misc.FileListener
 import uk.co.nickthecoder.paratask.misc.FileWatcher
-import uk.co.nickthecoder.paratask.util.Resource
-import java.io.BufferedWriter
-import java.io.FileOutputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
 import java.nio.file.Path
 
-class FileOptions(val resource: Resource) : FileListener {
+class FileOptions(val file: File) : FileListener {
 
-    val name = resource.nameWithoutExtension
+    val name = file.nameWithoutExtension
 
     val includes = mutableListOf<String>()
 
@@ -49,7 +45,7 @@ class FileOptions(val resource: Resource) : FileListener {
 
     init {
         load()
-        resource.file?.let { FileWatcher.instance.register(it, this) }
+        FileWatcher.instance.register(file, this)
     }
 
     fun listOptions(): Collection<Option> {
@@ -155,7 +151,7 @@ class FileOptions(val resource: Resource) : FileListener {
 
         val jroot: JsonObject
         try {
-            jroot = Json.parse(InputStreamReader(resource.url.openStream())).asObject()
+            jroot = Json.parse(InputStreamReader(file.inputStream())).asObject()
         } catch (e: Exception) {
             // We don't care if we can't read the file - it may not exist, and that's fine!
             //println("Failed to load options file ${resource}")
@@ -182,7 +178,6 @@ class FileOptions(val resource: Resource) : FileListener {
     }
 
     fun save() {
-        val file = resource.file ?: return
 
         val jroot = JsonObject()
 

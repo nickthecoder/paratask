@@ -19,13 +19,13 @@ package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
-import uk.co.nickthecoder.paratask.parameters.ResourceParameter
-import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
 
 class IncludesTool : ListTableTool<String>() {
 
@@ -33,12 +33,12 @@ class IncludesTool : ListTableTool<String>() {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val resourceDirectoryP = ResourceParameter("directory")
+    val directoryP = FileParameter("directory")
 
     override val resultsName = "Includes"
 
     init {
-        taskD.addParameters(optionsNameP, resourceDirectoryP)
+        taskD.addParameters(optionsNameP, directoryP)
     }
 
     override fun createColumns() : List<Column<String,*>> {
@@ -49,11 +49,11 @@ class IncludesTool : ListTableTool<String>() {
         return columns
     }
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
     override fun run() {
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
         for (include in optionsFile.listIncludes()) {
             list.add(include)

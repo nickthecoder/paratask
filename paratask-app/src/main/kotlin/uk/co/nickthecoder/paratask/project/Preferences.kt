@@ -18,14 +18,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.applicationDirectory
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
+import java.io.File
 
 object Preferences {
 
-    val optionsPath = mutableListOf<Resource>()
+    val optionsPath = mutableListOf<File>()
 
     var configDirectory = homeDirectory.child(".config", "paratask")
 
@@ -34,36 +34,33 @@ object Preferences {
     init {
         val appOptionsDir = applicationDirectory.child("options")
         if (appOptionsDir.exists() && appOptionsDir.isDirectory) {
-            optionsPath.add(Resource(appOptionsDir))
+            optionsPath.add(appOptionsDir)
         }
         val configOptionsDir = configDirectory.child("options")
         if (configOptionsDir.exists() && configOptionsDir.isDirectory) {
-            optionsPath.add(Resource(configOptionsDir))
+            optionsPath.add(configOptionsDir)
         }
     }
 
-    fun createOptionsResourceParameter(
+    fun createOptionsFileParameter(
             name: String = "directory",
             required: Boolean = false,
-            defaultFirst: Boolean = required,
-            onlyDirectories: Boolean = false
+            defaultFirst: Boolean = required
 
-    ): ChoiceParameter<Resource?> {
+    ): ChoiceParameter<File?> {
 
         val value = if (required) optionsPath.first() else null
-        val result = ChoiceParameter<Resource?>(name, required = required, value = value)
+        val result = ChoiceParameter<File?>(name, required = required, value = value)
         if (!required) {
             result.choice("", null, "<ALL>")
         }
 
-        optionsPath.forEach { resource ->
-            if (resource.isFileOrDirectory() || !onlyDirectories) {
-
-                result.choice(resource.path, resource, resource.shortPath())
-                if (defaultFirst && result.value == null) {
-                    result.value = resource
-                }
+        optionsPath.forEach { dir ->
+            result.choice(dir.path, dir, dir.path)
+            if (defaultFirst && result.value == null) {
+                result.value = dir
             }
+
         }
         return result
     }

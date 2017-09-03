@@ -35,14 +35,14 @@ class OptionsTool : ListTableTool<Option> {
 
     val optionsNameP = StringParameter("optionsName")
 
-    val resourceDirectoryP = Preferences.createOptionsResourceParameter(required = true)
+    val directoryP = Preferences.createOptionsFileParameter(required = true)
 
     var includesTool: IncludesTool = IncludesTool()
 
     val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
     init {
-        taskD.addParameters(optionsNameP, resourceDirectoryP)
+        taskD.addParameters(optionsNameP, directoryP)
     }
 
     override val resultsName = "Options"
@@ -56,17 +56,17 @@ class OptionsTool : ListTableTool<Option> {
     constructor(tool: Tool) : super() {
         this.tool = tool
         optionsNameP.value = tool.optionsName
-        resourceDirectoryP.value = Preferences.optionsPath[0]
+        directoryP.value = Preferences.optionsPath[0]
     }
 
     constructor(fileOptions: FileOptions) : this() {
         optionsNameP.value = fileOptions.name
-        resourceDirectoryP.value = fileOptions.resource.parentResource()
+        directoryP.value = fileOptions.file.parentFile
     }
 
     constructor(optionsName: String) : this() {
         optionsNameP.value = optionsName
-        resourceDirectoryP.value = Preferences.optionsPath[0]
+        directoryP.value = Preferences.optionsPath[0]
     }
 
     override fun createColumns(): List<Column<Option, *>> {
@@ -92,7 +92,7 @@ class OptionsTool : ListTableTool<Option> {
     }
 
     override fun createHeader() = Header(this,
-            HeaderRow(resourceDirectoryP),
+            HeaderRow(directoryP),
             HeaderRow(optionsNameP))
 
     override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
@@ -147,25 +147,24 @@ class OptionsTool : ListTableTool<Option> {
     }
 
 
-    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
+    fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
     override fun run() {
         shortTitle = optionsNameP.value
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, resourceDirectoryP.value!!)
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
         for (option in optionsFile.listOptions()) {
             list.add(option)
         }
 
         includesTool.optionsNameP.value = optionsNameP.value
-        includesTool.resourceDirectoryP.value = resourceDirectoryP.value
+        includesTool.directoryP.value = directoryP.value
         includesTool.run()
 
         autoRefresh.unwatchAll()
-        optionsFile.resource.file?.let {
-            autoRefresh.watch(it)
-        }
+        autoRefresh.watch(optionsFile.file)
+
         list.sort()
     }
 
