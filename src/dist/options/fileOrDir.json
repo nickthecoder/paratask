@@ -1,5 +1,6 @@
 {
-    "comments": "Used for all tools who's rows return files and directories.\nThe main purpose of this is to include the more specific option files, such as \"dir\" \"file\", \"image\" etc.\nCurrently, it has no options of its own.\n",
+    "comments": "Used for all tools who's rows return files and/or directories.\nThe main purpose of this is to include the more specific option files, such as \"dir\" \"file\", \"image\" etc.\n",
+    "rowFilterScript": "row.isFileOrDirectory()",
     "includes": [
         "image",
         "video",
@@ -8,15 +9,63 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "println(\"testing\")",
-            "code": "test",
-            "label": "Testing",
-            "isRow": false,
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "dir",
+            "label": "Open Directory",
+            "isRow": true,
             "isMultiple": false,
             "prompt": false,
             "newTab": false,
-            "refresh": false
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "row.file.parentFile"
+                        }
+                    ]
+                },
+                {
+                    "name": "treeRoot",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "foldSingleDirectories",
+                    "value": "true"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "60"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
+                }
+            ]
         }
     ]
 }

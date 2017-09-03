@@ -28,8 +28,9 @@ import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
+import java.io.File
 
-class OptionsTool : ListTableTool<Option> {
+class OptionsTool() : ListTableTool<Option>() {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -41,20 +42,10 @@ class OptionsTool : ListTableTool<Option> {
 
     val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
 
-    init {
-        taskD.addParameters(optionsNameP, directoryP)
-    }
+    val file: File
+        get() = File(directoryP.value, optionsNameP.value + ".json")
 
-    override val resultsName = "Options"
-
-    val tool: Tool?
-
-    constructor() : super() {
-        tool = null
-    }
-
-    constructor(tool: Tool) : super() {
-        this.tool = tool
+    constructor(tool: Tool) : this() {
         optionsNameP.value = tool.optionsName
         directoryP.value = Preferences.optionsPath[0]
     }
@@ -68,6 +59,12 @@ class OptionsTool : ListTableTool<Option> {
         optionsNameP.value = optionsName
         directoryP.value = Preferences.optionsPath[0]
     }
+
+    init {
+        taskD.addParameters(optionsNameP, directoryP)
+    }
+
+    override val resultsName = "Options"
 
     override fun createColumns(): List<Column<Option, *>> {
         val columns = mutableListOf<Column<Option, *>>()
@@ -152,8 +149,8 @@ class OptionsTool : ListTableTool<Option> {
     override fun run() {
         shortTitle = optionsNameP.value
         list.clear()
-        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
 
+        val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
         for (option in optionsFile.listOptions()) {
             list.add(option)
         }
@@ -169,15 +166,15 @@ class OptionsTool : ListTableTool<Option> {
     }
 
     fun taskEdit(option: Option): EditOptionTask {
-        return EditOptionTask(getFileOptions(), option, tool = tool)
+        return EditOptionTask(getFileOptions(), option)
     }
 
     fun taskCopy(option: Option): CopyOptionTask {
-        return CopyOptionTask(getFileOptions(), option, tool = tool)
+        return CopyOptionTask(getFileOptions(), option)
     }
 
     fun taskNew(): NewOptionTask {
-        return NewOptionTask(getFileOptions(), tool = tool)
+        return NewOptionTask(getFileOptions())
     }
 
     fun taskDelete(option: Option): DeleteOptionTask {
@@ -188,7 +185,6 @@ class OptionsTool : ListTableTool<Option> {
     open class EditOptionTask(
             val fileOptions: FileOptions,
             val option: Option,
-            val tool: Tool?,
             name: String = "editOption")
 
         : AbstractTask() {
@@ -289,8 +285,8 @@ class OptionsTool : ListTableTool<Option> {
         }
     }
 
-    open class NewOptionTask(fileOptions: FileOptions, tool: Tool?)
-        : EditOptionTask(fileOptions, TaskOption(NullTask()), name = "newOption", tool = tool) {
+    open class NewOptionTask(fileOptions: FileOptions)
+        : EditOptionTask(fileOptions, TaskOption(NullTask()), name = "newOption") {
 
         override fun save(newOption: Option) {
             fileOptions.addOption(newOption)
@@ -298,8 +294,8 @@ class OptionsTool : ListTableTool<Option> {
         }
     }
 
-    open class CopyOptionTask(fileOptions: FileOptions, option: Option, tool: Tool?)
-        : EditOptionTask(fileOptions, option.copy(), name = "copyOption", tool = tool) {
+    open class CopyOptionTask(fileOptions: FileOptions, option: Option)
+        : EditOptionTask(fileOptions, option.copy(), name = "copyOption") {
 
         override fun save(newOption: Option) {
             super.update()

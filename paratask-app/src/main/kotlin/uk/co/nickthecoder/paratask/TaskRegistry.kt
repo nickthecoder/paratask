@@ -34,14 +34,11 @@ object TaskRegistry {
 
     val topLevel = TaskGroup("Top Level")
 
-    val misc = TaskGroup("Miscellaneous")
-
     init {
         register(ParaTaskCore.instance)
 
         addGroup(home)
         addGroup(topLevel)
-        addGroup(misc)
     }
 
     fun listGroups(): List<TaskGroup> = taskGroups

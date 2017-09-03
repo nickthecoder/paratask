@@ -23,19 +23,21 @@ import uk.co.nickthecoder.paratask.options.FileOptions
 import uk.co.nickthecoder.paratask.options.OptionsManager
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Preferences
-import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File
 
-class OptionsFilesTool : ListTableTool<FileOptions>() {
+class OptionsFilesTool : ListTableTool<FileOptions>(), HasDirectory {
 
     override val taskD = TaskDescription("optionsFiles", description = "Work with Option Files (does not include those in the jar file)")
 
     val directoryP = Preferences.createOptionsFileParameter()
 
-    var directory by directoryP
+    override val directory: File?
+        get() = directoryP.value ?: directoryP.choiceValues().filterNotNull().firstOrNull()
+
 
     init {
         taskD.addParameters(directoryP)

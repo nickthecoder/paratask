@@ -1,6 +1,6 @@
 {
     "includes": [
-        
+        "fileOrDir"
     ],
     "options": [
         {
@@ -13,6 +13,8 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
+            "keyCode": "UP",
+            "alt": "DOWN",
             "parameters": [
                 {
                     "name": "directories",
@@ -21,6 +23,14 @@
                             "expression": "tool.directory"
                         }
                     ]
+                },
+                {
+                    "name": "treeRoot",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
                 },
                 {
                     "name": "onlyFiles",
@@ -37,16 +47,16 @@
                     "value": "false"
                 },
                 {
-                    "name": "enterHidden",
-                    "value": "false"
-                },
-                {
-                    "name": "includeBase",
-                    "value": "false"
+                    "name": "foldSingleDirectories",
+                    "value": "true"
                 },
                 {
                     "name": "thumbnailHeight",
                     "value": "32"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
                 },
                 {
                     "name": "autoRefresh",
@@ -64,30 +74,16 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "aliases": [
-                "e"
-            ],
             "parameters": [
                 {
                     "name": "optionsName",
-                    "expression": "row.resource.nameWithoutExtension"
+                    "expression": "row.nameWithoutExtension"
                 },
                 {
                     "name": "directory",
-                    "expression": "row.resource.parentResource()"
+                    "expression": "row.file.parentFile"
                 }
             ]
-        },
-        {
-            "type": "groovy",
-            "script": "println( row.resource.parentResource().url )\n",
-            "code": "test",
-            "label": "Test",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
         }
     ]
 }

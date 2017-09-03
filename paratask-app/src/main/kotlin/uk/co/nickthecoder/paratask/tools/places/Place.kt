@@ -42,8 +42,6 @@ class Place(
     val url
         get() = resource.url
 
-    fun isFileOrDirectory() = resource.isFileOrDirectory()
-
     fun isURL() = !resource.isFileOrDirectory()
 
     fun taskEdit() = EditPlaceTask(this)

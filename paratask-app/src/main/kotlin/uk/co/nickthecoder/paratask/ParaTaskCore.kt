@@ -44,7 +44,7 @@ class ParaTaskCore : Registers {
                 WebTool(), EditorTool(),
                 CustomToolListTool(),
                 GitTool(), GitStatusTool(),
-                OptionsFilesTool(), OptionsTool(),
+                OptionsFilesTool(),
                 ShortcutsTool(),
                 ProcessesTool(),
                 MythRecordedTool()
@@ -52,9 +52,6 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.topLevel.addTasks(TerminalTool())
         TaskRegistry.topLevel.addTasks(CommandTask())
-
-        TaskRegistry.misc.addTasks(CodeHeaderTool())
-        TaskRegistry.misc.addTasks(OpenProjectTask())
 
         val files = TaskGroup("Files")
         files.addTasks(DirectoryTool(), GrepTool(), FindTool(), LocateTool())
@@ -68,9 +65,18 @@ class ParaTaskCore : Registers {
         images.addTasks(ImageViewerTool())
         images.addTasks(ResizeImageTask(), RotateImageTask(), FlipImageTask())
 
+        val paratask = TaskGroup("ParaTask")
+        paratask.addTasks(OptionsTool(), OptionsFilesTool(), ShortcutsTool())
+        paratask.addTasks(OpenProjectTask())
+
+        val misc = TaskGroup("Miscellaneous")
+        misc.addTasks(CodeHeaderTool(), MythRecordedTool(), ProcessesTool())
+
         TaskRegistry.addGroup(git)
         TaskRegistry.addGroup(files)
         TaskRegistry.addGroup(images)
+        TaskRegistry.addGroup(paratask)
+        TaskRegistry.addGroup(misc)
 
         TaskRegistry.aliasTool(DirectoryTool(), "uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool")
         TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")

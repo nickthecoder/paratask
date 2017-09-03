@@ -49,47 +49,6 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "edit",
-            "label": "Edit Options File in Text Editor",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "file",
-                    "values": [
-                        {
-                            "expression": "tool.getFileOptions().resource.file"
-                        }
-                    ]
-                },
-                {
-                    "name": "initialText",
-                    "value": ""
-                },
-                {
-                    "name": "goToLine",
-                    "value": ""
-                },
-                {
-                    "name": "findText",
-                    "value": ""
-                },
-                {
-                    "name": "matchCase",
-                    "value": "false"
-                },
-                {
-                    "name": "useRegex",
-                    "value": "false"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
             "code": "^",
             "label": "Open Options Directory",
@@ -100,12 +59,20 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "tool.fileOptions.resource.parentFile"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.file.parentFile"
+                        }
+                    ]
                 },
                 {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "treeRoot",
+                    "value": ""
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
                 },
                 {
                     "name": "onlyFiles",
@@ -122,16 +89,41 @@
                     "value": "false"
                 },
                 {
-                    "name": "enterHidden",
-                    "value": "false"
+                    "name": "foldSingleDirectories",
+                    "value": "true"
                 },
                 {
-                    "name": "includeBase",
-                    "value": "false"
+                    "name": "thumbnailHeight",
+                    "value": "60"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
                 },
                 {
                     "name": "autoRefresh",
                     "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "e",
+            "label": "Edit Options File in Text Editor",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "tool.file"
+                        }
+                    ]
                 }
             ]
         }

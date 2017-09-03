@@ -31,6 +31,8 @@ interface FileTest {
 
     val file: File?
 
+    fun isFileOrDirectory(): Boolean = file != null
+
     fun isFile(): Boolean = file?.isFile == true
 
     fun isDirectory(): Boolean = file?.isDirectory == true
@@ -39,4 +41,6 @@ interface FileTest {
 
     fun isVideo(): Boolean = file?.isVideo() == true
 
+    val nameWithoutExtension: String?
+        get() = file?.nameWithoutExtension
 }

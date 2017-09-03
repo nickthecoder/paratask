@@ -23,11 +23,12 @@ import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.misc.FileListener
+import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.misc.FileWatcher
 import java.io.*
 import java.nio.file.Path
 
-class FileOptions(val file: File) : FileListener {
+class FileOptions(override val file: File) : FileListener, FileTest {
 
     val name = file.nameWithoutExtension
 
