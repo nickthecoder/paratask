@@ -2,6 +2,7 @@
     "comments": "Used for all tools who's rows return files and directories.\nThe main purpose of this is to include the more specific option files, such as \"dir\" \"file\", \"image\" etc.\nCurrently, it has no options of its own.\n",
     "includes": [
         "image",
+        "video",
         "file",
         "dir"
     ],

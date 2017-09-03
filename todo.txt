@@ -4,10 +4,6 @@ New minor tab : Columns : Reorder and select columns for table tools.
 	Should these be saved to history?
 	Must be saved to project file.
 
-Sort out the options path.
-	Is the jar file going to be used, or a directory in the app's path?
-	Resources to have "isWritable" and use it to filter the options when editing options.
-
 Bugs
 	Right click on a row without the code having focus puts the menu on the far right of the row.
 
