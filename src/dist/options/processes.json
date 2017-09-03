@@ -188,17 +188,6 @@
         },
         {
             "type": "groovy",
-            "script": "println( rows.collect{ it.pid } )",
-            "code": "row",
-            "label": "Print rows.collect { it.pid }",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false
-        },
-        {
-            "type": "groovy",
             "script": "row.reniceTask()",
             "code": "nice",
             "label": "Change Priority",

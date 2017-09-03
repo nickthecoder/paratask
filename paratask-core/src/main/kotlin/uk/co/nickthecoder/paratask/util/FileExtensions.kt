@@ -17,11 +17,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
+import uk.co.nickthecoder.paratask.Task
 import java.io.File
 
 val currentDirectory: File = File("").absoluteFile
 
 val homeDirectory: File = File(System.getProperty("user.home"))
+
+val applicationDirectory: File
+    get() {
+        val codeLocation = Task::class.java.protectionDomain.codeSource.location
+        if (codeLocation.path.endsWith(".jar")) {
+            return File(codeLocation.toURI().path).parentFile.parentFile
+        }
+        // Running in development environment, such as an Eclipse/IntelliJ, without using jar files
+        return currentDirectory.child("src", "dist")
+    }
 
 val imageExtensions = hashSetOf("bmp", "cmyk", "cmyka", "dpf", "eps", "gif", "ico", "jpeg", "jpg", "mng", "pbm", "pcx", "png", "pnm", "ps", "psd", "raw", "rgb", "rgba", "svg", "tga", "tif", "tiff", "webp", "xcf", "xpm")
 

@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.util.applicationDirectory
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 
@@ -32,8 +32,14 @@ object Preferences {
     var projectsDirectory = configDirectory.child("projects")
 
     init {
-        optionsPath.add(Resource(configDirectory.child("options")))
-        optionsPath.add(Resource(ParaTaskApp::class.java.getResource("options")))
+        val appOptionsDir = applicationDirectory.child("options")
+        if (appOptionsDir.exists() && appOptionsDir.isDirectory) {
+            optionsPath.add(Resource(appOptionsDir))
+        }
+        val configOptionsDir = configDirectory.child("options")
+        if (configOptionsDir.exists() && configOptionsDir.isDirectory) {
+            optionsPath.add(Resource(configOptionsDir))
+        }
     }
 
     fun createOptionsResourceParameter(
