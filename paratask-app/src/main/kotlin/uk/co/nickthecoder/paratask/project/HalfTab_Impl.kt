@@ -154,6 +154,13 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     override fun isLeft() = projectTab.left === this
 
+    override fun otherHalf(): HalfTab? {
+        if (isLeft()) {
+            return projectTab.right
+        } else {
+            return projectTab.left
+        }
+    }
 
     fun bindButtons() {
         runButton.disableProperty().bind(toolPane.tool.taskRunner.disableRunProperty)

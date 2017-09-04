@@ -53,10 +53,27 @@
                     "value": "32"
                 },
                 {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
                 }
             ]
+        },
+        {
+            "type": "groovy",
+            "script": "tool.syncDirectoryTool()",
+            "code": "sync",
+            "label": "Sync/Split Directory Tool",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "keyCode": "F5",
+            "alt": "DOWN"
         }
     ]
 }

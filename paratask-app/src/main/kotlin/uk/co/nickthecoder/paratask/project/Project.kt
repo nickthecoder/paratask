@@ -179,7 +179,7 @@ class Project(val projectWindow: ProjectWindow) {
         fun load(projectFile: File): Project {
 
             val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
-            
+
             val width = jroot.getDouble("width", 600.0)
             val height = jroot.getDouble("height", 600.0)
 

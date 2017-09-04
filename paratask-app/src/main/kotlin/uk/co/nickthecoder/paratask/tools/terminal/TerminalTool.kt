@@ -22,7 +22,10 @@ import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.tools.places.DirectoryTool
 import uk.co.nickthecoder.paratask.util.process.OSCommand
+import uk.co.nickthecoder.paratask.util.process.linuxCurrentDirectory
+import uk.co.nickthecoder.paratask.util.process.unixPID
 
 class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = true) {
 
@@ -64,6 +67,32 @@ class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = tru
         }
         command.directory = directoryP.value
         return command
+    }
+
+    /**
+     * Splits the view, so that there's a DirectoryTool on the right.
+     * If there is ALREADY a directory tool on the right, then update it's directory to match the terminal's current working directory
+     * This only works on Linux, as it uses /proc/
+     */
+    fun syncDirectoryTool() {
+        val directory = terminalResults?.process?.linuxCurrentDirectory()
+        directory ?: return
+        
+        val otherHalf = toolPane?.halfTab?.otherHalf()
+        if (otherHalf == null) {
+            val tool = DirectoryTool()
+            tool.directoriesP.value = listOf(directory)
+            toolPane?.halfTab?.projectTab?.split(tool)
+        } else {
+            val otherTool = otherHalf.toolPane.tool
+            if (otherTool is DirectoryTool) {
+                if (otherTool.directoriesP.innerParameters.isEmpty()) {
+                    otherTool.directoriesP.addValue(directory)
+                }
+                otherTool.directoriesP.innerParameters[0].value = directory
+            }
+            otherTool.toolPane?.parametersPane?.run()
+        }
     }
 
 }

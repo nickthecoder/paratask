@@ -3,7 +3,7 @@ TODO
 Bugs
 	Right click on a row without the code having focus puts the menu on the far right of the row.
 
-When loading a project, collect errors, and show them in a new tab.
+Split terminal, with a DirectoryTool, and sync the current directory
 
 Add more filters to the find tool
 

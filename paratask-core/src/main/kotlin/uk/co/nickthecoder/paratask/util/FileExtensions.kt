@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.util
 
 import uk.co.nickthecoder.paratask.Task
 import java.io.File
+import java.lang.reflect.Field
 
 val currentDirectory: File = File("").absoluteFile
 
@@ -49,3 +50,40 @@ fun File.child(vararg names: String): File {
 fun File.isImage() = this.extension.toLowerCase() in imageExtensions
 
 fun File.isVideo() = this.extension.toLowerCase() in videoExtensions
+
+/**
+ * Java uses a cache to speed up File.canonicalFile, and I need to bypass this cache.
+ * There is a field on FileSystem, but it is not public, so I need to jump through hoops to change it, and
+ * then change it back. Also, as this is non-public, there is no guarantee that future versions of java will
+ * use this field. Therefore we must be careful to try our best and handle exceptions gracefully.
+ * Therefore, I get the value, attempt to change it, and then restore the value. If any of these step fail, then
+ * catch and ignore the exceptions. (In which case the result of this method may still return stale data).
+ */
+fun File.getUncachedCanonicalFile(): File? {
+
+    var useCanonCachesOldValue: Any? = null
+    var field: Field? = null
+
+    try {
+        val klass = Class.forName("java.io.FileSystem")
+        field = klass.getDeclaredField("useCanonCaches")
+        field.isAccessible = true
+        useCanonCachesOldValue = field.get(null)
+        field.set(null, false)
+    } catch (e: Exception) {
+        // Ignore - we did our best!
+    }
+
+    try {
+        return this.canonicalFile
+
+    } finally {
+        try {
+            if (useCanonCachesOldValue != null) {
+                field?.set(null, useCanonCachesOldValue)
+            }
+        } catch (e: Exception) {
+            // Ignore - we did our best!
+        }
+    }
+}

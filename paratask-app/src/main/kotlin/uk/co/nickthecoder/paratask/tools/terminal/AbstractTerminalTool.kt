@@ -40,7 +40,7 @@ abstract class AbstractTerminalTool(
 
     : AbstractTool(), Stoppable, HasDirectory {
 
-    private var terminalResults: TerminalResults? = null
+    protected var terminalResults: TerminalResults? = null
 
     override fun iconName() = if (taskD.name == "") "terminal" else taskD.name
 

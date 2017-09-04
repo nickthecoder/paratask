@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.util.process
 
 import uk.co.nickthecoder.paratask.util.child
+import uk.co.nickthecoder.paratask.util.getUncachedCanonicalFile
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -243,7 +244,7 @@ fun Process.unixPID(): Long? {
         return pid
 
     } catch (e2: Exception) {
-         // Do nothing
+        // Do nothing
     }
 
     return null
@@ -262,11 +263,9 @@ fun Process.linuxCurrentDirectory(): File? {
 
     val cwd = File("/proc").child(unixPID().toString(), "cwd")
     if (cwd.exists()) {
-        try {
-            return cwd.canonicalFile
-        } catch (e: Exception) {
-        }
+        return cwd.getUncachedCanonicalFile()
     }
+
     return null
 }
 
