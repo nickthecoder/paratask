@@ -31,10 +31,21 @@ open class ThreadedToolRunner(val tool: Tool) : ThreadedTaskRunner(tool) {
             Platform.runLater {
                 tool.updateResults()
                 if (tool.toolPane?.halfTab?.projectTab?.isSelected == true) {
-                    ParaTaskApp.logFocus("ThreadedToolRunner runTask. tool.toolPane.focusResults()")
-                    tool.toolPane?.focusResults()
+                    if (tool.toolPane?.skipFocus != true) {
+                        ParaTaskApp.logFocus("ThreadedToolRunner runTask. tool.toolPane.focusResults()")
+                        tool.toolPane?.focusResults()
+                    }
                 }
             }
+        }
+    }
+
+    override fun post() {
+        super.post()
+
+        Platform.runLater {
+            ParaTaskApp.logFocus("*** ToolPane_Impl skipFocus = false")
+            tool.toolPane?.skipFocus = false
         }
     }
 }

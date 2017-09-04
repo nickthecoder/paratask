@@ -3,8 +3,6 @@ TODO
 Bugs
 	Right click on a row without the code having focus puts the menu on the far right of the row.
 
-Split terminal, with a DirectoryTool, and sync the current directory
-
 Add more filters to the find tool
 
 Ctrl+A selects all rows in the table, copying the current row's code.

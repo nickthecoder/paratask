@@ -77,6 +77,12 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
         shared.focusResults()
     }
 
+    override var skipFocus : Boolean
+        get() = shared.skipFocus
+        set(v) {
+            shared.skipFocus = v
+        }
+
     override fun currentResults(): Results? {
         return shared.currentResults()
     }

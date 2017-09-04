@@ -84,6 +84,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         stage.scene = scene
         AutoExit.show(stage)
         this.stage = stage
+
     }
 
     fun addTool(tool: Tool, select: Boolean = true): ProjectTab {

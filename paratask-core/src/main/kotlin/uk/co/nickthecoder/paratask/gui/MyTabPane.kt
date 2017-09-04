@@ -119,8 +119,6 @@ open class MyTabPane<T : MyTab> : BorderPane() {
                 if (v.canClose && tabClosingPolicy != TabPane.TabClosingPolicy.UNAVAILABLE) {
                     v.right = v.closeButton
                 }
-                v.content.requestFocus()
-
             }
             selectionModel.select(v)
         }

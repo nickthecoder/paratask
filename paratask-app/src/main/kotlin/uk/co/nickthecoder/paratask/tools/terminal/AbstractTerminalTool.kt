@@ -76,7 +76,7 @@ abstract class AbstractTerminalTool(
         // Default behaviour is to do nothing.
     }
 
-    private fun createTerminalResults(): TerminalResults {
+    open protected fun createTerminalResults(): TerminalResults {
         // Let's try to create a RealTerminalResults, but do it using reflection so that this code can be compiled
         // without all of the bloat required by JediTerm. Therefore, we have a choice of lots of bloat, but an
         // excellent terminal, or no bloat, and a naff terminal.

@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.terminal
 
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
@@ -25,7 +27,6 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.tools.places.DirectoryTool
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.linuxCurrentDirectory
-import uk.co.nickthecoder.paratask.util.process.unixPID
 
 class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = true) {
 
@@ -77,22 +78,46 @@ class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = tru
     fun syncDirectoryTool() {
         val directory = terminalResults?.process?.linuxCurrentDirectory()
         directory ?: return
-        
+
         val otherHalf = toolPane?.halfTab?.otherHalf()
         if (otherHalf == null) {
             val tool = DirectoryTool()
             tool.directoriesP.value = listOf(directory)
             toolPane?.halfTab?.projectTab?.split(tool)
+
         } else {
-            val otherTool = otherHalf.toolPane.tool
-            if (otherTool is DirectoryTool) {
-                if (otherTool.directoriesP.innerParameters.isEmpty()) {
-                    otherTool.directoriesP.addValue(directory)
-                }
-                otherTool.directoriesP.innerParameters[0].value = directory
-            }
-            otherTool.toolPane?.parametersPane?.run()
+            updateSyncedDirectoryTool()
         }
     }
 
+    private fun updateSyncedDirectoryTool() {
+        val otherHalf = toolPane?.halfTab?.otherHalf()
+        if (otherHalf != null) {
+            val otherTool = otherHalf.toolPane.tool
+            if (otherTool is DirectoryTool) {
+                val oldValue = otherTool.directoriesP.value
+                if (otherTool.directoriesP.innerParameters.isEmpty()) {
+                    otherTool.directoriesP.addValue(directory)
+                } else {
+                    otherTool.directoriesP.innerParameters[0].value = directory
+                }
+                if (oldValue != otherTool.directoriesP.value) {
+                    otherTool.toolPane?.skipFocus = true
+                    otherTool.toolPane?.parametersPane?.run()
+                }
+            }
+        }
+    }
+
+    override fun createTerminalResults(): TerminalResults {
+        val results = super.createTerminalResults()
+
+        results.node.addEventFilter(KeyEvent.KEY_RELEASED) { event ->
+            if (event.code == KeyCode.ENTER) {
+                updateSyncedDirectoryTool()
+            }
+        }
+
+        return results
+    }
 }

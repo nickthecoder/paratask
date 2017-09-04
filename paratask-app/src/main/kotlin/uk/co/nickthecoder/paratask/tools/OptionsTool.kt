@@ -79,7 +79,6 @@ class OptionsTool() : ListTableTool<Option>() {
         columns.add(Column<Option, String>("script") {
             when (it) {
                 is GroovyOption -> it.script
-                is KotlinOption -> it.script
                 is TaskOption -> it.task.taskD.name
                 else -> ""
             }
@@ -213,10 +212,6 @@ class OptionsTool() : ListTableTool<Option>() {
                 rows = 10, columns = 40, style = "script",
                 value = if (option is GroovyOption) option.script else "")
 
-        var kotlinScriptP = StringParameter("kotlinScript",
-                rows = 10, columns = 40, style = "script",
-                value = if (option is KotlinOption) option.script else "")
-
         val scriptOrTaskP = OneOfParameter("action", message = "Action Type")
 
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
@@ -227,11 +222,6 @@ class OptionsTool() : ListTableTool<Option>() {
                 groovyScriptP.value = option.script
                 scriptOrTaskP.value = groovyScriptP
 
-            } else if (option is KotlinOption) {
-
-                kotlinScriptP.value = option.script
-                scriptOrTaskP.value = kotlinScriptP
-
             } else if (option is TaskOption) {
 
                 taskP.value = option.task.copy()
@@ -239,7 +229,7 @@ class OptionsTool() : ListTableTool<Option>() {
             }
 
             taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
-            scriptOrTaskP.addParameters(taskP, groovyScriptP, kotlinScriptP)
+            scriptOrTaskP.addParameters(taskP, groovyScriptP)
 
             isRow.listen {
                 isMultiple.hidden = isRow.value == false
@@ -257,9 +247,6 @@ class OptionsTool() : ListTableTool<Option>() {
             val newOption: Option
             if (scriptOrTaskP.value == groovyScriptP) {
                 newOption = GroovyOption(groovyScriptP.value)
-
-            } else if (scriptOrTaskP.value == kotlinScriptP) {
-                newOption = KotlinOption(kotlinScriptP.value)
 
             } else {
                 newOption = TaskOption(taskP.value!!.copy())

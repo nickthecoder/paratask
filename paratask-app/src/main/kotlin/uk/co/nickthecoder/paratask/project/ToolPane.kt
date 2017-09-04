@@ -56,5 +56,10 @@ interface ToolPane {
 
     fun focusResults()
 
+    /**
+     * Prevents the focus changing the next time the tool is run.
+     */
+    var skipFocus: Boolean
+
     fun currentResults(): Results?
 }

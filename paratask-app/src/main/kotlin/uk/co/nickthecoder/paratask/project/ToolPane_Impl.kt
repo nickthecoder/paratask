@@ -202,12 +202,18 @@ class ToolPane_Impl(override var tool: Tool)
     }
 
     override fun focusResults() {
-        val tab = tabPane.selectionModel.selectedItem
-        if (tab is MinorTab) {
-            ParaTaskApp.logFocus("ToolPane_Implt focusResults. tab.focus()")
-            tab.focus()
+        if (skipFocus) {
+            println("ToolPane_Impl Skipped focus")
+        } else {
+            val tab = tabPane.selectionModel.selectedItem
+            if (tab is MinorTab) {
+                ParaTaskApp.logFocus("ToolPane_Implt focusResults. tab.focus()")
+                tab.focus()
+            }
         }
     }
+
+    override var skipFocus: Boolean = false
 
     override fun currentResults(): Results? {
         val tab = tabPane.selectedTab
@@ -219,15 +225,19 @@ class ToolPane_Impl(override var tool: Tool)
 
     class ParametersTab(val parametersPane: ParametersPane) : MinorTab("Parameters") {
         override fun focus() {
-            Platform.runLater {
-                ParaTaskApp.logFocus("ParametersTab.focus. parametersPane.focus()")
-                parametersPane.focus()
+            if (parametersPane.tool.toolPane?.skipFocus != true) {
+                Platform.runLater {
+                    ParaTaskApp.logFocus("ParametersTab.focus. parametersPane.focus()")
+                    parametersPane.focus()
+                }
             }
         }
 
         override fun selected() {
-            ParaTaskApp.logFocus("ParametersTab.selected focus()")
-            focus()
+            if (parametersPane.tool.toolPane?.skipFocus != true) {
+                ParaTaskApp.logFocus("ParametersTab.selected focus()")
+                focus()
+            }
         }
 
         override fun deselected() {

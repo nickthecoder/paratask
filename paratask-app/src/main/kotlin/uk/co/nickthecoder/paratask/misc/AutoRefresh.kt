@@ -31,8 +31,8 @@ class AutoRefresh(val onRefresh: () -> Unit) : FileListener {
         onRefresh()
     }
 
-    fun watch(file: File) {
-        FileWatcher.instance.register(file, this)
+    fun watch(file: File, useCanonical: Boolean = true) {
+        FileWatcher.instance.register(file, this, useCanonical = useCanonical)
     }
 
     fun unwatchAll() {

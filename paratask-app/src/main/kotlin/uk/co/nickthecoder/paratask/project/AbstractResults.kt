@@ -74,8 +74,10 @@ abstract class AbstractResults(
 
     override fun selected() {
         if (tool.toolPane?.halfTab?.projectTab?.isSelected == true) {
-            ParaTaskApp.logFocus("AbstractResults.selected. focus()")
-            focus()
+            if (tool.toolPane?.skipFocus != true) {
+                ParaTaskApp.logFocus("AbstractResults.selected. focus()")
+                focus()
+            }
         }
     }
 
