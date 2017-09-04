@@ -23,10 +23,12 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 
 /**
- * Note, unlike more Tasks, this CANNOT be run from the command line, use StartTask instead. This is because it
+ * Used to open a new project window from an *existing* project.
+ * Note, unlike most Tasks, this CANNOT be run from the command line. This is because it
  * does not attempt to start JavaFX - it assumes it is already running.
+ * See OpenProjectTask for loading a project from the command line.
  */
-class OpenProjectTask : AbstractTask() {
+class NewProjectWindowTask : AbstractTask() {
     override val taskD = TaskDescription("Open Project")
 
     val fileP = FileParameter(

@@ -27,6 +27,7 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.util.JsonHelper
 import java.io.*
 
@@ -178,7 +179,7 @@ class Project(val projectWindow: ProjectWindow) {
         fun load(projectFile: File): Project {
 
             val jroot = Json.parse(InputStreamReader(FileInputStream(projectFile))).asObject()
-
+            
             val width = jroot.getDouble("width", 600.0)
             val height = jroot.getDouble("height", 600.0)
 
@@ -189,43 +190,58 @@ class Project(val projectWindow: ProjectWindow) {
 
             project.projectFile = projectFile
 
-            val jprojectData = jroot.get("projectData")
-            if (jprojectData != null) {
-                JsonHelper.read(jprojectData.asArray(), project.projectDataP)
-            }
-
-            val jprojectPreferences = jroot.get("preferences")
-            if (jprojectPreferences != null) {
-                (jprojectPreferences as JsonArray).forEach { jpref ->
-                    val task = JsonHelper.readTask(jpref as JsonObject)
-                    project.storePreferences(task)
+            try {
+                val jprojectData = jroot.get("projectData")
+                if (jprojectData != null) {
+                    JsonHelper.read(jprojectData.asArray(), project.projectDataP)
                 }
+            } catch(e: Exception) {
+                projectWindow.addTool(ExceptionTool(e))
             }
 
-            val jtabs = jroot.get("tabs")
-            jtabs?.let {
-                for (jtab in jtabs.asArray().map { it.asObject() }) {
+            try {
+                val jprojectPreferences = jroot.get("preferences")
+                if (jprojectPreferences != null) {
+                    (jprojectPreferences as JsonArray).forEach { jpref ->
+                        val task = JsonHelper.readTask(jpref as JsonObject)
+                        project.storePreferences(task)
+                    }
+                }
+            } catch(e: Exception) {
+                projectWindow.addTool(ExceptionTool(e))
+            }
 
+            try {
+                val jtabs = jroot.get("tabs")
+                jtabs?.let {
+                    for (jtab in jtabs.asArray().map { it.asObject() }) {
 
-                    val jleft = jtab.get("left").asObject()
-                    jleft?.let {
-                        val tool = loadTool(jleft)
-                        val projectTab = projectWindow.addTool(tool, select = false)
-                        updateHistory(jleft, projectTab.left)
+                        try {
+                            val jleft = jtab.get("left").asObject()
+                            jleft?.let {
+                                val tool = loadTool(jleft)
+                                val projectTab = projectWindow.addTool(tool, select = false)
+                                updateHistory(jleft, projectTab.left)
 
-                        val jright = jtab.get("right")
-                        if (jright != null) {
-                            val toolR = loadTool(jright.asObject())
-                            projectTab.split(toolR)
-                            updateHistory(jright.asObject(), projectTab.right!!)
-                        }
+                                val jright = jtab.get("right")
+                                if (jright != null) {
+                                    val toolR = loadTool(jright.asObject())
+                                    projectTab.split(toolR)
+                                    updateHistory(jright.asObject(), projectTab.right!!)
+                                }
 
-                        val jtabProperties = jtab.get("properties")
-                        jtabProperties?.let {
-                            JsonHelper.read(jtabProperties as JsonArray, (projectTab as ProjectTab_Impl).tabProperties)
+                                val jtabProperties = jtab.get("properties")
+                                jtabProperties?.let {
+                                    JsonHelper.read(jtabProperties as JsonArray, (projectTab as ProjectTab_Impl).tabProperties)
+                                }
+                            }
+                        } catch (e: Exception) {
+                            projectWindow.addTool(ExceptionTool(e))
                         }
                     }
                 }
+            } catch (e: Exception) {
+                projectWindow.addTool(ExceptionTool(e))
             }
 
             return project

@@ -96,7 +96,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     }
 
     fun onOpenProject() {
-        TaskPrompter(OpenProjectTask()).placeOnStage(Stage())
+        TaskPrompter(NewProjectWindowTask()).placeOnStage(Stage())
     }
 
 

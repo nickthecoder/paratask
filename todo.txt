@@ -1,9 +1,5 @@
 TODO
 
-New minor tab : Columns : Reorder and select columns for table tools.
-	Should these be saved to history?
-	Must be saved to project file.
-
 Bugs
 	Right click on a row without the code having focus puts the menu on the far right of the row.
 
@@ -20,6 +16,7 @@ OptionsTool to list other options paths which have a FileOption with this name.
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
 
+Editor : refuse opening large files.
 
 Use Kotlin scripts instead of Groovy scripts.
 	Implement it side by side, then add "deprecation" warning when loading groovy scripts, then remove groovy completely.
