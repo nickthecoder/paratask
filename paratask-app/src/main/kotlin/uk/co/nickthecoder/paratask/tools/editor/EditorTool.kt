@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.tools.editor
 
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.AbstractTool
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.DropFiles
@@ -27,11 +28,13 @@ import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
+val MAX_FILE_SIZE = 20_000
+
 class EditorTool() : AbstractTool() {
 
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
-    val fileP = MultipleParameter("file") { FileParameter("") }
+    val filesP = MultipleParameter("file") { FileParameter("") }
 
     val initialTextP = StringParameter("initialText", required = false, hidden = true)
 
@@ -49,18 +52,18 @@ class EditorTool() : AbstractTool() {
     }
 
     constructor(file: File) : this() {
-        fileP.addValue(file)
+        filesP.addValue(file)
     }
 
     constructor(vararg files: File) : this() {
         for (file in files) {
-            fileP.addValue(file)
+            filesP.addValue(file)
         }
     }
 
     constructor(files: List<File>) : this() {
         for (file in files) {
-            fileP.addValue(file)
+            filesP.addValue(file)
         }
     }
 
@@ -69,18 +72,26 @@ class EditorTool() : AbstractTool() {
     }
 
     init {
-        taskD.addParameters(fileP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
+        taskD.addParameters(filesP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
     }
 
+    override fun customCheck() {
+        super.customCheck()
+        filesP.innerParameters.forEach { fileP ->
+            if (fileP.value!!.length() > MAX_FILE_SIZE) {
+                throw ParameterException(fileP, "File is too large to open in the text editor.")
+            }
+        }
+    }
 
     override fun run() {
     }
 
     override fun createResults(): List<Results> {
-        if (fileP.value.isEmpty()) {
+        if (filesP.value.isEmpty()) {
             return singleResults(EditorResults(this, initialTextP.value))
         } else {
-            return fileP.value.map { EditorResults(this, it) }
+            return filesP.value.map { EditorResults(this, it) }
         }
     }
 

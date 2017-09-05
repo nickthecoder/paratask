@@ -133,7 +133,7 @@ class EditorResults(
 
     override fun closed() {
         super.closed()
-        tool.fileP.remove(file)
+        tool.filesP.remove(file)
     }
 
     fun hideToolBar() {
