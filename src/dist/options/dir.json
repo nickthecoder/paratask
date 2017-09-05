@@ -69,6 +69,10 @@
                     "value": "32"
                 },
                 {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
                     "name": "autoRefresh",
                     "value": "true"
                 }
@@ -192,6 +196,136 @@
                 {
                     "name": "closeWhenFinished",
                     "value": "true"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.FindTool",
+            "code": "find",
+            "label": "Find",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directory",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "filename",
+                    "value": ""
+                },
+                {
+                    "name": "matchType",
+                    "value": "GLOB_CASE_INSENSITIVE"
+                },
+                {
+                    "name": "wholeName",
+                    "value": "false"
+                },
+                {
+                    "name": "user",
+                    "value": ""
+                },
+                {
+                    "name": "group",
+                    "value": ""
+                },
+                {
+                    "name": "type",
+                    "value": ""
+                },
+                {
+                    "name": "typeFollowsSymlink",
+                    "value": "true"
+                },
+                {
+                    "name": "emptyFiles",
+                    "value": "false"
+                },
+                {
+                    "name": "newerThanFile",
+                    "value": ""
+                },
+                {
+                    "name": "followSymlinks",
+                    "value": "false"
+                },
+                {
+                    "name": "otherFileSystems",
+                    "value": "true"
+                },
+                {
+                    "name": "minDepth",
+                    "value": ""
+                },
+                {
+                    "name": "maxDepth",
+                    "value": ""
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "60"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.GrepTool",
+            "code": "grep",
+            "label": "Grep",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "filesOrDirectories",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "patterns",
+                    "values": [
+                        {
+                            "value": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "type",
+                    "value": "extended"
+                },
+                {
+                    "name": "part",
+                    "value": "any"
+                },
+                {
+                    "name": "invertResults",
+                    "value": "false"
+                },
+                {
+                    "name": "followSymLinks",
+                    "value": "false"
+                },
+                {
+                    "name": "maxMatches",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }

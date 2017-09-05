@@ -190,7 +190,7 @@ open class TableResults<R : Any>(
                 runner.runDefault(tableRow.item.row, newTab = true)
 
             } else if (event.button == MouseButton.SECONDARY) {
-                showContextMenu(tableView, event)
+                showContextMenu(tableRow, event)
             }
         }
     }
@@ -199,7 +199,7 @@ open class TableResults<R : Any>(
         val rows = tableView.selectionModel.selectedItems.map { it.row }
         runner.buildContextMenu(contextMenu, rows)
         if (event is MouseEvent) {
-            contextMenu.show(node, Side.LEFT, event.x, event.y)
+            contextMenu.show(node, Side.BOTTOM, event.x, 0.0)
         } else {
             contextMenu.show(node, Side.BOTTOM, 0.0, 0.0)
         }

@@ -1,7 +1,6 @@
 TODO
 
 Bugs
-	Right click on a row without the code having focus puts the menu on the far right of the row.
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 
@@ -15,8 +14,6 @@ OptionsTool to list other options paths which have a FileOption with this name.
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
-
-Editor : refuse opening large files.
 
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
