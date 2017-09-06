@@ -153,7 +153,9 @@ class OptionsTool() : ListTableTool<Option>() {
 
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
         for (option in optionsFile.listOptions()) {
-            list.add(option)
+            if (rowFilter.accept(option)) {
+                list.add(option)
+            }
         }
 
         includesTool.optionsNameP.value = optionsNameP.value

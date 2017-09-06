@@ -113,16 +113,16 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         }
 
         fun accept(row: R): Boolean {
-            val a = columnP.value!!.getter(row)
-            val bType = testP.value!!.bType
+            val a = columnP.value?.let { it.getter(row) }
+            val bType = testP.value?.bType
             val b: Any? = when (bType) {
-                Int::javaClass -> {
+                Int::class.java -> {
                     intValueP.value!!
                 }
-                Double::javaClass -> {
+                Double::class.java -> {
                     doubleValueP.value!!
                 }
-                String::javaClass -> {
+                String::class.java -> {
                     stringValueP.value
                 }
 
