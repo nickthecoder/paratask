@@ -6,11 +6,6 @@ Filter table results
 	Use JavaFX's FilterList rather than have the Tool's run method do it?
 		Tool still has "val filter(s)", but so does TableResults???
 
-	Groovy filters :
-		A single groovy expression which is evaluated once per row.
-		List the attributes and their types of the row's class
-		Maybe also list the public attributes of the tool.
-
 	If for now we have a SINGLE filter, and let the Tool do the filtering,
 	then later, we could allow MULTIPLE filters (still within one tab), and have a pull down to choose which filter to edit.
 		DirectoryTool would still only have a SINGLE filter though, as the filters need to be set BEFORE the task is run.

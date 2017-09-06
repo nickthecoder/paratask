@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.parameters.fields.BooleanComboBoxField
 import uk.co.nickthecoder.paratask.parameters.fields.BooleanField
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -60,9 +61,17 @@ class BooleanParameter(
         }
     }
 
+    internal var comboBoxLabels: Map<Boolean?, String>? = null
+
     override fun isStretchy() = false
 
-    override fun createField(): BooleanField = BooleanField(this).build() as BooleanField
+    override fun createField(): LabelledField {
+        if (comboBoxLabels != null) {
+            return BooleanComboBoxField(this).build()
+        } else {
+            return BooleanField(this).build()
+        }
+    }
 
     override fun coerce(v: Any?) {
         if (v is Boolean?) {
@@ -72,9 +81,28 @@ class BooleanParameter(
         super.coerce(v)
     }
 
+    fun asComboBox(map: Map<Boolean?, String> = if (required) NOT_NULLABLE_MAP else NULLABLE_MAP) {
+        comboBoxLabels = map
+    }
+
+    fun asComboBox(trueLabel: String, falseLabel: String) {
+        asComboBox(mapOf(Pair(true, trueLabel), Pair(false, falseLabel)))
+    }
+
+    fun asComboBox(trueLabel: String, falseLabel: String, nullLabel: String) {
+        asComboBox(mapOf(Pair(true, trueLabel), Pair(false, falseLabel), Pair(null, nullLabel)))
+    }
+
     override fun toString(): String = "Boolean" + super.toString()
 
     override fun copy() = BooleanParameter(name = name, label = label, description = description, value = value,
             required = required, oppositeName = oppositeName, labelOnLeft = labelOnLeft)
 
+    companion object {
+
+        val NULLABLE_MAP = mutableMapOf<Boolean?, String>(Pair(true, "True"), Pair(false, "False"), Pair(null, "Null"))
+
+        val NOT_NULLABLE_MAP = mutableMapOf<Boolean?, String>(Pair(true, "True"), Pair(false, "False"))
+
+    }
 }

@@ -25,7 +25,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     val groovyScriptP = StringParameter("groovyScript", required = false, rows = 5)
 
-    val andP = BooleanParameter("and", value = true)
+    val andP = BooleanParameter("and", label = "", value = true)
 
     val conditionsP = MultipleParameter("conditions") { Condition() }
 
@@ -33,6 +33,8 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     var groovyScript: GroovyScript? = null
 
     init {
+        andP.asComboBox("AND", "OR")
+
         taskD.addParameters(ignoreFiltersP, groovyScriptP, andP, conditionsP)
         groovyScriptP.listen {
             groovyScript = if (groovyScriptP.value.isBlank()) {
@@ -48,34 +50,63 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     }
 
     fun accept(row: R): Boolean {
-
         if (ignoreFiltersP.value == true) {
             return true
         }
 
-        conditionsP.innerParameters.filterIsInstance<Condition>().forEach { condition ->
-
-            if (andP.value == true) {
-                if (!condition.accept(row)) {
-                    return false
-                }
-            } else if (andP.value == false) {
-                if (condition.accept(row)) {
-                    return true
-                }
-            }
-        }
-
-        groovyScript?.let { script ->
-            val bindings = Binding()
-            bindings.setVariable("row", row)
-            val result = script.run(bindings)
-            if (result == false) {
+        if (andP.value == true) {
+            if (acceptConditions(row) == false) {
                 return false
             }
+        } else if (acceptConditions(row) == true) {
+            return true
         }
 
-        return true
+        return acceptGroovyScript(row)
+    }
+
+    fun acceptConditions(row: R): Boolean {
+
+        if (conditionsP.value.isEmpty()) {
+            return true
+        } else {
+            conditionsP.innerParameters.filterIsInstance<Condition>().forEach { condition ->
+
+                if (andP.value == true) {
+                    if (!condition.accept(row)) {
+                        return false
+                    }
+                } else if (andP.value == false) {
+                    if (condition.accept(row)) {
+                        return true
+                    }
+                }
+            }
+            // We have tested all conditions, and the none of them have returned,.
+            // If we are AND-ing, then none returned false, so return true.
+            // If we are OR-ing, then none returned true, so return false.
+            return andP.value == true
+        }
+    }
+
+    fun acceptGroovyScript(row: R): Boolean {
+        try {
+            groovyScript?.let {
+                script ->
+                val bindings = Binding()
+                bindings.setVariable("row", row)
+                val result = script.run(bindings)
+                if (result == false) {
+                    return false
+                } else if (result == true) {
+                    return true
+                }
+                // If a non-boolean value is returned, then ignore it.
+            }
+        } catch (e: Exception) {
+            println("Groovy Row Filter faild : $e")
+        }
+        return andP.value == true
     }
 
     fun exampleValue(column: Column<R, *>?): Any? {
