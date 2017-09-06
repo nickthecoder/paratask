@@ -1,8 +1,11 @@
 package uk.co.nickthecoder.paratask.table
 
+import groovy.lang.Binding
+import org.codehaus.groovy.ant.Groovy
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
 
 
@@ -18,12 +21,26 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     override val taskD = TaskDescription("filter", description = "Filter Rows")
 
-    val conditionsP = MultipleParameter("conditions") { Condition() }
+    val ignoreFiltersP = BooleanParameter("ignoreFilters", value = false)
+
+    val groovyScriptP = StringParameter("groovyScript", required = false, rows = 5)
 
     val andP = BooleanParameter("and", value = true)
 
+    val conditionsP = MultipleParameter("conditions") { Condition() }
+
+
+    var groovyScript: GroovyScript? = null
+
     init {
-        taskD.addParameters(conditionsP, andP)
+        taskD.addParameters(ignoreFiltersP, groovyScriptP, andP, conditionsP)
+        groovyScriptP.listen {
+            groovyScript = if (groovyScriptP.value.isBlank()) {
+                null
+            } else {
+                GroovyScript(groovyScriptP.value)
+            }
+        }
     }
 
     override fun run() {
@@ -31,6 +48,10 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     }
 
     fun accept(row: R): Boolean {
+
+        if (ignoreFiltersP.value == true) {
+            return true
+        }
 
         conditionsP.innerParameters.filterIsInstance<Condition>().forEach { condition ->
 
@@ -42,6 +63,15 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
                 if (condition.accept(row)) {
                     return true
                 }
+            }
+        }
+
+        groovyScript?.let { script ->
+            val bindings = Binding()
+            bindings.setVariable("row", row)
+            val result = script.run(bindings)
+            if (result == false) {
+                return false
             }
         }
 

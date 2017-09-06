@@ -1,15 +1,11 @@
 TODO
 
 Filter table results
-	Save in history and/or project?
-	For tools such as GitTool - for the first tab only?
-	For tools such as DirectoryTool - for all tabs?
+	Change the label from "No Filters" to "Filtered"
+	Allow filtering by right clicking a column header
+	Use JavaFX's FilterList rather than have the Tool's run method do it?
+		Tool still has "val filter(s)", but so does TableResults???
 
-	Simple filters :
-		Column [not] TestType Value
-		Where TestTypes are "==" ">" "<" "contains"
-		And then choose whether to "OR" or "AND" the results
-		Allow "Value" to be an expression too. e.g. 
 	Groovy filters :
 		A single groovy expression which is evaluated once per row.
 		List the attributes and their types of the row's class
@@ -19,14 +15,11 @@ Filter table results
 	then later, we could allow MULTIPLE filters (still within one tab), and have a pull down to choose which filter to edit.
 		DirectoryTool would still only have a SINGLE filter though, as the filters need to be set BEFORE the task is run.
 
-	FilterTab : MinorTab
-	(Abstract)TableTool.getFilters() : RowFilter<*>
-	RowFilter : columns, name:String
-		fun accept( row ) : Boolean
-
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
+
+BooleanParameter to render as a ComboBox with custom labels. Use it for RowFilter's "AND"/"OR"
 
 Add more filters to the find tool
 
