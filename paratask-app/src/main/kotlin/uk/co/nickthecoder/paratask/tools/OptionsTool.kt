@@ -45,6 +45,8 @@ class OptionsTool() : ListTableTool<Option>() {
     val file: File
         get() = File(directoryP.value, optionsNameP.value + ".json")
 
+    override val rowFilter = RowFilter<Option>(this, createColumns(), GroovyOption())
+
     constructor(tool: Tool) : this() {
         optionsNameP.value = tool.optionsName
         directoryP.value = Preferences.optionsPath[0]

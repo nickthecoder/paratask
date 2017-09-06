@@ -17,12 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
 
 interface ParametersPane {
 
-    val tool: Tool
+    val task: Task
 
     val taskForm: TaskForm
 

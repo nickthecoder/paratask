@@ -25,4 +25,7 @@ interface TableTool<R : Any> : Tool {
 
     fun createRow(): TableRow<WrappedRow<R>>
 
+    open val rowFilter: RowFilter<R>?
+        get() = null
+
 }

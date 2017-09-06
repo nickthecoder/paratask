@@ -36,7 +36,9 @@ interface ToolPane {
 
     fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>)
 
-    fun addResults(results: Results, index: Int = tabPane.tabs.size - 1): ResultsTab
+    fun addResults(results: Results): ResultsTab
+
+    fun addResults(results: Results, index: Int): ResultsTab
 
     fun attached(halfTab: HalfTab)
 

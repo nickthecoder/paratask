@@ -20,12 +20,15 @@ package uk.co.nickthecoder.paratask.project
 import javafx.application.Platform
 import javafx.geometry.Side
 import javafx.scene.Node
-import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.MyTabPane
+import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
+import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.TableTool
+import uk.co.nickthecoder.paratask.util.focusNext
 
 class ToolPane_Impl(override var tool: Tool)
 
@@ -33,7 +36,7 @@ class ToolPane_Impl(override var tool: Tool)
 
     override val tabPane = MyTabPane<MinorTab>()
 
-    override var parametersPane: ParametersPane = ParametersPane_Impl(tool)
+    override var parametersPane: ToolParametersPane = ToolParametersPane_Impl(tool)
 
     override lateinit var halfTab: HalfTab
 
@@ -43,13 +46,24 @@ class ToolPane_Impl(override var tool: Tool)
 
     val footer: HeaderOrFooter? = tool.createFooter()
 
+    var filterTab: FilterTab? = null
+
     init {
         center = tabPane
 
         tabPane.side = Side.BOTTOM
 
         parametersTab.canClose = false
-        parametersTab.content = parametersPane as Node
+
+        // Add the filter tab, if the tool has a filter
+        val ttool = tool
+        if (ttool is TableTool<*>) {
+            val filter = ttool.rowFilter
+            if (filter != null) {
+                filterTab = FilterTab(ttool, filter)
+                tabPane.add(filterTab!!)
+            }
+        }
 
         tabPane.add(parametersTab)
 
@@ -76,8 +90,8 @@ class ToolPane_Impl(override var tool: Tool)
         if (newTab is MinorTab) {
             newTab.selected()
         }
-        top = if (newTab === parametersTab) null else header
-        bottom = if (newTab === parametersTab) null else footer
+        top = if (newTab is ResultsTab) header else null
+        bottom = if (newTab is ResultsTab) footer else null
     }
 
     override fun resultsTool(): Tool {
@@ -119,9 +133,18 @@ class ToolPane_Impl(override var tool: Tool)
             addResults(results)
         }
         // Select the first tab, unless another tab selected itself while being added.
-        if (parametersTab.isSelected) {
+        if (parametersTab.isSelected || filterTab?.isSelected == true) {
             tabPane.selectionModel.select(0)
         }
+    }
+
+    override fun addResults(results: Results): ResultsTab {
+        tabPane.tabs.forEachIndexed { index, tab ->
+            if (tab !is ResultsTab) {
+                return addResults(results, index)
+            }
+        }
+        return addResults(results, 0)
     }
 
     override fun addResults(results: Results, index: Int): ResultsTab {
@@ -144,6 +167,7 @@ class ToolPane_Impl(override var tool: Tool)
 
         ParaTaskApp.logAttach("ToolPane.attaching")
         parametersPane.attached(this)
+        filterTab?.parametersPane?.attached(this)
 
         tool.attached(this)
 
@@ -155,6 +179,7 @@ class ToolPane_Impl(override var tool: Tool)
         attached = false
         ParaTaskApp.logAttach("ToolPane detaching")
         parametersPane.detaching()
+        filterTab?.parametersPane?.detaching()
         tool.detaching()
         parametersPane.detaching()
         removeOldResults(tool.resultsList)
@@ -223,7 +248,12 @@ class ToolPane_Impl(override var tool: Tool)
         return null
     }
 
-    class ParametersTab(val parametersPane: ParametersPane) : MinorTab("Parameters") {
+    class ParametersTab(val parametersPane: ToolParametersPane) : MinorTab("Parameters") {
+
+        init {
+            content = parametersPane as Node
+        }
+
         override fun focus() {
             if (parametersPane.tool.toolPane?.skipFocus != true) {
                 Platform.runLater {
@@ -237,6 +267,31 @@ class ToolPane_Impl(override var tool: Tool)
             if (parametersPane.tool.toolPane?.skipFocus != true) {
                 ParaTaskApp.logFocus("ParametersTab.selected focus()")
                 focus()
+            }
+        }
+
+        override fun deselected() {
+        }
+    }
+
+    class FilterTab(val tool: TableTool<*>, val filter: RowFilter<*>) : MinorTab("Filter") {
+
+        val parametersPane: ParametersPane = ParametersPane_Impl(filter)
+
+        init {
+            content = parametersPane as Node
+        }
+
+        override fun selected() {
+
+        }
+
+        override fun focus() {
+            if (tool.toolPane?.skipFocus != true) {
+                Platform.runLater {
+                    ParaTaskApp.logFocus("FilterTab.focus. parametersPane.focus()")
+                    parametersPane.focus()
+                }
             }
         }
 

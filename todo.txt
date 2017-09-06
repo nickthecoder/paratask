@@ -1,5 +1,29 @@
 TODO
 
+Filter table results
+	Save in history and/or project?
+	For tools such as GitTool - for the first tab only?
+	For tools such as DirectoryTool - for all tabs?
+
+	Simple filters :
+		Column [not] TestType Value
+		Where TestTypes are "==" ">" "<" "contains"
+		And then choose whether to "OR" or "AND" the results
+		Allow "Value" to be an expression too. e.g. 
+	Groovy filters :
+		A single groovy expression which is evaluated once per row.
+		List the attributes and their types of the row's class
+		Maybe also list the public attributes of the tool.
+
+	If for now we have a SINGLE filter, and let the Tool do the filtering,
+	then later, we could allow MULTIPLE filters (still within one tab), and have a pull down to choose which filter to edit.
+		DirectoryTool would still only have a SINGLE filter though, as the filters need to be set BEFORE the task is run.
+
+	FilterTab : MinorTab
+	(Abstract)TableTool.getFilters() : RowFilter<*>
+	RowFilter : columns, name:String
+		fun accept( row ) : Boolean
+
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
