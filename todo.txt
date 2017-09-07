@@ -1,10 +1,5 @@
 TODO
 
-Allow for multiple filters
-	Return a Map<String,RowFilter> and create a SingleFilter interface which return "Filter" -> open val rowFilter 
-	If there are more than one, then use a combobox/ChoiceParameter to select which to edit.
-	GitStatus and GitLog to have a single filter, Git to have both.
-
 Character and Boolean Tests for RowFilter
 contains,begins/endWith to be case insensitive
 Regex test

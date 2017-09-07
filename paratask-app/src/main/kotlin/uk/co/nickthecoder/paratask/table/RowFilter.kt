@@ -12,9 +12,12 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     : AbstractTask() {
 
     companion object {
-        val intTests: List<RowFilter.Test> = listOf(IntEqualsTest(), IntGreaterThan(), IntLessThan())
-        val doubleTests: List<RowFilter.Test> = listOf(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
-        val stringTests: List<RowFilter.Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith())
+        val intTests: List<Test> = listOf(IntEqualsTest(), IntGreaterThan(), IntLessThan())
+        val doubleTests: List<Test> = listOf(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
+        val stringTests: List<Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith())
+        val charTests: List<Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan())
+        val booleanTests: List<Test> = listOf(BooleanEqualsTest())
+
         val nullTest = NullTest()
         val notNullTest = NullTest().opposite()
     }
@@ -118,13 +121,16 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
         val columnP = ChoiceParameter<Column<R, *>?>("column", value = null, required = true)
         val testP = ChoiceParameter<Test?>("test", value = null, required = true)
+        val booleanValueP = BooleanParameter("booleanValue", label = "Value", required = false)
         val intValueP = IntParameter("intValue", label = "Value")
         val doubleValueP = DoubleParameter("doubleValue", label = "Value")
         val stringValueP = StringParameter("stringValue", label = "Value")
 
         init {
-            addParameters(columnP, testP, intValueP, doubleValueP, stringValueP)
+            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP)
 
+            booleanValueP.hidden = true
+            booleanValueP.asComboBox()
             intValueP.hidden = true
             doubleValueP.hidden = true
             stringValueP.hidden = true
@@ -148,7 +154,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             testP.addChoice(notNullTest.label, notNullTest, notNullTest.label)
 
             if (!testP.choiceValues().contains(testP.value)) {
-                testP.value = null
+                testP.value = tests.firstOrNull()
             }
         }
 
@@ -157,17 +163,24 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             val columnType: Class<*>? = exampleValue?.javaClass
 
             when (columnType) {
+            // Make sure that "java.lang.Boolean" AND "boolean" are both handled.
+                Boolean::class.java -> testChoices(booleanTests)
+                java.lang.Boolean::class.java -> testChoices(booleanTests)
+
+                Char::class.java -> testChoices(charTests)
+                java.lang.Character::class.java -> testChoices(charTests)
+
+            // We don't seem to have the same problem with "java.lang.Integer" and "int". Not sure why!
                 Int::class.java -> testChoices(intTests)
                 Double::class.java -> testChoices(doubleTests)
                 String::class.java -> testChoices(stringTests)
                 else -> testChoices(listOf())
             }
-
-
         }
 
         fun testPChanged() {
             val bType = testP.value?.bType
+            booleanValueP.hidden = (bType != Boolean::class.java) && (bType != java.lang.Boolean::class.java)
             intValueP.hidden = bType != Int::class.java
             doubleValueP.hidden = bType != Double::class.java
             stringValueP.hidden = bType != String::class.java
@@ -177,6 +190,9 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             val a = columnP.value?.let { it.getter(row) }
             val bType = testP.value?.bType
             val b: Any? = when (bType) {
+                Boolean::class.java -> {
+                    booleanValueP.value!!
+                }
                 Int::class.java -> {
                     intValueP.value!!
                 }
@@ -204,6 +220,11 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         fun opposite(): Test
     }
 
+    interface BooleanBTest : Test {
+        override val bType
+            get() = Boolean::class.java
+    }
+
     interface IntBTest : Test {
         override val bType
             get() = Int::class.java
@@ -221,7 +242,13 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     abstract class EqualsTest : Test {
         override val label = "=="
-        override fun accept(a: Any?, b: Any?): Boolean = a == b
+        override fun accept(a: Any?, b: Any?): Boolean {
+            if (a is Char && b is String) {
+                return a.toString() == b
+            }
+            return a == b
+        }
+
         override fun opposite(): Test = NotTest(this, "!=")
     }
 
@@ -237,6 +264,8 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         override fun accept(a: Any?, b: Any?) = !inner.accept(a, b)
         override fun opposite(): Test = inner
     }
+
+    class BooleanEqualsTest : EqualsTest(), BooleanBTest
 
     class IntEqualsTest : EqualsTest(), IntBTest
 
@@ -293,12 +322,14 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         override fun opposite(): Test = NotTest(this, ">=")
     }
 
-
     class StringLessThan : StringBTest {
         override val label = "<"
         override fun accept(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a < b
+            }
+            if (a is Char && b is String) {
+                return a.toString() < b
             }
             return false
         }
@@ -312,6 +343,10 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             if (a is String && b is String) {
                 return a > b
             }
+            if (a is Char && b is String) {
+                return a.toString() > b
+            }
+
             return false
         }
 
@@ -322,7 +357,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         override val label = "contains"
         override fun accept(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
-                return a.contains(b)
+                return a.toLowerCase().contains(b.toLowerCase())
             }
             return false
         }
@@ -334,7 +369,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         override val label = "starts with"
         override fun accept(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
-                return a.startsWith(b)
+                return a.toLowerCase().startsWith(b.toLowerCase())
             }
             return false
         }
@@ -346,7 +381,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         override val label = "ends with"
         override fun accept(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
-                return a.endsWith(b)
+                return a.toLowerCase().endsWith(b.toLowerCase())
             }
             return false
         }
