@@ -117,6 +117,23 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         return column.getter(exampleRow)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is RowFilter<*>) {
+            return false
+        }
+        if (groovyScriptP.value != other.groovyScriptP.value) {
+            return false
+        }
+        if (conditionsP.value.size != other.conditionsP.value.size) {
+            return false
+        }
+        conditionsP.value.filterIsInstance<Condition>().forEachIndexed { index, myCondition ->
+            val otherCondition = other.conditionsP.value[index]
+            if (myCondition != otherCondition) return false
+        }
+        return true
+    }
+
     inner class Condition : CompoundParameter("condition") {
 
         val columnP = ChoiceParameter<Column<R, *>?>("column", value = null, required = true)
@@ -209,6 +226,20 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             }
 
             return testP.value!!.accept(a, b)
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (other !is RowFilter<*>.Condition) {
+                return false
+            }
+            if (columnP.value != other.columnP.value || testP.value != other.testP.value) return false
+
+            if ((!stringValueP.hidden) && stringValueP.value != other.stringValueP.value) return false
+            if ((!intValueP.hidden) && intValueP.value != other.intValueP.value) return false
+            if ((!doubleValueP.hidden) && doubleValueP.value != other.doubleValueP.value) return false
+            if ((!booleanValueP.hidden) && booleanValueP.value != other.booleanValueP.value) return false
+
+            return true
         }
     }
 

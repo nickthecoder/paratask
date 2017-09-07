@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.table.Filtered
+import uk.co.nickthecoder.paratask.table.RowFilter
 
 class History(var halfTab: HalfTab) {
 
@@ -168,11 +170,22 @@ class History(var halfTab: HalfTab) {
 
         val values = mutableMapOf<String, String>()
 
+        val filterMaps: Map<String, Map<String, String>>?
+
+
         val tool: Tool
             get() {
                 val result = Tool.create(creationString)
                 for (parameter in result.valueParameters()) {
                     parameter.stringValue = values[parameter.name]!! // Safe
+                }
+                if (result is Filtered) {
+                    result.rowFilters.forEach { key, filter ->
+                        for (parameter in filter.taskD.valueParameters()) {
+                            val filterMap = filterMaps!![key]
+                            parameter.stringValue = filterMap!![parameter.name]!!
+                        }
+                    }
                 }
                 return result
             }
@@ -181,11 +194,24 @@ class History(var halfTab: HalfTab) {
             for (parameter in tool.taskD.valueParameters()) {
                 values.put(parameter.name, parameter.stringValue)
             }
+
+            if (tool is Filtered) {
+                filterMaps = mutableMapOf<String, Map<String, String>>()
+                tool.rowFilters.forEach { key, filter ->
+                    val stringValues = mutableMapOf<String, String>()
+                    for (parameter in filter.taskD.valueParameters()) {
+                        stringValues.put(parameter.name, parameter.stringValue)
+                    }
+                    filterMaps[key] = stringValues
+                }
+            } else {
+                filterMaps = null
+            }
         }
 
         override fun equals(other: Any?): Boolean {
             if (other is Moment) {
-                return creationString == other.creationString && values == other.values
+                return creationString == other.creationString && values == other.values && filterMaps == other.filterMaps
             }
             return false
         }
@@ -198,4 +224,3 @@ class History(var halfTab: HalfTab) {
     }
 
 }
-

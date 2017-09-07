@@ -1,7 +1,5 @@
 TODO
 
-Character and Boolean Tests for RowFilter
-contains,begins/endWith to be case insensitive
 Regex test
 	Need a RegexParameter
 
