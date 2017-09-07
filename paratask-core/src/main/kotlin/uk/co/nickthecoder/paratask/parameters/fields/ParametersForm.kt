@@ -224,13 +224,13 @@ open class ParametersForm(val parentParameter: ParentParameter)
             w += it.prefWidth + spacing
         }
 
-        val mchildren: List<Node> = getManagedChildren()
+        val mchildren: List<Node> = getManagedChildren<Node>().filter { it.isVisible }
         val otherWidths = mchildren.filter { it !is ParameterField }.map { it.prefWidth(height) }.max()
         return Math.max(w, otherWidths ?: 0.0) + insets.left + insets.right
     }
 
     override fun computeMinHeight(width: Double): Double {
-        val mchildren: List<Node> = getManagedChildren()
+        val mchildren: List<Node> = getManagedChildren<Node>().filter { it.isVisible }
         val sum = sum(mchildren, Node::minHeight, width)
         return sum + (mchildren.size - 1) * spacing + insets.top + insets.bottom
     }
@@ -238,7 +238,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
     override fun computePrefHeight(w: Double): Double {
         val width = (if (w == -1.0) computePrefWidth(-1.0) else w) - insets.left - insets.right
 
-        val mchildren: List<Node> = getManagedChildren()
+        val mchildren: List<Node> = getManagedChildren<Node>().filter { it.isVisible }
         val sum = sum(mchildren, Node::prefHeight, width)
         return sum + (mchildren.size - 1) * spacing + insets.top + insets.bottom
     }
@@ -248,15 +248,13 @@ open class ParametersForm(val parentParameter: ParentParameter)
         var y = insets.top
         val w = width - insets.left - insets.right
 
-        getManagedChildren<Node>().forEach {
+        getManagedChildren<Node>().filter { it.isVisible }.forEach {
             //if ( it !is ParameterField ) {
             //    println( "Laying out ${it} using width ${w}")
             //}
-            if (it.isVisible) {
-                val h = it.prefHeight(w)
-                layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
-                y += h + spacing
-            }
+            val h = it.prefHeight(w)
+            layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
+            y += h + spacing
         }
     }
 
