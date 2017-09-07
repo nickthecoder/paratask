@@ -25,6 +25,8 @@ import com.pty4j.PtyProcess
 import javafx.application.Platform
 import javafx.embed.swing.SwingNode
 import javafx.scene.input.DataFormat
+import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
@@ -60,6 +62,14 @@ class RealTerminalResults(tool: Tool)
         sendText(text)
     }
     val compoundDropHelper = CompoundDropHelper(filesDropHelper, textDropHelper)
+
+    init {
+        node.addEventHandler(MouseEvent.MOUSE_CLICKED) { event ->
+            if (event.clickCount == 1 && event.button == MouseButton.PRIMARY) {
+                focus()
+            }
+        }
+    }
 
     fun quoteFilenameIfNeeded(filename: String): String {
         if (filename.matches(Regex("[a-zA-Z0-9,._+:@%/-]*"))) {
