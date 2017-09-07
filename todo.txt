@@ -3,7 +3,6 @@ TODO
 Regex test
 	Need a RegexParameter
 
-Save/Restore filters in the History
 Save/Load filters in Project files
 
 Add a rowfilter attribute to TableResults

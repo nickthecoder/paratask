@@ -6,6 +6,8 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.util.Resource
+import java.io.File
 
 
 class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R, val label: String = "Filter")
@@ -14,9 +16,11 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     companion object {
         val intTests: List<Test> = listOf(IntEqualsTest(), IntGreaterThan(), IntLessThan())
         val doubleTests: List<Test> = listOf(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
-        val stringTests: List<Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith())
+        val stringTests: List<Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
         val charTests: List<Test> = listOf(StringEqualsTest(), StringGreaterThan(), StringLessThan())
         val booleanTests: List<Test> = listOf(BooleanEqualsTest())
+        val toStringTests: List<Test> = stringTests.map { ToStringTest(it) }
+        val fileTests: List<Test> = toStringTests
 
         val nullTest = NullTest()
         val notNullTest = NullTest().opposite()
@@ -58,10 +62,10 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         }
 
         if (andP.value == true) {
-            if (acceptConditions(row) == false) {
+            if (!acceptConditions(row)) {
                 return false
             }
-        } else if (acceptConditions(row) == true) {
+        } else if (acceptConditions(row)) {
             return true
         }
 
@@ -142,15 +146,17 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         val intValueP = IntParameter("intValue", label = "Value")
         val doubleValueP = DoubleParameter("doubleValue", label = "Value")
         val stringValueP = StringParameter("stringValue", label = "Value")
+        val regexValueP = RegexParameter("regexValue", label = "Value")
 
         init {
-            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP)
+            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP)
 
             booleanValueP.hidden = true
             booleanValueP.asComboBox()
             intValueP.hidden = true
             doubleValueP.hidden = true
             stringValueP.hidden = true
+            regexValueP.hidden = true
 
             columns.forEach { column ->
                 columnP.addChoice(column.name, column, column.name)
@@ -191,6 +197,8 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
                 Int::class.java -> testChoices(intTests)
                 Double::class.java -> testChoices(doubleTests)
                 String::class.java -> testChoices(stringTests)
+                File::class.java -> testChoices(fileTests)
+                Resource::class.java -> testChoices(toStringTests)
                 else -> testChoices(listOf())
             }
         }
@@ -201,6 +209,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             intValueP.hidden = bType != Int::class.java
             doubleValueP.hidden = bType != Double::class.java
             stringValueP.hidden = bType != String::class.java
+            regexValueP.hidden = bType != Regex::class.java
         }
 
         fun accept(row: R): Boolean {
@@ -219,6 +228,9 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
                 String::class.java -> {
                     stringValueP.value
                 }
+                Regex::class.java -> {
+                    Regex(regexValueP.value)
+                }
 
                 else -> {
                     null
@@ -234,10 +246,11 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             }
             if (columnP.value != other.columnP.value || testP.value != other.testP.value) return false
 
-            if ((!stringValueP.hidden) && stringValueP.value != other.stringValueP.value) return false
+            if ((!booleanValueP.hidden) && booleanValueP.value != other.booleanValueP.value) return false
             if ((!intValueP.hidden) && intValueP.value != other.intValueP.value) return false
             if ((!doubleValueP.hidden) && doubleValueP.value != other.doubleValueP.value) return false
-            if ((!booleanValueP.hidden) && booleanValueP.value != other.booleanValueP.value) return false
+            if ((!stringValueP.hidden) && stringValueP.value != other.stringValueP.value) return false
+            if ((!regexValueP.hidden) && regexValueP.value != other.regexValueP.value) return false
 
             return true
         }
@@ -249,6 +262,16 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         val bType: Class<*>?
         fun accept(a: Any?, b: Any?): Boolean
         fun opposite(): Test
+    }
+
+    /**
+     * Converts the column's value to a string, then performs a string test upon it.
+     */
+    class ToStringTest(val test: Test) : Test {
+        override val label = test.label
+        override val bType = test.bType
+        override fun accept(a: Any?, b: Any?) = test.accept(a.toString(), b)
+        override fun opposite() = ToStringTest(test.opposite())
     }
 
     interface BooleanBTest : Test {
@@ -269,6 +292,11 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     interface StringBTest : Test {
         override val bType
             get() = String::class.java
+    }
+
+    interface RegexBTest : Test {
+        override val bType
+            get() = Regex::class.java
     }
 
     abstract class EqualsTest : Test {
@@ -418,6 +446,18 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         }
 
         override fun opposite(): Test = NotTest(this, "does not end with")
+    }
+
+    class StringMatches : RegexBTest {
+        override val label = "matches"
+        override fun accept(a: Any?, b: Any?): Boolean {
+            if (a is String && b is Regex) {
+                return b.matches(a)
+            }
+            return false
+        }
+
+        override fun opposite(): Test = NotTest(this, "does not match")
     }
 
 }
