@@ -25,13 +25,6 @@ import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 
-// Note. JavaFX cannot handle null values in Combobox correctly
-// See : http://stackoverflow.com/questions/25877323/no-select-item-on-javafx-combobox
-// So I've added a "special" value, and made the generic type "ANY?"
-// and added a bodgeProperty, which forwards get/sets to the parameter's property
-
-private val FAKE_NULL = "FAKE_NULL"
-
 /**
  * Renders a BooleanParameter as a ComboBox rather than the usual checkbox
  */
@@ -39,29 +32,12 @@ class BooleanComboBoxField(val booleanParameter: BooleanParameter) : LabelledFie
 
     private var dirty = false
 
-    val comboBox = ComboBox<Any?>()
+    val comboBox = ComboBox<String>()
 
-    val converter = object : StringConverter<Any?>() {
-
-        override fun fromString(label: String): Any? {
-            return getValueForLabel(label) ?: FAKE_NULL
-        }
-
-        override fun toString(obj: Any?): String {
-            @Suppress("UNCHECKED_CAST")
-            return getLabelForValue(if (obj === FAKE_NULL) null else obj as Boolean)
-        }
-    }
-
-    val bodgeProperty = object : SimpleObjectProperty <Any?>(FAKE_NULL) {
-        override fun get(): Any? = booleanParameter.value ?: FAKE_NULL
-        override fun set(value: Any?) {
-            if (value === FAKE_NULL) {
-                booleanParameter.value = null
-
-            } else {
-                booleanParameter.value = value as Boolean
-            }
+    val bodgeProperty = object : SimpleObjectProperty <String>("") {
+        override fun get(): String = getLabelForValue(booleanParameter.value)
+        override fun set(value: String) {
+            booleanParameter.value = getValueForLabel(value)
         }
     }
 
@@ -78,7 +54,6 @@ class BooleanComboBoxField(val booleanParameter: BooleanParameter) : LabelledFie
 
     override fun createControl(): ComboBox<*> {
 
-        comboBox.converter = converter
         comboBox.valueProperty().bindBidirectional(bodgeProperty)
 
         updateChoices()
@@ -88,10 +63,10 @@ class BooleanComboBoxField(val booleanParameter: BooleanParameter) : LabelledFie
 
     private fun updateChoices() {
         comboBox.items.clear()
-        booleanParameter.comboBoxLabels!!.keys.forEach {
+        booleanParameter.comboBoxLabels!!.values.forEach {
             comboBox.items.add(it)
         }
-        comboBox.value = booleanParameter.value ?: FAKE_NULL
+        comboBox.value = getLabelForValue(booleanParameter.value)
 
     }
 
@@ -101,7 +76,7 @@ class BooleanComboBoxField(val booleanParameter: BooleanParameter) : LabelledFie
         super.parameterChanged(event)
 
         if (event.type == ParameterEventType.VALUE) {
-            comboBox.value = booleanParameter.value
+            comboBox.value = getLabelForValue(booleanParameter.value)
         }
     }
 
