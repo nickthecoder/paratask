@@ -28,7 +28,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     override val taskD = TaskDescription("filter", description = "Filter Rows")
 
-    val ignoreFiltersP = BooleanParameter("ignoreFilters", value = false)
+    val acceptRejectP = BooleanParameter("acceptReject", label = "", value = true, required = false)
 
     val groovyScriptP = StringParameter("groovyScript", required = false, rows = 5)
 
@@ -42,7 +42,9 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     init {
         andP.asComboBox("AND", "OR")
 
-        taskD.addParameters(ignoreFiltersP, groovyScriptP, andP, conditionsP)
+        acceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
+
+        taskD.addParameters(acceptRejectP, groovyScriptP, andP, conditionsP)
         groovyScriptP.listen {
             groovyScript = if (groovyScriptP.value.isBlank()) {
                 null
@@ -57,22 +59,31 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     }
 
     fun accept(row: R): Boolean {
-        if (ignoreFiltersP.value == true) {
+        if (acceptRejectP.value == null) {
             return true
         }
-
-        if (andP.value == true) {
-            if (!acceptConditions(row)) {
-                return false
-            }
-        } else if (acceptConditions(row)) {
-            return true
+        val result = testResult(row)
+        if (acceptRejectP.value == false) {
+            return !result
+        } else {
+            return result
         }
-
-        return acceptGroovyScript(row)
     }
 
-    fun acceptConditions(row: R): Boolean {
+    fun testResult(row: R): Boolean {
+
+        if (andP.value == true) {
+            if (!conditionsResult(row)) {
+                return false
+            }
+        } else if (conditionsResult(row)) {
+            return true
+        }
+
+        return groovyResult(row)
+    }
+
+    fun conditionsResult(row: R): Boolean {
 
         if (conditionsP.value.isEmpty()) {
             return true
@@ -96,7 +107,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         }
     }
 
-    fun acceptGroovyScript(row: R): Boolean {
+    fun groovyResult(row: R): Boolean {
         try {
             groovyScript?.let {
                 script ->
@@ -237,7 +248,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
                 }
             }
 
-            return testP.value!!.accept(a, b)
+            return testP.value!!.result(a, b)
         }
 
         override fun equals(other: Any?): Boolean {
@@ -260,7 +271,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     interface Test {
         val label: String
         val bType: Class<*>?
-        fun accept(a: Any?, b: Any?): Boolean
+        fun result(a: Any?, b: Any?): Boolean
         fun opposite(): Test
     }
 
@@ -270,7 +281,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     class ToStringTest(val test: Test) : Test {
         override val label = test.label
         override val bType = test.bType
-        override fun accept(a: Any?, b: Any?) = test.accept(a.toString(), b)
+        override fun result(a: Any?, b: Any?) = test.result(a.toString(), b)
         override fun opposite() = ToStringTest(test.opposite())
     }
 
@@ -301,7 +312,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     abstract class EqualsTest : Test {
         override val label = "=="
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is Char && b is String) {
                 return a.toString() == b
             }
@@ -314,13 +325,13 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     class NullTest : Test {
         override val label = "is null"
         override val bType = null
-        override fun accept(a: Any?, b: Any?): Boolean = a == null
+        override fun result(a: Any?, b: Any?): Boolean = a == null
         override fun opposite(): Test = NotTest(this, "is not null")
     }
 
     class NotTest(val inner: Test, override val label: String) : Test {
         override val bType = inner.bType
-        override fun accept(a: Any?, b: Any?) = !inner.accept(a, b)
+        override fun result(a: Any?, b: Any?) = !inner.result(a, b)
         override fun opposite(): Test = inner
     }
 
@@ -334,7 +345,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class IntGreaterThan : IntBTest {
         override val label = ">"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is Int && b is Int) {
                 return a > b
             }
@@ -346,7 +357,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class IntLessThan : IntBTest {
         override val label = "<"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is Int && b is Int) {
                 return a < b
             }
@@ -359,7 +370,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class DoubleGreaterThan : DoubleBTest {
         override val label = ">"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is Double && b is Double) {
                 return a > b
             }
@@ -371,7 +382,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class DoubleLessThan : DoubleBTest {
         override val label = "<"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is Double && b is Double) {
                 return a < b
             }
@@ -383,7 +394,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringLessThan : StringBTest {
         override val label = "<"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a < b
             }
@@ -398,7 +409,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringGreaterThan : StringBTest {
         override val label = "<"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a > b
             }
@@ -414,7 +425,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringContains : StringBTest {
         override val label = "contains"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a.toLowerCase().contains(b.toLowerCase())
             }
@@ -426,7 +437,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringStartsWith : StringBTest {
         override val label = "starts with"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a.toLowerCase().startsWith(b.toLowerCase())
             }
@@ -438,7 +449,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringEndsWith : StringBTest {
         override val label = "ends with"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is String) {
                 return a.toLowerCase().endsWith(b.toLowerCase())
             }
@@ -450,7 +461,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     class StringMatches : RegexBTest {
         override val label = "matches"
-        override fun accept(a: Any?, b: Any?): Boolean {
+        override fun result(a: Any?, b: Any?): Boolean {
             if (a is String && b is Regex) {
                 return b.matches(a)
             }
