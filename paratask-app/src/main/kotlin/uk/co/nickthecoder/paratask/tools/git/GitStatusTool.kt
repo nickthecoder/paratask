@@ -23,17 +23,17 @@ import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.table.BaseFileColumn
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.WrappedRow
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.util.isImage
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class GitStatusTool : AbstractCommandTool<GitStatusTool.GitStatusRow>(), HasDirectory {
+class GitStatusTool :
+        AbstractCommandTool<GitStatusTool.GitStatusRow>(),
+        HasDirectory,
+        SingleRowFilter<GitStatusTool.GitStatusRow> {
 
     override val taskD = TaskDescription("gitStatus", description = "Source Code Control")
 
@@ -42,6 +42,10 @@ class GitStatusTool : AbstractCommandTool<GitStatusTool.GitStatusRow>(), HasDire
     override val directory: File? by directoryP
 
     override val resultsName = "Status"
+
+    private val exampleRow = GitStatusRow(File(""), ' ', ' ')
+
+    override val rowFilter = RowFilter(this, createColumns(), exampleRow, "Git Status Filter")
 
     init {
         taskD.addParameters(directoryP)
@@ -84,7 +88,9 @@ class GitStatusTool : AbstractCommandTool<GitStatusTool.GitStatusRow>(), HasDire
         val file = File(directory, path)
 
         val gsr = GitStatusRow(file, index = index, work = work, renamed = renamed)
-        list.add(gsr)
+        if (rowFilter.accept(gsr)) {
+            list.add(gsr)
+        }
     }
 
     fun addDirectory(directory: File, index: Char, work: Char) {

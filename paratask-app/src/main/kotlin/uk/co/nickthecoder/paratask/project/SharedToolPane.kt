@@ -34,7 +34,7 @@ class SharedToolPane(override var tool: Tool) : ToolPane {
     override val parametersPane: ParametersPane
         get() = shared.parametersPane
 
-    override val parametersTab: ToolPane_Impl.ParametersTab
+    override val parametersTab: ParametersTab
         get() = shared.parametersTab
 
     override fun resultsTool(): Tool = shared.resultsTool()

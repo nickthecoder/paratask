@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.table
 
 import groovy.lang.Binding
-import org.codehaus.groovy.ant.Groovy
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
@@ -9,7 +8,8 @@ import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
 
 
-class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R) : AbstractTask() {
+class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R, val label: String = "Filter")
+    : AbstractTask() {
 
     companion object {
         val intTests: List<RowFilter.Test> = listOf(IntEqualsTest(), IntGreaterThan(), IntLessThan())

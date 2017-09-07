@@ -21,11 +21,7 @@ import javafx.scene.control.TableRow
 import javafx.scene.input.DragEvent
 import uk.co.nickthecoder.paratask.Tool
 
-interface TableTool<R : Any> : Tool {
+interface TableTool<R : Any> : Tool, Filtered {
 
     fun createRow(): TableRow<WrappedRow<R>>
-
-    open val rowFilter: RowFilter<R>?
-        get() = null
-
 }

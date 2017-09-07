@@ -21,13 +21,19 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.SingleRowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.time.format.DateTimeFormatter
+import java.util.*
 
-class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
+class GitLogTool :
+        AbstractCommandTool<GitLogRow>(),
+        HasDirectory,
+        SingleRowFilter<GitLogRow> {
 
     override val taskD = TaskDescription("gitLog", description = "Log of Commits/Merges")
 
@@ -61,6 +67,10 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
     val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     override val resultsName = "Log"
+
+    private val exampleRow = GitLogRow("", "", "", "")
+
+    override val rowFilter = RowFilter(this, createColumns(), exampleRow, "Git Log Filter")
 
     init {
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
@@ -129,7 +139,10 @@ class GitLogTool : AbstractCommandTool<GitLogRow>(), HasDirectory {
             if (line == "") {
                 state = GitLogTool.ParseState.HEAD
                 if (list.size < maxItemsP.value!!) {
-                    list.add(GitLogTool.GitLogRow(commit, author, message, date))
+                    val row = GitLogTool.GitLogRow(commit, author, message, date)
+                    if (rowFilter.accept(row)) {
+                        list.add(row)
+                    }
                 }
                 commit = ""
                 author = ""

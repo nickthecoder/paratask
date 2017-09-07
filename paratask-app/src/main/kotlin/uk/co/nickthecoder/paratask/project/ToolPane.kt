@@ -22,7 +22,7 @@ import uk.co.nickthecoder.paratask.gui.MyTabPane
 
 interface ToolPane {
 
-    var tool: Tool
+    val tool: Tool
 
     val tabPane: MyTabPane<MinorTab>
 
@@ -30,7 +30,7 @@ interface ToolPane {
 
     val parametersPane: ParametersPane
 
-    val parametersTab: ToolPane_Impl.ParametersTab
+    val parametersTab: ParametersTab
 
     fun resultsTool(): Tool
 

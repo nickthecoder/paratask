@@ -26,13 +26,15 @@ import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.project.SharedToolPane
 import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.table.Filtered
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File
 
 /**
  * Combines multiple git tools into one.
  */
-class GitTool : AbstractTool(), HasDirectory {
+class GitTool : AbstractTool(), HasDirectory, Filtered {
 
     override val taskD = TaskDescription("git", description = "Source Code Control")
 
@@ -49,6 +51,8 @@ class GitTool : AbstractTool(), HasDirectory {
     val logGroupP = GroupParameter("gitLog")
 
     var resultsTabIndex: Int = 0
+
+    override val rowFilters: Map<String, RowFilter<*>> = mapOf(Pair("status", gitStatus.rowFilter), Pair("log", gitLog.rowFilter))
 
     init {
         logGroupP.addParameters(
@@ -71,6 +75,10 @@ class GitTool : AbstractTool(), HasDirectory {
 
     override fun run() {
         resultsTabIndex = toolPane?.tabPane?.selectionModel?.selectedIndex ?: 0
+        // If the current tab is not one of the results, then select the first results.
+        if (resultsTabIndex > 2) {
+            resultsTabIndex = 0
+        }
 
         gitStatus.directoryP.value = directoryP.value
         gitLog.directoryP.value = directoryP.value

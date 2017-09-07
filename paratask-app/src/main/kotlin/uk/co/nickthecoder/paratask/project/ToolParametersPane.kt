@@ -17,17 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import javafx.event.EventHandler
-import javafx.scene.control.Button
-import javafx.scene.layout.BorderPane
-import javafx.scene.layout.FlowPane
-import javafx.scene.layout.StackPane
-import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
-import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
-import uk.co.nickthecoder.paratask.util.Stoppable
-import uk.co.nickthecoder.paratask.util.focusNext
 
 interface ToolParametersPane : ParametersPane {
     val tool: Tool
@@ -44,9 +34,7 @@ class ToolParametersPane_Impl(override val tool: Tool)
         if (taskForm.check()) {
 
             toolPane.halfTab.pushHistory(tool)
-
-            task.taskRunner.run()
-
+            tool.taskRunner.run()
             return true
         }
         return false

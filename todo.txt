@@ -1,20 +1,37 @@
 TODO
 
-Filter table results
-	Change the label from "No Filters" to "Filtered"
-	Allow filtering by right clicking a column header
-	Use JavaFX's FilterList rather than have the Tool's run method do it?
-		Tool still has "val filter(s)", but so does TableResults???
+Allow for multiple filters
+	Return a Map<String,RowFilter> and create a SingleFilter interface which return "Filter" -> open val rowFilter 
+	If there are more than one, then use a combobox/ChoiceParameter to select which to edit.
+	GitStatus and GitLog to have a single filter, Git to have both.
 
-	If for now we have a SINGLE filter, and let the Tool do the filtering,
-	then later, we could allow MULTIPLE filters (still within one tab), and have a pull down to choose which filter to edit.
-		DirectoryTool would still only have a SINGLE filter though, as the filters need to be set BEFORE the task is run.
+Character and Boolean Tests for RowFilter
+contains,begins/endWith to be case insensitive
+Regex test
+	Need a RegexParameter
+
+Save/Restore filters in the History
+Save/Load filters in Project files
+
+Add a rowfilter attribute to TableResults
+	Use FilteredList instead of the tool applying the filter in its run method
+	Right click a column heading to edit a single column's filter.
+		Push History, but no need to re-run the tool when applying a column filter.
+	Maybe right click the Code's heading to edit the Groovy filter in place.
+
+CompoundParameter : 
+	Allow other layouts - in particular, a HBox
+		Use it for RowFilter's condition parameters
+
+Allow filtering by right clicking a column header
+	The TableResults will need to have a filter for this to work (shares the same instance as the Tool).
+
+Change createColumns to a val columns, to prevent multiple copies of the columns being created.
 
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
+		This is a long standing known bug with JediTerm.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
-
-BooleanParameter to render as a ComboBox with custom labels. Use it for RowFilter's "AND"/"OR"
 
 Add more filters to the find tool
 
