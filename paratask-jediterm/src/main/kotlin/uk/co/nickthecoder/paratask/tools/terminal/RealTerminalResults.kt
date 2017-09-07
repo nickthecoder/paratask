@@ -65,7 +65,7 @@ class RealTerminalResults(tool: Tool)
         if (filename.matches(Regex("[a-zA-Z0-9,._+:@%/-]*"))) {
             return filename
         }
-        return "'" + filename.replace("//", "////").replace("'", "\\'") + "'"
+        return "'" + filename.replace("//", "////").replace("'", "'\\''") + "'"
     }
 
     override fun start(osCommand: OSCommand) {
