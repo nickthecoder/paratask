@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.event.ActionEvent
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
@@ -59,7 +60,9 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
 
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
             val box = HBox()
+            box.styleClass.add("programming")
             val stack = StackPane()
+            stack.alignment = Pos.CENTER_LEFT
 
             expressionField = TextField()
             expressionField?.styleClass?.add("expression")
@@ -74,6 +77,9 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
             }
             expressionField?.textProperty()?.bindBidirectional(parameter.expressionProperty)
             expressionButton?.addEventHandler(ActionEvent.ACTION) { onExpression() }
+
+            expressionField?.isVisible = parameter.expression != null
+            control?.isVisible = parameter.expression == null
 
             controlContainer = box
         } else {

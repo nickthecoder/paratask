@@ -40,9 +40,6 @@ class ParametersForm(val parentParameter: ParentParameter)
 
     private val columns = mutableListOf<FieldColumn>()
 
-    // TODO Try to do away with this
-    //override val fieldSet = mutableListOf<ParameterField>()
-
     val formFields = mutableListOf<FormField>()
 
     init {
@@ -109,6 +106,7 @@ class ParametersForm(val parentParameter: ParentParameter)
         parameterField.fieldParent = this
         formFields.add(formField)
 
+        updateField(parameterField)
         return node
     }
 

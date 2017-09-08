@@ -2,11 +2,8 @@ TODO
 
 Refactor ParameterField
 
-HeaderRow : Implement updateField and iterator
-
-Get error messages working.
-
-Do something with FieldParent. Maybe delete it, and send visibility events directly to the parent of the parameter being hidden.
+Edit an option = layout is really screwed up.
+Missing "+" "-" buttons
 
 Make ParameterField an interface
 
@@ -14,7 +11,7 @@ Try to do away with WrappedField
 	Instead, anything that wants to be wrapped, just make controlContainer the TitlePane and the label to null
 		may need to do away with LabelledField, and instead just use "if label != null"
 	WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
-
+Check expressions.
 
 Recompile Goko
 
