@@ -31,13 +31,13 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class BoxedMultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : ParameterField(multipleParameter), HasChildFields, WrappableField {
+    : ParameterField(multipleParameter), WrappableField {
 
     val addButton = Button("+")
 
     val parametersForm = ParametersForm(multipleParameter)
 
-    val shortcuts = ShortcutHelper("MultipleField", this, false)
+    val shortcuts = ShortcutHelper("MultipleField", parametersForm, false)
 
     private var wrappedField: WrappedField? = null
 
@@ -56,9 +56,6 @@ class BoxedMultipleField<T>(val multipleParameter: MultipleParameter<T>)
     override fun addAndRemoveButtons(buttons: Node) {
         wrapper().addAndRemoveButtons(buttons)
     }
-
-    override val fieldSet: List<ParameterField>
-        get() = parametersForm.fieldSet
 
     override fun createControl(): ParametersForm {
 
@@ -126,7 +123,7 @@ class BoxedMultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
     private fun newValue(index: Int) {
         val valueParameter = multipleParameter.newValue(index)
-        parametersForm.findField(valueParameter)?.focusNext()
+        parametersForm.findField(valueParameter)?.control?.focusNext()
     }
 
     private fun extraValue() {

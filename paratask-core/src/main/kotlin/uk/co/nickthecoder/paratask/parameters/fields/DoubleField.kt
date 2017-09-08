@@ -25,7 +25,8 @@ import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: DoubleAdaptor) : LabelledField(doubleParameter) {
+open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: DoubleAdaptor)
+    : AbstractLabelledField(doubleParameter) {
 
     private var dirty = false
 
@@ -82,7 +83,7 @@ open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: Doub
      * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
      */
     private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
+        val defaultRunnable = control?.scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 

@@ -17,23 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-interface FieldParent {
-
-    val spacing: Double
-
-    val columns: List<FieldColumn>
-
-    fun calculateColumnPreferences()
-
-    fun calculateColumnWidths()
+interface FieldParent : Iterable<ParameterField> {
 
     fun updateVisibility(field: ParameterField) {
         if (field is WrappableField) {
             field.wrapper().isVisible = !field.parameter.hidden
             field.wrapper().parent.requestLayout()
         } else {
-            field.isVisible = !field.parameter.hidden
+            // TODO Fix this
+            //field.isVisible = !field.parameter.hidden
             field.control?.parent?.requestLayout()
         }
     }
+
 }

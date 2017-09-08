@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.parameters.RegexParameter
 import uk.co.nickthecoder.paratask.util.focusNext
 
-class RegexField(val regexParameter: RegexParameter) : LabelledField(regexParameter) {
+class RegexField(val regexParameter: RegexParameter) : AbstractLabelledField(regexParameter) {
 
     override fun createControl(): TextField {
         val textField = TextField()

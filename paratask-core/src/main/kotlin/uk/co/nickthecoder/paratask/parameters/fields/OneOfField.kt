@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.geometry.HPos
-import javafx.geometry.VPos
 import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.*
 
@@ -62,18 +60,6 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         if (event.type == ParameterEventType.VALUE) {
             buildContent()
         }
-    }
-
-    override fun computePrefHeight(width: Double): Double {
-        return insets.top + insets.bottom + (control?.prefHeight(width) ?: 0.0)
-    }
-
-    override fun computePrefWidth(height: Double): Double {
-        return insets.left + insets.right + (control?.prefWidth(height) ?: 0.0)
-    }
-
-    override fun layoutChildren() {
-        layoutInArea(control, insets.left, insets.top, width - insets.left - insets.right, height - insets.left - insets.right, 0.0, HPos.LEFT, VPos.CENTER)
     }
 
     override fun wrapper(): WrappedField {

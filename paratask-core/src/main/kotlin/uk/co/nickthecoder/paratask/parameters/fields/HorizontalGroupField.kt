@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
@@ -9,16 +8,16 @@ import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
-    : LabelledField(groupParameter), HasChildFields, FieldParent, ParameterListener {
+    : AbstractLabelledField(groupParameter), FieldParent, ParameterListener {
 
     val hBox = HBox()
 
-    override val spacing = 10.0
-
-    override val columns = listOf(FieldColumn(0.0), FieldColumn(0.0), FieldColumn(1.0))
-
-    override val fieldSet = mutableListOf<ParameterField>()
+    val fieldSet = mutableListOf<ParameterField>()
     val containers = mutableListOf<Node>()
+
+    override fun iterator(): Iterator<ParameterField> {
+        return fieldSet.iterator()
+    }
 
     override fun createControl(): Node {
         buildContent()
@@ -68,16 +67,6 @@ class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
                 }
                 visibleIndex++
             }
-        }
-    }
-
-
-    override fun calculateColumnWidths() {}
-
-    override fun calculateColumnPreferences() {
-        columns.forEach {
-            it.prefWidth = 0.0
-            it.minWidth = 0.0
         }
     }
 

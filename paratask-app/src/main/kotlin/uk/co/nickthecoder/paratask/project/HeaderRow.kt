@@ -24,6 +24,7 @@ import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
 import javafx.geometry.VPos
 import javafx.scene.control.Button
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import uk.co.nickthecoder.paratask.ParaTaskApp
@@ -31,15 +32,13 @@ import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.fields.FieldColumn
-import uk.co.nickthecoder.paratask.parameters.fields.FieldParent
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
 class HeaderRow(vararg parameters: Parameter) : Region() {
 
-    val fieldPositions = mutableListOf<FieldPosition>()
+    val boxedFields = mutableListOf<BoxedField>()
 
     private var goButton: Button? = null
 
@@ -59,10 +58,10 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
             throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
         }
         val parameterField = parameter.createField()
+        val boxedField = BoxedField(parameterField)
 
-        parameterField.styleClass.add("field-${parameter.name}")
-        fieldPositions.add(FieldPosition(this, parameterField))
-        children.add(parameterField)
+        boxedFields.add(boxedField)
+        children.add(boxedField)
 
         return this
     }
@@ -134,11 +133,11 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
     override fun computePrefWidth(height: Double): Double = 0.0
 
     override fun computeMinHeight(width: Double): Double {
-        return fieldPositions.map { it.field.minHeight(-1.0) }.max() ?: 0.0
+        return boxedFields.map { it.minHeight(-1.0) }.max() ?: 0.0
     }
 
     override fun computePrefHeight(w: Double): Double {
-        return fieldPositions.map { it.field.prefHeight(-1.0) }.max() ?: 0.0
+        return boxedFields.map { it.prefHeight(-1.0) }.max() ?: 0.0
     }
 
     override fun layoutChildren() {
@@ -150,13 +149,10 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
         var slack = width - insets.left - insets.right + spacing
         goButton?.let { slack -= spacing + it.prefWidth(-1.0) }
 
-        fieldPositions.forEach {
-            val field = it.field
+        boxedFields.forEach { boxedField ->
 
-            it.calculateColumnPreferences()
-
-            slack -= field.prefWidth(-1.0) + spacing
-            if (field.parameter.isStretchy()) {
+            slack -= boxedField.prefWidth(-1.0) + spacing
+            if (boxedField.parameterField.parameter.isStretchy()) {
                 stretchies++
             }
         }
@@ -169,21 +165,15 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
 
         x += gap
 
-        fieldPositions.forEach {
-            val field = it.field
+        boxedFields.forEach { boxedField ->
+            var w = boxedField.prefWidth(-1.0)
+            val h = boxedField.prefHeight(w)
 
-            var w = field.prefWidth(-1.0)
-            val h = field.prefHeight(w)
-
-            it.columns[0].width = it.columns[0].prefWidth
-            if (field.parameter.isStretchy()) {
+            if (boxedField.parameterField.parameter.isStretchy()) {
                 w += extra
-                it.columns[2].width = it.columns[2].prefWidth + extra
-            } else {
-                it.columns[2].width = it.columns[2].prefWidth
             }
 
-            layoutInArea(field, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
+            layoutInArea(boxedField, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
             x += w + spacing
         }
 
@@ -192,29 +182,14 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
         }
     }
 
-    data class FieldPosition(val headerRow: HeaderRow, val field: ParameterField) : FieldParent {
-
-        override val spacing: Double
-            get() = headerRow.spacing
-
-        override val columns = mutableListOf(FieldColumn(0.0), FieldColumn(0.0), FieldColumn(1.0))
+    class BoxedField(val parameterField: ParameterField) : BorderPane() {
 
         init {
-            field.form = this
-        }
-
-        override fun calculateColumnWidths() {}
-
-        override fun calculateColumnPreferences() {
-            columns.forEach {
-                it.prefWidth = 0.0
-                it.minWidth = 0.0
+            if (parameterField is LabelledField) {
+                left = parameterField.label
             }
-            if (field is LabelledField) {
-                field.adjustColumnWidths(columns)
-            }
+            center = parameterField.control
+            styleClass.add("labelled-field")
         }
-
     }
-
 }

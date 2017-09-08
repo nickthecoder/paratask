@@ -36,10 +36,6 @@ class TaskForm(val task: Task) {
         task.taskD.height?.let { scrollPane.prefHeight = it.toDouble() }
     }
 
-    fun tidyUp() {
-        form.tidyUp()
-    }
-
     fun check(): Boolean {
 
         val programming = task.taskD.programmingMode
@@ -50,7 +46,7 @@ class TaskForm(val task: Task) {
             val parameter = field.parameter
             if (!programming || (parameter is ValueParameter<*> && parameter.expression != null)) {
                 if (field.isDirty()) {
-                    ensureVisible(field)
+                    ensureVisible(field.control!!)
                     return false
                 }
             }
@@ -67,7 +63,7 @@ class TaskForm(val task: Task) {
             val field = form.findField(e.parameter)
             if (field != null) {
                 field.showError(e.message)
-                ensureVisible(field)
+                ensureVisible(field.control!!)
             }
 
             return false

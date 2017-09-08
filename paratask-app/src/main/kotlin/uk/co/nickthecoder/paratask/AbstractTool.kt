@@ -134,7 +134,7 @@ abstract class AbstractTool : Tool {
         Platform.runLater {
             val field = toolPane?.parametersPane?.taskForm?.form?.findField(parameter)
             ParaTaskApp.logFocus("AbstractTool.focusOnParameter. field?.focusNext()")
-            field?.focusNext()
+            field?.controlContainer?.focusNext()
         }
     }
 

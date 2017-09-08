@@ -17,41 +17,69 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.Label
-import javafx.scene.layout.Region
-import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.ParameterEvent
-import uk.co.nickthecoder.paratask.parameters.ParameterEventType
-import uk.co.nickthecoder.paratask.parameters.ParameterListener
+import javafx.scene.control.TextField
+import javafx.scene.control.ToggleButton
+import javafx.scene.layout.HBox
+import javafx.scene.layout.StackPane
+import uk.co.nickthecoder.paratask.parameters.*
 
-abstract class ParameterField(val parameter: Parameter) : Region(), ParameterListener {
+abstract class ParameterField(val parameter: Parameter) : ParameterListener {
 
     lateinit var form: FieldParent
 
+    internal var expressionButton: ToggleButton? = null
+
+    internal var expressionField: TextField? = null
+
     val error = Label()
 
-    open var control: Node? = null
-        set(v) {
-            if (field != null) {
-                children.remove(field)
-            }
-            field = v
-            if (v != null) {
-                v.styleClass.add("control")
-                children.add(v)
-            }
-        }
+    var control: Node? = null
+
+    /**
+     * When in programming mode, this will contain the "=" button, and the expression or the control.
+     * Otherwise it is just the control
+     */
+    var controlContainer: Node? = null
 
     open fun build(): ParameterField {
+
+        if (control != null) {
+            throw IllegalStateException("Field has already been built")
+        }
 
         error.isVisible = false
         error.styleClass.add("error")
 
-        children.add(error)
         parameter.parameterListeners.add(this)
 
         control = createControl()
+
+        if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
+            val box = HBox()
+            val stack = StackPane()
+
+            expressionField = TextField()
+            expressionField?.styleClass?.add("expression")
+            expressionButton = ToggleButton("=")
+
+            box.children.addAll(expressionButton, stack)
+            stack.children.addAll(expressionField, control)
+            onExpression()
+
+            if (parameter.expression != null) {
+                expressionButton?.isSelected = true
+            }
+            expressionField?.textProperty()?.bindBidirectional(parameter.expressionProperty)
+            expressionButton?.addEventHandler(ActionEvent.ACTION) { onExpression() }
+
+            controlContainer = box
+        } else {
+            controlContainer = control
+        }
+
         return this
     }
 
@@ -60,9 +88,6 @@ abstract class ParameterField(val parameter: Parameter) : Region(), ParameterLis
     fun showError(message: String) {
         error.text = message
         error.visibleProperty().value = true
-        // Without this, the layout sometimes screwed up. I found this from the GoKo project,
-        // Its TimeLimits preferences did't layout correctly when OK was pressed from a *different* preferences tab.
-        requestLayout()
     }
 
     fun clearError() {
@@ -82,5 +107,15 @@ abstract class ParameterField(val parameter: Parameter) : Region(), ParameterLis
         if (event.type == ParameterEventType.VISIBILITY) {
             form.updateVisibility(this)
         }
+    }
+
+    fun onExpression() {
+        if (expressionButton?.isSelected == true) {
+            expressionField?.text = ""
+        } else {
+            expressionField?.text = null
+        }
+        control?.isVisible = expressionButton?.isSelected == false
+        expressionField?.isVisible = expressionButton?.isSelected == true
     }
 }

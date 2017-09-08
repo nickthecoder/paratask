@@ -31,7 +31,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 
 private val FAKE_NULL = "FAKE_NULL"
 
-class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>) : LabelledField(choiceParameter) {
+class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>) : AbstractLabelledField(choiceParameter) {
 
     private var dirty = false
 

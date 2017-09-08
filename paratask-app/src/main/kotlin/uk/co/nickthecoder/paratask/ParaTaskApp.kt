@@ -59,7 +59,7 @@ class ParaTaskApp : Application() {
             }
 
             initialFunction?.let { it() }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
         }
     }

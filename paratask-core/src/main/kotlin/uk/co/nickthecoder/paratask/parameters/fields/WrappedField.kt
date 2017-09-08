@@ -48,13 +48,13 @@ class WrappedField(val parameterField: ParameterField) : TitledPane() {
                 expressionButton.isSelected = true
                 box.children.add(expressionField)
             } else {
-                box.children.add(parameterField)
+                box.children.add(parameterField.control)
             }
             expressionButton.addEventHandler(ActionEvent.ACTION) { onExpression() }
 
             content = box
         } else {
-            box.children.add(parameterField)
+            box.children.add(parameterField.control)
             content = box
             expressionButton = null
         }
@@ -63,11 +63,11 @@ class WrappedField(val parameterField: ParameterField) : TitledPane() {
     fun onExpression() {
         if (expressionButton?.isSelected == true) {
             box.children.add(expressionField)
-            box.children.remove(parameterField)
+            box.children.remove(parameterField.control)
             expressionField.text = ""
         } else {
             box.children.remove(expressionField)
-            box.children.add(parameterField)
+            box.children.add(parameterField.control)
             expressionField.text = null
         }
     }

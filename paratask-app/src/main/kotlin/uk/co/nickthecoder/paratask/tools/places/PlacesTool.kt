@@ -182,7 +182,7 @@ class PlacesTool : AbstractTableTool<Place>() {
         val field = toolPane?.parametersPane?.taskForm?.form?.findField(fileP)
         Platform.runLater {
             ParaTaskApp.logFocus("PlacesTool.onAddPlacesFile. field?.focusNext()")
-            field?.focusNext()
+            field?.control?.focusNext()
         }
     }
 

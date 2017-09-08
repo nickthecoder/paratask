@@ -23,7 +23,7 @@ import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 
-class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
+class IntField(val intParameter: IntParameter) : AbstractLabelledField(intParameter) {
 
     private var dirty = false
 
@@ -79,7 +79,7 @@ class IntField(val intParameter: IntParameter) : LabelledField(intParameter) {
      * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
      */
     private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
+        val defaultRunnable = control?.scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 

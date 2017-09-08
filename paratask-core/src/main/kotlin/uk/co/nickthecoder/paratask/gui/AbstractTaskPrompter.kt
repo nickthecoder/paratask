@@ -42,7 +42,6 @@ abstract class AbstractTaskPrompter(val task: Task) {
 
     open protected fun close() {
         stage?.hide()
-        taskForm.tidyUp()
     }
 
     open fun build() {

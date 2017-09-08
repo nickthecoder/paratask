@@ -28,7 +28,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import java.time.LocalDate
 
 
-class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter) {
+class DateField(val dateParameter: DateParameter) : AbstractLabelledField(dateParameter) {
 
     val datePicker = DatePicker()
 
@@ -106,7 +106,7 @@ class DateField(val dateParameter: DateParameter) : LabelledField(dateParameter)
      * re-introduces the expected behaviour of the ENTER key (i.e. performing the default button's action).
      */
     private fun processEnter() {
-        val defaultRunnable = scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
+        val defaultRunnable = control?.scene?.accelerators?.get(ApplicationActions.ENTER.keyCodeCombination)
         defaultRunnable?.let { defaultRunnable.run() }
     }
 

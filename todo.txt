@@ -1,9 +1,29 @@
 TODO	
 
+Refactor ParameterField
+	Add style "field" to the new "row"
+ParametersForm.descrendants needs to add others, so that groups still line up).
+	Will probably mean bringing back an interface with all the column and spacing stuff previously removed from FieldParent.
+Do something with FieldParent. Maybe delete it, and send visibility events directly to the parent of the parameter being hidden.
+
+WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
+
+Recompile Goko
+
 
 Look at FieldParent - remove the stuff about Columns, and maybe the spacing too!
+LabelledField should NOT be a Node, but instead have a control, label and error message.
+	It is up to the parent to arrange them.
+	MultipleField may then be merged with BoxedMultipleField as LabelledField can be an interface.
+
+
+Consider sending the visibility event to the parent's listeners as well as the child's???
+	As a new type CHILD_VISIBILITY?
+	Instead of updateVisibility method on FieldParent
 
 ParameterField.form is dodgy. lateinit, and set OUTSIDE of the class!
+
+AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
 

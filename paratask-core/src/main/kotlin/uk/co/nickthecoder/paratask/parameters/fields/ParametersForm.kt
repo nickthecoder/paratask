@@ -35,36 +35,34 @@ import uk.co.nickthecoder.paratask.parameters.ParentParameter
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  * This is the base class for GroupParmetersForm and MultipleField.
  */
-open class ParametersForm(val parentParameter: ParentParameter)
-    : Region(), FieldParent, HasChildFields {
+class ParametersForm(val parentParameter: ParentParameter)
+    : Region(), FieldParent {
 
-    override final val columns = mutableListOf<FieldColumn>()
+    private val columns = mutableListOf<FieldColumn>()
 
-    override val fieldSet = mutableListOf<ParameterField>()
+    // TODO Try to do away with this
+    //override val fieldSet = mutableListOf<ParameterField>()
+
+    val formFields = mutableListOf<FormField>()
 
     init {
         styleClass.add("parametersForm")
 
         columns.add(FieldColumn(0.0)) // Label
-        columns.add(FieldColumn(0.0)) // Expression button
         columns.add(FieldColumn()) // Main Control
         styleClass.add("form")
     }
 
-    fun tidyUp() {
-        fieldSet.forEach {
-            if (it is ParametersForm) {
-                it.tidyUp()
-            }
-        }
+    override fun iterator(): Iterator<ParameterField> {
+        return formFields.map { it.parameterField }.iterator()
     }
 
-    open fun buildContent() {
+    fun buildContent() {
         buildTop()
         buildChildren()
     }
 
-    open fun buildTop() {
+    fun buildTop() {
         if (parentParameter.description.isNotEmpty()) {
             val textFlow = TextFlow(Text(parentParameter.description))
             textFlow.prefWidth = 500.0
@@ -72,7 +70,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
         }
     }
 
-    open fun buildChildren() {
+    fun buildChildren() {
         var index = 0
         parentParameter.children.forEach { child ->
             addParameter(child, index)
@@ -82,38 +80,34 @@ open class ParametersForm(val parentParameter: ParentParameter)
 
     fun clear() {
         children.clear()
-        fieldSet.clear()
+        formFields.clear()
     }
 
     fun add(node: Node) {
         children.add(node)
     }
 
-    open fun addParameter(parameter: Parameter, index: Int): Node {
+    fun addParameter(parameter: Parameter, index: Int): Node {
 
         //if (parameter.parent == null) {
         //    throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
         //}
         val parameterField = parameter.createField()
+        val formField = FormField(parameterField)
 
         val node = if (parameterField is WrappableField) {
             parameterField.wrapper()
         } else {
-            parameterField
+            formField
         }
 
         children.add(node)
 
         if (parameter.hidden && !parameter.isProgrammingMode()) {
-            if (parameterField is WrappableField) {
-                parameterField.wrapper().isVisible = false
-            } else {
-                parameterField.isVisible = false
-            }
+            node.isVisible = false
         }
-        parameterField.styleClass.add("field-${parameter.name}")
         parameterField.form = this
-        fieldSet.add(parameterField)
+        formFields.add(formField)
 
         return node
     }
@@ -121,11 +115,11 @@ open class ParametersForm(val parentParameter: ParentParameter)
     fun descendants(): List<ParameterField> {
         val list = mutableListOf<ParameterField>()
 
-        fun addThem(form: HasChildFields) {
-            form.fieldSet.forEach {
-                list.add(it)
-                if (it is HasChildFields) {
-                    addThem(it)
+        fun addThem(fieldParent: FieldParent) {
+            fieldParent.forEach { parameterField ->
+                list.add(parameterField)
+                if (parameterField is FieldParent) {
+                    addThem(parameterField)
                 }
             }
 
@@ -143,7 +137,7 @@ open class ParametersForm(val parentParameter: ParentParameter)
         return null
     }
 
-    override val spacing: Double
+    val spacing: Double
         get() = spacingProperty.get()
 
     /**
@@ -162,19 +156,17 @@ open class ParametersForm(val parentParameter: ParentParameter)
         }
     }
 
-    override fun calculateColumnPreferences() {
+    fun calculateColumnPreferences() {
         columns.forEach {
             it.prefWidth = 0.0
             it.minWidth = 0.0
         }
-        fieldSet.forEach { field ->
-            if (field is LabelledField) {
-                field.adjustColumnWidths(columns)
-            }
+        formFields.forEach { formField ->
+            formField.adjustColumnWidths(columns)
         }
     }
 
-    override fun calculateColumnWidths() {
+    fun calculateColumnWidths() {
         var totalStretch: Double = 0.0
         var prefWidth = -spacing
         columns.forEach {
@@ -192,10 +184,8 @@ open class ParametersForm(val parentParameter: ParentParameter)
                 it.width = it.prefWidth + extra * it.stretch / totalStretch
             }
         }
-        fieldSet.forEach { field ->
-            if (field is LabelledField) {
-                field.adjustColumnWidths(columns)
-            }
+        formFields.forEach { formField ->
+            formField.adjustColumnWidths(columns)
         }
     }
 
@@ -249,9 +239,6 @@ open class ParametersForm(val parentParameter: ParentParameter)
         val w = width - insets.left - insets.right
 
         getManagedChildren<Node>().filter { it.isVisible }.forEach {
-            //if ( it !is ParameterField ) {
-            //    println( "Laying out ${it} using width ${w}")
-            //}
             val h = it.prefHeight(w)
             layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
             y += h + spacing
@@ -292,6 +279,135 @@ open class ParametersForm(val parentParameter: ParentParameter)
             return sum
         }
 
+    }
+
+    inner class FormField(val parameterField: ParameterField) : Region() {
+
+        init {
+            if (parameterField is LabelledField) {
+                children.add(parameterField.label)
+            }
+            children.add(parameterField.controlContainer)
+        }
+
+        override fun computeMinHeight(width: Double): Double {
+            val controlHeight = parameterField.controlContainer?.minHeight(width) ?: 0.0
+            val both = if (parameterField is LabelledField) {
+                Math.max(parameterField.label.minHeight(width), controlHeight)
+            } else {
+                controlHeight
+            }
+            val err = if (parameterField.error.isVisible) parameterField.error.minHeight(width) else 0.0
+
+            return both + err
+        }
+
+        override fun computePrefHeight(width: Double): Double {
+            val controlHeight = parameterField.controlContainer?.prefHeight(width) ?: 0.0
+            val both = if (parameterField is LabelledField) {
+                Math.max(parameterField.label.prefHeight(width), controlHeight)
+            } else {
+                controlHeight
+            }
+            val err = if (parameterField.error.isVisible) parameterField.error.prefHeight(width) else 0.0
+
+            return both + err
+        }
+
+        override fun computeMinWidth(height: Double): Double {
+
+            val lab = if (parameterField is LabelledField) {
+                if (parameterField.label.isVisible) {
+                    parameterField.label.minWidth(height) + spacing
+                } else {
+                    0.0
+                }
+            } else {
+                0.0
+            }
+            val main = lab + spacing + (parameterField.controlContainer?.minWidth(height) ?: 0.0)
+            val err = if (parameterField.error.isVisible) parameterField.error.minWidth(height) else 0.0
+            return Math.max(main, err)
+        }
+
+        override fun computePrefWidth(height: Double): Double {
+
+            val lab = if (parameterField is LabelledField) {
+                if (parameterField.label.isVisible) {
+                    parameterField.label.prefWidth(height) + spacing
+                } else {
+                    0.0
+                }
+            } else {
+                0.0
+            }
+            val main = lab + spacing + (parameterField.controlContainer?.prefWidth(height) ?: 0.0)
+            val err = if (parameterField.error.isVisible) parameterField.error.prefWidth(height) else 0.0
+            return Math.max(main, err)
+        }
+
+        override fun layoutChildren() {
+            val controlContainer = parameterField.controlContainer!!
+
+            calculateColumnPreferences()
+            calculateColumnWidths()
+
+            var x = insets.left
+            var y = insets.top
+
+            var h: Double
+            var w: Double
+
+            // Label
+            val labelHeight: Double
+            if (parameterField is LabelledField) {
+                if (parameterField.label.isVisible) {
+                    h = Math.max(parameterField.label.prefHeight(-1.0), controlContainer.prefHeight(-1.0) ?: 0.0)
+                    w = columns[0].width
+                    layoutInArea(parameterField.label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
+                    x += w + spacing
+                    labelHeight = parameterField.label.prefHeight(-1.0)
+                } else {
+                    labelHeight = 0.0
+                }
+            } else {
+                labelHeight = 0.0
+            }
+
+            // Control
+            val stretchy = parameterField.parameter.isStretchy() || parameterField.expressionButton?.isSelected == true
+            h = controlContainer.prefHeight(-1.0)
+            w = if (stretchy) columns[1].width else controlContainer.prefWidth(h)
+            layoutInArea(controlContainer, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
+
+            // Error message
+            y += Math.max(labelHeight, controlContainer.prefHeight(-1.0) ?: 0.0)
+            x = insets.left
+
+            if (parameterField.error.isVisible) {
+                h = parameterField.error.prefHeight(-1.0)
+                w = width - insets.left - insets.right
+                layoutInArea(parameterField.error, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
+            }
+        }
+
+        protected fun adjustColumnWidth(column: FieldColumn, node: Node) {
+            val prefW = node.prefWidth(-1.0)
+            val minW = node.minWidth(-1.0)
+            if (column.prefWidth < prefW) {
+                column.prefWidth = prefW
+            }
+            if (column.minWidth < minW) {
+                column.minWidth = minW
+            }
+        }
+
+        fun adjustColumnWidths(columns: List<FieldColumn>) {
+            if (parameterField is LabelledField) {
+                adjustColumnWidth(columns[0], parameterField.label)
+            }
+            adjustColumnWidth(columns[1], parameterField.controlContainer!!)
+        }
     }
 
 }

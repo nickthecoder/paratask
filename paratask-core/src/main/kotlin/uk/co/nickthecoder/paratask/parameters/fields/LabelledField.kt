@@ -17,168 +17,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.event.ActionEvent
-import javafx.geometry.HPos
-import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.control.ToggleButton
 import javafx.scene.control.Tooltip
 import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
-abstract class LabelledField(parameter: Parameter, label: String = parameter.label) : ParameterField(parameter) {
+interface LabelledField {
 
-    var label: Node = Label(label)
+    var label: Node
 
-    protected var expressionButton: ToggleButton? = null
+    fun replaceLabel(node: Node)
+}
 
-    protected var expressionField: TextField? = null
+abstract class AbstractLabelledField(parameter: Parameter, label: String = parameter.label)
+    : ParameterField(parameter), LabelledField {
 
-    override var control: Node?
-        get() = super.control
-        set(v) {
-            super.control = v
-            if (parameter is ValueParameter<*> && parameter.expression != null) {
-                v?.isVisible = false
-            }
-        }
+    override var label: Node = Label(label)
 
-    override fun build(): LabelledField {
+    override fun build(): AbstractLabelledField {
         super.build()
 
         if (parameter.description != "") {
             (label as Label).tooltip = Tooltip(parameter.description)
         }
 
-        children.add(this.label)
-        styleClass.add("field")
-
-        if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
-            expressionField = TextField()
-            expressionField?.styleClass?.add("expression")
-            expressionButton = ToggleButton("=")
-            expressionField?.textProperty()?.bindBidirectional(parameter.expressionProperty)
-
-            children.add(expressionButton)
-
-            if (parameter.expression != null) {
-                expressionButton?.isSelected = true
-                children.add(expressionField)
-            }
-            expressionButton?.addEventHandler(ActionEvent.ACTION) { onExpression() }
-        }
         return this
     }
 
     /**
      * When placed in a MultipleField, the label is replaced by "+" and "-" buttons
      */
-    fun replaceLabel(node: Node) {
-        children.remove(label)
+    override fun replaceLabel(node: Node) {
         label = node
-        children.add(label)
-    }
-
-
-    private fun controlOrExpression(): Node? = if (expressionButton?.isSelected == true) expressionField else control
-
-    override fun computeMinHeight(width: Double): Double {
-        val both = Math.max(label.minHeight(width), controlOrExpression()?.minHeight(width) ?: 0.0)
-        val err = if (error.isVisible) error.minHeight(width) else 0.0
-
-        return both + err
-    }
-
-    override fun computePrefHeight(width: Double): Double {
-        val both = Math.max(label.prefHeight(width), controlOrExpression()?.prefHeight(width) ?: 0.0)
-        val allThree = Math.max(both, expressionButton?.prefHeight(width) ?: 0.0)
-        val err = if (error.isVisible) error.prefHeight(width) else 0.0
-
-        return allThree + err
-    }
-
-    override fun computeMinWidth(height: Double): Double {
-
-        val lab = if (label.isVisible) label.minWidth(height) + form.spacing else 0.0
-        val button = expressionButton?.minWidth(height) ?: 0.0
-        val allThree = lab + button + (controlOrExpression()?.minWidth(height) ?: 0.0)
-        val err = if (error.isVisible) error.minWidth(height) else 0.0
-        return Math.max(allThree, err)
-    }
-
-    override fun computePrefWidth(height: Double): Double {
-
-        val lab = if (label.isVisible) label.prefWidth(height) + form.spacing else 0.0
-        val button = expressionButton?.prefWidth(height) ?: 0.0
-        val allThree = lab + button + (controlOrExpression()?.prefWidth(height) ?: 0.0)
-        val err = if (error.isVisible) error.prefWidth(height) else 0.0
-        return Math.max(allThree, err)
-    }
-
-    override fun layoutChildren() {
-        val controlOrExp = controlOrExpression()
-
-        form.calculateColumnPreferences()
-        form.calculateColumnWidths()
-
-        var x = insets.left
-        var y = insets.top
-
-        var h: Double
-        var w: Double
-
-        // Label
-        if (label.isVisible) {
-            h = Math.max(label.prefHeight(-1.0), controlOrExp?.prefHeight(-1.0) ?: 0.0)
-            w = form.columns[0].width
-            layoutInArea(label, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
-            x += w + form.spacing
-        }
-
-        // Expression Button
-        expressionButton?.let {
-            w = form.columns[1].width
-            h = it.prefHeight(-1.0)
-            layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
-            x += w + form.spacing
-        }
-
-        // Control
-        controlOrExp?.let {
-            val stretchy = parameter.isStretchy() || expressionButton?.isSelected == true
-            h = it.prefHeight(-1.0)
-            w = if (stretchy) form.columns[2].width else it.prefWidth(h)
-            layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
-        }
-
-        // Error message
-        y += Math.max(label.prefHeight(-1.0), controlOrExp?.prefHeight(-1.0) ?: 0.0)
-        x = insets.left
-
-        if (error.isVisible) {
-            h = error.prefHeight(-1.0)
-            w = width - insets.left - insets.right
-            layoutInArea(error, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
-        }
-    }
-
-    protected fun adjustColumnWidth(column: FieldColumn, node: Node) {
-        val prefW = node.prefWidth(-1.0)
-        val minW = node.minWidth(-1.0)
-        if (column.prefWidth < prefW) {
-            column.prefWidth = prefW
-        }
-        if (column.minWidth < minW) {
-            column.minWidth = minW
-        }
-    }
-
-    fun adjustColumnWidths(columns: List<FieldColumn>) {
-        adjustColumnWidth(columns[0], label)
-        expressionButton?.let { adjustColumnWidth(columns[1], it) }
-        controlOrExpression()?.let { adjustColumnWidth(columns[2], it) }
     }
 
     fun showOrClearError(message: String?) {
@@ -189,14 +59,4 @@ abstract class LabelledField(parameter: Parameter, label: String = parameter.lab
         }
     }
 
-    fun onExpression() {
-        if (expressionButton?.isSelected == true) {
-            children.add(expressionField)
-            expressionField?.text = ""
-        } else {
-            children.remove(expressionField)
-            expressionField?.text = null
-        }
-        control?.isVisible = expressionButton?.isSelected == false
-    }
 }

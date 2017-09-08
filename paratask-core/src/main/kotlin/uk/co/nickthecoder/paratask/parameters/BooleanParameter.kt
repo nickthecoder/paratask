@@ -22,6 +22,7 @@ import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.BooleanComboBoxField
 import uk.co.nickthecoder.paratask.parameters.fields.BooleanField
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class BooleanParameter(
@@ -65,7 +66,7 @@ class BooleanParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): LabelledField {
+    override fun createField(): ParameterField {
         if (comboBoxLabels != null) {
             return BooleanComboBoxField(this).build()
         } else {

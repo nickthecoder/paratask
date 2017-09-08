@@ -25,7 +25,8 @@ import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.focusNext
 
-class StringField(val stringParameter: StringParameter) : LabelledField(stringParameter) {
+class StringField(val stringParameter: StringParameter)
+    : AbstractLabelledField(stringParameter) {
 
     lateinit var textField: TextInputControl
 

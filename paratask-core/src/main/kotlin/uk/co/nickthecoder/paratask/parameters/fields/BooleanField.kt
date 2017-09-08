@@ -22,7 +22,7 @@ import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 
 class BooleanField(val booleanParameter: BooleanParameter)
-    : LabelledField(booleanParameter, label = if (booleanParameter.labelOnLeft) booleanParameter.label else "") {
+    : AbstractLabelledField(booleanParameter, label = if (booleanParameter.labelOnLeft) booleanParameter.label else "") {
 
     override fun createControl(): CheckBox {
 
