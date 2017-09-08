@@ -1,12 +1,20 @@
 TODO	
 
 Refactor ParameterField
-	Add style "field" to the new "row"
-ParametersForm.descrendants needs to add others, so that groups still line up).
-	Will probably mean bringing back an interface with all the column and spacing stuff previously removed from FieldParent.
+
+HeaderRow : Implement updateField and iterator
+
+Get error messages working.
+
 Do something with FieldParent. Maybe delete it, and send visibility events directly to the parent of the parameter being hidden.
 
-WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
+Make ParameterField an interface
+
+Try to do away with WrappedField
+	Instead, anything that wants to be wrapped, just make controlContainer the TitlePane and the label to null
+		may need to do away with LabelledField, and instead just use "if label != null"
+	WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
+
 
 Recompile Goko
 

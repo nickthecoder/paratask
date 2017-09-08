@@ -36,6 +36,8 @@ class ToolParametersPane_Impl(override val tool: Tool)
             toolPane.halfTab.pushHistory(tool)
             tool.taskRunner.run()
             return true
+        } else {
+            toolPane.parametersTab.isSelected = true
         }
         return false
     }

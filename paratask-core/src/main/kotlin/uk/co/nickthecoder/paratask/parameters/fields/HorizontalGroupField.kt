@@ -29,7 +29,7 @@ class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
         hBox.children.clear()
         groupParameter.children.forEach { child ->
             val field = child.createField()
-            field.form = this
+            field.fieldParent = this
 
             val container: Node
             if (groupParameter.labelsAbove) {
@@ -53,7 +53,7 @@ class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
         }
     }
 
-    override fun updateVisibility(field: ParameterField) {
+    override fun updateField(field: ParameterField) {
         var visibleIndex = 0
         fieldSet.forEachIndexed { index, f ->
             val container = containers[index]

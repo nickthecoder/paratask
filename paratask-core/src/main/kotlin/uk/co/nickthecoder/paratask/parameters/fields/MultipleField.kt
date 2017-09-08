@@ -103,7 +103,6 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         } else if (result is WrappedField) {
             result.addAndRemoveButtons(buttons)
         }
-
         return result
     }
 

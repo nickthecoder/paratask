@@ -106,7 +106,7 @@ class ParametersForm(val parentParameter: ParentParameter)
         if (parameter.hidden && !parameter.isProgrammingMode()) {
             node.isVisible = false
         }
-        parameterField.form = this
+        parameterField.fieldParent = this
         formFields.add(formField)
 
         return node
@@ -249,6 +249,15 @@ class ParametersForm(val parentParameter: ParentParameter)
         return cssMetaDataList
     }
 
+    override fun updateField(field: ParameterField) {
+        requestLayout()
+        findFormField(field)?.requestLayout()
+    }
+
+    fun findFormField(parameterField: ParameterField): FormField? {
+        return formFields.firstOrNull { it.parameterField === parameterField }
+    }
+
     companion object {
 
         internal val cssMetaDataList = mutableListOf<CssMetaData<out Styleable, *>>()
@@ -287,7 +296,7 @@ class ParametersForm(val parentParameter: ParentParameter)
             if (parameterField is LabelledField) {
                 children.add(parameterField.label)
             }
-            children.add(parameterField.controlContainer)
+            children.addAll(parameterField.controlContainer, parameterField.error)
         }
 
         override fun computeMinHeight(width: Double): Double {
@@ -310,7 +319,6 @@ class ParametersForm(val parentParameter: ParentParameter)
                 controlHeight
             }
             val err = if (parameterField.error.isVisible) parameterField.error.prefHeight(width) else 0.0
-
             return both + err
         }
 

@@ -22,8 +22,10 @@ import javafx.css.StyleConverter
 import javafx.css.Styleable
 import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
+import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.control.Button
+import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
@@ -32,11 +34,13 @@ import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.fields.FieldParent
 import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
-class HeaderRow(vararg parameters: Parameter) : Region() {
+class HeaderRow(vararg parameters: Parameter)
+    : Region(), FieldParent {
 
     val boxedFields = mutableListOf<BoxedField>()
 
@@ -55,9 +59,10 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
     fun add(parameter: Parameter): HeaderRow {
 
         if (parameter.parent == null) {
-            throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
+            throw ParameterException(parameter, "Does not have a parent")
         }
         val parameterField = parameter.createField()
+        parameterField.fieldParent = this
         val boxedField = BoxedField(parameterField)
 
         boxedFields.add(boxedField)
@@ -81,6 +86,7 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
     val spacing: Double
         get() = spacingProperty.get()
 
+    val ySpacing = 4.0
 
     override fun getCssMetaData(): List<CssMetaData<out Styleable, *>> {
         return cssMetaDataList
@@ -91,24 +97,21 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
         fireTabToFocusNext()
     }
 
-    companion object {
+    var error: Label? = null
 
-        internal val cssMetaDataList = mutableListOf<CssMetaData<out Styleable, *>>()
-
-        internal val SPACING = object : CssMetaData<HeaderRow, Number>("-fx-spacing", StyleConverter.getSizeConverter(), 0.0) {
-            override fun isSettable(form: HeaderRow): Boolean = true
-
-            override fun getStyleableProperty(form: HeaderRow): StyleableDoubleProperty {
-                return form.spacingProperty
-            }
+    override fun updateField(field: ParameterField) {
+        if (field.error.isVisible) {
+            error = field.error
+            children.add(error)
+        } else if (error == field.error) {
+            children.remove(error)
+            error = null
         }
+        requestLayout()
+    }
 
-        init {
-            Pane.getClassCssMetaData().forEach {
-                cssMetaDataList.add(it)
-            }
-            cssMetaDataList.add(SPACING)
-        }
+    override fun iterator(): Iterator<ParameterField> {
+        return boxedFields.map { it.parameterField }.iterator()
     }
 
     /**
@@ -137,13 +140,16 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
     }
 
     override fun computePrefHeight(w: Double): Double {
-        return boxedFields.map { it.prefHeight(-1.0) }.max() ?: 0.0
+        val err = error?.prefHeight(-1.0) ?: -ySpacing
+        return err + ySpacing + (boxedFields.map { it.prefHeight(-1.0) }.max() ?: 0.0)
     }
 
     override fun layoutChildren() {
 
         var x = insets.left
-        val y = insets.top
+        var y = insets.top
+
+        var maxHeight = 0.0
 
         var stretchies = 0
         var slack = width - insets.left - insets.right + spacing
@@ -175,21 +181,54 @@ class HeaderRow(vararg parameters: Parameter) : Region() {
 
             layoutInArea(boxedField, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
             x += w + spacing
+            if (h > maxHeight) {
+                maxHeight = h
+            }
         }
 
         goButton?.let {
             layoutInArea(it, x, y, it.prefWidth(-1.0), prefHeight(-1.0), 0.0, HPos.LEFT, VPos.TOP)
         }
+
+        error?.let {
+            y += maxHeight + ySpacing
+            x = insets.left
+            layoutInArea(it, x, y, it.prefWidth(-1.0), it.prefHeight(-1.0), 0.0, HPos.LEFT, VPos.TOP)
+        }
     }
+
+
+    companion object {
+
+        internal val cssMetaDataList = mutableListOf<CssMetaData<out Styleable, *>>()
+
+        internal val SPACING = object : CssMetaData<HeaderRow, Number>("-fx-spacing", StyleConverter.getSizeConverter(), 0.0) {
+            override fun isSettable(form: HeaderRow): Boolean = true
+
+            override fun getStyleableProperty(form: HeaderRow): StyleableDoubleProperty {
+                return form.spacingProperty
+            }
+        }
+
+        init {
+            Pane.getClassCssMetaData().forEach {
+                cssMetaDataList.add(it)
+            }
+            cssMetaDataList.add(SPACING)
+        }
+    }
+
 
     class BoxedField(val parameterField: ParameterField) : BorderPane() {
 
         init {
             if (parameterField is LabelledField) {
                 left = parameterField.label
+                setAlignment(left, Pos.CENTER_LEFT)
+                left.styleClass.add("right-pad-label")
             }
             center = parameterField.control
-            styleClass.add("labelled-field")
+            setAlignment(center, Pos.CENTER_LEFT)
         }
     }
 }

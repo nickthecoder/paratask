@@ -28,7 +28,7 @@ import uk.co.nickthecoder.paratask.parameters.*
 
 abstract class ParameterField(val parameter: Parameter) : ParameterListener {
 
-    lateinit var form: FieldParent
+    lateinit var fieldParent: FieldParent
 
     internal var expressionButton: ToggleButton? = null
 
@@ -87,11 +87,17 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
 
     fun showError(message: String) {
         error.text = message
-        error.visibleProperty().value = true
+        if (!error.isVisible) {
+            error.isVisible = true
+            fieldParent.updateField(this)
+        }
     }
 
     fun clearError() {
-        error.visibleProperty().value = false
+        if (error.isVisible) {
+            error.isVisible = false
+            fieldParent.updateField(this)
+        }
     }
 
     open fun isDirty(): Boolean = false
@@ -105,7 +111,7 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
             updateEnabled()
         }
         if (event.type == ParameterEventType.VISIBILITY) {
-            form.updateVisibility(this)
+            fieldParent.updateField(this)
         }
     }
 

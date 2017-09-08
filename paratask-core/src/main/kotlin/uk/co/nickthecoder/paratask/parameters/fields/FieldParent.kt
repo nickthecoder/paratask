@@ -19,15 +19,5 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 interface FieldParent : Iterable<ParameterField> {
 
-    fun updateVisibility(field: ParameterField) {
-        if (field is WrappableField) {
-            field.wrapper().isVisible = !field.parameter.hidden
-            field.wrapper().parent.requestLayout()
-        } else {
-            // TODO Fix this
-            //field.isVisible = !field.parameter.hidden
-            field.control?.parent?.requestLayout()
-        }
-    }
-
+    fun updateField(field: ParameterField)
 }
