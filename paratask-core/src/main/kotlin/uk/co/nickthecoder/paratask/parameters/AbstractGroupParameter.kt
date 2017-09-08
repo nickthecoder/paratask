@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.parameters.fields.GroupField
+import uk.co.nickthecoder.paratask.parameters.fields.HorizontalGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class AbstractGroupParameter(
@@ -28,7 +31,16 @@ abstract class AbstractGroupParameter(
     : AbstractParameter(name, description = description, label = label),
         ParentParameter {
 
+    internal var horizontal: Boolean = false
+
+    internal var labelsAbove: Boolean = true
+
     override val children = mutableListOf<Parameter>()
+
+    fun layoutHorizontal( labelsAbove : Boolean ) {
+        horizontal = true
+        this.labelsAbove = labelsAbove
+    }
 
     fun descendants(): List<Parameter> {
         val result = mutableListOf<Parameter>()
@@ -131,6 +143,14 @@ abstract class AbstractGroupParameter(
     }
 
     override fun isStretchy(): Boolean = true
+
+    override fun createField(): ParameterField {
+        if (horizontal) {
+            return HorizontalGroupField(this).build()
+        } else {
+            return GroupField(this).build()
+        }
+    }
 
     protected fun copyChildren(copy: AbstractGroupParameter) {
         children.forEach { child ->

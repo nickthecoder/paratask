@@ -29,12 +29,6 @@ open class GroupParameter(
         name = name,
         label = label,
         description = description) {
-    /**
-     * Creates a GroupField, which contains fields for each of this group's children
-     * When used to group parameters it is wrapped in a box, but when used as the root,
-     * it is not wrapped in a box.
-     */
-    override fun createField(): GroupField = GroupField(this).build() as GroupField
 
     override fun errorMessage(): String? = null
 
@@ -42,6 +36,9 @@ open class GroupParameter(
 
     override fun copy(): GroupParameter {
         val result = GroupParameter(name = name, label = label, description = description)
+        if (horizontal) {
+            result.layoutHorizontal(labelsAbove)
+        }
         copyChildren(result)
         return result
     }

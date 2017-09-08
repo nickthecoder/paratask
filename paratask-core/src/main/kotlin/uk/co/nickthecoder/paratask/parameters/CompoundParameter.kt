@@ -19,22 +19,25 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.parameters.fields.GroupField
 import uk.co.nickthecoder.paratask.util.escapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
 import uk.co.nickthecoder.paratask.util.unescapeNL
 
 /**
- * Very similar to a GroupParameter, but is specially designed to be used as the children of MultipleParameter
+ * Very similar to a GroupParameter, but is specially designed to be used as the children of MultipleParameter,
+ * which requires its children to be ValueParameters.
  *
  * The 'value' of this parameter is always 'this'.
  */
-open class CompoundParameter(name: String,
-                        override val label: String = name.uncamel(),
-                        description: String = "")
+open class CompoundParameter(
+        name: String,
+        override val label: String = name.uncamel(),
+        description: String = "")
 
-    : AbstractGroupParameter(name = name, label = label, description = description), ValueParameter<CompoundParameter> {
-
+    : ValueParameter<CompoundParameter>, AbstractGroupParameter(
+        name = name,
+        label = label,
+        description = description) {
 
     override val expressionProperty = SimpleStringProperty()
 
@@ -90,15 +93,11 @@ open class CompoundParameter(name: String,
         }
     }
 
-    override fun createField(): GroupField {
-        val result = GroupField(this)
-        result.build()
-        return result
-    }
-
-
     override fun copy(): CompoundParameter {
         val result = CompoundParameter(name = name, label = label, description = description)
+        if (horizontal) {
+            result.layoutHorizontal(labelsAbove)
+        }
         copyChildren(result)
         return result
     }

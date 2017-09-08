@@ -34,16 +34,16 @@ class BooleanComboBoxField(val booleanParameter: BooleanParameter) : LabelledFie
 
     val comboBox = ComboBox<String>()
 
-    val bodgeProperty = object : SimpleObjectProperty <String>("") {
+    val bodgeProperty = object : SimpleObjectProperty <String?>("") {
         override fun get(): String = getLabelForValue(booleanParameter.value)
-        override fun set(value: String) {
+        override fun set(value: String?) {
             booleanParameter.value = getValueForLabel(value)
         }
     }
 
     fun getLabelForValue(value: Boolean?) = booleanParameter.comboBoxLabels!![value] ?: ""
 
-    fun getValueForLabel(label: String): Boolean? {
+    fun getValueForLabel(label: String?): Boolean? {
         for (entry in booleanParameter.comboBoxLabels!!) {
             if (label == entry.value) {
                 return entry.key

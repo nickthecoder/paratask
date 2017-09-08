@@ -34,7 +34,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     val andP = BooleanParameter("and", label = "", value = true)
 
-    val conditionsP = MultipleParameter("conditions") { Condition() }
+    val conditionsP = MultipleParameter("conditions", boxed = true) { Condition() }
 
 
     var groovyScript: GroovyScript? = null
@@ -151,15 +151,16 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     inner class Condition : CompoundParameter("condition") {
 
-        val columnP = ChoiceParameter<Column<R, *>?>("column", value = null, required = true)
-        val testP = ChoiceParameter<Test?>("test", value = null, required = true)
-        val booleanValueP = BooleanParameter("booleanValue", label = "Value", required = false)
-        val intValueP = IntParameter("intValue", label = "Value")
-        val doubleValueP = DoubleParameter("doubleValue", label = "Value")
-        val stringValueP = StringParameter("stringValue", label = "Value")
-        val regexValueP = RegexParameter("regexValue", label = "Value")
+        val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = true)
+        val testP = ChoiceParameter<Test?>("test", label = "", value = null, required = true)
+        val booleanValueP = BooleanParameter("booleanValue", label = "", required = false)
+        val intValueP = IntParameter("intValue", label = "")
+        val doubleValueP = DoubleParameter("doubleValue", label = "")
+        val stringValueP = StringParameter("stringValue", label = "")
+        val regexValueP = RegexParameter("regexValue", label = "")
 
         init {
+            layoutHorizontal(false)
             addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP)
 
             booleanValueP.hidden = true

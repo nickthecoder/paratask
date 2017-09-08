@@ -54,7 +54,8 @@ class WrappedField(val parameterField: ParameterField) : TitledPane() {
 
             content = box
         } else {
-            content = parameterField
+            box.children.add(parameterField)
+            content = box
             expressionButton = null
         }
     }

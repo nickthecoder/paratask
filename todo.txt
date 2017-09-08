@@ -1,7 +1,9 @@
-TODO
+TODO	
 
-Regex test
-	Need a RegexParameter
+
+Look at FieldParent - remove the stuff about Columns, and maybe the spacing too!
+
+ParameterField.form is dodgy. lateinit, and set OUTSIDE of the class!
 
 Save/Load filters in Project files
 
@@ -10,6 +12,9 @@ Add a rowfilter attribute to TableResults
 	Right click a column heading to edit a single column's filter.
 		Push History, but no need to re-run the tool when applying a column filter.
 	Maybe right click the Code's heading to edit the Groovy filter in place.
+	When a ResultTab is selected, update the FilterTab if there is one to indicate if filtering has occurred.
+		"Not Filtered" or "Filtered n of m"
+		OR, all Table results to have a label like "<label> (n)" and change it to "<label> (n of m)"
 
 CompoundParameter : 
 	Allow other layouts - in particular, a HBox

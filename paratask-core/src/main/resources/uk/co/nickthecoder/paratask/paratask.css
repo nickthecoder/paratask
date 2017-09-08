@@ -14,6 +14,18 @@
     -fx-padding: 0px;
 }
 
+.horizontal-group {
+    -fx-spacing: 10px;
+}
+
+.horizontal-group > .vbox {
+    -fx-spacing: 4px;
+}
+
+.padded-box {
+    -fx-padding: 10px;
+}
+
 .task-prompter > .scroll-pane {
     -fx-background-insets: 0;
     -fx-padding: 0;
