@@ -46,6 +46,11 @@ class HeaderRow(vararg parameters: Parameter)
 
     private var goButton: Button? = null
 
+    /**
+     * A single error label beneath the fields. If more than one field is in error, only one error is displayed.
+     */
+    var error: Label? = null
+
     init {
         styleClass.add("header-row")
         addAll(*parameters)
@@ -97,13 +102,11 @@ class HeaderRow(vararg parameters: Parameter)
         fireTabToFocusNext()
     }
 
-    var error: Label? = null
-
     override fun updateField(field: ParameterField) {
-        if (field.error.isVisible) {
+        if ((!field.parameter.hidden) && field.error.isVisible && field.error !== error) {
             error = field.error
             children.add(error)
-        } else if (error == field.error) {
+        } else if (error === field.error) {
             children.remove(error)
             error = null
         }

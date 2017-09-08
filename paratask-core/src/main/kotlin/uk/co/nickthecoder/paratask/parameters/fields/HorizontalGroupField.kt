@@ -10,10 +10,19 @@ import uk.co.nickthecoder.paratask.parameters.ParameterListener
 class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
     : AbstractLabelledField(groupParameter), FieldParent, ParameterListener {
 
+    val vBox = VBox()
+
     val hBox = HBox()
 
     val fieldSet = mutableListOf<ParameterField>()
     val containers = mutableListOf<Node>()
+
+    /**
+     * A single error label beneath the fields. If more than one field is in error, only one error is displayed.
+     * Named error2 to avoid clashing with the error for THIS ParameterField (which will never be used, as
+     * GroupParameters are never in error).
+     */
+    var error2: Label? = null
 
     override fun iterator(): Iterator<ParameterField> {
         return fieldSet.iterator()
@@ -22,7 +31,9 @@ class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
     override fun createControl(): Node {
         buildContent()
         hBox.styleClass.add("horizontal-group")
-        return hBox
+        vBox.children.add(hBox)
+        vBox.styleClass.add("horizontal-container")
+        return vBox
     }
 
     fun buildContent() {
@@ -67,6 +78,14 @@ class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
                 }
                 visibleIndex++
             }
+        }
+
+        if ((!field.parameter.hidden) && field.error.isVisible && field.error !== error2) {
+            error2 = field.error
+            vBox.children.add(error2)
+        } else if (error2 === field.error) {
+            vBox.children.remove(error2)
+            error2 = null
         }
     }
 
