@@ -26,11 +26,9 @@ import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
  * This is the Field created by GroupParameter and is also use in TaskForm to prompt a whole Task.
  */
 open class GroupField(groupParameter: AbstractGroupParameter)
-    : ParameterField(groupParameter), WrappableField {
+    : ParameterField(groupParameter, isBoxed = true) {
 
     val parametersForm = ParametersForm(groupParameter)
-
-    private var wrappedField: WrappedField? = null
 
     override fun createControl(): ParametersForm {
         buildContent()
@@ -41,14 +39,4 @@ open class GroupField(groupParameter: AbstractGroupParameter)
         parametersForm.buildContent()
     }
 
-    override fun wrapper(): WrappedField {
-        if (wrappedField == null) {
-            wrappedField = WrappedField(this)
-        }
-        return wrappedField!!
-    }
-
-    override fun addAndRemoveButtons(buttons: Node) {
-        wrapper().addAndRemoveButtons(buttons)
-    }
 }

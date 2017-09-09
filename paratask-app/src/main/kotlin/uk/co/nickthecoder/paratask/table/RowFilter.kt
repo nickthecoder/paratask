@@ -34,7 +34,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     val andP = BooleanParameter("and", label = "", value = true)
 
-    val conditionsP = MultipleParameter("conditions", boxed = true) { Condition() }
+    val conditionsP = MultipleParameter("conditions", isBoxed = true) { Condition() }
 
 
     var groovyScript: GroovyScript? = null

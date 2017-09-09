@@ -29,8 +29,8 @@ interface LabelledField {
     var labelNode: Node
 }
 
-abstract class AbstractLabelledField(parameter: Parameter, label: String = parameter.label)
-    : ParameterField(parameter), LabelledField {
+abstract class AbstractLabelledField(parameter: Parameter, label: String = parameter.label, isBoxed: Boolean = false)
+    : ParameterField(parameter, isBoxed = isBoxed), LabelledField {
 
     private var stack = StackPane()
 

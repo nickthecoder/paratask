@@ -2,14 +2,13 @@ TODO
 
 Refactor ParameterField
 
-Missing "+" "-" buttons
-
 Make ParameterField an interface
 
 Try to do away with WrappedField
+	box.styleClass.add("padded-box")
+Delete BoxedMultipleField - just use the boolean.
 	Instead, anything that wants to be wrapped, just make controlContainer the TitlePane and the label to null
 		may need to do away with LabelledField, and instead just use "if label != null"
-	WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
 
 Recompile Goko
 

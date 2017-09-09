@@ -68,10 +68,8 @@ class ParametersForm(val parentParameter: ParentParameter)
     }
 
     fun buildChildren() {
-        var index = 0
         parentParameter.children.forEach { child ->
-            addParameter(child, index)
-            index++
+            addParameter(child)
         }
     }
 
@@ -84,24 +82,15 @@ class ParametersForm(val parentParameter: ParentParameter)
         children.add(node)
     }
 
-    fun addParameter(parameter: Parameter, index: Int): ParameterField {
+    fun addParameter(parameter: Parameter): ParameterField {
 
-        //if (parameter.parent == null) {
-        //    throw ParameterException(parameter, "Does not have a parent so cannot be added to a form")
-        //}
         val parameterField = parameter.createField()
         val formField = FormField(parameterField)
 
-        val node = if (parameterField is WrappableField) {
-            parameterField.wrapper()
-        } else {
-            formField
-        }
-
-        children.add(node)
+        children.add(formField)
 
         if (parameter.hidden && !parameter.isProgrammingMode()) {
-            node.isVisible = false
+            parameterField.control?.isVisible = false
         }
         parameterField.fieldParent = this
         formFields.add(formField)
@@ -368,7 +357,7 @@ class ParametersForm(val parentParameter: ParentParameter)
             val labelHeight: Double
             if (parameterField is LabelledField) {
                 if (parameterField.labelNode.isVisible) {
-                    h = Math.max(parameterField.labelNode.prefHeight(-1.0), controlContainer.prefHeight(-1.0) ?: 0.0)
+                    h = Math.max(parameterField.labelNode.prefHeight(-1.0), controlContainer.prefHeight(-1.0))
                     w = columns[0].width
                     layoutInArea(parameterField.labelNode, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
                     x += w + spacing
@@ -383,11 +372,19 @@ class ParametersForm(val parentParameter: ParentParameter)
             // Control
             val stretchy = parameterField.parameter.isStretchy() || parameterField.expressionButton?.isSelected == true
             h = controlContainer.prefHeight(-1.0)
-            w = if (stretchy) columns[1].width else controlContainer.prefWidth(h)
+            w = if (stretchy) {
+                if (parameterField is LabelledField) {
+                    columns[1].width
+                } else {
+                    width - insets.left - insets.right
+                }
+            } else {
+                controlContainer.prefWidth(h)
+            }
             layoutInArea(controlContainer, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
             // Error message
-            y += Math.max(labelHeight, controlContainer.prefHeight(-1.0) ?: 0.0)
+            y += Math.max(labelHeight, controlContainer.prefHeight(-1.0))
             x = insets.left
 
             if (parameterField.error.isVisible) {
@@ -397,7 +394,7 @@ class ParametersForm(val parentParameter: ParentParameter)
             }
         }
 
-        protected fun adjustColumnWidth(column: FieldColumn, node: Node) {
+        private fun adjustColumnWidth(column: FieldColumn, node: Node) {
             val prefW = node.prefWidth(-1.0)
             val minW = node.minWidth(-1.0)
             if (column.prefWidth < prefW) {

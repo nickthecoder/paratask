@@ -31,7 +31,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : AbstractLabelledField(multipleParameter) {
+    : AbstractLabelledField(multipleParameter, isBoxed = multipleParameter.isBoxed) {
 
     val addButton = Button("+")
 
@@ -43,9 +43,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         shortcuts.add(ApplicationActions.NEW_ITEM) { extraValue() }
     }
 
-    override fun createControl(): ParametersForm {
-
-        control = parametersForm
+    override fun createControl(): Node {
 
         addButton.onAction = EventHandler {
             extraValue()
@@ -61,7 +59,15 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         }
 
         buildContent()
-        return parametersForm
+        if (isBoxed) {
+            val box = HBox()
+            box.styleClass.add("padded-box")
+            box.children.add(parametersForm)
+            control = box
+        } else {
+            control = parametersForm
+        }
+        return control!!
     }
 
     fun buildContent() {
@@ -78,7 +84,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
     fun addParameter(parameter: Parameter, index: Int): ParameterField {
 
-        val result = parametersForm.addParameter(parameter, index)
+        val result = parametersForm.addParameter(parameter)
 
         val buttons = HBox()
 
@@ -98,7 +104,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         removeButton.tooltip = Tooltip("Remove")
         buttons.children.add(removeButton)
 
-        result.plusMinusButtons( buttons)
+        result.plusMinusButtons(buttons)
 
         return result
     }

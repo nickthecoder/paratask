@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.BoxedMultipleField
 import uk.co.nickthecoder.paratask.parameters.fields.MultipleField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.escapeNL
@@ -34,7 +33,7 @@ class MultipleParameter<T>(
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE,
         value: List<T>? = null,
-        val boxed: Boolean = false,
+        val isBoxed: Boolean = false,
         val factory: () -> ValueParameter<T>)
 
     : AbstractParameter(
@@ -149,11 +148,7 @@ class MultipleParameter<T>(
 
     override fun createField(): ParameterField {
         val result: ParameterField
-        if (boxed) {
-            result = BoxedMultipleField(this)
-        } else {
-            result = MultipleField(this)
-        }
+        result = MultipleField(this)
         result.build()
         return result
     }
@@ -223,7 +218,7 @@ class MultipleParameter<T>(
 
     override fun copy(): MultipleParameter<T> {
         val result = MultipleParameter<T>(name = name, label = label, description = description, value = value,
-                minItems = minItems, maxItems = maxItems, boxed = boxed, factory = factory)
+                minItems = minItems, maxItems = maxItems, isBoxed = isBoxed, factory = factory)
 
         value.forEach {
             result.addValue(it)

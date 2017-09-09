@@ -21,13 +21,11 @@ import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.*
 
 class OneOfField(val oneOfParameter: OneOfParameter)
-    : ParameterField(oneOfParameter), WrappableField {
+    : ParameterField(oneOfParameter, isBoxed = true) {
 
     val choiceP = ChoiceParameter("choose", label = oneOfParameter.message, value = oneOfParameter.value)
 
     val parametersForm = ParametersForm(oneOfParameter)
-
-    private var wrappedField: WrappedField? = null
 
     override fun createControl(): ParametersForm {
 
@@ -47,11 +45,11 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         parametersForm.clear()
         parametersForm.buildTop()
 
-        parametersForm.addParameter(choiceP, 0)
+        parametersForm.addParameter(choiceP)
 
         oneOfParameter.value?.let { child: Parameter ->
             if (!child.hidden) {
-                parametersForm.addParameter(child, 1)
+                parametersForm.addParameter(child)
             }
         }
     }
@@ -60,16 +58,5 @@ class OneOfField(val oneOfParameter: OneOfParameter)
         if (event.type == ParameterEventType.VALUE) {
             buildContent()
         }
-    }
-
-    override fun wrapper(): WrappedField {
-        if (wrappedField == null) {
-            wrappedField = WrappedField(this)
-        }
-        return wrappedField!!
-    }
-
-    override fun addAndRemoveButtons(buttons: Node) {
-        wrapper().addAndRemoveButtons(buttons)
     }
 }

@@ -22,12 +22,14 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.parameters.*
 
-abstract class ParameterField(val parameter: Parameter) : ParameterListener {
+abstract class ParameterField(val parameter: Parameter, val isBoxed: Boolean = false)
+    : ParameterListener {
 
     lateinit var fieldParent: FieldParent
 
@@ -45,6 +47,8 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
      */
     var controlContainer: Node? = null
 
+    private var box: TitledPane? = null
+
     open fun build(): ParameterField {
 
         if (control != null) {
@@ -57,6 +61,9 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
         parameter.parameterListeners.add(this)
 
         control = createControl()
+
+        // Either just 'control', or a HBox containing the "=" button, and the control and expression text field.
+        val expControl: Node
 
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
             val box = HBox()
@@ -81,11 +88,21 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
             expressionField?.isVisible = parameter.expression != null
             control?.isVisible = parameter.expression == null
 
-            controlContainer = box
+            expControl = box
         } else {
-            controlContainer = control
+            expControl = control!!
         }
 
+        if (isBoxed) {
+            val box = TitledPane()
+            box.text = parameter.label
+            box.isCollapsible = false
+            box.content = expControl
+            controlContainer = box
+            this.box = box
+        } else {
+            controlContainer = expControl
+        }
         return this
     }
 
@@ -112,7 +129,12 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
         control?.isDisable = !parameter.enabled
     }
 
-    open fun plusMinusButtons(buttons: Node) {}
+    open fun plusMinusButtons(buttons: Node) {
+        box?.let {
+            it.graphic = buttons
+            return
+        }
+    }
 
     override fun parameterChanged(event: ParameterEvent) {
         if (event.type == ParameterEventType.ENABLED) {
