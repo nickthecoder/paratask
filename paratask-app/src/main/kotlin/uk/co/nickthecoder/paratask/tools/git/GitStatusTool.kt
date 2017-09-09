@@ -45,23 +45,17 @@ class GitStatusTool :
 
     private val exampleRow = GitStatusRow(File(""), ' ', ' ')
 
-    override val rowFilter = RowFilter(this, createColumns(), exampleRow, "Git Status Filter")
-
     init {
         taskD.addParameters(directoryP)
-    }
-
-    override fun createColumns(): List<Column<GitStatusRow, *>> {
-        val columns = mutableListOf<Column<GitStatusRow, *>>()
 
         columns.add(Column<GitStatusRow, Char>("index") { it.index })
         columns.add(Column<GitStatusRow, Char>("work") { it.work })
         columns.add(Column<GitStatusRow, String>("name") { it.file.name })
         columns.add(BaseFileColumn<GitStatusRow>("path", base = directory!!) { it.file })
         columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
-
-        return columns
     }
+
+    override val rowFilter = RowFilter(this, columns, exampleRow, "Git Status Filter")
 
     override fun createHeader() = Header(this, directoryP)
 

@@ -40,18 +40,11 @@ class CustomToolListTool : ListTableTool<CustomToolRow>() {
 
     init {
         taskD.addParameters(toolsP)
-    }
 
-
-    override fun createColumns(): List<Column<CustomToolRow, *>> {
-        val columns = mutableListOf<Column<CustomToolRow, *>>()
-        
         columns.add(Column<CustomToolRow, String>("label") { row -> row.label })
         columns.add(Column<CustomToolRow, ImageView>("icon", label = "") { row -> ImageView(row.tool.icon) })
         columns.add(Column<CustomToolRow, String>("toolName") { row -> row.tool.taskD.name.uncamel() })
         columns.add(Column<CustomToolRow, String>("parameters") { row -> parameters(row.tool) })
-
-        return columns
     }
 
     override fun run() {

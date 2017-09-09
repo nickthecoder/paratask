@@ -70,6 +70,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     init {
         taskD.addParameters(directoriesP, extensionsP, showProcessedFilesP, depthP, headerTestP, withinLinesP, headerTextP)
+
+        columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
+        columns.add(Column<ProcessedFile, String>("name") { it.file.name })
+        columns.add(Column<ProcessedFile, File>("path") { it.file })
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -83,16 +87,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             return
         }
         super.loadProblem(parameterName, expression, stringValue)
-    }
-
-    override fun createColumns(): List<Column<ProcessedFile, *>> {
-        val columns = mutableListOf<Column<ProcessedFile, *>>()
-
-        columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
-        columns.add(Column<ProcessedFile, String>("name") { it.file.name })
-        columns.add(Column<ProcessedFile, File>("path") { it.file })
-
-        return columns
     }
 
     override fun attached(toolPane: ToolPane) {

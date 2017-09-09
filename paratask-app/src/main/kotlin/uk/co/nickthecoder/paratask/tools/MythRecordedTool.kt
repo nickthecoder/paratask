@@ -57,11 +57,6 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
 
         taskD.addParameters(serverP, databaseP, userP, passwordP, directoryP)
         directoryP.aliases.add("direcotry")
-    }
-
-
-    override fun createColumns(): List<Column<RecordedLine, *>> {
-        val columns = mutableListOf<Column<RecordedLine, *>>()
 
         columns.add(Column<RecordedLine, String>("channel") { it.channel })
         columns.add(Column<RecordedLine, Date>("start") { it.start })
@@ -69,8 +64,6 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         columns.add(Column<RecordedLine, String>("subtitle") { it.subtitle })
         columns.add(Column<RecordedLine, String>("description") { it.description })
         columns.add(BaseFileColumn<RecordedLine>("file", base = directoryP.value!!) { it.file })
-
-        return columns
     }
 
     override fun run() {

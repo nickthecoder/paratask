@@ -89,18 +89,11 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
                 wholeNameP.value = true
             }
         }
-    }
-
-    override fun createColumns(): List<Column<WrappedFile, *>> {
-
-        val columns = mutableListOf<Column<WrappedFile, *>>()
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
         columns.add(BaseFileColumn<WrappedFile>("file", base = directory!!) { it.file })
         columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
-
-        return columns
     }
 
     override fun customCheck() {

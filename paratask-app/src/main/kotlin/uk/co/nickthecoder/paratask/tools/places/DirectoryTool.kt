@@ -37,7 +37,10 @@ import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
-import uk.co.nickthecoder.paratask.util.*
+import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.util.HasDirectory
+import uk.co.nickthecoder.paratask.util.currentDirectory
+import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
 class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
@@ -96,6 +99,11 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         taskD.addParameters(
                 directoriesP, treeRootP, placesFileP, filterGroupP, foldSingleDirectoriesP,
                 thumbnailer.heightP, thumbnailer.directoryThumbnailP, autoRefreshP)
+
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
+        columns.add(FileNameColumn<WrappedFile>("name") { it.file })
+        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
+        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -113,17 +121,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
         } else {
             super.loadProblem(parameterName, expression, stringValue)
         }
-    }
-
-    fun createColumns(): List<Column<WrappedFile, *>> {
-        val columns = mutableListOf<Column<WrappedFile, *>>()
-
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
-        columns.add(FileNameColumn<WrappedFile>("name") { it.file })
-        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
-        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
-
-        return columns
     }
 
     override fun run() {
@@ -259,7 +256,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
 
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
-        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, createColumns(), canClose = true) {
+        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, columns, canClose = true) {
 
         init {
             dropHelper = DirectoryDropHelper(directory)

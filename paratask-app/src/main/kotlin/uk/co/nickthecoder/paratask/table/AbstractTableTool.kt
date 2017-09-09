@@ -24,6 +24,8 @@ import uk.co.nickthecoder.paratask.AbstractTool
 
 abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {
 
+    val columns = mutableListOf<Column<R, *>>()
+
     open fun updateRow(tableRow: TableRow<WrappedRow<R>>, row: R) {
     }
 

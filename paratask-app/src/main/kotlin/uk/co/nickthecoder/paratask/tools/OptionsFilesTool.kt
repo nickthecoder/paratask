@@ -41,15 +41,9 @@ class OptionsFilesTool : ListTableTool<FileOptions>(), HasDirectory {
 
     init {
         taskD.addParameters(directoryP)
-    }
-
-    override fun createColumns(): List<Column<FileOptions, *>> {
-        val columns = mutableListOf<Column<FileOptions, *>>()
 
         columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension })
         columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.file.path })
-
-        return columns
     }
 
     override fun createHeader() = Header(this, directoryP)

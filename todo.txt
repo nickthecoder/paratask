@@ -4,19 +4,6 @@ Continuing the ParameterField refactoring.
 
 Recompile Goko
 
-
-Look at FieldParent - remove the stuff about Columns, and maybe the spacing too!
-LabelledField should NOT be a Node, but instead have a control, label and error message.
-	It is up to the parent to arrange them.
-	MultipleField may then be merged with BoxedMultipleField as LabelledField can be an interface.
-
-
-Consider sending the visibility event to the parent's listeners as well as the child's???
-	As a new type CHILD_VISIBILITY?
-	Instead of updateVisibility method on FieldParent
-
-ParameterField.form is dodgy. lateinit, and set OUTSIDE of the class!
-
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
@@ -30,14 +17,8 @@ Add a rowfilter attribute to TableResults
 		"Not Filtered" or "Filtered n of m"
 		OR, all Table results to have a label like "<label> (n)" and change it to "<label> (n of m)"
 
-CompoundParameter : 
-	Allow other layouts - in particular, a HBox
-		Use it for RowFilter's condition parameters
-
 Allow filtering by right clicking a column header
 	The TableResults will need to have a filter for this to work (shares the same instance as the Tool).
-
-Change createColumns to a val columns, to prevent multiple copies of the columns being created.
 
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.

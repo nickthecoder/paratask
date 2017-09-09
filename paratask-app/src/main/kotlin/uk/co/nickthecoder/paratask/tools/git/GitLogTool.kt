@@ -28,7 +28,6 @@ import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class GitLogTool :
         AbstractCommandTool<GitLogRow>(),
@@ -70,22 +69,15 @@ class GitLogTool :
 
     private val exampleRow = GitLogRow("", "", "", "")
 
-    override val rowFilter = RowFilter(this, createColumns(), exampleRow, "Git Log Filter")
-
     init {
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
-    }
-
-
-    override fun createColumns(): List<Column<GitLogRow, *>> {
-        val columns = mutableListOf<Column<GitLogRow, *>>()
 
         columns.add(Column<GitLogRow, String>("date") { it.date })
         columns.add(Column<GitLogRow, String>("message", width = 400) { it.message })
         columns.add(Column<GitLogRow, String>("author") { it.author })
-
-        return columns
     }
+
+    override val rowFilter = RowFilter(this, columns, exampleRow, "Git Log Filter")
 
     override fun createCommand(): OSCommand {
 

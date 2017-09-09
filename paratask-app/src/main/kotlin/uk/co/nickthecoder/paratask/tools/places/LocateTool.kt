@@ -10,7 +10,6 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.FileNameColumn
 import uk.co.nickthecoder.paratask.table.ModifiedColumn
 import uk.co.nickthecoder.paratask.table.SizeColumn
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
@@ -40,6 +39,11 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
     init {
         taskD.addParameters(patternsP, matchWholePathP, checkFileExitsP, regularExpressionP, caseSensitiveP, maxItemsP)
         taskD.unnamedParameter = patternsP
+
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "", width = thumbnailer.heightP.value!! + 8) { thumbnailer.thumbnailImageView(it.file) })
+        columns.add(Column<WrappedFile, String>("path") { it.file.path })
+        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
+        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
 
     override fun createHeader() = Header(this, patternsP)
@@ -71,18 +75,6 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
         patternsP.value.forEach { command.addArgument(it) }
 
         return command
-    }
-
-    override fun createColumns(): List<Column<WrappedFile, *>> {
-
-        val columns = mutableListOf<Column<WrappedFile, *>>()
-
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "", width = thumbnailer.heightP.value!! + 8) { thumbnailer.thumbnailImageView(it.file) })
-        columns.add(Column<WrappedFile, String>("path") { it.file.path })
-        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
-        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
-
-        return columns
     }
 
     override fun processLine(line: String) {

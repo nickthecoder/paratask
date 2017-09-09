@@ -23,11 +23,12 @@ import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
-import uk.co.nickthecoder.paratask.util.FileLister
+import uk.co.nickthecoder.paratask.misc.AutoRefresh
+import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.misc.*
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
@@ -50,18 +51,11 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
     init {
         taskD.addParameters(directoryP, filenameP)
-    }
-
-
-    override fun createColumns(): List<Column<Place, *>> {
-        val columns = mutableListOf<Column<Place, *>>()
 
         columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
         columns.add(Column<Place, String>("label") { it.label })
         columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
         columns.add(Column<Place, String>("location") { it.resource.path })
-
-        return columns
     }
 
     override fun createHeader() = Header(this, directoryP, filenameP)

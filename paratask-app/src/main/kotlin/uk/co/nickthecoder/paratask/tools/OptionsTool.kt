@@ -45,8 +45,6 @@ class OptionsTool() : ListTableTool<Option>(), SingleRowFilter<Option> {
     val file: File
         get() = File(directoryP.value, optionsNameP.value + ".json")
 
-    override val rowFilter = RowFilter<Option>(this, createColumns(), GroovyOption())
-
     constructor(tool: Tool) : this() {
         optionsNameP.value = tool.optionsName
         directoryP.value = Preferences.optionsPath[0]
@@ -64,12 +62,6 @@ class OptionsTool() : ListTableTool<Option>(), SingleRowFilter<Option> {
 
     init {
         taskD.addParameters(optionsNameP, directoryP)
-    }
-
-    override val resultsName = "Options"
-
-    override fun createColumns(): List<Column<Option, *>> {
-        val columns = mutableListOf<Column<Option, *>>()
 
         columns.add(Column<Option, String>("code") { it.code })
         columns.add(Column<Option, String>("label") { it.label })
@@ -85,9 +77,12 @@ class OptionsTool() : ListTableTool<Option>(), SingleRowFilter<Option> {
                 else -> ""
             }
         })
-
-        return columns
     }
+
+    override val rowFilter = RowFilter<Option>(this, columns, GroovyOption())
+
+    override val resultsName = "Options"
+
 
     override fun createHeader() = Header(this,
             HeaderRow(directoryP),

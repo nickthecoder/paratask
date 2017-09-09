@@ -31,14 +31,10 @@ class HomeTool : ListTableTool<Tool>() {
     override val taskD = TaskDescription("home", description = "Lists available Tools")
 
 
-    override fun createColumns(): List<Column<Tool, *>> {
-        val columns = mutableListOf<Column<Tool, *>>()
-
+    init {
         columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })
         columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name.uncamel() })
         columns.add(Column<Tool, String>("description") { tool -> tool.taskD.description })
-
-        return columns
     }
 
     override fun run() {

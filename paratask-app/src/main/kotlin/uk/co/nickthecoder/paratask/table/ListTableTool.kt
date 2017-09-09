@@ -17,10 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.table
 
-import javafx.scene.control.TableRow
-import javafx.scene.control.TableView
-import javafx.scene.input.DragEvent
-import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.project.Results
 
 abstract class ListTableTool<R : Any> : AbstractTableTool<R>() {
@@ -33,10 +29,8 @@ abstract class ListTableTool<R : Any> : AbstractTableTool<R>() {
         return TableResults(this, list, resultsName, columns)
     }
 
-    abstract fun createColumns(): List<Column<R, *>>
-
     override fun createResults(): List<Results> {
-        return listOf(createTableResults(createColumns()))
+        return listOf(createTableResults(columns))
     }
 
 }

@@ -31,6 +31,13 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
         taskD.addParameters(choiceP)
         choiceP.addParameters(allP, commandP, userP, groupP, pidsP)
+
+        columns.add(Column<ProcessRow, Int>("pid", width = 100) { it.pid })
+        columns.add(Column<ProcessRow, String>("user", width = 100) { it.user })
+        columns.add(Column<ProcessRow, String>("group", width = 100) { it.group })
+        columns.add(Column<ProcessRow, Double>("CPU", width = 70, label = "%CPU") { it.cpu })
+        columns.add(Column<ProcessRow, Double>("memory", width = 70, label = "%Mem") { it.mem })
+        columns.add(Column<ProcessRow, String>("command", width = 700) { it.cmd })
     }
 
     override fun createCommand(): OSCommand {
@@ -61,19 +68,6 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
         }
         return command
-    }
-
-    override fun createColumns(): List<Column<ProcessRow, *>> {
-        val columns = mutableListOf<Column<ProcessRow, *>>()
-
-        columns.add(Column<ProcessRow, Int>("pid", width = 100) { it.pid })
-        columns.add(Column<ProcessRow, String>("user", width = 100) { it.user })
-        columns.add(Column<ProcessRow, String>("group", width = 100) { it.group })
-        columns.add(Column<ProcessRow, Double>("CPU", width = 70, label = "%CPU") { it.cpu })
-        columns.add(Column<ProcessRow, Double>("memory", width = 70, label = "%Mem") { it.mem })
-        columns.add(Column<ProcessRow, String>("command", width = 700) { it.cmd })
-
-        return columns
     }
 
     private val linePattern = Pattern.compile("^([^ ]*) ++([^ ]*) ++([^ ]*) ++([^ ]*) ++([^ ]*) ++(.*)$")

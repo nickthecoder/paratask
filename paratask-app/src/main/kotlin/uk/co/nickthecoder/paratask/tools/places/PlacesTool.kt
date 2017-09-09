@@ -54,6 +54,11 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     init {
         taskD.addParameters(filesP)
+
+        columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
+        columns.add(Column<Place, String>("label") { it.label })
+        columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
+        columns.add(Column<Place, String>("location") { it.resource.path })
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -69,18 +74,6 @@ class PlacesTool : AbstractTableTool<Place>() {
         }
         super<AbstractTableTool>.loadProblem(parameterName, expression, stringValue)
     }
-
-    fun createColumns(): List<Column<Place, *>> {
-        val columns = mutableListOf<Column<Place, *>>()
-
-        columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
-        columns.add(Column<Place, String>("label") { it.label })
-        columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
-        columns.add(Column<Place, String>("location") { it.resource.path })
-
-        return columns
-    }
-
 
     override fun createResults(): List<Results> {
         return filesP.innerParameters.filter { it.value != null }.map { fileP ->
@@ -192,7 +185,8 @@ class PlacesTool : AbstractTableTool<Place>() {
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns(), canClose = true) {
+            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, canClose = true) {
+        
         init {
             autoRefresh.watch(placesFile.file)
         }

@@ -19,13 +19,13 @@ package uk.co.nickthecoder.paratask.tools.git
 
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
@@ -52,16 +52,9 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
 
     init {
         taskD.addParameters(directoryP, commitP, compareToP)
-    }
-
-
-    override fun createColumns(): List<Column<WrappedFile, *>> {
-        val columns = mutableListOf<Column<WrappedFile, *>>()
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
         columns.add(BaseFileColumn<WrappedFile>("path", base = directory!!) { it.file })
-
-        return columns
     }
 
     override fun createCommand(): OSCommand {

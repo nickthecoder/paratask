@@ -39,14 +39,8 @@ class IncludesTool : ListTableTool<String>() {
 
     init {
         taskD.addParameters(optionsNameP, directoryP)
-    }
-
-    override fun createColumns() : List<Column<String,*>> {
-        val columns = mutableListOf<Column<String,*>>()
 
         columns.add(Column<String, String>("include") { it })
-
-        return columns
     }
 
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
