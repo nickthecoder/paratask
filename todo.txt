@@ -2,7 +2,6 @@ TODO
 
 Refactor ParameterField
 
-Edit an option = layout is really screwed up.
 Missing "+" "-" buttons
 
 Make ParameterField an interface
@@ -11,7 +10,6 @@ Try to do away with WrappedField
 	Instead, anything that wants to be wrapped, just make controlContainer the TitlePane and the label to null
 		may need to do away with LabelledField, and instead just use "if label != null"
 	WrappedField has a "=" button and expression field. Reuse the ones on ParameterField.
-Check expressions.
 
 Recompile Goko
 

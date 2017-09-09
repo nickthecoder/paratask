@@ -17,38 +17,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
+import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.parameters.Parameter
 
 interface LabelledField {
 
-    var label: Node
-
-    fun replaceLabel(node: Node)
+    var labelNode: Node
 }
 
 abstract class AbstractLabelledField(parameter: Parameter, label: String = parameter.label)
     : ParameterField(parameter), LabelledField {
 
-    override var label: Node = Label(label)
+    private var stack = StackPane()
+
+    private var label = Label(label)
+
+    override var labelNode: Node = stack
 
     override fun build(): AbstractLabelledField {
         super.build()
 
+        stack.children.add(label)
+        stack.alignment = Pos.CENTER_LEFT
+
         if (parameter.description != "") {
-            (label as Label).tooltip = Tooltip(parameter.description)
+            label.tooltip = Tooltip(parameter.description)
         }
 
         return this
     }
 
-    /**
-     * When placed in a MultipleField, the label is replaced by "+" and "-" buttons
-     */
-    override fun replaceLabel(node: Node) {
-        label = node
+    override fun plusMinusButtons(buttons: Node) {
+        stack.children.clear()
+        stack.children.add(buttons)
     }
 
     fun showOrClearError(message: String?) {

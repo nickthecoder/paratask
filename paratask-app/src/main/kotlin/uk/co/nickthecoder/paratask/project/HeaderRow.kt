@@ -226,7 +226,7 @@ class HeaderRow(vararg parameters: Parameter)
 
         init {
             if (parameterField is LabelledField) {
-                left = parameterField.label
+                left = parameterField.labelNode
                 setAlignment(left, Pos.CENTER_LEFT)
                 left.styleClass.add("right-pad-label")
             }

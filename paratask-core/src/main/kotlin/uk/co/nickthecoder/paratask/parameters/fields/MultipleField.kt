@@ -76,7 +76,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         }
     }
 
-    fun addParameter(parameter: Parameter, index: Int): Node {
+    fun addParameter(parameter: Parameter, index: Int): ParameterField {
 
         val result = parametersForm.addParameter(parameter, index)
 
@@ -98,11 +98,8 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         removeButton.tooltip = Tooltip("Remove")
         buttons.children.add(removeButton)
 
-        if (result is LabelledField) {
-            result.replaceLabel(buttons)
-        } else if (result is WrappedField) {
-            result.addAndRemoveButtons(buttons)
-        }
+        result.plusMinusButtons( buttons)
+
         return result
     }
 

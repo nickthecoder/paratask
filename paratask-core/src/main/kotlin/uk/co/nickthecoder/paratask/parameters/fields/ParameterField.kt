@@ -112,6 +112,8 @@ abstract class ParameterField(val parameter: Parameter) : ParameterListener {
         control?.isDisable = !parameter.enabled
     }
 
+    open fun plusMinusButtons(buttons: Node) {}
+
     override fun parameterChanged(event: ParameterEvent) {
         if (event.type == ParameterEventType.ENABLED) {
             updateEnabled()
