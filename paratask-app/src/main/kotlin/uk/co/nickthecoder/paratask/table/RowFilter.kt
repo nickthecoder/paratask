@@ -30,12 +30,11 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     val acceptRejectP = BooleanParameter("acceptReject", label = "", value = true, required = false)
 
-    val groovyScriptP = StringParameter("groovyScript", required = false, rows = 5)
-
-    val andP = BooleanParameter("and", label = "", value = true)
+    val groovyScriptP = StringParameter("groovyScript", label = "Groovy Script (return true or false)", required = false, rows = 5, isBoxed = true)
 
     val conditionsP = MultipleParameter("conditions", isBoxed = true) { Condition() }
 
+    val andP = BooleanParameter("and", label = "", value = true)
 
     var groovyScript: GroovyScript? = null
 
@@ -44,7 +43,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
         acceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
 
-        taskD.addParameters(acceptRejectP, groovyScriptP, andP, conditionsP)
+        taskD.addParameters(acceptRejectP, conditionsP, andP, groovyScriptP)
         groovyScriptP.listen {
             groovyScript = if (groovyScriptP.value.isBlank()) {
                 null

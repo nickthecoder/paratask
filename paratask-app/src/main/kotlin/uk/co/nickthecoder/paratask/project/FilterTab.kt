@@ -42,7 +42,7 @@ class FilterTab(val tool: Tool, val filters: Map<String, RowFilter<*>>) : MinorT
     }
 
     override fun selected() {
-
+        focus()
     }
 
     override fun focus() {

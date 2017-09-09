@@ -35,6 +35,8 @@ interface Parameter : Labelled {
 
     val parameterListeners: ParameterListeners
 
+    val isBoxed : Boolean
+
     var hidden: Boolean
 
     var enabled: Boolean

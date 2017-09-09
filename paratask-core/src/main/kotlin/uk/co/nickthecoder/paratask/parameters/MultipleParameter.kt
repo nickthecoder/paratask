@@ -33,13 +33,14 @@ class MultipleParameter<T>(
         val minItems: Int = 0,
         val maxItems: Int = Int.MAX_VALUE,
         value: List<T>? = null,
-        val isBoxed: Boolean = false,
+        isBoxed: Boolean = false,
         val factory: () -> ValueParameter<T>)
 
     : AbstractParameter(
         name = name,
         label = label,
-        description = description), ValueParameter<List<T>>, ParentParameter {
+        description = description, isBoxed = isBoxed),
+        ValueParameter<List<T>>, ParentParameter {
 
     val innerParameters = mutableListOf<ValueParameter<T>>()
 

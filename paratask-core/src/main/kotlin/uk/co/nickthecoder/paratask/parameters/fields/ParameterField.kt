@@ -25,7 +25,10 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.parameters.*
 
-abstract class ParameterField(val parameter: Parameter, label: String = parameter.label, val isBoxed: Boolean = false)
+abstract class ParameterField(
+        val parameter: Parameter,
+        label: String = parameter.label,
+        val isBoxed: Boolean = parameter.isBoxed)
     : ParameterListener {
 
     private var labelStack = StackPane()

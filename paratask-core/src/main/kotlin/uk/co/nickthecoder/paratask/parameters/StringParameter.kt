@@ -32,7 +32,8 @@ class StringParameter(
         val style: String? = null,
         val stretchy: Boolean = true,
         hidden: Boolean = false,
-        enabled: Boolean = true)
+        enabled: Boolean = true,
+        isBoxed: Boolean = false)
 
     : AbstractValueParameter<String>(
         name = name,
@@ -41,7 +42,8 @@ class StringParameter(
         value = value,
         required = required,
         hidden = hidden,
-        enabled = enabled) {
+        enabled = enabled,
+        isBoxed = isBoxed) {
 
     override val converter = object : StringConverter<String>() {
         override fun fromString(str: String): String? = str
@@ -63,5 +65,5 @@ class StringParameter(
     override fun toString() = "String" + super.toString()
 
     override fun copy() = StringParameter(name = name, label = label, description = description, value = value,
-            required = required, columns = columns, rows = rows, style = style, stretchy = stretchy)
+            required = required, columns = columns, rows = rows, style = style, stretchy = stretchy, isBoxed = isBoxed)
 }

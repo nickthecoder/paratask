@@ -31,7 +31,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : ParameterField(multipleParameter, isBoxed = multipleParameter.isBoxed) {
+    : ParameterField(multipleParameter) {
 
     val addButton = Button("+")
 

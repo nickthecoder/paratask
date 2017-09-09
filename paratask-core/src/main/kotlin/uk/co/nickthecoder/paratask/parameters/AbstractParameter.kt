@@ -22,7 +22,8 @@ abstract class AbstractParameter(
         override val label: String,
         override val description: String,
         hidden: Boolean = false,
-        enabled: Boolean = true)
+        enabled: Boolean = true,
+        override val isBoxed: Boolean = false)
 
     : Parameter {
 
