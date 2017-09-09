@@ -35,14 +35,13 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.fields.FieldParent
-import uk.co.nickthecoder.paratask.parameters.fields.LabelledField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
 class HeaderRow(vararg parameters: Parameter)
     : Region(), FieldParent {
 
-    val boxedFields = mutableListOf<BoxedField>()
+    val boxedFields = mutableListOf<PaddedField>()
 
     private var goButton: Button? = null
 
@@ -68,7 +67,7 @@ class HeaderRow(vararg parameters: Parameter)
         }
         val parameterField = parameter.createField()
         parameterField.fieldParent = this
-        val boxedField = BoxedField(parameterField)
+        val boxedField = PaddedField(parameterField)
 
         boxedFields.add(boxedField)
         children.add(boxedField)
@@ -222,10 +221,10 @@ class HeaderRow(vararg parameters: Parameter)
     }
 
 
-    class BoxedField(val parameterField: ParameterField) : BorderPane() {
+    class PaddedField(val parameterField: ParameterField) : BorderPane() {
 
         init {
-            if (parameterField is LabelledField) {
+            if (parameterField.hasLabel && parameterField.label.text.isNotBlank()) {
                 left = parameterField.labelNode
                 setAlignment(left, Pos.CENTER_LEFT)
                 left.styleClass.add("right-pad-label")

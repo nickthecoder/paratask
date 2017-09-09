@@ -28,7 +28,7 @@ import uk.co.nickthecoder.paratask.gui.EditTaskPrompter
 import uk.co.nickthecoder.paratask.parameters.TaskParameter
 
 class TaskField(val taskParameter: TaskParameter)
-    : AbstractLabelledField(taskParameter) {
+    : ParameterField(taskParameter) {
 
     private val taskButton = Button("...")
 

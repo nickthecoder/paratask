@@ -28,7 +28,8 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import java.time.LocalDate
 
 
-class DateField(val dateParameter: DateParameter) : AbstractLabelledField(dateParameter) {
+class DateField(val dateParameter: DateParameter)
+    : ParameterField(dateParameter) {
 
     val datePicker = DatePicker()
 

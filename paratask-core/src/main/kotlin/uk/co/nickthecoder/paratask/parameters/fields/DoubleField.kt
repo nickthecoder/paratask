@@ -26,7 +26,7 @@ import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: DoubleAdaptor)
-    : AbstractLabelledField(doubleParameter) {
+    : ParameterField(doubleParameter) {
 
     private var dirty = false
 

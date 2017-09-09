@@ -20,16 +20,19 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.control.TitledPane
-import javafx.scene.control.ToggleButton
+import javafx.scene.control.*
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.parameters.*
 
-abstract class ParameterField(val parameter: Parameter, val isBoxed: Boolean = false)
+abstract class ParameterField(val parameter: Parameter, label: String = parameter.label, val isBoxed: Boolean = false)
     : ParameterListener {
+
+    private var labelStack = StackPane()
+
+    var label = Label(label)
+
+    var labelNode: Node = labelStack
 
     lateinit var fieldParent: FieldParent
 
@@ -49,7 +52,17 @@ abstract class ParameterField(val parameter: Parameter, val isBoxed: Boolean = f
 
     private var box: TitledPane? = null
 
+    open val hasLabel: Boolean
+        get() = !isBoxed
+
     open fun build(): ParameterField {
+
+        labelStack.children.add(label)
+        labelStack.alignment = Pos.CENTER_LEFT
+
+        if (parameter.description != "") {
+            label.tooltip = Tooltip(parameter.description)
+        }
 
         if (control != null) {
             throw IllegalStateException("Field has already been built")
@@ -108,6 +121,14 @@ abstract class ParameterField(val parameter: Parameter, val isBoxed: Boolean = f
 
     abstract fun createControl(): Node
 
+    fun showOrClearError(message: String?) {
+        if (message == null) {
+            clearError()
+        } else {
+            showError(message)
+        }
+    }
+
     fun showError(message: String) {
         error.text = message
         if (!error.isVisible) {
@@ -134,6 +155,8 @@ abstract class ParameterField(val parameter: Parameter, val isBoxed: Boolean = f
             it.graphic = buttons
             return
         }
+        labelStack.children.clear()
+        labelStack.children.add(buttons)
     }
 
     override fun parameterChanged(event: ParameterEvent) {

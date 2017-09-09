@@ -22,17 +22,19 @@ import uk.co.nickthecoder.paratask.parameters.InformationParameter
 
 class InformationField(val informationParameter: InformationParameter) : ParameterField(informationParameter) {
 
-    val label = Label(informationParameter.information)
+    val information = Label(informationParameter.information)
+
+    override val hasLabel = false
 
     override fun createControl(): Label {
 
-        label.isWrapText = true
-        label.styleClass.add("information")
-        control = label
+        information.isWrapText = true
+        information.styleClass.add("information")
+        control = information
 
         informationParameter.styleProperty.addListener({ _, oldValue, newValue ->
-            oldValue?.let { label.styleClass.remove(it) }
-            newValue?.let { label.styleClass.add(it) }
+            oldValue?.let { information.styleClass.remove(it) }
+            newValue?.let { information.styleClass.add(it) }
         })
         return label
     }

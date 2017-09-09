@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 class HorizontalGroupField(val groupParameter: AbstractGroupParameter)
-    : AbstractLabelledField(groupParameter), FieldParent, ParameterListener {
+    : ParameterField(groupParameter), FieldParent, ParameterListener {
 
     val vBox = VBox()
 

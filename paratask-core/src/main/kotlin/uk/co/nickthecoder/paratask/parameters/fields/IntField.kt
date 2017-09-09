@@ -23,7 +23,8 @@ import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.IntParameter
 
-class IntField(val intParameter: IntParameter) : AbstractLabelledField(intParameter) {
+class IntField(val intParameter: IntParameter)
+    : ParameterField(intParameter) {
 
     private var dirty = false
 

@@ -29,7 +29,7 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
  * Renders a BooleanParameter as a ComboBox rather than the usual checkbox
  */
 class BooleanComboBoxField(val booleanParameter: BooleanParameter)
-    : AbstractLabelledField(booleanParameter) {
+    : ParameterField(booleanParameter) {
 
     private var dirty = false
 

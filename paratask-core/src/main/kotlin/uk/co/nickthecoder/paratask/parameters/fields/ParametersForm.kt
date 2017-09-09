@@ -280,7 +280,7 @@ class ParametersForm(val parentParameter: ParentParameter)
     inner class FormField(val parameterField: ParameterField) : Region() {
 
         init {
-            if (parameterField is LabelledField) {
+            if (parameterField.hasLabel) {
                 children.add(parameterField.labelNode)
             }
             children.addAll(parameterField.controlContainer, parameterField.error)
@@ -288,7 +288,7 @@ class ParametersForm(val parentParameter: ParentParameter)
 
         override fun computeMinHeight(width: Double): Double {
             val controlHeight = parameterField.controlContainer?.minHeight(width) ?: 0.0
-            val both = if (parameterField is LabelledField) {
+            val both = if (parameterField.hasLabel) {
                 Math.max(parameterField.labelNode.minHeight(width), controlHeight)
             } else {
                 controlHeight
@@ -300,7 +300,7 @@ class ParametersForm(val parentParameter: ParentParameter)
 
         override fun computePrefHeight(width: Double): Double {
             val controlHeight = parameterField.controlContainer?.prefHeight(width) ?: 0.0
-            val both = if (parameterField is LabelledField) {
+            val both = if (parameterField.hasLabel) {
                 Math.max(parameterField.labelNode.prefHeight(width), controlHeight)
             } else {
                 controlHeight
@@ -311,7 +311,7 @@ class ParametersForm(val parentParameter: ParentParameter)
 
         override fun computeMinWidth(height: Double): Double {
 
-            val lab = if (parameterField is LabelledField) {
+            val lab = if (parameterField.hasLabel) {
                 if (parameterField.labelNode.isVisible) {
                     parameterField.labelNode.minWidth(height) + spacing
                 } else {
@@ -327,7 +327,7 @@ class ParametersForm(val parentParameter: ParentParameter)
 
         override fun computePrefWidth(height: Double): Double {
 
-            val lab = if (parameterField is LabelledField) {
+            val lab = if (parameterField.hasLabel) {
                 if (parameterField.labelNode.isVisible) {
                     parameterField.labelNode.prefWidth(height) + spacing
                 } else {
@@ -355,7 +355,7 @@ class ParametersForm(val parentParameter: ParentParameter)
 
             // Label
             val labelHeight: Double
-            if (parameterField is LabelledField) {
+            if (parameterField.hasLabel) {
                 if (parameterField.labelNode.isVisible) {
                     h = Math.max(parameterField.labelNode.prefHeight(-1.0), controlContainer.prefHeight(-1.0))
                     w = columns[0].width
@@ -373,7 +373,7 @@ class ParametersForm(val parentParameter: ParentParameter)
             val stretchy = parameterField.parameter.isStretchy() || parameterField.expressionButton?.isSelected == true
             h = controlContainer.prefHeight(-1.0)
             w = if (stretchy) {
-                if (parameterField is LabelledField) {
+                if (parameterField.hasLabel) {
                     columns[1].width
                 } else {
                     width - insets.left - insets.right
@@ -406,7 +406,7 @@ class ParametersForm(val parentParameter: ParentParameter)
         }
 
         fun adjustColumnWidths(columns: List<FieldColumn>) {
-            if (parameterField is LabelledField) {
+            if (parameterField.hasLabel) {
                 adjustColumnWidth(columns[0], parameterField.labelNode)
             }
             adjustColumnWidth(columns[1], parameterField.controlContainer!!)

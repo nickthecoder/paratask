@@ -21,7 +21,8 @@ import javafx.event.ActionEvent
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.parameters.ButtonParameter
 
-class ButtonField(val buttonParameter: ButtonParameter) : AbstractLabelledField(buttonParameter) {
+class ButtonField(val buttonParameter: ButtonParameter)
+    : ParameterField(buttonParameter) {
 
     var button: Button? = null
 

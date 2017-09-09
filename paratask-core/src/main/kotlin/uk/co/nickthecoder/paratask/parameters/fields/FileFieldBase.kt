@@ -40,7 +40,7 @@ import java.io.File
 
 
 abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
-    : AbstractLabelledField(valueParameter) {
+    : ParameterField(valueParameter) {
 
     val textField = TextField()
 
