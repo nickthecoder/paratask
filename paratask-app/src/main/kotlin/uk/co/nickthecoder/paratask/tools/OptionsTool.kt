@@ -30,7 +30,7 @@ import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import java.io.File
 
-class OptionsTool() : ListTableTool<Option>(), SingleRowFilter<Option> {
+class OptionsTool() : ListTableTool<Option>() {
 
     override val taskD = TaskDescription("options", description = "Work with Options")
 
@@ -148,9 +148,7 @@ class OptionsTool() : ListTableTool<Option>(), SingleRowFilter<Option> {
 
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
         for (option in optionsFile.listOptions()) {
-            if (rowFilter.accept(option)) {
-                list.add(option)
-            }
+            list.add(option)
         }
 
         includesTool.optionsNameP.value = optionsNameP.value

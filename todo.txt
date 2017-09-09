@@ -1,24 +1,24 @@
 TODO	
 
-Continuing the ParameterField refactoring. 
+Use the new filters on all the tools - make it the default in ListTableTool
+	Places, Directory
 
-Recompile Goko
+Add Info on FilterTab that filters can be edited by right clicking column headers.
+Allow filtering of "Any Column" - convert to string
+Edit groovy RowFilter and "any column" by right clicking code column.
+Put an icon on the column headers that have filters.
+
+DirectoryTool filter on Name is tricky - it is a FILE, not a string. Hmmm.
+	Other tools will have the same problem.
+	Column. New method to return an object for the row filter. FileNameColumn will return File.name (which is a string).
+		Default is to return the same as the regular getter.
+
+DirectoryTool filter on size - its a LONG. Compare it with the DoubleValue.
+No RowFilters for DATES
 
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
-
-Add a rowfilter attribute to TableResults
-	Use FilteredList instead of the tool applying the filter in its run method
-	Right click a column heading to edit a single column's filter.
-		Push History, but no need to re-run the tool when applying a column filter.
-	Maybe right click the Code's heading to edit the Groovy filter in place.
-	When a ResultTab is selected, update the FilterTab if there is one to indicate if filtering has occurred.
-		"Not Filtered" or "Filtered n of m"
-		OR, all Table results to have a label like "<label> (n)" and change it to "<label> (n of m)"
-
-Allow filtering by right clicking a column header
-	The TableResults will need to have a filter for this to work (shares the same instance as the Tool).
 
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.

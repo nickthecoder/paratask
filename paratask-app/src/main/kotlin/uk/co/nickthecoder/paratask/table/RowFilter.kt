@@ -1,9 +1,12 @@
 package uk.co.nickthecoder.paratask.table
 
 import groovy.lang.Binding
+import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.UnthreadedTaskRunner
+import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.Resource
@@ -148,6 +151,60 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         return true
     }
 
+    fun editColumnFilters(column: Column<R, *>, onOk: () -> Unit) {
+        val task = EditColumnFilters(column, onOk)
+        TaskPrompter(task).placeOnStage(Stage())
+    }
+
+    inner class EditColumnFilters(val column: Column<R, *>, val onOk: () -> Unit) : AbstractTask() {
+
+        override val taskRunner = UnthreadedTaskRunner(this)
+
+        override val taskD = TaskDescription("editColumnFilters", width = 700)
+
+        val columnAcceptRejectP = BooleanParameter("acceptReject", label = "", value = acceptRejectP.value, required = false)
+        val columnInfoP = InformationParameter("info", information = "Column ${column.name}")
+        val columnConditionsP = MultipleParameter("conditions", isBoxed = true) {
+            val condition = Condition()
+            condition.columnP.value = column
+            condition.columnP.hidden = true
+            condition
+        }
+        val columnAndP = BooleanParameter("and", label = "", value = andP.value)
+
+        init {
+            columnAcceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
+            columnAndP.asComboBox("AND", "OR")
+
+            taskD.addParameters(columnAcceptRejectP, columnInfoP, columnConditionsP, columnAndP)
+
+            conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value === column }.forEach {
+                @Suppress("UNCHECKED_CAST")
+                val newValue = columnConditionsP.newValue() as RowFilter<R>.Condition
+                newValue.copyValues(it)
+            }
+
+            if (columnConditionsP.value.size == 0) {
+                columnConditionsP.newValue()
+            }
+        }
+
+        override fun run() {
+            acceptRejectP.value = columnAcceptRejectP.value
+            andP.value = columnAndP.value
+            // Remove the conditions for the column
+            conditionsP.value = conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value !== column }
+            // Add the new conditions
+            columnConditionsP.value.filterIsInstance<Condition>().forEach {
+                @Suppress("UNCHECKED_CAST")
+                val newValue = conditionsP.newValue() as RowFilter<R>.Condition
+                newValue.copyValues(it)
+            }
+
+            onOk()
+        }
+    }
+
     inner class Condition : CompoundParameter("condition") {
 
         val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = true)
@@ -175,6 +232,17 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
             columnP.listen { columnPChanged() }
             testP.listen { testPChanged() }
+        }
+
+
+        fun copyValues(other: Condition) {
+            columnP.value = other.columnP.value
+            testP.value = other.testP.value
+            booleanValueP.value = other.booleanValueP.value
+            intValueP.value = other.intValueP.value
+            doubleValueP.value = other.doubleValueP.value
+            stringValueP.value = other.stringValueP.value
+            regexValueP.value = other.regexValueP.value
         }
 
         fun testChoices(tests: List<Test>) {

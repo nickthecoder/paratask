@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.RowFilter
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.File
@@ -51,6 +52,8 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
     val passwordP = StringParameter("password", value = "mythtv")
 
     val directoryP = FileParameter("directory", expectFile = false, value = File("/video/myth/"))
+
+    override val rowFilter = RowFilter<RecordedLine>(this, columns, RecordedLine("", "", Date(0), "", "", "", File("")))
 
     init {
         Class.forName("com.mysql.jdbc.Driver")

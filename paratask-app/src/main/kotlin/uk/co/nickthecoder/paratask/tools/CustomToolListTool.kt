@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class CustomToolListTool : ListTableTool<CustomToolRow>() {
@@ -37,6 +38,8 @@ class CustomToolListTool : ListTableTool<CustomToolRow>() {
         compoundP.addParameters(labelP, toolP)
         compoundP
     }
+
+    override val rowFilter = RowFilter<CustomToolRow>(this, columns, CustomToolRow("", this))
 
     init {
         taskD.addParameters(toolsP)

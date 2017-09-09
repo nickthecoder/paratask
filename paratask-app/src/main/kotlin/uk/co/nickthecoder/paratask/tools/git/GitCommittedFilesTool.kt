@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -44,6 +45,9 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
     val compareToP = StringParameter("compareTo", required = false)
 
     val compareTo by compareToP
+
+    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+
 
     constructor(directory: File, commit: String) : this() {
         directoryP.value = directory

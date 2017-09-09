@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools.git
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -33,6 +34,9 @@ class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
     override val resultsName = "Stash"
 
     override val directory by directoryP
+
+    override val rowFilter = RowFilter<GitStashRow>(this, columns, GitStashRow("","",""))
+
 
     init {
         taskD.addParameters(directoryP)

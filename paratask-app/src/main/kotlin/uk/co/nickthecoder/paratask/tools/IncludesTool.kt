@@ -26,6 +26,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.table.RowFilter
 
 class IncludesTool : ListTableTool<String>() {
 
@@ -36,6 +37,8 @@ class IncludesTool : ListTableTool<String>() {
     val directoryP = FileParameter("directory")
 
     override val resultsName = "Includes"
+
+    override val rowFilter = RowFilter<String>(this, columns, "")
 
     init {
         taskD.addParameters(optionsNameP, directoryP)

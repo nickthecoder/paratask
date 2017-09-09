@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.FileNameColumn
 import uk.co.nickthecoder.paratask.table.NumberColumn
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable
@@ -41,6 +42,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
     override val directory: File?
         get() = grepTask.filesP.value.firstOrNull { it?.isDirectory() == true }
 
+    override val rowFilter = RowFilter<GrepRow>(this, columns, GrepRow(File(""), 0, ""))
 
     init {
         grepTask.contextLinesP.hidden = true

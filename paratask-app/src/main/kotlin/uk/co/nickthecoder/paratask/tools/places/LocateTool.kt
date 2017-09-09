@@ -11,6 +11,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ModifiedColumn
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.table.SizeColumn
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -35,6 +36,9 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
     val maxItemsP = IntParameter("maxItems", required = false, value = null)
 
     val thumbnailer = Thumbnailer()
+
+    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+
 
     init {
         taskD.addParameters(patternsP, matchWholePathP, checkFileExitsP, regularExpressionP, caseSensitiveP, maxItemsP)

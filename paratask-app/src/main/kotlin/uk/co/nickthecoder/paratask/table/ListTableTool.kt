@@ -19,14 +19,14 @@ package uk.co.nickthecoder.paratask.table
 
 import uk.co.nickthecoder.paratask.project.Results
 
-abstract class ListTableTool<R : Any> : AbstractTableTool<R>() {
+abstract class ListTableTool<R : Any> : AbstractTableTool<R>(), SingleRowFilter<R> {
 
     var list = mutableListOf<R>()
 
     open val resultsName = "Results"
 
     open fun createTableResults(columns: List<Column<R, *>>): TableResults<R> {
-        return TableResults(this, list, resultsName, columns)
+        return TableResults(this, list, resultsName, columns, rowFilter)
     }
 
     override fun createResults(): List<Results> {

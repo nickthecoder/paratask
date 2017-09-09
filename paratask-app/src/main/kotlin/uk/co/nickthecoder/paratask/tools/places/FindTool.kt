@@ -25,10 +25,7 @@ import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.table.BaseFileColumn
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.ModifiedColumn
-import uk.co.nickthecoder.paratask.table.SizeColumn
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -67,6 +64,8 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
     val thumbnailer = Thumbnailer()
 
     override val directory by directoryP
+
+    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
 
 
     init {

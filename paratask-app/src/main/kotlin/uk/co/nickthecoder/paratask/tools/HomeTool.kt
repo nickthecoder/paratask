@@ -24,12 +24,14 @@ import uk.co.nickthecoder.paratask.TaskRegistry
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class HomeTool : ListTableTool<Tool>() {
 
     override val taskD = TaskDescription("home", description = "Lists available Tools")
 
+    override val rowFilter = RowFilter<Tool>(this, columns, this)
 
     init {
         columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })

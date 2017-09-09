@@ -25,6 +25,7 @@ import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.table.RowFilter
 import uk.co.nickthecoder.paratask.util.FileLister
 import java.io.File
 
@@ -67,6 +68,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """)
 
     private var containsText by headerTestP
+
+    override val rowFilter = RowFilter<ProcessedFile>(this, columns, ProcessedFile(File("")))
 
     init {
         taskD.addParameters(directoriesP, extensionsP, showProcessedFilesP, depthP, headerTestP, withinLinesP, headerTextP)
@@ -113,17 +116,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
 
     fun isProcessed(file: File): Boolean {
-        val reader = file.bufferedReader()
-        reader.use {
-            for (i in 1..withinLinesP.value!!) {
-                val line = reader.readLine()
-                line ?: return false
-                if (line.contains(containsText)) {
-                    return true
+        try {
+            val reader = file.bufferedReader()
+            reader.use {
+                for (i in 1..withinLinesP.value!!) {
+                    val line = reader.readLine()
+                    line ?: return false
+                    if (line.contains(containsText)) {
+                        return true
+                    }
                 }
             }
+            return false
+        } catch (e: Exception) {
+            return false
         }
-        return false
     }
 
 

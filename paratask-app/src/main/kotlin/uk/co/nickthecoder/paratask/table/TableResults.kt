@@ -18,9 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import com.sun.javafx.collections.ImmutableObservableList
+import com.sun.javafx.scene.control.skin.TableColumnHeader
 import com.sun.javafx.scene.control.skin.TableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.application.Platform
+import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
 import javafx.scene.Node
@@ -46,6 +48,7 @@ open class TableResults<R : Any>(
         val list: List<R>,
         label: String = "Results",
         val columns: List<Column<R, *>>,
+        val rowFilter: RowFilter<R>? = null,
         canClose: Boolean = false) :
 
         AbstractResults(tool, label, canClose = canClose) {
@@ -59,6 +62,8 @@ open class TableResults<R : Any>(
     private val codeColumn: TableColumn<WrappedRow<R>, String> = TableColumn("")
 
     val runner = RowOptionsRunner<R>(tool)
+
+    var filteredData: FilteredList<WrappedRow<R>>? = null
 
     /**
      * Used to ensure that the currently selected row is always visible. See move()
@@ -102,7 +107,13 @@ open class TableResults<R : Any>(
             tableView.columns.add(column)
         }
 
-        val sortedList = SortedList(data)
+        val sortedList: SortedList<WrappedRow<R>>
+        if (rowFilter == null) {
+            sortedList = SortedList(data)
+        } else {
+            filteredData = FilteredList(data) { rowFilter.accept(it.row) }
+            sortedList = SortedList(filteredData)
+        }
         sortedList.comparatorProperty().bind(tableView.comparatorProperty())
 
         with(tableView) {
@@ -120,6 +131,11 @@ open class TableResults<R : Any>(
         }
         dropHelper?.applyTo(resultsTab)
 
+        if (rowFilter != null) {
+            tableView.addEventFilter(MouseEvent.MOUSE_PRESSED) { if (it.button == MouseButton.SECONDARY) it.consume() }
+            tableView.addEventFilter(MouseEvent.MOUSE_RELEASED) { tableMouseEvent(it) }
+            //tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { tableMouseEvent(it) }
+        }
     }
 
     override fun detaching() {
@@ -138,6 +154,32 @@ open class TableResults<R : Any>(
         super.deselected()
     }
 
+    fun tableMouseEvent(event: MouseEvent) {
+        if (event.button == MouseButton.SECONDARY) {
+            event.consume()
+
+            var node: Node? = event.target as Node
+            while (node != null && node !== tableView) {
+                if (node is TableColumnHeader) {
+                    changeColumnFilter(node)
+                    return
+                }
+                node = node.parent
+            }
+        }
+    }
+
+    fun changeColumnFilter(tch: TableColumnHeader) {
+        val column = tch.tableColumn
+        if (column is Column<*, *>) {
+            @Suppress("UNCHECKED_CAST")
+            rowFilter?.editColumnFilters(column as Column<R, *>) {
+                Platform.runLater {
+                    filteredData?.setPredicate { rowFilter.accept(it.row) }
+                }
+            }
+        }
+    }
 
     fun stopEditing() {
         tableView.edit(-1, null)

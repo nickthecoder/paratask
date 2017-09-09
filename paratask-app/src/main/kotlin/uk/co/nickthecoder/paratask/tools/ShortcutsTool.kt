@@ -21,13 +21,16 @@ import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.project.ParataskAction
 import uk.co.nickthecoder.paratask.project.ParataskActions
-import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.table.RowFilter
 
 class ShortcutsTool : ListTableTool<ParataskAction>() {
 
     override val taskD = TaskDescription("shortcuts", description = "Keyboard Shortcuts")
+
+    override val rowFilter = RowFilter<ParataskAction>(this, columns, ParataskActions.EDIT_COPY)
 
     init {
         columns.add(Column<ParataskAction, ImageView>("icon", label = "") { action -> ImageView(action.image) })

@@ -37,7 +37,7 @@ import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.focusNext
 import java.io.File
 
-class PlacesTool : AbstractTableTool<Place>() {
+class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
@@ -51,6 +51,9 @@ class PlacesTool : AbstractTableTool<Place>() {
 
     // Used to select the correct ResultsTab when refreshing the tool
     var latestFile: PlacesFile? = null
+
+    override val rowFilter = RowFilter<Place>(this, columns, Place(PlacesFile(File("")), Resource(File("")), ""))
+
 
     init {
         taskD.addParameters(filesP)
@@ -185,8 +188,8 @@ class PlacesTool : AbstractTableTool<Place>() {
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, canClose = true) {
-        
+            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, rowFilter = rowFilter, canClose = true) {
+
         init {
             autoRefresh.watch(placesFile.file)
         }

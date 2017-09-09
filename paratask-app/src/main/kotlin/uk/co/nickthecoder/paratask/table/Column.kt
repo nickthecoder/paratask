@@ -39,5 +39,3 @@ open class Column<R, T>(
         }
     }
 }
-
-

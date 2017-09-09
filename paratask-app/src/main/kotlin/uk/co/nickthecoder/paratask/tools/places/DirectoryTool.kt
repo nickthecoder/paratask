@@ -43,7 +43,7 @@ import uk.co.nickthecoder.paratask.util.currentDirectory
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
+class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowFilter<WrappedFile> {
 
     override val taskD = TaskDescription(name = "directory", description = "Work with a Single Directory")
 
@@ -71,7 +71,6 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     val thumbnailer = Thumbnailer()
 
-
     val treeRoot: File
         get() = treeRootP.value ?: homeDirectory
 
@@ -93,6 +92,9 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
     // When a directory is changed, we use this, rather than latestDirectory to choose which ResultsTab to select
     var selectDirectory: File? = null
+
+    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+
 
     init {
         filterGroupP.addParameters(onlyFilesP, extensionsP, includeHiddenP)
@@ -119,7 +121,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
             // Do nothing - we no longer use these parameters
             // They were for the rather naff "DirectoryTreeTool", which no longer exists.
         } else {
-            super.loadProblem(parameterName, expression, stringValue)
+            super<AbstractTableTool>.loadProblem(parameterName, expression, stringValue)
         }
     }
 
@@ -256,7 +258,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory {
 
 
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
-        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, columns, canClose = true) {
+        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, columns, rowFilter = rowFilter, canClose = true) {
 
         init {
             dropHelper = DirectoryDropHelper(directory)
