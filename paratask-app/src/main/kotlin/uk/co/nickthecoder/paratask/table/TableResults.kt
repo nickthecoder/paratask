@@ -177,24 +177,35 @@ open class TableResults<R : Any>(
     }
 
     fun changeColumnFilter(tch: TableColumnHeader) {
-        val column = tch.tableColumn
-        if (column is Column<*, *>) {
-            @Suppress("UNCHECKED_CAST")
-            rowFilter?.editColumnFilters(column as Column<R, *>) {
-                Platform.runLater {
-                    filteredData?.setPredicate { rowFilter.accept(it.row) }
 
-                    columns.forEach { col ->
-                        if (rowFilter.filtersColumn(col) == true) {
-                            col.graphic = ImageView(ParaTask.imageResource("buttons/filter.png"))
-                        } else {
-                            col.graphic = null
-                        }
+        val tchCol = tch.tableColumn
+        val column: Column<R, *>? = if (tchCol is Column<*, *>) {
+            @Suppress("UNCHECKED_CAST")
+            tchCol as Column<R, *>
+        } else {
+            null
+        }
+
+        rowFilter?.editColumnFilters(column) {
+            Platform.runLater {
+                filteredData?.setPredicate { rowFilter.accept(it.row) }
+
+                columns.forEach { col ->
+                    if (rowFilter.filtersColumn(col)) {
+                        col.graphic = ImageView(filterIcon)
+                    } else {
+                        col.graphic = null
                     }
+                }
+                if (rowFilter.filtersColumn(null)) {
+                    codeColumn.graphic = ImageView(filterIcon)
+                } else {
+                    codeColumn.graphic = null
                 }
             }
         }
     }
+
 
     fun stopEditing() {
         tableView.edit(-1, null)
@@ -416,6 +427,9 @@ open class TableResults<R : Any>(
     }
 
 
+    companion object {
+        val filterIcon = ParaTask.imageResource("buttons/filter.png")
+    }
 }
 
 

@@ -2,10 +2,7 @@ package uk.co.nickthecoder.paratask.table
 
 import groovy.lang.Binding
 import javafx.stage.Stage
-import uk.co.nickthecoder.paratask.AbstractTask
-import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.UnthreadedTaskRunner
+import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
@@ -84,7 +81,10 @@ You can also edit filters by clicking the table columns' headers.""")
         }
     }
 
-    fun filtersColumn(column: Column<R, *>): Boolean {
+    fun filtersColumn(column: Column<R, *>?): Boolean {
+        if (column == null && groovyScriptP.value.isNotBlank()) {
+            return true
+        }
         return conditionsP.value.filterIsInstance<Condition>().firstOrNull { it.columnP.value === column } != null
     }
 
@@ -190,26 +190,34 @@ You can also edit filters by clicking the table columns' headers.""")
         return true
     }
 
-    fun editColumnFilters(column: Column<R, *>, onOk: () -> Unit) {
-        val task = EditColumnFilters(column, onOk)
+    fun editColumnFilters(column: Column<R, *>?, onOk: () -> Unit) {
+        val task: Task = if (column == null) {
+            EditRowFilters(onOk)
+        } else {
+            EditColumnFilters(column, onOk)
+        }
         TaskPrompter(task).placeOnStage(Stage())
     }
 
-    inner class EditColumnFilters(val column: Column<R, *>, val onOk: () -> Unit) : AbstractTask() {
+    open inner class EditColumnFilters(val column: Column<R, *>?, val onOk: () -> Unit) : AbstractTask() {
 
         override val taskRunner = UnthreadedTaskRunner(this)
 
         override val taskD = TaskDescription("editColumnFilters", width = 700)
 
         val clearOtherFiltersP = BooleanParameter("clearOtherFilters", value = false, required = true, labelOnLeft = false)
+
         val columnAcceptRejectP = BooleanParameter("acceptReject", label = "", value = acceptRejectP.value, required = false)
-        val columnInfoP = InformationParameter("info", information = "Column ${column.name}")
+
+        val columnInfoP = InformationParameter("info", information = if (column == null) "row" else "Column ${column.name}")
+
         val columnConditionsP = MultipleParameter("conditions", isBoxed = true) {
             val condition = Condition()
             condition.columnP.value = column
             condition.columnP.hidden = true
             condition
         }
+
         val columnAndP = BooleanParameter("and", label = "", value = andP.value)
 
         init {
@@ -247,6 +255,20 @@ You can also edit filters by clicking the table columns' headers.""")
             }
 
             onOk()
+        }
+    }
+
+    inner class EditRowFilters(onOk: () -> Unit) : EditColumnFilters(null, onOk) {
+
+        val myGroovyScriptP = StringParameter("groovyScript", label = "Groovy Script (return true or false)", required = false, rows = 5, isBoxed = true, value = groovyScriptP.value)
+
+        init {
+            taskD.addParameters(myGroovyScriptP)
+        }
+
+        override fun run() {
+            groovyScriptP.value = myGroovyScriptP.value
+            super.run()
         }
     }
 
