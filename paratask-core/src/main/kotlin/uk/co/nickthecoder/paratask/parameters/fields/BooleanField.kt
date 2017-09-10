@@ -35,7 +35,7 @@ class BooleanField(val booleanParameter: BooleanParameter)
         }
         checkBox.selectedProperty().bindBidirectional(booleanParameter.valueProperty)
 
-        labelNode.addEventHandler(MouseEvent.MOUSE_CLICKED, {
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, {
             checkBox.requestFocus()
             booleanParameter.value = when (booleanParameter.value) {
                 null -> true

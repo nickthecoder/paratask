@@ -95,10 +95,8 @@ open class CompoundParameter(
 
     override fun copy(): CompoundParameter {
         val result = CompoundParameter(name = name, label = label, description = description)
-        if (horizontal) {
-            result.layoutHorizontal(labelsAbove)
-        }
         copyChildren(result)
+        result.fieldFactory = fieldFactory
         return result
     }
 }

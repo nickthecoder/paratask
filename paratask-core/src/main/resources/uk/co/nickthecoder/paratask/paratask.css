@@ -49,8 +49,33 @@
     -fx-spacing: 20px;
 }
 
-.right-pad-label {
+.right-pad {
     -fx-padding: 0 10px 0 0;
+}
+
+.bottom-pad {
+    -fx-padding: 0 0 10px 0;
+}
+
+.small-bottom-pad {
+    -fx-padding: 0 0 4px 0;
+}
+
+.box-group {
+    -fx-spacing : 20px;
+}
+
+.labels-above-grid-group {
+    -fx-hgap : 10px;
+}
+
+.grid-group {
+    -fx-hgap : 10px;
+    -fx-vgap : 10px;
+}
+
+.box-group > .hbox {
+    -fx-spacing: 10px;
 }
 
 /***********************************

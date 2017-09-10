@@ -19,7 +19,8 @@ package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.GroupField
-import uk.co.nickthecoder.paratask.parameters.fields.HorizontalGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.BoxGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.GridGroupField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -31,15 +32,23 @@ abstract class AbstractGroupParameter(
     : AbstractParameter(name, description = description, label = label),
         ParentParameter {
 
-    internal var horizontal: Boolean = false
-
-    internal var labelsAbove: Boolean = true
+    internal var fieldFactory: (AbstractGroupParameter) -> ParameterField = {
+        GroupField(this).build()
+    }
 
     override val children = mutableListOf<Parameter>()
 
-    fun layoutHorizontal( labelsAbove : Boolean ) {
-        horizontal = true
-        this.labelsAbove = labelsAbove
+    fun boxLayout(labelsAbove: Boolean, isBoxed: Boolean = false) {
+        fieldFactory = {
+            BoxGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
+        }
+
+    }
+
+    fun gridLayout(labelsAbove: Boolean, columns: Int = children.size, isBoxed: Boolean = false) {
+        fieldFactory = {
+            GridGroupField(this, labelsAbove = labelsAbove, columns = columns, isBoxed = isBoxed).build()
+        }
     }
 
     fun descendants(): List<Parameter> {
@@ -144,13 +153,7 @@ abstract class AbstractGroupParameter(
 
     override fun isStretchy(): Boolean = true
 
-    override fun createField(): ParameterField {
-        if (horizontal) {
-            return HorizontalGroupField(this).build()
-        } else {
-            return GroupField(this).build()
-        }
-    }
+    override fun createField(): ParameterField = fieldFactory(this)
 
     protected fun copyChildren(copy: AbstractGroupParameter) {
         children.forEach { child ->

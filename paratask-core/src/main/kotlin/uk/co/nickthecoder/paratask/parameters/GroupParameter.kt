@@ -36,10 +36,9 @@ open class GroupParameter(
 
     override fun copy(): GroupParameter {
         val result = GroupParameter(name = name, label = label, description = description)
-        if (horizontal) {
-            result.layoutHorizontal(labelsAbove)
-        }
+        result.fieldFactory = fieldFactory
         copyChildren(result)
         return result
     }
+
 }

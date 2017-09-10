@@ -193,9 +193,17 @@ class OptionsTool() : ListTableTool<Option>() {
 
         val label = StringParameter("label", value = option.label)
 
+        var flagsGroupP = GroupParameter("flags")
+
+        //var rowGroupP = GroupParameter("rowGroup", label = "")
+
         var isRow = BooleanParameter("isRow", value = option.isRow)
 
         var isMultiple = BooleanParameter("isMultiple", value = option.isMultiple)
+
+        val paddingP = InformationParameter("padding", label = "", information = "")
+
+        //var otherGroupP = GroupParameter("otherGroup", label = "")
 
         var refresh = BooleanParameter("refresh", value = option.refresh)
 
@@ -225,7 +233,10 @@ class OptionsTool() : ListTableTool<Option>() {
                 scriptOrTaskP.value = taskP
             }
 
-            taskD.addParameters(code, aliases, label, isRow, isMultiple, refresh, newTab, prompt, scriptOrTaskP, shortcutP)
+            flagsGroupP.addParameters(isRow, isMultiple, paddingP, refresh, newTab, prompt)
+            flagsGroupP.gridLayout(labelsAbove = false, columns = 3, isBoxed = true)
+
+            taskD.addParameters(code, aliases, label, flagsGroupP, scriptOrTaskP, shortcutP)
             scriptOrTaskP.addParameters(taskP, groovyScriptP)
 
             isRow.listen {

@@ -1,12 +1,13 @@
 TODO	
 
-Right click on Code column header to filter by the *PRIMARY* object. e.g. the FILE for DirectoryTool
-	Allow filtering of "Any Column" - convert to string
+Boolean's label to have the mouseevent to change the value no matter which layout is used.
+
 Allow registering of additional tests for existing A Types and also register new A types
 
-DirectoryTool filter on size - its a LONG. Compare it with the DoubleValue.
-No RowFilters for DATES
-
+No RowFilters for date/times
+	greater than / less than : N [Minutes/Hours/Days/Weeks/Years] Ago
+	On [Date]
+	Before/After [Date]
 
 
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
@@ -57,12 +58,17 @@ Allowing GroupParameter and/or CompoundParameter to lay out children using a Flo
 	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
 	The children would need to SHARE one error message label.
 
-Space out the ScaleDouble fields.
 
 Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm.
 	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
 	Or add a list of ScaledDoubleParameters???
 	Or make ScaledValue imutable???
+	Maybe replace this with a more generic compound parameter, with a extra method(s) scaledValue() : ScaledValue and doubleValue : Double()
+Space out the ScaleDouble fields.
+
+RangeParameters (int and double)
+
+Other compound parameters, such as "Size" : x,y
 
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
@@ -93,17 +99,8 @@ New Tasks
 
 ---
 
-Pipeline - As well as "Script", "Task", can also be a Pipeline
-	A list of Tasks/Tools/Scripts?
-		e.g. Command | Editor
-		GitLog | FilterRow | Table ( GitLog )
-		ListDirectory | ForEach?? | SearchAndReplace
-
 Expressions to allow for autocomplete.
 	e.g. row. should autocomplete all public methods/attributes
-
-Need some way to "hide" weird options such as "GC", printRow etc.
-	Maybe have an "order", and when N options are in the menu, then place the less used options in a sub-menu.
 
 TerminalTool to allow running of Tasks/Tools/Options from the input field
 	Special prefix such as ":" to specify an option, and allow for simple command line style arguments
@@ -115,6 +112,11 @@ A true tree style tool would be interesting.
 
 Later Version
 =============
+
+Create a WEB front end
+	Why? It can be used as a general purpose application framework!
+	Have a "Regular" mode, where row option are buttons at the top, and there's a check box against each row.
+		Non-row options are buttons at the bottom.
 
 Editor - Open a file in a new lower tab
     Can we remove a single lower tab?

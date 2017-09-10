@@ -36,7 +36,7 @@ class InformationField(val informationParameter: InformationParameter) : Paramet
             oldValue?.let { information.styleClass.remove(it) }
             newValue?.let { information.styleClass.add(it) }
         })
-        return label
+        return information
     }
 
 }

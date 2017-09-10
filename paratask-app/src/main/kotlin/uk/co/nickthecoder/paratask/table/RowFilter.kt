@@ -205,8 +205,6 @@ You can also edit filters by clicking the table columns' headers.""")
 
         override val taskD = TaskDescription("editColumnFilters", width = 700)
 
-        val clearOtherFiltersP = BooleanParameter("clearOtherFilters", value = false, required = true, labelOnLeft = false)
-
         val columnAcceptRejectP = BooleanParameter("acceptReject", label = "", value = acceptRejectP.value, required = false)
 
         val columnInfoP = InformationParameter("info", information = if (column == null) "row" else "Column ${column.name}")
@@ -220,11 +218,13 @@ You can also edit filters by clicking the table columns' headers.""")
 
         val columnAndP = BooleanParameter("and", label = "", value = andP.value)
 
+        val clearOtherFiltersP = BooleanParameter("clearOtherFilters", value = false, required = true, labelOnLeft = false)
+
         init {
             columnAcceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
             columnAndP.asComboBox("AND", "OR")
 
-            taskD.addParameters(clearOtherFiltersP, columnAcceptRejectP, columnInfoP, columnConditionsP, columnAndP)
+            taskD.addParameters(columnAcceptRejectP, columnInfoP, columnConditionsP, columnAndP, clearOtherFiltersP)
 
             conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value === column }.forEach {
                 @Suppress("UNCHECKED_CAST")
@@ -283,7 +283,7 @@ You can also edit filters by clicking the table columns' headers.""")
         val regexValueP = RegexParameter("regexValue", label = "")
 
         init {
-            layoutHorizontal(false)
+            boxLayout(false)
             addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP)
 
             booleanValueP.hidden = true
