@@ -167,6 +167,8 @@ abstract class ParameterField(
             updateEnabled()
         }
         if (event.type == ParameterEventType.VISIBILITY) {
+            controlContainer?.isVisible = !parameter.hidden
+            label.isVisible = !parameter.hidden
             fieldParent.updateField(this)
         }
     }

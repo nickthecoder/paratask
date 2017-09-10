@@ -91,9 +91,4 @@ class GridGroupField(
         return grid
     }
 
-    override fun updateField(field: ParameterField) {
-        super.updateField(field)
-        field.label.isVisible = !field.parameter.hidden
-        field.controlContainer?.isVisible = !field.parameter.hidden
-    }
 }
