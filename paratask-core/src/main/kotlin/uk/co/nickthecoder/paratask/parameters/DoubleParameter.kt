@@ -53,7 +53,15 @@ open class DoubleParameter(
         }
 
         override fun toString(obj: Double?): String {
-            return obj?.toString() ?: ""
+            if (obj == null) {
+                return ""
+            }
+            val l = obj.toLong()
+            if (obj == l.toDouble()) {
+                return l.toString()
+            } else {
+                return obj.toString()
+            }
         }
     }
 

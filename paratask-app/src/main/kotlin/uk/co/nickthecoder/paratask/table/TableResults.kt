@@ -27,10 +27,12 @@ import javafx.collections.transformation.SortedList
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.control.*
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.util.Callback
+import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.gui.DropHelper
@@ -104,6 +106,11 @@ open class TableResults<R : Any>(
         tableView.columns.add(codeColumn)
 
         for (column in columns) {
+            if (rowFilter?.filtersColumn(column) == true) {
+                column.graphic = ImageView(ParaTask.imageResource("buttons/filter.png"))
+            } else {
+                column.graphic = null
+            }
             tableView.columns.add(column)
         }
 
@@ -176,6 +183,11 @@ open class TableResults<R : Any>(
             rowFilter?.editColumnFilters(column as Column<R, *>) {
                 Platform.runLater {
                     filteredData?.setPredicate { rowFilter.accept(it.row) }
+                    if (rowFilter?.filtersColumn(column) == true) {
+                        column.graphic = ImageView(ParaTask.imageResource("buttons/filter.png"))
+                    } else {
+                        column.graphic = null
+                    }
                 }
             }
         }

@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
