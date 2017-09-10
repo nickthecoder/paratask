@@ -201,6 +201,7 @@ You can also edit filters by clicking the table columns' headers.""")
 
         override val taskD = TaskDescription("editColumnFilters", width = 700)
 
+        val clearOtherFiltersP = BooleanParameter("clearOtherFilters", value = false, required = true, labelOnLeft = false)
         val columnAcceptRejectP = BooleanParameter("acceptReject", label = "", value = acceptRejectP.value, required = false)
         val columnInfoP = InformationParameter("info", information = "Column ${column.name}")
         val columnConditionsP = MultipleParameter("conditions", isBoxed = true) {
@@ -215,7 +216,7 @@ You can also edit filters by clicking the table columns' headers.""")
             columnAcceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
             columnAndP.asComboBox("AND", "OR")
 
-            taskD.addParameters(columnAcceptRejectP, columnInfoP, columnConditionsP, columnAndP)
+            taskD.addParameters(clearOtherFiltersP, columnAcceptRejectP, columnInfoP, columnConditionsP, columnAndP)
 
             conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value === column }.forEach {
                 @Suppress("UNCHECKED_CAST")
@@ -231,8 +232,13 @@ You can also edit filters by clicking the table columns' headers.""")
         override fun run() {
             acceptRejectP.value = columnAcceptRejectP.value
             andP.value = columnAndP.value
-            // Remove the conditions for the column
-            conditionsP.value = conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value !== column }
+            if (clearOtherFiltersP.value == true) {
+                conditionsP.clear()
+                groovyScriptP.value = ""
+            } else {
+                // Remove the conditions for the column
+                conditionsP.value = conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value !== column }
+            }
             // Add the new conditions
             columnConditionsP.value.filterIsInstance<Condition>().forEach {
                 @Suppress("UNCHECKED_CAST")
@@ -292,9 +298,7 @@ You can also edit filters by clicking the table columns' headers.""")
                 testP.addChoice(test.label, test, test.label)
             }
 
-            if (!testP.choiceValues().contains(testP.value)) {
-                testP.value = tests.firstOrNull()
-            }
+            testP.value = tests.firstOrNull()
         }
 
         fun columnPChanged() {

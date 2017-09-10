@@ -1,8 +1,5 @@
 TODO	
 
-DirectoryTool filter on Name is tricky - it is a FILE, not a string. Hmmm.
-	Column. New method to return an object for the row filter. FileNameColumn will return File.name (which is a string).
-		Default is to return the same as the regular getter.
 Right click on Code column header to filter by the *PRIMARY* object. e.g. the FILE for DirectoryTool
 	Allow filtering of "Any Column" - convert to string
 Allow registering of additional tests for existing A Types and also register new A types

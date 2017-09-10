@@ -183,10 +183,13 @@ open class TableResults<R : Any>(
             rowFilter?.editColumnFilters(column as Column<R, *>) {
                 Platform.runLater {
                     filteredData?.setPredicate { rowFilter.accept(it.row) }
-                    if (rowFilter?.filtersColumn(column) == true) {
-                        column.graphic = ImageView(ParaTask.imageResource("buttons/filter.png"))
-                    } else {
-                        column.graphic = null
+
+                    columns.forEach { col ->
+                        if (rowFilter.filtersColumn(col) == true) {
+                            col.graphic = ImageView(ParaTask.imageResource("buttons/filter.png"))
+                        } else {
+                            col.graphic = null
+                        }
                     }
                 }
             }
