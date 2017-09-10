@@ -61,6 +61,7 @@ class ParaTaskApp : Application() {
             initialFunction?.let { it() }
         } catch (e: Throwable) {
             e.printStackTrace()
+            System.exit(1)
         }
     }
 
