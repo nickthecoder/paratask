@@ -18,13 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.misc.FileTest
+import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.FileNameColumn
-import uk.co.nickthecoder.paratask.table.NumberColumn
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable
@@ -93,6 +92,17 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
 
     override fun check() {
         grepTask.check()
+    }
+
+
+    override fun createTableResults(): TableResults<GrepRow> {
+        val results = super.createTableResults()
+
+        results.dragHelper = DragFilesHelper {
+            results.selectedRows().map { it.file }
+        }
+
+        return results
     }
 
     data class GrepRow(override val file: File, var lineNumber: Int, var line: String) : FileTest

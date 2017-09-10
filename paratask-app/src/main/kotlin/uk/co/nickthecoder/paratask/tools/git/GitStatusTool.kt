@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.tools.git
 import javafx.scene.control.TableRow
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
@@ -108,6 +109,16 @@ class GitStatusTool :
             "normal"
         }
         tableRow.styleClass.add("git-" + style)
+    }
+
+    override fun createTableResults(): TableResults<GitStatusRow> {
+        val results = super.createTableResults()
+
+        results.dragHelper = DragFilesHelper {
+            results.selectedRows().map { it.file }
+        }
+
+        return results
     }
 
     inner class GitStatusRow(

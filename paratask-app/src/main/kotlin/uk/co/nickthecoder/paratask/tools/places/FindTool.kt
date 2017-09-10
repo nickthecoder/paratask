@@ -20,6 +20,8 @@ package uk.co.nickthecoder.paratask.tools.places
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.gui.DragFilesHelper
+import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
@@ -155,10 +157,6 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
         return command
     }
 
-    override fun createHeader(): Header? {
-        return Header(this, HeaderRow(directoryP), HeaderRow(filenameP, matchTypeP, typeP))
-    }
-
     override fun processLine(line: String) {
         val l2 = if (line.startsWith("./")) line.substring(2) else line
         val file = directory!!.resolve(File(l2))
@@ -166,4 +164,17 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
         list.add(WrappedFile(file))
     }
 
+    override fun createHeader(): Header? {
+        return Header(this, HeaderRow(directoryP), HeaderRow(filenameP, matchTypeP, typeP))
+    }
+
+    override fun createTableResults(): TableResults<WrappedFile> {
+        val results = super.createTableResults()
+
+        results.dragHelper = DragFilesHelper {
+            results.selectedRows().map { it.file }
+        }
+
+        return results
+    }
 }

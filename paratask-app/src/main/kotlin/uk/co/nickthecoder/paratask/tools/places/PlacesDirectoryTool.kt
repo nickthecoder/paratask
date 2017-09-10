@@ -63,9 +63,8 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
     override fun createHeader() = Header(this, directoryP, filenameP)
 
-    override fun createTableResults(columns: List<Column<Place, *>>): TableResults<Place> {
-        val tableResults = super.createTableResults(columns)
-
+    override fun createTableResults(): TableResults<Place> {
+        val tableResults = super.createTableResults()
 
         val filesDragHelper = DragFilesHelper {
             tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }

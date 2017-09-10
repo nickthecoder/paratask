@@ -25,12 +25,12 @@ abstract class ListTableTool<R : Any> : AbstractTableTool<R>(), SingleRowFilter<
 
     open val resultsName = "Results"
 
-    open fun createTableResults(columns: List<Column<R, *>>): TableResults<R> {
+    open fun createTableResults(): TableResults<R> {
         return TableResults(this, list, resultsName, columns, rowFilter)
     }
 
     override fun createResults(): List<Results> {
-        return listOf(createTableResults(columns))
+        return listOf(createTableResults())
     }
 
 }

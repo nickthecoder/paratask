@@ -88,8 +88,8 @@ class OptionsTool() : ListTableTool<Option>() {
             HeaderRow(directoryP),
             HeaderRow(optionsNameP))
 
-    override fun createTableResults(columns: List<Column<Option, *>>): TableResults<Option> {
-        val tableResults = super.createTableResults(columns)
+    override fun createTableResults(): TableResults<Option> {
+        val tableResults = super.createTableResults()
 
         tableResults.dragHelper = SimpleDragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()

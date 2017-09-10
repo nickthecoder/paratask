@@ -6,142 +6,47 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
-            "code": "config",
-            "label": "Configuration Directory",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "term",
+            "label": "Terminal",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
-            "newTab": false,
+            "newTab": true,
             "refresh": false,
+            "keyCode": "T",
+            "alt": "DOWN",
             "parameters": [
                 {
-                    "name": "directories",
-                    "values": [
-                        {
-                            "expression": "Preferences.projectDirectory"
-                        }
-                    ]
+                    "name": "program",
+                    "value": "bash"
                 },
                 {
-                    "name": "treeRoot",
-                    "value": "/home/nick/projects/paratask/"
-                },
-                {
-                    "name": "placesFile",
-                    "value": ""
-                },
-                {
-                    "name": "onlyFiles",
-                    "value": ""
-                },
-                {
-                    "name": "extensions",
+                    "name": "arguments",
                     "values": [
                         
                     ]
                 },
                 {
-                    "name": "includeHidden",
-                    "value": "false"
+                    "name": "directory",
+                    "value": ""
                 },
                 {
-                    "name": "foldSingleDirectories",
-                    "value": "true"
-                },
-                {
-                    "name": "thumbnailHeight",
-                    "value": "32"
-                },
-                {
-                    "name": "directoryThumbnail",
-                    "value": ".thumbnails/default.jpg"
-                },
-                {
-                    "name": "autoRefresh",
+                    "name": "closeWhenFinished",
                     "value": "true"
                 }
             ]
         },
         {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.PlacesTool",
-            "code": "places",
-            "label": "Places",
+            "type": "groovy",
+            "script": "new OptionsTool(tool)",
+            "code": "eo",
+            "label": "Edit Options",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "files",
-                    "values": [
-                        {
-                            "expression": "new File( helper.home, \".config/gtk-3.0/bookmarks\" )"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
-            "code": "./",
-            "label": "Project Directory",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "directories",
-                    "values": [
-                        {
-                            "expression": "tool.project.directory"
-                        }
-                    ]
-                },
-                {
-                    "name": "treeRoot",
-                    "value": "/home/nick/projects/paratask/"
-                },
-                {
-                    "name": "placesFile",
-                    "value": ""
-                },
-                {
-                    "name": "onlyFiles",
-                    "value": ""
-                },
-                {
-                    "name": "extensions",
-                    "values": [
-                        
-                    ]
-                },
-                {
-                    "name": "includeHidden",
-                    "value": "false"
-                },
-                {
-                    "name": "foldSingleDirectories",
-                    "value": "true"
-                },
-                {
-                    "name": "thumbnailHeight",
-                    "value": "32"
-                },
-                {
-                    "name": "directoryThumbnail",
-                    "value": ".thumbnails/default.jpg"
-                },
-                {
-                    "name": "autoRefresh",
-                    "value": "true"
-                }
-            ]
+            "newTab": true,
+            "refresh": false
         },
         {
             "type": "task",
@@ -154,6 +59,7 @@
             "newTab": true,
             "refresh": false,
             "keyCode": "NUMBER_SIGN",
+            "control": "DOWN",
             "alt": "DOWN",
             "parameters": [
                 {
@@ -215,6 +121,7 @@
             "newTab": true,
             "refresh": false,
             "keyCode": "SLASH",
+            "control": "DOWN",
             "alt": "DOWN",
             "parameters": [
                 {
@@ -276,9 +183,69 @@
             "newTab": true,
             "refresh": false,
             "keyCode": "HOME",
+            "control": "DOWN",
             "alt": "DOWN",
             "parameters": [
                 
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "config",
+            "label": "Configuration Directory",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "Preferences.projectDirectory"
+                        }
+                    ]
+                },
+                {
+                    "name": "treeRoot",
+                    "value": "/home/nick/projects/paratask/"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
+                    "name": "extensions",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "includeHidden",
+                    "value": "false"
+                },
+                {
+                    "name": "foldSingleDirectories",
+                    "value": "true"
+                },
+                {
+                    "name": "thumbnailHeight",
+                    "value": "32"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
+                },
+                {
+                    "name": "autoRefresh",
+                    "value": "true"
+                }
             ]
         },
         {
@@ -291,7 +258,9 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "keyCode": "PLAY",
+            "keyCode": "DIGIT2",
+            "control": "DOWN",
+            "alt": "DOWN",
             "parameters": [
                 {
                     "name": "program",
@@ -325,7 +294,9 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "keyCode": "TRACK_NEXT",
+            "keyCode": "PERIOD",
+            "control": "DOWN",
+            "alt": "DOWN",
             "parameters": [
                 {
                     "name": "program",
@@ -359,7 +330,9 @@
             "prompt": false,
             "newTab": false,
             "refresh": false,
-            "keyCode": "TRACK_PREV",
+            "keyCode": "COMMA",
+            "control": "DOWN",
+            "alt": "DOWN",
             "parameters": [
                 {
                     "name": "program",
@@ -385,46 +358,13 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
-            "code": "term",
-            "label": "Terminal",
+            "task": "uk.co.nickthecoder.paratask.tools.places.DirectoryTool",
+            "code": "./",
+            "label": "Project Directory",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
             "newTab": true,
-            "refresh": false,
-            "keyCode": "T",
-            "alt": "DOWN",
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "bash"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": ""
-                },
-                {
-                    "name": "closeWhenFinished",
-                    "value": "true"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CodeHeaderTool",
-            "code": "header",
-            "label": "Add Code Header",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
             "refresh": false,
             "parameters": [
                 {
@@ -436,89 +376,44 @@
                     ]
                 },
                 {
+                    "name": "treeRoot",
+                    "value": "./"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
+                },
+                {
+                    "name": "onlyFiles",
+                    "value": ""
+                },
+                {
                     "name": "extensions",
                     "values": [
-                        {
-                            "value": "java"
-                        },
-                        {
-                            "value": "kt"
-                        }
+                        
                     ]
                 },
                 {
-                    "name": "showProcessedFiles",
+                    "name": "includeHidden",
                     "value": "false"
                 },
                 {
-                    "name": "depth",
-                    "value": "10"
-                },
-                {
-                    "name": "headerTest",
-                    "value": "This program is free software"
-                },
-                {
-                    "name": "withinLines",
-                    "value": "10"
-                },
-                {
-                    "name": "headerText",
-                    "value": "<PROGRAM NAME AND DESCRIPTION>\nCopyright (C) <YEAR> <AUTHOR>\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.LocateTool",
-            "code": "loc",
-            "label": "Locate Files",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "pattern",
-                    "values": [
-                        {
-                            "value": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "matchWholePath",
+                    "name": "foldSingleDirectories",
                     "value": "true"
                 },
                 {
-                    "name": "checkFileExists",
-                    "value": "false"
+                    "name": "thumbnailHeight",
+                    "value": "32"
                 },
                 {
-                    "name": "regularExpressions",
-                    "value": "false"
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
                 },
                 {
-                    "name": "caseSensitive",
-                    "value": "false"
-                },
-                {
-                    "name": "maxItems",
-                    "value": ""
+                    "name": "autoRefresh",
+                    "value": "true"
                 }
             ]
-        },
-        {
-            "type": "groovy",
-            "script": "new OptionsTool(tool)",
-            "code": "eo",
-            "label": "Edit Options",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false
         }
     ]
 }
