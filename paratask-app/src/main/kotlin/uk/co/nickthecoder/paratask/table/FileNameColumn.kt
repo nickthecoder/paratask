@@ -29,6 +29,8 @@ class FileNameColumn<R>(
 
         Column<R, File>(name = name, label = label, getter = getter) {
 
+    override val filterGetter: (R) -> Any = { getter(it).name }
+
     init {
         setCellFactory { FileNameTableCell() }
     }

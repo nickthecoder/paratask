@@ -22,7 +22,10 @@ import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
-open class WrappedFile(override val file: File) : FileTest {
+open class WrappedFile(override val file: File) : FileTest, Wrapped<File> {
+
+    override val wrapped: File
+        get() = file
 
     val icon by lazy {
         ParaTask.imageResource("filetypes/${if (file.isDirectory) "directory" else "file"}.png")

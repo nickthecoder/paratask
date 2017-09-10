@@ -30,6 +30,12 @@ open class Column<R, T>(
 
 ) : TableColumn<WrappedRow<R>, T>(label), Labelled {
 
+    /**
+     * Used by RowFilter, for example DirectoryTool's "name" column is for a column of type File, but this getter will
+     * return a String (from file.name)
+     */
+    open val filterGetter: (R) -> Any? = getter
+
     init {
         @Suppress("UNCHECKED_CAST")
         setCellValueFactory { p -> p.value.observable(name, getter) as ObservableValue<T> }

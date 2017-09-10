@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.UnthreadedTaskRunner
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.Resource
@@ -27,6 +28,8 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
         val charTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan())
         val booleanTests = testOrNotTest(BooleanEqualsTest())
+        val objectTests = testOrNotTest()
+
         val toStringTests: List<Test> = stringTests.map {
             if (it === nullTest || it === notNullTest) {
                 it
@@ -159,8 +162,15 @@ You can also edit filters by clicking the table columns' headers.""")
     }
 
     fun exampleValue(column: Column<R, *>?): Any? {
-        column ?: return null
-        return column.getter(exampleRow)
+        if (column == null) {
+            if (exampleRow is Wrapped<*>) {
+                return exampleRow.wrapped
+            } else {
+                return exampleRow
+            }
+        } else {
+            return column.filterGetter(exampleRow)
+        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -236,7 +246,7 @@ You can also edit filters by clicking the table columns' headers.""")
 
     inner class Condition : CompoundParameter("condition") {
 
-        val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = true)
+        val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = false)
         val testP = ChoiceParameter<Test?>("test", label = "", value = null, required = true)
         val booleanValueP = BooleanParameter("booleanValue", label = "")
         val intValueP = IntParameter("intValue", label = "")
@@ -255,12 +265,14 @@ You can also edit filters by clicking the table columns' headers.""")
             stringValueP.hidden = true
             regexValueP.hidden = true
 
+            columnP.addChoice("ROW", null, "ROW")
             columns.forEach { column ->
                 columnP.addChoice(column.name, column, column.name)
             }
 
             columnP.listen { columnPChanged() }
             testP.listen { testPChanged() }
+            columnPChanged()
         }
 
 
@@ -300,7 +312,7 @@ You can also edit filters by clicking the table columns' headers.""")
                 File::class.java -> testChoices(fileTests)
                 Resource::class.java -> testChoices(toStringTests)
 
-                else -> testChoices(listOf())
+                else -> testChoices(objectTests)
             }
         }
 
@@ -314,7 +326,18 @@ You can also edit filters by clicking the table columns' headers.""")
         }
 
         fun accept(row: R): Boolean {
-            val a = columnP.value?.let { it.getter(row) }
+
+            val column = columnP.value
+            val a = if (column == null) {
+                if (row is Wrapped<*>) {
+                    row.wrapped
+                } else {
+                    row
+                }
+            } else {
+                column.filterGetter(row)
+            }
+
             val bType = testP.value?.bType
             val b: Any? = when (bType) {
                 java.lang.Boolean::class.java -> {
