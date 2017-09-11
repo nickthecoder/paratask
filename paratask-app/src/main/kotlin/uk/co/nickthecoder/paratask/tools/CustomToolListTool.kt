@@ -44,10 +44,10 @@ class CustomToolListTool : ListTableTool<CustomToolRow>() {
     init {
         taskD.addParameters(toolsP)
 
-        columns.add(Column<CustomToolRow, String>("label") { row -> row.label })
-        columns.add(Column<CustomToolRow, ImageView>("icon", label = "") { row -> ImageView(row.tool.icon) })
-        columns.add(Column<CustomToolRow, String>("toolName") { row -> row.tool.taskD.name.uncamel() })
-        columns.add(Column<CustomToolRow, String>("parameters") { row -> parameters(row.tool) })
+        columns.add(Column<CustomToolRow, String>("label", getter = { row -> row.label }))
+        columns.add(Column<CustomToolRow, ImageView>("icon", label = "", getter = { row -> ImageView(row.tool.icon) }))
+        columns.add(Column<CustomToolRow, String>("toolName", getter = { row -> row.tool.taskD.name.uncamel() }))
+        columns.add(Column<CustomToolRow, String>("parameters", getter = { row -> parameters(row.tool) }))
     }
 
     override fun run() {

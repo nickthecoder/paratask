@@ -64,20 +64,20 @@ class OptionsTool() : ListTableTool<Option>() {
     init {
         taskD.addParameters(optionsNameP, directoryP)
 
-        columns.add(Column<Option, String>("code") { it.code })
-        columns.add(Column<Option, String>("label") { it.label })
-        columns.add(BooleanColumn<Option>("isRow") { it.isRow })
-        columns.add(BooleanColumn<Option>("isMultiple") { it.isMultiple })
-        columns.add(BooleanColumn<Option>("refresh") { it.refresh })
-        columns.add(BooleanColumn<Option>("newTab") { it.newTab })
-        columns.add(BooleanColumn<Option>("prompt") { it.prompt })
-        columns.add(Column<Option, String>("script") {
+        columns.add(Column<Option, String>("code", getter = { it.code }))
+        columns.add(Column<Option, String>("label", getter = { it.label }))
+        columns.add(BooleanColumn<Option>("isRow", getter = { it.isRow }))
+        columns.add(BooleanColumn<Option>("isMultiple", getter = { it.isMultiple }))
+        columns.add(BooleanColumn<Option>("refresh", getter = { it.refresh }))
+        columns.add(BooleanColumn<Option>("newTab", getter = { it.newTab }))
+        columns.add(BooleanColumn<Option>("prompt", getter = { it.prompt }))
+        columns.add(Column<Option, String>("script", getter = {
             when (it) {
                 is GroovyOption -> it.script
                 is TaskOption -> it.task.taskD.name
                 else -> ""
             }
-        })
+        }))
     }
 
     override val rowFilter = RowFilter<Option>(this, columns, GroovyOption())

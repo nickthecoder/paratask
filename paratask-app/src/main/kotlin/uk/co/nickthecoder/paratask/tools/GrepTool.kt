@@ -49,7 +49,7 @@ class GrepTool : AbstractCommandTool<GrepRow>(), Stoppable, HasDirectory {
 
         columns.add(FileNameColumn<GrepRow>("name") { it.file })
         columns.add(NumberColumn<GrepRow, Int>("lineNumber", label = "#") { it.lineNumber })
-        columns.add(Column<GrepRow, String>("line") { it.line })
+        columns.add(Column<GrepRow, String>("line", getter = { it.line }))
     }
 
     override fun createHeader(): Header? {

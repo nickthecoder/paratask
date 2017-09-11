@@ -41,9 +41,9 @@ class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
     init {
         taskD.addParameters(directoryP)
 
-        columns.add(Column<GitStashRow, String?>("stash") { it.name })
-        columns.add(Column<GitStashRow, String?>("basedOnCommit") { it.message })
-        columns.add(Column<GitStashRow, String?>("commit") { it.commit })
+        columns.add(Column<GitStashRow, String?>("stash", getter = { it.name }))
+        columns.add(Column<GitStashRow, String?>("basedOnCommit", getter = { it.message }))
+        columns.add(Column<GitStashRow, String?>("commit", getter = { it.commit }))
     }
 
     override fun createCommand(): OSCommand {

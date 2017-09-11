@@ -43,7 +43,7 @@ class IncludesTool : ListTableTool<String>() {
     init {
         taskD.addParameters(optionsNameP, directoryP)
 
-        columns.add(Column<String, String>("include") { it })
+        columns.add(Column<String, String>("include", getter = { it }))
     }
 
     fun getFileOptions() = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)

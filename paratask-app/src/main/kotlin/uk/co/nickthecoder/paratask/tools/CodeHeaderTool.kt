@@ -74,9 +74,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     init {
         taskD.addParameters(directoriesP, extensionsP, showProcessedFilesP, depthP, headerTestP, withinLinesP, headerTextP)
 
-        columns.add(BooleanColumn<ProcessedFile>("processed") { it.processed })
-        columns.add(Column<ProcessedFile, String>("name") { it.file.name })
-        columns.add(Column<ProcessedFile, File>("path") { it.file })
+        columns.add(BooleanColumn<ProcessedFile>("processed", getter = { it.processed }))
+        columns.add(Column<ProcessedFile, String>("name", getter = { it.file.name }))
+        columns.add(Column<ProcessedFile, File>("path", getter = { it.file }))
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {

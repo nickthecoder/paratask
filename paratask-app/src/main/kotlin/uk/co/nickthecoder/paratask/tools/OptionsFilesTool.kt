@@ -45,8 +45,8 @@ class OptionsFilesTool : ListTableTool<FileOptions>(), HasDirectory {
     init {
         taskD.addParameters(directoryP)
 
-        columns.add(Column<FileOptions, String>("name") { fileOptions -> fileOptions.file.nameWithoutExtension })
-        columns.add(Column<FileOptions, String>("path") { fileOptions -> fileOptions.file.path })
+        columns.add(Column<FileOptions, String>("name", getter = { fileOptions -> fileOptions.file.nameWithoutExtension }))
+        columns.add(Column<FileOptions, String>("path", getter = { fileOptions -> fileOptions.file.path }))
     }
 
     override fun createHeader() = Header(this, directoryP)

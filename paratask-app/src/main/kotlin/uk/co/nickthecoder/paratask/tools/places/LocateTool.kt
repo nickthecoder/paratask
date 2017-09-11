@@ -43,8 +43,10 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
         taskD.addParameters(patternsP, matchWholePathP, checkFileExitsP, regularExpressionP, caseSensitiveP, maxItemsP)
         taskD.unnamedParameter = patternsP
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "", width = thumbnailer.heightP.value!! + 8) { thumbnailer.thumbnailImageView(it.file) })
-        columns.add(Column<WrappedFile, String>("path") { it.file.path })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "", width = thumbnailer.heightP.value!! + 8, getter= {
+            thumbnailer.thumbnailImageView(it.file)
+        }))
+        columns.add(Column<WrappedFile, String>("path", getter= { it.file.path }))
         columns.add(TimestampColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }

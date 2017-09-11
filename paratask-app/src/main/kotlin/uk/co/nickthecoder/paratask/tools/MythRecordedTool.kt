@@ -61,12 +61,12 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         taskD.addParameters(serverP, databaseP, userP, passwordP, directoryP)
         directoryP.aliases.add("direcotry")
 
-        columns.add(Column<RecordedLine, String>("channel") { it.channel })
-        columns.add(Column<RecordedLine, Date>("start") { it.start })
-        columns.add(Column<RecordedLine, String>("title") { it.title })
-        columns.add(Column<RecordedLine, String>("subtitle") { it.subtitle })
-        columns.add(Column<RecordedLine, String>("description") { it.description })
-        columns.add(BaseFileColumn<RecordedLine>("file", base = directoryP.value!!) { it.file })
+        columns.add(Column<RecordedLine, String>("channel", getter = { it.channel }))
+        columns.add(Column<RecordedLine, Date>("start", getter = { it.start }))
+        columns.add(Column<RecordedLine, String>("title", getter = { it.title }))
+        columns.add(Column<RecordedLine, String>("subtitle", getter = { it.subtitle }))
+        columns.add(Column<RecordedLine, String>("description", getter = { it.description }))
+        columns.add(BaseFileColumn<RecordedLine>("file", base = directoryP.value!!, getter = { it.file }))
     }
 
     override fun run() {

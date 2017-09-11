@@ -19,28 +19,24 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     companion object {
 
-        val bTypes = mutableListOf<BType>(BooleanBType(), IntBType(), DoubleBType(), StringBType(),
-                LocalDateBType(), TemporalAmountBType(),
-                IntRangeBType())
+        private val nullTest = NullTest()
+        private val notNullTest = NullTest().opposite()
 
-        val nullTest = NullTest()
-        val notNullTest = NullTest().opposite()
+        private val intTests = testOrNotTest(IntEqualsTest(), IntGreaterThan(), IntLessThan(), IntWithin())
+        private val doubleTests = testOrNotTest(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
+        private val longTests = testOrNotTest(LongEqualsTest(), LongGreaterThan(), LongLessThan())
 
-        val intTests = testOrNotTest(IntEqualsTest(), IntGreaterThan(), IntLessThan(), IntWithin())
-        val doubleTests = testOrNotTest(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
-        val longTests = testOrNotTest(LongEqualsTest(), LongGreaterThan(), LongLessThan())
-
-        val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(),
+        private val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(),
                 StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
 
-        val localDateTests = testOrNotTest(LocalDateBefore(), LocalDateAfter())
-        val localDateTimeTests = testOrNotTest(LocalDateTimeEarlierThan(), LocalDateTimeBefore(), LocalDateTimeOn())
+        private val localDateTests = testOrNotTest(LocalDateBefore(), LocalDateAfter())
+        private val localDateTimeTests = testOrNotTest(LocalDateTimeEarlierThan(), LocalDateTimeBefore(), LocalDateTimeOn())
 
-        val charTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan())
-        val booleanTests = testOrNotTest(BooleanEqualsTest())
-        val objectTests = testOrNotTest()
+        private val charTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan())
+        private val booleanTests = testOrNotTest(BooleanEqualsTest())
+        private val objectTests = testOrNotTest()
 
-        val toStringTests: List<Test> = stringTests.map {
+        private val toStringTests: List<Test> = stringTests.map {
             if (it === nullTest || it === notNullTest) {
                 it
             } else {
@@ -48,10 +44,31 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
             }
         }
 
-        val fileSpecificTests = testOrNotTest(FileExits(), FileIsFile(), FileIsDirectory())
-        val fileTests: List<Test> = fileSpecificTests + toStringTests
+        private val fileSpecificTests = testOrNotTest(FileExits(), FileIsFile(), FileIsDirectory())
+        private val fileTests: MutableList<Test> = (fileSpecificTests + toStringTests).toMutableList()
 
-        fun testOrNotTest(vararg tests: Test, includeNullTests: Boolean = true): List<Test> {
+        private val resourceSpecificTests = testOrNotTest(ResourceIsFile(), ResourceIsDirectory(), ResourceIsFileOrDirectory())
+        private val resourceTests: MutableList<Test> = (resourceSpecificTests + toStringTests).toMutableList()
+
+
+        val bTypes = mutableListOf<BType>(BooleanBType(), IntBType(), DoubleBType(), StringBType(),
+                LocalDateBType(), TemporalAmountBType(),
+                IntRangeBType())
+
+        val testMap = mutableMapOf<Class<*>, MutableList<Test>>(
+                java.lang.Boolean::class.java to booleanTests,
+                java.lang.Integer::class.java to intTests,
+                java.lang.Long::class.java to longTests,
+                java.lang.Double::class.java to doubleTests,
+                java.lang.Character::class.java to charTests,
+                String::class.java to stringTests,
+                File::class.java to fileTests,
+                Resource::class.java to resourceTests,
+                LocalDate::class.java to localDateTests,
+                LocalDateTime::class.java to localDateTimeTests
+        )
+
+        fun testOrNotTest(vararg tests: Test, includeNullTests: Boolean = true): MutableList<Test> {
             val result = mutableListOf<Test>()
             tests.forEach {
                 result.add(it)
@@ -319,20 +336,11 @@ You can also edit filters by clicking the table columns' headers.""")
             val exampleValue = exampleValue(columnP.value)
             val columnType: Class<*>? = exampleValue?.let { it::class.java }
 
-            when (columnType) {
-                java.lang.Boolean::class.java -> testChoices(booleanTests)
-                java.lang.Character::class.java -> testChoices(charTests)
-                java.lang.Integer::class.java -> testChoices(intTests)
-                java.lang.Double::class.java -> testChoices(doubleTests)
-                java.lang.Long::class.java -> testChoices(longTests)
-
-                String::class.java -> testChoices(stringTests)
-                File::class.java -> testChoices(fileTests)
-                Resource::class.java -> testChoices(toStringTests)
-                LocalDate::class.java -> testChoices(localDateTests)
-                LocalDateTime::class.java -> testChoices(localDateTimeTests)
-
-                else -> testChoices(objectTests)
+            val tests = testMap[columnType]
+            if (tests == null) {
+                testChoices(objectTests)
+            } else {
+                testChoices(tests)
             }
         }
 

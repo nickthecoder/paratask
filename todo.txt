@@ -1,13 +1,5 @@
 TODO	
 
-Allow registering of additional tests for existing A Types and also register new A types
-
-No RowFilters for date/times
-	greater than / less than : N [Minutes/Hours/Days/Weeks/Years] Ago
-	On [Date]
-	Before/After [Date]
-
-
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files

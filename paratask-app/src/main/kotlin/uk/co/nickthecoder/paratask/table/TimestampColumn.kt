@@ -35,11 +35,10 @@ open class TimestampColumn<R>(
                 name = name,
                 label = label,
                 getter = getter,
-                width = 100) {
-
-    override val filterGetter = { row: R ->
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(getter(row)), ZoneId.systemDefault())
-    }
+                width = 100,
+                filterGetter = { row: R ->
+                    LocalDateTime.ofInstant(Instant.ofEpochMilli(getter(row)), ZoneId.systemDefault())
+                }) {
 
     init {
         setCellFactory { DateTableCell() }

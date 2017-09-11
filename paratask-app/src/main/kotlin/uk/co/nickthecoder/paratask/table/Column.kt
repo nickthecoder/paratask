@@ -26,15 +26,10 @@ open class Column<R, T>(
         val name: String,
         width: Int? = null,
         override val label: String = name.uncamel(),
-        val getter: (R) -> T
+        val getter: (R) -> T,
+        val filterGetter: (R) -> Any? = getter)
 
-) : TableColumn<WrappedRow<R>, T>(label), Labelled {
-
-    /**
-     * Used by RowFilter, for example DirectoryTool's "name" column is for a column of type File, but this getter will
-     * return a String (from file.name)
-     */
-    open val filterGetter: (R) -> Any? = getter
+    : TableColumn<WrappedRow<R>, T>(label), Labelled {
 
     init {
         @Suppress("UNCHECKED_CAST")

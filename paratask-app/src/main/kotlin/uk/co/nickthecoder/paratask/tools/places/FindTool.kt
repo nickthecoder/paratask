@@ -91,10 +91,10 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
             }
         }
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
-        columns.add(BaseFileColumn<WrappedFile>("file", base = directory!!) { it.file })
-        columns.add(TimestampColumn<WrappedFile>("modified") { it.file.lastModified() })
-        columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "", getter = { thumbnailer.thumbnailImageView(it.file) }))
+        columns.add(BaseFileColumn<WrappedFile>("file", base = directory!!, getter = { it.file }))
+        columns.add(TimestampColumn<WrappedFile>("modified", getter = { it.file.lastModified() }))
+        columns.add(SizeColumn<WrappedFile>("size", getter = { it.file.length() }))
     }
 
     override fun customCheck() {

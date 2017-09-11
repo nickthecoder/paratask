@@ -33,10 +33,10 @@ class ShortcutsTool : ListTableTool<ParataskAction>() {
     override val rowFilter = RowFilter<ParataskAction>(this, columns, ParataskActions.EDIT_COPY)
 
     init {
-        columns.add(Column<ParataskAction, ImageView>("icon", label = "") { action -> ImageView(action.image) })
-        columns.add(Column<ParataskAction, String>("name") { action -> action.name })
-        columns.add(BooleanColumn<ParataskAction>("changed") { action -> action.isChanged() })
-        columns.add(Column<ParataskAction, String>("shortcut", width = 300) { action -> action.shortcutString() })
+        columns.add(Column<ParataskAction, ImageView>("icon", label = "", getter = { action -> ImageView(action.image) }))
+        columns.add(Column<ParataskAction, String>("name", getter = { action -> action.name }))
+        columns.add(BooleanColumn<ParataskAction>("changed", getter = { action -> action.isChanged() }))
+        columns.add(Column<ParataskAction, String>("shortcut", width = 300, getter = { action -> action.shortcutString() }))
     }
 
     override fun run() {

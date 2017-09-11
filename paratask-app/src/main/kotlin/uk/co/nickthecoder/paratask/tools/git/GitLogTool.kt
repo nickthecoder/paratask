@@ -72,9 +72,9 @@ class GitLogTool :
     init {
         taskD.addParameters(directoryP, maxItemsP, grepP, grepTypeP, mergesP, matchCaseP, sinceP, untilP)
 
-        columns.add(Column<GitLogRow, String>("date") { it.date })
-        columns.add(Column<GitLogRow, String>("message", width = 400) { it.message })
-        columns.add(Column<GitLogRow, String>("author") { it.author })
+        columns.add(Column<GitLogRow, String>("date", getter = { it.date }))
+        columns.add(Column<GitLogRow, String>("message", width = 400, getter = { it.message }))
+        columns.add(Column<GitLogRow, String>("author", getter = { it.author }))
     }
 
     override val rowFilter = RowFilter(this, columns, exampleRow, "Git Log Filter")

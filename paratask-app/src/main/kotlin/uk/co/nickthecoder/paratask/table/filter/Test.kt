@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.paratask.table.filter
 
 import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
+import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 import java.time.*
 import java.time.temporal.TemporalAmount
@@ -203,12 +204,29 @@ class FileExits : FileUnaryTest("file exists", "file does not exist") {
     override fun testResult(a: File) = a.exists()
 }
 
-class FileIsFile : FileUnaryTest("is a file", "is not a file") {
+class FileIsFile : FileUnaryTest("is a file", "not a file") {
     override fun testResult(a: File) = a.isFile()
 }
 
-class FileIsDirectory : FileUnaryTest("is a directory", "is not a directory") {
+class FileIsDirectory : FileUnaryTest("is a directory", "not a directory") {
     override fun testResult(a: File) = a.isDirectory()
+}
+
+/* --- RESOURCE --- */
+
+abstract class ResourceUnaryTest(label: String, oppositeLabel: String)
+    : UnarySafeTest<Resource>(label, oppositeLabel, Resource::class.java)
+
+class ResourceIsFile : ResourceUnaryTest("is a file", "not a file") {
+    override fun testResult(a: Resource) = a.isFile()
+}
+
+class ResourceIsDirectory : ResourceUnaryTest("is a directory", "not a directory") {
+    override fun testResult(a: Resource) = a.isDirectory()
+}
+
+class ResourceIsFileOrDirectory : ResourceUnaryTest("is a file or directory", "not a file nor directory") {
+    override fun testResult(a: Resource) = a.isFileOrDirectory()
 }
 
 

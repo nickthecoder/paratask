@@ -56,10 +56,10 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
     init {
         taskD.addParameters(directoryP, filenameP)
 
-        columns.add(Column<Place, ImageView>("icon", label = "") { ImageView(it.resource.icon) })
-        columns.add(Column<Place, String>("label") { it.label })
+        columns.add(Column<Place, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
+        columns.add(Column<Place, String>("label", getter = { it.label }))
         columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
-        columns.add(Column<Place, String>("location") { it.resource.path })
+        columns.add(Column<Place, String>("location", getter = { it.resource.path }))
     }
 
     override fun createHeader() = Header(this, directoryP, filenameP)

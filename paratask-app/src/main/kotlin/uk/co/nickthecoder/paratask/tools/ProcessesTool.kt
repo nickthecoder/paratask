@@ -36,12 +36,12 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
         taskD.addParameters(choiceP)
         choiceP.addParameters(allP, commandP, userP, groupP, pidsP)
 
-        columns.add(Column<ProcessRow, Int>("pid", width = 100) { it.pid })
-        columns.add(Column<ProcessRow, String>("user", width = 100) { it.user })
-        columns.add(Column<ProcessRow, String>("group", width = 100) { it.group })
-        columns.add(Column<ProcessRow, Double>("CPU", width = 70, label = "%CPU") { it.cpu })
-        columns.add(Column<ProcessRow, Double>("memory", width = 70, label = "%Mem") { it.mem })
-        columns.add(Column<ProcessRow, String>("command", width = 700) { it.cmd })
+        columns.add(Column<ProcessRow, Int>("pid", width = 100, getter = { it.pid }))
+        columns.add(Column<ProcessRow, String>("user", width = 100, getter = { it.user }))
+        columns.add(Column<ProcessRow, String>("group", width = 100, getter = { it.group }))
+        columns.add(Column<ProcessRow, Double>("CPU", width = 70, label = "%CPU", getter = { it.cpu }))
+        columns.add(Column<ProcessRow, Double>("memory", width = 70, label = "%Mem", getter = { it.mem }))
+        columns.add(Column<ProcessRow, String>("command", width = 700, getter = { it.cmd }))
     }
 
     override fun createCommand(): OSCommand {

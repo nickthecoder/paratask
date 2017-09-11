@@ -57,7 +57,7 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
     init {
         taskD.addParameters(directoryP, commitP, compareToP)
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "") { ImageView(it.icon) })
+        columns.add(Column<WrappedFile, ImageView>("icon", label = "", getter = { ImageView(it.icon) }))
         columns.add(BaseFileColumn<WrappedFile>("path", base = directory!!) { it.file })
     }
 

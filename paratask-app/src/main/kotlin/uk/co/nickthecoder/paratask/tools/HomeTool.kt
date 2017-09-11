@@ -34,9 +34,9 @@ class HomeTool : ListTableTool<Tool>() {
     override val rowFilter = RowFilter<Tool>(this, columns, this)
 
     init {
-        columns.add(Column<Tool, ImageView>("icon", label = "") { tool -> ImageView(tool.icon) })
-        columns.add(Column<Tool, String>("name") { tool -> tool.taskD.name.uncamel() })
-        columns.add(Column<Tool, String>("description") { tool -> tool.taskD.description })
+        columns.add(Column<Tool, ImageView>("icon", label = "", getter = { tool -> ImageView(tool.icon) }))
+        columns.add(Column<Tool, String>("name", getter = { tool -> tool.taskD.name.uncamel() }))
+        columns.add(Column<Tool, String>("description", getter = { tool -> tool.taskD.description }))
     }
 
     override fun run() {

@@ -51,11 +51,11 @@ class GitStatusTool :
     init {
         taskD.addParameters(directoryP)
 
-        columns.add(Column<GitStatusRow, Char>("index") { it.index })
-        columns.add(Column<GitStatusRow, Char>("work") { it.work })
-        columns.add(Column<GitStatusRow, String>("name") { it.file.name })
-        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory!!) { it.file })
-        columns.add(Column<GitStatusRow, String?>("renamedFrom") { it.renamed })
+        columns.add(Column<GitStatusRow, Char>("index", getter = { it.index }))
+        columns.add(Column<GitStatusRow, Char>("work", getter = { it.work }))
+        columns.add(Column<GitStatusRow, String>("name", getter = { it.file.name }))
+        columns.add(BaseFileColumn<GitStatusRow>("path", base = directory!!, getter = { it.file }))
+        columns.add(Column<GitStatusRow, String?>("renamedFrom", getter = { it.renamed }))
     }
 
     override val rowFilter = RowFilter(this, columns, exampleRow, "Git Status Filter")
