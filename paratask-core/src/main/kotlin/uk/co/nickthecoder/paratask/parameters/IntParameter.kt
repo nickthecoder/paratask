@@ -28,19 +28,16 @@ open class IntParameter(
         description: String = "",
         value: Int? = null,
         required: Boolean = true,
-        var range: IntRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE),
-        val columnCount: Int = 6,
-        hidden: Boolean = false,
-        enabled: Boolean = true)
+        val minValue: Int = Int.MIN_VALUE,
+        val maxValue: Int = Int.MAX_VALUE,
+        val columnCount: Int = 6)
 
     : AbstractValueParameter<Int?>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        hidden = hidden,
-        enabled = enabled) {
+        required = required) {
 
     override val converter = object : StringConverter<Int?>() {
         override fun fromString(str: String): Int? {
@@ -69,27 +66,13 @@ open class IntParameter(
             return super.errorMessage(v)
         }
 
-        if (!range.contains(v)) {
-            if (range.start == Int.MIN_VALUE) {
-                return "Cannot be more than ${range.endInclusive}"
-            } else if (range.endInclusive == Int.MAX_VALUE) {
-                return "Cannot be less than ${range.start}"
-            } else {
-                return "Must be in the range ${range.start}..${range.endInclusive}"
-            }
+        if (v > maxValue) {
+            return "Cannot be more than $maxValue"
+        } else if (v < minValue) {
+            return "Cannot be less than $minValue"
         }
 
         return null
-    }
-
-    fun min(minimum: Int): IntParameter {
-        range = minimum..range.endInclusive
-        return this
-    }
-
-    fun max(maximum: Int): IntParameter {
-        range = range.start..maximum
-        return this
     }
 
     override fun isStretchy() = false
@@ -98,5 +81,12 @@ open class IntParameter(
 
     override fun toString(): String = "Int" + super.toString()
 
-    override fun copy() = IntParameter(name = name, label = label, description = description, value = value, required = required, range = range)
+    override fun copy() = IntParameter(
+            name = name,
+            label = label,
+            description = description,
+            value = value,
+            required = required,
+            minValue = minValue,
+            maxValue = maxValue)
 }

@@ -21,8 +21,6 @@ abstract class AbstractParameter(
         override val name: String,
         override val label: String,
         override val description: String,
-        hidden: Boolean = false,
-        enabled: Boolean = true,
         override val isBoxed: Boolean = false)
 
     : Parameter {
@@ -39,7 +37,7 @@ abstract class AbstractParameter(
         }, false)
     }
 
-    override var hidden: Boolean = hidden
+    override var hidden: Boolean = false
         set(v) {
             val old = field
             field = v
@@ -48,7 +46,7 @@ abstract class AbstractParameter(
             }
         }
 
-    override var enabled: Boolean = enabled
+    override var enabled: Boolean = true
         set(v) {
             val old = field
             field = v

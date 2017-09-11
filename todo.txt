@@ -1,7 +1,5 @@
 TODO	
 
-Boolean's label to have the mouseevent to change the value no matter which layout is used.
-
 Allow registering of additional tests for existing A Types and also register new A types
 
 No RowFilters for date/times
@@ -13,10 +11,6 @@ No RowFilters for date/times
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
-
-FindTool does not support dragging.
-
-Exception in app startup - app doesn't exit???
 
 Bugs
 	JediTerm problem when using a split pane - sometime the Swing component stops working.

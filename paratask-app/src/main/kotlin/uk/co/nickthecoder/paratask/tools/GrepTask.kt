@@ -67,12 +67,11 @@ class GrepTask : AbstractCommandTask() {
     val followSymLinksP = BooleanParameter("followSymLinks", value = false,
             description = "Follow symbolic links when searching recursively")
 
-    val maxMatchesP = IntParameter("maxMatches", value = null, required = false,
+    val maxMatchesP = IntParameter("maxMatches", value = null, required = false, minValue = 1,
             description = "The maximum number of matches to show per file.\nLeave blank to show ALL matches.")
-            .min(1)
 
-    val contextLinesP = IntParameter("contextLines", required = false,
-            description = "Output number of lines of context surrounding the matched line").min(1)
+    val contextLinesP = IntParameter("contextLines", required = false, minValue = 1,
+            description = "Output number of lines of context surrounding the matched line")
 
     val additionalOptionsP = StringParameter("additionalOptions", value = "IHsn",
             description = "Additional grep parameters (default=IHsn)")

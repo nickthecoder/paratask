@@ -78,6 +78,14 @@ project(':paratask-app') {
 
 }
 
+project(':paratask-examples') {
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile project(':paratask-app')
+    }
+}
+
 project(':paratask-jediterm') {
     apply plugin: 'kotlin'
 

@@ -30,18 +30,14 @@ class RegexParameter(
         required: Boolean = true,
         val columns: Int = 30,
         val style: String? = null,
-        val stretchy: Boolean = true,
-        hidden: Boolean = false,
-        enabled: Boolean = true)
+        val stretchy: Boolean = true)
 
     : AbstractValueParameter<String>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        hidden = hidden,
-        enabled = enabled) {
+        required = required) {
 
     override val converter = object : StringConverter<String>() {
         override fun fromString(str: String): String? = str

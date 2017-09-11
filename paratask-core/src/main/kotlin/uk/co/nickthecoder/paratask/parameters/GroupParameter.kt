@@ -32,13 +32,10 @@ open class GroupParameter(
 
     override fun errorMessage(): String? = null
 
-    override fun isStretchy() = true
-
     override fun copy(): GroupParameter {
-        val result = GroupParameter(name = name, label = label, description = description)
-        result.fieldFactory = fieldFactory
-        copyChildren(result)
-        return result
+        val copy = GroupParameter(name = name, label = label, description = description)
+        copyAbstractAttributes(copy)
+        return copy
     }
 
 }

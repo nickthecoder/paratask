@@ -115,7 +115,7 @@ class ReniceTask() : AbstractTask() {
 
     override val taskD = TaskDescription("renice", description = "Change process's priority")
 
-    val priorityP = IntParameter("priority", range = -20..19, description = """0 is the default priority.
+    val priorityP = IntParameter("priority", minValue = -20, maxValue = 19, description = """0 is the default priority.
 19 is the 'lowest' priority (the affected processes will run only when nothing else in the system wants to)""")
 
     val pidsP = MultipleParameter("pids") {

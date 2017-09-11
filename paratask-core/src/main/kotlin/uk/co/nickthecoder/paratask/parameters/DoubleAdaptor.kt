@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.parameters.compound.ScaledDoubleParameter
 
 /**
  * Allows DoubleField to be used by DoubleParameter and ScaledDoubleParameter
@@ -56,37 +57,4 @@ class DoubleParameterAdaptor(val doubleParameter: DoubleParameter) : DoubleAdapt
 
     override val valueProperty: SimpleObjectProperty<Double?> = doubleParameter.valueProperty
 
-}
-
-class ScaledDoubleParameterAdaptor(val scaledDoubleParameter: ScaledDoubleParameter) : DoubleAdaptor {
-
-    override var value: Double?
-        get() = scaledDoubleParameter.value.value
-        set(v) {
-            scaledDoubleParameter.value.value = v!!
-        }
-
-    override val converter = object : StringConverter<Double?>() {
-        override fun fromString(string: String): Double? = string.toDouble()
-        override fun toString(obj: Double?): String = obj.toString()
-    }
-
-    override fun errorMessage(v: Double?) = null
-
-    override val minValue: Double = Double.MIN_VALUE
-
-    override val maxValue: Double = Double.MAX_VALUE
-
-
-    override var valueProperty = object : SimpleObjectProperty<Double?>() {
-        override fun set(v: Double?) {
-            val changed = v != get()
-            if (changed) {
-                super.set(v)
-                scaledDoubleParameter.value.value = v!!
-                scaledDoubleParameter.parameterListeners.fireValueChanged(scaledDoubleParameter)
-            }
-        }
-        override fun get() = scaledDoubleParameter.value.value
-    }
 }

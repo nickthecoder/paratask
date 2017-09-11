@@ -1,5 +1,6 @@
 include 'paratask-core'
 include 'paratask-app'
+include 'paratask-examples'
 // Comment out the following line if you want to compile paratask without using JediTerm.
 // And also remove the dependancy in build.gradle.
 include 'paratask-jediterm'

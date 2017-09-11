@@ -30,15 +30,11 @@ abstract class AbstractValueParameter<T>(
         description: String,
         value: T,
         var required: Boolean = false,
-        hidden: Boolean = false,
-        enabled: Boolean = true,
         isBoxed: Boolean = false)
 
     : AbstractParameter(
         name, label = label,
         description = description,
-        hidden = hidden,
-        enabled = enabled,
         isBoxed = isBoxed),
 
         PropertyValueParameter<T> {

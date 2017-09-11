@@ -36,15 +36,15 @@ class EditorTool() : AbstractTool() {
 
     val filesP = MultipleParameter("file") { FileParameter("") }
 
-    val initialTextP = StringParameter("initialText", required = false, hidden = true)
+    val initialTextP = StringParameter("initialText", required = false)
 
-    val findTextP = StringParameter("findText", required = false, hidden = true)
+    val findTextP = StringParameter("findText", required = false)
 
-    val matchCaseP = BooleanParameter("matchCase", value = false, hidden = true)
+    val matchCaseP = BooleanParameter("matchCase", value = false)
 
-    val useRegexP = BooleanParameter("useRegex", value = false, hidden = true)
+    val useRegexP = BooleanParameter("useRegex", value = false)
 
-    val goToLineP = IntParameter("goToLine", required = false, hidden = true)
+    val goToLineP = IntParameter("goToLine", required = false)
 
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         files.filter { it.isFile() }.forEach { addFile(it) }
@@ -72,6 +72,11 @@ class EditorTool() : AbstractTool() {
     }
 
     init {
+        initialTextP.hidden = true
+        goToLineP.hidden = true
+        findTextP.hidden = true
+        matchCaseP.hidden = true
+        useRegexP.hidden = true
         taskD.addParameters(filesP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
     }
 

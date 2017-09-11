@@ -17,13 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.geometry.HPos
-import javafx.geometry.VPos
-import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 
 /**
- * This is the Field created by GroupParameter and is also use in TaskForm to prompt a whole Task.
+ * This is the [ParameterField] created by [AbstractGroupParameter].
+ * Note, there are other implementations for AbstractGroupParameter's ParameterField. This implementation lays out its
+ * children in a form, with labels on the left, and controls on the right. The controls are aligned with each other.
  */
 open class GroupField(groupParameter: AbstractGroupParameter)
     : ParameterField(groupParameter, isBoxed = true) {

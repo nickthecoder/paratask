@@ -29,11 +29,12 @@ class RenameFileTask() : AbstractTask() {
 
     override val taskD = TaskDescription("renameFile")
 
-    val fileP = FileParameter("file", mustExist = true, enabled = false)
+    val fileP = FileParameter("file", mustExist = true)
 
     val newNameP = StringParameter("newName")
 
     init {
+        fileP.enabled = false
         taskD.addParameters(fileP, newNameP)
     }
 

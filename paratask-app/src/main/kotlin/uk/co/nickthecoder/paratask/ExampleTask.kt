@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.compound.ScaledDoubleParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.time.format.DateTimeFormatter
@@ -64,12 +65,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val durationP = ScaledDoubleParameter("time",
-            scales = mapOf<String, Double>("seconds" to 1.0, "minutes" to 60.0, "hours" to 60.0 * 60))
-
     val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
-    val rangeFromP = IntParameter("rangeFrom", label = "From", range = 1..100, value = 1)
-    val rangeToP = IntParameter("rangeTo", label = "To", range = 1..100, value = 99)
     val stringInGroupP = StringParameter("units")
 
     val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
@@ -85,14 +81,12 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
     val informationP = InformationParameter("information", information = "Use information parameters to add arbitrary text to a form.")
 
     init {
-        rangeFromP.enabled = false
 
         taskD.addParameters(requiredInt, optionalInt, doubleP, optionalDoubleP,
-                fileP, informationP, buttonP, durationP,
+                fileP, informationP, buttonP,
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
                 directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
 
-        groupP.addParameters(rangeFromP, rangeToP, stringInGroupP)
         oneOfP.addParameters(aP, bP)
     }
     
@@ -101,13 +95,6 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
 
         println(taskD.toString())
 
-        println("Duration scaled value=${durationP.value.scaledValue} string=${durationP.stringValue} (${durationP.value} ${durationP.scaleString})")
-    }
-
-    override fun customCheck() {
-        if (rangeFromP.value!! > rangeToP.value!!) {
-            throw ParameterException(rangeToP, "Must be less than 'from'")
-        }
     }
 }
 

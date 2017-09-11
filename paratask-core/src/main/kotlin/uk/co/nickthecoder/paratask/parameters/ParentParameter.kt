@@ -25,6 +25,7 @@ interface ParentParameter : Parameter {
     val children: List<Parameter>
 
     fun check() {
+        errorMessage()?.let { throw ParameterException(this, it) }
         children.forEach { checkChild(it) }
     }
 

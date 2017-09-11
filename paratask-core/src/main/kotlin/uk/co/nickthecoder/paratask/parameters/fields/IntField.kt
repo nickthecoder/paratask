@@ -86,7 +86,7 @@ class IntField(val intParameter: IntParameter)
 
     private fun createSpinner(): Spinner<*> {
 
-        val spinner = Spinner(IntSpinnerValueFactory(intParameter.range, intParameter.value))
+        val spinner = Spinner(IntSpinnerValueFactory(intParameter.minValue..intParameter.maxValue, intParameter.value))
         if (intParameter.expression == null) {
             intParameter.value = spinner.valueFactory.value
         }

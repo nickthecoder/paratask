@@ -155,6 +155,11 @@ abstract class AbstractGroupParameter(
 
     override fun createField(): ParameterField = fieldFactory(this)
 
+    protected fun copyAbstractAttributes(copy: AbstractGroupParameter) {
+        copy.fieldFactory = fieldFactory
+        copyChildren(copy)
+    }
+
     protected fun copyChildren(copy: AbstractGroupParameter) {
         children.forEach { child ->
             copy.addParameters(child.copy())

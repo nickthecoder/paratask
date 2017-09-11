@@ -142,6 +142,26 @@
         },
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.ImageViewerTool",
+            "code": ".",
+            "label": "View Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "view"
+            ],
+            "parameters": [
+                {
+                    "name": "file",
+                    "expression": "row.file"
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "ink",
             "label": "Open in Inkscape",
@@ -158,7 +178,9 @@
                 {
                     "name": "arguments",
                     "values": [
-                        
+                        {
+                            "expression": "row.file"
+                        }
                     ]
                 },
                 {
@@ -168,26 +190,6 @@
                 {
                     "name": "output",
                     "value": "IGNORE"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.ImageViewerTool",
-            "code": ".",
-            "label": "View Image",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "aliases": [
-                "view"
-            ],
-            "parameters": [
-                {
-                    "name": "file",
-                    "expression": "row.file"
                 }
             ]
         },
@@ -219,7 +221,7 @@
                 },
                 {
                     "name": "directory",
-                    "expression": "row.parentFile"
+                    "expression": "row.file.parentFile"
                 },
                 {
                     "name": "output",

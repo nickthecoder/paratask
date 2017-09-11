@@ -28,10 +28,11 @@ class CreateDirectoryTask() : AbstractTask() {
 
     override val taskD = TaskDescription("createDirectory")
 
-    val parentDirectoryP = FileParameter("parentDirectory", expectFile = false, required = true, hidden = true)
+    val parentDirectoryP = FileParameter("parentDirectory", expectFile = false, required = true)
     val directoryNameP = StringParameter("directoryName")
 
     init {
+        parentDirectoryP.hidden = true
         taskD.addParameters(parentDirectoryP, directoryNameP)
     }
 

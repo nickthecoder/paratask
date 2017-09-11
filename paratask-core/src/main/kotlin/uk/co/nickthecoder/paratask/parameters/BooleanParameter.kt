@@ -31,18 +31,14 @@ class BooleanParameter(
         value: Boolean? = null,
         required: Boolean = true,
         val oppositeName: String? = null,
-        val labelOnLeft: Boolean = true,
-        hidden: Boolean = false,
-        enabled: Boolean = true)
+        val labelOnLeft: Boolean = true)
 
     : AbstractValueParameter<Boolean?>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        hidden = hidden,
-        enabled = enabled) {
+        required = required) {
 
     override val converter = object : StringConverter<Boolean?>() {
         override fun fromString(str: String): Boolean? {

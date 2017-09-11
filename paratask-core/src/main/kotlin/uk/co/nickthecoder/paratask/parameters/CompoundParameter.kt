@@ -93,10 +93,9 @@ open class CompoundParameter(
         }
     }
 
-    override fun copy(): CompoundParameter {
-        val result = CompoundParameter(name = name, label = label, description = description)
-        copyChildren(result)
-        result.fieldFactory = fieldFactory
-        return result
+    override fun copy(): GroupParameter {
+        val copy = GroupParameter(name = name, label = label, description = description)
+        copyAbstractAttributes(copy)
+        return copy
     }
 }

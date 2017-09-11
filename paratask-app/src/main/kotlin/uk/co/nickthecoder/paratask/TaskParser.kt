@@ -56,7 +56,11 @@ class TaskParser(val task: Task) {
         metaTaskD.addParameters(promptP, helpP)
     }
 
-    fun go(args: Array<String>) {
+    fun go(args: Array<String>, prompt: Boolean = false) {
+
+        if (prompt) {
+            promptP.value = true
+        }
 
         arguments = args.toList()
 

@@ -34,18 +34,14 @@ open class FileParameter(
         value: File? = if (expectFile == false && mustExist == true) currentDirectory else null,
         var baseDirectory: File? = null,
         val baseDirectoryP: FileParameter? = null,
-        val extensions: List<String>? = null,
-        hidden: Boolean = false,
-        enabled: Boolean = true)
+        val extensions: List<String>? = null)
 
     : AbstractValueParameter<File?>(
         name = name,
         label = label,
         description = description,
         value = value,
-        required = required,
-        hidden = hidden,
-        enabled = enabled) {
+        required = required) {
 
     override val converter = object : StringConverter<File?>() {
 

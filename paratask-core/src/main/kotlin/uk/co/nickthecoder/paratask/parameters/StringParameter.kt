@@ -31,8 +31,6 @@ class StringParameter(
         val rows: Int = 1,
         val style: String? = null,
         val stretchy: Boolean = true,
-        hidden: Boolean = false,
-        enabled: Boolean = true,
         isBoxed: Boolean = false)
 
     : AbstractValueParameter<String>(
@@ -41,8 +39,6 @@ class StringParameter(
         description = description,
         value = value,
         required = required,
-        hidden = hidden,
-        enabled = enabled,
         isBoxed = isBoxed) {
 
     override val converter = object : StringConverter<String>() {

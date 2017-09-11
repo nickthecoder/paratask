@@ -87,6 +87,247 @@
             "newTab": false,
             "refresh": false,
             "keyCode": "LEFT"
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "gimp",
+            "label": "Open in GIMP",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gimp"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "tool.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "ink",
+            "label": "Open in Inkscape",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "inkscape"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "tool.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "jpg",
+            "label": "Convert Image to JPG",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "convert"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "tool.file.name"
+                        },
+                        {
+                            "expression": "tool.file.name + \".jpg\""
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "png",
+            "label": "Convert Image to PNG",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "convert"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "tool.file.name"
+                        },
+                        {
+                            "expression": "tool.file.name + \".png\""
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.FlipImageTask",
+            "code": "flip",
+            "label": "Flip Image",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "tool.file"
+                },
+                {
+                    "name": "direction",
+                    "value": "x"
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( tool.file.parentFile, \"flipped-\" + tool.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.ResizeImageTask",
+            "code": "size",
+            "label": "Resize Image",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "tool.file"
+                },
+                {
+                    "name": "resizeOption",
+                    "value": "size"
+                },
+                {
+                    "name": "width",
+                    "value": "100"
+                },
+                {
+                    "name": "height",
+                    "value": "100"
+                },
+                {
+                    "name": "keepAspectRatio",
+                    "value": "true"
+                },
+                {
+                    "name": "percentage",
+                    "value": ""
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( tool.file.parentFile, \"resized-\" + tool.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.RotateImageTask",
+            "code": "rot",
+            "label": "Rotate Image",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "tool.file"
+                },
+                {
+                    "name": "rotation",
+                    "value": "90"
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( tool.file.parentFile, \"rotated-\" + tool.file.name )"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
         }
     ]
 }

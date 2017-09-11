@@ -40,7 +40,7 @@ class GitLogTool :
 
     override val directory by directoryP
 
-    val maxItemsP = IntParameter("maxItems", range = 1..Int.MAX_VALUE, value = 100)
+    val maxItemsP = IntParameter("maxItems", minValue = 1, value = 100)
 
     val grepP = StringParameter("grep", required = false)
 
