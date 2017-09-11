@@ -1,10 +1,17 @@
-package uk.co.nickthecoder.paratask.table
+package uk.co.nickthecoder.paratask.table.filter
 
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
+import uk.co.nickthecoder.paratask.parameters.compound.TemporalAmountParameter
+import java.time.LocalDate
+import java.time.temporal.TemporalAmount
 
 /**
  * Defines the second argument for a [Test] to be used within a [RowFilter].
+ * It is call BType, because [Test.accept] takes two parameters named "a" and "b".
+ * "a" is taken from the table's data, and "b" is taken from a [Parameter] to be filled in by the user.
+ * This class is responsible for creating that [Parameter], and extracting the value to be passed to the
+ * accept method.
  */
 interface BType {
 
@@ -68,6 +75,25 @@ class StringBType() : ValueParameterBType<String>() {
 
     override val klass = java.lang.String::class.java
     override fun createParameter() = StringParameter("stringValue", label = "")
+}
+
+class LocalDateBType() : ValueParameterBType<LocalDate>() {
+    override val klass = LocalDate::class.java
+    override fun createParameter() = DateParameter("dateValue", label = "")
+}
+
+class TemporalAmountBType() : AbstractBType() {
+    override val klass = TemporalAmount::class.java
+    override fun createParameter() = TemporalAmountParameter("temporalAmountValue", label = "")
+
+    override fun copyValue(fromParameter: Parameter, toParameter: Parameter) {
+        if (toParameter is TemporalAmountParameter && fromParameter is TemporalAmountParameter) {
+            toParameter.amount = fromParameter.amount
+            toParameter.units = fromParameter.units
+        }
+    }
+
+    override fun getValue(parameter: Parameter) = (parameter as TemporalAmountParameter).value
 }
 
 class IntRangeBType : AbstractBType() {

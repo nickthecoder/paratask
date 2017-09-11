@@ -28,6 +28,7 @@ import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.child

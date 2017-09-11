@@ -32,6 +32,8 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.tools.NullTask
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.focusNext

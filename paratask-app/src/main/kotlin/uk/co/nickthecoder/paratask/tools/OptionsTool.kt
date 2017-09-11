@@ -28,6 +28,7 @@ import uk.co.nickthecoder.paratask.options.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import java.io.File
 
 class OptionsTool() : ListTableTool<Option>() {

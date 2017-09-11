@@ -18,8 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.control.TableRow
-import javafx.scene.input.DragEvent
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.table.filter.Filtered
 
 interface TableTool<R : Any> : Tool, Filtered {
 

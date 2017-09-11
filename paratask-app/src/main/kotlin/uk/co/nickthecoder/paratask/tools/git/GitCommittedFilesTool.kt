@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.process.OSCommand

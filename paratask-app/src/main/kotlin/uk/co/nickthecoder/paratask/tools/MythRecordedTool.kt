@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.File

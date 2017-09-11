@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.paratask.table
+package uk.co.nickthecoder.paratask.table.filter
 
 import groovy.lang.Binding
 import javafx.stage.Stage
@@ -7,8 +7,11 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R, val label: String = "Filter")
@@ -16,7 +19,9 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
 
     companion object {
 
-        val bTypes = mutableListOf<BType>(BooleanBType(), IntBType(), DoubleBType(), StringBType(), IntRangeBType())
+        val bTypes = mutableListOf<BType>(BooleanBType(), IntBType(), DoubleBType(), StringBType(),
+                LocalDateBType(), TemporalAmountBType(),
+                IntRangeBType())
 
         val nullTest = NullTest()
         val notNullTest = NullTest().opposite()
@@ -24,7 +29,13 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         val intTests = testOrNotTest(IntEqualsTest(), IntGreaterThan(), IntLessThan(), IntWithin())
         val doubleTests = testOrNotTest(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
         val longTests = testOrNotTest(LongEqualsTest(), LongGreaterThan(), LongLessThan())
-        val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
+
+        val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(),
+                StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
+
+        val localDateTests = testOrNotTest(LocalDateBefore(), LocalDateAfter())
+        val localDateTimeTests = testOrNotTest(LocalDateTimeEarlierThan(), LocalDateTimeBefore(), LocalDateTimeOn())
+
         val charTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan())
         val booleanTests = testOrNotTest(BooleanEqualsTest())
         val objectTests = testOrNotTest()
@@ -318,15 +329,17 @@ You can also edit filters by clicking the table columns' headers.""")
                 String::class.java -> testChoices(stringTests)
                 File::class.java -> testChoices(fileTests)
                 Resource::class.java -> testChoices(toStringTests)
+                LocalDate::class.java -> testChoices(localDateTests)
+                LocalDateTime::class.java -> testChoices(localDateTimeTests)
 
                 else -> testChoices(objectTests)
             }
         }
 
         fun testPChanged() {
-            val bType = testP.value?.bType
+            val bClass = testP.value?.bClass
             bTypeParameters.forEach { key, parameter ->
-                parameter.hidden = bType != key.klass
+                parameter.hidden = bClass != key.klass
             }
         }
 
@@ -343,7 +356,7 @@ You can also edit filters by clicking the table columns' headers.""")
                 column.filterGetter(row)
             }
 
-            val klass = testP.value?.bType
+            val klass = testP.value?.bClass
             val bType = bTypes.firstOrNull { it.klass === klass }
             val parameter = bTypeParameters[bType]
             val b = parameter?.let { bType?.getValue(parameter) }

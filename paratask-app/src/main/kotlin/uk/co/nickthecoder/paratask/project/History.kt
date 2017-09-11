@@ -19,8 +19,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.table.Filtered
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.Filtered
 
 class History(var halfTab: HalfTab) {
 

@@ -25,7 +25,7 @@ import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Preferences
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File

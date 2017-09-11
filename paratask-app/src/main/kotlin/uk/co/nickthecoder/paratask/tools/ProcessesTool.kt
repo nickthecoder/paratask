@@ -2,10 +2,9 @@ package uk.co.nickthecoder.paratask.tools
 
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.util.regex.Pattern

@@ -26,18 +26,26 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-open class ModifiedColumn<R>(
+open class TimestampColumn<R>(
         name: String,
         label: String = name.uncamel(),
         getter: (R) -> Long) :
 
-        Column<R, Long>(name = name, label = label, getter = getter, width = 100) {
+        Column<R, Long>(
+                name = name,
+                label = label,
+                getter = getter,
+                width = 100) {
+
+    override val filterGetter = { row: R ->
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(getter(row)), ZoneId.systemDefault())
+    }
 
     init {
         setCellFactory { DateTableCell() }
-        styleClass.add("modified")
-
+        styleClass.add("timestamp")
     }
+
 
     class DateTableCell<R> : TextFieldTableCell<R, Long>() {
         override fun updateItem(item: Long?, empty: Boolean) {
@@ -52,8 +60,8 @@ open class ModifiedColumn<R>(
     }
 
     companion object {
-        val dateFormat : DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-        val shortDateFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM")
+        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+        val shortDateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM")
 
         fun format(millis: Long): String {
             val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault())

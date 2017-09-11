@@ -43,6 +43,7 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.project.ResultsTab
 import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 
 
 open class TableResults<R : Any>(

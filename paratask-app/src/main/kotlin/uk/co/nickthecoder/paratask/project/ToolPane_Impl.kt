@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.MyTab
 import uk.co.nickthecoder.paratask.gui.MyTabPane
-import uk.co.nickthecoder.paratask.table.Filtered
+import uk.co.nickthecoder.paratask.table.filter.Filtered
 
 class ToolPane_Impl(override val tool: Tool)
 

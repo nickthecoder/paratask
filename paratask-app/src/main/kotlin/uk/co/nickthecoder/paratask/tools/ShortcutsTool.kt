@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.table.BooleanColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 
 class ShortcutsTool : ListTableTool<ParataskAction>() {
 

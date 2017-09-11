@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 
 abstract class ListTableTool<R : Any> : AbstractTableTool<R>(), SingleRowFilter<R> {
 

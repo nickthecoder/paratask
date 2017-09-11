@@ -20,10 +20,10 @@ package uk.co.nickthecoder.paratask.tools
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.misc.FileTest
-import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.HeaderRow
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.tools.GrepTool.GrepRow
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.Stoppable

@@ -25,6 +25,8 @@ import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory

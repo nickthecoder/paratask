@@ -8,7 +8,7 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.fields.ParametersForm
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 
 class FilterTab(val tool: Tool, val filters: Map<String, RowFilter<*>>) : MinorTab("Filter") {
 

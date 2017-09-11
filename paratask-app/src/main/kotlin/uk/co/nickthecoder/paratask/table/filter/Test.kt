@@ -1,12 +1,14 @@
-package uk.co.nickthecoder.paratask.table
+package uk.co.nickthecoder.paratask.table.filter
 
 import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
 import java.io.File
+import java.time.*
+import java.time.temporal.TemporalAmount
 
 
 interface Test {
+    val bClass: Class<*>?
     val label: String
-    val bType: Class<*>?
     fun result(a: Any?, b: Any?): Boolean
     fun opposite(): Test
 }
@@ -16,12 +18,14 @@ abstract class AbstractTest(override val label: String, val oppositeLabel: Strin
 }
 
 class NullTest : AbstractTest("is null", "is not null") {
-    override val bType = null
+    override val bClass = null
     override fun result(a: Any?, b: Any?) = a == null
 }
 
 class NotTest(val inner: Test, override val label: String) : Test {
-    override val bType = inner.bType
+    override val bClass
+        get() = inner.bClass
+
     override fun result(a: Any?, b: Any?) = !inner.result(a, b)
     override fun opposite(): Test = inner
 }
@@ -30,43 +34,70 @@ class NotTest(val inner: Test, override val label: String) : Test {
  * Converts the A value to a string, then performs a string test upon it.
  */
 class ToStringTest(val test: Test) : Test {
+    override val bClass = String::class.java
     override val label = test.label
-    override val bType = test.bType
     override fun result(a: Any?, b: Any?) = test.result(a?.toString(), b)
     override fun opposite() = ToStringTest(test.opposite())
 }
 
 
-abstract class SafeTest<A, B>(label: String, oppositeLabel: String, val aClass: Class<*>, val bClass: Class<*>)
+abstract class SafeTest<A, B>(label: String, oppositeLabel: String, val aClass: Class<*>, override val bClass: Class<*>)
     : AbstractTest(label, oppositeLabel) {
 
-    override val bType: Class<*>? = bClass
-
     override fun result(a: Any?, b: Any?): Boolean {
-        if (a == null) {
-            return false
-        }
-        if (b == null && bType !== Unit::class.java) {
+
+        if (a == null || b == null) {
+            //println("Null. a = $a b = $b")
             return false
         }
 
-        if ((a::class.java === aClass) && (b == null || (b::class.java === bClass))) {
-            @Suppress("UNCHECKED_CAST")
-            return testResult(a as A, b as B)
-        } else {
+        if (!aClass.isInstance(a)) {
+            //println("Wrong A type ${a::class.java} vs $aClass")
             return false
         }
+
+        if (!bClass.isInstance(b)) {
+            //println("Wrong B type ${b::class.java} vs $bClass")
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        return testResult(a as A, b as B)
     }
 
-    override fun opposite(): Test = NotTest(this, oppositeLabel)
-
     abstract fun testResult(a: A, b: B): Boolean
+}
+
+abstract class UnarySafeTest<A>(label: String, oppositeLabel: String, val aClass: Class<*>)
+    : AbstractTest(label, oppositeLabel) {
+
+    override val bClass = null
+
+    override fun result(a: Any?, b: Any?): Boolean {
+
+        if (a == null) {
+            //println("Null. a = $a")
+            return false
+        }
+        if (b != null) {
+            //println("Expected b to be null. Ignoring $b")
+        }
+
+        if (!aClass.isInstance(a)) {
+            //println("Wrong A type ${a::class.java} vs $aClass")
+            return false
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        return testResult(a as A)
+    }
+
+    abstract fun testResult(a: A): Boolean
 }
 
 /* --- BOOLEAN --- */
 
 class BooleanEqualsTest : AbstractTest("==", "!=") {
-    override val bType = java.lang.Boolean::class.java
+    override val bClass = java.lang.Boolean::class.java
     override fun result(a: Any?, b: Any?) = a == b
 }
 
@@ -165,18 +196,53 @@ class StringMatches : StringTest<Regex>("matches", "does not match", Regex::clas
 
 /* --- FILE --- */
 
-abstract class FileTest<B>(label: String, oppositeLabel: String, bClass: Class<*>)
-    : SafeTest<File, B>(label, oppositeLabel, File::class.java, bClass)
+abstract class FileUnaryTest(label: String, oppositeLabel: String)
+    : UnarySafeTest<File>(label, oppositeLabel, File::class.java)
 
-class FileExits : FileTest<Any?>("file exists", "file does not exist", Unit::class.java) {
-    override fun testResult(a: File, b: Any?) = a.exists()
+class FileExits : FileUnaryTest("file exists", "file does not exist") {
+    override fun testResult(a: File) = a.exists()
 }
 
-class FileIsFile : FileTest<Any?>("is a file", "is not a file", Unit::class.java) {
-    override fun testResult(a: File, b: Any?) = a.isFile()
+class FileIsFile : FileUnaryTest("is a file", "is not a file") {
+    override fun testResult(a: File) = a.isFile()
 }
 
-class FileIsDirectory : FileTest<Any?>("is a directory", "is not a directory", Unit::class.java) {
-    override fun testResult(a: File, b: Any?) = a.isDirectory()
+class FileIsDirectory : FileUnaryTest("is a directory", "is not a directory") {
+    override fun testResult(a: File) = a.isDirectory()
 }
 
+
+/* --- LOCALDATE --- */
+
+abstract class LocalDateTest<B>(label: String, oppositeLabel: String, bClass: Class<*>)
+    : SafeTest<LocalDate, B>(label, oppositeLabel, LocalDate::class.java, bClass)
+
+class LocalDateEqualsTest : LocalDateTest<LocalDate>("same date", "!=", LocalDate::class.java) {
+    override fun testResult(a: LocalDate, b: LocalDate) = a == b
+}
+
+class LocalDateBefore : LocalDateTest<LocalDate>("before", "not before", LocalDate::class.java) {
+    override fun testResult(a: LocalDate, b: LocalDate) = a < b
+}
+
+class LocalDateAfter : LocalDateTest<LocalDate>("after", "not after", LocalDate::class.java) {
+    override fun testResult(a: LocalDate, b: LocalDate) = a > b
+}
+
+
+/* --- LOCALDATETIME --- */
+
+abstract class LocalDateTimeTest<B>(label: String, oppositeLabel: String, bClass: Class<*>)
+    : SafeTest<LocalDateTime, B>(label, oppositeLabel, LocalDateTime::class.java, bClass)
+
+class LocalDateTimeEarlierThan : LocalDateTimeTest<TemporalAmount>("earlier than … ago", "later than … ago", TemporalAmount::class.java) {
+    override fun testResult(a: LocalDateTime, b: TemporalAmount) = a < LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()) - b
+}
+
+class LocalDateTimeBefore : LocalDateTimeTest<LocalDate>("on or after", "before", LocalDate::class.java) {
+    override fun testResult(a: LocalDateTime, b: LocalDate) = a >= b.atStartOfDay()
+}
+
+class LocalDateTimeOn : LocalDateTimeTest<LocalDate>("date ==", "date !=", LocalDate::class.java) {
+    override fun testResult(a: LocalDateTime, b: LocalDate) = a.toLocalDate() == b
+}

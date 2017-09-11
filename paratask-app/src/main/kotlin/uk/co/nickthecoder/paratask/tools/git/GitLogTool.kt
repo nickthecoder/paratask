@@ -21,8 +21,8 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.RowFilter
-import uk.co.nickthecoder.paratask.table.SingleRowFilter
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.tools.git.GitLogTool.GitLogRow
 import uk.co.nickthecoder.paratask.util.HasDirectory

@@ -26,8 +26,8 @@ import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.project.SharedToolPane
 import uk.co.nickthecoder.paratask.project.ToolPane
-import uk.co.nickthecoder.paratask.table.Filtered
-import uk.co.nickthecoder.paratask.table.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.Filtered
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import java.io.File
 

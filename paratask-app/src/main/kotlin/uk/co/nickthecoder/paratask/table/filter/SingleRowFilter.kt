@@ -1,4 +1,6 @@
-package uk.co.nickthecoder.paratask.table
+package uk.co.nickthecoder.paratask.table.filter
+
+import uk.co.nickthecoder.paratask.table.TableTool
 
 interface SingleRowFilter<R : Any> : TableTool<R> {
 

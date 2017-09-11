@@ -37,6 +37,8 @@ import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
+import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.util.FileLister
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.currentDirectory
@@ -104,7 +106,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "") { thumbnailer.thumbnailImageView(it.file) })
         columns.add(FileNameColumn<WrappedFile>("name") { it.file })
-        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
+        columns.add(TimestampColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
 

@@ -3,7 +3,6 @@ package uk.co.nickthecoder.paratask.tools.places
 import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.gui.DragFilesHelper
-import uk.co.nickthecoder.paratask.gui.DragHelper
 import uk.co.nickthecoder.paratask.misc.Thumbnailer
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
@@ -12,6 +11,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
@@ -45,7 +45,7 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "", width = thumbnailer.heightP.value!! + 8) { thumbnailer.thumbnailImageView(it.file) })
         columns.add(Column<WrappedFile, String>("path") { it.file.path })
-        columns.add(ModifiedColumn<WrappedFile>("modified") { it.file.lastModified() })
+        columns.add(TimestampColumn<WrappedFile>("modified") { it.file.lastModified() })
         columns.add(SizeColumn<WrappedFile>("size") { it.file.length() })
     }
 
