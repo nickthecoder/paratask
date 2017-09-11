@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.table
 
+import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
 import java.io.File
 
 
@@ -85,6 +86,10 @@ class IntLessThan : IntTest<Int>("<", ">=", Integer::class.java) {
 
 class IntGreaterThan : IntTest<Int>(">", "<=", Integer::class.java) {
     override fun testResult(a: Int, b: Int) = a > b
+}
+
+class IntWithin : IntTest<IntRangeParameter>("within range", "outside range", IntRangeParameter::class.java) {
+    override fun testResult(a: Int, b: IntRangeParameter) = b.contains(a)
 }
 
 /* --- DOUBLE --- */

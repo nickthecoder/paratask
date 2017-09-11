@@ -7,6 +7,7 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 
@@ -19,7 +20,7 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         val nullTest = NullTest()
         val notNullTest = NullTest().opposite()
 
-        val intTests = testOrNotTest(IntEqualsTest(), IntGreaterThan(), IntLessThan())
+        val intTests = testOrNotTest(IntEqualsTest(), IntGreaterThan(), IntLessThan(), IntWithin())
         val doubleTests = testOrNotTest(DoubleEqualsTest(), DoubleGreaterThan(), DoubleLessThan())
         val longTests = testOrNotTest(LongEqualsTest(), LongGreaterThan(), LongLessThan())
         val stringTests = testOrNotTest(StringEqualsTest(), StringGreaterThan(), StringLessThan(), StringContains(), StringStartsWith(), StringEndsWith(), StringMatches())
@@ -281,10 +282,11 @@ You can also edit filters by clicking the table columns' headers.""")
         val doubleValueP = DoubleParameter("doubleValue", label = "")
         val stringValueP = StringParameter("stringValue", label = "")
         val regexValueP = RegexParameter("regexValue", label = "")
+        val intRangeP = IntRangeParameter("intRange", label = "")
 
         init {
             boxLayout(false)
-            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP)
+            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP, intRangeP)
 
             booleanValueP.hidden = true
             booleanValueP.asComboBox()
@@ -292,6 +294,7 @@ You can also edit filters by clicking the table columns' headers.""")
             doubleValueP.hidden = true
             stringValueP.hidden = true
             regexValueP.hidden = true
+            intRangeP.hidden = true
 
             columnP.addChoice("ROW", null, "ROW")
             columns.forEach { column ->
@@ -312,6 +315,8 @@ You can also edit filters by clicking the table columns' headers.""")
             doubleValueP.value = other.doubleValueP.value
             stringValueP.value = other.stringValueP.value
             regexValueP.value = other.regexValueP.value
+            intRangeP.from = other.intRangeP.from
+            intRangeP.to = other.intRangeP.to
         }
 
         fun testChoices(tests: List<Test>) {
@@ -349,6 +354,7 @@ You can also edit filters by clicking the table columns' headers.""")
             doubleValueP.hidden = bType != java.lang.Double::class.java
             stringValueP.hidden = bType != String::class.java
             regexValueP.hidden = bType != Regex::class.java
+            intRangeP.hidden = bType != IntRangeParameter::class.java
         }
 
         fun accept(row: R): Boolean {
@@ -380,6 +386,9 @@ You can also edit filters by clicking the table columns' headers.""")
                 }
                 Regex::class.java -> {
                     Regex(regexValueP.value)
+                }
+                IntRangeParameter::class.java -> {
+                    intRangeP
                 }
 
                 else -> {

@@ -8,6 +8,7 @@ class IntRangeParameter(
         name: String,
         override val label: String = name.uncamel(),
         val required: Boolean = true,
+        val inclusive: Boolean = true, // Used by contains()
         val minValue: Int = Int.MIN_VALUE,
         val maxValue: Int = Int.MAX_VALUE,
         description: String = "")
@@ -29,6 +30,22 @@ class IntRangeParameter(
         boxLayout(false)
     }
 
+    fun contains(value: Int): Boolean {
+        if (from ?: Int.MAX_VALUE > value) {
+            return false
+        }
+        if (inclusive) {
+            if (to ?: Int.MIN_VALUE <= value) {
+                return false
+            }
+        } else {
+            if (to ?: Int.MIN_VALUE < value) {
+                return false
+            }
+        }
+        return true
+    }
+
     override fun errorMessage(): String? {
         if (isProgrammingMode()) return null
 
@@ -39,7 +56,13 @@ class IntRangeParameter(
     }
 
     override fun copy(): IntRangeParameter {
-        val copy = IntRangeParameter(name = name, label = label, description = description, required = required, minValue = minValue, maxValue = maxValue)
+        val copy = IntRangeParameter(name = name,
+                label = label,
+                description = description,
+                required = required,
+                inclusive = inclusive,
+                minValue = minValue,
+                maxValue = maxValue)
         copyAbstractAttributes(copy)
         return copy
     }
