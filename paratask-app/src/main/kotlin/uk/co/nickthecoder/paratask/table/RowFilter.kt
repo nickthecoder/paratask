@@ -345,8 +345,8 @@ You can also edit filters by clicking the table columns' headers.""")
 
             val klass = testP.value?.bType
             val bType = bTypes.firstOrNull { it.klass === klass }
-            val parameter = bTypeParameters[bType]!!
-            val b = bType?.getValue(parameter)
+            val parameter = bTypeParameters[bType]
+            val b = parameter?.let { bType?.getValue(parameter) }
 
             return testP.value!!.result(a, b)
         }
