@@ -7,7 +7,6 @@ import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 
@@ -16,6 +15,8 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
     : AbstractTask() {
 
     companion object {
+
+        val bTypes = mutableListOf<BType>(BooleanBType(), IntBType(), DoubleBType(), StringBType(), IntRangeBType())
 
         val nullTest = NullTest()
         val notNullTest = NullTest().opposite()
@@ -174,23 +175,6 @@ You can also edit filters by clicking the table columns' headers.""")
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is RowFilter<*>) {
-            return false
-        }
-        if (groovyScriptP.value != other.groovyScriptP.value) {
-            return false
-        }
-        if (conditionsP.value.size != other.conditionsP.value.size) {
-            return false
-        }
-        conditionsP.value.filterIsInstance<Condition>().forEachIndexed { index, myCondition ->
-            val otherCondition = other.conditionsP.value[index]
-            if (myCondition != otherCondition) return false
-        }
-        return true
-    }
-
     fun editColumnFilters(column: Column<R, *>?, onOk: () -> Unit) {
         val task: Task = if (column == null) {
             EditRowFilters(onOk)
@@ -200,11 +184,12 @@ You can also edit filters by clicking the table columns' headers.""")
         TaskPrompter(task).placeOnStage(Stage())
     }
 
+
     open inner class EditColumnFilters(val column: Column<R, *>?, val onOk: () -> Unit) : AbstractTask() {
 
         override val taskRunner = UnthreadedTaskRunner(this)
 
-        override val taskD = TaskDescription("editColumnFilters", width = 700)
+        final override val taskD = TaskDescription("editColumnFilters", width = 700)
 
         val columnAcceptRejectP = BooleanParameter("acceptReject", label = "", value = acceptRejectP.value, required = false)
 
@@ -277,24 +262,18 @@ You can also edit filters by clicking the table columns' headers.""")
 
         val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = false)
         val testP = ChoiceParameter<Test?>("test", label = "", value = null, required = true)
-        val booleanValueP = BooleanParameter("booleanValue", label = "")
-        val intValueP = IntParameter("intValue", label = "")
-        val doubleValueP = DoubleParameter("doubleValue", label = "")
-        val stringValueP = StringParameter("stringValue", label = "")
-        val regexValueP = RegexParameter("regexValue", label = "")
-        val intRangeP = IntRangeParameter("intRange", label = "")
+
+        val bTypeParameters = mutableMapOf<BType, Parameter>()
 
         init {
             boxLayout(false)
-            addParameters(columnP, testP, booleanValueP, intValueP, doubleValueP, stringValueP, regexValueP, intRangeP)
-
-            booleanValueP.hidden = true
-            booleanValueP.asComboBox()
-            intValueP.hidden = true
-            doubleValueP.hidden = true
-            stringValueP.hidden = true
-            regexValueP.hidden = true
-            intRangeP.hidden = true
+            addParameters(columnP, testP)
+            bTypes.forEach {
+                val parameter = it.createParameter()
+                parameter.hidden = true
+                addParameters(parameter)
+                bTypeParameters[it] = parameter
+            }
 
             columnP.addChoice("ROW", null, "ROW")
             columns.forEach { column ->
@@ -310,13 +289,10 @@ You can also edit filters by clicking the table columns' headers.""")
         fun copyValues(other: Condition) {
             columnP.value = other.columnP.value
             testP.value = other.testP.value
-            booleanValueP.value = other.booleanValueP.value
-            intValueP.value = other.intValueP.value
-            doubleValueP.value = other.doubleValueP.value
-            stringValueP.value = other.stringValueP.value
-            regexValueP.value = other.regexValueP.value
-            intRangeP.from = other.intRangeP.from
-            intRangeP.to = other.intRangeP.to
+
+            bTypeParameters.forEach { bType, parameter ->
+                bType.copyValue(other.bTypeParameters[bType]!!, parameter)
+            }
         }
 
         fun testChoices(tests: List<Test>) {
@@ -349,12 +325,9 @@ You can also edit filters by clicking the table columns' headers.""")
 
         fun testPChanged() {
             val bType = testP.value?.bType
-            booleanValueP.hidden = bType != java.lang.Boolean::class.java
-            intValueP.hidden = bType != java.lang.Integer::class.java
-            doubleValueP.hidden = bType != java.lang.Double::class.java
-            stringValueP.hidden = bType != String::class.java
-            regexValueP.hidden = bType != Regex::class.java
-            intRangeP.hidden = bType != IntRangeParameter::class.java
+            bTypeParameters.forEach { key, parameter ->
+                parameter.hidden = bType != key.klass
+            }
         }
 
         fun accept(row: R): Boolean {
@@ -370,50 +343,14 @@ You can also edit filters by clicking the table columns' headers.""")
                 column.filterGetter(row)
             }
 
-            val bType = testP.value?.bType
-            val b: Any? = when (bType) {
-                java.lang.Boolean::class.java -> {
-                    booleanValueP.value!!
-                }
-                java.lang.Integer::class.java -> {
-                    intValueP.value!!
-                }
-                java.lang.Double::class.java -> {
-                    doubleValueP.value!!
-                }
-                String::class.java -> {
-                    stringValueP.value
-                }
-                Regex::class.java -> {
-                    Regex(regexValueP.value)
-                }
-                IntRangeParameter::class.java -> {
-                    intRangeP
-                }
-
-                else -> {
-                    null
-                }
-            }
+            val klass = testP.value?.bType
+            val bType = bTypes.firstOrNull { it.klass === klass }
+            val parameter = bTypeParameters[bType]!!
+            val b = bType?.getValue(parameter)
 
             return testP.value!!.result(a, b)
         }
 
-        override fun equals(other: Any?): Boolean {
-            if (other !is RowFilter<*>.Condition) {
-                return false
-            }
-            if (columnP.value != other.columnP.value || testP.value != other.testP.value) return false
-
-            if ((!booleanValueP.hidden) && booleanValueP.value != other.booleanValueP.value) return false
-            if ((!intValueP.hidden) && intValueP.value != other.intValueP.value) return false
-            if ((!doubleValueP.hidden) && doubleValueP.value != other.doubleValueP.value) return false
-            if ((!stringValueP.hidden) && stringValueP.value != other.stringValueP.value) return false
-            if ((!regexValueP.hidden) && regexValueP.value != other.regexValueP.value) return false
-
-            return true
-        }
     }
-
 
 }
