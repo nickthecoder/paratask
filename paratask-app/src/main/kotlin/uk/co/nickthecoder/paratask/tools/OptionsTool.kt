@@ -215,9 +215,9 @@ class OptionsTool() : ListTableTool<Option>() {
 
         val shortcutP = ShortcutParameter("shortcut", value = option.shortcut)
 
-        var groovyScriptP = StringParameter("groovyScript",
-                rows = 10, columns = 40, style = "script",
-                value = if (option is GroovyOption) option.script else "")
+        var groovyScriptP = ScriptParameter("groovyScript",
+                rows = 10, columns = 40, value = if (option is GroovyOption) option.script else "",
+                scriptVariables = fileOptions.scriptVariables)
 
         val scriptOrTaskP = OneOfParameter("action", message = "Action Type")
 
@@ -315,7 +315,7 @@ class OptionsTool() : ListTableTool<Option>() {
 
         override val taskD = TaskDescription("optionsMetaData")
 
-        val scriptVariablesMap = mutableMapOf<String, Class<*>>()
+        val scriptVariables = ScriptVariables()
 
         val fileOptions = getFileOptions()
 
@@ -323,7 +323,7 @@ class OptionsTool() : ListTableTool<Option>() {
                 value = fileOptions.comments)
 
         val rowFilterP = ScriptParameter("rowFilterScript", required = false, rows = 5,
-                value = fileOptions.rowFilterScript?.source ?: "", scriptVariables = ScriptVariables(scriptVariablesMap))
+                value = fileOptions.rowFilterScript?.source ?: "", scriptVariables = scriptVariables)
 
         val infoP = InformationParameter("info", information =
         """The following parameters are optional, and if filled in correctly, will allow the "…" button in script fields to show information about the row and tool classes.""")
@@ -335,24 +335,17 @@ class OptionsTool() : ListTableTool<Option>() {
         init {
             taskD.addParameters(commentsP, rowFilterP, infoP, rowClassNameP, toolClassNameP)
 
-            updateClassName("row", rowClassNameP.value)
-            updateClassName("tool", toolClassNameP.value)
+            scriptVariables.add("row", rowClassNameP.value)
+            scriptVariables.add("tool", toolClassNameP.value)
 
             rowClassNameP.listen {
-                updateClassName("row", rowClassNameP.value)
+                scriptVariables.add("row", rowClassNameP.value)
             }
             toolClassNameP.listen {
-                updateClassName("tool", toolClassNameP.value)
+                scriptVariables.add("tool", toolClassNameP.value)
             }
         }
 
-        fun updateClassName(name: String, className: String) {
-            try {
-                scriptVariablesMap[name] = Class.forName(className)
-            } catch (e: Exception) {
-                scriptVariablesMap.remove(name)
-            }
-        }
 
         override fun run() {
             fileOptions.comments = commentsP.value

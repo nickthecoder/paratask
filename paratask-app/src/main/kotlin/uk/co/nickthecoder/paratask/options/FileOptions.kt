@@ -23,6 +23,7 @@ import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.misc.FileListener
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.misc.FileWatcher
@@ -40,14 +41,24 @@ class FileOptions(override val file: File) : FileListener, FileTest {
     var rowFilterScript: GroovyScript? = null
 
     var rowClassName: String = ""
+        set(v) {
+            field = v
+            scriptVariables.add("row", v)
+        }
 
     var toolClassName: String = Tool::class.java.name
+        set(v) {
+            field = v
+            scriptVariables.add("tool", v)
+        }
 
     private val optionsMap = mutableMapOf<String, Option>()
 
     private val primaryOptionsMap = mutableMapOf<String, Option>()
 
     private var saving: Boolean = false
+
+    val scriptVariables = ScriptVariables()
 
     init {
         load()

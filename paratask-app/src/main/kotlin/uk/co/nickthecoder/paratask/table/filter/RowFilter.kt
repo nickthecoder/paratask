@@ -83,9 +83,8 @@ class RowFilter<R : Any>(val tool: Tool, val columns: List<Column<R, *>>, val ex
         }
     }
 
-    val programmableProperties = ScriptVariables(mapOf<String, Class<*>>(
-            "row" to exampleRow.javaClass,
-            "tool" to tool.javaClass))
+    val programmableProperties = ScriptVariables()
+
 
     override val taskD = TaskDescription("filter", description =
     """Filter Rows.
@@ -102,6 +101,9 @@ You can also edit filters by clicking the table columns' headers.""")
     var groovyScript: GroovyScript? = null
 
     init {
+        programmableProperties.add("row", exampleRow.javaClass)
+        programmableProperties.add("tool", tool.javaClass)
+
         andP.asComboBox("AND", "OR")
 
         acceptRejectP.asComboBox("Accept if...", "Reject if...", "Ignore")
