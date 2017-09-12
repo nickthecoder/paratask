@@ -182,6 +182,7 @@ You can also edit filters by clicking the table columns' headers.""")
                 script ->
                 val bindings = Binding()
                 bindings.setVariable("row", row)
+                bindings.setVariable("tool", tool)
                 val result = script.run(bindings)
                 if (result == false) {
                     return false
@@ -191,7 +192,7 @@ You can also edit filters by clicking the table columns' headers.""")
                 // If a non-boolean value is returned, then ignore it.
             }
         } catch (e: Exception) {
-            println("Groovy Row Filter faild : $e")
+            println("Groovy Row Filter failed : $e")
         }
         return andP.value == true
     }
@@ -279,7 +280,7 @@ You can also edit filters by clicking the table columns' headers.""")
 
     inner class EditRowFilters(onOk: () -> Unit) : EditColumnFilters(null, onOk) {
 
-        val myGroovyScriptP = StringParameter("groovyScript", label = "Groovy Script (return true or false)", required = false, rows = 5, isBoxed = true, value = groovyScriptP.value)
+        val myGroovyScriptP = ScriptParameter("groovyScript", programmableProperties, label = "Groovy Script (return true or false)", required = false, rows = 5, value = groovyScriptP.value)
 
         init {
             taskD.addParameters(myGroovyScriptP)

@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.application.Platform
 import javafx.collections.ObservableList
 import javafx.scene.Scene
 import javafx.scene.control.*
@@ -7,8 +8,13 @@ import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTask
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -20,17 +26,20 @@ class VariablePrompter(val sourceText: TextInputControl, val scriptVariables: Sc
 
     val instructions = Label(
             """Click an item to copy it to the clipboard.
-Double click to close the window.
 Then use Ctrl+V to paste it into your script.""")
 
     val variablesTree = TreeView<TreeData>()
 
-    val code = TextField()
+    val infoTask = InfoTask()
+
+    val infoArea = TaskPrompter(infoTask, showCancel = false)
+
 
     lateinit var stage: Stage
 
     fun build() {
 
+        infoArea.build()
 
         instructions.styleClass.add("instructions")
 
@@ -38,7 +47,7 @@ Then use Ctrl+V to paste it into your script.""")
             styleClass.add("variable-prompter")
             top = instructions
             center = variablesTree
-            bottom = code
+            bottom = infoArea.root
         }
 
         with(variablesTree) {
@@ -46,18 +55,12 @@ Then use Ctrl+V to paste it into your script.""")
             isShowRoot = false
 
             selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-                selectedItem(newValue)
-            }
-            root.children.firstOrNull()?.isExpanded = true
-
-            addEventFilter(MouseEvent.MOUSE_CLICKED) { event ->
-                if (event.clickCount == 2) {
-                    stage.hide()
-                    event.consume()
+                newValue?.let {
+                    selectedItem(newValue)
                 }
             }
+            root.children.firstOrNull()?.isExpanded = true
         }
-
     }
 
 
@@ -74,11 +77,17 @@ Then use Ctrl+V to paste it into your script.""")
 
     fun selectedItem(item: TreeItem<TreeData>) {
         if (item is MyTreeItem) {
-            code.text = item.treeData.fullCode()
+            val data = item.treeData
+            infoTask.codeP.value = data.fullCode()
 
+            infoTask.classP.value = if (data is PropertyOrMethod) {
+                data.type?.name ?: ""
+            } else {
+                ""
+            }
             val clipboard = Clipboard.getSystemClipboard()
             val content = ClipboardContent()
-            content.putString(code.text)
+            content.putString(data.fullCode())
             clipboard.setContent(content)
         }
     }
@@ -103,12 +112,30 @@ Then use Ctrl+V to paste it into your script.""")
         val excludeFieldNames = hashSetOf(
                 "Companion", "class", "rowFilter", "rowFilters", "tabDropHelper", "tabDropHelperProperty", "taskD", "taskRunner",
                 "toolPane", "createHeader", "createFooter", "createHeaderRows", "createResults", "createRow", "customCheck", "detatching",
-                "ewnsureToolPane", "evaluateTask", "focusOnParameter", "loadProblem", "updateResults", "updateRow", "updateTitle",
+                "ensureToolPane", "evaluateTask", "focusOnParameter", "loadProblem", "updateResults", "updateRow", "updateTitle",
                 "valueParameters")
 
-        val excludeMethodNames = hashSetOf("notify", "notifyAll", "wait", "equals", "hashCode", "toString")
+        val excludeMethodNames = hashSetOf("getClass", "notify", "notifyAll", "wait", "equals", "hashCode", "toString")
     }
 
+    /**
+     * Used to show info about the selected item in the tree
+     */
+    inner class InfoTask : AbstractTask() {
+        override val taskD = TaskDescription("variableInfo")
+        val codeP = StringParameter("code", required = false)
+        val classP = StringParameter("class", required = false)
+
+        init {
+            taskD.addParameters(codeP, classP)
+        }
+
+        override fun run() {
+            Platform.runLater {
+                stage.hide()
+            }
+        }
+    }
 
     class MyTreeItem(val treeData: TreeData) : TreeItem<TreeData>(treeData) {
 

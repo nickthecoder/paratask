@@ -23,6 +23,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
+import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.gui.VariablePrompter
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
@@ -66,6 +67,12 @@ class ScriptField(val scriptParameter: ScriptParameter)
             }
         })
 
+        textField.addEventHandler(KeyEvent.KEY_PRESSED) { event ->
+            if (event.code == KeyCode.CONTEXT_MENU) {
+                showScriptEditor()
+            }
+        }
+
         this.textField = textField
 
         promptButton.onAction = EventHandler { event -> showScriptEditor() }
@@ -76,8 +83,10 @@ class ScriptField(val scriptParameter: ScriptParameter)
     override fun build(): ParameterField {
         val field = super.build()
 
-        box?.let {
-            it.graphic = promptButton
+        if (scriptParameter.scriptVariables.map.isNotEmpty()) {
+            box?.let {
+                it.graphic = promptButton
+            }
         }
 
         return field
@@ -94,7 +103,7 @@ class ScriptField(val scriptParameter: ScriptParameter)
     }
 
     fun showScriptEditor() {
-        val editor = VariablePrompter( textField, scriptParameter.scriptVariables)
+        val editor = VariablePrompter(textField, scriptParameter.scriptVariables)
         editor.build()
         editor.show()
     }
