@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.MythRecordedTool$RecordedLine",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.MythRecordedTool",
     "includes": [
         "file"
     ],
@@ -26,12 +28,20 @@
             "refresh": false,
             "parameters": [
                 {
-                    "name": "directory",
-                    "expression": "tool.directoryP.value"
+                    "name": "directories",
+                    "values": [
+                        {
+                            "expression": "tool.directoryP.value"
+                        }
+                    ]
                 },
                 {
-                    "name": "depth",
-                    "value": "1"
+                    "name": "treeRoot",
+                    "value": "/home/nick/projects/paratask/"
+                },
+                {
+                    "name": "placesFile",
+                    "value": ""
                 },
                 {
                     "name": "onlyFiles",
@@ -48,16 +58,16 @@
                     "value": "false"
                 },
                 {
-                    "name": "enterHidden",
-                    "value": "false"
-                },
-                {
-                    "name": "includeBase",
-                    "value": "false"
+                    "name": "foldSingleDirectories",
+                    "value": "true"
                 },
                 {
                     "name": "thumbnailHeight",
                     "value": "32"
+                },
+                {
+                    "name": "directoryThumbnail",
+                    "value": ".thumbnails/default.jpg"
                 },
                 {
                     "name": "autoRefresh",

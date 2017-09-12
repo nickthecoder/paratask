@@ -1,4 +1,6 @@
 {
+    "rowClassName": "java.lang.String",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.IncludesTool",
     "includes": [
         
     ],

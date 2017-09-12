@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.CustomToolRow",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.CustomToolListTool",
     "includes": [
         
     ],

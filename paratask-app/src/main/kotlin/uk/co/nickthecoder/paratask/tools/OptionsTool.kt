@@ -22,6 +22,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.RegisteredTaskFactory
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.gui.SimpleDragHelper
 import uk.co.nickthecoder.paratask.misc.AutoRefresh
 import uk.co.nickthecoder.paratask.options.*
@@ -314,21 +315,50 @@ class OptionsTool() : ListTableTool<Option>() {
 
         override val taskD = TaskDescription("optionsMetaData")
 
+        val scriptVariablesMap = mutableMapOf<String, Class<*>>()
+
         val fileOptions = getFileOptions()
 
         val commentsP = StringParameter("comments", required = false, rows = 6,
                 value = fileOptions.comments)
 
-        val rowFilterP = StringParameter("rowFilterScript", required = false, style = "script", rows = 10,
-                value = fileOptions.rowFilterScript?.source ?: "")
+        val rowFilterP = ScriptParameter("rowFilterScript", required = false, rows = 5,
+                value = fileOptions.rowFilterScript?.source ?: "", scriptVariables = ScriptVariables(scriptVariablesMap))
+
+        val infoP = InformationParameter("info", information =
+        """The following parameters are optional, and if filled in correctly, will allow the "…" button in script fields to show information about the row and tool classes.""")
+
+        val rowClassNameP = StringParameter("rowClassName", required = false, value = fileOptions.rowClassName)
+
+        val toolClassNameP = StringParameter("toolClassName", required = false, value = fileOptions.toolClassName)
 
         init {
-            taskD.addParameters(commentsP, rowFilterP)
+            taskD.addParameters(commentsP, rowFilterP, infoP, rowClassNameP, toolClassNameP)
+
+            updateClassName("row", rowClassNameP.value)
+            updateClassName("tool", toolClassNameP.value)
+
+            rowClassNameP.listen {
+                updateClassName("row", rowClassNameP.value)
+            }
+            toolClassNameP.listen {
+                updateClassName("tool", toolClassNameP.value)
+            }
+        }
+
+        fun updateClassName(name: String, className: String) {
+            try {
+                scriptVariablesMap[name] = Class.forName(className)
+            } catch (e: Exception) {
+                scriptVariablesMap.remove(name)
+            }
         }
 
         override fun run() {
             fileOptions.comments = commentsP.value
             fileOptions.rowFilterScript = if (rowFilterP.value == "") null else GroovyScript(rowFilterP.value)
+            fileOptions.rowClassName = rowClassNameP.value
+            fileOptions.toolClassName = toolClassNameP.value
             fileOptions.save()
         }
     }

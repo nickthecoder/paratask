@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.GrepTool$GrepRow",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.GrepTool",
     "includes": [
         "fileOrDir"
     ],

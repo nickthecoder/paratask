@@ -1,5 +1,7 @@
 {
     "comments": "Can be included from any tools which extend HasDirectory. All the options will be non-row options using making use of \"tool.directory\".",
+    "rowClassName": "uk.co.nickthecoder.paratask.util.HasDirectory",
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
     "includes": [
         
     ],
@@ -38,7 +40,7 @@
                 },
                 {
                     "name": "matchType",
-                    "value": "CASE_INSENSITIVE"
+                    "value": "<unknown>"
                 },
                 {
                     "name": "wholeName",
@@ -54,7 +56,7 @@
                 },
                 {
                     "name": "type",
-                    "value": "<unknown>"
+                    "value": ""
                 },
                 {
                     "name": "typeFollowsSymlink",

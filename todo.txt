@@ -1,23 +1,8 @@
 TODO	
 
 Scripts when editing Filter and GroovyOption should ALSO be in yellow.
-	May it a special ScriptParameter?
-	These fields AND the ones currently in yellow should have a "..." button next to them.
-	Click to see a list of objects that will be in scope (e.g.tool, row), and also see their properties and getters.
-		Expand (in a tree?) to see the grandchild properties and getters.
 	GroovyOption ( row and tool )
-	Row Filter ( row and tool )
 	Expressions in a TaskOption ( row and tool )
-	So needs somewhere to store a map of name:String -> Class
-		For GroovyOption, it can have such a mapping (and stored as a MultiParameter of String,String on the MetaData tab.
-		For RowFilter, it already HAS a tool and an exampleRow object. Nothing else is needed.
-			This is the easiest place to start.
-		For expressions in a general task, we'd need to tell the TaskParameter the bindings.
-			The TaskField has access to the TaskParameter.
-			The TaskField creates an EditTaskPrompter (passing along those bindings)
-			The EditTaskPrompter has a TaskForm, which has a ParametersForm.
-			I *think* fields can get access to the top-level ParametersForm.
-			That's a lot of hierarchy to cut through backwards!
 
 
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???

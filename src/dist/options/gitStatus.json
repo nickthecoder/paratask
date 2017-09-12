@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.git.GitStatusTool$GitStatusRow",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitStatusTool",
     "includes": [
         "git",
         "fileOrDir"

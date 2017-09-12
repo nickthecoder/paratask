@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.project.ParataskAction",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.ShortcutsTool",
     "includes": [
         
     ],

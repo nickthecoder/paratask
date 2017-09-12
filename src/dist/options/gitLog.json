@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.git.GitLogTool$GitLogRow",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitLogTool",
     "includes": [
         
     ],

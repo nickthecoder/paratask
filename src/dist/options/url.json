@@ -1,5 +1,7 @@
 {
     "comments": "Used by PlacesTool.\nRow must define isURL() and url\n",
+    "rowClassName": "uk.co.nickthecoder.paratask.util.Resource",
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
     "rowFilterScript": "row.isURL()",
     "includes": [
         

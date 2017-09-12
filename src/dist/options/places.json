@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.places.Place",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.places.PlacesTool",
     "includes": [
         "fileOrDir",
         "url"

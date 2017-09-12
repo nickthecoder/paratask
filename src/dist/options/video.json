@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.misc.FileTest",
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
     "rowFilterScript": "row.isVideo()",
     "includes": [
         

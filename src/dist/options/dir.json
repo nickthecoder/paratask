@@ -1,5 +1,7 @@
 {
     "comments": "Must define row.isDirectory()\nIf this is true, then row.file must be a File object, refering to a directory (not a file)",
+    "rowClassName": "uk.co.nickthecoder.paratask.misc.FileTest",
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
     "rowFilterScript": "row.isDirectory()",
     "includes": [
         

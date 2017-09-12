@@ -1,24 +1,31 @@
 {
-         "include" : [ "foo", "bar" ],
-         "options" : [
-             {
-                "type" : "groovy",
-                "code" : ".",
-                "label" : "Use the Tool",
-                "script" : "row",
-                "isRow" : true,
-                "isMultiple" : false,
-                "refresh" : false
-             },
-             {
-                "type" : "groovy",
-                "code" : "x",
-                "label" : "Test",
-                "script" : "println(4+1)",
-                "isRow" : false,
-                "isMultiple" : false,
-                "refresh" : false
-             }
-         ] 
-
-    }
+    "rowClassName": "uk.co.nickthecoder.paratask.Tool",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.HomeTool",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "row",
+            "code": ".",
+            "label": "Use the Tool",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        },
+        {
+            "type": "groovy",
+            "script": "println(4+1)",
+            "code": "x",
+            "label": "Test",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false
+        }
+    ]
+}

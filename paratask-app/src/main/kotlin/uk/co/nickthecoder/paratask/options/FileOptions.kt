@@ -22,6 +22,7 @@ import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import com.eclipsesource.json.PrettyPrint
 import groovy.lang.Binding
+import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.misc.FileListener
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.misc.FileWatcher
@@ -37,6 +38,10 @@ class FileOptions(override val file: File) : FileListener, FileTest {
     var comments: String = ""
 
     var rowFilterScript: GroovyScript? = null
+
+    var rowClassName: String = ""
+
+    var toolClassName: String = Tool::class.java.name
 
     private val optionsMap = mutableMapOf<String, Option>()
 
@@ -109,6 +114,8 @@ class FileOptions(override val file: File) : FileListener, FileTest {
  
     {
          "comments" : "Applies only to files (not directories)",
+         "rowClassName" : "uk.co.nickthecoder.paratask.Foo",
+         "toolClassName" : "uk.co.nickthecoder.paratask.Bar",
          "rowFilterScript" : "row.isFile()",
          "includes" : [ "foo", "bar" ],
          "options" : [
@@ -160,6 +167,9 @@ class FileOptions(override val file: File) : FileListener, FileTest {
         }
 
         comments = jroot.getString("comments", "")
+        rowClassName = jroot.getString("rowClassName", "")
+        toolClassName = jroot.getString("toolClassName", Tool::class.java.name)
+
         val rowFilterScriptSource = jroot.getString("rowFilterScript", "")
         rowFilterScript = if (rowFilterScriptSource == "") null else GroovyScript(rowFilterScriptSource)
 
@@ -182,9 +192,16 @@ class FileOptions(override val file: File) : FileListener, FileTest {
 
         val jroot = JsonObject()
 
-        if (comments != "") {
+        if (comments.isNotBlank()) {
             jroot.add("comments", comments)
         }
+        if (rowClassName.isNotBlank()) {
+            jroot.add("rowClassName", rowClassName)
+        }
+        if (toolClassName.isNotBlank()) {
+            jroot.add("toolClassName", toolClassName)
+        }
+
         rowFilterScript?.let { jroot.add("rowFilterScript", it.source) }
 
         val jincludes = JsonArray()

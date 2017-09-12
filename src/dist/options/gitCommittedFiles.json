@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.misc.WrappedFile",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitCommittedFilesTool",
     "includes": [
         "fileOrDir"
     ],

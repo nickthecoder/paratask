@@ -1,4 +1,6 @@
 {
+    "rowClassName": "uk.co.nickthecoder.paratask.options.Option",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.OptionsTool",
     "includes": [
         
     ],
