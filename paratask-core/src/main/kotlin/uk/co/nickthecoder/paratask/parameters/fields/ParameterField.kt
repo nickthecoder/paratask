@@ -53,7 +53,7 @@ abstract class ParameterField(
      */
     var controlContainer: Node? = null
 
-    private var box: TitledPane? = null
+    protected var box: TitledPane? = null
 
     open val hasLabel: Boolean
         get() = !isBoxed

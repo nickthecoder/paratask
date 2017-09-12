@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.table.filter
 import groovy.lang.Binding
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.*
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.misc.Wrapped
 import uk.co.nickthecoder.paratask.options.GroovyScript
@@ -14,7 +15,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 
-class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R, val label: String = "Filter")
+class RowFilter<R : Any>(val tool: Tool, val columns: List<Column<R, *>>, val exampleRow: R, val label: String = "Filter")
     : AbstractTask() {
 
     companion object {
@@ -82,13 +83,17 @@ class RowFilter<R>(val tool: Tool, val columns: List<Column<R, *>>, val exampleR
         }
     }
 
+    val programmableProperties = ScriptVariables(mapOf<String, Class<*>>(
+            "row" to exampleRow.javaClass,
+            "tool" to tool.javaClass))
+
     override val taskD = TaskDescription("filter", description =
     """Filter Rows.
 You can also edit filters by clicking the table columns' headers.""")
 
     val acceptRejectP = BooleanParameter("acceptReject", label = "", value = true, required = false)
 
-    val groovyScriptP = StringParameter("groovyScript", label = "Groovy Script (return true or false)", required = false, rows = 5, isBoxed = true)
+    val groovyScriptP = ScriptParameter("groovyScript", programmableProperties, label = "Groovy Script (return true or false)", required = false, rows = 5)
 
     val conditionsP = MultipleParameter("conditions", isBoxed = true) { Condition() }
 
