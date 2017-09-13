@@ -20,7 +20,7 @@ class FilterTab(val tool: Tool, val filters: Map<String, RowFilter<*>>) : MinorT
 
     val choiceGroupP = GroupParameter("choiceGroup")
 
-    val choiceForm = ParametersForm(choiceGroupP)
+    val choiceForm = ParametersForm(choiceGroupP, null)
 
     init {
         content = whole

@@ -21,5 +21,4 @@ interface FieldParent : Iterable<ParameterField> {
 
     fun updateField(field: ParameterField)
 
-    fun findRootParametersForm(): ParametersForm?
 }

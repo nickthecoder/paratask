@@ -56,8 +56,6 @@ class HeaderRow(vararg parameters: Parameter)
         addAll(*parameters)
     }
 
-    override fun findRootParametersForm(): ParametersForm? = null
-
     fun addAll(vararg parameters: Parameter): HeaderRow {
         parameters.forEach { add(it) }
         return this

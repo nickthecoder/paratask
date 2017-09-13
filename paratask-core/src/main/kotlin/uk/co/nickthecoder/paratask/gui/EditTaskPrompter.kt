@@ -17,17 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.event.EventHandler
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 
 open class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?)
     : AbstractTaskPrompter(task) {
 
-    val doneButton = Button("Done")
+    val variablesButton = Button("Variables")
 
-    init {
-        taskForm.form.scriptVariables = scriptVariables
-    }
+    val doneButton = Button("Done")
 
     override fun build() {
 
@@ -37,10 +36,20 @@ open class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?)
             visibleProperty().bind(task.taskRunner.showRunProperty)
             disableProperty().bind(task.taskRunner.disableRunProperty)
             defaultButtonProperty().set(true)
-            onAction = javafx.event.EventHandler {
+            onAction = EventHandler {
                 onDone()
             }
         }
+
+        if (scriptVariables != null && scriptVariables.map.isNotEmpty()) {
+            variablesButton.onAction = EventHandler {
+                val prompter = VariablePrompter(scriptVariables)
+                prompter.build()
+                prompter.show()
+            }
+            buttons.children.add(variablesButton)
+        }
+
         buttons.children.add(doneButton)
 
     }
