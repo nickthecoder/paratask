@@ -220,16 +220,15 @@ Then use Ctrl+V to paste it into your script.""")
 
     inner class PropertyItem(parent: TreeData, name: String, type: Class<*>) : PropertyOrMethod(parent, name, type) {
 
-        override fun toString() = name
-        override fun code(): String = name
+        override fun code() = name
+        override fun toString(): String = "$name : ${type?.simpleName ?: ""}"
     }
 
     inner class MethodItem(parent: TreeData, val method: Method) : PropertyOrMethod(parent, method.name, method.returnType) {
         override fun toString(): String {
-            val params = method.parameterCount
-            val paramsString = if (params == 0) "" else params.toString()
+            val params = method.parameterTypes.map{ it.simpleName}.joinToString(separator = ",")
 
-            return "$name(${paramsString})"
+            return "${name}($params) : ${method.returnType.simpleName}"
         }
 
         override fun code(): String {
