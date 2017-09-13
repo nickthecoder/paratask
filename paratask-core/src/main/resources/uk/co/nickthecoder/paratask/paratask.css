@@ -299,6 +299,10 @@
     -fx-font-family: monospace;
 }
 
+.programming > .container {
+    -fx-padding: 0 0 0 10px;
+}
+
 .expression.text-input {
     -fx-control-inner-background: #ffc;
 }

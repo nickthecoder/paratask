@@ -21,6 +21,7 @@ import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.*
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.gui.VariablePrompter
@@ -91,17 +92,20 @@ abstract class ParameterField(
         val expControl: Node
 
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
-            val box = HBox()
-            box.styleClass.add("programming")
+            val borderPane = BorderPane()
+            borderPane.styleClass.add("programming")
             val stack = StackPane()
+            stack.styleClass.add("container")
             stack.alignment = Pos.CENTER_LEFT
 
             expressionField = TextField()
+            expressionField?.prefColumnCount = 40
             expressionField?.styleClass?.add("expression")
             expressionButton = ToggleButton("=")
             expressionBox.children.add(expressionField)
 
-            box.children.addAll(expressionButton, stack)
+            borderPane.left = expressionButton
+            borderPane.center = stack
             stack.children.addAll(expressionBox, control)
             onExpression()
 
@@ -114,7 +118,8 @@ abstract class ParameterField(
             expressionBox.isVisible = parameter.expression != null
             control?.isVisible = parameter.expression == null
 
-            expControl = box
+            expControl = borderPane
+            //expControl = expressionField!!
         } else {
             expControl = control!!
         }

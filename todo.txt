@@ -1,9 +1,5 @@
 TODO	
 
-Scripts when editing Filter and GroovyOption should ALSO be in yellow.
-	Expressions in a TaskOption ( row and tool )
-
-
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
