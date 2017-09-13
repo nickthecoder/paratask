@@ -29,8 +29,7 @@ import javafx.scene.layout.Region
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.gui.ScriptVariables
-import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.ParentParameter
+import uk.co.nickthecoder.paratask.parameters.*
 
 /**
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
@@ -282,13 +281,21 @@ class ParametersForm(val parentParameter: ParentParameter)
 
     }
 
-    inner class FormField(val parameterField: ParameterField) : Region() {
+    inner class FormField(val parameterField: ParameterField) : Region(), ParameterListener {
 
         init {
             if (parameterField.hasLabel) {
                 children.add(parameterField.labelNode)
             }
             children.addAll(parameterField.controlContainer, parameterField.error)
+            parameterField.parameter.parameterListeners.add(this)
+            isVisible = !parameterField.parameter.hidden
+        }
+
+        override fun parameterChanged(event: ParameterEvent) {
+            if (event.type == ParameterEventType.VISIBILITY) {
+                isVisible = !parameterField.parameter.hidden
+            }
         }
 
         override fun computeMinHeight(width: Double): Double {
