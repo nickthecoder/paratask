@@ -103,7 +103,7 @@ class ScriptField(val scriptParameter: ScriptParameter)
     }
 
     fun showScriptEditor() {
-        val editor = VariablePrompter(textField, scriptParameter.scriptVariables)
+        val editor = VariablePrompter(scriptParameter.scriptVariables)
         editor.build()
         editor.show()
     }

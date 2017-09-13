@@ -61,7 +61,7 @@ class TaskField(val taskParameter: TaskParameter)
             if (taskParameter.programmable) {
                 task.taskD.programmingMode = true
             }
-            val taskPrompter = EditTaskPrompter(task)
+            val taskPrompter = EditTaskPrompter(task, taskParameter.scriptVariables)
             taskPrompter.placeOnStage(Stage())
         }
     }

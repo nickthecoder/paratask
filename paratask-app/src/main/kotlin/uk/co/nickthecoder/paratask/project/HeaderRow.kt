@@ -36,6 +36,7 @@ import uk.co.nickthecoder.paratask.gui.defaultWhileFocusWithin
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.fields.FieldParent
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
+import uk.co.nickthecoder.paratask.parameters.fields.ParametersForm
 import uk.co.nickthecoder.paratask.util.fireTabToFocusNext
 
 class HeaderRow(vararg parameters: Parameter)
@@ -54,6 +55,8 @@ class HeaderRow(vararg parameters: Parameter)
         styleClass.add("header-row")
         addAll(*parameters)
     }
+
+    override fun findParametersForm(): ParametersForm? = null
 
     fun addAll(vararg parameters: Parameter): HeaderRow {
         parameters.forEach { add(it) }

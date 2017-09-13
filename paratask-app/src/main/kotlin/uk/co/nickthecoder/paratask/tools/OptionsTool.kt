@@ -224,6 +224,9 @@ class OptionsTool() : ListTableTool<Option>() {
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
 
         init {
+            println("EditOptionsTask setting sv to ${fileOptions.scriptVariables}")
+            taskP.scriptVariables = fileOptions.scriptVariables
+
             if (option is GroovyOption) {
 
                 groovyScriptP.value = option.script

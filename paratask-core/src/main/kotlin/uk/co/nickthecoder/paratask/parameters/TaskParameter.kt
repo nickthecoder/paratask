@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.Task
 import uk.co.nickthecoder.paratask.TaskGroup
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.parameters.fields.TaskField
 import uk.co.nickthecoder.paratask.util.escapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -45,6 +46,8 @@ class TaskParameter(
         description = description,
         value = value,
         required = required) {
+
+    var scriptVariables: ScriptVariables? = null
 
     /**
      * Format is a set of lines. The first line is the creation string.

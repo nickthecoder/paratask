@@ -20,4 +20,6 @@ package uk.co.nickthecoder.paratask.parameters.fields
 interface FieldParent : Iterable<ParameterField> {
 
     fun updateField(field: ParameterField)
+
+    fun findParametersForm(): ParametersForm?
 }

@@ -23,6 +23,7 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
+import uk.co.nickthecoder.paratask.gui.VariablePrompter
 import uk.co.nickthecoder.paratask.parameters.*
 
 abstract class ParameterField(
@@ -37,11 +38,19 @@ abstract class ParameterField(
 
     var labelNode: Node = labelStack
 
-    lateinit var fieldParent: FieldParent
+    var fieldParent: FieldParent? = null
+        set(v) {
+            field = v
+            updatedParent()
+        }
+
+    internal val expressionBox = HBox()
 
     internal var expressionButton: ToggleButton? = null
 
     internal var expressionField: TextField? = null
+
+    internal var variablesPrompter = Button("…")
 
     val error = Label()
 
@@ -90,9 +99,10 @@ abstract class ParameterField(
             expressionField = TextField()
             expressionField?.styleClass?.add("expression")
             expressionButton = ToggleButton("=")
+            expressionBox.children.add(expressionField)
 
             box.children.addAll(expressionButton, stack)
-            stack.children.addAll(expressionField, control)
+            stack.children.addAll(expressionBox, control)
             onExpression()
 
             if (parameter.expression != null) {
@@ -101,7 +111,7 @@ abstract class ParameterField(
             expressionField?.textProperty()?.bindBidirectional(parameter.expressionProperty)
             expressionButton?.addEventHandler(ActionEvent.ACTION) { onExpression() }
 
-            expressionField?.isVisible = parameter.expression != null
+            expressionBox.isVisible = parameter.expression != null
             control?.isVisible = parameter.expression == null
 
             expControl = box
@@ -122,6 +132,25 @@ abstract class ParameterField(
         return this
     }
 
+    fun updatedParent() {
+        if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
+            findParametersForm()?.let { parametersForm ->
+                parametersForm.scriptVariables?.let { sv ->
+                    variablesPrompter.addEventHandler(ActionEvent.ACTION) {
+                        val vp = VariablePrompter(sv)
+                        vp.build()
+                        vp.show()
+                    }
+                    expressionBox.children.add(variablesPrompter)
+                }
+            }
+        }
+    }
+
+    fun findParametersForm(): ParametersForm? {
+        return fieldParent?.findParametersForm()
+    }
+
     abstract fun createControl(): Node
 
     fun showOrClearError(message: String?) {
@@ -136,14 +165,14 @@ abstract class ParameterField(
         error.text = message
         if (!error.isVisible) {
             error.isVisible = true
-            fieldParent.updateField(this)
+            fieldParent?.updateField(this)
         }
     }
 
     fun clearError() {
         if (error.isVisible) {
             error.isVisible = false
-            fieldParent.updateField(this)
+            fieldParent?.updateField(this)
         }
     }
 
@@ -169,7 +198,7 @@ abstract class ParameterField(
         if (event.type == ParameterEventType.VISIBILITY) {
             controlContainer?.isVisible = !parameter.hidden
             label.isVisible = !parameter.hidden
-            fieldParent.updateField(this)
+            fieldParent?.updateField(this)
         }
     }
 
@@ -180,6 +209,6 @@ abstract class ParameterField(
             expressionField?.text = null
         }
         control?.isVisible = expressionButton?.isSelected == false
-        expressionField?.isVisible = expressionButton?.isSelected == true
+        expressionBox.isVisible = expressionButton?.isSelected == true
     }
 }

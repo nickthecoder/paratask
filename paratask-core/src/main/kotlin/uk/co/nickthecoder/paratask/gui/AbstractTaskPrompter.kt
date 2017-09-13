@@ -46,6 +46,7 @@ abstract class AbstractTaskPrompter(val task: Task) {
 
     open fun build() {
 
+        taskForm.build()
         with(buttons) {
             styleClass.add("buttons")
         }

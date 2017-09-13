@@ -1,7 +1,6 @@
 TODO	
 
 Scripts when editing Filter and GroovyOption should ALSO be in yellow.
-	GroovyOption ( row and tool )
 	Expressions in a TaskOption ( row and tool )
 
 

@@ -3,24 +3,23 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.application.Platform
 import javafx.collections.ObservableList
 import javafx.scene.Scene
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeView
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
-import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.parameters.fields.TaskForm
 import uk.co.nickthecoder.paratask.util.AutoExit
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 
-class VariablePrompter(val sourceText: TextInputControl, val scriptVariables: ScriptVariables) {
+class VariablePrompter(val scriptVariables: ScriptVariables) {
 
     val borderPane = BorderPane()
 

@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ParentParameter
 
@@ -42,6 +43,8 @@ class ParametersForm(val parentParameter: ParentParameter)
 
     val formFields = mutableListOf<FormField>()
 
+    var scriptVariables: ScriptVariables? = null
+
     init {
         styleClass.add("parametersForm")
 
@@ -49,6 +52,8 @@ class ParametersForm(val parentParameter: ParentParameter)
         columns.add(FieldColumn()) // Main Control
         styleClass.add("form")
     }
+
+    override fun findParametersForm() = this
 
     override fun iterator(): Iterator<ParameterField> {
         return formFields.map { it.parameterField }.iterator()

@@ -13,11 +13,11 @@ import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.focusNext
 
 
-open class ParametersPane_Impl(override val task: Task)
+open class ParametersPane_Impl(final override val task: Task)
 
     : ParametersPane, BorderPane() {
 
-    override val taskForm = TaskForm(task)
+    final override val taskForm = TaskForm(task)
 
     protected val buttons = FlowPane()
 
@@ -28,6 +28,8 @@ open class ParametersPane_Impl(override val task: Task)
     protected lateinit var toolPane: ToolPane
 
     init {
+        taskForm.build()
+
         center = taskForm.scrollPane
         bottom = buttons
 

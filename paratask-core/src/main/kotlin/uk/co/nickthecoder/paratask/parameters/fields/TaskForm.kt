@@ -21,6 +21,7 @@ import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class TaskForm(val task: Task) {
@@ -29,7 +30,7 @@ class TaskForm(val task: Task) {
 
     val scrollPane = ScrollPane(form)
 
-    init {
+    fun build() {
         scrollPane.fitToWidthProperty().set(true)
         form.buildContent()
         task.taskD.width?.let { scrollPane.prefWidth = it.toDouble() }

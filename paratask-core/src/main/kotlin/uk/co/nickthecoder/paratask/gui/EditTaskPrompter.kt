@@ -20,12 +20,17 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 
-open class EditTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
-
+open class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?)
+    : AbstractTaskPrompter(task) {
 
     val doneButton = Button("Done")
 
+    init {
+        taskForm.form.scriptVariables = scriptVariables
+    }
+
     override fun build() {
+
         super.build()
 
         with(doneButton) {
@@ -37,6 +42,7 @@ open class EditTaskPrompter(task: Task) : AbstractTaskPrompter(task) {
             }
         }
         buttons.children.add(doneButton)
+
     }
 
     fun onDone() {
