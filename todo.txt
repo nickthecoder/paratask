@@ -6,7 +6,6 @@ Save/Load filters in Project files
 
 Bugs
 	Parameter.enabled isn't working.
-	EditorTool doens't let you "Run", but doesn't show an error.
 	Expressions within a Group or a Multiple don't show the expression's "..." button, because getParametersForm is returning the
 		Group's parameters form, not the root.
 

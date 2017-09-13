@@ -28,13 +28,15 @@ import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
-val MAX_FILE_SIZE = 20_000
+private val MAX_FILE_SIZE = 1_000_000
 
 class EditorTool() : AbstractTool() {
 
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
     val filesP = MultipleParameter("file") { FileParameter("aFile") }
+
+    val ignoreFileSizeCheckP = BooleanParameter("ignoreFileSizeCheck", value = false)
 
     val initialTextP = StringParameter("initialText", required = false)
 
@@ -72,19 +74,23 @@ class EditorTool() : AbstractTool() {
     }
 
     init {
+        ignoreFileSizeCheckP.hidden = true
         initialTextP.hidden = true
         goToLineP.hidden = true
         findTextP.hidden = true
         matchCaseP.hidden = true
         useRegexP.hidden = true
-        taskD.addParameters(filesP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
+        taskD.addParameters(filesP, ignoreFileSizeCheckP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
     }
 
     override fun customCheck() {
         super.customCheck()
-        filesP.innerParameters.forEach { fileP ->
-            if (fileP.value!!.length() > MAX_FILE_SIZE) {
-                throw ParameterException(fileP, "File is too large to open in the text editor.")
+        if (ignoreFileSizeCheckP.value != true) {
+            filesP.innerParameters.forEach { fileP ->
+                if (fileP.value!!.length() > MAX_FILE_SIZE) {
+                    ignoreFileSizeCheckP.hidden = false
+                    throw ParameterException(fileP, "File is too large to open in the text editor.")
+                }
             }
         }
     }
