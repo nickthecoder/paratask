@@ -66,5 +66,5 @@ abstract class AbstractValueParameter<T>(
 
     override fun errorMessage(v: T?): String? = if (v == null && required && !isProgrammingMode()) "Required" else null
 
-    override fun toString() = super.toString() + " = " + value
+    override fun toString() = "${super.toString()} value='$value'"
 }

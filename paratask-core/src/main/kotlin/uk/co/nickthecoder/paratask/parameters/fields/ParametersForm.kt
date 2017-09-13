@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.parameters.*
  * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
  * This is the base class for GroupParmetersForm and MultipleField.
  */
-class ParametersForm(val parentParameter: ParentParameter)
+class ParametersForm(val parentParameter: ParentParameter, val parameterField: ParameterField?)
     : Region(), FieldParent {
 
     private val columns = mutableListOf<FieldColumn>()
@@ -52,7 +52,12 @@ class ParametersForm(val parentParameter: ParentParameter)
         styleClass.add("form")
     }
 
-    override fun findParametersForm() = this
+    override fun findRootParametersForm(): ParametersForm? {
+        parameterField?.let {
+            return it.findRootParametersForm()
+        }
+        return this
+    }
 
     override fun iterator(): Iterator<ParameterField> {
         return formFields.map { it.parameterField }.iterator()
@@ -107,6 +112,14 @@ class ParametersForm(val parentParameter: ParentParameter)
         val list = mutableListOf<ParameterField>()
 
         fun addThem(fieldParent: FieldParent) {
+            if (fieldParent is ParameterField) {
+                list.add(fieldParent)
+            } else if (fieldParent is ParametersForm) {
+                fieldParent.parameterField?.let {
+                    list.add(it)
+                }
+            }
+            println("")
             fieldParent.forEach { parameterField ->
                 list.add(parameterField)
                 if (parameterField is FieldParent) {

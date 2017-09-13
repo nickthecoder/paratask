@@ -26,7 +26,7 @@ abstract class AbstractParameter(
     : Parameter {
 
     override val aliases = mutableListOf<String>()
-    
+
     override val parameterListeners = ParameterListeners()
 
     override fun listen(listener: (event: ParameterEvent) -> Unit) {
@@ -57,5 +57,5 @@ abstract class AbstractParameter(
 
     override var parent: Parameter? = null
 
-    override fun toString() = "Parameter $name"
+    override fun toString() = "Parameter name='$name'"
 }

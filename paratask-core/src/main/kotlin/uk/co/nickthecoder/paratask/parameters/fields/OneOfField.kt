@@ -25,7 +25,7 @@ class OneOfField(val oneOfParameter: OneOfParameter)
 
     val choiceP = ChoiceParameter("choose", label = oneOfParameter.message, value = oneOfParameter.value)
 
-    val parametersForm = ParametersForm(oneOfParameter)
+    val parametersForm = ParametersForm(oneOfParameter, this)
 
     override fun createControl(): ParametersForm {
 

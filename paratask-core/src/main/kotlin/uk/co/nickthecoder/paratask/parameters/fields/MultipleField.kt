@@ -31,17 +31,23 @@ import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
-    : ParameterField(multipleParameter) {
+    : ParameterField(multipleParameter), FieldParent {
 
     val addButton = Button("+")
 
-    val parametersForm = ParametersForm(multipleParameter)
+    val parametersForm = ParametersForm(multipleParameter, this)
 
     val shortcuts = ShortcutHelper("MultipleField", parametersForm, false)
 
     init {
         shortcuts.add(ApplicationActions.NEW_ITEM) { extraValue() }
     }
+
+    override fun updateField(field: ParameterField) {
+        parametersForm.updateField(field)
+    }
+
+    override fun iterator(): Iterator<ParameterField> = parametersForm.iterator()
 
     override fun createControl(): Node {
 

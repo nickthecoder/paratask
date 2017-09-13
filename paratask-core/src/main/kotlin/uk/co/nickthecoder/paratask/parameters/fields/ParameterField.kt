@@ -139,7 +139,7 @@ abstract class ParameterField(
 
     fun updatedParent() {
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
-            findParametersForm()?.let { parametersForm ->
+            findRootParametersForm()?.let { parametersForm ->
                 parametersForm.scriptVariables?.let { sv ->
                     variablesPrompter.addEventHandler(ActionEvent.ACTION) {
                         val vp = VariablePrompter(sv)
@@ -152,8 +152,8 @@ abstract class ParameterField(
         }
     }
 
-    fun findParametersForm(): ParametersForm? {
-        return fieldParent?.findParametersForm()
+    fun findRootParametersForm(): ParametersForm? {
+        return fieldParent?.findRootParametersForm()
     }
 
     abstract fun createControl(): Node

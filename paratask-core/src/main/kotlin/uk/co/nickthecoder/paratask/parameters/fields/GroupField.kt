@@ -25,9 +25,16 @@ import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
  * children in a form, with labels on the left, and controls on the right. The controls are aligned with each other.
  */
 open class GroupField(groupParameter: AbstractGroupParameter)
-    : ParameterField(groupParameter, isBoxed = true) {
+    : ParameterField(groupParameter, isBoxed = true), FieldParent {
 
-    val parametersForm = ParametersForm(groupParameter)
+    val parametersForm = ParametersForm(groupParameter, this)
+
+
+    override fun updateField(field: ParameterField) {
+        parametersForm.updateField(field)
+    }
+
+    override fun iterator(): Iterator<ParameterField> = parametersForm.iterator()
 
     override fun createControl(): ParametersForm {
         buildContent()

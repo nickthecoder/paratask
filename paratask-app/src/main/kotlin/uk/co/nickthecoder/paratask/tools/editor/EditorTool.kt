@@ -34,7 +34,7 @@ class EditorTool() : AbstractTool() {
 
     override val taskD = TaskDescription("editor", description = "A simple text editor")
 
-    val filesP = MultipleParameter("file") { FileParameter("") }
+    val filesP = MultipleParameter("file") { FileParameter("aFile") }
 
     val initialTextP = StringParameter("initialText", required = false)
 

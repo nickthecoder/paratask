@@ -26,7 +26,7 @@ import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class TaskForm(val task: Task) {
 
-    val form = ParametersForm(task.taskD.root)
+    val form = ParametersForm(task.taskD.root, null)
 
     val scrollPane = ScrollPane(form)
 
@@ -65,6 +65,8 @@ class TaskForm(val task: Task) {
             if (field != null) {
                 field.showError(e.message)
                 ensureVisible(field.control!!)
+            } else {
+                println("TaskForm.check : Couldn't show error message : '${e.message} for parameter ${e.parameter}.")
             }
 
             return false
