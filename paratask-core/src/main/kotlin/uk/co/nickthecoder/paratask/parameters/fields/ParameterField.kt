@@ -123,6 +123,7 @@ abstract class ParameterField(
         } else {
             controlContainer = expControl
         }
+        updateEnabled()
         return this
     }
 

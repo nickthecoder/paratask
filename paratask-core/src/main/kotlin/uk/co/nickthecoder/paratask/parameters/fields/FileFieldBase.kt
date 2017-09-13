@@ -144,7 +144,6 @@ abstract class FileFieldBase(val valueParameter: ValueParameter<*>)
     }
 
     override fun updateEnabled() {
-        super.updateEnabled()
         textField.isDisable = !parameter.enabled
     }
 

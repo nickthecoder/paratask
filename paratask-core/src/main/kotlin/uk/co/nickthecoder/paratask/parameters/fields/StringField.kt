@@ -61,8 +61,13 @@ class StringField(val stringParameter: StringParameter)
             }
         })
 
+
         this.textField = textField
         return textField
+    }
+
+    override fun updateEnabled() {
+        textField.isDisable = !parameter.enabled
     }
 
     fun onKeyTyped(event: KeyEvent) {
