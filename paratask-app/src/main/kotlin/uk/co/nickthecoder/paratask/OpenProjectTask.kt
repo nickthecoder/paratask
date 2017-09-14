@@ -44,7 +44,7 @@ class OpenProjectTask : AbstractTask() {
 
     override var taskRunner: TaskRunner = UnthreadedTaskRunner(this)
 
-    val projectsP = MultipleParameter("projects", minItems = 1,
+    val projectsP = MultipleParameter("projects",
             description = "The names of the projects to load. (Do not include the .json suffix)") {
         StringParameter("")
     }

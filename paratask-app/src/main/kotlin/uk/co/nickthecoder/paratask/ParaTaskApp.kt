@@ -22,6 +22,7 @@ import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.project.Project
 import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.tools.HomeTool
 import java.io.File
 
 /**
@@ -147,10 +148,16 @@ class ParaTaskApp : Application() {
         }
 
         private fun startOpenProjects(projectFiles: List<File>) {
-            for (file in projectFiles) {
-                Project.load(file)
+            if (projectFiles.isEmpty()) {
+                val pw = ProjectWindow()
+                pw.placeOnStage(Stage())
+                pw.addTool(HomeTool())
+            } else {
+                // Open a new window
+                for (file in projectFiles) {
+                    Project.load(file)
+                }
             }
-
         }
     }
 }

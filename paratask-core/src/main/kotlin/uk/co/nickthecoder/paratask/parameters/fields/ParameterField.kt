@@ -78,7 +78,7 @@ abstract class ParameterField(
 
         control = createControl()
 
-        // Either just 'control', or a HBox containing the "=" button, and the control and expression text field.
+        // Either just 'control', or a BorderPane with "=" button and a Stack of the control and the expression text field.
         val expControl: Node
 
         if (parameter.isProgrammingMode() && parameter is ValueParameter<*>) {
@@ -108,7 +108,6 @@ abstract class ParameterField(
             control?.isVisible = parameter.expression == null
 
             expControl = borderPane
-            //expControl = expressionField!!
         } else {
             expControl = control!!
         }
@@ -123,7 +122,11 @@ abstract class ParameterField(
         } else {
             controlContainer = expControl
         }
-        updateEnabled()
+
+        if (!parameter.enabled) {
+            updateEnabled()
+        }
+
         return this
     }
 

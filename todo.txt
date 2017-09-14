@@ -10,6 +10,13 @@ Bugs
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 	Check if GitTool rm and rmf are working.
 
+Allow "project" task to have 0 params, in which case it opens a new project window.
+
+Drop files and text into Editor.
+	May be also drop generic table data too.
+
+Push the cwd of a TerminalTool?
+
 Add more filters to the find tool
 
 Ctrl+A selects all rows in the table, copying the current row's code.

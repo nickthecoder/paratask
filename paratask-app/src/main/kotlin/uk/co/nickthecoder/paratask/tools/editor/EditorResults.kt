@@ -21,10 +21,12 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.ToolBar
+import javafx.scene.input.DataFormat
+import javafx.scene.input.TransferMode
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.util.dumpAncestors
 import java.io.File
@@ -54,8 +56,19 @@ class EditorResults(
             label = (if (value) "*" else "") + (file?.name ?: "New File")
         }
 
+
+    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { event, text ->
+        insertText(text)
+    }
+    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { event, files ->
+        val text = files.map { it.path }.joinToString(separator = "\n")
+        insertText(text)
+    }
+    val compoundDropHelper = CompoundDropHelper(filesDropHelper, textDropHelper)
+
     init {
         codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
+        compoundDropHelper.applyTo(codeArea)
 
         val shortcuts = ShortcutHelper("EditorTool", node)
 
@@ -204,5 +217,9 @@ class EditorResults(
 
     fun onFind() {
         showFindBar()
+    }
+
+    fun insertText(text: String) {
+        codeArea.insertText(codeArea.caretPosition, text)
     }
 }
