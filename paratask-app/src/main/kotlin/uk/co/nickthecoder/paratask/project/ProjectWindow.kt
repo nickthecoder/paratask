@@ -17,10 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.Tool
@@ -43,20 +45,31 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
     val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
-    private val toolBar = ToolBar()
+    private val topToolBars = HBox()
+    private val rightToolBars = HBox()
+    private val bottomToolBars = HBox()
+    private val leftToolBars = HBox()
+
+    private val mainToolBar = ToolBar()
 
     private val shortcuts = ShortcutHelper("ProjectWindow", borderPane)
 
     init {
         scene.userData = this
 
+        topToolBars.children.add(mainToolBar)
+
         with(borderPane) {
             center = tabs as Node
-            top = toolBar
+            top = topToolBars
+            bottom = bottomToolBars
+            left = leftToolBars
+            right = rightToolBars
+
             setPrefSize(800.0, 600.0)
         }
 
-        with(toolBar.items) {
+        with(mainToolBar.items) {
             add(ParataskActions.PROJECT_OPEN.createButton(shortcuts) { onOpenProject() })
             add(ParataskActions.PROJECT_SAVE.createButton(shortcuts) { onSaveProject() })
             add(ParataskActions.QUIT.createButton(shortcuts) { onQuit() })
@@ -85,6 +98,22 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         AutoExit.show(stage)
         this.stage = stage
 
+    }
+
+    fun addToolBar(toolBar: ToolBar, side: Side = Side.TOP) {
+        when (side) {
+            Side.TOP -> topToolBars.children.add(toolBar)
+            Side.RIGHT -> rightToolBars.children.add(toolBar)
+            Side.BOTTOM -> bottomToolBars.children.add(toolBar)
+            Side.LEFT -> leftToolBars.children.add(toolBar)
+        }
+    }
+
+    fun removeToolBar(toolBar: ToolBar) {
+        topToolBars.children.remove(toolBar)
+        rightToolBars.children.remove(toolBar)
+        bottomToolBars.children.remove(toolBar)
+        leftToolBars.children.remove(toolBar)
     }
 
     fun addTool(tool: Tool, select: Boolean = true): ProjectTab {

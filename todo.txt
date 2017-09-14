@@ -1,5 +1,28 @@
 TODO	
 
+BUGS
+	New tools show the FilterTab rather than the ParametersTab
+
+CustomToolListTool to allow Tasks too
+	Also add a "new Tab" boolean
+
+Allow creation of Toolbars with tools on them.
+	Allow FILES to be dragged to the buttons if the tool has a "default" parameter of type "FileParameter".
+
+Allow Places to create a toolBar
+	Allow FILES to be dragged to the buttons in the same manner as dragging to the row i.e. can copy/move/link files.
+	Drag files to it to add them to the PlacesFile.
+
+A new Places tool, which saves the places as parameters, rather than in a Places file.
+	Maybe rename the old one to PlacesFileTool
+
+Could even consider creating a toolbar from a DirectoryTool
+How about a MountTool!
+
+How about the "main" toolbar being such a tool!
+
+Any tools that can become toolbars can also become Menus!!!
+
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
@@ -9,11 +32,6 @@ Bugs
 		This is a long standing known bug with JediTerm.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 	Check if GitTool rm and rmf are working.
-
-Allow "project" task to have 0 params, in which case it opens a new project window.
-
-Drop files and text into Editor.
-	May be also drop generic table data too.
 
 Push the cwd of a TerminalTool?
 

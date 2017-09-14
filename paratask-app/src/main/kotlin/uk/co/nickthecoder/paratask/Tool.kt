@@ -53,6 +53,9 @@ interface Tool : Task {
 
     val tabDropHelperProperty: ObjectProperty<DropHelper?>
 
+    val projectWindow: ProjectWindow?
+        get() = toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow
+
     val project: Project?
         get() = toolPane?.halfTab?.projectTab?.projectTabs?.projectWindow?.project
 
