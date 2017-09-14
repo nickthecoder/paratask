@@ -1,18 +1,17 @@
 package uk.co.nickthecoder.paratask.project
 
+import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.geometry.Side
-import javafx.scene.control.Button
-import javafx.scene.control.Separator
-import javafx.scene.control.ToolBar
+import javafx.scene.control.*
+import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import uk.co.nickthecoder.paratask.ToolBarTool
 
 /**
  * Connects the Tool with its tool bar.
  */
 class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTool, side: Side = Side.TOP) {
-
-    val toolButton: Button = ToolBarConnectorButton()
 
     val toolBar = ToolBar()
 
@@ -27,33 +26,55 @@ class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTo
             }
         }
 
+    init {
+        toolBar.contextMenu = ContextMenu()
+        /*
+        toolBar.addEventFilter(MouseEvent.MOUSE_PRESSED) { event ->
+            println("Event $event")
+            if (event.button == MouseButton.SECONDARY) {
+                println("Showing menu")
+                toolBar.contextMenu.show(toolBar, Side.BOTTOM, 0.0, 0.0)
+                event.consume()
+            }
+        }
+        */
+        val editItem = MenuItem("Edit Toolbar")
+        editItem.onAction = EventHandler { editToolBar() }
+        toolBar.contextMenu.items.add(editItem)
+    }
+
     fun remove() {
         projectWindow.removeToolBar(toolBar)
     }
 
     fun update() {
-        with(toolBar.items) {
-            clear()
-            add(toolButton)
-            add(Separator())
+        val buttons = tool.toolBarButtons(projectWindow)
 
-            tool.toolBarButtons(projectWindow).forEach {
-                add(it)
+        if (buttons.isEmpty()) {
+            projectWindow.removeToolBar(toolBar)
+        } else {
+
+            with(toolBar.items) {
+                clear()
+                buttons.forEach { button ->
+                    add(button)
+                }
             }
-        }
 
-        if (toolBar.parent == null) {
-            projectWindow.addToolBar(toolBar, side)
-        }
-    }
-
-
-    inner class ToolBarConnectorButton : ToolButton(projectWindow, tool, label = "", icon = tool.icon, newTab = false) {
-        override fun onAction() {
-            super.onAction()
-            if (tool is ToolBarTool) {
-                tool.toolBarConnector = this@ToolBarToolConnector
+            if (toolBar.parent == null) {
+                projectWindow.addToolBar(toolBar, side)
             }
         }
     }
+
+    fun editToolBar() {
+        tool.toolPane?.halfTab?.let { halfTab ->
+            halfTab.projectTab.isSelected = true
+            halfTab.toolPane.parametersTab.isSelected = true
+            return
+        }
+        val projectTab = projectWindow.addTool(tool)
+        projectTab.left.toolPane.parametersTab.isSelected = true
+    }
+
 }

@@ -49,7 +49,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
     override val taskD = TaskDescription(name = "directory", description = "Work with a Single Directory")
 
-    val directoriesP = MultipleParameter("directories", value = listOf(currentDirectory)) {
+    val directoriesP = MultipleParameter("directories", value = listOf(currentDirectory), minItems = 1) {
         FileParameter("dir", label = "Directory", expectFile = false, mustExist = true)
     }
 
@@ -99,10 +99,12 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
 
     init {
+
         filterGroupP.addParameters(onlyFilesP, extensionsP, includeHiddenP)
         taskD.addParameters(
                 directoriesP, treeRootP, placesFileP, filterGroupP, foldSingleDirectoriesP,
                 thumbnailer.heightP, thumbnailer.directoryThumbnailP, autoRefreshP)
+        taskD.unnamedParameter = directoriesP
 
         columns.add(Column<WrappedFile, ImageView>("icon", label = "", getter = { thumbnailer.thumbnailImageView(it.file) }))
         columns.add(FileNameColumn<WrappedFile>("name", getter = { it.file }))

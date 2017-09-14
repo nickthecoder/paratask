@@ -1,7 +1,6 @@
 TODO	
 
-BUGS
-	New tools show the FilterTab rather than the ParametersTab
+Alt+W to close a results tab. If it is the last one, close the halftab.
 
 CustomToolListTool to allow Tasks too
 	Also add a "new Tab" boolean

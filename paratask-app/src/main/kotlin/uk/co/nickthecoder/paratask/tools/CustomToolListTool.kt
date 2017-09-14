@@ -40,6 +40,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
     val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = Side.TOP, required = false)
             .nullableEnumChoices("None")
+    override var toolBarSide by toolBarSideP
 
     val toolsP = MultipleParameter("tools") {
 
@@ -84,25 +85,14 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
                 }
             }
         }
-
-        Platform.runLater {
-            toolBarConnector?.let { tc ->
-                toolBarSideP.value?.let {
-                    tc.side = it
-                }
-                if (toolBarSideP.value == null) {
-                    tc.remove()
-                } else {
-                    tc.update()
-                }
-            }
-        }
-
+        updateToolbar()
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
-        toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this)
+        if (toolBarConnector == null) {
+            toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this)
+        }
     }
 
     override fun toolBarButtons(projectWindow: ProjectWindow): List<Button> {
