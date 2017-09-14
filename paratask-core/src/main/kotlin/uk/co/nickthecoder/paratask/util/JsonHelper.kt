@@ -89,11 +89,11 @@ object JsonHelper {
     }
 
 
-    fun readTask(jhalfTab: JsonObject): Task {
-        val creationString = jhalfTab.get("task").asString()
+    fun readTask(jtask: JsonObject): Task {
+        val creationString = jtask.get("task").asString()
         val task = Task.create(creationString)
 
-        val jparameters = jhalfTab.get("parameters")
+        val jparameters = jtask.get("parameters")
         if (jparameters != null) {
             JsonHelper.read(jparameters.asArray(), task)
         }

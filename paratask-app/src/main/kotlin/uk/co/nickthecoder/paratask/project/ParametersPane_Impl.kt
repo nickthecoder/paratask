@@ -49,22 +49,14 @@ open class ParametersPane_Impl(final override val task: Task)
 
     override fun run(): Boolean {
 
-        task.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
-
-        if (taskForm.check()) {
-
-            //toolPane.halfTab.pushHistory(tool)
-
-            task.taskRunner.run()
-
-            return true
-        }
-        return false
-    }
-
-    override fun runIfNotAlreadyRunning(): Boolean {
         if (!task.taskRunner.isRunning()) {
-            return run()
+            task.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
+
+            if (taskForm.check()) {
+
+                task.taskRunner.run()
+                return true
+            }
         }
         return false
     }

@@ -113,6 +113,17 @@ class Project(val projectWindow: ProjectWindow) {
             jprojectPreferences.add(jpref)
         }
 
+        val jtoolbars = JsonArray()
+        projectWindow.toolBarTools().forEach { toolBarTool ->
+            if (toolBarTool.toolPane == null) {
+                val jtool = JsonHelper.taskAsJsonObject(toolBarTool)
+                jtoolbars.add(jtool)
+            }
+        }
+        if (!jtoolbars.isEmpty) {
+            jroot.add("toolbars", jtoolbars)
+        }
+
         val jtabs = JsonArray()
         for (tab in projectWindow.tabs.listTabs()) {
             val jtab = JsonObject()
@@ -208,6 +219,24 @@ class Project(val projectWindow: ProjectWindow) {
                     }
                 }
             } catch(e: Exception) {
+                projectWindow.addTool(ExceptionTool(e))
+            }
+
+            try {
+                val jtoolbars = jroot.get("toolbars")
+                // These are ToolBarTools, which were not visible in ProjectTabs, only visible as toolbars.
+                // Load them, and remove the tab straight away.
+                jtoolbars?.let {
+                    for (jtoolbar in it.asArray()) {
+                        val tool = JsonHelper.readTask(jtoolbar.asObject())
+                        if (tool is Tool) {
+                            val projectTab = projectWindow.addTool(tool)
+                            projectTab.projectTabs.removeTab(projectTab)
+                        }
+                    }
+                }
+
+            } catch (e: Exception) {
                 projectWindow.addTool(ExceptionTool(e))
             }
 

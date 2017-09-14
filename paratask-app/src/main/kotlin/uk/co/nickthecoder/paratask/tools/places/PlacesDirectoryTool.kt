@@ -48,7 +48,7 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
     lateinit var placesFile: PlacesFile
 
-    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.run() }
 
     override val rowFilter = RowFilter<Place>(this, columns, Place(PlacesFile(File("")), Resource(File("")), ""))
 

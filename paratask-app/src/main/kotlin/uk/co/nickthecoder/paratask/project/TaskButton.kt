@@ -15,7 +15,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import java.io.File
 
 
-abstract class AbstractTaskButton(val task: Task, val label: String, val icon: Image?) : Button() {
+abstract class AbstractTaskButton(val task: Task, val label: String, val icon: Image?, val copyTask: Boolean) : Button() {
     init {
         onAction = EventHandler { onAction() }
 
@@ -35,12 +35,16 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
     }
 
     fun onDroppedFiles(files: List<File>) {
-        val t = task.copy()
+        val t = createTask()
+
         val unamed = t.taskD.unnamedParameter
         if (unamed is FileParameter) {
             unamed.value = files.firstOrNull()
         } else if (unamed is MultipleParameter<*> && unamed.factory() is FileParameter) {
-            unamed.clear()
+            if (copyTask) {
+                println("Clearing unamed parameter values")
+                unamed.clear()
+            }
             files.forEach { file ->
                 val fp = unamed.newValue()
                 if (fp is FileParameter) {
@@ -49,11 +53,16 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
             }
         }
         runTask(t)
+        if (t is Tool && !copyTask) {
+            t.toolPane?.parametersPane?.run()
+        }
     }
 
     fun onAction() {
-        runTask(task)
+        runTask(createTask())
     }
+
+    fun createTask() = if (copyTask) task.copy() else task
 
     abstract fun runTask(task: Task)
 
@@ -78,7 +87,7 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
 
 
 class TaskButton(task: Task, label: String, icon: Image?)
-    : AbstractTaskButton(task, label, icon) {
+    : AbstractTaskButton(task, label, icon, copyTask = true) {
 
     override fun runTask(task: Task) {
         val taskPrompter = TaskPrompter(task)
@@ -88,18 +97,17 @@ class TaskButton(task: Task, label: String, icon: Image?)
 }
 
 
-open class ToolButton(val projectWindow: ProjectWindow, val tool: Tool, label: String, icon: Image?, val newTab: Boolean)
-    : AbstractTaskButton(tool, label, icon) {
+open class ToolButton(val projectWindow: ProjectWindow, val tool: Tool, label: String, icon: Image?, copyTask: Boolean)
+    : AbstractTaskButton(tool, label, icon, copyTask) {
 
     override fun runTask(task: Task) {
-        val t = if (newTab) task.copy() else task
-        if (t is Tool) {
-            t.toolPane?.halfTab?.let { halfTab ->
+        if (task is Tool) {
+            task.toolPane?.halfTab?.let { halfTab ->
                 halfTab.projectTab.isSelected = true
                 halfTab.toolPane.focusResults()
                 return
             }
-            projectWindow.addTool(t)
+            projectWindow.addTool(task)
         }
     }
 

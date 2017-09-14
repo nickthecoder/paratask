@@ -32,8 +32,6 @@ interface ParametersPane {
      **/
     fun run(): Boolean
 
-    fun runIfNotAlreadyRunning(): Boolean
-
     fun attached(toolPane: ToolPane)
 
     fun detaching()

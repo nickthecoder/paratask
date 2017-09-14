@@ -1,12 +1,10 @@
 TODO	
 
+Editor must not discard changes or blank documents when re-run.
+
+Save the toolbars if their tool is not in a HalfTab (otherwise they will be lost)
+
 Alt+W to close a results tab. If it is the last one, close the halftab.
-
-CustomToolListTool to allow Tasks too
-	Also add a "new Tab" boolean
-
-Allow creation of Toolbars with tools on them.
-	Allow FILES to be dragged to the buttons if the tool has a "default" parameter of type "FileParameter".
 
 Allow Places to create a toolBar
 	Allow FILES to be dragged to the buttons in the same manner as dragging to the row i.e. can copy/move/link files.
@@ -14,6 +12,12 @@ Allow Places to create a toolBar
 
 A new Places tool, which saves the places as parameters, rather than in a Places file.
 	Maybe rename the old one to PlacesFileTool
+
+Create a CustomToolListTool when creating a blank project window.
+	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
+	Include a HomeTool, a DirectoryTool of ~
+	Include existing buttons (but maybe Load/Save Project are NOT part of this, and are always visible)
+	Buttons must have a tooltip
 
 Could even consider creating a toolbar from a DirectoryTool
 How about a MountTool!

@@ -42,7 +42,7 @@ class OptionsTool() : ListTableTool<Option>() {
 
     var includesTool: IncludesTool = IncludesTool()
 
-    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.run() }
 
     val file: File
         get() = File(directoryP.value, optionsNameP.value + ".json")

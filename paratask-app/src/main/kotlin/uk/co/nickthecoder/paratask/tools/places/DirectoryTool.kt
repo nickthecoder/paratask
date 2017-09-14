@@ -69,7 +69,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
             description = "Refresh the list when the contents of the directory changes")
 
 
-    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.runIfNotAlreadyRunning() }
+    val autoRefresh = AutoRefresh { toolPane?.parametersPane?.run() }
 
     val thumbnailer = Thumbnailer()
 

@@ -3,9 +3,9 @@ package uk.co.nickthecoder.paratask.project
 import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.geometry.Side
-import javafx.scene.control.*
-import javafx.scene.input.MouseButton
-import javafx.scene.input.MouseEvent
+import javafx.scene.control.ContextMenu
+import javafx.scene.control.MenuItem
+import javafx.scene.control.ToolBar
 import uk.co.nickthecoder.paratask.ToolBarTool
 
 /**
@@ -13,7 +13,7 @@ import uk.co.nickthecoder.paratask.ToolBarTool
  */
 class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTool, side: Side = Side.TOP) {
 
-    val toolBar = ToolBar()
+    val toolBar = ConnectedToolBar()
 
     var side: Side = side
         set(v) {
@@ -77,4 +77,7 @@ class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTo
         projectTab.left.toolPane.parametersTab.isSelected = true
     }
 
+    inner class ConnectedToolBar : ToolBar() {
+        val connector = this@ToolBarToolConnector
+    }
 }

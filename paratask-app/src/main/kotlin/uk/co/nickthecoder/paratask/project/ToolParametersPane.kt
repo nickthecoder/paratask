@@ -29,15 +29,18 @@ class ToolParametersPane_Impl(override val tool: Tool)
 
     override fun run(): Boolean {
 
-        task.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
+        if (!task.taskRunner.isRunning()) {
 
-        if (taskForm.check()) {
+            task.resolveParameters(toolPane.halfTab.projectTab.projectTabs.projectWindow.project.resolver)
 
-            toolPane.halfTab.pushHistory(tool)
-            tool.taskRunner.run()
-            return true
-        } else {
-            toolPane.parametersTab.isSelected = true
+            if (taskForm.check()) {
+
+                toolPane.halfTab.pushHistory(tool)
+                tool.taskRunner.run()
+                return true
+            } else {
+                toolPane.parametersTab.isSelected = true
+            }
         }
         return false
     }

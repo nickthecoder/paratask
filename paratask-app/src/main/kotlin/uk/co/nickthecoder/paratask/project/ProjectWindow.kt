@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import com.sun.org.apache.xerces.internal.dom.ParentNode
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -26,6 +27,7 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.Tool
+import uk.co.nickthecoder.paratask.ToolBarTool
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.tools.HomeTool
@@ -114,6 +116,25 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
         rightToolBars.children.remove(toolBar)
         bottomToolBars.children.remove(toolBar)
         leftToolBars.children.remove(toolBar)
+    }
+
+    fun toolBarTools(): List<ToolBarTool> {
+        val list = mutableListOf<ToolBarTool>()
+
+        fun add(toolBars: HBox) {
+            toolBars.children.forEach { child ->
+                if (child is ToolBarToolConnector.ConnectedToolBar) {
+                    list.add(child.connector.tool)
+                }
+            }
+        }
+
+        add(topToolBars)
+        add(rightToolBars)
+        add(bottomToolBars)
+        add(leftToolBars)
+
+        return list
     }
 
     fun addTool(tool: Tool, select: Boolean = true): ProjectTab {

@@ -213,7 +213,7 @@ open class OptionsRunner(val tool: Tool) {
         open fun add() {}
 
         open fun onFinished() {
-            tool.toolPane?.parametersPane?.runIfNotAlreadyRunning()
+            tool.toolPane?.parametersPane?.run()
         }
     }
 

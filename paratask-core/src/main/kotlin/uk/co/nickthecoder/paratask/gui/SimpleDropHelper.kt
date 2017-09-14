@@ -53,7 +53,7 @@ open class SimpleDropHelper<T>(
         val accepted = accept(event)
 
         if (accepted != null) {
-            println("onDragDropped event.tm= ${event.transferMode} accepted: ${accepted.second}")
+            debugPrintln("onDragDropped event.tm= ${event.transferMode} accepted: ${accepted.second}")
             if (accepted.second.contains(event.transferMode)) {
                 onDropped(event, accepted.first)
                 debugPrintln("Accepted : $modes")

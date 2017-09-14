@@ -80,7 +80,9 @@ class EditorTool() : AbstractTool() {
         findTextP.hidden = true
         matchCaseP.hidden = true
         useRegexP.hidden = true
+
         taskD.addParameters(filesP, ignoreFileSizeCheckP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
+        taskD.unnamedParameter = filesP
     }
 
     override fun customCheck() {
