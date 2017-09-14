@@ -21,7 +21,7 @@ import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 
 
-class NewPlaceTask(placesFile: PlacesFile) : EditPlaceTask(Place(placesFile, Resource(File("")), "")) {
+class NewPlaceTask(placesFile: PlacesFile) : EditPlaceTask(PlaceInFile(placesFile, Resource(File("")), "")) {
 
     override fun run() {
         place.placesFile.places.add(place)

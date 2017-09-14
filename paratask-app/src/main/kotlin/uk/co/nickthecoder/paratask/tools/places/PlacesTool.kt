@@ -39,7 +39,7 @@ import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.focusNext
 import java.io.File
 
-class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
+class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile> {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
@@ -54,16 +54,16 @@ class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
     // Used to select the correct ResultsTab when refreshing the tool
     var latestFile: PlacesFile? = null
 
-    override val rowFilter = RowFilter<Place>(this, columns, Place(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter<PlaceInFile>(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
 
     init {
         taskD.addParameters(filesP)
 
-        columns.add(Column<Place, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
-        columns.add(Column<Place, String>("label", getter = { it.label }))
-        columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS, getter = { it.name }))
-        columns.add(Column<Place, String>("location", getter = { it.resource.path }, filterGetter = { it.resource }))
+        columns.add(Column<PlaceInFile, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
+        columns.add(Column<PlaceInFile, String>("label", getter = { it.label }))
+        columns.add(TruncatedStringColumn<PlaceInFile>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS, getter = { it.name }))
+        columns.add(Column<PlaceInFile, String>("location", getter = { it.resource.path }, filterGetter = { it.resource }))
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -90,7 +90,7 @@ class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
         return Header(this, fileP)
     }
 
-    fun createResults(file: File): TableResults<Place> {
+    fun createResults(file: File): TableResults<PlaceInFile> {
 
         val placesFile = placesFilesMap[file]!!
         val tableResults = PlacesTableResults(placesFile)
@@ -124,7 +124,7 @@ class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
 
             override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
                 for (f in content) {
-                    placesFile.places.add(Place(placesFile, Resource(f), f.name))
+                    placesFile.places.add(PlaceInFile(placesFile, Resource(f), f.name))
                 }
                 placesFile.save()
             }
@@ -134,7 +134,7 @@ class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
         val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
             content.forEach {
-                placesFile.places.add(Place(placesFile, it.resource, it.label))
+                placesFile.places.add(PlaceInFile(placesFile, it.resource, it.label))
             }
             placesFile.save()
         }
@@ -190,7 +190,7 @@ class PlacesTool : AbstractTableTool<Place>(), SingleRowFilter<Place> {
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<Place>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, rowFilter = rowFilter, canClose = true) {
+            TableResults<PlaceInFile>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, rowFilter = rowFilter, canClose = true) {
 
         init {
             autoRefresh.watch(placesFile.file)

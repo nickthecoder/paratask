@@ -25,7 +25,7 @@ import uk.co.nickthecoder.paratask.parameters.OneOfParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.Resource
 
-open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
+open class EditPlaceTask(protected val place: PlaceInFile, name: String = "editPlace")
     : AbstractTask() {
 
     final override val taskD = TaskDescription(name)
@@ -52,11 +52,11 @@ open class EditPlaceTask(protected val place: Place, name: String = "editPlace")
         labelP.value = place.label
     }
 
-    private fun createPlace(): Place {
+    private fun createPlace(): PlaceInFile {
         return if (oneOfP.value === urlP) {
-            Place(place.placesFile, Resource(urlP.value), labelP.value)
+            PlaceInFile(place.placesFile, Resource(urlP.value), labelP.value)
         } else {
-            Place(place.placesFile, Resource(fileP.value!!), labelP.value)
+            PlaceInFile(place.placesFile, Resource(fileP.value!!), labelP.value)
         }
     }
 

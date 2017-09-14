@@ -28,7 +28,7 @@ class PlacesFile(val file: File) {
     val places = if (file.exists()) {
         file.readLines().map { parseLine(it) }.toMutableList()
     } else {
-        mutableListOf<Place>()
+        mutableListOf<PlaceInFile>()
     }
 
     fun remove(place: Place) {
@@ -40,7 +40,7 @@ class PlacesFile(val file: File) {
         file.writeText(places.joinToString(separator = "\n", postfix = "\n"))
     }
 
-    private fun parseLine(line: String): Place {
+    private fun parseLine(line: String): PlaceInFile {
         val space = line.indexOf(' ')
         val urlString = if (space >= 0) line.substring(0, space) else line
         var label: String
@@ -56,13 +56,12 @@ class PlacesFile(val file: File) {
             }
         }
 
-        // TODO Handle files relative to this places file. e.g.  relative:foo/bar%20bar/baz
         val url = URL(urlString)
         if (urlString.startsWith("file:")) {
             val file = File(url.toURI())
-            return Place(this, Resource(file), label)
+            return PlaceInFile(this, Resource(file), label)
         } else {
-            return Place(this, Resource(urlString), label)
+            return PlaceInFile(this, Resource(urlString), label)
         }
     }
 

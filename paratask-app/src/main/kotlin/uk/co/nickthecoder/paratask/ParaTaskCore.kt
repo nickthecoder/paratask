@@ -38,7 +38,7 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.home.addTasks(
                 HomeTool(),
-                DirectoryTool(), PlacesTool(), PlacesDirectoryTool(),
+                DirectoryTool(), PlacesTool(), PlaceListTool(), PlacesDirectoryTool(),
                 FindTool(), LocateTool(), GrepTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),

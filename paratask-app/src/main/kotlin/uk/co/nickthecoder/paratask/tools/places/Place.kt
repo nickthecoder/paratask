@@ -23,8 +23,7 @@ import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.isImage
 import java.io.Serializable
 
-class Place(
-        @Transient val placesFile: PlacesFile,
+open class Place(
         val resource: Resource,
         val label: String)
 
@@ -44,15 +43,10 @@ class Place(
 
     fun isURL() = !resource.isFileOrDirectory()
 
-    fun taskEdit() = EditPlaceTask(this)
-
-    fun taskCopy() = CopyPlaceTask(this)
-
-    fun taskRemove() = RemovePlaceTask(this)
-
     override fun toString() = "$resource $label"
 
     companion object {
         val dataFormat = DataFormat("application/x-java-paratask-place-list")
     }
 }
+

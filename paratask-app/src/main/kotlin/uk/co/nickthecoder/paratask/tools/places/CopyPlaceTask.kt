@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 
-class CopyPlaceTask(place: Place) : EditPlaceTask(place, "copyPlace") {
+class CopyPlaceTask(place: PlaceInFile) : EditPlaceTask(place, "copyPlace") {
 
     override fun run() {
         place.placesFile.places.add(place)

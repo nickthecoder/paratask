@@ -21,7 +21,7 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 
 
-class RemovePlaceTask(val place: Place) : AbstractTask() {
+class RemovePlaceTask(val place: PlaceInFile) : AbstractTask() {
     override val taskD = TaskDescription("removePlace", description = "Remove:  ${place.label} (${place.resource.toString()})")
 
     override fun run() {

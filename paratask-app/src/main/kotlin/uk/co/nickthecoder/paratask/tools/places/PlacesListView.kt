@@ -44,14 +44,14 @@ class PlacesListView(file: File) : ListView<Place>() {
     val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
         content.forEach {
-            placesFile.places.add(Place(placesFile, it.resource, it.label))
+            placesFile.places.add(PlaceInFile(placesFile, it.resource, it.label))
         }
         placesFile.save()
     }
 
     val filesDropHelper = DropFiles(arrayOf(TransferMode.LINK)) { _, content ->
         for (f in content) {
-            placesFile.places.add(Place(placesFile, Resource(f), f.name))
+            placesFile.places.add(PlaceInFile(placesFile, Resource(f), f.name))
         }
         placesFile.save()
     }

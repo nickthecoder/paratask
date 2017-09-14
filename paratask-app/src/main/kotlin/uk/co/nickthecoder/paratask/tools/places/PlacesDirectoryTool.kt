@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.io.File
 
-class PlacesDirectoryTool : ListTableTool<Place>() {
+class PlacesDirectoryTool : ListTableTool<PlaceInFile>() {
 
     override val taskD = TaskDescription("placesDirectory", description = "Places Directory")
 
@@ -50,21 +50,21 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
     val autoRefresh = AutoRefresh { toolPane?.parametersPane?.run() }
 
-    override val rowFilter = RowFilter<Place>(this, columns, Place(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter<PlaceInFile>(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
 
     init {
         taskD.addParameters(directoryP, filenameP)
 
-        columns.add(Column<Place, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
-        columns.add(Column<Place, String>("label", getter = { it.label }))
-        columns.add(TruncatedStringColumn<Place>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
-        columns.add(Column<Place, String>("location", getter = { it.resource.path }))
+        columns.add(Column<PlaceInFile, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
+        columns.add(Column<PlaceInFile, String>("label", getter = { it.label }))
+        columns.add(TruncatedStringColumn<PlaceInFile>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS) { it.name })
+        columns.add(Column<PlaceInFile, String>("location", getter = { it.resource.path }))
     }
 
     override fun createHeader() = Header(this, directoryP, filenameP)
 
-    override fun createTableResults(): TableResults<Place> {
+    override fun createTableResults(): TableResults<PlaceInFile> {
         val tableResults = super.createTableResults()
 
         val filesDragHelper = DragFilesHelper {
@@ -97,7 +97,7 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
 
             override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
                 for (file in content) {
-                    placesFile.places.add(Place(placesFile, Resource(file), file.name))
+                    placesFile.places.add(PlaceInFile(placesFile, Resource(file), file.name))
                 }
                 placesFile.save()
             }
@@ -107,7 +107,7 @@ class PlacesDirectoryTool : ListTableTool<Place>() {
         val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
             content.forEach {
-                placesFile.places.add(Place(placesFile, it.resource, it.label))
+                placesFile.places.add(PlaceInFile(placesFile, it.resource, it.label))
             }
             placesFile.save()
         }
