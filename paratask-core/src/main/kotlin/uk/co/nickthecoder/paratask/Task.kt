@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
+import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.Parameter
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
@@ -27,6 +28,8 @@ interface Task {
     val taskRunner: TaskRunner
 
     val taskD: TaskDescription
+
+    val icon: Image?
 
     /**
      * This is used to resolve OTHER tasks created by this task.

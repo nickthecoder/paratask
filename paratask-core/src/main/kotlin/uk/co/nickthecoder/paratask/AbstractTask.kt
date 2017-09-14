@@ -21,6 +21,8 @@ abstract class AbstractTask : Task {
 
     override val taskRunner: TaskRunner by lazy { ThreadedTaskRunner(this) }
 
+    override val icon = null
+
     override var resolver: ParameterResolver = PlainDirectoryResolver()
 
     override fun check() {

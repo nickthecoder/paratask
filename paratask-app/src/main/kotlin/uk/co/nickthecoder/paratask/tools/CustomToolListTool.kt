@@ -21,10 +21,7 @@ import javafx.application.Platform
 import javafx.geometry.Side
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
-import uk.co.nickthecoder.paratask.RegisteredTaskFactory
-import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.ToolBarTool
+import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.Column
@@ -59,10 +56,10 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
     init {
         taskD.addParameters(toolBarSideP, toolsP)
 
-        columns.add(Column<CustomToolRow, ImageView>("icon", label = "", getter = { row -> ImageView(row.tool.icon) }))
+        columns.add(Column<CustomToolRow, ImageView>("icon", label = "", getter = { row -> ImageView(row.task.icon) }))
         columns.add(Column<CustomToolRow, String>("label", getter = { row -> row.label }))
-        columns.add(Column<CustomToolRow, String>("toolName", getter = { row -> row.tool.taskD.name.uncamel() }))
-        columns.add(Column<CustomToolRow, String>("parameters", getter = { row -> parameters(row.tool) }))
+        columns.add(Column<CustomToolRow, String>("toolName", getter = { row -> row.task.taskD.name.uncamel() }))
+        columns.add(Column<CustomToolRow, String>("parameters", getter = { row -> parameters(row.task) }))
 
         toolBarSideP.listen {
             toolsP.value.forEach { compound ->
@@ -80,7 +77,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
             val newTabP = compound.find("newTab") as BooleanParameter
             if (toolP is ValueParameter<*>) {
                 val task = toolP.value
-                if (task is Tool) {
+                if (task != null) {
                     list.add(CustomToolRow(labelP.value, task, newTabP.value == true))
                 }
             }
@@ -97,16 +94,16 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
     override fun toolBarButtons(projectWindow: ProjectWindow): List<Button> {
         return list.map { row ->
-            AbstractTaskButton.createToolOrTaskButton(projectWindow, row.tool, row.label, newTab = row.newTab)
+            AbstractTaskButton.createToolOrTaskButton(projectWindow, row.task, row.label, newTab = row.newTab)
         }
     }
 
-    fun parameters(tool: Tool): String {
-        return tool.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
+    fun parameters(task: Task): String {
+        return task.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
     }
 }
 
-data class CustomToolRow(val label: String, val tool: Tool, val newTab: Boolean) {}
+data class CustomToolRow(val label: String, val task: Task, val newTab: Boolean) {}
 
 // Note this tool cannot be run from the command line, because the arguments would be too cumbersome.
 // Therefore there is no main function.

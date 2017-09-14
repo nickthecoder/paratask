@@ -41,8 +41,6 @@ interface Tool : Task {
 
     val longTitle: String
 
-    val icon: Image?
-
     val optionsName: String
 
     val optionsRunner: OptionsRunner

@@ -91,7 +91,6 @@ class TaskButton(task: Task, label: String, icon: Image?)
 
     override fun runTask(task: Task) {
         val taskPrompter = TaskPrompter(task)
-        taskPrompter.build()
         taskPrompter.placeOnStage(Stage())
     }
 }
