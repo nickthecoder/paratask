@@ -28,7 +28,7 @@ class ResourceParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: Resource? = null,
-        val expectFile: Boolean? = true,
+        val expectFile: Boolean? = null,
         required: Boolean = true)
 
     : AbstractGroupParameter(
@@ -42,7 +42,7 @@ class ResourceParameter(
     val urlP = StringParameter(name + "_url", label = "URL", required = required)
     var url by urlP
 
-    val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "Resource Type")
+    val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "")
     var fileOrUrl by fileOrUrlP
 
     override fun saveChildren(): Boolean = false
@@ -64,7 +64,7 @@ class ResourceParameter(
                 file = null
                 url = ""
             } else {
-                if (v.isFile()) {
+                if (v.isFileOrDirectory()) {
                     fileOrUrl = fileP
                     file = v.file
                 } else {
@@ -80,10 +80,10 @@ class ResourceParameter(
 
     init {
         this.value = value
-        horizontalLayout(false)
         fileOrUrlP.addParameters(fileP, urlP)
         addParameters(fileOrUrlP)
-
+        fileOrUrlP.horizontalLayout(null)
+        horizontalLayout(null)
     }
 
     override fun errorMessage(v: Resource?): String? {

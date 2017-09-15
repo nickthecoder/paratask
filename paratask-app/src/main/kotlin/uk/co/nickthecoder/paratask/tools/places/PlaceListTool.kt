@@ -121,7 +121,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
 
         val labelP = StringParameter("label", required = false)
 
-        val resourceP = ResourceParameter("resource", required = true, expectFile = null)
+        val resourceP = ResourceParameter("resource")
         var resource by resourceP
 
         init {

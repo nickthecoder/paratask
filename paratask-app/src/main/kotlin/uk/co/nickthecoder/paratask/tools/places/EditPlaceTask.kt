@@ -18,64 +18,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import uk.co.nickthecoder.paratask.AbstractTask
-import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.OneOfParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.util.Resource
+import uk.co.nickthecoder.paratask.parameters.compound.ResourceParameter
 
 open class EditPlaceTask(protected val place: PlaceInFile, name: String = "editPlace")
     : AbstractTask() {
 
     final override val taskD = TaskDescription(name)
 
-    val labelP = StringParameter("label", required = false)
+    val labelP = StringParameter("label", required = false, value = place.label)
 
-    val fileP = FileParameter("file", expectFile = null, required = false)
-
-    val urlP = StringParameter("url", required = false)
-
-    val oneOfP = OneOfParameter("fileOrURL", choiceLabel = "Resource Type")
+    val resourceP = ResourceParameter("resource", value = place.resource)
+    var resource by resourceP
 
     init {
-        taskD.addParameters(labelP, oneOfP)
-        oneOfP.addParameters(fileP, urlP)
-
-        if (place.resource.isFileOrDirectory()) {
-            fileP.value = place.resource.file!!
-            oneOfP.value = fileP
-        } else {
-            urlP.value = place.resource.toString()
-            oneOfP.value = urlP
-        }
-        labelP.value = place.label
-    }
-
-    private fun createPlace(): PlaceInFile {
-        return if (oneOfP.value === urlP) {
-            PlaceInFile(place.placesFile, Resource(urlP.value), labelP.value)
-        } else {
-            PlaceInFile(place.placesFile, Resource(fileP.value!!), labelP.value)
-        }
-    }
-
-    override fun customCheck() {
-        if (fileP.value == null && (urlP.value == "")) {
-            throw ParameterException(urlP, "You must enter a URL or a File")
-        }
-        try {
-            createPlace()
-        } catch(e: Exception) {
-            throw ParameterException(urlP, "Invlid URL")
-        }
+        taskD.addParameters(labelP, resourceP)
     }
 
     override fun run() {
         val index = place.placesFile.places.indexOf(place)
         place.placesFile.places.remove(place)
 
-        val newPlace = createPlace()
+        val newPlace = PlaceInFile(place.placesFile, resource!!, labelP.value)
         if (index >= 0) {
             place.placesFile.places.add(index, newPlace)
         } else {

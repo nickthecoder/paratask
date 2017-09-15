@@ -1,14 +1,17 @@
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.application.Platform
 import javafx.scene.Node
+import javafx.scene.control.Control
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 open class HorizontalGroupField(
         groupParameter: AbstractGroupParameter,
-        val labelsAbove: Boolean,
+        val labelsAbove: Boolean?,
         isBoxed: Boolean)
 
     : SingleErrorGroupField(groupParameter, isBoxed = isBoxed), FieldParent, ParameterListener {
@@ -45,17 +48,31 @@ open class HorizontalGroupField(
     fun createChild(childField: ParameterField): Node {
 
         val container: Node
-        if (labelsAbove) {
+        if (labelsAbove == true) {
             val vbox = VBox()
             container = vbox
             container.styleClass.add("vbox")
+            container.children.addAll(childField.label, childField.control)
+        } else if (labelsAbove == false) {
+            val hbox = HBox()
+            container = hbox
+            container.styleClass.add("hbox")
+            if (childField.parameter.isStretchy()) {
+                hBox.maxWidth = Double.MAX_VALUE
+                HBox.setHgrow(childField.control, Priority.ALWAYS)
+            }
             container.children.addAll(childField.label, childField.control)
         } else {
             val hbox = HBox()
             container = hbox
             container.styleClass.add("hbox")
-            container.children.addAll(childField.label, childField.control)
+            if (childField.parameter.isStretchy()) {
+                hBox.maxWidth = Double.MAX_VALUE
+                HBox.setHgrow(childField.control, Priority.ALWAYS)
+            }
+            container.children.addAll(childField.control)
         }
+
         return container
     }
 

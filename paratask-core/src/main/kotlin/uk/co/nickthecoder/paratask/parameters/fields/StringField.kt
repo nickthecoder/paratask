@@ -61,7 +61,6 @@ class StringField(val stringParameter: StringParameter)
             }
         })
 
-
         this.textField = textField
         return textField
     }

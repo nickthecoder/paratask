@@ -52,7 +52,7 @@ abstract class AbstractGroupParameter(
         }
     }
 
-    fun horizontalLayout(labelsAbove: Boolean, isBoxed: Boolean = false) {
+    fun horizontalLayout(labelsAbove: Boolean?, isBoxed: Boolean = false) {
         fieldFactory = {
             HorizontalGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
         }

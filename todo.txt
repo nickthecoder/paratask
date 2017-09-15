@@ -1,8 +1,5 @@
 TODO	
 
-EditPlaceTask.Change to ResourceParameter
-ResizeImage check OneOf
-
 ProcessTool. PIDs parameter not showing "+" button (when boxed or not).
 
 Not checking ProcessTool's OneOf's Choice parameter.
