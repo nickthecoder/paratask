@@ -1,0 +1,9 @@
+{
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
+    "includes": [
+        "place"
+    ],
+    "options": [
+        
+    ]
+}

@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  */
 class Thumbnailer() {
 
-    val heightP = IntParameter("thumbnailHeight", value = 60)
+    val heightP = IntParameter("thumbnailHeight", value = DEFAULT_THUMBNAIL_SIZE)
 
     val directoryThumbnailP = StringParameter("directoryThumbnail", value = ".thumbnails/default.jpg")
 
@@ -191,6 +191,6 @@ class Thumbnailer() {
     }
 
     companion object {
-        val DEFAULT_THUMBNAIL_SIZE = 32
+        val DEFAULT_THUMBNAIL_SIZE = 80
     }
 }

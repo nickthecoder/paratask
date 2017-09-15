@@ -15,17 +15,17 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
     val allP = InformationParameter("all", label = "All", information = "All Processes")
 
-    val commandP = StringParameter("command", required = false)
+    val commandP = StringParameter("command")
 
     val userP = StringParameter("user")
 
     val groupP = StringParameter("group")
 
-    val pidsP = MultipleParameter("pids", minItems = 1) {
+    val pidsP = MultipleParameter("pids", label = "PIDs", minItems = 1, isBoxed = true) {
         IntParameter("pid")
     }
 
-    val choiceP = OneOfParameter("choiceP", value = allP)
+    val choiceP = OneOfParameter("filter", value = allP, choiceLabel = "Filter Type")
 
     override val rowFilter = RowFilter<ProcessRow>(this, columns, ProcessRow(0, "", "", 0.0, 0.0, ""))
 
@@ -55,7 +55,7 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
             }
 
             commandP -> {
-                command.addArguments("-C", commandP)
+                command.addArguments("-C", commandP.value)
             }
 
             userP -> {

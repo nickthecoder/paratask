@@ -30,6 +30,8 @@ open class GroupParameter(
         label = label,
         description = description) {
 
+    override fun saveChildren(): Boolean = true
+
     override fun errorMessage(): String? = null
 
     override fun copy(): GroupParameter {

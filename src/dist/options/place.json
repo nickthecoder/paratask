@@ -1,0 +1,10 @@
+{
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
+    "includes": [
+        "fileOrDir",
+        "url"
+    ],
+    "options": [
+        
+    ]
+}

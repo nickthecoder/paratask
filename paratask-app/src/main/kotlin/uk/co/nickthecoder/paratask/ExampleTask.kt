@@ -68,7 +68,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
     val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
     val stringInGroupP = StringParameter("units")
 
-    val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String")
+    val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String", choiceLabel = "Choose")
     val aP = StringParameter("a")
     val bP = IntParameter("b")
 
@@ -89,7 +89,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
 
         oneOfP.addParameters(aP, bP)
     }
-    
+
     override fun run() {
         println("Example Parameter values : ")
 

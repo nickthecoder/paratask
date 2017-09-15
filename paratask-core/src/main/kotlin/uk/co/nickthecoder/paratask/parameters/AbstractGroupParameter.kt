@@ -19,7 +19,7 @@ package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.GroupField
-import uk.co.nickthecoder.paratask.parameters.fields.BoxGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.HorizontalGroupField
 import uk.co.nickthecoder.paratask.parameters.fields.GridGroupField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
@@ -38,11 +38,24 @@ abstract class AbstractGroupParameter(
 
     override val children = mutableListOf<Parameter>()
 
-    fun boxLayout(labelsAbove: Boolean, isBoxed: Boolean = false) {
-        fieldFactory = {
-            BoxGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
-        }
+    abstract fun saveChildren(): Boolean
 
+    fun boxLayout() {
+        fieldFactory = {
+            GroupField(this, isBoxed = true).build()
+        }
+    }
+
+    fun plainLayout() {
+        fieldFactory = {
+            GroupField(this, isBoxed = false).build()
+        }
+    }
+
+    fun horizontalLayout(labelsAbove: Boolean, isBoxed: Boolean = false) {
+        fieldFactory = {
+            HorizontalGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
+        }
     }
 
     fun gridLayout(labelsAbove: Boolean, columns: Int = children.size, isBoxed: Boolean = false) {

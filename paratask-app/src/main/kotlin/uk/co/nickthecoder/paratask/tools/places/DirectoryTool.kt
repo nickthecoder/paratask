@@ -106,7 +106,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
                 thumbnailer.heightP, thumbnailer.directoryThumbnailP, autoRefreshP)
         taskD.unnamedParameter = directoriesP
 
-        columns.add(Column<WrappedFile, ImageView>("icon", label = "", getter = { thumbnailer.thumbnailImageView(it.file) }))
+        columns.add(Column<WrappedFile, ImageView>("icon", width = 90, label = "", getter = { thumbnailer.thumbnailImageView(it.file) }))
         columns.add(FileNameColumn<WrappedFile>("name", getter = { it.file }))
         columns.add(TimestampColumn<WrappedFile>("modified", getter = { it.file.lastModified() }))
         columns.add(SizeColumn<WrappedFile>("size", getter = { it.file.length() }))

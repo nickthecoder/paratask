@@ -36,7 +36,7 @@ open class EditPlaceTask(protected val place: PlaceInFile, name: String = "editP
 
     val urlP = StringParameter("url", required = false)
 
-    val oneOfP = OneOfParameter("fileOrURL")
+    val oneOfP = OneOfParameter("fileOrURL", choiceLabel = "Resource Type")
 
     init {
         taskD.addParameters(labelP, oneOfP)

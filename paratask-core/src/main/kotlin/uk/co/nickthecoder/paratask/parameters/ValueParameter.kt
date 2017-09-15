@@ -45,6 +45,8 @@ interface ValueParameter<T>
             expressionProperty.set(v)
         }
 
+    fun saveValue(): Boolean = true
+
     /**
      * Set the value based on an evaluated expression, and therefore the type T isn't known by the
      * caller.

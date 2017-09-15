@@ -42,8 +42,10 @@ class ResourceParameter(
     val urlP = StringParameter(name + "_url", label = "URL", required = required)
     var url by urlP
 
-    val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP)
+    val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "Resource Type")
     var fileOrUrl by fileOrUrlP
+
+    override fun saveChildren(): Boolean = false
 
     override var value: Resource?
         get() {
@@ -78,7 +80,7 @@ class ResourceParameter(
 
     init {
         this.value = value
-        boxLayout(false)
+        horizontalLayout(false)
         fileOrUrlP.addParameters(fileP, urlP)
         addParameters(fileOrUrlP)
 

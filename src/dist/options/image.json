@@ -66,51 +66,6 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tasks.ResizeImageTask",
-            "code": "size",
-            "label": "Resize Image",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "inputFile",
-                    "expression": "row.file"
-                },
-                {
-                    "name": "resizeOption",
-                    "value": "size"
-                },
-                {
-                    "name": "width",
-                    "value": "100"
-                },
-                {
-                    "name": "height",
-                    "value": "100"
-                },
-                {
-                    "name": "keepAspectRatio",
-                    "value": "true"
-                },
-                {
-                    "name": "percentage",
-                    "value": ""
-                },
-                {
-                    "name": "outputFile",
-                    "expression": "new File( row.file.parentFile, \"resized-\" + row.file.name )"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "gimp",
             "label": "Open in GIMP",
@@ -260,6 +215,51 @@
                 {
                     "name": "directory",
                     "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tasks.ResizeImageTask",
+            "code": "size",
+            "label": "Resize Image",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "inputFile",
+                    "expression": "row.file"
+                },
+                {
+                    "name": "resizeOptions",
+                    "value": "size"
+                },
+                {
+                    "name": "width",
+                    "value": "100"
+                },
+                {
+                    "name": "height",
+                    "value": "100"
+                },
+                {
+                    "name": "keepAspectRatio",
+                    "value": "true"
+                },
+                {
+                    "name": "percentage",
+                    "value": ""
+                },
+                {
+                    "name": "outputFile",
+                    "expression": "new File( row.file.parentFile, \"resized-\" + row.file.name )"
                 },
                 {
                     "name": "output",

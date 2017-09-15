@@ -62,6 +62,10 @@ open class ChoiceParameter<T>(
     override fun isStretchy() = false
 
 
+    override fun errorMessage(): String? {
+        return super.errorMessage()
+    }
+
     override fun errorMessage(v: T?): String? {
         if (isProgrammingMode()) return null
 

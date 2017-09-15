@@ -50,6 +50,8 @@ class ScaledDoubleParameter(
 
     val units = value.scales
 
+    override fun saveChildren(): Boolean = false
+
     override val converter: StringConverter<ScaledDouble?> = ScaledDouble.converter(value.scales)
 
     override var value: ScaledDouble?
@@ -71,7 +73,7 @@ class ScaledDoubleParameter(
 
     init {
         this.value = value
-        boxLayout(false)
+        horizontalLayout(false)
         units.forEach { scale, lab ->
             scaleP.addChoice(scale.toString(), scale, lab)
         }

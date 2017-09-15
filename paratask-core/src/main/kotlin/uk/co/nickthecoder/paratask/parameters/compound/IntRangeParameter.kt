@@ -27,8 +27,10 @@ class IntRangeParameter(
 
     init {
         addParameters(fromP, toP)
-        boxLayout(false)
+        horizontalLayout(false)
     }
+
+    override fun saveChildren(): Boolean = true
 
     fun contains(value: Int): Boolean {
         if (from ?: Int.MAX_VALUE > value) {

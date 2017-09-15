@@ -61,7 +61,7 @@ class TaskDescription(
 
     fun copyValuesFrom(source: TaskDescription) {
         for (sourceParameter in source.root.descendants()) {
-            if (sourceParameter is ValueParameter<*>) {
+            if (sourceParameter is ValueParameter<*> && sourceParameter.saveValue()) {
 
                 val stringValue = sourceParameter.stringValue
                 val destParameter = root.find(sourceParameter.name)

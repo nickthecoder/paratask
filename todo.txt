@@ -1,5 +1,14 @@
 TODO	
 
+EditPlaceTask.Change to ResourceParameter
+ResizeImage check OneOf
+
+ProcessTool. PIDs parameter not showing "+" button (when boxed or not).
+
+Not checking ProcessTool's OneOf's Choice parameter.
+
+When a tool has missing required values (such as ProcessTool), it shows the FilterTab, not ParametersTab
+
 Editor must not discard changes or blank documents when re-run.
 
 Alt+W to close a results tab. If it is the last one, close the halftab.
@@ -7,9 +16,6 @@ Alt+W to close a results tab. If it is the last one, close the halftab.
 Allow Places to create a toolBar
 	Allow FILES to be dragged to the buttons in the same manner as dragging to the row i.e. can copy/move/link files.
 	Drag files to it to add them to the PlacesFile.
-
-A new Places tool, which saves the places as parameters, rather than in a Places file.
-	Maybe rename the old one to PlacesFileTool
 
 Create a CustomToolListTool when creating a blank project window.
 	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)

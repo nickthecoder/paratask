@@ -79,7 +79,6 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>)
             comboBox.items.add(value ?: FAKE_NULL)
         }
         comboBox.value = choiceParameter.value ?: FAKE_NULL
-
     }
 
     override fun isDirty(): Boolean = dirty
@@ -92,7 +91,7 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>)
         } else if (event.type == ParameterEventType.VALUE) {
             comboBox.value = choiceParameter.value
         }
-
+        showOrClearError(choiceParameter.errorMessage())
 
     }
 

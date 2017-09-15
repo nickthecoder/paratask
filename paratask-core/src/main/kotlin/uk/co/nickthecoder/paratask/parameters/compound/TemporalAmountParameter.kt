@@ -25,6 +25,8 @@ class TemporalAmountParameter(
     val unitsP = ChoiceParameter("units", label = "", required = required, value = TimeUnit.DAYS).enumChoices()
     var units by unitsP
 
+    override fun saveChildren(): Boolean = true
+
     val value: TemporalAmount?
         get() {
             val a = amount
@@ -50,7 +52,7 @@ class TemporalAmountParameter(
     }
 
     init {
-        boxLayout(false)
+        horizontalLayout(false)
         addParameters(amountP, unitsP)
     }
 

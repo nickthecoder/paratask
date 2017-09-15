@@ -35,14 +35,14 @@ interface ParentParameter : Parameter {
         }
         if (parameter is ParentParameter) {
             parameter.check()
-        } else {
-            if (parameter is ValueParameter<*> && parameter.expression != null) {
-                if (parameter.expression == "") {
-                    throw ParameterException(parameter, "Expression is required")
-                }
-            } else {
-                parameter.errorMessage()?.let { throw ParameterException(parameter, it) }
+        }
+
+        if (parameter is ValueParameter<*> && parameter.expression != null) {
+            if (parameter.expression == "") {
+                throw ParameterException(parameter, "Expression is required")
             }
+        } else {
+            parameter.errorMessage()?.let { throw ParameterException(parameter, it) }
         }
 
     }

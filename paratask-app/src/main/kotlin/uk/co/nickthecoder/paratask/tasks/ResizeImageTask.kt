@@ -31,23 +31,26 @@ class ResizeImageTask : AbstractCommandTask() {
 
     val outputFileP = FileParameter("outputFile", label = "Output Image", mustExist = null)
 
-    val resizeOptionP = OneOfParameter("resizeOption")
-
     val percentageP = IntParameter("percentage")
 
-    val widthP = IntParameter("width")
+    val widthP = IntParameter("width", label = "")
 
-    val heightP = IntParameter("height")
+    val heightP = IntParameter("height", label = "x")
 
     val sizeP = GroupParameter("size")
 
     val keepAspectRationP = BooleanParameter("keepAspectRatio", value = true)
 
+    val resizeOptionP = OneOfParameter("resizeOptions", choiceLabel = "Resize Type", value = sizeP)
+
     val onlyShrinkP = BooleanParameter("onlyShrink", value = true)
+
 
     init {
         sizeP.addParameters(widthP, heightP, keepAspectRationP)
         resizeOptionP.addParameters(sizeP, percentageP)
+
+        sizeP.horizontalLayout(false)
 
         taskD.addParameters(inputFileP, resizeOptionP, outputFileP, outputP)
     }

@@ -1,13 +1,12 @@
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.scene.Node
-import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
-open class BoxGroupField(
+open class HorizontalGroupField(
         groupParameter: AbstractGroupParameter,
         val labelsAbove: Boolean,
         isBoxed: Boolean)

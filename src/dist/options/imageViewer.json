@@ -272,7 +272,7 @@
                     "expression": "tool.file"
                 },
                 {
-                    "name": "resizeOption",
+                    "name": "resizeOptions",
                     "value": "size"
                 },
                 {

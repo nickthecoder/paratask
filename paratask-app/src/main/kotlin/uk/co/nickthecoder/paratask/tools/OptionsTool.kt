@@ -219,11 +219,14 @@ class OptionsTool() : ListTableTool<Option>() {
                 rows = 10, columns = 40, value = if (option is GroovyOption) option.script else "",
                 scriptVariables = fileOptions.scriptVariables)
 
-        val scriptOrTaskP = OneOfParameter("action")
+        val scriptOrTaskP = OneOfParameter("action", choiceLabel = "Action Type")
 
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
 
         init {
+            scriptOrTaskP.addParameters(taskP, groovyScriptP)
+            taskD.addParameters(code, aliases, label, flagsGroupP, scriptOrTaskP, shortcutP)
+
             taskP.scriptVariables = fileOptions.scriptVariables
 
             if (option is GroovyOption) {
@@ -240,8 +243,6 @@ class OptionsTool() : ListTableTool<Option>() {
             flagsGroupP.addParameters(isRow, isMultiple, paddingP, refresh, newTab, prompt)
             flagsGroupP.gridLayout(labelsAbove = false, columns = 3, isBoxed = true)
 
-            taskD.addParameters(code, aliases, label, flagsGroupP, scriptOrTaskP, shortcutP)
-            scriptOrTaskP.addParameters(taskP, groovyScriptP)
 
             isRow.listen {
                 isMultiple.hidden = isRow.value == false

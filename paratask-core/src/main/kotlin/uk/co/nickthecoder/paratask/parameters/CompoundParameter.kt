@@ -39,6 +39,10 @@ open class CompoundParameter(
         label = label,
         description = description) {
 
+    override fun saveChildren(): Boolean = true
+
+    override fun saveValue() = false
+
     override val expressionProperty = SimpleStringProperty()
 
     override var expression: String?

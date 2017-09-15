@@ -17,11 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
-import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.OneOfField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
@@ -29,17 +26,27 @@ class OneOfParameter(
         name: String,
         val required: Boolean = true,
         label: String = name.uncamel(),
+        val choiceLabel: String,
         description: String = "",
         value: Parameter? = null)
 
     : AbstractGroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
 
-    val choiceP = ChoiceParameter(name + "choice", label = "", value = value)
+    override fun saveChildren() = true
+
+    val choiceP = OneOfChoiceParameter(value)
 
     override val expressionProperty = SimpleStringProperty()
 
+    override val valueProperty = choiceP.valueProperty
+
     override val converter: StringConverter<Parameter?> = object : StringConverter<Parameter?>() {
-        override fun toString(v: Parameter?): String = v?.name ?: ""
+        override fun toString(v: Parameter?): String {
+            if (v == null) {
+                Thread.dumpStack()
+            }
+            return v?.name ?: ""
+        }
 
         override fun fromString(v: String): Parameter? {
             if (v == "") return null
@@ -47,17 +54,14 @@ class OneOfParameter(
         }
     }
 
-    override val valueProperty = SimpleObjectProperty<Parameter?>()
 
     init {
         addParameters(choiceP)
         this.value = value
 
-        choiceP.listen {
-            children.forEach { child ->
-                if (child != choiceP) {
-                    child.hidden = choiceP.value != child
-                }
+        choiceP.listen { event ->
+            children.filter { it != choiceP }.forEach { child ->
+                child.hidden = child != choiceP.value
             }
         }
     }
@@ -66,48 +70,32 @@ class OneOfParameter(
         choiceP.clear()
         children.filter { it !== choiceP }.forEach { child ->
             choiceP.addChoice(child.name, child, child.label)
-            child.hidden = choiceP.value != child
+            child.hidden = value != child
         }
 
-        val result = OneOfField(this)
-        result.build()
-        return result
-    }
-
-    override fun errorMessage(): String? {
-        return errorMessage(value)
+        return super.createField()
     }
 
     override fun errorMessage(v: Parameter?): String? {
-        if (isProgrammingMode()) return null
-
-        if (v == null) {
-            if (required) {
-                return "You must choose an item from the list"
-            }
-            return null
-        } else {
-            return v.errorMessage()
-        }
+        return null
     }
-
-    override fun check() {
-        errorMessage()?.let { throw ParameterException(this, it) }
-
-        value?.let { checkChild(it) }
-    }
-
 
     override fun copy(): OneOfParameter {
-        val result = OneOfParameter(name = name, label = label, description = description, value = null)
+        val result = OneOfParameter(name = name, label = label, choiceLabel = choiceLabel, description = description, value = null)
+        println("Copying OneOf value=$value")
         children.forEach { child ->
             val copiedChild = child.copy()
             result.addParameters(copiedChild)
             if (child === value) {
+                println("Resetting child to ${value}")
                 result.value = copiedChild
             }
         }
+        println("Copied OneOf value=${result.value}")
         return result
     }
 
+    inner class OneOfChoiceParameter(value: Parameter?) : ChoiceParameter<Parameter?>(name + "_choice", label = choiceLabel, value = value, required = required) {
+        override fun saveValue(): Boolean = false
+    }
 }

@@ -36,18 +36,18 @@ object JsonHelper {
         val jparameters = JsonArray()
 
         fun foo(grp: AbstractGroupParameter) {
-            for (parameter in grp.children) {
-                if (parameter is ValueParameter<*> && parameter !is CompoundParameter) {
-                    if (!parameter.hidden) {
-                        val jparameter = JsonObject()
-                        jparameter.set("name", parameter.name)
-                        saveValue(parameter, jparameter)
-                        jparameters.add(jparameter)
-                    }
-                } else if (parameter is AbstractGroupParameter) {
-                    foo(parameter)
-                } else {
 
+            for (parameter in grp.children) {
+                // Save the VALUE
+                if (parameter is ValueParameter<*> && parameter.saveValue() && !parameter.hidden) {
+                    val jparameter = JsonObject()
+                    jparameter.set("name", parameter.name)
+                    saveValue(parameter, jparameter)
+                    jparameters.add(jparameter)
+                }
+                // Save the children's values
+                if (parameter is AbstractGroupParameter && parameter.saveChildren()) {
+                    foo(parameter)
                 }
             }
         }
