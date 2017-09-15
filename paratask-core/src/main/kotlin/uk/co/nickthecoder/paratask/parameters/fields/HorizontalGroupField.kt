@@ -1,11 +1,9 @@
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.application.Platform
+import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Control
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
-import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
@@ -16,7 +14,7 @@ open class HorizontalGroupField(
 
     : SingleErrorGroupField(groupParameter, isBoxed = isBoxed), FieldParent, ParameterListener {
 
-    val hBox = HBox()
+    val borderPane = BorderPane()
 
     val fieldSet = mutableListOf<ParameterField>()
     val containers = mutableListOf<Node>()
@@ -26,7 +24,9 @@ open class HorizontalGroupField(
     }
 
     override fun createContent(): Node {
-        hBox.styleClass.add("box-group")
+
+        var box = HBox()
+        var foundStretchy: Boolean = false
 
         groupParameter.children.forEach { child ->
             val field = child.createField()
@@ -37,60 +37,63 @@ open class HorizontalGroupField(
             fieldSet.add(field)
             containers.add(container)
 
+            box.styleClass.add("box-group")
             if (!child.hidden) {
-                hBox.children.add(container)
+                if (child.isStretchy() && !foundStretchy) {
+                    if (box.children.isNotEmpty()) {
+                        borderPane.left = box
+                        box.styleClass.add("right-spacing")
+                    }
+                    foundStretchy = true
+                    borderPane.center = container
+                    box = HBox()
+                    box.styleClass.add("left-spacing")
+                } else {
+                    box.children.add(container)
+                }
             }
         }
 
-        return hBox
+        if (box.children.isNotEmpty()) {
+            if (borderPane.left == null && borderPane.center == null) {
+                borderPane.left = box
+            } else {
+                borderPane.right = box
+            }
+        }
+
+        return borderPane
     }
 
     fun createChild(childField: ParameterField): Node {
 
         val container: Node
         if (labelsAbove == true) {
-            val vbox = VBox()
-            container = vbox
-            container.styleClass.add("vbox")
-            container.children.addAll(childField.label, childField.control)
+            container = BorderPane()
+            container.top = childField.label
+            container.center = childField.control
+            childField.label.styleClass.add("small-bottom-pad")
+            BorderPane.setAlignment(childField.label, Pos.CENTER)
+            BorderPane.setAlignment(childField.control, Pos.CENTER)
         } else if (labelsAbove == false) {
-            val hbox = HBox()
-            container = hbox
-            container.styleClass.add("hbox")
-            if (childField.parameter.isStretchy()) {
-                hBox.maxWidth = Double.MAX_VALUE
-                HBox.setHgrow(childField.control, Priority.ALWAYS)
-            }
-            container.children.addAll(childField.label, childField.control)
+            container = BorderPane()
+            container.left = childField.label
+            container.center = childField.control
+            childField.label.styleClass.add("right-pad")
+            BorderPane.setAlignment(childField.label, Pos.CENTER_LEFT)
+            BorderPane.setAlignment(childField.control, Pos.CENTER_LEFT)
         } else {
-            val hbox = HBox()
-            container = hbox
-            container.styleClass.add("hbox")
-            if (childField.parameter.isStretchy()) {
-                hBox.maxWidth = Double.MAX_VALUE
-                HBox.setHgrow(childField.control, Priority.ALWAYS)
-            }
-            container.children.addAll(childField.control)
+            container = childField.control!!
         }
 
         return container
     }
 
     override fun updateField(field: ParameterField) {
-        var visibleIndex = 0
-        fieldSet.forEachIndexed { index, f ->
-            val container = containers[index]
-            if (f.parameter.hidden) {
-                if (hBox.children.contains(container)) {
-                    hBox.children.remove(container)
-                }
-            } else {
-                if (!hBox.children.contains(container)) {
-                    hBox.children.add(visibleIndex, container)
-                }
-                visibleIndex++
-            }
-        }
+        borderPane.left = null
+        borderPane.center = null
+        borderPane.right = null
+        createContent()
 
         super.updateField(field)
     }

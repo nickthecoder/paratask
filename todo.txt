@@ -32,6 +32,8 @@ AbstractGroupParameter.innerListener should only forward CHANGE events to the pa
 Save/Load filters in Project files
 
 Bugs
+	ResourceExample - slows down a LOT when flicking between file and url. Probably a problem with listeners not unregistering.
+
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
 		This is a long standing known bug with JediTerm.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
