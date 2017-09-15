@@ -51,7 +51,7 @@ abstract class AbstractValueParameter<T>(
         }
     }
 
-    override val expressionProperty = SimpleStringProperty()
+    override val expressionProperty = SimpleStringProperty(null)
 
     final override var value: T
         set(v) {

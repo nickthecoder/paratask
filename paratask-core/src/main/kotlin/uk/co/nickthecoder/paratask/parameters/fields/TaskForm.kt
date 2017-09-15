@@ -46,6 +46,7 @@ class TaskForm(val task: Task) {
         form.descendants().forEach { field ->
             val parameter = field.parameter
             if (!programming || (parameter is ValueParameter<*> && parameter.expression != null)) {
+                field.makeClean()
                 if (field.isDirty()) {
                     ensureVisible(field.control!!)
                     return false

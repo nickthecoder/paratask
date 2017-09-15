@@ -155,7 +155,19 @@ abstract class ParameterField(
         }
     }
 
+    /**
+     * Controls, such as Spinners, can hold a value which is not reflected by Parameter's value. In these cases, isDirty
+     * returns true, and the form will not be validated (i.e. TaskForm.check() fails).
+     * Most fields are never dirty and always return false.
+     */
     open fun isDirty(): Boolean = false
+
+    /**
+     * For controls, such as Spinners, attempt to make the Parameter's value in sync with the value in the control.
+     * If it fails, then isDirty() will be false, an error should be displayed and the form will not validate.
+     * Most fields do nothing, as they are never dirty.
+     */
+    open fun makeClean() {}
 
     open fun updateEnabled() {
         control?.isDisable = !parameter.enabled

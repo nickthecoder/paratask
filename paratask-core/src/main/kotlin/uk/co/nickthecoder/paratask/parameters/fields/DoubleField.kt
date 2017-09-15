@@ -22,19 +22,20 @@ import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.gui.ApplicationActions
-import uk.co.nickthecoder.paratask.parameters.DoubleAdaptor
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.DoubleParameter
 
-open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: DoubleAdaptor)
+open class DoubleField(val doubleParameter: DoubleParameter)
     : ParameterField(doubleParameter) {
 
     private var dirty = false
+
+    private var spinner: Spinner<Double?>? = null
 
     override fun createControl(): Node {
 
         val spinner = createSimpleSpinner()
 
-        spinner.valueFactory.converter = adaptor.converter
+        spinner.valueFactory.converter = doubleParameter.converter
         spinner.editableProperty().set(true)
 
         spinner.editor.addEventHandler(KeyEvent.KEY_PRESSED, { event ->
@@ -60,22 +61,36 @@ open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: Doub
 
         spinner.editor.textProperty().addListener({ _, _, newValue: String ->
             try {
-                val v = adaptor.converter.fromString(newValue)
-                if (doubleParameter.expression == null) {
-                    spinner.valueFactory.value = v
-                }
-                showOrClearError(adaptor.errorMessage(v))
-                dirty = false
+                val v = doubleParameter.converter.fromString(newValue)
+                showOrClearError(doubleParameter.errorMessage(v))
+                dirty = true
             } catch (e: Exception) {
                 showError("Not a number")
-                dirty = true
             }
         })
 
+        spinner.focusedProperty().addListener { _, _, newValue ->
+            if (newValue == false) {
+                makeClean()
+            }
+        }
+
+        this.spinner = spinner
         return spinner
     }
 
     override fun isDirty(): Boolean = dirty
+
+    override fun makeClean() {
+        try {
+            if (doubleParameter.expression == null) {
+                doubleParameter.value = doubleParameter.converter.fromString(spinner?.editor?.text)
+            }
+            dirty = false
+        } catch(e: Exception) {
+            dirty = true
+        }
+    }
 
     /**
      * Spinners normally consume the ENTER key, which means the default button won't be run when ENTER is
@@ -87,15 +102,16 @@ open class DoubleField(val doubleParameter: ValueParameter<*>, val adaptor: Doub
         defaultRunnable?.let { defaultRunnable.run() }
     }
 
-    private fun createSimpleSpinner(): Spinner<*> {
+    private fun createSimpleSpinner(): Spinner<Double?> {
 
-        val factory = DoubleSpinnerValueFactory(adaptor.minValue, adaptor.maxValue, adaptor.value)
+        val factory = DoubleSpinnerValueFactory(doubleParameter.minValue, doubleParameter.maxValue, doubleParameter.value)
         val spinner = Spinner(factory)
         if (doubleParameter.expression == null) {
-            adaptor.value = spinner.valueFactory.value
+            doubleParameter.value = spinner.valueFactory.value
         }
 
-        spinner.valueFactory.valueProperty().bindBidirectional(adaptor.valueProperty)
+        spinner.valueFactory.valueProperty().bindBidirectional(doubleParameter.valueProperty)
+        spinner.editor.text = doubleParameter.converter.toString(doubleParameter.value)
         return spinner
     }
 
