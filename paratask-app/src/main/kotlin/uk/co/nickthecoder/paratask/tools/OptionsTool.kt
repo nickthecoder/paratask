@@ -219,7 +219,7 @@ class OptionsTool() : ListTableTool<Option>() {
                 rows = 10, columns = 40, value = if (option is GroovyOption) option.script else "",
                 scriptVariables = fileOptions.scriptVariables)
 
-        val scriptOrTaskP = OneOfParameter("action", message = "Action Type")
+        val scriptOrTaskP = OneOfParameter("action")
 
         var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
 

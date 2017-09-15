@@ -17,9 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.parameters.compound
 
-import uk.co.nickthecoder.paratask.parameters.*
+import javafx.beans.property.SimpleStringProperty
+import javafx.util.StringConverter
+import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameters.DoubleParameter
+import uk.co.nickthecoder.paratask.parameters.ValueParameter
 import uk.co.nickthecoder.paratask.util.uncamel
-import kotlin.reflect.KProperty
 
 /**
  * See [ScaledDouble]
@@ -36,17 +40,19 @@ class ScaledDoubleParameter(
     : AbstractGroupParameter(
         name = name,
         label = label,
-        description = description) {
+        description = description), ValueParameter<ScaledDouble?> {
 
     val amountP = DoubleParameter(name = "_amount", label = "", required = required)
     var amount by amountP
 
-    val scaleP = ChoiceParameter<Double>(name = "_scale", value = 1.0, label = "")
+    val scaleP = ChoiceParameter(name = "_scale", value = 1.0, label = "")
     var scale by scaleP
 
     val units = value.scales
 
-    var value: ScaledDouble?
+    override val converter: StringConverter<ScaledDouble?> = ScaledDouble.converter(value.scales)
+
+    override var value: ScaledDouble?
         get() {
             if (amount == null || scale == null) {
                 return null
@@ -63,36 +69,30 @@ class ScaledDoubleParameter(
             }
         }
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): ScaledDouble? {
-        return value
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: ScaledDouble?) {
-        this.value = value
-    }
-
     init {
         this.value = value
         boxLayout(false)
-        units.forEach { scale, label ->
-            scaleP.addChoice(scale.toString(), scale, label)
+        units.forEach { scale, lab ->
+            scaleP.addChoice(scale.toString(), scale, lab)
         }
         addParameters(amountP, scaleP)
     }
 
-    override fun errorMessage(): String? {
-        if (isProgrammingMode()) return null
+    override val expressionProperty = SimpleStringProperty()
 
-        // Let the inner parameters handle errors for null values
-        if (amount == null || scale == null) {
+    override fun errorMessage(v: ScaledDouble?): String? {
+
+        if (isProgrammingMode()) return null
+        if (v == null) {
+            if (amountP.required) {
+                return "Required"
+            }
             return null
         }
 
-        val v = (amount ?: 0.0) * (scale ?: 0.0)
-
-        if (v < minValue) {
+        if (v.value < minValue) {
             return "Cannot be less than ${minValue / (scale ?: 1.0)}"
-        } else if (v > maxValue) {
+        } else if (v.amount > maxValue) {
             return "Cannot be more than ${maxValue / (scale ?: 1.0)}"
         }
         return null

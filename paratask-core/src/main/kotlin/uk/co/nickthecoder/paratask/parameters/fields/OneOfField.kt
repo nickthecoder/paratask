@@ -17,46 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.scene.Node
 import uk.co.nickthecoder.paratask.parameters.*
 
 class OneOfField(val oneOfParameter: OneOfParameter)
-    : ParameterField(oneOfParameter, isBoxed = true) {
 
-    val choiceP = ChoiceParameter("choose", label = oneOfParameter.message, value = oneOfParameter.value)
+    : BoxGroupField(oneOfParameter, isBoxed = true, labelsAbove = false) {
 
-    val parametersForm = ParametersForm(oneOfParameter, this)
+    init {
 
-    override fun createControl(): ParametersForm {
-
-        choiceP.parameterListeners.add(this)
-
-        for (child in oneOfParameter.children) {
-            choiceP.choice(child.name, child, child.label)
-        }
-        choiceP.valueProperty.bindBidirectional(oneOfParameter.valueProperty)
-        choiceP.parent = oneOfParameter
-
-        buildContent()
-        return parametersForm
-    }
-
-    fun buildContent() {
-        parametersForm.clear()
-        parametersForm.buildTop()
-
-        parametersForm.addParameter(choiceP)
-
-        oneOfParameter.value?.let { child: Parameter ->
-            if (!child.hidden) {
-                parametersForm.addParameter(child)
-            }
-        }
-    }
-
-    override fun parameterChanged(event: ParameterEvent) {
-        if (event.type == ParameterEventType.VALUE) {
-            buildContent()
-        }
     }
 }

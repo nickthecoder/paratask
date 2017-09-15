@@ -32,16 +32,26 @@ object JsonHelper {
         return jtask
     }
 
-    fun parametersAsJsonArray(group: AbstractGroupParameter): JsonArray {
+    fun parametersAsJsonArray(group2: AbstractGroupParameter): JsonArray {
         val jparameters = JsonArray()
-        for (parameter in group.descendants()) {
-            if (parameter is ValueParameter<*> && !parameter.hidden) {
-                val jparameter = JsonObject()
-                jparameter.set("name", parameter.name)
-                saveValue(parameter, jparameter)
-                jparameters.add(jparameter)
+
+        fun foo(grp: AbstractGroupParameter) {
+            for (parameter in grp.children) {
+                if (parameter is ValueParameter<*> && parameter !is CompoundParameter) {
+                    if (!parameter.hidden) {
+                        val jparameter = JsonObject()
+                        jparameter.set("name", parameter.name)
+                        saveValue(parameter, jparameter)
+                        jparameters.add(jparameter)
+                    }
+                } else if (parameter is AbstractGroupParameter) {
+                    foo(parameter)
+                } else {
+
+                }
             }
         }
+        foo(group2)
         return jparameters
     }
 

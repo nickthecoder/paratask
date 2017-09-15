@@ -19,7 +19,7 @@ package uk.co.nickthecoder.paratask
 
 import javafx.scene.paint.Color
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.parameters.compound.ScaledDoubleParameter
+import uk.co.nickthecoder.paratask.parameters.compound.ResourceParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.homeDirectory
 import java.time.format.DateTimeFormatter

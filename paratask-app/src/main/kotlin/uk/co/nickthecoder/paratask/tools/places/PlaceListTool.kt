@@ -25,6 +25,7 @@ import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.compound.ResourceParameter
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
@@ -95,11 +96,9 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
                 for (f in content) {
                     val newEntry = placesP.newValue() as PlaceParameter
                     newEntry.labelP.value = f.name
-                    newEntry.oneOfP.value = newEntry.fileP
-                    newEntry.fileP.value = f
+                    newEntry.resource = Resource(f)
                 }
             }
-
         }
 
         val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
@@ -107,13 +106,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
             content.forEach { place ->
                 val newEntry = placesP.newValue() as PlaceParameter
                 newEntry.labelP.value = place.label
-                if (place.isFile()) {
-                    newEntry.oneOfP.value = newEntry.fileP
-                    newEntry.fileP.value = place.file
-                } else {
-                    newEntry.oneOfP.value = newEntry.urlP
-                    newEntry.urlP.value = place.resource.url.toString()
-                }
+                newEntry.resource = place.resource
             }
             toolPane?.parametersPane?.run()
 
@@ -128,32 +121,15 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
 
         val labelP = StringParameter("label", required = false)
 
-        val fileP = FileParameter("file", expectFile = null, required = false)
-
-        val urlP = StringParameter("url", required = false)
-
-        val oneOfP = OneOfParameter("fileOrURL", value = fileP)
+        val resourceP = ResourceParameter("resource", required = true, expectFile = null)
+        var resource by resourceP
 
         init {
-            oneOfP.addParameters(fileP, urlP)
-
-            addParameters(labelP, oneOfP)
-        }
-
-        fun createResource(): Resource? {
-            try {
-                if (oneOfP.value == fileP) {
-                    return Resource(fileP.value!!)
-                } else {
-                    return Resource(urlP.value)
-                }
-            } catch (e: Exception) {
-                return null
-            }
+            addParameters(labelP, resourceP)
         }
 
         fun createPlace(): Place? {
-            createResource()?.let {
+            resource?.let {
                 return Place(it, labelP.value)
             }
             return null

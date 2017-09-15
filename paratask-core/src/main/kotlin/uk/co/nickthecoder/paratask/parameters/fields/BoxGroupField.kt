@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
-class BoxGroupField(
+open class BoxGroupField(
         groupParameter: AbstractGroupParameter,
         val labelsAbove: Boolean,
         isBoxed: Boolean)

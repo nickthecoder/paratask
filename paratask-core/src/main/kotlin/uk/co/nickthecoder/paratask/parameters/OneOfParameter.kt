@@ -22,6 +22,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.OneOfField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class OneOfParameter(
@@ -29,10 +30,11 @@ class OneOfParameter(
         val required: Boolean = true,
         label: String = name.uncamel(),
         description: String = "",
-        val message: String = "Choose",
         value: Parameter? = null)
 
     : AbstractGroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
+
+    val choiceP = ChoiceParameter(name + "choice", label = "", value = value)
 
     override val expressionProperty = SimpleStringProperty()
 
@@ -48,11 +50,25 @@ class OneOfParameter(
     override val valueProperty = SimpleObjectProperty<Parameter?>()
 
     init {
+        addParameters(choiceP)
         this.value = value
+
+        choiceP.listen {
+            children.forEach { child ->
+                if (child != choiceP) {
+                    child.hidden = choiceP.value != child
+                }
+            }
+        }
     }
 
+    override fun createField(): ParameterField {
+        choiceP.clear()
+        children.filter { it !== choiceP }.forEach { child ->
+            choiceP.addChoice(child.name, child, child.label)
+            child.hidden = choiceP.value != child
+        }
 
-    override fun createField(): OneOfField {
         val result = OneOfField(this)
         result.build()
         return result
@@ -83,7 +99,7 @@ class OneOfParameter(
 
 
     override fun copy(): OneOfParameter {
-        val result = OneOfParameter(name = name, label = label, description = description, value = null, message = message)
+        val result = OneOfParameter(name = name, label = label, description = description, value = null)
         children.forEach { child ->
             val copiedChild = child.copy()
             result.addParameters(copiedChild)
