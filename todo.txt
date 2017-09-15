@@ -2,8 +2,6 @@ TODO
 
 Editor must not discard changes or blank documents when re-run.
 
-Save the toolbars if their tool is not in a HalfTab (otherwise they will be lost)
-
 Alt+W to close a results tab. If it is the last one, close the halftab.
 
 Allow Places to create a toolBar

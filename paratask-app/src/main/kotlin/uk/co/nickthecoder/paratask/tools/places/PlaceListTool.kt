@@ -19,12 +19,13 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
+import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.gui.*
+import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.table.Column
-import uk.co.nickthecoder.paratask.table.ListTableTool
-import uk.co.nickthecoder.paratask.table.TruncatedStringColumn
+import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.util.Resource
@@ -38,7 +39,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
         PlaceParameter()
     }
 
-    override val rowFilter = RowFilter<Place>(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
     init {
         taskD.addParameters(placesP)
@@ -50,19 +51,77 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
     }
 
     override fun run() {
-        placesP.value.filterIsInstance<PlaceParameter>().forEach { placeP ->
-            try {
-                val label = placeP.labelP.value
-                val resource = if (placeP.oneOfP.value == placeP.fileP) {
-                    Resource(placeP.fileP.value!!)
-                } else {
-                    Resource(placeP.urlP.value)
-                }
-                list.add(Place(resource, label))
-            } catch (e: Exception) {
-                // Do nothing, just exclude the item from the list.
-            }
+        list.clear()
+        list.addAll(placesP.value.filterIsInstance<PlaceParameter>().map { placeP -> placeP.createPlace() }.filterNotNull())
+    }
+
+    override fun createTableResults(): TableResults<Place> {
+        val tableResults = super.createTableResults()
+
+        // Drag
+
+        val filesDragHelper = DragFilesHelper {
+            tableResults.selectedRows().filter { it.isFile() }.map { it.file!! }
         }
+
+        val placesDragHelper = SimpleDragHelper(Place.dataFormat, onMoved = { list ->
+            list.forEach { place ->
+                placesP.value.filterIsInstance<PlaceParameter>().firstOrNull { it.createPlace() == place }?.let {
+                    placesP.remove(it)
+                }
+            }
+            toolPane?.parametersPane?.run()
+        }) {
+            tableResults.selectedRows()
+        }
+
+        tableResults.dragHelper = CompoundDragHelper(placesDragHelper, filesDragHelper)
+
+        // Drop
+
+        val filesDropHelper: TableDropFilesHelper<Place> = object : TableDropFilesHelper<Place>() {
+
+            override fun acceptDropOnNonRow() = arrayOf(TransferMode.LINK)
+
+            override fun acceptDropOnRow(row: Place) = if (row.isDirectory()) TransferMode.ANY else null
+
+            override fun droppedOnRow(row: Place, content: List<File>, transferMode: TransferMode) {
+                if (row.isDirectory()) {
+                    FileOperations.instance.fileOperation(content, row.file!!, transferMode)
+                }
+            }
+
+            override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
+                for (f in content) {
+                    val newEntry = placesP.newValue() as PlaceParameter
+                    newEntry.labelP.value = f.name
+                    newEntry.oneOfP.value = newEntry.fileP
+                    newEntry.fileP.value = f
+                }
+            }
+
+        }
+
+        val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
+
+            content.forEach { place ->
+                val newEntry = placesP.newValue() as PlaceParameter
+                newEntry.labelP.value = place.label
+                if (place.isFile()) {
+                    newEntry.oneOfP.value = newEntry.fileP
+                    newEntry.fileP.value = place.file
+                } else {
+                    newEntry.oneOfP.value = newEntry.urlP
+                    newEntry.urlP.value = place.resource.url.toString()
+                }
+            }
+            toolPane?.parametersPane?.run()
+
+        }
+
+        tableResults.dropHelper = CompoundDropHelper(placesDropHelper, filesDropHelper)
+
+        return tableResults
     }
 
     class PlaceParameter : CompoundParameter("places") {
@@ -80,6 +139,26 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
 
             addParameters(labelP, oneOfP)
         }
+
+        fun createResource(): Resource? {
+            try {
+                if (oneOfP.value == fileP) {
+                    return Resource(fileP.value!!)
+                } else {
+                    return Resource(urlP.value)
+                }
+            } catch (e: Exception) {
+                return null
+            }
+        }
+
+        fun createPlace(): Place? {
+            createResource()?.let {
+                return Place(it, labelP.value)
+            }
+            return null
+        }
+
     }
 
 }

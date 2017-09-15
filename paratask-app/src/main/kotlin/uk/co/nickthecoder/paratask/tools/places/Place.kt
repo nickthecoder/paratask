@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.tools.places
 import javafx.scene.input.DataFormat
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.util.Resource
-import uk.co.nickthecoder.paratask.util.isImage
 import java.io.Serializable
 
 open class Place(
@@ -44,6 +43,17 @@ open class Place(
     fun isURL() = !resource.isFileOrDirectory()
 
     override fun toString() = "$resource $label"
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Place) {
+            return label == other.label && resource == other.resource
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return label.hashCode() + 31 * resource.hashCode()
+    }
 
     companion object {
         val dataFormat = DataFormat("application/x-java-paratask-place-list")
