@@ -82,16 +82,13 @@ class OneOfParameter(
 
     override fun copy(): OneOfParameter {
         val result = OneOfParameter(name = name, label = label, choiceLabel = choiceLabel, description = description, value = null)
-        println("Copying OneOf value=$value")
         children.forEach { child ->
             val copiedChild = child.copy()
             result.addParameters(copiedChild)
             if (child === value) {
-                println("Resetting child to ${value}")
                 result.value = copiedChild
             }
         }
-        println("Copied OneOf value=${result.value}")
         return result
     }
 

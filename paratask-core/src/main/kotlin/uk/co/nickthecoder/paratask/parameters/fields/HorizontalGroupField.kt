@@ -1,11 +1,13 @@
 package uk.co.nickthecoder.paratask.parameters.fields
 
+import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
+import uk.co.nickthecoder.paratask.util.focusNext
 
 open class HorizontalGroupField(
         groupParameter: AbstractGroupParameter,
@@ -19,37 +21,55 @@ open class HorizontalGroupField(
     val fieldSet = mutableListOf<ParameterField>()
     val containers = mutableListOf<Node>()
 
+    /**
+     * Holds a cache of all child fields, so that when we re-build the content (due to a field changing visibility),
+     * we do not need to rebuild any fields (which is expensive, because each field will have listeners!)
+     */
+    val fieldMap = mutableMapOf<String, ParameterField>()
+
     override fun iterator(): Iterator<ParameterField> {
         return fieldSet.iterator()
     }
 
     override fun createContent(): Node {
 
+        // Create a cache of all ParameterFields, so that if this is called again, we don't need to create them again.
+        if (fieldMap.isEmpty()) {
+            groupParameter.children.forEach { child ->
+                val field = child.createField()
+                fieldMap.put(child.name, field)
+            }
+        }
+
         var box = HBox()
         var foundStretchy: Boolean = false
 
         groupParameter.children.forEach { child ->
-            val field = child.createField()
-            field.fieldParent = this
+            val field = fieldMap[child.name]
 
-            val container = createChild(field)
+            if (field != null) {
 
-            fieldSet.add(field)
-            containers.add(container)
+                field.fieldParent = this
 
-            box.styleClass.add("box-group")
-            if (!child.hidden) {
-                if (child.isStretchy() && !foundStretchy) {
-                    if (box.children.isNotEmpty()) {
-                        borderPane.left = box
-                        box.styleClass.add("right-spacing")
+                val container = createChild(field)
+
+                fieldSet.add(field)
+                containers.add(container)
+
+                box.styleClass.add("box-group")
+                if (!child.hidden) {
+                    if (child.isStretchy() && !foundStretchy) {
+                        if (box.children.isNotEmpty()) {
+                            borderPane.left = box
+                            box.styleClass.add("right-spacing")
+                        }
+                        foundStretchy = true
+                        borderPane.center = container
+                        box = HBox()
+                        box.styleClass.add("left-spacing")
+                    } else {
+                        box.children.add(container)
                     }
-                    foundStretchy = true
-                    borderPane.center = container
-                    box = HBox()
-                    box.styleClass.add("left-spacing")
-                } else {
-                    box.children.add(container)
                 }
             }
         }
@@ -61,6 +81,7 @@ open class HorizontalGroupField(
                 borderPane.right = box
             }
         }
+
 
         return borderPane
     }
@@ -93,7 +114,18 @@ open class HorizontalGroupField(
         borderPane.left = null
         borderPane.center = null
         borderPane.right = null
+
+        // Remember the focus owner, and set it back later
+        // This is a bodge because sometimes the focus owner will be removed from the scene and put back again,
+        // in which case things can go wrong. In particular, ResourceParameter's "File" or "URL", combobox
+        // doesn't work without losing and gaining focus.
+        val focusOwner = borderPane.scene?.focusOwner
         createContent()
+
+        focusOwner?.scene?.root?.requestFocus()
+        Platform.runLater {
+            focusOwner?.focusNext()
+        }
 
         super.updateField(field)
     }
