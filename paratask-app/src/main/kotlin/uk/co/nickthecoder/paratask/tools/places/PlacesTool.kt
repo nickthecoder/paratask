@@ -19,7 +19,6 @@ package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.application.Platform
 import javafx.geometry.Side
-import javafx.scene.control.Button
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
@@ -40,7 +39,7 @@ import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.focusNext
 import java.io.File
 
-class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile> {
+class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile>, ToolBarTool {
 
     override val taskD = TaskDescription("places", description = "Favourite Places")
 
@@ -57,9 +56,15 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
 
     override val rowFilter = RowFilter<PlaceInFile>(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
+    override var toolBarConnector: ToolBarToolConnector? = null
+
+    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
+            .nullableEnumChoices("None")
+    override var toolBarSide by toolBarSideP
+
 
     init {
-        taskD.addParameters(filesP)
+        taskD.addParameters(filesP, toolBarSideP)
 
         columns.add(Column<PlaceInFile, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
         columns.add(Column<PlaceInFile, String>("label", getter = { it.label }))
@@ -151,12 +156,23 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
             val placesFile = PlacesFile(file)
             placesFilesMap[file] = placesFile
         }
+
+        if (showingToolbar()) {
+            Platform.runLater {
+                val places = mutableListOf<Place>()
+                placesFilesMap.values.forEach { places.addAll(it.places) }
+                updateToolbar(places.map { place -> PlaceButton(toolBarConnector!!.projectWindow, place) })
+            }
+        }
     }
 
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         toolPane.tabPane.createAddTabButton {
             onAddPlacesFile()
+        }
+        if (toolBarConnector == null) {
+            toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this, true)
         }
     }
 

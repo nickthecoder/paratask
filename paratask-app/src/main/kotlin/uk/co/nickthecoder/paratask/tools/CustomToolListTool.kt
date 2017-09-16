@@ -17,12 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
+import javafx.application.Platform
 import javafx.geometry.Side
-import javafx.scene.control.Button
 import javafx.scene.image.ImageView
-import uk.co.nickthecoder.paratask.*
+import uk.co.nickthecoder.paratask.RegisteredTaskFactory
+import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.ToolBarTool
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.project.*
+import uk.co.nickthecoder.paratask.project.AbstractTaskButton
+import uk.co.nickthecoder.paratask.project.ToolBarToolConnector
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
@@ -34,7 +39,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
     override var toolBarConnector: ToolBarToolConnector? = null
 
-    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = Side.TOP, required = false)
+    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
             .nullableEnumChoices("None")
     override var toolBarSide by toolBarSideP
 
@@ -50,7 +55,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
     }
 
     private val exampleRow = CustomToolRow("", this, true)
-    override val rowFilter = RowFilter<CustomToolRow>(this, columns, exampleRow)
+    override val rowFilter = RowFilter(this, columns, exampleRow)
 
     init {
         taskD.addParameters(toolBarSideP, toolsP)
@@ -81,7 +86,10 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
                 }
             }
         }
-        updateToolbar()
+
+        if (showingToolbar()) {
+            updateToolbar(list.map { row -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, row.task, row.label, newTab = row.newTab) })
+        }
     }
 
     override fun attached(toolPane: ToolPane) {
@@ -91,18 +99,13 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
         }
     }
 
-    override fun toolBarButtons(projectWindow: ProjectWindow): List<Button> {
-        return list.map { row ->
-            AbstractTaskButton.createToolOrTaskButton(projectWindow, row.task, row.label, newTab = row.newTab)
-        }
-    }
 
     fun parameters(task: Task): String {
         return task.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
     }
 }
 
-data class CustomToolRow(val label: String, val task: Task, val newTab: Boolean) {}
+data class CustomToolRow(val label: String, val task: Task, val newTab: Boolean)
 
 // Note this tool cannot be run from the command line, because the arguments would be too cumbersome.
 // Therefore there is no main function.

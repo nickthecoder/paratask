@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.application.Platform
 import javafx.geometry.Side
-import javafx.scene.control.Button
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
@@ -30,7 +30,6 @@ import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.compound.ResourceParameter
 import uk.co.nickthecoder.paratask.project.PlaceButton
-import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.project.ToolBarToolConnector
 import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.*
@@ -51,7 +50,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
 
     override var toolBarConnector: ToolBarToolConnector? = null
 
-    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = Side.TOP, required = false)
+    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
             .nullableEnumChoices("None")
     override var toolBarSide by toolBarSideP
 
@@ -69,7 +68,12 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
         list.clear()
         list.addAll(placesP.value.filterIsInstance<PlaceParameter>().map { placeP -> placeP.createPlace() }.filterNotNull())
 
-        updateToolbar()
+        if (showingToolbar()) {
+            Platform.runLater {
+                updateToolbar(list.map { row -> PlaceButton(toolBarConnector!!.projectWindow, row) })
+            }
+        }
+
     }
 
     override fun attached(toolPane: ToolPane) {
@@ -79,11 +83,6 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
         }
     }
 
-    override fun toolBarButtons(projectWindow: ProjectWindow): List<Button> {
-        return list.map { row ->
-            PlaceButton(projectWindow, row)
-        }
-    }
 
     override fun createTableResults(): TableResults<Place> {
         val tableResults = super.createTableResults()

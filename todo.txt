@@ -4,10 +4,6 @@ Editor must not discard changes or blank documents when re-run.
 
 Alt+W to close a results tab. If it is the last one, close the halftab.
 
-Allow Places to create a toolBar
-	Allow FILES to be dragged to the buttons in the same manner as dragging to the row i.e. can copy/move/link files.
-	Drag files to it to add them to the PlacesFile.
-
 Create a CustomToolListTool when creating a blank project window.
 	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
 	Include a HomeTool, a DirectoryTool of ~

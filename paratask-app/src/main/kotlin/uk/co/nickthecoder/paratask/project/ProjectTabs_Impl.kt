@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.geometry.Side
 import javafx.scene.control.ContextMenu

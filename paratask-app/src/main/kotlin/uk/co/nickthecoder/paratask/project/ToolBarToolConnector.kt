@@ -3,6 +3,7 @@ package uk.co.nickthecoder.paratask.project
 import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.geometry.Side
+import javafx.scene.control.Button
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.ToolBar
@@ -42,8 +43,7 @@ class ToolBarToolConnector(
         projectWindow.removeToolBar(toolBar)
     }
 
-    fun update() {
-        val buttons = tool.toolBarButtons(projectWindow)
+    fun update(buttons: List<Button>) {
 
         if (buttons.isEmpty()) {
             projectWindow.removeToolBar(toolBar)
@@ -65,7 +65,9 @@ class ToolBarToolConnector(
     fun editToolBar() {
         tool.toolPane?.halfTab?.let { halfTab ->
             halfTab.projectTab.isSelected = true
-            halfTab.toolPane.parametersTab.isSelected = true
+            if (!runToolOnEdit) {
+                halfTab.toolPane.parametersTab.isSelected = true
+            }
             return
         }
         val projectTab = projectWindow.tabs.addTool(tool, run = runToolOnEdit)

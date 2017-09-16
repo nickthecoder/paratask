@@ -231,8 +231,16 @@ class Project(val projectWindow: ProjectWindow) {
                     for (jtoolbar in it.asArray()) {
                         val tool = JsonHelper.readTask(jtoolbar.asObject())
                         if (tool is Tool) {
-                            val projectTab = projectWindow.addTool(tool)
+                            val projectTab = projectWindow.tabs.addTool(tool, run = false)
+                            // Run single threaded, rather than the normal way, so that we can remove the tab as soon as it has finished.
+                            try {
+                                tool.check()
+                                tool.run()
+                            } catch (e: Exception) {
+                                projectTab.add(ExceptionTool(e))
+                            }
                             projectTab.projectTabs.removeTab(projectTab)
+
                         }
                     }
                 }

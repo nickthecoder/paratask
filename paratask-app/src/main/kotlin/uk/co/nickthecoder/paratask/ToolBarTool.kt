@@ -12,9 +12,15 @@ interface ToolBarTool : Tool {
 
     var toolBarSide: Side?
 
-    fun toolBarButtons(projectWindow: ProjectWindow): List<Button>
+    fun showingToolbar() : Boolean {
+        if ( toolBarSide == null ) {
+            toolBarConnector?.remove()
+            return false
+        }
+        return true
+    }
 
-    fun updateToolbar() {
+    fun updateToolbar(buttons: List<Button>) {
 
         Platform.runLater {
             toolBarConnector?.let { tc ->
@@ -24,7 +30,7 @@ interface ToolBarTool : Tool {
                 if (toolBarSide == null) {
                     tc.remove()
                 } else {
-                    tc.update()
+                    tc.update(buttons)
                 }
             }
         }
