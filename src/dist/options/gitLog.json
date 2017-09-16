@@ -7,42 +7,6 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "co",
-            "label": "Git Check Out Commit",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "checkout"
-                        },
-                        {
-                            "expression": "row.commit"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": "./"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.git.GitCommittedFilesTool",
             "code": ".",
             "label": "List Committed Files",
@@ -131,6 +95,42 @@
                         },
                         {
                             "expression": "row.commit+\"^\""
+                        },
+                        {
+                            "expression": "row.commit"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "co",
+            "label": "Git Check Out Commit",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "checkout"
                         },
                         {
                             "expression": "row.commit"

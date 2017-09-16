@@ -6,6 +6,39 @@
     "options": [
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "dall",
+            "label": "Git Diff All",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
             "code": "ca",
             "label": "Git Commit All",
@@ -28,7 +61,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "./"
+                    "expression": "tool.directory"
                 },
                 {
                     "name": "output",
@@ -57,11 +90,32 @@
                 },
                 {
                     "name": "directory",
-                    "value": "./"
+                    "expression": "tool.directory"
                 },
                 {
                     "name": "output",
                     "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
+            "code": "egi",
+            "label": "Edit .gitignore",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "file",
+                    "values": [
+                        {
+                            "expression": "new File(tool.directory, \".gitignore\")"
+                        }
+                    ]
                 }
             ]
         },
@@ -78,7 +132,7 @@
             "parameters": [
                 {
                     "name": "directory",
-                    "value": "./"
+                    "expression": "tool.directory"
                 },
                 {
                     "name": "maxItems",
@@ -107,60 +161,6 @@
                 {
                     "name": "until",
                     "value": ""
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.editor.EditorTool",
-            "code": "egi",
-            "label": "Edit .gitignore",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "file",
-                    "values": [
-                        {
-                            "value": "./.gitignore"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "stash",
-            "label": "Git Stash",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": true,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "stash"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
                 }
             ]
         },
@@ -195,7 +195,7 @@
                 },
                 {
                     "name": "directory",
-                    "value": "./"
+                    "expression": "tool.directory"
                 },
                 {
                     "name": "closeWhenFinished",
@@ -205,14 +205,14 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
-            "code": "dall",
-            "label": "Git Diff All",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "stash",
+            "label": "Git Stash",
             "isRow": false,
             "isMultiple": false,
             "prompt": false,
-            "newTab": true,
-            "refresh": false,
+            "newTab": false,
+            "refresh": true,
             "parameters": [
                 {
                     "name": "program",
@@ -222,7 +222,7 @@
                     "name": "arguments",
                     "values": [
                         {
-                            "value": "diff"
+                            "value": "stash"
                         }
                     ]
                 },
@@ -231,8 +231,8 @@
                     "expression": "tool.directory"
                 },
                 {
-                    "name": "closeWhenFinished",
-                    "value": "false"
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }
