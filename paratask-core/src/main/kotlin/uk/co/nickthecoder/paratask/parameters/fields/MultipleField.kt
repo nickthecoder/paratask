@@ -129,6 +129,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
     }
 
     override fun parameterChanged(event: ParameterEvent) {
+        super.parameterChanged(event)
         if (event.type == ParameterEventType.STRUCTURAL) {
             buildContent()
         }

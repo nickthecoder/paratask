@@ -1,10 +1,12 @@
 TODO	
 
 ProcessTool. PIDs parameter not showing "+" button (when boxed or not).
+	Does show if the "pid" is selected as the filter when the form is first built.
 
 Not checking ProcessTool's OneOf's Choice parameter.
 
 When a tool has missing required values (such as ProcessTool), it shows the FilterTab, not ParametersTab
+	Add a separator to MyTabPane, and put parameters first (after the separator) - Just use a padding???
 
 Editor must not discard changes or blank documents when re-run.
 

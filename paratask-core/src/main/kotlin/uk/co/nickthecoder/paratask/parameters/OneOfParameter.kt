@@ -42,9 +42,6 @@ class OneOfParameter(
 
     override val converter: StringConverter<Parameter?> = object : StringConverter<Parameter?>() {
         override fun toString(v: Parameter?): String {
-            if (v == null) {
-                Thread.dumpStack()
-            }
             return v?.name ?: ""
         }
 

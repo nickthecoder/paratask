@@ -89,7 +89,7 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
         children.add(formField)
 
         if (parameter.hidden && !parameter.isProgrammingMode()) {
-            parameterField.control?.isVisible = false
+            parameterField.controlContainer?.isVisible = false
         }
         parameterField.fieldParent = this
         formFields.add(formField)
