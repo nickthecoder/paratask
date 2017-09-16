@@ -51,6 +51,8 @@ class ToolPane_Impl(override val tool: Tool)
 
         parametersTab.canClose = false
 
+        tabPane.add(parametersTab)
+
         // Add the filter tab, if the tool has a filter
         if (tool is Filtered) {
             val filters = tool.rowFilters
@@ -59,8 +61,6 @@ class ToolPane_Impl(override val tool: Tool)
                 tabPane.add(filterTab!!)
             }
         }
-
-        tabPane.add(parametersTab)
 
         tabPane.selectionModel.selectedItemProperty().addListener { _, oldTab, newTab -> onTabChanged(oldTab, newTab) }
     }
@@ -123,6 +123,10 @@ class ToolPane_Impl(override val tool: Tool)
 
     override fun replaceResults(resultsList: List<Results>, oldResultsList: List<Results>) {
         removeOldResults(oldResultsList)
+        parametersTab.styleClass.remove("separated")
+        if (resultsList.isNotEmpty()) {
+            parametersTab.styleClass.add("separated")
+        }
 
         resultsList.forEach { results ->
             addResults(results)

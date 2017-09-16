@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -90,9 +91,9 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
         addEventHandler(MouseEvent.MOUSE_RELEASED) { onReleased(it) }
     }
 
-    fun textProperty() = label.textProperty()
+    fun textProperty() : StringProperty = label.textProperty()
 
-    open fun  close() {
+    open fun close() {
         tabPane?.remove(this)
     }
 
@@ -105,6 +106,7 @@ open class MyTab(text: String = "", content: Node = Label("Empty"), graphic: Nod
         }
         set(v) {
             tabPane?.let {
+                @Suppress("UNCHECKED_CAST")
                 (it as MyTabPane<MyTab>).selectedTab = this
             }
         }

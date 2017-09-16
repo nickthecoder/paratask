@@ -288,6 +288,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
          */
         override fun <E : Node?> getManagedChildren(): MutableList<E> {
             val result = mutableListOf<E>()
+            @Suppress("UNCHECKED_CAST")
             mutableTabs.forEach { result.add(it as E) }
             return result
         }
