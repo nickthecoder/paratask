@@ -1,8 +1,5 @@
 TODO	
 
-When a tool has missing required values (such as ProcessTool), it shows the FilterTab, not ParametersTab
-	Add a separator to MyTabPane, and put parameters first (after the separator) - Just use a padding???
-
 Editor must not discard changes or blank documents when re-run.
 
 Alt+W to close a results tab. If it is the last one, close the halftab.

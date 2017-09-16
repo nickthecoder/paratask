@@ -18,18 +18,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.tools.places
 
 import javafx.application.Platform
+import javafx.geometry.Side
+import javafx.scene.control.Button
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.AutoRefresh
 import uk.co.nickthecoder.paratask.misc.FileOperations
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.nullableEnumChoices
 import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.table.filter.RowFilter

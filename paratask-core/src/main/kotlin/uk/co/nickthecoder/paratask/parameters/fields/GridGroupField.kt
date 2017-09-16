@@ -91,4 +91,8 @@ class GridGroupField(
         return grid
     }
 
+    override fun updateField(field: ParameterField) {
+        // Do nothing. When fields become visible/hidden, the layout doesn't change.
+    }
+
 }

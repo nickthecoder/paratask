@@ -242,6 +242,10 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
         return cssMetaDataList
     }
 
+    override fun updateError(field: ParameterField) {
+        updateField(field)
+    }
+
     override fun updateField(field: ParameterField) {
         requestLayout()
         findFormField(field)?.requestLayout()

@@ -11,7 +11,11 @@ import uk.co.nickthecoder.paratask.ToolBarTool
 /**
  * Connects the Tool with its tool bar.
  */
-class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTool, side: Side = Side.TOP) {
+class ToolBarToolConnector(
+        val projectWindow: ProjectWindow,
+        val tool: ToolBarTool,
+        val runToolOnEdit: Boolean,
+        side: Side = Side.TOP) {
 
     val toolBar = ConnectedToolBar()
 
@@ -28,16 +32,7 @@ class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTo
 
     init {
         toolBar.contextMenu = ContextMenu()
-        /*
-        toolBar.addEventFilter(MouseEvent.MOUSE_PRESSED) { event ->
-            println("Event $event")
-            if (event.button == MouseButton.SECONDARY) {
-                println("Showing menu")
-                toolBar.contextMenu.show(toolBar, Side.BOTTOM, 0.0, 0.0)
-                event.consume()
-            }
-        }
-        */
+
         val editItem = MenuItem("Edit Toolbar")
         editItem.onAction = EventHandler { editToolBar() }
         toolBar.contextMenu.items.add(editItem)
@@ -73,7 +68,7 @@ class ToolBarToolConnector(val projectWindow: ProjectWindow, val tool: ToolBarTo
             halfTab.toolPane.parametersTab.isSelected = true
             return
         }
-        val projectTab = projectWindow.addTool(tool)
+        val projectTab = projectWindow.tabs.addTool(tool, run = runToolOnEdit)
         projectTab.left.toolPane.parametersTab.isSelected = true
     }
 

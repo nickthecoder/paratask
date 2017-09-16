@@ -17,8 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.scene.control.Button
 import javafx.scene.input.DataFormat
 import uk.co.nickthecoder.paratask.misc.FileTest
+import uk.co.nickthecoder.paratask.project.ProjectWindow
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.Serializable
 
@@ -59,4 +61,3 @@ open class Place(
         val dataFormat = DataFormat("application/x-java-paratask-place-list")
     }
 }
-

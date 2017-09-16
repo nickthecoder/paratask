@@ -30,8 +30,7 @@ abstract class SingleErrorGroupField(
 
     abstract fun createContent(): Node
 
-    override fun updateField(field: ParameterField) {
-
+    override fun updateError(field: ParameterField) {
         if ((!field.parameter.hidden) && field.error.isVisible && field.error !== error2) {
             error2 = field.error
             vBox.children.add(error2)
@@ -40,5 +39,5 @@ abstract class SingleErrorGroupField(
             error2 = null
         }
     }
-
+    
 }

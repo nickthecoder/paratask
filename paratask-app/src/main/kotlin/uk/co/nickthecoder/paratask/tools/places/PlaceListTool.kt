@@ -17,22 +17,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.places
 
+import javafx.geometry.Side
+import javafx.scene.control.Button
 import javafx.scene.control.OverrunStyle
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
+import uk.co.nickthecoder.paratask.ToolBarTool
 import uk.co.nickthecoder.paratask.gui.*
 import uk.co.nickthecoder.paratask.misc.FileOperations
 import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.parameters.compound.ResourceParameter
+import uk.co.nickthecoder.paratask.project.PlaceButton
+import uk.co.nickthecoder.paratask.project.ProjectWindow
+import uk.co.nickthecoder.paratask.project.ToolBarToolConnector
+import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
 
-class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
+class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarTool {
 
     override val taskD = TaskDescription("placesList", description = "Favourite Places")
 
@@ -42,8 +49,15 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
 
     override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
+    override var toolBarConnector: ToolBarToolConnector? = null
+
+    val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = Side.TOP, required = false)
+            .nullableEnumChoices("None")
+    override var toolBarSide by toolBarSideP
+
+
     init {
-        taskD.addParameters(placesP)
+        taskD.addParameters(toolBarSideP, placesP)
 
         columns.add(Column<Place, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
         columns.add(Column<Place, String>("label", getter = { it.label }))
@@ -54,6 +68,21 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
     override fun run() {
         list.clear()
         list.addAll(placesP.value.filterIsInstance<PlaceParameter>().map { placeP -> placeP.createPlace() }.filterNotNull())
+
+        updateToolbar()
+    }
+
+    override fun attached(toolPane: ToolPane) {
+        super.attached(toolPane)
+        if (toolBarConnector == null) {
+            toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this, false)
+        }
+    }
+
+    override fun toolBarButtons(projectWindow: ProjectWindow): List<Button> {
+        return list.map { row ->
+            PlaceButton(projectWindow, row)
+        }
     }
 
     override fun createTableResults(): TableResults<Place> {

@@ -43,6 +43,11 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
         shortcuts.add(ApplicationActions.NEW_ITEM) { extraValue() }
     }
 
+
+    override fun updateError(field: ParameterField) {
+        parametersForm.updateField(field)
+    }
+
     override fun updateField(field: ParameterField) {
         parametersForm.updateField(field)
     }

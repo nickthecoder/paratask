@@ -126,8 +126,6 @@ open class HorizontalGroupField(
         Platform.runLater {
             focusOwner?.focusNext()
         }
-
-        super.updateField(field)
     }
 
 }

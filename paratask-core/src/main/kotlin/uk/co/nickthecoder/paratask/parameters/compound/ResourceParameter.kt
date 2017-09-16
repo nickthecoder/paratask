@@ -19,6 +19,7 @@ package uk.co.nickthecoder.paratask.parameters.compound
 
 import javafx.beans.property.SimpleStringProperty
 import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.net.URL
@@ -43,6 +44,7 @@ class ResourceParameter(
     var url by urlP
 
     val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "")
+            .addParameters(fileP, urlP)
     var fileOrUrl by fileOrUrlP
 
     override var value: Resource?
@@ -75,11 +77,11 @@ class ResourceParameter(
     override val converter = Resource.converter
 
     init {
-        this.value = value
-        fileOrUrlP.addParameters(fileP, urlP)
         addParameters(fileOrUrlP)
         fileOrUrlP.asHorizontal(null)
         asHorizontal(null)
+
+        this.value = value
     }
 
     override fun errorMessage(v: Resource?): String? {

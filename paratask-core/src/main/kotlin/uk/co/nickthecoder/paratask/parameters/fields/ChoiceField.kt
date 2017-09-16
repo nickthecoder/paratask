@@ -51,9 +51,16 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>)
     }
 
     val bodgeProperty = object : SimpleObjectProperty <Any?>(FAKE_NULL) {
-        override fun get(): Any? = choiceParameter.value ?: FAKE_NULL
+        override fun get(): Any? {
+            if (choiceParameter.value == null) {
+                return FAKE_NULL
+            } else {
+                return choiceParameter.value!!
+            }
+        }
+
         override fun set(value: Any?) {
-            if (value === FAKE_NULL) {
+            if (value == null || value === FAKE_NULL) {
                 choiceParameter.value = null
 
             } else {
@@ -64,21 +71,22 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>)
     }
 
     override fun createControl(): ComboBox<*> {
-
         comboBox.converter = converter
-        comboBox.valueProperty().bindBidirectional(bodgeProperty)
 
         updateChoices()
+        comboBox.valueProperty().bindBidirectional(bodgeProperty)
 
         return comboBox
     }
 
     private fun updateChoices() {
+        val pValue = choiceParameter.value
+
         comboBox.items.clear()
         for (value: T? in choiceParameter.choiceValues()) {
             comboBox.items.add(value ?: FAKE_NULL)
         }
-        comboBox.value = choiceParameter.value ?: FAKE_NULL
+        comboBox.value = pValue
     }
 
     override fun isDirty(): Boolean = dirty

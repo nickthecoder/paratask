@@ -29,6 +29,9 @@ open class GroupField(groupParameter: GroupParameter, isBoxed: Boolean = true)
 
     val parametersForm = ParametersForm(groupParameter, this)
 
+    override fun updateError(field: ParameterField) {
+        parametersForm.updateField(field)
+    }
 
     override fun updateField(field: ParameterField) {
         parametersForm.updateField(field)

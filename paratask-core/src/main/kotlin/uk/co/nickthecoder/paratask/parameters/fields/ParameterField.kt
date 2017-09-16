@@ -144,14 +144,14 @@ abstract class ParameterField(
         error.text = message
         if (!error.isVisible) {
             error.isVisible = true
-            fieldParent?.updateField(this)
+            fieldParent?.updateError(this)
         }
     }
 
     fun clearError() {
         if (error.isVisible) {
             error.isVisible = false
-            fieldParent?.updateField(this)
+            fieldParent?.updateError(this)
         }
     }
 

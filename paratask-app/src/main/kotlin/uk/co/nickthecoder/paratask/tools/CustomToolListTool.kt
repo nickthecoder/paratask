@@ -87,7 +87,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
     override fun attached(toolPane: ToolPane) {
         super.attached(toolPane)
         if (toolBarConnector == null) {
-            toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this)
+            toolBarConnector = ToolBarToolConnector(toolPane.halfTab.projectTab.projectTabs.projectWindow, this, false)
         }
     }
 

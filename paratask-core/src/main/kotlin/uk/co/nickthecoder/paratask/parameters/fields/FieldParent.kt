@@ -19,6 +19,8 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 interface FieldParent : Iterable<ParameterField> {
 
+    fun updateError(field: ParameterField)
+
     fun updateField(field: ParameterField)
 
 }
