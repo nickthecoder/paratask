@@ -44,6 +44,13 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
         columns.add(Column<ProcessRow, String>("command", width = 700, getter = { it.cmd }))
     }
 
+    override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
+        if (parameterName == "choiceP") {
+            // Do nothing
+        } else {
+            super.loadProblem(parameterName, expression, stringValue)
+        }
+    }
     override fun createCommand(): OSCommand {
         val command = OSCommand("ps", "--no-headers", "--format", "pid user group %cpu %mem cmd")
 

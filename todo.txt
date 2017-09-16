@@ -20,6 +20,18 @@ Create a CustomToolListTool when creating a blank project window.
 	Include existing buttons (but maybe Load/Save Project are NOT part of this, and are always visible)
 	Buttons must have a tooltip
 
+TrashTool
+	Maybe a special kind of Resource??
+		Must be able to add it to "Places" tools, so that it can then become a toolbar icon.
+	Or just a new Tool/Task.
+		"Default" deleteFiles[] parameter, can delete files dragged to it.
+	~/.local/Trash
+
+Change the way drags to Tool toolbar buttons are handled.
+	If tool has a dragHelper, then apply it to the button. 
+		Only if it doesn't should we create a special one based on the unnamed parameter.
+	Then the TrashTool will work as expected.
+
 Could even consider creating a toolbar from a DirectoryTool
 How about a MountTool!
 
@@ -36,12 +48,8 @@ Use a "GridInfo" class rather than multiple parameters
 
 TaskD.addParameters returns this (like AbstractGroupParameter)
 
-
-Consider renaming group parameters.
-	Then a new CompoundParameter, which is a ValueParameter too (use this for ResourceParameter etc).
-
-	PlaceParameter could be the new CompoundParameter, which has a Place
-	RowFilter.Condition renamed to ConditionParameter could be a new CompoundParameter, returning a (new) Condition object.
+PlaceParameter could be the new CompoundParameter, which has a Place
+RowFilter.Condition renamed to ConditionParameter could be a new CompoundParameter, returning a (new) Condition object.
 
 Bugs
 	ParameterForm does NOT handle squashed info parameters. See GroupExample, and squash it.

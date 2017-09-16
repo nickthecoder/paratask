@@ -58,7 +58,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T>)
 
         parametersForm.styleClass.add("multiple")
 
-        // Add 'blank' items, so that the required minumum number of items can be entered.
+        // Add 'blank' items, so that the required minimum number of items can be entered.
         // The most common scenarios, is adding a single 'blank' item when minItems == 1
         while (multipleParameter.minItems > multipleParameter.value.size) {
             multipleParameter.newValue()
