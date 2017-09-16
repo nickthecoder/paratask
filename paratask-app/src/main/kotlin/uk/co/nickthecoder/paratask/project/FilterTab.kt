@@ -6,7 +6,8 @@ import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.SimpleGroupParameter
+import uk.co.nickthecoder.paratask.parameters.addParameters
 import uk.co.nickthecoder.paratask.parameters.fields.ParametersForm
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 
@@ -18,7 +19,7 @@ class FilterTab(val tool: Tool, val filters: Map<String, RowFilter<*>>) : MinorT
 
     val choiceP = ChoiceParameter("filter", label = "Select a Filter", value = filters.values.first())
 
-    val choiceGroupP = GroupParameter("choiceGroup")
+    val choiceGroupP = SimpleGroupParameter("choiceGroup")
 
     val choiceForm = ParametersForm(choiceGroupP, null)
 

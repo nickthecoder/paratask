@@ -28,7 +28,8 @@ class InformationParameter(
         name: String,
         label: String = "",
         val information: String,
-        style: String? = null)
+        style: String? = null,
+        val stretchy: Boolean = true)
 
     : AbstractParameter(name, label = label, description = "") {
 
@@ -41,7 +42,7 @@ class InformationParameter(
 
     override fun errorMessage(): String? = null
 
-    override fun isStretchy(): Boolean = true
+    override fun isStretchy(): Boolean = stretchy
 
     override fun createField() = InformationField(this).build() as InformationField
 

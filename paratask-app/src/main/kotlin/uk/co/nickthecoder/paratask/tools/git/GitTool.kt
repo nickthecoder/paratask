@@ -21,7 +21,8 @@ import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.SimpleGroupParameter
+import uk.co.nickthecoder.paratask.parameters.addParameters
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.project.Results
 import uk.co.nickthecoder.paratask.project.SharedToolPane
@@ -48,7 +49,7 @@ class GitTool : AbstractTool(), HasDirectory, Filtered {
 
     val gitStash = GitStashTool()
 
-    val logGroupP = GroupParameter("gitLog")
+    val logGroupP = SimpleGroupParameter("gitLog")
 
     var resultsTabIndex: Int = 0
 

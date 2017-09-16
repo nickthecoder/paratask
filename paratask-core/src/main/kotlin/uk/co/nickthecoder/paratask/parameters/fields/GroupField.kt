@@ -17,14 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 
 /**
- * This is the [ParameterField] created by [AbstractGroupParameter].
+ * This is the [ParameterField] created by [GroupParameter].
  * Note, there are other implementations for AbstractGroupParameter's ParameterField. This implementation lays out its
  * children in a form, with labels on the left, and controls on the right. The controls are aligned with each other.
  */
-open class GroupField(groupParameter: AbstractGroupParameter, isBoxed: Boolean = true)
+open class GroupField(groupParameter: GroupParameter, isBoxed: Boolean = true)
     : ParameterField(groupParameter, isBoxed = isBoxed), FieldParent {
 
     val parametersForm = ParametersForm(groupParameter, this)

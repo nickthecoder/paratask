@@ -46,8 +46,8 @@ class MultipleParameterTest : ParameterTestBase() {
 
     @Test
     fun compoundValues() {
-        val multipleP = MultipleParameter<CompoundParameter>("multiple") {
-            val cp = CompoundParameter("compound")
+        val multipleP = MultipleParameter<MultipleGroupParameter>("multiple") {
+            val cp = MultipleGroupParameter("compound")
             val intP = IntParameter("int")
             val stringP = StringParameter("string")
             cp.addParameters(intP, stringP)

@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.paratask.parameters.compound
 
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
-import uk.co.nickthecoder.paratask.parameters.IntParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class IntRangeParameter(
@@ -11,23 +10,28 @@ class IntRangeParameter(
         val inclusive: Boolean = true, // Used by contains()
         val minValue: Int = Int.MIN_VALUE,
         val maxValue: Int = Int.MAX_VALUE,
+        toText: String? = "To",
         description: String = "")
 
-    : AbstractGroupParameter(
+    : GroupParameter(
         name = name,
         label = label,
         description = description) {
 
-    val fromP = IntParameter(name + "_from", label = "", required = required, minValue = minValue, maxValue = maxValue)
+    val fromP = IntParameter(name + "_from", label = "From", required = required, minValue = minValue, maxValue = maxValue)
     var from by fromP
 
-    val toP = IntParameter(name + "_to", label = "… ", required = required, minValue = minValue, maxValue = maxValue)
+    val toP = IntParameter(name + "_to", label = "To", required = required, minValue = minValue, maxValue = maxValue)
     var to by toP
 
 
     init {
-        addParameters(fromP, toP)
-        asHorizontal(false)
+        addParameters(fromP)
+        if (toText != null) {
+            addParameters(InformationParameter(name + "_info", information = toText, stretchy = false))
+        }
+        addParameters(toP)
+        asHorizontal(null)
     }
 
     override fun saveChildren(): Boolean = true

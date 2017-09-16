@@ -20,7 +20,7 @@ class ScaledDoubleExample : AbstractTask() {
     }
 
     override fun run() {
-        println("Length = ${length} (${length?.value} mm)")
+        println("Length = ${length} (${length.value} mm)")
     }
 
 }

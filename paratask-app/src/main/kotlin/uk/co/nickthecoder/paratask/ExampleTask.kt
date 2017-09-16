@@ -65,7 +65,7 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
             .choice("white", Color.WHITE)
             .choice("white", Color.BLACK)
 
-    val groupP = GroupParameter("group", description = "Here we see GroupParameter in action")
+    val groupP = SimpleGroupParameter("group", description = "Here we see GroupParameter in action")
     val stringInGroupP = StringParameter("units")
 
     val oneOfP = OneOfParameter("oneOf", description = "We can either enter an Int or a String", choiceLabel = "Choose")

@@ -38,11 +38,6 @@ TaskD.addParameters returns this (like AbstractGroupParameter)
 
 
 Consider renaming group parameters.
-	Recompile GoKo first though!
-
-	GroupParameter->SimpleGroupParameter, 
-	AbstractGroupParameter->GroupParameter,
-	CompoundParameter->MultipleGroupParameter
 	Then a new CompoundParameter, which is a ValueParameter too (use this for ResourceParameter etc).
 
 	PlaceParameter could be the new CompoundParameter, which has a Place

@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools
 
-import javafx.application.Platform
 import javafx.geometry.Side
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
@@ -43,7 +42,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
         val labelP = StringParameter("label", required = false)
         val toolP = TaskParameter("tool", taskFactory = RegisteredTaskFactory())
-        val compoundP = CompoundParameter("toolDetails")
+        val compoundP = MultipleGroupParameter("toolDetails")
         val newTabP = BooleanParameter("newTab", value = true)
 
         compoundP.addParameters(labelP, toolP, newTabP)

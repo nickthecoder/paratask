@@ -9,8 +9,8 @@ import org.junit.Test
 
 class GroupParameterTest : ParameterTestBase(), ParameterListener {
 
-    var group = GroupParameter("group")
-    var subGroup = GroupParameter("subGroup")
+    var group = SimpleGroupParameter("group")
+    var subGroup = SimpleGroupParameter("subGroup")
     val abc = IntParameter("abc")
     val def = IntParameter("def")
     val hij = StringParameter("hij")
@@ -98,7 +98,7 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
         val param1 = IntParameter("one")
         val param2 = StringParameter("one")
 
-        val group = GroupParameter("group")
+        val group = SimpleGroupParameter("group")
         group.add(param1)
         expectParameterException { group.add(param2) }
     }
@@ -108,9 +108,9 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
         val param1 = IntParameter("one")
         val param2 = StringParameter("one")
 
-        val group1 = GroupParameter("group1")
+        val group1 = SimpleGroupParameter("group1")
         group1.add(param1)
-        val group2 = GroupParameter("group2")
+        val group2 = SimpleGroupParameter("group2")
         group2.add(param2)
 
         expectParameterException { group2.add(param2) }
@@ -121,10 +121,10 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
         val param1 = IntParameter("one")
         val param2 = StringParameter("one")
 
-        val group1 = GroupParameter("group1")
+        val group1 = SimpleGroupParameter("group1")
         group1.add(param1)
 
-        val group2 = GroupParameter("group2")
+        val group2 = SimpleGroupParameter("group2")
         group2.add(param2)
 
         expectParameterException { group1.add(group2) }
@@ -135,11 +135,11 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
         val param1 = IntParameter("one")
         val param2 = StringParameter("two")
 
-        val group1 = GroupParameter("group1")
+        val group1 = SimpleGroupParameter("group1")
         group1.add(param1)
         group1.add(param2)
 
-        val group2 = GroupParameter("group2")
+        val group2 = SimpleGroupParameter("group2")
         group1.add(group2)
 
         expectParameterException { group2.add(param2) }
@@ -147,8 +147,8 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
 
     @Test
     fun addToTwice() {
-        val group1 = GroupParameter("group1")
-        val group2 = GroupParameter("group2")
+        val group1 = SimpleGroupParameter("group1")
+        val group2 = SimpleGroupParameter("group2")
         val param1 = IntParameter("one")
         group1.add(param1)
         expectParameterException { group1.add(param1) }
@@ -157,7 +157,7 @@ class GroupParameterTest : ParameterTestBase(), ParameterListener {
 
     @Test
     fun addToIteself() {
-        val group = GroupParameter("group")
+        val group = SimpleGroupParameter("group")
         expectParameterException { group.add(group) }
     }
 

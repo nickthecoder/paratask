@@ -30,7 +30,7 @@ class OneOfParameter(
         description: String = "",
         value: Parameter? = null)
 
-    : AbstractGroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
+    : GroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
 
     override fun saveChildren() = true
 

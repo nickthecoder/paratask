@@ -1,9 +1,6 @@
 package uk.co.nickthecoder.paratask.parameters.compound
 
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameters.IntParameter
-import uk.co.nickthecoder.paratask.parameters.enumChoices
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.time.Duration
@@ -17,7 +14,7 @@ class TemporalAmountParameter(
         description: String = "",
         required: Boolean = true)
 
-    : AbstractGroupParameter(name, label, description) {
+    : GroupParameter(name, label, description) {
 
     val amountP = IntParameter("amount", label = "", required = required)
     var amount by amountP

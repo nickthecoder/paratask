@@ -41,7 +41,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
 
-    val nameGroupP = GroupParameter("matchName")
+    val nameGroupP = SimpleGroupParameter("matchName")
     val filenameP = StringParameter("filename", required = false)
     val matchTypeP = ChoiceParameter("matchType", value = MatchType.GLOB_CASE_INSENSITIVE).enumChoices(true)
 
@@ -49,13 +49,13 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     val emptyFilesP = BooleanParameter("emptyFiles", value = false)
 
-    val traverseGroupP = GroupParameter("traverseOptions")
+    val traverseGroupP = SimpleGroupParameter("traverseOptions")
     val followSymlinksP = BooleanParameter("followSymlinks", value = false)
     val otherFileSystemsP = BooleanParameter("otherFileSystems", value = true)
     val minDepthP = IntParameter("minDepth", required = false)
     val maxDepthP = IntParameter("maxDepth", required = false)
 
-    val filterGroupP = GroupParameter("filter")
+    val filterGroupP = SimpleGroupParameter("filter")
     val userP = StringParameter("user", required = false)
     val groupP = StringParameter("group", required = false)
     val newerThanFileP = FileParameter("newerThanFile", required = false, mustExist = true)

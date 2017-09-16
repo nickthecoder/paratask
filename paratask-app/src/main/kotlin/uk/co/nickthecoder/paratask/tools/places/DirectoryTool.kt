@@ -57,7 +57,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
     val placesFileP = FileParameter("placesFile", required = false, expectFile = true)
 
-    val filterGroupP = GroupParameter("filter")
+    val filterGroupP = SimpleGroupParameter("filter")
 
     val onlyFilesP = BooleanParameter("onlyFiles", required = false, value = null)
     val extensionsP = MultipleParameter("extensions", label = "File Extensions") { StringParameter("") }

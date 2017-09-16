@@ -117,7 +117,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place> {
         return tableResults
     }
 
-    class PlaceParameter : CompoundParameter("places") {
+    class PlaceParameter : MultipleGroupParameter("places") {
 
         val labelP = StringParameter("label", required = false)
 

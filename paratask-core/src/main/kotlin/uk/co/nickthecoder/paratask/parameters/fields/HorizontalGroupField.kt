@@ -5,12 +5,12 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 import uk.co.nickthecoder.paratask.util.focusNext
 
 open class HorizontalGroupField(
-        groupParameter: AbstractGroupParameter,
+        groupParameter: GroupParameter,
         val labelsAbove: Boolean?,
         isBoxed: Boolean)
 
@@ -56,7 +56,7 @@ open class HorizontalGroupField(
                 fieldSet.add(field)
                 containers.add(container)
 
-                box.styleClass.add("box-group")
+                box.styleClass.add("horizontal-group")
                 if (!child.hidden) {
                     if (child.isStretchy() && !foundStretchy) {
                         if (box.children.isNotEmpty()) {
@@ -66,7 +66,7 @@ open class HorizontalGroupField(
                         foundStretchy = true
                         borderPane.center = container
                         box = HBox()
-                        box.styleClass.add("left-spacing")
+                        box.styleClass.addAll("horizontal-group", "left-spacing")
                     } else {
                         box.children.add(container)
                     }

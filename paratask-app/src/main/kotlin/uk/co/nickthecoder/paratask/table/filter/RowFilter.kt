@@ -294,7 +294,7 @@ You can also edit filters by clicking the table columns' headers.""")
         }
     }
 
-    inner class Condition : CompoundParameter("condition") {
+    inner class Condition : MultipleGroupParameter("condition") {
 
         val columnP = ChoiceParameter<Column<R, *>?>("column", label = "", value = null, required = false)
         val testP = ChoiceParameter<Test?>("test", label = "", value = null, required = true)

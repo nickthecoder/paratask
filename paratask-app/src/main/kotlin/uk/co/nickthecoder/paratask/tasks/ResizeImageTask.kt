@@ -37,7 +37,7 @@ class ResizeImageTask : AbstractCommandTask() {
 
     val heightP = IntParameter("height", label = "x")
 
-    val sizeP = GroupParameter("size")
+    val sizeP = SimpleGroupParameter("size")
 
     val keepAspectRationP = BooleanParameter("keepAspectRatio", value = true)
 

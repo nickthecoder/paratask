@@ -31,10 +31,10 @@ class ResourceParameter(
         val expectFile: Boolean? = null,
         required: Boolean = true)
 
-    : AbstractGroupParameter(
+    : CompoundParameter<Resource?>(
         name = name,
         label = label,
-        description = description), ValueParameter<Resource?> {
+        description = description) {
 
     val fileP = FileParameter(name + "_file", label = "File", required = required, expectFile = expectFile)
     var file by fileP
@@ -44,8 +44,6 @@ class ResourceParameter(
 
     val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "")
     var fileOrUrl by fileOrUrlP
-
-    override fun saveChildren(): Boolean = false
 
     override var value: Resource?
         get() {
@@ -73,8 +71,6 @@ class ResourceParameter(
                 }
             }
         }
-
-    override val expressionProperty = SimpleStringProperty()
 
     override val converter = Resource.converter
 

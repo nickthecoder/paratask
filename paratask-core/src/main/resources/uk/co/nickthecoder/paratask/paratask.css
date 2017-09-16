@@ -20,10 +20,7 @@
 
 .horizontal-group {
     -fx-spacing: 10px;
-}
-
-.horizontal-group > .vbox {
-    -fx-spacing: 4px;
+    -fx-alignment: center-left;
 }
 
 .padded-box {

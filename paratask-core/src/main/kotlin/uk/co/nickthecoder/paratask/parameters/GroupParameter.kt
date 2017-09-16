@@ -17,27 +17,173 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
+import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.GroupField
+import uk.co.nickthecoder.paratask.parameters.fields.HorizontalGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.GridGroupField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
-open class GroupParameter(
+abstract class GroupParameter(
         name: String,
         override val label: String = name.uncamel(),
         description: String = "")
 
-    : AbstractGroupParameter(
-        name = name,
-        label = label,
-        description = description) {
+    : AbstractParameter(name, description = description, label = label),
+        ParentParameter {
 
-    override fun saveChildren(): Boolean = true
-
-    override fun errorMessage(): String? = null
-
-    override fun copy(): GroupParameter {
-        val copy = GroupParameter(name = name, label = label, description = description)
-        copyAbstractAttributes(copy)
-        return copy
+    var fieldFactory: (GroupParameter) -> ParameterField = {
+        GroupField(this).build()
     }
 
+    override val children = mutableListOf<Parameter>()
+
+    abstract fun saveChildren(): Boolean
+
+
+    fun descendants(): List<Parameter> {
+        val result = mutableListOf<Parameter>()
+
+        fun addAll(group: GroupParameter) {
+            group.children.forEach { child ->
+                result.add(child)
+                if (child is GroupParameter) {
+                    addAll(child)
+                }
+            }
+        }
+
+        addAll(this)
+        return result
+    }
+
+    fun add(child: Parameter) {
+        if (child === this) {
+            throw ParameterException(this, "Cannot add to itself")
+        }
+        if (child.parent != null) {
+            throw ParameterException(child, "Already in a group")
+        }
+        if (find(child.name) != null) {
+            throw ParameterException(this, "Parameter with name '${child.name}' is already in this GroupParameter")
+        }
+
+        if (child is SimpleGroupParameter) {
+            child.descendants().forEach { ancestor ->
+                if (find(ancestor.name) != null) {
+                    throw ParameterException(this,
+                            "Duplicate parameter name '${ancestor.name}' in GroupParameter '${child.name}'")
+                }
+            }
+
+        }
+
+        // Check that the child isn't already an ancestor
+        findRoot()?.let { root ->
+            if (root.find(child.name) != null) {
+                throw ParameterException(child, "Parameter already exists in the tree")
+            }
+        }
+
+        children.add(child)
+        child.parent = this
+
+        child.parameterListeners.add(innerListener)
+    }
+
+    /**
+     * Forwards change events for the children to the group's listeners
+     */
+    val innerListener = object : ParameterListener {
+        override fun parameterChanged(event: ParameterEvent) {
+            parameterListeners.fireInnerParameterChanged(this@GroupParameter, event.parameter)
+        }
+    }
+
+    fun remove(child: Parameter) {
+        children.remove(child)
+    }
+
+    fun find(name: String): Parameter? {
+        return findWithoutAliases(name) ?: findWithAliases(name)
+    }
+
+    fun findWithoutAliases(name: String): Parameter? {
+        children.forEach { child ->
+            if (child.name == name) {
+                return child
+            }
+            if (child is BooleanParameter && child.oppositeName == name) {
+                return child
+            }
+            if (child is GroupParameter) {
+                child.find(name)?.let { return it }
+            }
+        }
+
+        return null
+    }
+
+    fun findWithAliases(name: String): Parameter? {
+        children.forEach { child ->
+            if (child.aliases.contains(name)) {
+                return child
+            }
+            if (child is GroupParameter) {
+                child.findWithAliases(name)?.let { return it }
+            }
+        }
+
+        return null
+    }
+
+    override fun isStretchy(): Boolean = true
+
+    override fun createField(): ParameterField = fieldFactory(this)
+
+    protected fun copyAbstractAttributes(copy: GroupParameter) {
+        copy.fieldFactory = fieldFactory
+        copyChildren(copy)
+    }
+
+    protected fun copyChildren(copy: GroupParameter) {
+        children.forEach { child ->
+            copy.addParameters(child.copy())
+        }
+    }
+}
+
+
+
+inline fun <reified T : GroupParameter> T.addParameters(vararg parameters: Parameter): T {
+    parameters.forEach { add(it) }
+    return this
+}
+
+inline fun <reified T : GroupParameter> T.asBox(): T {
+    fieldFactory = {
+        GroupField(this, isBoxed = true).build()
+    }
+    return this
+}
+
+inline fun <reified T : GroupParameter> T.asPlain(): T {
+    fieldFactory = {
+        GroupField(this, isBoxed = false).build()
+    }
+    return this
+}
+
+inline fun <reified T : GroupParameter> T.asHorizontal(labelsAbove: Boolean? = false, isBoxed: Boolean = false): T {
+    fieldFactory = {
+        HorizontalGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
+    }
+    return this
+}
+
+inline fun <reified T : GroupParameter> T.asGrid(labelsAbove: Boolean = false, columns: Int = children.size, isBoxed: Boolean = false): T {
+    fieldFactory = {
+        GridGroupField(this, labelsAbove = labelsAbove, columns = columns, isBoxed = isBoxed).build()
+    }
+    return this
 }

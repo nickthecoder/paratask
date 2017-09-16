@@ -31,7 +31,7 @@ class ShortcutParameter(
         label: String = name.uncamel(),
         description: String = "",
         value: KeyCodeCombination? = null)
-    : GroupParameter(name, label, description) {
+    : SimpleGroupParameter(name, label, description) {
 
     val keyP = ChoiceParameter<KeyCode?>("shortcutKey", label = "Key", required = false, value = null).nullableEnumChoices()
     val controlP = BooleanParameter("control", required = false, value = false)

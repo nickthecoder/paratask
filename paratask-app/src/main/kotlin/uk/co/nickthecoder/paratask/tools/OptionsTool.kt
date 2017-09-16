@@ -195,7 +195,7 @@ class OptionsTool() : ListTableTool<Option>() {
 
         val label = StringParameter("label", value = option.label)
 
-        var flagsGroupP = GroupParameter("flags")
+        var flagsGroupP = SimpleGroupParameter("flags")
 
         //var rowGroupP = GroupParameter("rowGroup", label = "")
 

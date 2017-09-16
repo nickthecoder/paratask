@@ -21,7 +21,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 
 class RootParameter(val taskD: TaskDescription, description: String)
 
-    : GroupParameter("root", description = description) {
+    : SimpleGroupParameter("root", description = description) {
 
     override fun findTaskD(): TaskDescription = taskD
 
@@ -30,12 +30,12 @@ class RootParameter(val taskD: TaskDescription, description: String)
     fun valueParameters(): List<ValueParameter<*>> {
         val result = mutableListOf<ValueParameter<*>>()
 
-        fun addAll(group: AbstractGroupParameter) {
+        fun addAll(group: GroupParameter) {
             group.children.forEach { child ->
                 if (child is ValueParameter<*>) {
                     result.add(child)
                 }
-                if (child is AbstractGroupParameter) {
+                if (child is GroupParameter) {
                     addAll(child)
                 }
             }

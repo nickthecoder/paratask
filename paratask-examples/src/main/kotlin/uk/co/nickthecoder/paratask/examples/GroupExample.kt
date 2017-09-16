@@ -11,25 +11,30 @@ class GroupExample : AbstractTask() {
 
     val normalIntP = IntParameter("normalInt", label = "Int")
     val normalStringP = StringParameter("normalString", label = "String", columns = 10)
-    val normalGroupP = GroupParameter("normalGroup")
+    val normalGroupP = SimpleGroupParameter("normalGroup")
             .addParameters(normalIntP, normalStringP)
+
+    val plainIntP = IntParameter("plainInt", label = "Int")
+    val plainStringP = StringParameter("plainString", label = "String", columns = 10)
+    val plainGroupP = SimpleGroupParameter("plainGroup")
+            .addParameters(plainIntP, plainStringP).asPlain()
 
     val horizontalIntP = IntParameter("horizontalInt", label = "Int")
     val horizontalStringP = StringParameter("horizontalString", label = "String", columns = 10)
-    val horizontalGroupP = GroupParameter("horizontalGroup")
+    val horizontalGroupP = SimpleGroupParameter("horizontalGroup")
             .addParameters(horizontalIntP, horizontalStringP)
             .asHorizontal()
 
     val boolAP = BooleanParameter("a")
     val boolBP = BooleanParameter("b")
-    val noStretchP = GroupParameter("No stretchy fields")
+    val noStretchP = SimpleGroupParameter("No stretchy fields")
             .addParameters(boolAP, boolBP)
             .asHorizontal()
 
     val boolCP = BooleanParameter("c")
     val midStringP = StringParameter("midStr", label = "String", columns = 10)
     val boolDP = BooleanParameter("d")
-    val middleStretchyP = GroupParameter("middleStretchy")
+    val middleStretchyP = SimpleGroupParameter("middleStretchy")
             .addParameters(boolCP, midStringP, boolDP)
             .asHorizontal()
 
@@ -37,7 +42,7 @@ class GroupExample : AbstractTask() {
 
     val stringAP = StringParameter("stringA", columns = 10)
     val stringBP = StringParameter("stringB", columns = 10)
-    val twoStringsP = GroupParameter("twoStrings")
+    val twoStringsP = SimpleGroupParameter("twoStrings")
             .addParameters(stringAP, stringBP)
             .asHorizontal()
 
@@ -45,7 +50,7 @@ class GroupExample : AbstractTask() {
     val boolBetaP = BooleanParameter("beta")
     val boolGammaP = BooleanParameter("gamma")
     val boolDeltaP = BooleanParameter("delta")
-    val gridGroupP = GroupParameter("grid")
+    val gridGroupP = SimpleGroupParameter("grid")
             .addParameters(boolAlphaP, boolBetaP, boolGammaP, boolDeltaP)
             .asGrid(columns = 3, isBoxed = true)
 
@@ -53,12 +58,12 @@ class GroupExample : AbstractTask() {
     val boolBeta2P = BooleanParameter("beta2")
     val boolGamma2P = BooleanParameter("gamma2")
     val boolDelta2P = BooleanParameter("delta2")
-    val gridGroup2P = GroupParameter("grid2")
+    val gridGroup2P = SimpleGroupParameter("grid2")
             .addParameters(boolAlpha2P, boolBeta2P, boolGamma2P, boolDelta2P)
             .asGrid(labelsAbove = true, columns = 3, isBoxed = true)
 
     init {
-        taskD.addParameters(normalGroupP, horizontalGroupP, noStretchP, middleStretchyP, infoP, twoStringsP, gridGroupP, gridGroup2P)
+        taskD.addParameters(normalGroupP, plainGroupP, horizontalGroupP, noStretchP, middleStretchyP, infoP, twoStringsP, gridGroupP, gridGroup2P)
     }
 
     override fun run() {

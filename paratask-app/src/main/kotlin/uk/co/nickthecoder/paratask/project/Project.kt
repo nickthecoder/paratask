@@ -26,7 +26,8 @@ import uk.co.nickthecoder.paratask.*
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
 import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.SimpleGroupParameter
+import uk.co.nickthecoder.paratask.parameters.addParameters
 import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.util.JsonHelper
 import java.io.*
@@ -39,7 +40,7 @@ class Project(val projectWindow: ProjectWindow) {
 
     val saveHistoryP = BooleanParameter("saveHistory", value = false)
 
-    var projectDataP = GroupParameter("projectData")
+    var projectDataP = SimpleGroupParameter("projectData")
 
     init {
         projectDataP.addParameters(projectDirectoryP, saveHistoryP)

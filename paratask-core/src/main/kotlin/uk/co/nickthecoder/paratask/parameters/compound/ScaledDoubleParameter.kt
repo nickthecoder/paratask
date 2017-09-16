@@ -17,12 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.parameters.compound
 
-import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
-import uk.co.nickthecoder.paratask.parameters.DoubleParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.uncamel
 
 /**
@@ -37,10 +33,10 @@ class ScaledDoubleParameter(
         val minValue: Double = 0.0,
         val maxValue: Double = Double.MAX_VALUE)
 
-    : AbstractGroupParameter(
+    : CompoundParameter<ScaledDouble>(
         name = name,
         label = label,
-        description = description), ValueParameter<ScaledDouble?> {
+        description = description), ValueParameter<ScaledDouble> {
 
     val amountP = DoubleParameter(name = "_amount", label = "", required = required)
     var amount by amountP
@@ -50,25 +46,15 @@ class ScaledDoubleParameter(
 
     val units = value.scales
 
-    override fun saveChildren(): Boolean = false
+    override val converter: StringConverter<ScaledDouble> = ScaledDouble.converter(value.scales)
 
-    override val converter: StringConverter<ScaledDouble?> = ScaledDouble.converter(value.scales)
-
-    override var value: ScaledDouble?
+    override var value: ScaledDouble
         get() {
-            if (amount == null || scale == null) {
-                return null
-            }
             return ScaledDouble(amount!!, scale!!, units)
         }
         set(v) {
-            if (v == null) {
-                amount = null
-                scale = null
-            } else {
-                amount = v.amount
-                scale = v.scale
-            }
+            amount = v.amount
+            scale = v.scale
         }
 
     init {
@@ -79,8 +65,6 @@ class ScaledDoubleParameter(
         }
         addParameters(amountP, scaleP)
     }
-
-    override val expressionProperty = SimpleStringProperty()
 
     override fun errorMessage(v: ScaledDouble?): String? {
 

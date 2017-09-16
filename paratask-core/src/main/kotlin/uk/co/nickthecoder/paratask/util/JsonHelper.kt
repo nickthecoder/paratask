@@ -32,10 +32,10 @@ object JsonHelper {
         return jtask
     }
 
-    fun parametersAsJsonArray(group2: AbstractGroupParameter): JsonArray {
+    fun parametersAsJsonArray(group2: GroupParameter): JsonArray {
         val jparameters = JsonArray()
 
-        fun foo(grp: AbstractGroupParameter) {
+        fun foo(grp: GroupParameter) {
 
             for (parameter in grp.children) {
                 // Save the VALUE
@@ -46,7 +46,7 @@ object JsonHelper {
                     jparameters.add(jparameter)
                 }
                 // Save the children's values
-                if (parameter is AbstractGroupParameter && parameter.saveChildren()) {
+                if (parameter is GroupParameter && parameter.saveChildren()) {
                     foo(parameter)
                 }
             }
@@ -68,7 +68,7 @@ object JsonHelper {
                 jparameter.set("values", jvalues)
 
                 parameter.innerParameters.forEach { inner ->
-                    if (inner is CompoundParameter) {
+                    if (inner is MultipleGroupParameter) {
                         val jArray = parametersAsJsonArray(inner)
                         jvalues.add(jArray)
                     } else {
@@ -111,7 +111,7 @@ object JsonHelper {
     }
 
 
-    fun read(jparameters: JsonArray, group: AbstractGroupParameter, task: Task? = null) {
+    fun read(jparameters: JsonArray, group: GroupParameter, task: Task? = null) {
         for (jitem in jparameters.asArray()) {
 
             val ji = jitem.asObject()
@@ -136,7 +136,7 @@ object JsonHelper {
                                 if (jvalue.isString) {
                                     // Backward compatability.
                                     newValue.stringValue = jvalue.asString()
-                                } else if (jvalue.isArray && newValue is CompoundParameter) {
+                                } else if (jvalue.isArray && newValue is MultipleGroupParameter) {
                                     val jvalueArray = jvalue.asArray()
                                     read(jvalueArray, newValue, task)
                                 } else if (jvalue.isObject) {

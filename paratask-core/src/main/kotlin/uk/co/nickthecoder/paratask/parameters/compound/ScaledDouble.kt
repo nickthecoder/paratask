@@ -22,10 +22,10 @@ data class ScaledDouble(
 
     companion object {
 
-        fun converter(scales: Map<Double, String>) = object : StringConverter<ScaledDouble?>() {
+        fun converter(scales: Map<Double, String>) = object : StringConverter<ScaledDouble>() {
             override fun fromString(string: String?): ScaledDouble? {
                 if (string == null || string.isEmpty()) {
-                    return null
+                    return ScaledDouble(0.0, 0.0, emptyMap())
                 }
                 val star = string.indexOf('*')
                 if (star < 0) {
@@ -40,7 +40,7 @@ data class ScaledDouble(
                     return ""
                 }
 
-                return "${obj.amount}*{obj.scale}"
+                return "${obj.amount}*${obj.scale}"
             }
         }
     }

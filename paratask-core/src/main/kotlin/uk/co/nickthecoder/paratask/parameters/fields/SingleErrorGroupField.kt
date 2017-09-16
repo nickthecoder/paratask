@@ -3,12 +3,12 @@ package uk.co.nickthecoder.paratask.parameters.fields
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 
 abstract class SingleErrorGroupField(
-        val groupParameter: AbstractGroupParameter,
+        val groupParameter: GroupParameter,
         isBoxed: Boolean)
 
     : ParameterField(groupParameter, isBoxed = isBoxed), FieldParent, ParameterListener {

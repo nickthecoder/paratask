@@ -7,12 +7,12 @@ import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
-import uk.co.nickthecoder.paratask.parameters.AbstractGroupParameter
+import uk.co.nickthecoder.paratask.parameters.GroupParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 
 class GridGroupField(
-        groupParameter: AbstractGroupParameter,
+        groupParameter: GroupParameter,
         val labelsAbove: Boolean,
         val columns: Int = groupParameter.children.size,
         isBoxed: Boolean)
