@@ -32,7 +32,7 @@ abstract class AbstractGroupParameter(
     : AbstractParameter(name, description = description, label = label),
         ParentParameter {
 
-    internal var fieldFactory: (AbstractGroupParameter) -> ParameterField = {
+    var fieldFactory: (AbstractGroupParameter) -> ParameterField = {
         GroupField(this).build()
     }
 
@@ -40,28 +40,32 @@ abstract class AbstractGroupParameter(
 
     abstract fun saveChildren(): Boolean
 
-    fun boxLayout() {
+    fun asBox(): AbstractGroupParameter {
         fieldFactory = {
             GroupField(this, isBoxed = true).build()
         }
+        return this
     }
 
-    fun plainLayout() {
+    fun asPlain(): AbstractGroupParameter {
         fieldFactory = {
             GroupField(this, isBoxed = false).build()
         }
+        return this
     }
 
-    fun horizontalLayout(labelsAbove: Boolean?, isBoxed: Boolean = false) {
+    fun asHorizontal(labelsAbove: Boolean? = false, isBoxed: Boolean = false): AbstractGroupParameter {
         fieldFactory = {
             HorizontalGroupField(this, labelsAbove = labelsAbove, isBoxed = isBoxed).build()
         }
+        return this
     }
 
-    fun gridLayout(labelsAbove: Boolean, columns: Int = children.size, isBoxed: Boolean = false) {
+    fun asGrid(labelsAbove: Boolean = false, columns: Int = children.size, isBoxed: Boolean = false): AbstractGroupParameter {
         fieldFactory = {
             GridGroupField(this, labelsAbove = labelsAbove, columns = columns, isBoxed = isBoxed).build()
         }
+        return this
     }
 
     fun descendants(): List<Parameter> {
@@ -123,8 +127,9 @@ abstract class AbstractGroupParameter(
         }
     }
 
-    fun addParameters(vararg parameters: Parameter) {
+    fun addParameters(vararg parameters: Parameter) : AbstractGroupParameter {
         parameters.forEach { add(it) }
+        return this
     }
 
     fun remove(child: Parameter) {

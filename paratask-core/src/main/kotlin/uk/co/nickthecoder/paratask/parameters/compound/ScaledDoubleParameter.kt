@@ -73,7 +73,7 @@ class ScaledDoubleParameter(
 
     init {
         this.value = value
-        horizontalLayout(false)
+        asHorizontal(false)
         units.forEach { scale, lab ->
             scaleP.addChoice(scale.toString(), scale, lab)
         }

@@ -20,6 +20,8 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.IntField
+import uk.co.nickthecoder.paratask.parameters.fields.IntSliderField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 open class IntParameter(
@@ -38,6 +40,18 @@ open class IntParameter(
         description = description,
         value = value,
         required = required) {
+
+
+    var fieldFactory: (IntParameter) -> ParameterField = {
+        IntField(this).build()
+    }
+
+    fun asSlider(sliderInfo: SliderInfo = SliderInfo()) : IntParameter {
+        fieldFactory = {
+            IntSliderField(this, sliderInfo).build()
+        }
+        return this
+    }
 
     override val converter = object : StringConverter<Int?>() {
         override fun fromString(str: String): Int? {
@@ -77,7 +91,7 @@ open class IntParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): IntField = IntField(this).build() as IntField
+    override fun createField(): ParameterField = fieldFactory(this)
 
     override fun toString(): String = "Int" + super.toString()
 
@@ -89,4 +103,13 @@ open class IntParameter(
             required = required,
             minValue = minValue,
             maxValue = maxValue)
+
+    data class SliderInfo(
+            val blockIncrement: Int = 1,
+            val majorTickUnit: Int = 1,
+            val minorTickCount: Int = 0,
+            val horizontal: Boolean = true,
+            val snapToTicks: Boolean = true,
+            val showValue: Boolean = false
+    )
 }

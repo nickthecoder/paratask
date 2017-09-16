@@ -82,8 +82,8 @@ class ResourceParameter(
         this.value = value
         fileOrUrlP.addParameters(fileP, urlP)
         addParameters(fileOrUrlP)
-        fileOrUrlP.horizontalLayout(null)
-        horizontalLayout(null)
+        fileOrUrlP.asHorizontal(null)
+        asHorizontal(null)
     }
 
     override fun errorMessage(v: Resource?): String? {

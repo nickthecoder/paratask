@@ -302,7 +302,7 @@ You can also edit filters by clicking the table columns' headers.""")
         val bTypeParameters = mutableMapOf<BType, Parameter>()
 
         init {
-            horizontalLayout(false)
+            asHorizontal(false)
             addParameters(columnP, testP)
             bTypes.forEach {
                 val parameter = it.createParameter()

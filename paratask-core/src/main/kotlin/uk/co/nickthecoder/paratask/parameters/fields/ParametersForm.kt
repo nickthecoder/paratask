@@ -385,7 +385,6 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
 
             // Control
             val stretchy = parameterField.parameter.isStretchy() || parameterField.expressionButton?.isSelected == true
-            h = controlContainer.prefHeight(-1.0)
             w = if (stretchy) {
                 if (parameterField.hasLabel) {
                     columns[1].width
@@ -393,8 +392,12 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
                     width - insets.left - insets.right
                 }
             } else {
-                controlContainer.prefWidth(h)
+                controlContainer.prefWidth(-1.0)
             }
+            h = controlContainer.prefHeight(w)
+
+            // TODO This doesn't work well with InformationParameter that can span multiple lines.
+            // See GroupExample (and resize the window narrower than the info message.)
             layoutInArea(controlContainer, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
             // Error message

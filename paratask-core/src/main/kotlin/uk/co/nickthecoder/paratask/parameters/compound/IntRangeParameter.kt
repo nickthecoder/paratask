@@ -27,7 +27,7 @@ class IntRangeParameter(
 
     init {
         addParameters(fromP, toP)
-        horizontalLayout(false)
+        asHorizontal(false)
     }
 
     override fun saveChildren(): Boolean = true

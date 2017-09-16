@@ -52,7 +52,7 @@ class TemporalAmountParameter(
     }
 
     init {
-        horizontalLayout(false)
+        asHorizontal(false)
         addParameters(amountP, unitsP)
     }
 
