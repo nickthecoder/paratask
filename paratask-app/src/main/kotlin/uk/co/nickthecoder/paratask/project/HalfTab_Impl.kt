@@ -85,6 +85,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         this.dividerRatio = 0.3
 
         toolBars.center = toolBar
+        toolBar.styleClass.add("bottom")
 
         left = mainArea
 

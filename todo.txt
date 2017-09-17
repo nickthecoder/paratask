@@ -1,5 +1,9 @@
 TODO	
 
+If there are no toolbars when loading a project, or when creating a new project window,
+	then create a CustomToolListTool with : "Quit", "new window" and "about" tasks.
+	Change the stylesheet (or just add the required styleclass?) of the HBox which hold the toolbars, so that it matches a toolbar
+
 Editor must not discard changes or blank documents when re-run.
 
 Alt+W to close a results tab. If it is the last one, close the halftab.

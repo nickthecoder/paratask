@@ -17,22 +17,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
-import com.sun.org.apache.xerces.internal.dom.ParentNode
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Pane
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import uk.co.nickthecoder.paratask.ParaTask
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.ToolBarTool
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
-import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 
 class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
@@ -48,9 +49,9 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     val tabs: ProjectTabs = ProjectTabs_Impl(this)
 
     private val topToolBars = HBox()
-    private val rightToolBars = HBox()
+    private val rightToolBars = VBox()
     private val bottomToolBars = HBox()
-    private val leftToolBars = HBox()
+    private val leftToolBars = VBox()
 
     private val mainToolBar = ToolBar()
 
@@ -58,6 +59,11 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
     init {
         scene.userData = this
+
+        topToolBars.styleClass.add("toolbar-container")
+        bottomToolBars.styleClass.addAll("toolbar-container", "bottom")
+        leftToolBars.styleClass.addAll("toolbar-container", "left")
+        rightToolBars.styleClass.addAll("toolbar-container", "right")
 
         topToolBars.children.add(mainToolBar)
 
@@ -103,11 +109,21 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     }
 
     fun addToolBar(toolBar: ToolBar, side: Side = Side.TOP) {
+        toolBar.styleClass.removeAll("bottom", "left", "right")
         when (side) {
             Side.TOP -> topToolBars.children.add(toolBar)
-            Side.RIGHT -> rightToolBars.children.add(toolBar)
-            Side.BOTTOM -> bottomToolBars.children.add(toolBar)
-            Side.LEFT -> leftToolBars.children.add(toolBar)
+            Side.RIGHT -> {
+                rightToolBars.children.add(toolBar)
+                toolBar.styleClass.add("right")
+            }
+            Side.BOTTOM -> {
+                bottomToolBars.children.add(toolBar)
+                toolBar.styleClass.add("bottom")
+            }
+            Side.LEFT -> {
+                leftToolBars.children.add(toolBar)
+                toolBar.styleClass.add("left")
+            }
         }
     }
 
@@ -121,7 +137,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     fun toolBarTools(): List<ToolBarTool> {
         val list = mutableListOf<ToolBarTool>()
 
-        fun add(toolBars: HBox) {
+        fun add(toolBars: Pane) {
             toolBars.children.forEach { child ->
                 if (child is ToolBarToolConnector.ConnectedToolBar) {
                     list.add(child.connector.tool)
