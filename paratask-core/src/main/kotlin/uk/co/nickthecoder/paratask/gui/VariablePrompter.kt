@@ -211,8 +211,8 @@ Then use Ctrl+V to paste it into your script.""")
 
         abstract fun code(): String
 
-        override fun equals(obj: Any?): Boolean {
-            return obj is PropertyOrMethod && obj.code() == this.code()
+        override fun equals(other: Any?): Boolean {
+            return other is PropertyOrMethod && other.code() == this.code()
         }
 
         override fun hashCode(): Int = code().hashCode()
@@ -226,7 +226,7 @@ Then use Ctrl+V to paste it into your script.""")
 
     inner class MethodItem(parent: TreeData, val method: Method) : PropertyOrMethod(parent, method.name, method.returnType) {
         override fun toString(): String {
-            val params = method.parameterTypes.map{ it.simpleName}.joinToString(separator = ",")
+            val params = method.parameterTypes.map { it.simpleName }.joinToString(separator = ",")
 
             return "${name}($params) : ${method.returnType.simpleName}"
         }

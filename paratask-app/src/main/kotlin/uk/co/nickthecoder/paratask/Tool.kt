@@ -95,7 +95,7 @@ interface Tool : Task {
 
     private fun evaluateParameter(parameter: ValueParameter<*>, row: Any?, rows: List<Any>?) {
 
-        if (parameter is MultipleParameter<*> && parameter.expression == null) {
+        if (parameter is MultipleParameter<*,*> && parameter.expression == null) {
             parameter.innerParameters.filter { it.expression != null }.forEach { innerParameter ->
                 evaluateParameter(innerParameter, row = row, rows = rows)
             }

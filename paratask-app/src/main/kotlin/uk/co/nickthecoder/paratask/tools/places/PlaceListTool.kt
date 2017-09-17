@@ -122,7 +122,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
 
             override fun droppedOnNonRow(content: List<File>, transferMode: TransferMode) {
                 for (f in content) {
-                    val newEntry = placesP.newValue() as PlaceParameter
+                    val newEntry = placesP.newValue()
                     newEntry.labelP.value = f.name
                     newEntry.resource = Resource(f)
                 }
@@ -132,7 +132,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
         val placesDropHelper = SimpleDropHelper<List<Place>>(Place.dataFormat, arrayOf(TransferMode.COPY, TransferMode.MOVE)) { _, content ->
 
             content.forEach { place ->
-                val newEntry = placesP.newValue() as PlaceParameter
+                val newEntry = placesP.newValue()
                 newEntry.labelP.value = place.label
                 newEntry.resource = place.resource
             }

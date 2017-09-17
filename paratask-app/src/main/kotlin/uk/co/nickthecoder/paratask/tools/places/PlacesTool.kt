@@ -88,7 +88,7 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
 
     override fun createResults(): List<Results> {
         return filesP.innerParameters.filter { it.value != null }.map { fileP ->
-            ResultsWithHeader(createResults(fileP.value!!), createHeader(fileP as FileParameter))
+            ResultsWithHeader(createResults(fileP.value!!), createHeader(fileP))
         }
     }
 

@@ -26,9 +26,14 @@ import javafx.scene.input.TransferMode
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.LineNumberFactory
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.*
-import uk.co.nickthecoder.paratask.project.*
-import uk.co.nickthecoder.paratask.util.dumpAncestors
+import uk.co.nickthecoder.paratask.gui.CompoundDropHelper
+import uk.co.nickthecoder.paratask.gui.DropFiles
+import uk.co.nickthecoder.paratask.gui.ShortcutHelper
+import uk.co.nickthecoder.paratask.gui.SimpleDropHelper
+import uk.co.nickthecoder.paratask.project.AbstractResults
+import uk.co.nickthecoder.paratask.project.ParataskActions
+import uk.co.nickthecoder.paratask.project.ResultsTab
+import uk.co.nickthecoder.paratask.project.ToolPane
 import java.io.File
 
 class EditorResults(
@@ -57,10 +62,10 @@ class EditorResults(
         }
 
 
-    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { event, text ->
+    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { _, text ->
         insertText(text)
     }
-    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { event, files ->
+    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         val text = files.map { it.path }.joinToString(separator = "\n")
         insertText(text)
     }

@@ -250,7 +250,7 @@ You can also edit filters by clicking the table columns' headers.""")
 
             conditionsP.value.filterIsInstance<Condition>().filter { it.columnP.value === column }.forEach {
                 @Suppress("UNCHECKED_CAST")
-                val newValue = columnConditionsP.newValue() as RowFilter<R>.Condition
+                val newValue = columnConditionsP.newValue()
                 newValue.copyValues(it)
             }
 
@@ -272,7 +272,7 @@ You can also edit filters by clicking the table columns' headers.""")
             // Add the new conditions
             columnConditionsP.value.filterIsInstance<Condition>().forEach {
                 @Suppress("UNCHECKED_CAST")
-                val newValue = conditionsP.newValue() as RowFilter<R>.Condition
+                val newValue = conditionsP.newValue()
                 newValue.copyValues(it)
             }
 

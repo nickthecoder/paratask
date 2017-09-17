@@ -63,7 +63,7 @@ object JsonHelper {
         if (parameter.expression != null) {
             jparameter.set("expression", parameter.expression)
         } else {
-            if (parameter is MultipleParameter<*>) {
+            if (parameter is MultipleParameter<*,*>) {
                 val jvalues = JsonArray()
                 jparameter.set("values", jvalues)
 
@@ -126,7 +126,7 @@ object JsonHelper {
 
                 } else {
 
-                    if (parameter is MultipleParameter<*>) {
+                    if (parameter is MultipleParameter<*,*>) {
                         val jvalues = ji.get("values")
                         if (jvalues != null) {
                             parameter.clear()

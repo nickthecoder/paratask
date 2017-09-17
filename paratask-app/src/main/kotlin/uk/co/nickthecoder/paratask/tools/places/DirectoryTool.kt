@@ -190,7 +190,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
     override fun createResults(): List<Results> {
         return directoriesP.innerParameters.filter { it.value != null }.map { dirP ->
-            createResults(dirP as FileParameter)
+            createResults(dirP)
         }
     }
 
@@ -228,7 +228,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
     }
 
     fun addDirectory(directory: File) {
-        directoriesP.addValue(directory) as FileParameter
+        directoriesP.addValue(directory)
         selectDirectory = directory
         toolPane?.parametersPane?.run()
     }

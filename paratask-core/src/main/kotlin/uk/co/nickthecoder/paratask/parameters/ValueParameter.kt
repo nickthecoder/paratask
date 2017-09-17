@@ -53,7 +53,7 @@ interface ValueParameter<T>
      */
     fun evaluated(v: Any?) {
         val parent = parent
-        if (v is Iterable<*> && parent is MultipleParameter<*>) {
+        if (v is Iterable<*> && parent is MultipleParameter<*,*>) {
             parent.evaluateMultiple(this, v)
         } else {
             coerce(v)

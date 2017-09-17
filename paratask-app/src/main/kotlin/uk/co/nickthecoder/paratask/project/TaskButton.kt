@@ -33,7 +33,7 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
 
     init {
         val unnamed = task.taskD.unnamedParameter
-        if (unnamed is FileParameter || unnamed is MultipleParameter<*> && unnamed.factory() is FileParameter) {
+        if (unnamed is FileParameter || unnamed is MultipleParameter<*,*> && unnamed.factory() is FileParameter) {
             DropFiles(arrayOf(TransferMode.LINK)) { _, files -> onDroppedFiles(files) }.applyTo(this)
         }
     }
@@ -44,7 +44,7 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
         val unamed = t.taskD.unnamedParameter
         if (unamed is FileParameter) {
             unamed.value = files.firstOrNull()
-        } else if (unamed is MultipleParameter<*> && unamed.factory() is FileParameter) {
+        } else if (unamed is MultipleParameter<*,*> && unamed.factory() is FileParameter) {
             if (copyTask) {
                 println("Clearing unamed parameter values")
                 unamed.clear()

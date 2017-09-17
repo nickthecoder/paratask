@@ -27,7 +27,7 @@ import uk.co.nickthecoder.paratask.util.escapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
 import uk.co.nickthecoder.paratask.util.unescapeNL
 
-class MultipleParameter<T>(
+class MultipleParameter<T, P : ValueParameter<T>>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
@@ -35,15 +35,16 @@ class MultipleParameter<T>(
         val maxItems: Int = Int.MAX_VALUE,
         value: List<T>? = null,
         isBoxed: Boolean = false,
-        val factory: () -> ValueParameter<T>)
+        val factory: () -> P)
 
     : AbstractParameter(
         name = name,
         label = label,
         description = description, isBoxed = isBoxed),
+
         ValueParameter<List<T>>, ParentParameter {
 
-    val innerParameters = mutableListOf<ValueParameter<T>>()
+    val innerParameters = mutableListOf<P>()
 
     override val children: List<Parameter> = innerParameters
 
@@ -101,7 +102,7 @@ class MultipleParameter<T>(
         }
     }
 
-    var fieldFactory: (MultipleParameter<T>) -> ParameterField = {
+    var fieldFactory: (MultipleParameter<T, P>) -> ParameterField = {
         MultipleField(this).build()
     }
 
@@ -124,7 +125,7 @@ class MultipleParameter<T>(
             }
             index++
         }
-        throw RuntimeException("Tried to evaluate innerParameter ${child}, but is not one of my children")
+        throw RuntimeException("Tried to evaluate innerParameter $child, but is not one of my children")
     }
 
     override fun check() {
@@ -157,7 +158,7 @@ class MultipleParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
-    private fun addInnerParameter(index: Int, initialise: (ValueParameter<T>) -> Unit): ValueParameter<T> {
+    private fun addInnerParameter(index: Int, initialise: (P) -> Unit): P {
         val innerParameter = factory()
         innerParameter.parent = this
         innerParameter.parameterListeners.add(innerListener)
@@ -169,15 +170,15 @@ class MultipleParameter<T>(
         return innerParameter
     }
 
-    fun newValue(index: Int = value.size): ValueParameter<T> {
+    fun newValue(index: Int = value.size): P {
         return addInnerParameter(index) {}
     }
 
-    fun addValue(item: T, index: Int = value.size): ValueParameter<T> {
+    fun addValue(item: T, index: Int = value.size): P {
         return addInnerParameter(index) { it.value = item }
     }
 
-    fun addStringValue(str: String, index: Int = value.size): ValueParameter<T> {
+    fun addStringValue(str: String, index: Int = value.size): P {
         return addInnerParameter(index) { it.stringValue = str }
     }
 
@@ -213,11 +214,11 @@ class MultipleParameter<T>(
         super.coerce(v)
     }
 
-    fun asListDetail(height: Int = 200, allowReordering: Boolean = true, labelFactory: (T) -> String): MultipleParameter<T> {
+    fun asListDetail(height: Int = 200, allowReordering: Boolean = true, labelFactory: (P) -> String): MultipleParameter<T, P> {
         return asListDetail(ListDetailsInfo(height = height, allowReordering = allowReordering, labelFactory = labelFactory))
     }
 
-    fun asListDetail(info: ListDetailsInfo<T>): MultipleParameter<T> {
+    fun asListDetail(info: ListDetailsInfo<P>): MultipleParameter<T, P> {
         fieldFactory = { ListDetailField(this, info).build() }
         return this
     }
@@ -226,8 +227,8 @@ class MultipleParameter<T>(
 
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
 
-    override fun copy(): MultipleParameter<T> {
-        val result = MultipleParameter<T>(name = name, label = label, description = description, value = value,
+    override fun copy(): MultipleParameter<T, P> {
+        val result = MultipleParameter(name = name, label = label, description = description, value = value,
                 minItems = minItems, maxItems = maxItems, isBoxed = isBoxed, factory = factory)
 
         value.forEach {
@@ -237,10 +238,9 @@ class MultipleParameter<T>(
         return result
     }
 
-    data class ListDetailsInfo<T>(
+    data class ListDetailsInfo<P>(
             var height: Int = 300,
             var allowReordering: Boolean = true,
-            var labelFactory: (T) -> String = { it.toString() }
+            var labelFactory: (P) -> String = { it.toString() }
     )
 }
-

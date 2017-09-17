@@ -54,10 +54,10 @@ class RealTerminalResults(tool: Tool)
 
     var termWidget: JediTermWidget? = null
 
-    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { event, text ->
+    val textDropHelper = SimpleDropHelper<String>(DataFormat.PLAIN_TEXT, arrayOf(TransferMode.COPY)) { _, text ->
         sendText(text)
     }
-    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { event, files ->
+    val filesDropHelper = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         val text = files.map { quoteFilenameIfNeeded(it.path) }.joinToString(separator = " ")
         sendText(text)
     }

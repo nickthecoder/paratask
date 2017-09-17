@@ -8,7 +8,9 @@ class MultipleParameterTest : ParameterTestBase() {
 
     @Test
     fun intValues() {
-        val multipleP = MultipleParameter<Int?>("multiple") { IntParameter("int") }
+        val multipleP = MultipleParameter("multiple") {
+            IntParameter("int")
+        }
 
         assertEquals("", multipleP.stringValue)
         multipleP.addValue(1)
@@ -21,21 +23,27 @@ class MultipleParameterTest : ParameterTestBase() {
 
     @Test
     fun canBeEmpty() {
-        val multipleP = MultipleParameter<Int?>("multiple") { IntParameter("int") }
+        val multipleP = MultipleParameter("multiple") {
+            IntParameter("int")
+        }
         assertNull(multipleP.errorMessage())
         multipleP.check()
     }
 
     @Test
     fun needAtLeaseOne() {
-        val multipleP = MultipleParameter<Int?>("multiple", minItems = 1) { IntParameter("int") }
+        val multipleP = MultipleParameter("multiple", minItems = 1) {
+            IntParameter("int")
+        }
         assertEquals("Must have at least 1 items", multipleP.errorMessage())
         expectParameterException { multipleP.check() }
     }
 
     @Test
     fun maxOf2() {
-        val multipleP = MultipleParameter<Int?>("multiple", maxItems = 2) { IntParameter("int") }
+        val multipleP = MultipleParameter("multiple", maxItems = 2) {
+            IntParameter("int")
+        }
         assertNull(multipleP.errorMessage())
         multipleP.check()
 
@@ -46,7 +54,7 @@ class MultipleParameterTest : ParameterTestBase() {
 
     @Test
     fun compoundValues() {
-        val multipleP = MultipleParameter<MultipleGroupParameter>("multiple") {
+        val multipleP = MultipleParameter("multiple") {
             val cp = MultipleGroupParameter("compound")
             val intP = IntParameter("int")
             val stringP = StringParameter("string")

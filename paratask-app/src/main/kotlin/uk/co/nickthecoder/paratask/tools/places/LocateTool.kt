@@ -20,7 +20,7 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
 
     override val taskD = TaskDescription("locate", description = "Use 'mlocate' to find files matching a pattern")
 
-    val patternsP = MultipleParameter<String>("pattern", minItems = 1, value = listOf("")) {
+    val patternsP = MultipleParameter("pattern", minItems = 1, value = listOf("")) {
         StringParameter("pattern", required = true)
     }
 

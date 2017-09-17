@@ -271,6 +271,7 @@ open class MyTabPane<T : MyTab> : BorderPane() {
             if (oldIndex != index) {
                 if (index >= 0) {
                     mutableTabs.remove(tab)
+                    @Suppress("UNCHECKED_CAST")
                     mutableTabs.add(index, tab as T)
                     tabsContainer.requestLayout()
                 }

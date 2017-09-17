@@ -44,18 +44,11 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
     override var toolBarSide by toolBarSideP
 
     val toolsP = MultipleParameter("tools") {
-
-        val labelP = StringParameter("label", required = false)
-        val toolP = TaskParameter("tool", taskFactory = RegisteredTaskFactory())
-        val compoundP = MultipleGroupParameter("toolDetails")
-        val newTabP = BooleanParameter("newTab", value = true)
-
-        compoundP.addParameters(labelP, toolP, newTabP)
-        compoundP
-    }.asListDetail(labelFactory = {
-        val label = (it.find("label") as StringParameter).value
+        Item()
+    }.asListDetail(labelFactory = { rowParameters ->
+        val label = rowParameters.labelP.value
         if (label.isBlank()) {
-            (it.find("tool") as TaskParameter).value?.taskD?.label ?: "<new item>"
+            (rowParameters.find("tool") as TaskParameter).value?.taskD?.label ?: "<new item>"
         } else {
             label
         }
@@ -68,7 +61,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
         taskD.addParameters(toolBarSideP, toolsP)
 
         columns.add(Column<CustomToolRow, ImageView>("icon", label = "", getter = { row -> ImageView(row.task.icon) }))
-        columns.add(Column<CustomToolRow, String>("label", getter = { row -> row.label }))
+        columns.add(Column<CustomToolRow, String>("label", getter = { (label) -> label }))
         columns.add(Column<CustomToolRow, String>("toolName", getter = { row -> row.task.taskD.name.uncamel() }))
         columns.add(Column<CustomToolRow, String>("parameters", getter = { row -> parameters(row.task) }))
 
@@ -96,7 +89,7 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
         if (showingToolbar()) {
             Platform.runLater {
-                updateToolbar(list.map { row -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, row.task, row.label, newTab = row.newTab) })
+                updateToolbar(list.map { (label, task, newTab) -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, task, label, newTab = newTab) })
             }
         }
     }
@@ -111,6 +104,20 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
     fun parameters(task: Task): String {
         return task.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
+    }
+}
+
+/**
+ * The inner parameter within the MultipleParameter 'toolsP'
+ */
+class Item : MultipleGroupParameter("toolDetails", label = "") {
+
+    val labelP = StringParameter("label", required = false)
+    val toolP = TaskParameter("tool", taskFactory = RegisteredTaskFactory())
+    val newTabP = BooleanParameter("newTab", value = true)
+
+    init {
+        addParameters(labelP, toolP, newTabP)
     }
 }
 

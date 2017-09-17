@@ -56,7 +56,7 @@ class OneOfParameter(
         addParameters(choiceP)
         this.value = value
 
-        choiceP.listen { event ->
+        choiceP.listen {
             children.filter { it != choiceP }.forEach { child ->
                 child.hidden = child != choiceP.value
             }

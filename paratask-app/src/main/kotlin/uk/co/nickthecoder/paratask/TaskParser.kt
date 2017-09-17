@@ -231,7 +231,7 @@ then place the POSIX standard "--" BEFORE the "default" argument(s).
 
     private fun parseExtraArguments() {
         task.taskD.unnamedParameter?.let { unnamedParameter ->
-            if (unnamedParameter is MultipleParameter<*>) {
+            if (unnamedParameter is MultipleParameter<*,*>) {
                 for (arg in arguments) {
                     unnamedParameter.addStringValue(arg)
                 }

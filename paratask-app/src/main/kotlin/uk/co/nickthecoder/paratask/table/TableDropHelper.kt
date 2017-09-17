@@ -85,6 +85,7 @@ abstract class TableDropHelper<T, R : Any>(
                 return Pair(null, null)
             }
             if (node is TableRow<*>) {
+                @Suppress("UNCHECKED_CAST")
                 val tableRow = node as TableRow<WrappedRow<R>>
                 if (tableRow.isEmpty) {
                     return Pair(null, null)

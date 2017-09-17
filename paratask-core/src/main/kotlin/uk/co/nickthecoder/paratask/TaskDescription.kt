@@ -70,8 +70,8 @@ class TaskDescription(
                     destParameter.expression = sourceParameter.expression
                 }
 
-                if (sourceParameter is MultipleParameter<*>
-                        && destParameter is MultipleParameter<*>
+                if (sourceParameter is MultipleParameter<*,*>
+                        && destParameter is MultipleParameter<*,*>
                         && destParameter.expression == null) {
 
                     val size = min(destParameter.innerParameters.size, sourceParameter.innerParameters.size)
@@ -89,7 +89,7 @@ class TaskDescription(
         builder.appendln("TaskDescription $name")
         builder.appendln()
         for (parameter in valueParameters()) {
-            if (parameter is MultipleParameter<*> && parameter.expression == null) {
+            if (parameter is MultipleParameter<*,*> && parameter.expression == null) {
                 builder.appendln("    ${parameter.name} = MultipleParameter size ${parameter.innerParameters.size} ${parameter.value.size}")
                 for (innerParameter in parameter.innerParameters) {
                     if (innerParameter.expression == null) {

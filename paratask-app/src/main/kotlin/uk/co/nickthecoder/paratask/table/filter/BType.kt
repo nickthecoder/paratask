@@ -27,8 +27,8 @@ interface BType {
 
 abstract class AbstractBType : BType {
 
-    override fun equals(obj: Any?): Boolean {
-        return obj?.javaClass === this.javaClass
+    override fun equals(other: Any?): Boolean {
+        return other?.javaClass === this.javaClass
     }
 
     override fun hashCode(): Int {

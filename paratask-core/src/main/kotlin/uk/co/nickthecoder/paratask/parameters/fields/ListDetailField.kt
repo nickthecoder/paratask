@@ -10,9 +10,9 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.parameters.*
 
-class ListDetailField<T>(
-        val multipleParameter: MultipleParameter<T>,
-        val info: MultipleParameter.ListDetailsInfo<T>)
+class ListDetailField<T, P : ValueParameter<T>>(
+        val multipleParameter: MultipleParameter<T, P>,
+        val info: MultipleParameter.ListDetailsInfo<P>)
 
     : ParameterField(multipleParameter), FieldParent {
 
@@ -92,7 +92,6 @@ class ListDetailField<T>(
 
     fun selectionChanged(selectedItem: ListData?) {
         detailsContainer.children.clear()
-        val index = list.selectionModel.selectedIndex
         if (selectedItem != null) {
             detailsContainer.children.add(selectedItem.field.controlContainer)
         }
@@ -208,7 +207,7 @@ class ListDetailField<T>(
 
         fun label(): String {
             @Suppress("UNCHECKED_CAST")
-            return info.labelFactory((field.parameter as ValueParameter<T>).value)
+            return info.labelFactory(field.parameter as P)
         }
 
         /**

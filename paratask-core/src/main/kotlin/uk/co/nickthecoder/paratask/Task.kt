@@ -51,7 +51,7 @@ interface Task {
     fun resolveParameter(resolver: ParameterResolver, parameter: ValueParameter<*>) {
         if (parameter is ValueParameter<*>) {
             resolver.resolve(parameter)
-            if (parameter is MultipleParameter<*>) {
+            if (parameter is MultipleParameter<*,*>) {
                 parameter.innerParameters.forEach { resolveParameter(resolver, it) }
             }
         }

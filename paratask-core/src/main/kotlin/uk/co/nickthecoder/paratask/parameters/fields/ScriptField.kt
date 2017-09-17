@@ -75,7 +75,7 @@ class ScriptField(val scriptParameter: ScriptParameter)
 
         this.textField = textField
 
-        promptButton.onAction = EventHandler { event -> showScriptEditor() }
+        promptButton.onAction = EventHandler { showScriptEditor() }
 
         return textField
     }
