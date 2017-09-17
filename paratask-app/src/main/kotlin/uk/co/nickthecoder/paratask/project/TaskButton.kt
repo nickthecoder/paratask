@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.TransferMode
@@ -24,6 +25,9 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
             text = task.taskD.label
         } else {
             text = label
+        }
+        if (task.taskD.description.isNotBlank()) {
+            tooltip = Tooltip(task.taskD.description)
         }
     }
 

@@ -12,9 +12,11 @@ interface ToolBarTool : Tool {
 
     var toolBarSide: Side?
 
-    fun showingToolbar() : Boolean {
-        if ( toolBarSide == null ) {
-            toolBarConnector?.remove()
+    fun showingToolbar(): Boolean {
+        if (toolBarSide == null) {
+            Platform.runLater {
+                toolBarConnector?.remove()
+            }
             return false
         }
         return true

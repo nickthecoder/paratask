@@ -88,7 +88,9 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
         }
 
         if (showingToolbar()) {
-            updateToolbar(list.map { row -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, row.task, row.label, newTab = row.newTab) })
+            Platform.runLater {
+                updateToolbar(list.map { row -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, row.task, row.label, newTab = row.newTab) })
+            }
         }
     }
 

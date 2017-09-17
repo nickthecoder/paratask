@@ -19,12 +19,11 @@ TrashTool
 		Must be able to add it to "Places" tools, so that it can then become a toolbar icon.
 	Or just a new Tool/Task.
 		"Default" deleteFiles[] parameter, can delete files dragged to it.
+		Or, add to /create an interface with :
+			val dropHelper : DropHelper? = null
+			Remove stuff about unnamed parameters in 
+		
 	~/.local/Trash
-
-Change the way drags to Tool toolbar buttons are handled.
-	If tool has a dragHelper, then apply it to the button. 
-		Only if it doesn't should we create a special one based on the unnamed parameter.
-	Then the TrashTool will work as expected.
 
 Could even consider creating a toolbar from a DirectoryTool
 How about a MountTool!

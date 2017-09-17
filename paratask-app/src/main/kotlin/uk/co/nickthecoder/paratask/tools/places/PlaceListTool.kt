@@ -46,7 +46,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
         PlaceParameter()
     }
 
-    override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter(this, columns, Place(Resource(File("")), ""))
 
     override var toolBarConnector: ToolBarToolConnector? = null
 

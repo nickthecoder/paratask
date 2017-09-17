@@ -38,7 +38,7 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.home.addTasks(
                 HomeTool(),
-                DirectoryTool(), PlacesTool(), PlaceListTool(), PlacesDirectoryTool(),
+                DirectoryTool(), PlacesTool(), PlaceListTool(), PlacesDirectoryTool(), MountTool(),
                 FindTool(), LocateTool(), GrepTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
@@ -57,6 +57,9 @@ class ParaTaskCore : Registers {
         files.addTasks(DirectoryTool(), GrepTool(), FindTool(), LocateTool())
         files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
+        val places = TaskGroup("Places")
+        places.addTasks(PlacesTool(), PlaceListTool(), PlacesDirectoryTool(), MountTool())
+
         val git = TaskGroup("Git")
         git.addTasks(GitTool(), GitStatusTool(), GitLogTool(), GitStashTool(), GitCommittedFilesTool())
         git.addTasks(GitCommitTask(), GitRMTask())
@@ -74,6 +77,7 @@ class ParaTaskCore : Registers {
 
         TaskRegistry.addGroup(git)
         TaskRegistry.addGroup(files)
+        TaskRegistry.addGroup(places)
         TaskRegistry.addGroup(images)
         TaskRegistry.addGroup(paratask)
         TaskRegistry.addGroup(misc)

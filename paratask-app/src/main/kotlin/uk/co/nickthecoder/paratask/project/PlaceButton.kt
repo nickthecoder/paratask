@@ -2,6 +2,7 @@ package uk.co.nickthecoder.paratask.project
 
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
@@ -18,6 +19,7 @@ class PlaceButton(val projectWindow: ProjectWindow, val place: Place) : Button()
 
         graphic = ImageView(place.resource.icon)
         text = place.label
+        tooltip = Tooltip(place.path)
 
         if (place.isDirectory()) {
             DropFiles(TransferMode.ANY) { event, files -> onDroppedFiles(event, files) }.applyTo(this)
