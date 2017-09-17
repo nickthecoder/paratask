@@ -88,6 +88,10 @@
     -fx-alignment: center-left;
 }
 
+.multiple-details {
+    -fx-padding: 0 10px 0 20px;
+}
+
 /***********************************
 * VariablePrompter                 *
 ***********************************/
@@ -117,7 +121,9 @@
     -fx-vgap: 10px;
     -fx-alignment: top-right;
 }
-
+.buttons.left {
+    -fx-alignment: top-left;
+}
 .buttons .button {
     -fx-min-width: 90px;
 }

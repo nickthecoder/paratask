@@ -20,11 +20,12 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.beans.property.SimpleStringProperty
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
+import uk.co.nickthecoder.paratask.parameters.fields.ListDetailField
 import uk.co.nickthecoder.paratask.parameters.fields.MultipleField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.escapeNL
-import uk.co.nickthecoder.paratask.util.unescapeNL
 import uk.co.nickthecoder.paratask.util.uncamel
+import uk.co.nickthecoder.paratask.util.unescapeNL
 
 class MultipleParameter<T>(
         name: String,
@@ -100,6 +101,10 @@ class MultipleParameter<T>(
         }
     }
 
+    var fieldFactory: (MultipleParameter<T>) -> ParameterField = {
+        MultipleField(this).build()
+    }
+
     init {
         value?.let { this.value = value }
     }
@@ -145,13 +150,6 @@ class MultipleParameter<T>(
         }
 
         return null
-    }
-
-    override fun createField(): ParameterField {
-        val result: ParameterField
-        result = MultipleField(this)
-        result.build()
-        return result
     }
 
     fun clear() {
@@ -215,6 +213,17 @@ class MultipleParameter<T>(
         super.coerce(v)
     }
 
+    fun asListDetail(height: Int = 200, allowReordering: Boolean = true, labelFactory: (T) -> String): MultipleParameter<T> {
+        return asListDetail(ListDetailsInfo(height = height, allowReordering = allowReordering, labelFactory = labelFactory))
+    }
+
+    fun asListDetail(info: ListDetailsInfo<T>): MultipleParameter<T> {
+        fieldFactory = { ListDetailField(this, info).build() }
+        return this
+    }
+
+    override fun createField(): ParameterField = fieldFactory(this)
+
     override fun toString(): String = "Multiple" + super.toString() + " = " + value
 
     override fun copy(): MultipleParameter<T> {
@@ -227,5 +236,11 @@ class MultipleParameter<T>(
 
         return result
     }
+
+    data class ListDetailsInfo<T>(
+            var height: Int = 300,
+            var allowReordering: Boolean = true,
+            var labelFactory: (T) -> String = { it.toString() }
+    )
 }
 

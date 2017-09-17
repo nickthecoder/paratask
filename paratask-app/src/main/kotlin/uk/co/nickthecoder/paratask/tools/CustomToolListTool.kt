@@ -52,7 +52,14 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
         compoundP.addParameters(labelP, toolP, newTabP)
         compoundP
-    }
+    }.asListDetail(labelFactory = {
+        val label = (it.find("label") as StringParameter).value
+        if (label.isBlank()) {
+            (it.find("tool") as TaskParameter).value?.taskD?.label ?: "<new item>"
+        } else {
+            label
+        }
+    })
 
     private val exampleRow = CustomToolRow("", this, true)
     override val rowFilter = RowFilter(this, columns, exampleRow)

@@ -31,8 +31,7 @@ import javafx.scene.text.TextFlow
 import uk.co.nickthecoder.paratask.parameters.*
 
 /**
- * Contains a list of {@link ParametersField}s layed out vertically, so that the controls line up (sharing the same x coordinate).
- * This is the base class for GroupParmetersForm and MultipleField.
+ * Contains a list of {@link ParametersField}s laid out vertically, so that the controls line up (sharing the same x coordinate).
  */
 class ParametersForm(val parentParameter: ParentParameter, val parameterField: ParameterField?)
     : Region(), FieldParent {

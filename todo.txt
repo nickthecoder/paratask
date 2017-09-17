@@ -1,8 +1,32 @@
 TODO	
 
-If there are no toolbars when loading a project, or when creating a new project window,
-	then create a CustomToolListTool with : "Quit", "new window" and "about" tasks.
-	Change the stylesheet (or just add the required styleclass?) of the HBox which hold the toolbars, so that it matches a toolbar
+MultipleParameter.
+	Create a field using a List/Details UI. Use it for CustomToolListTool and PlacesListTool.
+	Can also use it in GoKo for games and time limits.
+
+Change MultipleParameter, so that it knows the type of the inner parameter, rather than just ValueParameter<T>
+	Maybe create a superclass TypedMultipleParameter, and :
+	MultipleParameter<T> : TypedMultipleParameter<T,P : ValueParameter<T>>
+	NO!!! Just need MultipleParameter<T,P : ValueParameter<T>>
+
+TaskParameter to fire a change event, when the parameters are changed.
+
+For toolbar buttons with linked open tools, save the link, and restore it.
+	After saving tools and toolbars, Iterate over each toolbar, and each button within it.
+	If the button is a ToolButton, and the tool is visible, then save that info.
+	e.g. toolbarLinks: [ link: {toolbar=1, button=3, tab=3, right=true}, ... ]
+	When loading, IFF there were no errors, then re-link the tools (test that the tool is of the correct type).
+	When saving, make a list of toolbars (when saving a ToolBarTool in a tab, and also when saving the ToolBars without a tabbed tool)
+		Create a similar list when loading.
+		That way we can be sure that the toolbar index will be correct.
+
+MountTool to give option of using name, path or label for the button's text.
+
+Replace mounttool with a version using findmnt
+	Use --fstab and --mtab, so that we can list *unmounted* points as well.
+
+MythRecordedTool to show the TIME as well as the date.
+	Ensure that the DATE has a filterGetter suitable for date comparisons, and TIME has one suitable for time comparisions (i.e. < 4 hours ago)
 
 Editor must not discard changes or blank documents when re-run.
 

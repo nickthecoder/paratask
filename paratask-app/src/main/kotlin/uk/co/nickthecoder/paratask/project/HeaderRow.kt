@@ -102,7 +102,7 @@ class HeaderRow(vararg parameters: Parameter)
         fireTabToFocusNext()
     }
 
-    override fun updateField(field: ParameterField) {
+    override fun updateError(field: ParameterField) {
         if ((!field.parameter.hidden) && field.error.isVisible && field.error !== error) {
             error = field.error
             children.add(error)
@@ -110,6 +110,10 @@ class HeaderRow(vararg parameters: Parameter)
             children.remove(error)
             error = null
         }
+        requestLayout()
+    }
+
+    override fun updateField(field: ParameterField) {
         requestLayout()
     }
 

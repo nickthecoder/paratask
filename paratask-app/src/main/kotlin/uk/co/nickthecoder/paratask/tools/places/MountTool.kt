@@ -43,7 +43,7 @@ import java.nio.file.Path
 
 class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTool.MountPoint>, ToolBarTool {
 
-    override val taskD = TaskDescription("mount")
+    override val taskD = TaskDescription("mount", description = "Lists all mounted filesystems")
 
 
     override val rowFilter = RowFilter(this, columns, MountPoint(File(""), null))
