@@ -23,10 +23,8 @@ class MultipleExample : AbstractTask() {
     }
     var ints by intsP
 
-    val complexNumbersP = MultipleParameter("complexNumbers") {
-        val realP = DoubleParameter("real") // This name IS used! See the run method
-        val imaginaryP = DoubleParameter("imaginary") // This name IS used! See the run method
-        MultipleGroupParameter("complexNumber").addParameters(realP, imaginaryP)
+    val complexNumbersP = MultipleParameter("complexNumbers", isBoxed = true) {
+        ImaginaryNumberParameters()
     }
 
     init {
@@ -38,13 +36,22 @@ class MultipleExample : AbstractTask() {
 
         ints.forEach { println("Int = $it") }
 
-        complexNumbersP.value.forEach { mgp ->
-            val realP = mgp.find("real") as DoubleParameter
-            val imaginaryP = mgp.find("imaginary") as DoubleParameter
-            println("ComplexNumber ${realP.value} + ${imaginaryP.value}i")
+        complexNumbersP.innerParameters.forEach { imaginaryNumberParameters ->
+            println("ComplexNumber ${imaginaryNumberParameters.realP.value} + ${imaginaryNumberParameters.imaginaryP.value}i")
         }
     }
 
+    class ImaginaryNumberParameters : MultipleGroupParameter("complexNumber", "Complex Number") {
+        val realP = DoubleParameter("real") // This name IS used! See the run method
+        val plusP = InformationParameter("plus", information = "+")
+        val imaginaryP = DoubleParameter("imaginary") // This name IS used! See the run method
+        val iP = InformationParameter("i", information = "i")
+
+        init {
+            addParameters(realP, plusP, imaginaryP, iP)
+            asHorizontal(labelsAbove = null)
+        }
+    }
 }
 
 fun main(args: Array<String>) {

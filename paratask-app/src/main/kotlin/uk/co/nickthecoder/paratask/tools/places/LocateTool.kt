@@ -10,7 +10,10 @@ import uk.co.nickthecoder.paratask.parameters.IntParameter
 import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.SizeColumn
+import uk.co.nickthecoder.paratask.table.TableResults
+import uk.co.nickthecoder.paratask.table.TimestampColumn
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
 import uk.co.nickthecoder.paratask.util.process.OSCommand
@@ -36,7 +39,7 @@ class LocateTool : AbstractCommandTool<WrappedFile>() {
 
     val thumbnailer = Thumbnailer()
 
-    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+    override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
 
 
     init {

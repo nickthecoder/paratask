@@ -19,7 +19,6 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.beans.property.SimpleStringProperty
 import uk.co.nickthecoder.paratask.parameters.fields.InformationField
-import uk.co.nickthecoder.paratask.util.uncamel
 
 /**
  * Allows any text to appear on a form.

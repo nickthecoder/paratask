@@ -451,9 +451,9 @@ abstract class RecusriveFileOperation(sources: List<File>, destinationDirectory:
             if (!line.startsWith("removed")) {
                 val middle = line.indexOf("’ -> ‘")
                 if (middle > 0) {
-                    message("$copyCount of ${expectedCount} : ${line.substring(middle + 6, line.length - 1)}")
+                    message("$copyCount of $expectedCount : ${line.substring(middle + 6, line.length - 1)}")
                 } else {
-                    message("$copyCount of ${expectedCount} : $line")
+                    message("$copyCount of $expectedCount : $line")
                 }
                 copyCount++
             }

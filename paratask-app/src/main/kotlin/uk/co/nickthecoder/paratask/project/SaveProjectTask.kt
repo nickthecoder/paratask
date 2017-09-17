@@ -25,7 +25,7 @@ class SaveProjectTask(val project: Project) : AbstractTask() {
 
     override val taskD = TaskDescription("Save Project")
 
-    val fileP = FileParameter("projectFile", mustExist = null, expectFile = true, extensions = listOf<String>("json"))
+    val fileP = FileParameter("projectFile", mustExist = null, expectFile = true, extensions = listOf("json"))
 
     val projectDataP = project.projectDataP
 

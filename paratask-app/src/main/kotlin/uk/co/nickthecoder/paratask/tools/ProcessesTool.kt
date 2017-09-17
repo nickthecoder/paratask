@@ -27,7 +27,7 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
     val choiceP = OneOfParameter("filter", value = allP, choiceLabel = "Filter Type")
 
-    override val rowFilter = RowFilter<ProcessRow>(this, columns, ProcessRow(0, "", "", 0.0, 0.0, ""))
+    override val rowFilter = RowFilter(this, columns, ProcessRow(0, "", "", 0.0, 0.0, ""))
 
 
     init {

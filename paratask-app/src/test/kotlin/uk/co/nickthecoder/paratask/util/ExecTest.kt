@@ -1,11 +1,12 @@
 package uk.co.nickthecoder.paratask.util
 
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
-import uk.co.nickthecoder.paratask.util.process.*
+import uk.co.nickthecoder.paratask.util.process.Exec
+import uk.co.nickthecoder.paratask.util.process.ListSink
+import uk.co.nickthecoder.paratask.util.process.ProcessListener
+import uk.co.nickthecoder.paratask.util.process.StringSink
 import java.io.File
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 

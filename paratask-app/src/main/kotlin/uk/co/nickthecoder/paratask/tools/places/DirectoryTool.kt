@@ -95,7 +95,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
     // When a directory is changed, we use this, rather than latestDirectory to choose which ResultsTab to select
     var selectDirectory: File? = null
 
-    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+    override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
 
 
     init {

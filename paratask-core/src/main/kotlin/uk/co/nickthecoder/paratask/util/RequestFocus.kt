@@ -48,7 +48,7 @@ class RequestFocus(val startNode: Node, var attempts: Int) {
     }
 
     fun findFocusNode(node: Node): Node? {
-        if (debug) println("Trying node ${node}")
+        if (debug) println("Trying node $node")
         if (--attempts <= 0) return startNode
 
         if (node === startNode) {
@@ -56,11 +56,11 @@ class RequestFocus(val startNode: Node, var attempts: Int) {
         }
 
         if (node.isFocusTraversable) {
-            if (debug) println("Success! ${node}")
+            if (debug) println("Success! $node")
             return node // Success!
         }
         if (node is Parent) {
-            if (debug) println("Going inside parent node ${node}")
+            if (debug) println("Going inside parent node $node")
             findInsideParent(node)?.let { return it }
         }
         return null
@@ -68,22 +68,21 @@ class RequestFocus(val startNode: Node, var attempts: Int) {
 
 
     fun findFromNode(node: Node): Node? {
-        val parent = node.parent
-        if (parent == null) return null
+        val parent = node.parent ?: return null
 
         val children = parent.childrenUnmodifiable
         val idx = children.indexOf(node)
         if (idx >= 0) {
-            if (debug) println("Trying all siblings after ${node}")
+            if (debug) println("Trying all siblings after $node")
             for (i in idx + 1..children.size - 1) {
                 findFocusNode(children[i])?.let { return it }
             }
-            if (debug) println("Done all siblings after ${node}")
+            if (debug) println("Done all siblings after $node")
         }
         // We have looked at all the later siblings and their descendants
 
         // Now look at PARENT's later siblings
-        if (debug) println("Trying from parent node ${parent}")
+        if (debug) println("Trying from parent node $parent")
         findFromNode(parent)?.let { return it }
 
         if (parent.parent == null) {
@@ -102,7 +101,7 @@ class RequestFocus(val startNode: Node, var attempts: Int) {
         var debug: Boolean = false
 
         fun requestFocus(node: Node) {
-            if (debug) println("Requesting focus on ${node}")
+            if (debug) println("Requesting focus on $node")
             node.requestFocus()
         }
     }

@@ -58,7 +58,7 @@ abstract class AbstractResults(
             fileOptions.listOptions().forEach { option ->
 
                 option.shortcut?.let { shortcut ->
-                    if (option.isRow == false) {
+                    if (!option.isRow) {
                         if (shortcut.match(event)) {
                             tool.optionsRunner.runNonRow(option)
                             event.consume()

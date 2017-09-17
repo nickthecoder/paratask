@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
 import java.io.File
 
-class CreateDirectoryTask() : AbstractTask() {
+class CreateDirectoryTask : AbstractTask() {
 
     override val taskD = TaskDescription("createDirectory")
 

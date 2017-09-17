@@ -96,7 +96,7 @@ class BooleanParameter(
 
     companion object {
 
-        val NULLABLE_MAP = mutableMapOf<Boolean?, String>(Pair(true, "True"), Pair(false, "False"), Pair(null, "Null"))
+        val NULLABLE_MAP = mutableMapOf(Pair(true, "True"), Pair(false, "False"), Pair(null, "Null"))
 
         val NOT_NULLABLE_MAP = mutableMapOf<Boolean?, String>(Pair(true, "True"), Pair(false, "False"))
 

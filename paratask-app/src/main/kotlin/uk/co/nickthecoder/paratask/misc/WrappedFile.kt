@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.misc
 
-import javafx.scene.image.ImageView
 import uk.co.nickthecoder.paratask.ParaTask
-import uk.co.nickthecoder.paratask.util.isImage
 import java.io.File
 
 open class WrappedFile(override val file: File) : FileTest, Wrapped<File> {

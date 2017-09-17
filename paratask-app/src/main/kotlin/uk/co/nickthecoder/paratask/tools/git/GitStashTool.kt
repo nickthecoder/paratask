@@ -35,7 +35,7 @@ class GitStashTool : AbstractCommandTool<GitStashRow>(), HasDirectory {
 
     override val directory by directoryP
 
-    override val rowFilter = RowFilter<GitStashRow>(this, columns, GitStashRow("", "", ""))
+    override val rowFilter = RowFilter(this, columns, GitStashRow("", "", ""))
 
 
     init {

@@ -52,7 +52,7 @@ fun String.unescapeNL(): String {
     val builder = StringBuilder(this.length)
     var foundSlash = false
     for (i in 0..this.length - 1) {
-        val c = this.get(i)
+        val c = this[i]
 
         if (foundSlash) {
             if (c == 'n') {

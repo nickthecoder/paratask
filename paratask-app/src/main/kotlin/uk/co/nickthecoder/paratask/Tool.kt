@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask
 import groovy.lang.Binding
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
-import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.GroovyScript
 import uk.co.nickthecoder.paratask.options.Helper

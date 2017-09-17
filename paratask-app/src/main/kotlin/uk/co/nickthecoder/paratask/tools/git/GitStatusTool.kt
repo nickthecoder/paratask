@@ -24,7 +24,10 @@ import uk.co.nickthecoder.paratask.gui.DragFilesHelper
 import uk.co.nickthecoder.paratask.misc.FileTest
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.table.*
+import uk.co.nickthecoder.paratask.table.BaseFileColumn
+import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.TableResults
+import uk.co.nickthecoder.paratask.table.WrappedRow
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
 import uk.co.nickthecoder.paratask.tools.AbstractCommandTool
@@ -63,7 +66,7 @@ class GitStatusTool :
     override fun createHeader() = Header(this, directoryP)
 
     override fun createCommand(): OSCommand {
-        longTitle = "Git ${directory}"
+        longTitle = "Git $directory"
         return OSCommand("git", "status", "--porcelain").dir(directory!!)
     }
 

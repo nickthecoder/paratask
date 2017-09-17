@@ -49,7 +49,7 @@ class EditorTool() : AbstractTool() {
     val goToLineP = IntParameter("goToLine", required = false)
 
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
-        files.filter { it.isFile() }.forEach { addFile(it) }
+        files.filter { it.isFile }.forEach { addFile(it) }
         toolPane?.halfTab?.projectTab?.isSelected = true
     }
 

@@ -228,7 +228,7 @@ Then use Ctrl+V to paste it into your script.""")
         override fun toString(): String {
             val params = method.parameterTypes.map { it.simpleName }.joinToString(separator = ",")
 
-            return "${name}($params) : ${method.returnType.simpleName}"
+            return "$name($params) : ${method.returnType.simpleName}"
         }
 
         override fun code(): String {

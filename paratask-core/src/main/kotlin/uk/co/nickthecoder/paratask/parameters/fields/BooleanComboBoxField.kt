@@ -19,9 +19,7 @@ package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.ComboBox
-import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 

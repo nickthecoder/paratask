@@ -25,7 +25,7 @@ import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.io.File
 
-class RenameFileTask() : AbstractTask() {
+class RenameFileTask : AbstractTask() {
 
     override val taskD = TaskDescription("renameFile")
 

@@ -20,7 +20,6 @@ package uk.co.nickthecoder.paratask.gui
 import javafx.event.EventHandler
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.gui.AbstractTaskPrompter
 
 open class TaskPrompter(
         task: Task,

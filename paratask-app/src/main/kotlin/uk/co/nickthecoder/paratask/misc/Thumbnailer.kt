@@ -41,13 +41,13 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * Note that the height attribute is only used when creating ImageViews. The thumbnail files that are created are
  * 128x128.
  */
-class Thumbnailer() {
+class Thumbnailer {
 
     val heightP = IntParameter("thumbnailHeight", value = DEFAULT_THUMBNAIL_SIZE)
 
     val directoryThumbnailP = StringParameter("directoryThumbnail", value = ".thumbnails/default.jpg")
 
-    val messageDigest = MessageDigest.getInstance("MD5")
+    val messageDigest: MessageDigest = MessageDigest.getInstance("MD5")
 
     private val queue = ConcurrentLinkedQueue<File>()
 
@@ -66,10 +66,8 @@ class Thumbnailer() {
 
         if (thumbFile.exists()) {
             val inputStream = thumbFile.inputStream()
-            try {
+            inputStream.use { inputStream ->
                 return Image(inputStream)
-            } finally {
-                inputStream.close()
             }
         }
         return null
@@ -144,7 +142,7 @@ class Thumbnailer() {
 
         // Zero pad to 32 character
         while (hashText.length < 32) {
-            hashText = "0" + hashText;
+            hashText = "0" + hashText
         }
         return hashText
     }

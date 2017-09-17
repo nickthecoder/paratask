@@ -54,7 +54,7 @@ open class MultipleGroupParameter(
     override var value: MultipleGroupParameter
         get() = this
         set(newValue) {
-            for (child in children) {
+            children.forEach { child ->
                 if (child is ValueParameter<*>) {
                     child.stringValue = (newValue.find(child.name) as ValueParameter<*>).stringValue
                 }

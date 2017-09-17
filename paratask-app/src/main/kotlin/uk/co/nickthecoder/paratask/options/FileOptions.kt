@@ -191,7 +191,7 @@ class FileOptions(override val file: File) : FileListener, FileTest {
 
         val joptions = jroot.get("options")
         joptions?.let {
-            for (joption1 in joptions.asArray()) {
+            joptions.asArray().forEach { joption1 ->
                 val joption = joption1.asObject()
                 val option = Option.fromJson(joption)
                 addOption(option)
@@ -216,16 +216,14 @@ class FileOptions(override val file: File) : FileListener, FileTest {
         rowFilterScript?.let { jroot.add("rowFilterScript", it.source) }
 
         val jincludes = JsonArray()
-        for (include in includes) {
+        includes.forEach { include ->
             jincludes.add(include)
         }
         jroot.add("includes", jincludes)
 
         val joptions = JsonArray()
-        for (option in listOptions()) {
-
+        listOptions().forEach { option ->
             joptions.add(option.toJson())
-
         }
         jroot.add("options", joptions)
 

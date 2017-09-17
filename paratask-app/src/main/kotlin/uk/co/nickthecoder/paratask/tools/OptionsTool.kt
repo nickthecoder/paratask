@@ -81,7 +81,7 @@ class OptionsTool() : ListTableTool<Option>() {
         }))
     }
 
-    override val rowFilter = RowFilter<Option>(this, columns, GroovyOption())
+    override val rowFilter = RowFilter(this, columns, GroovyOption())
 
     override val resultsName = "Options"
 
@@ -93,7 +93,7 @@ class OptionsTool() : ListTableTool<Option>() {
     override fun createTableResults(): TableResults<Option> {
         val tableResults = super.createTableResults()
 
-        tableResults.dragHelper = SimpleDragHelper<List<Option>>(Option.dataFormat, onMoved = { onMoved(it) }) {
+        tableResults.dragHelper = SimpleDragHelper(Option.dataFormat, onMoved = { onMoved(it) }) {
             tableResults.selectedRows()
         }
 
@@ -137,7 +137,7 @@ class OptionsTool() : ListTableTool<Option>() {
     }
 
     override fun detaching() {
-        super<ListTableTool>.detaching()
+        super.detaching()
         autoRefresh.unwatchAll()
     }
 
@@ -216,12 +216,12 @@ class OptionsTool() : ListTableTool<Option>() {
         val shortcutP = ShortcutParameter("shortcut", value = option.shortcut)
 
         var groovyScriptP = ScriptParameter("groovyScript",
-                rows = 10, columns = 40, value = if (option is GroovyOption) option.script else "",
+                rows = 10, columns = 40, value = (option as? GroovyOption)?.script ?: "",
                 scriptVariables = fileOptions.scriptVariables)
 
         val scriptOrTaskP = OneOfParameter("action", choiceLabel = "Action Type")
 
-        var taskP = TaskParameter("task", value = if (option is TaskOption) option.task else null, taskFactory = RegisteredTaskFactory())
+        var taskP = TaskParameter("task", value = (option as? TaskOption)?.task, taskFactory = RegisteredTaskFactory())
 
         init {
             scriptOrTaskP.addParameters(taskP, groovyScriptP)
@@ -314,7 +314,7 @@ class OptionsTool() : ListTableTool<Option>() {
         }
     }
 
-    inner class OptionsMetaDataTask() : AbstractTask() {
+    inner class OptionsMetaDataTask : AbstractTask() {
 
         override val taskD = TaskDescription("optionsMetaData")
 

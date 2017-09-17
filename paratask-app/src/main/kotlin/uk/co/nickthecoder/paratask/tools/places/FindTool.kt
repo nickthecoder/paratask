@@ -67,7 +67,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     override val directory by directoryP
 
-    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+    override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
 
 
     init {

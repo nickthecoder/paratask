@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class MultipleMoveTask() : AbstractTask() {
+class MultipleMoveTask : AbstractTask() {
 
     override val taskD = TaskDescription("multipleMove", description =
     """Moves multiple files using wilcard patterns.

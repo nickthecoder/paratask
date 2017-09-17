@@ -89,15 +89,13 @@ class ShortcutParameter(
 
     private fun onChooseKey(buttonField: ButtonField) {
 
-        keyPressHandler = object : EventHandler<KeyEvent> {
-            override fun handle(event: KeyEvent) {
-                if (event.code != KeyCode.SHIFT && event.code != KeyCode.CONTROL && event.code != KeyCode.ALT) {
-                    keyP.value = event.code
-                    controlP.value = event.isControlDown
-                    shiftP.value = event.isShiftDown
-                    altP.value = event.isAltDown
-                    buttonField.button?.removeEventFilter(KeyEvent.KEY_PRESSED, keyPressHandler)
-                }
+        keyPressHandler = EventHandler { event ->
+            if (event.code != KeyCode.SHIFT && event.code != KeyCode.CONTROL && event.code != KeyCode.ALT) {
+                keyP.value = event.code
+                controlP.value = event.isControlDown
+                shiftP.value = event.isShiftDown
+                altP.value = event.isAltDown
+                buttonField.button?.removeEventFilter(KeyEvent.KEY_PRESSED, keyPressHandler)
             }
         }
         buttonField.button?.addEventFilter(KeyEvent.KEY_PRESSED, keyPressHandler)

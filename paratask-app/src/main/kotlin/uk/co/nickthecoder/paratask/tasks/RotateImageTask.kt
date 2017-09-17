@@ -20,7 +20,8 @@ package uk.co.nickthecoder.paratask.tasks
 import uk.co.nickthecoder.paratask.AbstractCommandTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
+import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 class RotateImageTask : AbstractCommandTask() {
@@ -31,7 +32,7 @@ class RotateImageTask : AbstractCommandTask() {
 
     val outputFileP = FileParameter("outputFile", label = "Output Image", mustExist = null)
 
-    val rotationP = ChoiceParameter<Int>("rotation", value = 0)
+    val rotationP = ChoiceParameter("rotation", value = 0)
 
     init {
         rotationP.addChoice("0", 0, "No Rotation")

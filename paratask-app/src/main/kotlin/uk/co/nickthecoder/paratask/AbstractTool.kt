@@ -18,14 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import javafx.application.Platform
-import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.options.OptionsRunner
 import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.project.*
+import uk.co.nickthecoder.paratask.project.Results
+import uk.co.nickthecoder.paratask.project.ThreadedToolRunner
+import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.paratask.project.ToolPane_Impl
 import uk.co.nickthecoder.paratask.util.HasDirectory
 import uk.co.nickthecoder.paratask.util.focusNext
 import uk.co.nickthecoder.paratask.util.uncamel

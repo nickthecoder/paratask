@@ -46,7 +46,7 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
 
     val compareTo by compareToP
 
-    override val rowFilter = RowFilter<WrappedFile>(this, columns, WrappedFile(File("")))
+    override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
 
 
     constructor(directory: File, commit: String) : this() {

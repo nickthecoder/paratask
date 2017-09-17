@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.gui
 
 import javafx.scene.Node
-import javafx.scene.input.DragEvent
 
 abstract class AbstractDropHelper : DropHelper {
 

@@ -31,7 +31,7 @@ class CompoundDragHelper(vararg helpers: SimpleDragHelper<*>) : DragHelper {
 
     init {
         val set = mutableSetOf<TransferMode>()
-        dragHelpers = helpers.asList<SimpleDragHelper<*>>()
+        dragHelpers = helpers.asList()
         dragHelpers.forEach {
             it.modes.forEach { set.add(it) }
         }

@@ -177,7 +177,7 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
 
                 // If we found the field, great, get the path.
                 if (field != null) {
-                    field.setAccessible(true)
+                    field.isAccessible = true
                     return (field.get(store) as Path).toFile()
                 }
 

@@ -50,7 +50,7 @@ class PlacesDirectoryTool : ListTableTool<PlaceInFile>() {
 
     val autoRefresh = AutoRefresh { toolPane?.parametersPane?.run() }
 
-    override val rowFilter = RowFilter<PlaceInFile>(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
 
     init {
@@ -128,7 +128,7 @@ class PlacesDirectoryTool : ListTableTool<PlaceInFile>() {
 
     override fun detaching() {
         autoRefresh.unwatchAll()
-        super<ListTableTool>.detaching()
+        super.detaching()
     }
 
     fun taskNew() = placesFile.taskNew()

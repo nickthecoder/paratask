@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import uk.co.nickthecoder.paratask.ParaTaskApp
-import uk.co.nickthecoder.paratask.gui.MyTab
 
 
 class ResultsTab(val results: Results) : MinorTab(results.label, results.node) {

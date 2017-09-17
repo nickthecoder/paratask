@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters.compound
 
-import javafx.beans.property.SimpleStringProperty
 import uk.co.nickthecoder.paratask.parameters.*
-import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.Resource
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.net.URL

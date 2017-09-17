@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class CopyFilesTask() : AbstractTask() {
+class CopyFilesTask : AbstractTask() {
 
     override val taskD = TaskDescription("copyFiles")
 

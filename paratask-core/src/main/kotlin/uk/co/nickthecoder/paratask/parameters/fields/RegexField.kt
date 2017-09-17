@@ -18,11 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.scene.control.TextField
-import javafx.scene.control.TextInputControl
-import javafx.scene.input.KeyEvent
-import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.parameters.RegexParameter
-import uk.co.nickthecoder.paratask.util.focusNext
 
 class RegexField(val regexParameter: RegexParameter)
     : ParameterField(regexParameter) {

@@ -17,12 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.util
 
-import com.sun.java.accessibility.util.SwingEventMonitor
 import javafx.application.Platform
-import javafx.embed.swing.SwingFXUtils
 import javafx.stage.Stage
-import sun.swing.SwingUtilities2
-import javax.swing.SwingUtilities
 
 /**
  * My application may close the last remaining JavaFX stage, and then try to create another one.
@@ -47,7 +43,7 @@ object AutoExit {
 
     fun inc(message: String) {
         privateInc()
-        if (log) printLog("inc $message ${resourceCounter}")
+        if (log) printLog("inc $message $resourceCounter")
     }
 
     private fun privateInc() {
@@ -56,7 +52,7 @@ object AutoExit {
 
     fun dec(message: String) {
         privateDec()
-        if (log) printLog("dec $message ${resourceCounter}")
+        if (log) printLog("dec $message $resourceCounter")
     }
 
     private fun privateDec() {
@@ -71,10 +67,10 @@ object AutoExit {
     fun show(stage: Stage) {
         privateInc()
         stage.show()
-        if (log) printLog("Show ${resourceCounter} $stage")
+        if (log) printLog("Show $resourceCounter $stage")
         stage.setOnHiding {
             privateDec()
-            if (log) printLog("Hide ${resourceCounter} $stage")
+            if (log) printLog("Hide $resourceCounter $stage")
         }
     }
 

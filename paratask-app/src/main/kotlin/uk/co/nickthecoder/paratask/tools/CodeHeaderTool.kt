@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     private var containsText by headerTestP
 
-    override val rowFilter = RowFilter<ProcessedFile>(this, columns, ProcessedFile(File("")))
+    override val rowFilter = RowFilter(this, columns, ProcessedFile(File("")))
 
     init {
         taskD.addParameters(directoriesP, extensionsP, showProcessedFilesP, depthP, headerTestP, withinLinesP, headerTextP)
@@ -109,7 +109,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             if (showProcessedFilesP.value == true) {
                 list.addAll(processedFiles)
             } else {
-                list.addAll(processedFiles.filter { it.processed == false })
+                list.addAll(processedFiles.filter { !it.processed })
             }
         }
 

@@ -21,7 +21,6 @@ import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.gui.ScriptVariables
 import uk.co.nickthecoder.paratask.parameters.ValueParameter
 
 class TaskForm(val task: Task) {

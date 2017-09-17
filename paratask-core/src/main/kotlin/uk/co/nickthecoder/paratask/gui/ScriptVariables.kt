@@ -6,7 +6,7 @@ package uk.co.nickthecoder.paratask.gui
  * the map will contain two items.
  * Reflection can be used to show the user properties of those two object, as well as the object's methods.
  */
-class ScriptVariables() {
+class ScriptVariables {
 
     val map = mutableMapOf<String, Class<*>>()
 

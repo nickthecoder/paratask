@@ -38,7 +38,7 @@ class IncludesTool : ListTableTool<String>() {
 
     override val resultsName = "Includes"
 
-    override val rowFilter = RowFilter<String>(this, columns, "")
+    override val rowFilter = RowFilter(this, columns, "")
 
     init {
         taskD.addParameters(optionsNameP, directoryP)

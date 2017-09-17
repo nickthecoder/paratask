@@ -18,17 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import uk.co.nickthecoder.paratask.gui.PlainWindow
-import uk.co.nickthecoder.paratask.tools.terminal.SimpleTerminal
 import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.enumChoices
-import uk.co.nickthecoder.paratask.project.ProjectWindow
+import uk.co.nickthecoder.paratask.tools.terminal.SimpleTerminal
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import uk.co.nickthecoder.paratask.util.process.SimpleSink
 import uk.co.nickthecoder.paratask.util.runAndWait
 
-abstract class AbstractCommandTask() : AbstractTask() {
+abstract class AbstractCommandTask : AbstractTask() {
 
     var command: OSCommand? = null
 

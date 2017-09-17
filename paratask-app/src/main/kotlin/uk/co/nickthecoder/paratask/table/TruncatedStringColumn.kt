@@ -34,7 +34,7 @@ class TruncatedStringColumn<R>(
     init {
         setCellFactory {
             val result = StringTableCell<R>()
-            result.setTextOverrun(overrunStyle)
+            result.textOverrun = overrunStyle
 
             result
         }

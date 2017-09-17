@@ -8,7 +8,7 @@ import java.time.temporal.TemporalAmount
 
 /**
  * Defines the second argument for a [Test] to be used within a [RowFilter].
- * It is call BType, because [Test.accept] takes two parameters named "a" and "b".
+ * It is call BType, because [Test.result] takes two parameters named "a" and "b".
  * "a" is taken from the table's data, and "b" is taken from a [Parameter] to be filled in by the user.
  * This class is responsible for creating that [Parameter], and extracting the value to be passed to the
  * accept method.
@@ -36,7 +36,7 @@ abstract class AbstractBType : BType {
     }
 }
 
-abstract class ValueParameterBType<T>() : AbstractBType() {
+abstract class ValueParameterBType<out T> : AbstractBType() {
 
     override fun copyValue(fromParameter: Parameter, toParameter: Parameter) {
         @Suppress("UNCHECKED_CAST")
@@ -48,7 +48,7 @@ abstract class ValueParameterBType<T>() : AbstractBType() {
 
 }
 
-class BooleanBType() : ValueParameterBType<Boolean?>() {
+class BooleanBType : ValueParameterBType<Boolean?>() {
 
     override val klass = java.lang.Boolean::class.java
 
@@ -59,30 +59,30 @@ class BooleanBType() : ValueParameterBType<Boolean?>() {
     }
 }
 
-class IntBType() : ValueParameterBType<Int?>() {
+class IntBType : ValueParameterBType<Int?>() {
 
     override val klass = java.lang.Integer::class.java
     override fun createParameter() = IntParameter("intValue", label = "")
 }
 
-class DoubleBType() : ValueParameterBType<Double?>() {
+class DoubleBType : ValueParameterBType<Double?>() {
 
     override val klass = java.lang.Double::class.java
     override fun createParameter() = DoubleParameter("doubleValue", label = "")
 }
 
-class StringBType() : ValueParameterBType<String>() {
+class StringBType : ValueParameterBType<String>() {
 
     override val klass = java.lang.String::class.java
     override fun createParameter() = StringParameter("stringValue", label = "")
 }
 
-class LocalDateBType() : ValueParameterBType<LocalDate>() {
+class LocalDateBType : ValueParameterBType<LocalDate>() {
     override val klass = LocalDate::class.java
     override fun createParameter() = DateParameter("dateValue", label = "")
 }
 
-class TemporalAmountBType() : AbstractBType() {
+class TemporalAmountBType : AbstractBType() {
     override val klass = TemporalAmount::class.java
     override fun createParameter() = TemporalAmountParameter("temporalAmountValue", label = "")
 

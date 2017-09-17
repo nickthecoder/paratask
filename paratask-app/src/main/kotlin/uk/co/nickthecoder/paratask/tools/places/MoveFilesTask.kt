@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.MultipleParameter
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 
-class MoveFilesTask() : AbstractTask() {
+class MoveFilesTask : AbstractTask() {
 
     override val taskD = TaskDescription("moveFiles")
 

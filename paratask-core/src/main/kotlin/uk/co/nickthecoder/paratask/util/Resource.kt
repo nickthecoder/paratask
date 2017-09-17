@@ -39,7 +39,7 @@ class Resource(val url: URL) : Serializable {
                 } else {
                     "web"
                 }
-                imageCache = ParaTask.imageResource("filetypes/${type}.png")
+                imageCache = ParaTask.imageResource("filetypes/$type.png")
             }
             return imageCache
         }
@@ -92,9 +92,9 @@ class Resource(val url: URL) : Serializable {
 
     fun isFileOrDirectory() = file != null
 
-    fun isFile() = file?.isFile() == true
+    fun isFile() = file?.isFile == true
 
-    fun isDirectory() = file?.isDirectory() == true
+    fun isDirectory() = file?.isDirectory == true
 
     override fun equals(other: Any?): Boolean {
         if (other is Resource) {

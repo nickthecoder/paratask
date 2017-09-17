@@ -3,7 +3,10 @@ package uk.co.nickthecoder.paratask.table.filter
 import uk.co.nickthecoder.paratask.parameters.compound.IntRangeParameter
 import uk.co.nickthecoder.paratask.util.Resource
 import java.io.File
-import java.time.*
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.TemporalAmount
 
 
@@ -42,7 +45,7 @@ class ToStringTest(val test: Test) : Test {
 }
 
 
-abstract class SafeTest<A, B>(label: String, oppositeLabel: String, val aClass: Class<*>, override val bClass: Class<*>)
+abstract class SafeTest<in A, in B>(label: String, oppositeLabel: String, val aClass: Class<*>, override val bClass: Class<*>)
     : AbstractTest(label, oppositeLabel) {
 
     override fun result(a: Any?, b: Any?): Boolean {
@@ -68,7 +71,7 @@ abstract class SafeTest<A, B>(label: String, oppositeLabel: String, val aClass: 
     abstract fun testResult(a: A, b: B): Boolean
 }
 
-abstract class UnarySafeTest<A>(label: String, oppositeLabel: String, val aClass: Class<*>)
+abstract class UnarySafeTest<in A>(label: String, oppositeLabel: String, val aClass: Class<*>)
     : AbstractTest(label, oppositeLabel) {
 
     override val bClass = null
@@ -205,11 +208,11 @@ class FileExits : FileUnaryTest("file exists", "file does not exist") {
 }
 
 class FileIsFile : FileUnaryTest("is a file", "not a file") {
-    override fun testResult(a: File) = a.isFile()
+    override fun testResult(a: File) = a.isFile
 }
 
 class FileIsDirectory : FileUnaryTest("is a directory", "not a directory") {
-    override fun testResult(a: File) = a.isDirectory()
+    override fun testResult(a: File) = a.isDirectory
 }
 
 /* --- RESOURCE --- */

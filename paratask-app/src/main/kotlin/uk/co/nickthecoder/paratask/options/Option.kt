@@ -71,7 +71,7 @@ interface Option : Externalizable, Comparable<Option> {
                 joption.set("task", task.creationString())
             }
             else -> {
-                throw RuntimeException("Unknown Option : ${javaClass}")
+                throw RuntimeException("Unknown Option : $javaClass")
             }
         }
         with(joption) {
@@ -94,7 +94,7 @@ interface Option : Externalizable, Comparable<Option> {
 
         if (aliases.size > 0) {
             val jaliases = JsonArray()
-            for (alias in aliases) {
+            aliases.forEach { alias ->
                 jaliases.add(alias)
             }
             joption.add("aliases", jaliases)

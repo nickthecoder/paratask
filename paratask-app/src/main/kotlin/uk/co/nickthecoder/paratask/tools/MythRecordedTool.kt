@@ -21,9 +21,9 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.StringParameter
-import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
+import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import java.io.BufferedReader
 import java.io.DataOutputStream
@@ -53,7 +53,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
 
     val directoryP = FileParameter("directory", expectFile = false, value = File("/video/myth/"))
 
-    override val rowFilter = RowFilter<RecordedLine>(this, columns, RecordedLine("", "", Date(0), "", "", "", File("")))
+    override val rowFilter = RowFilter(this, columns, RecordedLine("", "", Date(0), "", "", "", File("")))
 
     init {
         Class.forName("com.mysql.jdbc.Driver")
@@ -132,19 +132,19 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
             connection.requestMethod = "POST"
             println("Set to post")
 
-            connection.setDoOutput(true)
+            connection.doOutput = true
             println("Setting output stream")
-            val wr = DataOutputStream(connection.getOutputStream())
+            val wr = DataOutputStream(connection.outputStream)
             wr.writeBytes(urlParameters)
             wr.flush()
             wr.close()
 
             println("Created the connection")
-            val responseCode = connection.getResponseCode()
-            println("Response code ${responseCode}")
+            val responseCode = connection.responseCode
+            println("Response code $responseCode")
 
             // We don't care about the results!
-            val input = BufferedReader(InputStreamReader(connection.getInputStream()))
+            val input = BufferedReader(InputStreamReader(connection.inputStream))
             var line = input.readLine()
             while (line != null) {
                 println(line)

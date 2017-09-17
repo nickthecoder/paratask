@@ -30,7 +30,7 @@ class ShortcutsTool : ListTableTool<ParataskAction>() {
 
     override val taskD = TaskDescription("shortcuts", description = "Keyboard Shortcuts")
 
-    override val rowFilter = RowFilter<ParataskAction>(this, columns, ParataskActions.EDIT_COPY)
+    override val rowFilter = RowFilter(this, columns, ParataskActions.EDIT_COPY)
 
     init {
         columns.add(Column<ParataskAction, ImageView>("icon", label = "", getter = { action -> ImageView(action.image) }))

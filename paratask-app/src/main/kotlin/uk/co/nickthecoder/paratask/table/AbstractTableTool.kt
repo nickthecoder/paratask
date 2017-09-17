@@ -18,8 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.control.TableRow
-import javafx.scene.control.TableView
-import javafx.scene.input.DragEvent
 import uk.co.nickthecoder.paratask.AbstractTool
 
 abstract class AbstractTableTool<R : Any> : AbstractTool(), TableTool<R> {

@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters.fields
 
 import javafx.event.EventHandler
-import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
 import javafx.stage.DirectoryChooser

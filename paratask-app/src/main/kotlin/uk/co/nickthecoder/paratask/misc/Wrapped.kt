@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.paratask.misc
 
-interface Wrapped<T> {
+interface Wrapped<out T> {
 
     val wrapped: T
 }

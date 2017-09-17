@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask
 
 import javafx.beans.property.BooleanProperty
-import uk.co.nickthecoder.paratask.TaskListener
 
 interface TaskRunner {
 

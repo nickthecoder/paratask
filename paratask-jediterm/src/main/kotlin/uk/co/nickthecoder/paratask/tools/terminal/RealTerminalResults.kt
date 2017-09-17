@@ -32,12 +32,10 @@ import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.gui.CompoundDropHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
-import uk.co.nickthecoder.paratask.gui.DropHelper
 import uk.co.nickthecoder.paratask.gui.SimpleDropHelper
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.util.process.OSCommand
 import java.nio.charset.Charset
-import javax.swing.JComponent
 import javax.swing.SwingUtilities
 
 class RealTerminalResults(tool: Tool)

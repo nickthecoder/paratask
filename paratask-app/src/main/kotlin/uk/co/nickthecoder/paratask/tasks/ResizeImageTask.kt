@@ -61,10 +61,10 @@ class ResizeImageTask : AbstractCommandTask() {
         if (resizeOptionP.value === sizeP) {
             size = "${widthP.value}x${heightP.value}"
             if (keepAspectRationP.value == false) {
-                size = size + "!"
+                size += "!"
             }
             if (onlyShrinkP.value == true) {
-                size = size + ">"
+                size += ">"
             }
         } else {
             size = "${percentageP.value}%"

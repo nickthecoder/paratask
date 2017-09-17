@@ -36,7 +36,7 @@ class PlaceButton(val projectWindow: ProjectWindow, val place: Place) : Button()
 
     fun onDroppedFiles(event: DragEvent, files: List<File>) {
         val dir = place.file
-        if (dir != null && dir.isDirectory()) {
+        if (dir != null && dir.isDirectory) {
             FileOperations.instance.fileOperation(files, dir, event.transferMode)
         }
     }

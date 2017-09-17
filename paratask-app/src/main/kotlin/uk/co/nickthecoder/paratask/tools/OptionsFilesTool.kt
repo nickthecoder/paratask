@@ -36,7 +36,7 @@ class OptionsFilesTool : ListTableTool<FileOptions>(), HasDirectory {
 
     val directoryP = Preferences.createOptionsFileParameter()
 
-    override val rowFilter = RowFilter<FileOptions>(this, columns, FileOptions(File("")))
+    override val rowFilter = RowFilter(this, columns, FileOptions(File("")))
 
     override val directory: File?
         get() = directoryP.value ?: directoryP.choiceValues().filterNotNull().firstOrNull()

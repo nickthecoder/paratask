@@ -4,8 +4,6 @@ import uk.co.nickthecoder.paratask.AbstractTask
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.DoubleParameter
-import uk.co.nickthecoder.paratask.parameters.compound.ScaledDouble
-import uk.co.nickthecoder.paratask.parameters.compound.ScaledDoubleParameter
 
 class DoubleExample : AbstractTask() {
 
@@ -19,7 +17,7 @@ class DoubleExample : AbstractTask() {
     }
 
     override fun run() {
-        println("Length = ${length}")
+        println("Length = $length")
     }
 
 }

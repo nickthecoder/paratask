@@ -73,9 +73,9 @@ open class DoubleParameter(
         }
 
         if (v < minValue) {
-            return "Cannot be less than ${minValue}"
+            return "Cannot be less than $minValue"
         } else if (v > maxValue) {
-            return "Cannot be more than ${maxValue}"
+            return "Cannot be more than $maxValue"
         }
         return null
     }

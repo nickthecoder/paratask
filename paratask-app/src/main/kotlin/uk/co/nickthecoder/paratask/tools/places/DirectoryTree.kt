@@ -51,7 +51,7 @@ class DirectoryTree(
 
     var onSelected: ((File) -> Unit)? = null
 
-    val dragHelper = DragFilesHelper() {
+    val dragHelper = DragFilesHelper {
         val item = selectionModel.selectedItemProperty().get() as DirectoryItem?
         if (item == null) {
             null
@@ -211,7 +211,7 @@ class DirectoryTree(
         }
 
         override fun isLeaf(): Boolean {
-            return getChildren().isEmpty()
+            return children.isEmpty()
         }
 
         override fun toString(): String = directory.name

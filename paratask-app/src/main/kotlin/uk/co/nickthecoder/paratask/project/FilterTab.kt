@@ -11,7 +11,7 @@ import uk.co.nickthecoder.paratask.parameters.addParameters
 import uk.co.nickthecoder.paratask.parameters.fields.ParametersForm
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 
-class FilterTab(val tool: Tool, val filters: Map<String, RowFilter<*>>) : MinorTab("Filter") {
+class FilterTab(val tool: Tool, filters: Map<String, RowFilter<*>>) : MinorTab("Filter") {
 
     val whole = BorderPane()
 

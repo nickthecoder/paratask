@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.misc
 
-import uk.co.nickthecoder.paratask.Tool
 import java.io.File
 import java.nio.file.Path
 

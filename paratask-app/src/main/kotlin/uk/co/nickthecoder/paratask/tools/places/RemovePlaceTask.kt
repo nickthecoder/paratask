@@ -22,7 +22,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 
 
 class RemovePlaceTask(val place: PlaceInFile) : AbstractTask() {
-    override val taskD = TaskDescription("removePlace", description = "Remove:  ${place.label} (${place.resource.toString()})")
+    override val taskD = TaskDescription("removePlace", description = "Remove:  ${place.label} (${place.resource})")
 
     override fun run() {
         place.placesFile.places.remove(place)

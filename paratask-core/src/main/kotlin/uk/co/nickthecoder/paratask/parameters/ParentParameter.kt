@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 
 interface ParentParameter : Parameter {
 
@@ -33,9 +32,7 @@ interface ParentParameter : Parameter {
         if (parameter.hidden) {
             return
         }
-        if (parameter is ParentParameter) {
-            parameter.check()
-        }
+        (parameter as? ParentParameter)?.check()
 
         if (parameter is ValueParameter<*> && parameter.expression != null) {
             if (parameter.expression == "") {

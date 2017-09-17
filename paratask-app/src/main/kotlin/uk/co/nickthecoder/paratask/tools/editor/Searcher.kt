@@ -119,7 +119,7 @@ class Searcher(val codeArea: CodeArea) {
         val match = matches[index]
         codeArea.selectRange(match.end, match.start)
         matchNumber = index
-        matchPosition = "Match ${matchNumber + 1} of " + if (matches.size >= MAX_MATCHES) "at least ${MAX_MATCHES}" else "${matches.size}"
+        matchPosition = "Match ${matchNumber + 1} of " + if (matches.size >= MAX_MATCHES) "at least $MAX_MATCHES" else "${matches.size}"
         ParaTaskApp.logFocus("Searcher.gotoMatch. codeArea.requestFocus()")
         codeArea.requestFocus()
     }

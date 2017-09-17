@@ -32,7 +32,7 @@ class FlipImageTask : AbstractCommandTask() {
 
     val outputFileP = FileParameter("outputFile", label = "Output Image", mustExist = null)
 
-    val directionP = ChoiceParameter<String>("direction", value = "x")
+    val directionP = ChoiceParameter("direction", value = "x")
 
     init {
 

@@ -26,10 +26,7 @@ class TemporalAmountParameter(
 
     val value: TemporalAmount?
         get() {
-            val a = amount
-            if (a == null) {
-                return null
-            }
+            val a = amount ?: return null
             return when (units) {
                 TimeUnit.MILLISECONDS -> Duration.ofMillis(a.toLong())
                 TimeUnit.SECONDS -> Duration.ofSeconds(a.toLong())

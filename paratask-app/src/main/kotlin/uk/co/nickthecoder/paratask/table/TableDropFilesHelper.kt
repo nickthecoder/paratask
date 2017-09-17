@@ -19,7 +19,6 @@ package uk.co.nickthecoder.paratask.table
 
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
-import uk.co.nickthecoder.paratask.misc.FileOperations
 import java.io.File
 
 /**
@@ -33,5 +32,4 @@ abstract class TableDropFilesHelper<R : Any>(
 
     : TableDropHelper<List<File>, R>(
         dataFormat = DataFormat.FILES,
-        modes = modes) {
-}
+        modes = modes)

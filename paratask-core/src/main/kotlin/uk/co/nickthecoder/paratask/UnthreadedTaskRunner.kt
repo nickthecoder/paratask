@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.Task
-
 open class UnthreadedTaskRunner(task: Task) : AbstractTaskRunner(task) {
 
     override fun run() {

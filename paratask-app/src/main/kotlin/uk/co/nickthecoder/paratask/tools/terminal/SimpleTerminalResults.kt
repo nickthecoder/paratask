@@ -22,8 +22,6 @@ import javafx.scene.layout.StackPane
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.project.ResultsTab
-import uk.co.nickthecoder.paratask.project.ToolPane
 import uk.co.nickthecoder.paratask.util.Stoppable
 import uk.co.nickthecoder.paratask.util.process.Exec
 import uk.co.nickthecoder.paratask.util.process.OSCommand

@@ -4,7 +4,7 @@ import org.junit.Test
 import uk.co.nickthecoder.paratask.misc.WrappedFile
 import java.io.File
 
-class WrappedFileTest() {
+class WrappedFileTest {
 
     val base = currentDirectory.child("src", "test", "resources", "WrappedFile")
 

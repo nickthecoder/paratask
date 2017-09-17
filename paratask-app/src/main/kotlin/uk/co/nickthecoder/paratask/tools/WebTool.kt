@@ -20,14 +20,13 @@ package uk.co.nickthecoder.paratask.tools
 import javafx.concurrent.Worker
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebView
-import uk.co.nickthecoder.paratask.TaskDescription
-import uk.co.nickthecoder.paratask.project.AbstractResults
-import uk.co.nickthecoder.paratask.project.Results
-import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.ParaTaskApp
+import uk.co.nickthecoder.paratask.TaskDescription
+import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Header
-import uk.co.nickthecoder.paratask.project.HeaderRow
+import uk.co.nickthecoder.paratask.project.Results
 
 class WebTool() : AbstractTool() {
 

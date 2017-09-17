@@ -81,7 +81,7 @@ class GitLogTool :
 
     override fun createCommand(): OSCommand {
 
-        longTitle = "Git Log ${directory}"
+        longTitle = "Git Log $directory"
 
         val command = OSCommand("git", "log", "--date=short").dir(directory!!)
 

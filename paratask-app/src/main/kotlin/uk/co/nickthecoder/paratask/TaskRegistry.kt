@@ -59,12 +59,12 @@ object TaskRegistry {
     }
 
     fun createTool(creationString: String): Tool {
-        val cs = taskAliases.get(creationString) ?: creationString
+        val cs = taskAliases[creationString] ?: creationString
         return Tool.create(cs)
     }
 
     fun createTask(creationString: String): Task {
-        val cs = taskAliases.get(creationString) ?: creationString
+        val cs = taskAliases[creationString] ?: creationString
         return Task.create(cs)
     }
 
