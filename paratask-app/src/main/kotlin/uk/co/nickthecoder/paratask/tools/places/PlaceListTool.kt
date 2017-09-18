@@ -44,7 +44,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
 
     val placesP = MultipleParameter("files") {
         PlaceParameter()
-    }
+    }.asListDetail() { it.labelP.value }
 
     override val rowFilter = RowFilter(this, columns, Place(Resource(File("")), ""))
 
