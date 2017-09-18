@@ -1,5 +1,6 @@
 TODO
 
+
 Create a "MultipleChoiceParameter" allowing a set of items to be selected from a list.
 	Option to allow them to be re-organised (or maybe create a different type?)
 		One's value is a Set, the other a List???
@@ -11,8 +12,6 @@ Allow columns to be hidden (Right click any column header. List all columns in t
 Save filters in the project file.
 	Specify the index of the tab if there are more than one results.
 	Each test could need a code. e.g. "==", "contains". Label can default to the code.
-		
-So, Just create a TrashTool, which cannot be embedded within DirectoryTool (except with a bodge!)
 
 TaskParameter to fire a change event, when the parameters are changed.
 
@@ -62,9 +61,6 @@ PlaceParameter could be the new CompoundParameter, which has a Place
 RowFilter.Condition renamed to ConditionParameter could be a new CompoundParameter, returning a (new) Condition object.
 
 Bugs
-	ParameterForm does NOT handle squashed info parameters. See GroupExample, and squash it.
-	GroupExample - the bottom grid has no gaps between the rows.
-
 	JediTerm problem when using a split pane - sometime the Swing component stops working.
 		This is a long standing known bug with JediTerm.
 		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.

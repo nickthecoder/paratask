@@ -22,6 +22,7 @@ import javafx.css.StyleConverter
 import javafx.css.Styleable
 import javafx.css.StyleableDoubleProperty
 import javafx.geometry.HPos
+import javafx.geometry.Orientation
 import javafx.geometry.VPos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
@@ -211,6 +212,8 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
         return Math.max(w, otherWidths ?: 0.0) + insets.left + insets.right
     }
 
+    override fun getContentBias() = Orientation.HORIZONTAL
+
     override fun computeMinHeight(width: Double): Double {
         val mchildren: List<Node> = getManagedChildren<Node>().filter { it.isVisible }
         val sum = sum(mchildren, Node::minHeight, width)
@@ -399,8 +402,6 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
             }
             h = controlContainer.prefHeight(w)
 
-            // TODO This doesn't work well with InformationParameter that can span multiple lines.
-            // See GroupExample (and resize the window narrower than the info message.)
             layoutInArea(controlContainer, x, y, w, h, 0.0, HPos.LEFT, VPos.CENTER)
 
             // Error message
