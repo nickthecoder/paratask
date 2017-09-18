@@ -103,7 +103,10 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
 
     fun parameters(task: Task): String {
-        return task.valueParameters().map { "${it.name}=${it.value?.toString() ?: it.expression ?: ""}" }.joinToString()
+        return task.valueParameters().map {
+            // Regex trancates any parameter value with one or more new line characters.
+            "${it.name}=${it.value?.toString()?.replace(Regex("(?s)\n.*\\z"), " …") ?: it.expression ?: ""}"
+        }.joinToString()
     }
 }
 
