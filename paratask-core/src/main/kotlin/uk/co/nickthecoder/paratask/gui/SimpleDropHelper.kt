@@ -30,7 +30,7 @@ open class SimpleDropHelper<T>(
 
 ) : AbstractDropHelper() {
 
-    fun accept(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
+    open fun accept(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
         debugPrintln("accept Target ${event.gestureTarget}")
         if (!event.dragboard.hasContent(dataFormat)) {
             debugPrintln("Not accepted : No data of the correct type")

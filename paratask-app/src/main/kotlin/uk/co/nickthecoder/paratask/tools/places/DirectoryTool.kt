@@ -24,6 +24,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToolBar
 import javafx.scene.image.ImageView
+import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.SidePanel
@@ -39,13 +40,14 @@ import uk.co.nickthecoder.paratask.project.*
 import uk.co.nickthecoder.paratask.table.*
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.table.filter.SingleRowFilter
-import uk.co.nickthecoder.paratask.util.FileLister
-import uk.co.nickthecoder.paratask.util.HasDirectory
-import uk.co.nickthecoder.paratask.util.currentDirectory
-import uk.co.nickthecoder.paratask.util.homeDirectory
+import uk.co.nickthecoder.paratask.util.*
 import java.io.File
 
-class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowFilter<WrappedFile> {
+class DirectoryTool :
+        AbstractTableTool<WrappedFile>(),
+        HasDirectory,
+        HasDropHelper,
+        SingleRowFilter<WrappedFile> {
 
     override val taskD = TaskDescription(name = "directory", description = "List Directories")
 
@@ -82,6 +84,19 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
         get() {
             return selectedDirectoryTableResults()?.directory ?: directoriesP.value.firstOrNull()
         }
+
+    override val dropHelper = object : DropFiles(dropped = { event, files ->
+        directory?.let {
+            FileOperations.instance.fileOperation(files, it, event.transferMode)
+        }
+    }) {
+        override fun accept(event: DragEvent): Pair<Node?, Array<TransferMode>>? {
+            if (directory == null) {
+                return Pair(null, emptyArray())
+            }
+            return super.accept(event)
+        }
+    }
 
 
     /**

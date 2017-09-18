@@ -68,6 +68,23 @@
                     "value": "true"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.TrashTool$MoveToTrashTask",
+            "code": "-",
+            "label": "Move to Trash",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "files",
+                    "expression": "rows.collect{ it.file }"
+                }
+            ]
         }
     ]
 }

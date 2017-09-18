@@ -28,13 +28,13 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class TrashTool :
-        AbstractCommandTool<TrashTool.DeletedFile>(),
-        SingleRowFilter<TrashTool.DeletedFile>,
+        AbstractCommandTool<TrashTool.TrashFile>(),
+        SingleRowFilter<TrashTool.TrashFile>,
         HasDropHelper {
 
     override val taskD = TaskDescription(name = "trash", description = "List Deleted Files")
 
-    override val rowFilter = RowFilter(this, columns, DeletedFile(File(""), LocalDateTime.now()))
+    override val rowFilter = RowFilter(this, columns, TrashFile(File(""), LocalDateTime.now()))
 
     override val dropHelper = DropFiles(arrayOf(TransferMode.MOVE)) { _, files ->
         files.filter { it.exists() }.forEach {
@@ -47,9 +47,9 @@ class TrashTool :
     init {
         taskD.addParameters()
 
-        columns.add(FileNameColumn<DeletedFile>("name", getter = { it.file }))
-        columns.add(Column<DeletedFile, File>("path", getter = { it.file }))
-        columns.add(LocalDateTimeColumn<DeletedFile>("deleted", getter = { it.deletedOn }))
+        columns.add(FileNameColumn<TrashFile>("name", getter = { it.file }))
+        columns.add(Column<TrashFile, File>("path", getter = { it.file }))
+        columns.add(LocalDateTimeColumn<TrashFile>("deleted", getter = { it.deletedOn }))
     }
 
     override fun createCommand(): OSCommand {
@@ -64,7 +64,7 @@ class TrashTool :
             val path = matcher.group(2)
             val deletedOn = LocalDateTime.parse(dateTimeString, dateTimePattern)
 
-            list.add(DeletedFile(File(path), deletedOn))
+            list.add(TrashFile(File(path), deletedOn))
         }
     }
 
@@ -78,28 +78,6 @@ class TrashTool :
         val tableResults = TableResults(this, list, "Trash", columns, rowFilter = rowFilter)
         tableResults.dropHelper = dropHelper
         return listOf(tableResults)
-    }
-
-    fun restoreFilesTask(files: List<File>): RestoreFilesTask {
-        val restoreTask = RestoreFilesTask()
-        restoreTask.filesP.value = files
-        return restoreTask
-    }
-
-    class RestoreFilesTask : AbstractTask() {
-        override val taskD = TaskDescription("restoreFiles")
-
-        val filesP = MultipleParameter("files") {
-            FileParameter("file", mustExist = true, expectFile = null)
-        }
-
-        override fun run() {
-            filesP.innerParameters.forEach { fileParameter ->
-                fileParameter.value?.let { file ->
-                    restoreFile(file)
-                }
-            }
-        }
     }
 
     companion object {
@@ -161,7 +139,7 @@ class TrashTool :
         }
     }
 
-    class DeletedFile(file: File, val deletedOn: LocalDateTime) : WrappedFile(file)
+    class TrashFile(file: File, val deletedOn: LocalDateTime) : WrappedFile(file)
 
     class EmptyTrashTask : AbstractCommandTask() {
         override val taskD = TaskDescription("emptyTrash")
@@ -174,6 +152,47 @@ class TrashTool :
 
         override fun createCommand(): OSCommand {
             return OSCommand("trash-empty", daysAgoP.value)
+        }
+    }
+
+
+    class RestoreFilesTask : AbstractTask() {
+        override val taskD = TaskDescription("restoreFiles")
+
+        val filesP = MultipleParameter("files") {
+            FileParameter("file", mustExist = false, expectFile = null)
+        }
+
+        init {
+            taskD.addParameters(filesP)
+        }
+
+        override fun run() {
+            filesP.innerParameters.forEach { fileParameter ->
+                fileParameter.value?.let { file ->
+                    restoreFile(file)
+                }
+            }
+        }
+    }
+
+    class MoveToTrashTask : AbstractTask() {
+        override val taskD = TaskDescription("moveToTrash")
+
+        val filesP = MultipleParameter("files") {
+            FileParameter("file", mustExist = true, expectFile = null)
+        }
+
+        init {
+            taskD.addParameters(filesP)
+        }
+
+        override fun run() {
+            filesP.innerParameters.forEach { fileParameter ->
+                fileParameter.value?.let { file ->
+                    trashFile(file)
+                }
+            }
         }
     }
 }

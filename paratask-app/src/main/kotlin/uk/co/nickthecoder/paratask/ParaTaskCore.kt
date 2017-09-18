@@ -55,7 +55,7 @@ class ParaTaskCore : Registers {
 
         val files = TaskGroup("Files")
         files.addTasks(DirectoryTool(), TrashTool(), GrepTool(), FindTool(), LocateTool())
-        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), TrashTool.EmptyTrashTask())
+        files.addTasks(CopyFilesTask(), MoveFilesTask(), RenameFileTask(), TrashTool.MoveToTrashTask(), TrashTool.RestoreFilesTask(), TrashTool.EmptyTrashTask())
         files.addTasks(GrepTask(), SearchAndReplaceTask(), CreateDirectoryTask())
 
         val places = TaskGroup("Places")

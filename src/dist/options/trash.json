@@ -6,17 +6,6 @@
     ],
     "options": [
         {
-            "type": "groovy",
-            "script": "tool.restoreFilesTask( rows.collect{ it.file } )\n",
-            "code": "r",
-            "label": "Restore Files",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": true
-        },
-        {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.places.TrashTool$EmptyTrashTask",
             "code": "empty",
@@ -30,6 +19,23 @@
                 {
                     "name": "daysAgo",
                     "value": "7"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.TrashTool$RestoreFilesTask",
+            "code": "r",
+            "label": "Restore Files",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "files",
+                    "expression": "rows.collect{ it.file }"
                 }
             ]
         }
