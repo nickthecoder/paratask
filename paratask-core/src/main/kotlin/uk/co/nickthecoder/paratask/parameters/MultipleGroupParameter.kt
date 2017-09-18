@@ -97,8 +97,8 @@ open class MultipleGroupParameter(
         }
     }
 
-    override fun copy(): SimpleGroupParameter {
-        val copy = SimpleGroupParameter(name = name, label = label, description = description)
+    override fun copy(): MultipleGroupParameter {
+        val copy = MultipleGroupParameter(name = name, label = label, description = description)
         copyAbstractAttributes(copy)
         return copy
     }
