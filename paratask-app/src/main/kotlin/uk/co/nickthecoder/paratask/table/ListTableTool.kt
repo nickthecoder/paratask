@@ -24,6 +24,8 @@ abstract class ListTableTool<R : Any> : AbstractTableTool<R>(), SingleRowFilter<
 
     var list = mutableListOf<R>()
 
+    val columns = mutableListOf<Column<R, *>>()
+
     open val resultsName = "Results"
 
     open fun createTableResults(): TableResults<R> {

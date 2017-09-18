@@ -54,6 +54,8 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
     // Used to select the correct ResultsTab when refreshing the tool
     var latestFile: PlacesFile? = null
 
+    val columns = mutableListOf<Column<PlaceInFile, *>>()
+
     override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
     override var toolBarConnector: ToolBarToolConnector? = null

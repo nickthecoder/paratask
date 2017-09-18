@@ -95,8 +95,7 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
     // When a directory is changed, we use this, rather than latestDirectory to choose which ResultsTab to select
     var selectDirectory: File? = null
 
-    override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
-
+    override val rowFilter = RowFilter(this, createColumns(), WrappedFile(File("")))
 
     init {
 
@@ -106,10 +105,16 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
                 thumbnailer.heightP, thumbnailer.directoryThumbnailP, autoRefreshP)
         taskD.unnamedParameter = directoriesP
 
+    }
+
+    fun createColumns(): List<Column<WrappedFile, *>> {
+        val columns = mutableListOf<Column<WrappedFile, *>>()
         columns.add(Column<WrappedFile, ImageView>("icon", width = 90, label = "", getter = { thumbnailer.thumbnailImageView(it.file) }))
         columns.add(FileNameColumn<WrappedFile>("name", getter = { it.file }))
         columns.add(TimestampColumn<WrappedFile>("modified", getter = { it.file.lastModified() }))
         columns.add(SizeColumn<WrappedFile>("size", getter = { it.file.length() }))
+
+        return columns
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -262,9 +267,10 @@ class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowF
 
 
     inner class DirectoryTableResults(val directory: File, list: List<WrappedFile>)
-        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, columns, rowFilter = rowFilter, canClose = true) {
+        : TableResults<WrappedFile>(this@DirectoryTool, list, directory.name, createColumns(), rowFilter = rowFilter, canClose = true) {
 
         init {
+
             dropHelper = DirectoryDropHelper(directory)
 
             dragHelper = DragFilesHelper {

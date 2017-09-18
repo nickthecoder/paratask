@@ -37,7 +37,7 @@ abstract class AbstractCommandTask : AbstractTask() {
         INHERRIT("Pass through"), WINDOW("New Window"), IGNORE("Ignore")
     }
 
-    val outputP = ChoiceParameter<Output>("output", value = Output.INHERRIT).enumChoices()
+    val outputP = ChoiceParameter("output", value = Output.INHERRIT).enumChoices()
 
     var output by outputP
 

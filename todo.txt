@@ -1,13 +1,6 @@
 TODO	
 
-MultipleParameter.
-	Create a field using a List/Details UI. Use it for CustomToolListTool and PlacesListTool.
-	Can also use it in GoKo for games and time limits.
-
-Change MultipleParameter, so that it knows the type of the inner parameter, rather than just ValueParameter<T>
-	Maybe create a superclass TypedMultipleParameter, and :
-	MultipleParameter<T> : TypedMultipleParameter<T,P : ValueParameter<T>>
-	NO!!! Just need MultipleParameter<T,P : ValueParameter<T>>
+Directory tool not working with multiple lists.
 
 TaskParameter to fire a change event, when the parameters are changed.
 
@@ -21,7 +14,6 @@ For toolbar buttons with linked open tools, save the link, and restore it.
 		That way we can be sure that the toolbar index will be correct.
 
 MountTool to give option of using name, path or label for the button's text.
-
 Replace mounttool with a version using findmnt
 	Use --fstab and --mtab, so that we can list *unmounted* points as well.
 
