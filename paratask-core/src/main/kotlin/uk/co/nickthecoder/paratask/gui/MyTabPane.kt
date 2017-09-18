@@ -32,7 +32,7 @@ import javafx.scene.shape.Rectangle
 /**
  * My version of a TabPane, which differs from the standard JavaFX TabPane, by exposing the tabs as Nodes,
  * and therefore making it much more flexible.
- * I want to make the tabs a target for Drag and Drop operations, and that turns out to be imposible (I think),
+ * I want to make the tabs a target for Drag and Drop operations, and that turns out to be impossible (I think),
  * with the standard TabPane. Grr.
  * Also, TabPane also has an annoying "feature", whereby the tab contents are NOT correctly added to the Scene
  * in a timely manner. (I think anything that uses getItems() rather than getChildren() has this bug).
