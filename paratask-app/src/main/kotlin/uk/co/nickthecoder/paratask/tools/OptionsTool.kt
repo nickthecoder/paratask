@@ -323,20 +323,23 @@ class OptionsTool() : ListTableTool<Option>() {
         val fileOptions = getFileOptions()
 
         val commentsP = StringParameter("comments", required = false, rows = 6,
-                value = fileOptions.comments)
+                value = fileOptions.comments, isBoxed = true)
 
         val rowFilterP = ScriptParameter("rowFilterScript", required = false, rows = 5,
                 value = fileOptions.rowFilterScript?.source ?: "", scriptVariables = scriptVariables)
 
         val infoP = InformationParameter("info", information =
-        """The following parameters are optional, and if filled in correctly, will allow the "…" button in script fields to show information about the row and tool classes.""")
+        """These parameters are optional, and if filled in correctly, will allow the "…" button in script fields to show information about the row and tool classes.""")
 
         val rowClassNameP = StringParameter("rowClassName", required = false, value = fileOptions.rowClassName)
 
         val toolClassNameP = StringParameter("toolClassName", required = false, value = fileOptions.toolClassName)
 
+        val classGroupP = SimpleGroupParameter("toolAndRowClasses")
+                .addParameters(infoP, rowClassNameP, toolClassNameP)
+
         init {
-            taskD.addParameters(commentsP, rowFilterP, infoP, rowClassNameP, toolClassNameP)
+            taskD.addParameters(commentsP, rowFilterP, classGroupP)
 
             scriptVariables.add("row", rowClassNameP.value)
             scriptVariables.add("tool", toolClassNameP.value)
