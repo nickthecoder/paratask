@@ -47,7 +47,7 @@ import java.io.File
 
 class DirectoryTool : AbstractTableTool<WrappedFile>(), HasDirectory, SingleRowFilter<WrappedFile> {
 
-    override val taskD = TaskDescription(name = "directory", description = "Work with a Single Directory")
+    override val taskD = TaskDescription(name = "directory", description = "List Directories")
 
     val directoriesP = MultipleParameter("directories", value = listOf(currentDirectory), minItems = 1) {
         FileParameter("dir", label = "Directory", expectFile = false, mustExist = true)

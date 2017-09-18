@@ -1,6 +1,22 @@
 TODO	
 
-Directory tool not working with multiple lists.
+Create a "MultipleChoiceParameter" allowing a set of items to be selected from a list.
+	Option to allow them to be re-organised (or maybe create a different type?)
+		One's value is a Set, the other a List???
+
+Allow columns to be hidden (Right click any column header. List all columns in the context menu).
+	Could save this info as well as column widths in project file
+	Do NOT include it in the history.
+
+Save filters in the project file.
+	Specify the index of the tab if there are more than one results.
+	Each test could need a code. e.g. "==", "contains". Label can default to the code.
+
+Box "Comments" in Options meta data task
+	Also group the last three parameters
+
+		
+So, Just create a TrashTool, which cannot be embedded within DirectoryTool (except with a bodge!)
 
 TaskParameter to fire a change event, when the parameters are changed.
 
@@ -29,17 +45,6 @@ Create a CustomToolListTool when creating a blank project window.
 	Include a HomeTool, a DirectoryTool of ~
 	Include existing buttons (but maybe Load/Save Project are NOT part of this, and are always visible)
 	Buttons must have a tooltip
-
-TrashTool
-	Maybe a special kind of Resource??
-		Must be able to add it to "Places" tools, so that it can then become a toolbar icon.
-	Or just a new Tool/Task.
-		"Default" deleteFiles[] parameter, can delete files dragged to it.
-		Or, add to /create an interface with :
-			val dropHelper : DropHelper? = null
-			Remove stuff about unnamed parameters in 
-		
-	~/.local/Trash
 
 Could even consider creating a toolbar from a DirectoryTool
 How about a MountTool!

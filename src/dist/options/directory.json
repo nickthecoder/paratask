@@ -10,25 +10,6 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.places.CreateDirectoryTask",
-            "code": "mk",
-            "label": "Create Directory",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": true,
-            "newTab": false,
-            "refresh": false,
-            "keyCode": "D",
-            "alt": "DOWN",
-            "parameters": [
-                {
-                    "name": "directoryName",
-                    "value": ""
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "term",
             "label": "Terminal",

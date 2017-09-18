@@ -1,0 +1,37 @@
+{
+    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
+    "includes": [
+        "fileOrDir",
+        "hasDirectory"
+    ],
+    "options": [
+        {
+            "type": "groovy",
+            "script": "tool.restoreFilesTask( rows.collect{ it.file } )\n",
+            "code": "r",
+            "label": "Restore Files",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.places.TrashTool$EmptyTrashTask",
+            "code": "empty",
+            "label": "Empty the Trash",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "daysAgo",
+                    "value": "7"
+                }
+            ]
+        }
+    ]
+}

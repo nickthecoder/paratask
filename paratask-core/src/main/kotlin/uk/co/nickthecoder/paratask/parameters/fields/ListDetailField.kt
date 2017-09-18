@@ -131,7 +131,6 @@ class ListDetailField<T, P : ValueParameter<T>>(
             var index = list.selectionModel.selectedIndex
             while (index >= 0) {
                 list.selectionModel.clearSelection(index)
-                println("Removing item @ $index")
                 multipleParameter.removeAt(index)
                 list.items.removeAt(index)
                 index = list.selectionModel.selectedIndex
