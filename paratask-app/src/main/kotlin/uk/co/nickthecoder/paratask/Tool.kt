@@ -113,9 +113,4 @@ interface Tool : Task {
         }
     }
 
-    companion object {
-        fun create(creationString: String): Tool {
-            return Task.create(creationString) as Tool
-        }
-    }
 }

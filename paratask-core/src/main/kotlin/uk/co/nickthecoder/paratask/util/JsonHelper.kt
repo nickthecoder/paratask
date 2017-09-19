@@ -20,6 +20,7 @@ package uk.co.nickthecoder.paratask.util
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
 import uk.co.nickthecoder.paratask.Task
+import uk.co.nickthecoder.paratask.TaskFactory
 import uk.co.nickthecoder.paratask.parameters.*
 
 object JsonHelper {
@@ -101,7 +102,7 @@ object JsonHelper {
 
     fun readTask(jtask: JsonObject): Task {
         val creationString = jtask.get("task").asString()
-        val task = Task.create(creationString)
+        val task = TaskFactory.createTask(creationString)
 
         val jparameters = jtask.get("parameters")
         if (jparameters != null) {
@@ -155,7 +156,7 @@ object JsonHelper {
                     } else if (parameter is TaskParameter) {
                         val creationString = ji.getString("task", null)
                         if (creationString != null) {
-                            val task2 = Task.create(creationString)
+                            val task2 = TaskFactory.createTask(creationString)
                             val jps = ji.get("parameters")
                             if (jps != null) {
                                 read(jps.asArray(), task2)

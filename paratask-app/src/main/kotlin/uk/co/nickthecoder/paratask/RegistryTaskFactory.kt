@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameters.TaskFactory
+import uk.co.nickthecoder.paratask.parameters.TaskParameterFactory
 
-class RegisteredTaskFactory : TaskFactory {
+class RegisteredTaskFactory : TaskParameterFactory {
 
     // NOTE, We need to use "by lazy", because without it, we risk trying to access the TaskRegistry while it
     // is still being constructed, leading to infinite recursion.

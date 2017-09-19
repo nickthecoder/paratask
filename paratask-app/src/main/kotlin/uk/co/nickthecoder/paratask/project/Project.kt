@@ -312,7 +312,7 @@ class Project(val projectWindow: ProjectWindow) {
 
         private fun loadTool(jhalfTab: JsonObject): Tool {
             val creationString = jhalfTab.get("tool").asString()
-            val tool = TaskRegistry.createTool(creationString)
+            val tool = TaskFactory.createTask(creationString) as Tool
 
             val jparameters = jhalfTab.get("parameters")
             if (jparameters != null) {

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.options
 
 import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.TaskRegistry
+import uk.co.nickthecoder.paratask.TaskFactory
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.tools.NullTask
 import java.io.Serializable
@@ -26,7 +26,7 @@ import java.io.Serializable
 class TaskOption(var task: Task)
     : AbstractOption(), Serializable {
 
-    constructor(creationString: String) : this(TaskRegistry.createTask(creationString))
+    constructor(creationString: String) : this(TaskFactory.createTask(creationString))
 
     /**
      * For serialization

@@ -38,7 +38,7 @@ class TaskParameter(
         value: Task? = null,
         required: Boolean = true,
         val programmable: Boolean = true,
-        val taskFactory: TaskFactory)
+        val taskFactory: TaskParameterFactory)
 
     : AbstractValueParameter<Task?>(
         name = name,
@@ -110,7 +110,7 @@ class TaskParameter(
     override fun copy() = TaskParameter(name = name, label = label, description = description, value = value, required = required, taskFactory = taskFactory)
 }
 
-interface TaskFactory {
+interface TaskParameterFactory {
 
     val creationStringToTask: Map<String, Task>
 

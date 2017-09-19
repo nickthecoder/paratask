@@ -23,13 +23,6 @@ object TaskRegistry {
 
     private val registered = mutableSetOf<Registers>()
 
-    /**
-     * Maps creation strings to creation strings. The key is the alias, and the value is the actual creation string.
-     * This allows tools to be renamed without breaking existing project files.
-     * Used by Project.load
-     */
-    private val taskAliases = mutableMapOf<String, String>()
-
     val home = TaskGroup("Home")
 
     val topLevel = TaskGroup("Top Level")
@@ -52,20 +45,6 @@ object TaskRegistry {
             registered.add(item)
             item.register()
         }
-    }
-
-    fun aliasTask(task: Task, alias: String) {
-        taskAliases.put(alias, task.creationString())
-    }
-
-    fun createTool(creationString: String): Tool {
-        val cs = taskAliases[creationString] ?: creationString
-        return Tool.create(cs)
-    }
-
-    fun createTask(creationString: String): Task {
-        val cs = taskAliases[creationString] ?: creationString
-        return Task.create(cs)
     }
 
     /**

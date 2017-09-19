@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.project
 
 import javafx.beans.property.SimpleBooleanProperty
+import uk.co.nickthecoder.paratask.TaskFactory
 import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.table.filter.Filtered
 
@@ -174,7 +175,7 @@ class History(var halfTab: HalfTab) {
 
         val tool: Tool
             get() {
-                val result = Tool.create(creationString)
+                val result = TaskFactory.createTask(creationString) as Tool
                 for (parameter in result.valueParameters()) {
                     parameter.stringValue = values[parameter.name]!! // Safe
                 }

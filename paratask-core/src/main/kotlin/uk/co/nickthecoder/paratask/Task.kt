@@ -87,9 +87,4 @@ interface Task {
         throw IOException("Parameter name $parameterName not found in task : $this")
     }
 
-    companion object {
-        fun create(creationString: String): Task {
-            return Class.forName(creationString).newInstance() as Task
-        }
-    }
 }

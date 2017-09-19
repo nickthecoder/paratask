@@ -87,15 +87,17 @@ class ParaTaskCore : Registers {
          * Tasks/Tools that have been renamed. This allows saved objects to be restored correctly.
          */
 
-        TaskRegistry.aliasTask(CustomTaskListTool(), "uk.co.nickthecoder.paratask.tools.CustomToolListTool")
-        TaskRegistry.aliasTask(DirectoryTool(), "uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool")
-        TaskRegistry.aliasTask(CustomTaskListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
-        TaskRegistry.aliasTask(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
-        TaskRegistry.aliasTask(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")
-        TaskRegistry.aliasTask(PythonTool(), "uk.co.nickthecoder.paratask.tools.PythonTool")
+        println("Registering task aliases")
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.CustomToolListTool", CustomTaskListTool())
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.ListTool", CustomTaskListTool())
 
-        TaskRegistry.aliasTask(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageTool")
-        TaskRegistry.aliasTask(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageViewTool")
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool", DirectoryTool())
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.TerminalTool", TerminalTool())
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.GroovyTool", GroovyTool())
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.PythonTool", PythonTool())
+
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.ImageTool", ImageViewerTool())
+        TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.ImageViewTool", ImageViewerTool())
     }
 
     companion object {
