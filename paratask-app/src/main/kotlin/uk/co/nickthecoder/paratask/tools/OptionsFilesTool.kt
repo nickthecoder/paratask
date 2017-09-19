@@ -52,6 +52,8 @@ class OptionsFilesTool : ListTableTool<FileOptions>(), HasDirectory {
     override fun createHeader() = Header(this, directoryP)
 
     override fun run() {
+        longTitle = "Option Files in ${directoryP.value ?: Preferences.optionsPath}"
+
         list.clear()
         val chosenDirectory = directoryP.value
         if (chosenDirectory == null) {

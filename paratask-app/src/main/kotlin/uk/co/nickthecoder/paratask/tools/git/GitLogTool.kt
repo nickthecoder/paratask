@@ -79,6 +79,12 @@ class GitLogTool :
 
     override val rowFilter = RowFilter(this, columns, exampleRow, "Git Log Filter")
 
+
+    override fun run() {
+        longTitle = "Git Log ${directory}"
+        super.run()
+    }
+
     override fun createCommand(): OSCommand {
 
         longTitle = "Git Log $directory"

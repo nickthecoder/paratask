@@ -65,6 +65,11 @@ class GitStatusTool :
 
     override fun createHeader() = Header(this, directoryP)
 
+    override fun run() {
+        longTitle = "Git Status ${directory}"
+        super.run()
+    }
+
     override fun createCommand(): OSCommand {
         longTitle = "Git $directory"
         return OSCommand("git", "status", "--porcelain").dir(directory!!)

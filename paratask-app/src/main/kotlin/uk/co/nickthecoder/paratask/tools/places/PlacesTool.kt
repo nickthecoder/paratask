@@ -54,9 +54,8 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
     // Used to select the correct ResultsTab when refreshing the tool
     var latestFile: PlacesFile? = null
 
-    val columns = mutableListOf<Column<PlaceInFile, *>>()
 
-    override val rowFilter = RowFilter(this, columns, PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
+    override val rowFilter = RowFilter(this, createColumns(), PlaceInFile(PlacesFile(File("")), Resource(File("")), ""))
 
     override var toolBarConnector: ToolBarToolConnector? = null
 
@@ -67,11 +66,17 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
 
     init {
         taskD.addParameters(filesP, toolBarSideP)
+    }
+
+    fun createColumns(): List<Column<PlaceInFile, *>> {
+        val columns = mutableListOf<Column<PlaceInFile, *>>()
 
         columns.add(Column<PlaceInFile, ImageView>("icon", label = "", getter = { ImageView(it.resource.icon) }))
         columns.add(Column<PlaceInFile, String>("label", getter = { it.label }))
         columns.add(TruncatedStringColumn<PlaceInFile>("name", width = 200, overrunStyle = OverrunStyle.CENTER_ELLIPSIS, getter = { it.name }))
         columns.add(Column<PlaceInFile, String>("location", getter = { it.resource.path }, filterGetter = { it.resource }))
+
+        return columns
     }
 
     override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
@@ -209,7 +214,7 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
     }
 
     inner class PlacesTableResults(val placesFile: PlacesFile) :
-            TableResults<PlaceInFile>(this@PlacesTool, placesFile.places, placesFile.file.name, columns, rowFilter = rowFilter, canClose = true) {
+            TableResults<PlaceInFile>(this@PlacesTool, placesFile.places, placesFile.file.name, createColumns(), rowFilter = rowFilter, canClose = true) {
 
         init {
             autoRefresh.watch(placesFile.file)
@@ -220,6 +225,11 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
             if (latestFile?.file == placesFile.file) {
                 resultsTab.isSelected = true
             }
+        }
+
+        override fun selected() {
+            super.selected()
+            longTitle = "Places (${placesFile.file})"
         }
 
         override fun detaching() {

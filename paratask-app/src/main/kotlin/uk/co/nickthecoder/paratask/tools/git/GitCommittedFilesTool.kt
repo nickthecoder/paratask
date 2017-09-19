@@ -61,6 +61,12 @@ class GitCommittedFilesTool() : AbstractCommandTool<WrappedFile>(), HasDirectory
         columns.add(BaseFileColumn<WrappedFile>("path", base = directory!!) { it.file })
     }
 
+
+    override fun run() {
+        longTitle = "Git Committed Files '${commit}' from ${directory}"
+        super.run()
+    }
+
     override fun createCommand(): OSCommand {
         val command = OSCommand("git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit)
         if (compareTo.isNotEmpty()) {

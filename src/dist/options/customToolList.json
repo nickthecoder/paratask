@@ -7,7 +7,7 @@
     "options": [
         {
             "type": "groovy",
-            "script": "tool.evaluateTask( row.tool, row, null )\n",
+            "script": "tool.evaluateTask( row.taskP.value, row, null )\n",
             "code": ".",
             "label": "Run Tool",
             "isRow": true,

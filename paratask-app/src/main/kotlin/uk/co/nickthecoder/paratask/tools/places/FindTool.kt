@@ -101,6 +101,11 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
         }
     }
 
+    override fun run() {
+        longTitle = "Find in ${directory}"
+        super.run()
+    }
+
     override fun createCommand(): OSCommand {
 
         val command = OSCommand("find")

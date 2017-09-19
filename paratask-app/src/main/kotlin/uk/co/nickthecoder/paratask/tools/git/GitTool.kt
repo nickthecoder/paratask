@@ -75,6 +75,8 @@ class GitTool : AbstractTool(), HasDirectory, Filtered {
     }
 
     override fun run() {
+        longTitle = "Git ${directory}"
+
         resultsTabIndex = toolPane?.tabPane?.selectionModel?.selectedIndex ?: 0
         // If the current tab is not one of the results, then select the first results.
         if (resultsTabIndex > 2) {

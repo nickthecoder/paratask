@@ -44,15 +44,15 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
 
     override val taskD = TaskDescription("mythRecorded")
 
-    val serverP = StringParameter("server", value = "giddyserv")
+    val serverP = StringParameter("server")
 
     val databaseP = StringParameter("database", value = "mythconverg")
 
     val userP = StringParameter("user", value = "mythtv")
 
-    val passwordP = StringParameter("password", value = "mythtv")
+    val passwordP = StringParameter("password")
 
-    val directoryP = FileParameter("directory", expectFile = false, value = File("/video/myth/"))
+    val directoryP = FileParameter("directory", expectFile = false)
 
     override val rowFilter = RowFilter(this, columns, RecordedLine("", "", Timestamp(0), "", "", "", File("")))
 
@@ -71,6 +71,8 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
     }
 
     override fun run() {
+        longTitle = "Myth Recorded. Server: ${serverP.value}"
+
         list.clear()
 
         val server = encode(serverP.value)

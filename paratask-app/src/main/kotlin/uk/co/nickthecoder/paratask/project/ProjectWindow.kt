@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.project
 
+import javafx.beans.binding.Bindings
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -194,7 +195,8 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     }
 
     fun toolChanged(currentTool: Tool) {
-        stage?.titleProperty()?.bind(currentTool.longTitleProperty)
+        val prefix = project.projectFile?.nameWithoutExtension?.capitalize()?.plus(": ") ?: ""
+        stage?.titleProperty()?.bind(Bindings.concat(prefix, currentTool.longTitleProperty))
     }
 
 }

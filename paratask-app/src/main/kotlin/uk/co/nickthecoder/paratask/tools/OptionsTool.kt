@@ -146,6 +146,8 @@ class OptionsTool() : ListTableTool<Option>() {
 
     override fun run() {
         shortTitle = optionsNameP.value
+        longTitle = "Options : '${optionsNameP.value}' from ${directoryP.value}"
+
         list.clear()
 
         val optionsFile = OptionsManager.getFileOptions(optionsNameP.value, directoryP.value!!)
