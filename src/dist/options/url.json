@@ -23,23 +23,6 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.WebTool",
-            "code": "web",
-            "label": "Open with built-in Browser",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "address",
-                    "expression": "row.url.toString()"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "pri",
             "label": "Open new Private Firefox Profile",
@@ -74,6 +57,26 @@
                 {
                     "name": "output",
                     "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.WebTool",
+            "code": "v",
+            "label": "Open with built-in Browser",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "aliases": [
+                "web"
+            ],
+            "parameters": [
+                {
+                    "name": "address",
+                    "expression": "row.url.toString()"
                 }
             ]
         }
