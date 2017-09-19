@@ -36,8 +36,6 @@ import java.net.URLEncoder
 import java.sql.DriverManager
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 /**
  *
@@ -65,7 +63,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         directoryP.aliases.add("direcotry")
 
         columns.add(Column<RecordedLine, String>("channel", getter = { it.channel }))
-        columns.add(LocalDateTimeColumn<RecordedLine>("start", getter = { LocalDateTime.ofInstant(it.start.toInstant(), ZoneId.systemDefault()) }))
+        columns.add(LocalDateTimeColumn<RecordedLine>("start", getter = { it.start.toLocalDateTime() }))
         columns.add(Column<RecordedLine, String>("title", getter = { it.title }))
         columns.add(Column<RecordedLine, String>("subtitle", getter = { it.subtitle }))
         columns.add(Column<RecordedLine, String>("description", getter = { it.description }))
