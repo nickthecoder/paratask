@@ -24,6 +24,7 @@ import com.eclipsesource.json.PrettyPrint
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
+import uk.co.nickthecoder.paratask.gui.ApplicationAction
 import uk.co.nickthecoder.paratask.util.child
 import java.io.*
 
@@ -101,6 +102,7 @@ object ParataskActions {
     val EDIT_UNDO = ParataskAction("edit.undo", KeyCode.Z, control = true, tooltip = "Undo")
     val EDIT_REDO = ParataskAction("edit.redo", KeyCode.Z, shift = true, control = true, tooltip = "Redo")
     val ESCAPE = ParataskAction("escape", KeyCode.ESCAPE)
+    val SELECT_ALL = ParataskAction("select-all", KeyCode.A, control = true)
 
     // GlobalShortcuts
 

@@ -142,7 +142,6 @@ open class TableResults<R : Any>(
         if (rowFilter != null) {
             tableView.addEventFilter(MouseEvent.MOUSE_PRESSED) { if (it.button == MouseButton.SECONDARY) it.consume() }
             tableView.addEventFilter(MouseEvent.MOUSE_RELEASED) { tableMouseEvent(it) }
-            //tableView.addEventFilter(MouseEvent.MOUSE_CLICKED) { tableMouseEvent(it) }
         }
     }
 
@@ -341,6 +340,10 @@ open class TableResults<R : Any>(
             runTableOptions(prompt = true, newTab = true)
             event.consume()
 
+        } else if (ParataskActions.SELECT_ALL.match(event)) {
+            selectAll()
+            event.consume()
+
         } else if (ParataskActions.ESCAPE.match(event)) {
             event.consume()
         }
@@ -380,6 +383,20 @@ open class TableResults<R : Any>(
         return true
     }
 
+    fun selectAll() {
+        stopEditing()
+        // We need to run later so the EditCell has a chance to save the textfield to the WrappedRow.code
+        Platform.runLater {
+            val selectedRow = tableView.selectionModel.selectedIndex
+            val code = if (selectedRow >= 0 && selectedRow < tableView.items.count()) tableView.items[selectedRow].code else "?"
+            tableView.selectionModel.selectAll()
+            tableView.items.forEach { it.code = code }
+            if (selectedRow >= 0 && selectedRow < tableView.items.count()) {
+                editOption(selectedRow)
+            }
+        }
+
+    }
 
     fun runTableOptions(newTab: Boolean = false, prompt: Boolean = false) {
 
