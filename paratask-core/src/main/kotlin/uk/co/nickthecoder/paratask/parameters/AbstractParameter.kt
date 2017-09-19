@@ -57,5 +57,11 @@ abstract class AbstractParameter(
 
     override var parent: Parameter? = null
 
+
     override fun toString() = "Parameter name='$name'"
+}
+
+inline fun <reified T : AbstractParameter> T.addAliases(vararg alias: String): T {
+    aliases.addAll(alias)
+    return this
 }

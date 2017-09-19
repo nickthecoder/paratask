@@ -23,6 +23,7 @@ import javafx.scene.layout.BorderPane
 import uk.co.nickthecoder.paratask.AbstractTool
 import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.addAliases
 import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.Header
 import uk.co.nickthecoder.paratask.util.FileLister
@@ -37,24 +38,12 @@ class ImageViewerTool() : AbstractTool() {
 
     override val taskD = TaskDescription("imageViewer")
 
-    val fileP = FileParameter("file", expectFile = true, mustExist = true)
+    val fileP = FileParameter("file", expectFile = true, mustExist = true).addAliases("image")
 
     val file by fileP
 
     init {
         taskD.addParameters(fileP)
-    }
-
-    override fun loadProblem(parameterName: String, expression: String?, stringValue: String?) {
-        if (parameterName == "image") {
-            if (expression == null) {
-                fileP.value = File(stringValue)
-            } else {
-                fileP.expression = expression
-            }
-            return
-        }
-        super.loadProblem(parameterName, expression, stringValue)
     }
 
     override fun createResults() = listOf(ImageResults(fileP.value!!))

@@ -54,8 +54,8 @@ object TaskRegistry {
         }
     }
 
-    fun aliasTool(tool: Tool, alias: String) {
-        taskAliases.put(alias, tool.creationString())
+    fun aliasTask(task: Task, alias: String) {
+        taskAliases.put(alias, task.creationString())
     }
 
     fun createTool(creationString: String): Tool {

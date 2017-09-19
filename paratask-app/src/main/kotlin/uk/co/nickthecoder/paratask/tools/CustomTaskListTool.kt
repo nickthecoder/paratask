@@ -33,7 +33,7 @@ import uk.co.nickthecoder.paratask.table.ListTableTool
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import uk.co.nickthecoder.paratask.util.uncamel
 
-class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
+class CustomTaskListTool : ListTableTool<CustomTaskListTool.Item>(), ToolBarTool {
 
     override val taskD = TaskDescription("customToolList", description = "Create a list of customised tools")
 
@@ -54,16 +54,16 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
         }
     })
 
-    private val exampleRow = CustomToolRow("", this, true)
+    private val exampleRow = Item()
     override val rowFilter = RowFilter(this, columns, exampleRow)
 
     init {
         taskD.addParameters(toolBarSideP, toolsP)
 
-        columns.add(Column<CustomToolRow, ImageView>("icon", label = "", getter = { row -> ImageView(row.task.icon) }))
-        columns.add(Column<CustomToolRow, String>("label", getter = { (label) -> label }))
-        columns.add(Column<CustomToolRow, String>("toolName", getter = { row -> row.task.taskD.name.uncamel() }))
-        columns.add(Column<CustomToolRow, String>("parameters", getter = { row -> parameters(row.task) }))
+        columns.add(Column<Item, ImageView>("icon", label = "", getter = { row -> ImageView(row.taskP.value!!.icon) }))
+        columns.add(Column<Item, String>("label", getter = { row -> row.labelP.value }))
+        columns.add(Column<Item, String>("toolName", getter = { row -> row.taskP.value!!.taskD.name.uncamel() }))
+        columns.add(Column<Item, String>("parameters", getter = { row -> parameters(row.taskP.value!!) }))
 
         toolBarSideP.listen {
             toolsP.value.forEach { compound ->
@@ -75,21 +75,19 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
 
     override fun run() {
         list.clear()
-        toolsP.value.forEach { compound ->
-            val toolP = compound.find("tool") as TaskParameter
-            val labelP = compound.find("label") as StringParameter
-            val newTabP = compound.find("newTab") as BooleanParameter
-            if (toolP is ValueParameter<*>) {
-                val task = toolP.value
-                if (task != null) {
-                    list.add(CustomToolRow(labelP.value, task, newTabP.value == true))
-                }
+        toolsP.innerParameters.forEach { item ->
+            val task = item.taskP.value
+            if (task != null) {
+                list.add(item)
             }
         }
 
         if (showingToolbar()) {
             Platform.runLater {
-                updateToolbar(list.map { (label, task, newTab) -> AbstractTaskButton.createToolOrTaskButton(toolBarConnector!!.projectWindow, task, label, newTab = newTab) })
+                updateToolbar(list.map { row ->
+                    AbstractTaskButton.createToolOrTaskButton(
+                            toolBarConnector!!.projectWindow, row.taskP.value!!, row.labelP.value, newTab = row.newTabP.value!!)
+                })
             }
         }
     }
@@ -108,23 +106,24 @@ class CustomToolListTool : ListTableTool<CustomToolRow>(), ToolBarTool {
             "${it.name}=${it.value?.toString()?.replace(Regex("(?s)\n.*\\z"), " …") ?: it.expression ?: ""}"
         }.joinToString()
     }
-}
 
-/**
- * The inner parameter within the MultipleParameter 'toolsP'
- */
-class Item : MultipleGroupParameter("toolDetails", label = "") {
 
-    val labelP = StringParameter("label", required = false)
-    val toolP = TaskParameter("tool", taskFactory = RegisteredTaskFactory())
-    val newTabP = BooleanParameter("newTab", value = true)
+    /**
+     * The inner parameter within the MultipleParameter 'toolsP'
+     */
+    class Item : MultipleGroupParameter("toolDetails", label = "") {
 
-    init {
-        addParameters(labelP, toolP, newTabP)
+        val labelP = StringParameter("label", required = false)
+        val descriptionP = StringParameter("description", required = false)
+        val taskP = TaskParameter("task", taskFactory = RegisteredTaskFactory()).addAliases("tool")
+        val newTabP = BooleanParameter("newTab", value = true)
+
+        init {
+            addParameters(labelP, descriptionP, taskP, newTabP)
+        }
     }
 }
 
-data class CustomToolRow(val label: String, val task: Task, val newTab: Boolean)
 
 // Note this tool cannot be run from the command line, because the arguments would be too cumbersome.
 // Therefore there is no main function.

@@ -42,7 +42,7 @@ class ParaTaskCore : Registers {
                 FindTool(), LocateTool(), GrepTool(),
                 TerminalTool(), SSHTool(), PythonTool(), GroovyTool(),
                 WebTool(), EditorTool(),
-                CustomToolListTool(),
+                CustomTaskListTool(),
                 GitTool(), GitStatusTool(),
                 OptionsFilesTool(),
                 ShortcutsTool(),
@@ -83,14 +83,19 @@ class ParaTaskCore : Registers {
         TaskRegistry.addGroup(paratask)
         TaskRegistry.addGroup(misc)
 
-        TaskRegistry.aliasTool(DirectoryTool(), "uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool")
-        TaskRegistry.aliasTool(CustomToolListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
-        TaskRegistry.aliasTool(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
-        TaskRegistry.aliasTool(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")
-        TaskRegistry.aliasTool(PythonTool(), "uk.co.nickthecoder.paratask.tools.PythonTool")
+        /*
+         * Tasks/Tools that have been renamed. This allows saved objects to be restored correctly.
+         */
 
-        TaskRegistry.aliasTool(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageTool")
-        TaskRegistry.aliasTool(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageViewTool")
+        TaskRegistry.aliasTask(CustomTaskListTool(), "uk.co.nickthecoder.paratask.tools.CustomToolListTool")
+        TaskRegistry.aliasTask(DirectoryTool(), "uk.co.nickthecoder.paratask.tools.places.DirectoryTreeTool")
+        TaskRegistry.aliasTask(CustomTaskListTool(), "uk.co.nickthecoder.paratask.tools.ListTool")
+        TaskRegistry.aliasTask(TerminalTool(), "uk.co.nickthecoder.paratask.tools.TerminalTool")
+        TaskRegistry.aliasTask(GroovyTool(), "uk.co.nickthecoder.paratask.tools.GroovyTool")
+        TaskRegistry.aliasTask(PythonTool(), "uk.co.nickthecoder.paratask.tools.PythonTool")
+
+        TaskRegistry.aliasTask(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageTool")
+        TaskRegistry.aliasTask(ImageViewerTool(), "uk.co.nickthecoder.paratask.tools.ImageViewTool")
     }
 
     companion object {
