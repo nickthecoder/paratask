@@ -129,6 +129,7 @@ class HalfTab_Impl(override var toolPane: ToolPane)
         bindButtons()
         shortcuts.add(ParataskActions.PARAMETERS_SHOW) { onShowParameters() }
         shortcuts.add(ParataskActions.RESULTS_SHOW) { onShowResults() }
+        shortcuts.add(ParataskActions.RESULTS_TAB_CLOSE) { onCloseResults() }
     }
 
     override fun attached(projectTab: ProjectTab) {
@@ -275,6 +276,16 @@ class HalfTab_Impl(override var toolPane: ToolPane)
 
     fun onShowResults() {
         toolPane.tabPane.selectionModel.select(0)
+    }
+
+    fun onCloseResults() {
+        val minorTab = toolPane.tabPane.selectedTab
+        if (minorTab != null && minorTab.canClose && minorTab is ResultsTab) {
+            minorTab.close()
+            if ( toolPane.tabPane.tabs.filterIsInstance<ResultsTab>().isEmpty() ) {
+                close()
+            }
+        }
     }
 
     override fun focusOption() {

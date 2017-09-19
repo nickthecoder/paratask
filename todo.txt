@@ -15,8 +15,6 @@ Replace mounttool with a version using findmnt
 
 Editor must not discard changes or blank documents when re-run.
 
-Alt+W to close a results tab. If it is the last one, close the halftab.
-
 Create a CustomToolListTool when creating a blank project window.
 	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
 	Include a HomeTool, a DirectoryTool of ~
@@ -25,8 +23,7 @@ Create a CustomToolListTool when creating a blank project window.
 
 Save/Load filters in Project files
 
-Bugs
-	Check if GitTool rm and rmf are working.
+Check if GitTool rm and rmf are working.
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.

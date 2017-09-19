@@ -49,6 +49,8 @@ object ParataskActions {
 
     // HalfTab
 
+    val RESULTS_TAB_CLOSE = ParataskAction("results-tab.close", KeyCode.W, alt = true, label = "Close Results Tab")
+
     val TOOL_STOP = ParataskAction("tool.stop", KeyCode.ESCAPE, shift = true, tooltip = "Stop the Tool")
     val TOOL_RUN = ParataskAction("tool.run", KeyCode.F5, tooltip = "(Re) Run the Tool")
 
