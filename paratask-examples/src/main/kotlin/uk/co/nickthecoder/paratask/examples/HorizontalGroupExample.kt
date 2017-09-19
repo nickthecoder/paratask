@@ -7,8 +7,6 @@ import uk.co.nickthecoder.paratask.parameters.*
 
 class HorizontalGroupExample : AbstractTask() {
 
-    override val taskD = TaskDescription("horizontalGroupExample",
-            description = "Demonstrates the use of SimpleGroupParameter.asHorizontal(…)")
 
     val horizontalIntP = IntParameter("horizontalInt", label = "Int")
     val horizontalStringP = StringParameter("horizontalString", label = "String", columns = 10)
@@ -45,9 +43,10 @@ class HorizontalGroupExample : AbstractTask() {
             .addParameters(houseNumberP, roadNameP)
             .asHorizontal(LabelPosition.NONE)
 
-    init {
-        taskD.addParameters(horizontalGroupP, noStretchP, middleStretchyP, infoP, twoStringsP, info2P, addressLine1P)
-    }
+    override val taskD = TaskDescription("horizontalGroupExample",
+            description = "Demonstrates the use of SimpleGroupParameter.asHorizontal(…)")
+            .addParameters(horizontalGroupP, noStretchP, middleStretchyP, infoP, twoStringsP, info2P, addressLine1P)
+
 
     override fun run() {
     }

@@ -9,14 +9,13 @@ import java.io.File
 
 class ResourceExample : AbstractTask() {
 
-    override val taskD = TaskDescription("resourceExample")
 
     val resourceP = ResourceParameter("resource", value = Resource(File("")))
     var resource by resourceP
 
-    init {
-        taskD.addParameters(resourceP)
-    }
+    override val taskD = TaskDescription("resourceExample")
+            .addParameters(resourceP)
+
 
     override fun run() {
         println("Resource = $resource")

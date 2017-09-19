@@ -7,13 +7,10 @@ import uk.co.nickthecoder.paratask.parameters.compound.TemporalAmountParameter
 
 class TemporalAmountExample : AbstractTask() {
 
-    override val taskD = TaskDescription("temporalAmountExample")
-
     val periodP = TemporalAmountParameter("period")
 
-    init {
-        taskD.addParameters(periodP)
-    }
+    override val taskD = TaskDescription("temporalAmountExample")
+            .addParameters(periodP)
 
     override fun run() {
         println("Period = ${periodP.amount} ${periodP.units?.label} : ${periodP.value}")

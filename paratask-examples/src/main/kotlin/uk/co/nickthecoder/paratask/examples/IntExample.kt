@@ -7,7 +7,6 @@ import uk.co.nickthecoder.paratask.parameters.IntParameter
 
 class IntExample : AbstractTask() {
 
-    override val taskD = TaskDescription("intExample")
 
     val requiredP = IntParameter("required")
     var required by requiredP
@@ -24,9 +23,9 @@ class IntExample : AbstractTask() {
             .asSlider(IntParameter.SliderInfo(showValue = true))
 
 
-    init {
-        taskD.addParameters(requiredP, optionalP, oneToTenP, sliderP, slider2P)
-    }
+    override val taskD = TaskDescription("intExample")
+            .addParameters(requiredP, optionalP, oneToTenP, sliderP, slider2P)
+
 
     override fun run() {
         println("Required=$required, Optional=$optional")

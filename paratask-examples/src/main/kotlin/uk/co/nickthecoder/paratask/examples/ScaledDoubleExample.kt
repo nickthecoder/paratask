@@ -10,14 +10,13 @@ val zeroMeters = ScaledDouble(0.0, 1000.0, mapOf(1.0 to "mm", 10.0 to "cm", 1000
 
 class ScaledDoubleExample : AbstractTask() {
 
-    override val taskD = TaskDescription("scaledDoubleExample")
 
     val lengthP = ScaledDoubleParameter("length", value = zeroMeters)
     var length by lengthP
 
-    init {
-        taskD.addParameters(lengthP)
-    }
+    override val taskD = TaskDescription("scaledDoubleExample")
+            .addParameters(lengthP)
+
 
     override fun run() {
         println("Length = $length (${length.value} mm)")

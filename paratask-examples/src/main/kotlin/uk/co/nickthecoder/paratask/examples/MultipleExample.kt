@@ -7,8 +7,6 @@ import uk.co.nickthecoder.paratask.parameters.*
 
 class MultipleExample : AbstractTask() {
 
-    override val taskD = TaskDescription("multipleExample")
-
     val info1P = InformationParameter("info1", information = "The default is to allow zero items, so you don't HAVE to enter any strings.")
 
     val stringsP = MultipleParameter("strings") {
@@ -27,9 +25,10 @@ class MultipleExample : AbstractTask() {
         ImaginaryNumberParameters()
     }
 
-    init {
-        taskD.addParameters(info1P, stringsP, info2P, intsP, complexNumbersP)
-    }
+
+    override val taskD = TaskDescription("multipleExample")
+            .addParameters(info1P, stringsP, info2P, intsP, complexNumbersP)
+
 
     override fun run() {
         println("Strings = $strings")

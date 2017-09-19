@@ -7,11 +7,6 @@ import uk.co.nickthecoder.paratask.parameters.*
 
 class GroupExample : AbstractTask() {
 
-    override val taskD = TaskDescription("groupExample",
-            description = """Demonstrates how to group parameters.
-
-There are other ways to lay out groups. See HorizontalGroupExample, and GridGroupExample.""")
-
     val normalIntP = IntParameter("normalInt", label = "Int")
     val normalStringP = StringParameter("normalString", label = "String", columns = 10)
     val normalGroupP = SimpleGroupParameter("normalGroup")
@@ -22,9 +17,11 @@ There are other ways to lay out groups. See HorizontalGroupExample, and GridGrou
     val plainGroupP = SimpleGroupParameter("plainGroup")
             .addParameters(plainIntP, plainStringP).asPlain()
 
-    init {
-        taskD.addParameters(normalGroupP, plainGroupP)
-    }
+    override val taskD = TaskDescription("groupExample",
+            description = """Demonstrates how to group parameters.
+
+There are other ways to lay out groups. See HorizontalGroupExample, and GridGroupExample.""")
+            .addParameters(normalGroupP, plainGroupP)
 
     override fun run() {
     }

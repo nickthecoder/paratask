@@ -7,14 +7,11 @@ import uk.co.nickthecoder.paratask.parameters.DoubleParameter
 
 class DoubleExample : AbstractTask() {
 
-    override val taskD = TaskDescription("doubleExample")
-
     val lengthP = DoubleParameter("length", value = 0.0)
     var length by lengthP
 
-    init {
-        taskD.addParameters(lengthP)
-    }
+    override val taskD = TaskDescription("doubleExample")
+            .addParameters(lengthP)
 
     override fun run() {
         println("Length = $length")
