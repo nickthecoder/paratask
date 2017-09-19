@@ -15,9 +15,6 @@ MountTool to give option of using name, path or label for the button's text.
 Replace mounttool with a version using findmnt
 	Use --fstab and --mtab, so that we can list *unmounted* points as well.
 
-MythRecordedTool to show the TIME as well as the date.
-	Ensure that the DATE has a filterGetter suitable for date comparisons, and TIME has one suitable for time comparisions (i.e. < 4 hours ago)
-
 Editor must not discard changes or blank documents when re-run.
 
 Alt+W to close a results tab. If it is the last one, close the halftab.

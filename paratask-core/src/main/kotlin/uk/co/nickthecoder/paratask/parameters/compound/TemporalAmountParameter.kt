@@ -46,7 +46,7 @@ class TemporalAmountParameter(
     }
 
     init {
-        asHorizontal(false)
+        asHorizontal(LabelPosition.LEFT)
         addParameters(amountP, unitsP)
     }
 

@@ -241,7 +241,7 @@ class OptionsTool() : ListTableTool<Option>() {
             }
 
             flagsGroupP.addParameters(isRow, isMultiple, paddingP, refresh, newTab, prompt)
-            flagsGroupP.asGrid(labelsAbove = false, columns = 3, isBoxed = true)
+            flagsGroupP.asGrid(LabelPosition.LEFT, columns = 3, isBoxed = true)
 
 
             isRow.listen {

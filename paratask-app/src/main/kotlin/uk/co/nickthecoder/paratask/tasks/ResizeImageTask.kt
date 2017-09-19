@@ -50,7 +50,7 @@ class ResizeImageTask : AbstractCommandTask() {
         sizeP.addParameters(widthP, heightP, keepAspectRationP)
         resizeOptionP.addParameters(sizeP, percentageP)
 
-        sizeP.asHorizontal(false)
+        sizeP.asHorizontal(LabelPosition.LEFT)
 
         taskD.addParameters(inputFileP, resizeOptionP, outputFileP, outputP)
     }

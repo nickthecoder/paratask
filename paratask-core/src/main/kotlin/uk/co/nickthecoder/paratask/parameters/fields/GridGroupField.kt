@@ -8,12 +8,13 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.LabelPosition
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 
 
 class GridGroupField(
         groupParameter: GroupParameter,
-        val labelsAbove: Boolean,
+        val labelPosition: LabelPosition,
         val columns: Int = groupParameter.children.size,
         isBoxed: Boolean)
 
@@ -29,7 +30,7 @@ class GridGroupField(
     }
 
     override fun createContent(): Node {
-        if (labelsAbove) {
+        if (labelPosition == LabelPosition.TOP) {
             grid.styleClass.add("labels-above-grid-group")
         } else {
             grid.styleClass.add("grid-group")
@@ -54,7 +55,8 @@ class GridGroupField(
             val field = child.createField()
             field.fieldParent = this
 
-            if (labelsAbove) {
+            if (labelPosition == LabelPosition.TOP) {
+
                 field.label.styleClass?.add("small-bottom-pad")
                 if (row != groupParameter.children.size / columns - 1) {
                     field.controlContainer?.styleClass?.add("bottom-pad")
@@ -65,7 +67,9 @@ class GridGroupField(
                 if (row == 0) {
                     grid.columnConstraints.add(labelsAboveCC)
                 }
-            } else {
+
+            } else if (labelPosition == LabelPosition.LEFT) {
+
                 if (row == 0) {
                     grid.columnConstraints.add(labelCC)
                     grid.columnConstraints.add(controlCC)
@@ -76,10 +80,12 @@ class GridGroupField(
                 }
                 grid.add(field.label, column * 2, row)
                 grid.add(field.controlContainer, column * 2 + 1, row)
+
+            } else {
+                grid.add(field.controlContainer, column, row)
             }
 
             fieldSet.add(field)
-            //containers.add(container)
 
             column++
             if (column >= columns) {

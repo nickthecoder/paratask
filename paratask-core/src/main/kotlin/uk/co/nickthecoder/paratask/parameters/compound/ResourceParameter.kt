@@ -76,8 +76,8 @@ class ResourceParameter(
 
     init {
         addParameters(fileOrUrlP)
-        fileOrUrlP.asHorizontal(null)
-        asHorizontal(null)
+        fileOrUrlP.asHorizontal(LabelPosition.NONE)
+        asHorizontal(LabelPosition.NONE)
 
         this.value = value
     }

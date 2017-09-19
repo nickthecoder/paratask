@@ -6,12 +6,13 @@ import javafx.scene.Node
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.parameters.GroupParameter
+import uk.co.nickthecoder.paratask.parameters.LabelPosition
 import uk.co.nickthecoder.paratask.parameters.ParameterListener
 import uk.co.nickthecoder.paratask.util.focusNext
 
 open class HorizontalGroupField(
         groupParameter: GroupParameter,
-        val labelsAbove: Boolean?,
+        val labelPosition: LabelPosition,
         isBoxed: Boolean)
 
     : SingleErrorGroupField(groupParameter, isBoxed = isBoxed), FieldParent, ParameterListener {
@@ -89,20 +90,23 @@ open class HorizontalGroupField(
     fun createChild(childField: ParameterField): Node {
 
         val container: Node
-        if (labelsAbove == true) {
+
+        if (labelPosition == LabelPosition.TOP) {
             container = BorderPane()
             container.top = childField.label
             container.center = childField.control
             childField.label.styleClass.add("small-bottom-pad")
             BorderPane.setAlignment(childField.label, Pos.CENTER)
             BorderPane.setAlignment(childField.control, Pos.CENTER)
-        } else if (labelsAbove == false) {
+
+        } else if (labelPosition == LabelPosition.LEFT) {
             container = BorderPane()
             container.left = childField.label
             container.center = childField.control
             childField.label.styleClass.add("right-pad")
             BorderPane.setAlignment(childField.label, Pos.CENTER_LEFT)
             BorderPane.setAlignment(childField.control, Pos.CENTER_LEFT)
+
         } else {
             container = childField.control!!
         }

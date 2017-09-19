@@ -31,7 +31,7 @@ class IntRangeParameter(
             addParameters(InformationParameter(name + "_info", information = toText, stretchy = false))
         }
         addParameters(toP)
-        asHorizontal(null)
+        asHorizontal(LabelPosition.NONE)
     }
 
     override fun saveChildren(): Boolean = true

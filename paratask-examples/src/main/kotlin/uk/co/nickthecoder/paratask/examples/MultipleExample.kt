@@ -49,7 +49,7 @@ class MultipleExample : AbstractTask() {
 
         init {
             addParameters(realP, plusP, imaginaryP, iP)
-            asHorizontal(labelsAbove = null)
+            asHorizontal(LabelPosition.NONE)
         }
     }
 }
