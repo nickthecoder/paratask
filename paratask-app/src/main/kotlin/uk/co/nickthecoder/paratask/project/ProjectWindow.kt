@@ -31,9 +31,12 @@ import uk.co.nickthecoder.paratask.Tool
 import uk.co.nickthecoder.paratask.ToolBarTool
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
 import uk.co.nickthecoder.paratask.gui.TaskPrompter
+import uk.co.nickthecoder.paratask.tools.CustomTaskListTool
 import uk.co.nickthecoder.paratask.tools.ExceptionTool
 import uk.co.nickthecoder.paratask.tools.HomeTool
 import uk.co.nickthecoder.paratask.tools.WebTool
+import uk.co.nickthecoder.paratask.tools.places.DirectoryTool
+import uk.co.nickthecoder.paratask.tools.places.TrashTool
 import uk.co.nickthecoder.paratask.util.AutoExit
 
 class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
@@ -93,7 +96,18 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
     fun onNewWindow() {
         val newWindow = ProjectWindow()
         newWindow.placeOnStage(Stage())
-        newWindow.addTool(HomeTool())
+        newWindow.addDefaultTools()
+    }
+
+    fun addDefaultTools() {
+        addTool(HomeTool())
+        val customTasks = CustomTaskListTool()
+        customTasks.toolBarSideP.value = Side.TOP
+        val home = customTasks.toolsP.newValue()
+        home.taskP.value = DirectoryTool()
+        val trash = customTasks.toolsP.newValue()
+        trash.taskP.value = TrashTool()
+        addTool(customTasks)
     }
 
     fun placeOnStage(stage: Stage) {

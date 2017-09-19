@@ -11,15 +11,6 @@ For toolbar buttons with linked open tools, save the link, and restore it.
 		Create a similar list when loading.
 		That way we can be sure that the toolbar index will be correct.
 
-MountTool to give option of using name, path or label for the button's text.
-	
-
-Create a CustomToolListTool when creating a blank project window.
-	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
-	Include a HomeTool, a DirectoryTool of ~
-	Include existing buttons (but maybe Load/Save Project are NOT part of this, and are always visible)
-	Buttons must have a tooltip
-
 Save/Load filters in Project files
 
 Check if GitTool rm and rmf are working.

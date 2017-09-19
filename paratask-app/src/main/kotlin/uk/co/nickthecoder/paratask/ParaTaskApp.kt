@@ -151,7 +151,7 @@ class ParaTaskApp : Application() {
             if (projectFiles.isEmpty()) {
                 val pw = ProjectWindow()
                 pw.placeOnStage(Stage())
-                pw.addTool(HomeTool())
+                pw.addDefaultTools()
             } else {
                 // Open a new window
                 for (file in projectFiles) {
