@@ -21,7 +21,7 @@ import javafx.event.EventHandler
 import javafx.scene.control.Button
 import uk.co.nickthecoder.paratask.Task
 
-open class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?)
+class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?, val onDone: (() -> Unit)? = null)
     : AbstractTaskPrompter(task) {
 
     val variablesButton = Button("Variables")
@@ -56,6 +56,7 @@ open class EditTaskPrompter(task: Task, val scriptVariables: ScriptVariables?)
 
     fun onDone() {
         close()
+        onDone?.let { it() }
     }
 
 }

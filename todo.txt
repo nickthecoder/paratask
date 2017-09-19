@@ -1,7 +1,5 @@
 TODO
 
-TaskParameter to fire a change event, when the parameters are changed.
-
 For toolbar buttons with linked open tools, save the link, and restore it.
 	After saving tools and toolbars, Iterate over each toolbar, and each button within it.
 	If the button is a ToolButton, and the tool is visible, then save that info.
@@ -27,13 +25,8 @@ Create a CustomToolListTool when creating a blank project window.
 
 Save/Load filters in Project files
 
-TaskD.addParameters returns this (like AbstractGroupParameter)
-
 Bugs
 	Check if GitTool rm and rmf are working.
-
-Ctrl+A selects all rows in the table, copying the current row's code.
-De-selecting a row removes that row's code (if it has one).
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
