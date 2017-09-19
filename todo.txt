@@ -1,18 +1,5 @@
 TODO
 
-
-Create a "MultipleChoiceParameter" allowing a set of items to be selected from a list.
-	Option to allow them to be re-organised (or maybe create a different type?)
-		One's value is a Set, the other a List???
-
-Allow columns to be hidden (Right click any column header. List all columns in the context menu).
-	Could save this info as well as column widths in project file
-	Do NOT include it in the history.
-
-Save filters in the project file.
-	Specify the index of the tab if there are more than one results.
-	Each test could need a code. e.g. "==", "contains". Label can default to the code.
-
 TaskParameter to fire a change event, when the parameters are changed.
 
 For toolbar buttons with linked open tools, save the link, and restore it.
@@ -41,13 +28,6 @@ Create a CustomToolListTool when creating a blank project window.
 	Include existing buttons (but maybe Load/Save Project are NOT part of this, and are always visible)
 	Buttons must have a tooltip
 
-Could even consider creating a toolbar from a DirectoryTool
-How about a MountTool!
-
-How about the "main" toolbar being such a tool!
-
-Any tools that can become toolbars can also become Menus!!!
-
 AbstractGroupParameter.innerListener should only forward CHANGE events to the parent, not ALL event types???
 
 Save/Load filters in Project files
@@ -57,25 +37,11 @@ Use a "GridInfo" class rather than multiple parameters
 
 TaskD.addParameters returns this (like AbstractGroupParameter)
 
-PlaceParameter could be the new CompoundParameter, which has a Place
-RowFilter.Condition renamed to ConditionParameter could be a new CompoundParameter, returning a (new) Condition object.
-
 Bugs
-	JediTerm problem when using a split pane - sometime the Swing component stops working.
-		This is a long standing known bug with JediTerm.
-		Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 	Check if GitTool rm and rmf are working.
-
-Push the cwd of a TerminalTool?
-	Don't push, just change the value without creating a new moment in history.
-
-Add more filters to the find tool
 
 Ctrl+A selects all rows in the table, copying the current row's code.
 De-selecting a row removes that row's code (if it has one).
-
-OptionsTool to list other options paths which have a FileOption with this name.
-	As a new minor tab. Only show it if it isn't empty???
 
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
@@ -100,22 +66,6 @@ FileOperations
 		Implement as options when rows have shortcuts?
 		Or maybe use the Drag/Drop infrastructure, which may allow copy/paste of other types of data, such as Places.
 
-Allowing GroupParameter and/or CompoundParameter to lay out children using a FlowPane / GridPane / HBox.
-	Could use it for ShortcutParameter's booleans and maybe EditOptionTask's booleans too.
-	The children would need to SHARE one error message label.
-
-
-Fix problem where changing ScaledValue elements doesn't fire change events. Hmmm.
-	Add a ScaledDoubleParameter on ScaledValue, and throw exception if a value is used by more than one parameter.
-	Or add a list of ScaledDoubleParameters???
-	Or make ScaledValue imutable???
-	Maybe replace this with a more generic compound parameter, with a extra method(s) scaledValue() : ScaledValue and doubleValue : Double()
-Space out the ScaleDouble fields.
-
-RangeParameters (int and double)
-
-Other compound parameters, such as "Size" : x,y
-
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 	Maybe put it in a different (sub) project, as it is by no means a core feature.
@@ -128,32 +78,6 @@ Make git diff its own Task (with boolean for Use Diff Tool)
 			A button to pop-up a list of stashes, commits etc.
 	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
 
-Task to extract options from the jar file, and place them into ~/.config/paratask/options
-	(Don't overwrite anything, unless the "overwrite" parameter is ticked.
-
-
-PasswordParameter - never saved in json
-	But maybe later retrieve password values from a password safe.
-	So the parameter has an option to TYPE the password OR specify the key in the password safe.
-	For extra flexibility, support multiple password safes (each with their own parameters).
-
-New Tasks
-	Audio tasks
-		Encode a file to mp3/ogg/flac etc
-		Tag the file
-	mmv (multiple move) - Is this already done?
-
----
-
-Expressions to allow for autocomplete.
-	e.g. row. should autocomplete all public methods/attributes
-
-TerminalTool to allow running of Tasks/Tools/Options from the input field
-	Special prefix such as ":" to specify an option, and allow for simple command line style arguments
-
-A true tree style tool would be interesting.
-	Not only to implement DirecoryTree properly, but also for unrelated items in the tree
-		e.g. Place -> directory -> file ( each with different option files )
 
 
 Later Version
@@ -163,13 +87,6 @@ Create a WEB front end
 	Why? It can be used as a general purpose application framework!
 	Have a "Regular" mode, where row option are buttons at the top, and there's a check box against each row.
 		Non-row options are buttons at the bottom.
-
-Editor - Open a file in a new lower tab
-    Can we remove a single lower tab?
-        When removing the last editor tab, remove the whole toolPane
-    Allow a single Editor tool to be reused
-	i.e. When opening a new text file, if there is already an Editor open, then use it, adding a new minor tab
-	    (or showing the minor tab if it is already open)
 
 Write a generic DB tool
 	Work with Tables
@@ -184,6 +101,9 @@ Hard Bugs
 I've tried to fix them, but have not found a solution.
 
 WebTool does not detect when a redirect occurs.
-    This puts TWO moments in the history (one for the address requested and another for the redirected address).
-    When in the middle of History this second one wipes out the future history.
+	This puts TWO moments in the history (one for the address requested and another for the redirected address).
+
+JediTerm problem when using a split pane - sometime the Swing component stops working.
+	This is a long standing known bug with JediTerm.
+	Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 

@@ -148,19 +148,30 @@ class ListDetailField<T, P : ValueParameter<T>>(
 
         // NOTE. we need to create a NEW list, because otherwise we get exceptions when removing items.
         val indicies = list.selectionModel.selectedIndices.toMutableList().sorted()
-        indicies.forEach { position ->
-            if (position > previousPosition + 1) {
-                val item = list.items[position]
-                list.items.removeAt(position)
-                list.items.add(position - 1, item)
-                previousPosition = position - 1
-                newSelection.add(position - 1)
-            } else {
-                previousPosition = position
-                newSelection.add(position)
+
+        ignoreStructuralChanges = true
+        try {
+            indicies.forEach { position ->
+                if (position > previousPosition + 1) {
+                    val item = list.items[position]
+                    list.items.removeAt(position)
+                    list.items.add(position - 1, item)
+
+                    val value = multipleParameter.value[position]
+                    multipleParameter.removeAt(position)
+                    multipleParameter.addValue(value, position - 1)
+
+                    previousPosition = position - 1
+                    newSelection.add(position - 1)
+                } else {
+                    previousPosition = position
+                    newSelection.add(position)
+                }
+                list.selectionModel.clearSelection()
+                newSelection.forEach { list.selectionModel.select(it) }
             }
-            list.selectionModel.clearSelection()
-            newSelection.forEach { list.selectionModel.select(it) }
+        } finally {
+            ignoreStructuralChanges = false
         }
     }
 
@@ -172,19 +183,30 @@ class ListDetailField<T, P : ValueParameter<T>>(
 
         // NOTE. we need to create a NEW list, because otherwise we get exceptions when removing items.
         val indicies = list.selectionModel.selectedIndices.toMutableList().sortedDescending()
-        indicies.forEach { position ->
-            if (position < previousPosition - 1) {
-                val item = list.items[position]
-                list.items.removeAt(position)
-                list.items.add(position + 1, item)
-                previousPosition = position + 1
-                newSelection.add(position + 1)
-            } else {
-                previousPosition = position
-                newSelection.add(position)
+
+        ignoreStructuralChanges = true
+        try {
+            indicies.forEach { position ->
+                if (position < previousPosition - 1) {
+                    val item = list.items[position]
+                    list.items.removeAt(position)
+                    list.items.add(position + 1, item)
+
+                    val value = multipleParameter.value[position]
+                    multipleParameter.removeAt(position)
+                    multipleParameter.addValue(value, position + 1)
+
+                    previousPosition = position + 1
+                    newSelection.add(position + 1)
+                } else {
+                    previousPosition = position
+                    newSelection.add(position)
+                }
+                list.selectionModel.clearSelection()
+                newSelection.forEach { list.selectionModel.select(it) }
             }
-            list.selectionModel.clearSelection()
-            newSelection.forEach { list.selectionModel.select(it) }
+        } finally {
+            ignoreStructuralChanges = false
         }
     }
 
