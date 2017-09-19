@@ -13,7 +13,6 @@ MountTool to give option of using name, path or label for the button's text.
 Replace mounttool with a version using findmnt
 	Use --fstab and --mtab, so that we can list *unmounted* points as well.
 
-Editor must not discard changes or blank documents when re-run.
 
 Create a CustomToolListTool when creating a blank project window.
 	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
@@ -28,16 +27,15 @@ Check if GitTool rm and rmf are working.
 COPY Drag of Files to the same directory make a COPY of the files.
 	Maybe ask first? To prevent accidental drags screwing things up.
 
+Editor must not discard changes or blank documents when re-run.
+Consider saving new documents in the project file (A hidden multiple of string parameter).
+	May need a "preSave" method on Tool
 Dialog box to ask if Editor's buffers should be saved
 	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
 	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
 	The action is in the window title bar. e.g. "Close Tab", "Merge Tabs", "Close Right Panel"
-	Each has a special BooleanParameter, with a label such as "Save todo.txt", which defaults to true.
-		Has a tooltip (description) which shows the full path of the file to save/discard when you hover over the checkbox's label.
-	Ok, sends results to the Tool, which then saves/discards depending on the value of the special boolean
-		The operation is then executed.
 	Cancel sends nothing, and abandons the operation.
-	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS (GroupParameter)
+	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS
 		If every group has only ONE question, then we don't need to show as groups.
 
 FileOperations
