@@ -29,7 +29,7 @@ import uk.co.nickthecoder.paratask.tools.places.DirectoryTool
 import uk.co.nickthecoder.paratask.tools.places.Place
 import java.io.File
 
-class PlaceButton(val projectWindow: ProjectWindow, val place: Place) : Button() {
+open class PlaceButton(val projectWindow: ProjectWindow, val place: Place) : Button() {
 
     init {
         onAction = EventHandler { onAction() }

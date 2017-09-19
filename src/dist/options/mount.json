@@ -1,9 +1,75 @@
 {
-    "toolClassName": "uk.co.nickthecoder.paratask.Tool",
+    "rowClassName": "uk.co.nickthecoder.paratask.tools.places.MountTool$MountPoint",
+    "toolClassName": "uk.co.nickthecoder.paratask.tools.places.MountTool",
     "includes": [
         "fileOrDir"
     ],
     "options": [
-        
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "m",
+            "label": "Mount",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "mount"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "/home/nick/projects/paratask/"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "u",
+            "label": "Unmount",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "umount"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": "/home/nick/projects/paratask/"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        }
     ]
 }
