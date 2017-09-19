@@ -24,6 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.table.BaseFileColumn
 import uk.co.nickthecoder.paratask.table.Column
 import uk.co.nickthecoder.paratask.table.ListTableTool
+import uk.co.nickthecoder.paratask.table.LocalDateTimeColumn
 import uk.co.nickthecoder.paratask.table.filter.RowFilter
 import java.io.BufferedReader
 import java.io.DataOutputStream
@@ -32,9 +33,11 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
-import java.sql.Date
 import java.sql.DriverManager
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 /**
  *
@@ -53,7 +56,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
 
     val directoryP = FileParameter("directory", expectFile = false, value = File("/video/myth/"))
 
-    override val rowFilter = RowFilter(this, columns, RecordedLine("", "", Date(0), "", "", "", File("")))
+    override val rowFilter = RowFilter(this, columns, RecordedLine("", "", Timestamp(0), "", "", "", File("")))
 
     init {
         Class.forName("com.mysql.jdbc.Driver")
@@ -62,7 +65,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         directoryP.aliases.add("direcotry")
 
         columns.add(Column<RecordedLine, String>("channel", getter = { it.channel }))
-        columns.add(Column<RecordedLine, Date>("start", getter = { it.start }))
+        columns.add(LocalDateTimeColumn<RecordedLine>("start", getter = { LocalDateTime.ofInstant(it.start.toInstant(), ZoneId.systemDefault()) }))
         columns.add(Column<RecordedLine, String>("title", getter = { it.title }))
         columns.add(Column<RecordedLine, String>("subtitle", getter = { it.subtitle }))
         columns.add(Column<RecordedLine, String>("description", getter = { it.description }))
@@ -84,7 +87,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
         while (resultSet.next()) {
             val channel = resultSet.getString("name")
             val channelID = resultSet.getString("chanid")
-            val start = resultSet.getDate("progstart")
+            val start = resultSet.getTimestamp("progstart")
             val title = resultSet.getString("title")
             val subtitle = resultSet.getString("subtitle")
             val description = resultSet.getString("description")
@@ -102,7 +105,7 @@ class MythRecordedTool : ListTableTool<MythRecordedTool.RecordedLine>() {
     inner class RecordedLine(
             val channel: String,
             val channelID: String,
-            val start: Date,
+            val start: Timestamp,
             val title: String,
             val subtitle: String,
             val description: String,
