@@ -26,6 +26,9 @@ class ParameterListeners : Listeners<ParameterListener>() {
         forEach {
             it.parameterChanged(event)
         }
+        parameter.parent?.let { parent ->
+            parent.parameterListeners.fireInnerParameterChanged(parent, parameter)
+        }
     }
 
     fun fireStructureChanged(parameter: Parameter) {
@@ -39,6 +42,9 @@ class ParameterListeners : Listeners<ParameterListener>() {
         val event = ParameterEvent(parameter, ParameterEventType.INNER, innerParameter)
         forEach {
             it.parameterChanged(event)
+        }
+        parameter.parent?.let { parent ->
+            parent.parameterListeners.fireInnerParameterChanged(parent, innerParameter)
         }
     }
 

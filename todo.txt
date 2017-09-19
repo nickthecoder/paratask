@@ -29,9 +29,6 @@ AbstractGroupParameter.innerListener should only forward CHANGE events to the pa
 
 Save/Load filters in Project files
 
-Use a "GridInfo" class rather than multiple parameters
-	Also have an enum LabelPosition : NONE, TOP, LEFT
-
 TaskD.addParameters returns this (like AbstractGroupParameter)
 
 Bugs
