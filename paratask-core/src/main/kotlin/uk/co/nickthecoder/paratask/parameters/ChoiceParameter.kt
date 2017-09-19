@@ -102,13 +102,14 @@ open class ChoiceParameter<T>(
 
     fun valueKey() = valueToKeyMap[value]
 
-    fun addChoice(key: String, value: T?, label: String = key.uncamel()) {
+    fun addChoice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
         keyToValueMap.put(key, value)
         valueToKeyMap.put(value, key)
         valueToLabelMap.put(value, label)
         labelToValueMap.put(label, value)
 
         parameterListeners.fireStructureChanged(this)
+        return this
     }
 
     fun removeKey(key: String) {
@@ -159,10 +160,16 @@ open class ChoiceParameter<T>(
 
 }
 
-inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(nullLabel: String = ""): ChoiceParameter<T?> {
+inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(nullLabel: String = "", mixCase: Boolean = false): ChoiceParameter<T?> {
     choice("", null, nullLabel)
     enumValues<T>().forEach { item ->
-        val label = if (item is Labelled) item.label else item.name
+        val label = if (item is Labelled) {
+            item.label
+        } else if (mixCase) {
+            item.name.split("_").map { it.toLowerCase().capitalize() }.joinToString(separator = " ")
+        } else {
+            item.name
+        }
         choice(key = item.name, value = item, label = label)
     }
     return this

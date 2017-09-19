@@ -46,8 +46,11 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
 
 
     val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
-            .nullableEnumChoices("None")
+            .nullableEnumChoices(mixCase = true, nullLabel = "None")
     override var toolBarSide by toolBarSideP
+
+    val labelOptionP = ChoiceParameter("buttonText", value = MountPointButton.LabelOption.DIRECTORY_NAME)
+            .enumChoices(mixCase = true)
 
     val excludeFSTypesP = MultipleParameter("excludeFSTypes", value = listOf("tmpfs", "devtmpfs"), isBoxed = true) {
         StringParameter("excludeFSType")
@@ -58,7 +61,7 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
     }
 
     override val taskD = TaskDescription("mount", description = "Lists all mounted filesystems")
-            .addParameters(toolBarSideP, excludeFSTypesP, excludeMountPointsP)
+            .addParameters(toolBarSideP, labelOptionP, excludeFSTypesP, excludeMountPointsP)
 
 
     private val exampleRow = MountPoint(File(""), "", "", false, 0, 0, 0)
@@ -68,6 +71,10 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
 
 
     init {
+        labelOptionP.hidden = true
+        toolBarSideP.listen {
+            labelOptionP.hidden = toolBarSideP.value == null
+        }
         columns.add(Column<MountPoint, ImageView>("icon", label = "", getter = { ImageView(it.icon) }))
         columns.add(BooleanColumn<MountPoint>("mounted", label = "Mounted?", getter = { it.isMounted }))
         columns.add(Column<MountPoint, String>("label", getter = { it.label }))
@@ -93,10 +100,9 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
 
         if (showingToolbar()) {
             Platform.runLater {
-                updateToolbar(list.map { mountPoint -> MountPointButton(toolBarConnector!!.projectWindow, mountPoint) })
+                updateToolbar(list.map { mountPoint -> MountPointButton(toolBarConnector!!.projectWindow, mountPoint, labelOptionP.value!!) })
             }
         }
-
     }
 
     fun accept(mountPoint: MountPoint): Boolean {
@@ -191,7 +197,7 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
     }
 
     class MountPoint(
-            directory: File,
+            val directory: File,
             label: String,
             val fsType: String,
             val isMounted: Boolean,
@@ -201,7 +207,7 @@ class MountTool : ListTableTool<MountTool.MountPoint>(), SingleRowFilter<MountTo
 
         : Place(Resource(directory), label) {
 
-        val icon: Image? = ParaTask.imageResource("filetypes/${if (isMounted) "mounted" else "unmounted"}.png")
+        val icon: Image? = ParaTask.imageResource("filetypes/${if (isMounted) "mounted" else "directory"}.png")
     }
 
 }

@@ -1,5 +1,7 @@
 TODO
 
+Implement command line tab completion
+
 For toolbar buttons with linked open tools, save the link, and restore it.
 	After saving tools and toolbars, Iterate over each toolbar, and each button within it.
 	If the button is a ToolButton, and the tool is visible, then save that info.
@@ -10,9 +12,7 @@ For toolbar buttons with linked open tools, save the link, and restore it.
 		That way we can be sure that the toolbar index will be correct.
 
 MountTool to give option of using name, path or label for the button's text.
-Replace mounttool with a version using findmnt
-	Use --fstab and --mtab, so that we can list *unmounted* points as well.
-
+	
 
 Create a CustomToolListTool when creating a blank project window.
 	Include a DeleteFilesTask with a dustbin icon (must PROMPT the task)
@@ -49,8 +49,6 @@ FileOperations
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 	Maybe put it in a different (sub) project, as it is by no means a core feature.
-
-Implement command line tab completion
 
 Make git diff its own Task (with boolean for Use Diff Tool)
 	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.

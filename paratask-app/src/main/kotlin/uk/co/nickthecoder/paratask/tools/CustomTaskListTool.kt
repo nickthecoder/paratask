@@ -40,7 +40,7 @@ class CustomTaskListTool : ListTableTool<CustomTaskListTool.Item>(), ToolBarTool
     override var toolBarConnector: ToolBarToolConnector? = null
 
     val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
-            .nullableEnumChoices("None")
+            .nullableEnumChoices("None", mixCase = true)
     override var toolBarSide by toolBarSideP
 
     val toolsP = MultipleParameter("tools") {

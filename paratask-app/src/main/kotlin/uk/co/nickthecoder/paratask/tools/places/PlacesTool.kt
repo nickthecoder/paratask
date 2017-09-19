@@ -61,7 +61,7 @@ class PlacesTool : AbstractTableTool<PlaceInFile>(), SingleRowFilter<PlaceInFile
     override var toolBarConnector: ToolBarToolConnector? = null
 
     val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
-            .nullableEnumChoices("None")
+            .nullableEnumChoices("None", mixCase = true)
     override var toolBarSide by toolBarSideP
 
 

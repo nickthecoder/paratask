@@ -51,7 +51,7 @@ class PlaceListTool : ListTableTool<Place>(), SingleRowFilter<Place>, ToolBarToo
     override var toolBarConnector: ToolBarToolConnector? = null
 
     val toolBarSideP = ChoiceParameter<Side?>("toolbar", value = null, required = false)
-            .nullableEnumChoices("None")
+            .nullableEnumChoices("None", mixCase = true)
     override var toolBarSide by toolBarSideP
 
 
