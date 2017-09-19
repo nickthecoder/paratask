@@ -2,7 +2,7 @@
     "rowClassName": "uk.co.nickthecoder.paratask.tools.git.GitStashRow",
     "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitStashTool",
     "includes": [
-        
+        "git"
     ],
     "options": [
         {

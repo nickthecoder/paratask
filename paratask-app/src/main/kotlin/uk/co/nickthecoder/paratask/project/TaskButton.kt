@@ -50,36 +50,38 @@ abstract class AbstractTaskButton(val task: Task, val label: String, val icon: I
     }
 
     init {
-        val unnamed = task.taskD.unnamedParameter
+        val unnamedP = task.taskD.unnamedParameter
+        val directoryP = task.taskD.root.find("directory")
+
         if (task is HasDropHelper) {
             task.dropHelper.applyTo(this)
-        } else if (unnamed is FileParameter || unnamed is MultipleParameter<*, *> && unnamed.factory() is FileParameter) {
+        } else if (directoryP is FileParameter || unnamedP is FileParameter || unnamedP is MultipleParameter<*, *> && unnamedP.factory() is FileParameter) {
             DropFiles(arrayOf(TransferMode.LINK)) { _, files -> onDroppedFiles(files) }.applyTo(this)
         }
     }
 
     fun onDroppedFiles(files: List<File>) {
-        val t = createTask()
+        val t = task.copy()
 
-        val unamed = t.taskD.unnamedParameter
-        if (unamed is FileParameter) {
-            unamed.value = files.firstOrNull()
-        } else if (unamed is MultipleParameter<*, *> && unamed.factory() is FileParameter) {
-            if (copyTask) {
-                println("Clearing unamed parameter values")
-                unamed.clear()
-            }
+        val unamedP = t.taskD.unnamedParameter
+        val directoryP = t.taskD.root.find("directory")
+
+        if (unamedP is FileParameter) {
+            unamedP.value = files.firstOrNull()
+        } else if (unamedP is MultipleParameter<*, *> && unamedP.factory() is FileParameter) {
+            unamedP.clear()
             files.forEach { file ->
-                val fp = unamed.newValue()
+                val fp = unamedP.newValue()
                 if (fp is FileParameter) {
                     fp.value = file
                 }
             }
+        } else if (directoryP is FileParameter) {
+            files.filter { it.isDirectory() }.firstOrNull()?.let {
+                directoryP.value = it
+            }
         }
         runTask(t)
-        if (t is Tool && !copyTask) {
-            t.toolPane?.parametersPane?.run()
-        }
     }
 
     fun onAction() {

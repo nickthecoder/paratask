@@ -37,53 +37,51 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
 
     enum class MatchType { GLOB_CASE_SENSITIVE, GLOB_CASE_INSENSITIVE, REGEX_CASE_SENSITIVE, REGEX_CASE_INSENSITIVE }
 
-    override val taskD = TaskDescription("find", description = "Find files using the Unix 'find' command")
-
     val directoryP = FileParameter("directory", expectFile = false, mustExist = true)
+    override val directory by directoryP
 
-    val nameGroupP = SimpleGroupParameter("matchName")
     val filenameP = StringParameter("filename", required = false)
     val matchTypeP = ChoiceParameter("matchType", value = MatchType.GLOB_CASE_INSENSITIVE).enumChoices(true)
-
     val wholeNameP = BooleanParameter("wholeName", value = false)
+    val nameGroupP = SimpleGroupParameter("matchName")
+            .addParameters(filenameP, matchTypeP, wholeNameP)
 
-    val emptyFilesP = BooleanParameter("emptyFiles", value = false)
 
-    val traverseGroupP = SimpleGroupParameter("traverseOptions")
     val followSymlinksP = BooleanParameter("followSymlinks", value = false)
     val otherFileSystemsP = BooleanParameter("otherFileSystems", value = true)
     val minDepthP = IntParameter("minDepth", required = false)
     val maxDepthP = IntParameter("maxDepth", required = false)
+    val traverseGroupP = SimpleGroupParameter("traverseOptions")
+            .addParameters(followSymlinksP, otherFileSystemsP, minDepthP, maxDepthP)
 
-    val filterGroupP = SimpleGroupParameter("filter")
     val userP = StringParameter("user", required = false)
     val groupP = StringParameter("group", required = false)
-    val newerThanFileP = FileParameter("newerThanFile", required = false, mustExist = true)
     val typeP = ChoiceParameter<String?>("type", value = null, required = false)
+            .addChoice("", null, "Any")
+            .addChoice("f", "f", "Regular File")
+            .addChoice("d", "d", "Directory")
+            .addChoice("l", "l", "Symbolic Link")
+            .addChoice("s", "s", "Socket Link")
+            .addChoice("p", "p", "Named Pipe")
+            .addChoice("b", "b", "Special Block File")
+            .addChoice("c", "c", "Special Character File")
     val xtypeP = BooleanParameter("typeFollowsSymlink", value = true)
-
+    val emptyFilesP = BooleanParameter("emptyFiles", value = false)
+    val newerThanFileP = FileParameter("newerThanFile", required = false, mustExist = true)
+    val filterGroupP = SimpleGroupParameter("filter")
+            .addParameters(userP, groupP, typeP, xtypeP, emptyFilesP, newerThanFileP)
 
     val thumbnailer = Thumbnailer()
 
-    override val directory by directoryP
+    override val taskD = TaskDescription("find", description = "Find files using the Unix 'find' command")
+            .addParameters(directoryP, nameGroupP, filterGroupP, traverseGroupP, thumbnailer.heightP)
+
 
     override val rowFilter = RowFilter(this, columns, WrappedFile(File("")))
 
 
     init {
-        typeP.addChoice("", null, "Any")
-        typeP.addChoice("f", "f", "Regular File")
-        typeP.addChoice("d", "d", "Directory")
-        typeP.addChoice("l", "l", "Symbolic Link")
-        typeP.addChoice("s", "s", "Socket Link")
-        typeP.addChoice("p", "p", "Named Pipe")
-        typeP.addChoice("b", "b", "Special Block File")
-        typeP.addChoice("c", "c", "Special Character File")
-
-        nameGroupP.addParameters(filenameP, matchTypeP, wholeNameP)
-        traverseGroupP.addParameters(followSymlinksP, otherFileSystemsP, minDepthP, maxDepthP)
-        filterGroupP.addParameters(userP, groupP, typeP, xtypeP, emptyFilesP, newerThanFileP)
-        taskD.addParameters(directoryP, nameGroupP, filterGroupP, traverseGroupP, thumbnailer.heightP)
+        taskD.unnamedParameter = directoryP
 
         matchTypeP.listen {
             if (matchTypeP.value == MatchType.REGEX_CASE_SENSITIVE || matchTypeP.value == MatchType.REGEX_CASE_INSENSITIVE) {

@@ -1,0 +1,154 @@
+{
+    "toolClassName": "uk.co.nickthecoder.paratask.util.HasDirectory",
+    "includes": [
+        
+    ],
+    "options": [
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "g",
+            "label": "Gradle",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gradle"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Gradle"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "gb",
+            "label": "Gradle Build",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gradle"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "build"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Gradle Build"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "gi",
+            "label": "Gradle Install",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gradle"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "install"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Gradle Install"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "gia",
+            "label": "Gradle Install Application",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gradle"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "installApp"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Gradle InstallApp"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        }
+    ]
+}

@@ -36,18 +36,24 @@ class TerminalTool() : AbstractTerminalTool(showCommand = true, allowInput = tru
         directoryP.value = command.directory
     }
 
-    override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
-
     val programP = StringParameter("program", value = "bash")
 
     val argumentsP = MultipleParameter("arguments") { StringParameter("", required = false) }
 
     val directoryP = FileParameter("directory", expectFile = false, required = false)
 
+    val titleP = StringParameter(name = "title", value = "Terminal")
+
     val closeWhenFinishedP = BooleanParameter("closeWhenFinished", value = false)
 
-    init {
-        taskD.addParameters(programP, argumentsP, directoryP, closeWhenFinishedP)
+    override val taskD = TaskDescription("terminal", description = "A simple terminal emulator")
+            .addParameters(programP, argumentsP, directoryP, titleP, closeWhenFinishedP)
+
+
+    override fun run() {
+        shortTitle = titleP.value
+        longTitle = "${titleP.value} ${programP.value} ${argumentsP.value.joinToString(separator = " ")}"
+        super.run()
     }
 
     override fun finished() {

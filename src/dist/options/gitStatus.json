@@ -3,6 +3,7 @@
     "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitStatusTool",
     "includes": [
         "git",
+        "gradle",
         "fileOrDir"
     ],
     "options": [
@@ -75,42 +76,6 @@
                 {
                     "name": "output",
                     "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
-            "code": "d",
-            "label": "Git Diff",
-            "isRow": true,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "diff"
-                        },
-                        {
-                            "expression": "row.file.path"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "closeWhenFinished",
-                    "value": "false"
                 }
             ]
         },
@@ -205,6 +170,46 @@
                 {
                     "name": "option",
                     "value": "-f"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "d",
+            "label": "Git Diff",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        },
+                        {
+                            "expression": "row.file.path"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Git Diff"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
                 }
             ]
         }

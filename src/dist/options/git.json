@@ -6,39 +6,6 @@
     "options": [
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
-            "code": "dall",
-            "label": "Git Diff All",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": true,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "diff"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "closeWhenFinished",
-                    "value": "false"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.git.GitCommitTask",
             "code": "ca",
             "label": "Git Commit All",
@@ -166,6 +133,76 @@
         },
         {
             "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "stash",
+            "label": "Git Stash",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "stash"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "dall",
+            "label": "Git Diff All",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "git"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "diff"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Git Diff All"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
             "code": "push",
             "label": "Git Push",
@@ -198,41 +235,12 @@
                     "expression": "tool.directory"
                 },
                 {
+                    "name": "title",
+                    "value": "Git Push"
+                },
+                {
                     "name": "closeWhenFinished",
                     "value": "false"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "stash",
-            "label": "Git Stash",
-            "isRow": false,
-            "isMultiple": false,
-            "prompt": false,
-            "newTab": false,
-            "refresh": true,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "git"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "stash"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "tool.directory"
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
                 }
             ]
         }
