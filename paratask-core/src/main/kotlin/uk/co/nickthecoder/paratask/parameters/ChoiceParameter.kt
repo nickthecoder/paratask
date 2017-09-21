@@ -164,8 +164,13 @@ open class ChoiceParameter<T>(
 
 }
 
-inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(nullLabel: String = "", mixCase: Boolean = false): ChoiceParameter<T?> {
-    choice("", null, nullLabel)
+inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(
+        nullLabel: String = "",
+        nullKey: String = "null",
+        mixCase: Boolean = false): ChoiceParameter<T?> {
+
+    choice(nullKey, null, nullLabel)
+    
     enumValues<T>().forEach { item ->
         val label = if (item is Labelled) {
             item.label

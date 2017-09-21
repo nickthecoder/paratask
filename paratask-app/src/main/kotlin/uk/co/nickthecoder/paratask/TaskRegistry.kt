@@ -47,13 +47,13 @@ object TaskRegistry {
         }
     }
 
-    fun allTasks(): Set<Task> {
-        val tasks = mutableSetOf<Task>()
+    fun allTasks(): Collection<Task> {
+        val tasks = hashMapOf<String, Task>()
 
         listGroups().forEach {
-            tasks.addAll(it.listTasks())
+            tasks.putAll(it.listTasks().map { Pair(it.taskD.name, it) })
         }
-        return tasks
+        return tasks.values
     }
 
     /**

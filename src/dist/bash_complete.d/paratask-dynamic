@@ -1,7 +1,11 @@
-# Add this file to /etc/bash_completion.d for system wide effect. Or add :
+# Copy this file to /etc/bash_completion.d/paratask for system wide effect. Or add :
 #    . THIS_FILE_PATH
 # to ~/.bash_completion for single user effect.
-
+#
+# Alternatively, instead of this (slow) but dynamic auto-complete mechanism, generate a bash script using :
+#
+#     paratask generateAutoCompletion
+#
 # How it works.
 #
 # The "complete" command causes the function _ParataskComplete to be called whenever the
@@ -19,8 +23,6 @@
 # When I want a list of directories and files combined, I perform a similar trick, but using the
 # _ParataskFileComplete, with "-o plusdirs" instead of "-o dirname".
 # Note that in this case, the file names completions are generated TWICE, the first time they get thrown away.
-# This is convoluted and inefficient, but I can't see a better way to prompt the commands correctly. i.e. to only
-# show file/directory completions for FileParameters.
 
 
 PARATASK_SCRIPTS=paratask

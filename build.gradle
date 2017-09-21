@@ -17,10 +17,19 @@ mainClassName = "uk.co.nickthecoder.paratask.ParaTaskAppKt"
 defaultTasks 'installApp'
 
 dependencies {
+    compile project(':paratask-core')
     compile project(':paratask-app')
     // Comment out the following line, and also the line in settings.gradle to compile paratask without jediterm.
     compile project(':paratask-jediterm')
 }
+
+task generateCompletion(type: Exec) {
+    executable = 'build/install/paratask/bin/paratask'
+    args = ['generateCompletion']
+}
+distTar.dependsOn generateCompletion
+distZip.dependsOn generateCompletion
+run.dependsOn generateCompletion
 
 repositories {
     mavenCentral()

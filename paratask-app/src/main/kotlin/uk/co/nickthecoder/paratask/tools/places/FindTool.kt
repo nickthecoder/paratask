@@ -57,7 +57,7 @@ class FindTool : AbstractCommandTool<WrappedFile>(), HasDirectory {
     val userP = StringParameter("user", required = false)
     val groupP = StringParameter("group", required = false)
     val typeP = ChoiceParameter<String?>("type", value = null, required = false)
-            .addChoice("", null, "Any")
+            .addChoice("any", null, "Any")
             .addChoice("f", "f", "Regular File")
             .addChoice("d", "d", "Directory")
             .addChoice("l", "l", "Symbolic Link")

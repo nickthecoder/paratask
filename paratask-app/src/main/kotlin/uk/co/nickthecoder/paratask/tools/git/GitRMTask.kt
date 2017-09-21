@@ -30,11 +30,10 @@ class GitRMTask : AbstractTask(), HasDirectory {
     override val taskD = TaskDescription("gitRM")
 
     val directoryP = FileParameter("directory", expectFile = false)
-
     override val directory by directoryP
 
     val filesP = MultipleParameter("files", minItems = 1) {
-        FileParameter("", expectFile = null, baseDirectoryP = directoryP)
+        FileParameter("file", expectFile = null, baseDirectoryP = directoryP)
     }
 
     val optionP = ChoiceParameter<String?>("option", value = null, required = false)
