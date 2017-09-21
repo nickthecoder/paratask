@@ -41,14 +41,6 @@ Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 	Maybe put it in a different (sub) project, as it is by no means a core feature.
 
-Make git diff its own Task (with boolean for Use Diff Tool)
-	Allow for changes between various "positions" e.g. HEAD, MASTER, a stash, a commit etc.
-		Maybe even create special Parameters for the "positions"
-			A button to pop-up a list of stashes, commits etc.
-	https://stackoverflow.com/questions/7677736/git-diff-against-a-stash
-
-
-
 Later Version
 =============
 

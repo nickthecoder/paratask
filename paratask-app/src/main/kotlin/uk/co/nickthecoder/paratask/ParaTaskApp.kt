@@ -19,10 +19,9 @@ package uk.co.nickthecoder.paratask
 
 import javafx.application.Application
 import javafx.stage.Stage
+import uk.co.nickthecoder.paratask.gui.TaskPrompter
 import uk.co.nickthecoder.paratask.project.Project
 import uk.co.nickthecoder.paratask.project.ProjectWindow
-import uk.co.nickthecoder.paratask.gui.TaskPrompter
-import uk.co.nickthecoder.paratask.tools.HomeTool
 import java.io.File
 
 /**
@@ -175,7 +174,32 @@ fun main(args: Array<String>) {
         taskArgs = args.copyOfRange(1, args.size)
     }
 
-    if (taskName == "help" || taskName == "--help" || taskName == "-h") {
+    if (taskName == "--autocomplete") {
+        // We expect args to be :
+        // --autocomplete N arg1 arg2...
+        if (args.size < 2) {
+            println("Too few arguments for autocomplete")
+            System.exit(1)
+        }
+        val promptArgNumber = args[1].toInt()
+        val currentValue = if (args.size <= promptArgNumber + 2) "" else args[promptArgNumber + 2]
+
+        if (promptArgNumber == 1) {
+            TaskRegistry.allTasks().map { it.taskD.name }.filter { it.startsWith(currentValue) }.sorted().forEach {
+                println(it)
+            }
+        } else {
+            val task = TaskRegistry.findTask(args[3])
+            if (task == null) {
+                println("Task '$taskName' not found.")
+                System.exit(2)
+            } else {
+                // System.err.println("autocomplete( ${promptArgNumber - 2}, '$currentValue', ${args.copyOfRange(4, args.size).toList()}")
+                TaskParser(task).autoComplete(promptArgNumber - 2, currentValue, args.copyOfRange(4, args.size))
+            }
+        }
+
+    } else if (taskName == "help" || taskName == "--help" || taskName == "-h") {
         TaskParser(HelpTask()).go(taskArgs)
     } else {
         val task = TaskRegistry.findTask(taskName)

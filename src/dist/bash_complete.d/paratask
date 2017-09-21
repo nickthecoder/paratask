@@ -1,0 +1,64 @@
+# Add this file to /etc/bash_completion.d for system wide effect. Or add :
+#    . THIS_FILE_PATH
+# to ~/.bash_completion for single user effect.
+
+# How it works.
+#
+# The "complete" command causes the function _ParataskComplete to be called whenever the
+# TAB key is presses while typing a paratask command. This returns creates an array of strings, for each
+# possible value for the current argument. It does this by calling :
+# paratask --autocomplete ARG_NUMBER ARGS.
+# Alas, the way that this mechanism works, paratask CANNOT perform auto-complete for directory names,
+# because if it returns a single directory name, then a SPACE is added after it! Not what I want.
+# Therefore I need to rely of bash's completion of directory names. To do this, any FileParameters that
+# expect a directory name, does System.exit(123). This script detects the exit status, and changes the
+# 'complete' function from _ParataskComplete to _PararaskDirComplete. By returning 124, it causes bash
+# to start the auto-complete from scratch, which will now use the _PararaskDirComplete function instead.
+# This returns NO ITEMS, but because "-o dirnames" was given to "complete", bash will add directory names itself.
+# The old complete handler is replaced (so that next time tab is pressed, _ParataskComplete will be called).
+# When I want a list of directories and files combined, I perform a similar trick, but using the
+# _ParataskFileComplete, with "-o plusdirs" instead of "-o dirname".
+# Note that in this case, the file names completions are generated TWICE, the first time they get thrown away.
+# This is convoluted and inefficient, but I can't see a better way to prompt the commands correctly. i.e. to only
+# show file/directory completions for FileParameters.
+
+
+PARATASK_SCRIPTS=paratask
+
+_ParataskDirComplete()
+{
+    complete -F _ParataskComplete ${PARATASK_SCRIPTS}
+    return 0
+}
+_ParataskFileComplete()
+{
+    COMPREPLY=( $(${COMP_WORDS[0]} --autocomplete ${COMP_CWORD} "${COMP_WORDS[@]}" ) )
+    complete -F _ParataskComplete ${PARATASK_SCRIPTS}
+    return 0
+}
+
+_ParataskComplete()
+{
+      # echo "${COMP_WORDS[0]} --autocomplete ${COMP_CWORD} ${COMP_WORDS[@]}" > /tmp/paratask-tab-debug.txt
+      COMPREPLY=( $(${COMP_WORDS[0]} --autocomplete ${COMP_CWORD} "${COMP_WORDS[@]}" ) )
+      # Return values 123 and 122 are special only to this script and paratask. They aren't special to Bash.
+
+      EXIT=$?
+      if [ $EXIT == 123 ]
+      then
+            complete -F _ParataskDirComplete -o dirnames ${PARATASK_SCRIPTS}
+            # echo "# Exit status was 123" >> /tmp/paratask-tab-debug.txt
+            return 124 # Special value. See the bash man page for details
+      fi
+      if [ $EXIT == 122 ]
+      then
+            complete -F _ParataskFileComplete -o plusdirs ${PARATASK_SCRIPTS}
+            # echo "# Exit status was 122" >> /tmp/paratask-tab-debug.txt
+            return 124 # Special value. See the bash man page for details
+      fi
+
+      return 0
+}
+
+complete -F _ParataskComplete ${PARATASK_SCRIPTS}
+

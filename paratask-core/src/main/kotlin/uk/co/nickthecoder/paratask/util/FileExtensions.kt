@@ -52,6 +52,11 @@ fun File.isImage() = this.extension.toLowerCase() in imageExtensions
 fun File.isVideo() = this.extension.toLowerCase() in videoExtensions
 
 /**
+ * Returns the path, with a trailing slash if it is a directory.
+ */
+fun File.pathWithSlash() = if (isDirectory) path + File.separator else path
+
+/**
  * Java uses a cache to speed up File.canonicalFile, and I need to bypass this cache.
  * There is a field on FileSystem, but it is not public, so I need to jump through hoops to change it, and
  * then change it back. Also, as this is non-public, there is no guarantee that future versions of java will

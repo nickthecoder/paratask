@@ -87,7 +87,6 @@ class ParaTaskCore : Registers {
          * Tasks/Tools that have been renamed. This allows saved objects to be restored correctly.
          */
 
-        println("Registering task aliases")
         TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.CustomToolListTool", CustomTaskListTool())
         TaskFactory.addAlias("uk.co.nickthecoder.paratask.tools.ListTool", CustomTaskListTool())
 

@@ -149,6 +149,35 @@ open class FileParameter(
     override fun copy() = FileParameter(name = name, label = label, description = description, value = value,
             required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile, extensions = extensions)
 
+
+    override fun autoComplete(currentValue: String) {
+        // System.err.println( "autoCompleting $name extensions=$extensions")
+        // Leave it to the default behavior to list directory names
+        if (expectFile == false) {
+            //System.err.println( "System exit 123")
+            System.exit(123)
+        }
+        // Cannot auto complete for something that doesn't exist!
+        if (mustExist == false) {
+            //System.err.println( "System exit 123")
+            System.exit(123)
+        }
+
+        val file = File(currentValue)
+        val dir: File
+        if (currentValue.endsWith(File.separatorChar)) {
+            dir = file
+        } else {
+            dir = file.parentFile ?: File(".")
+        }
+        val lister = FileLister(onlyFiles = true, includeHidden = true, extensions = extensions)
+        val files = lister.listFiles(dir).map { if (it.path.startsWith("./")) it.path.substring(2) else it.path }
+        //System.err.println("Results\n${files}\n\n")
+        autoComplete(currentValue, files)
+        //System.err.println( "System exit 122")
+        System.exit(122)
+    }
+
     companion object {
         var showDragIcon: Boolean = true
         var showOpenButton: Boolean = false

@@ -46,14 +46,21 @@ class TaskParser(val task: Task) {
 
     private val helpP = BooleanParameter("help", description = "Print this help text")
 
-    private var autoComplete = false
+    private var autoComplete: Boolean = false
 
-    private var autoCompleteIndex = 0
+    private var autoCompleteIndex: Int = -1
 
-    private var autoCompleteValue = ""
+    private var autoCompleteValue: String = ""
 
     init {
         metaTaskD.addParameters(promptP, helpP)
+    }
+
+    fun autoComplete(autoCompleteIndex: Int, autoCompleteValue: String, args: Array<String>) {
+        autoComplete = true
+        this.autoCompleteIndex = autoCompleteIndex
+        this.autoCompleteValue = autoCompleteValue
+        go(args)
     }
 
     fun go(args: Array<String>, prompt: Boolean = false) {
@@ -65,30 +72,10 @@ class TaskParser(val task: Task) {
         arguments = args.toList()
 
         try {
-            if (arguments.size >= 2 && arguments[0] == "--autocomplete") {
-                autoComplete = true
-                autoCompleteIndex = Integer.parseInt(arguments[1]) - 1
-                if (arguments.size >= 3) {
-                    arguments = arguments.slice(3..arguments.size - 1)
-                    if (arguments.size > autoCompleteIndex) {
-                        autoCompleteValue = arguments[autoCompleteIndex]
-                    } else {
-                        autoCompleteValue = ""
-                    }
-                } else {
-                    arguments = mutableListOf()
-                    autoCompleteValue = ""
-                }
-            }
-
             parseRegularArguments()
             if (arguments.isNotEmpty()) {
-                if (autoComplete && autoCompleteIndex > 0) {
-                    // TODO Autocomplete the extra
-                } else {
-                    // Some Tasks allow for a single argument at the end without the "--parameter-name" part.
-                    parseExtraArguments()
-                }
+                // Some Tasks allow for a single argument at the end without the "--parameter-name" part.
+                parseExtraArguments()
             }
         } catch (e: Exception) {
             // Error while parsing arguments.
@@ -155,20 +142,26 @@ class TaskParser(val task: Task) {
     }
 
     private fun autoCompleteParameterNames() {
-        arguments = mutableListOf()
-        println(task.parameters().filter {
-            ("--" + it.name).startsWith(autoCompleteValue)
-        }.map { "--" + it.name }.joinToString(separator = " "))
+        val parameterNames =
+                task.parameters().filterIsInstance<BooleanParameter>().map { it.oppositeName }.filterNotNull() +
+                        task.parameters().map { it.name }
+
+        parameterNames.map { "--" + it }.filter {
+            (it).startsWith(autoCompleteValue)
+        }.sorted().forEach {
+            println(it)
+        }
     }
 
     private fun parseRegularArguments() {
 
-        if (autoComplete && autoCompleteIndex == 0) {
-            autoCompleteParameterNames()
-            return
-        }
-
         while (arguments.isNotEmpty()) {
+            if (autoComplete && autoCompleteIndex == 0) {
+                autoCompleteParameterNames()
+                arguments = emptyList()
+                return
+            }
+
             val arg = arguments[0]
             val arg2 = if (arguments.size > 1) arguments[1] else null
 
@@ -183,25 +176,35 @@ class TaskParser(val task: Task) {
 
     private fun parseArgument(taskD: TaskDescription, name: String, arg2: String?): Int {
         taskD.root.find(name)?.let { parameter ->
+
             if (parameter is BooleanParameter) {
                 parameter.value = name == parameter.name
                 return 1
             }
-            if (arg2 == null) {
-                throw ParameterException(parameter, "Expected a value for parameter $name")
-            }
-            if (parameter is ValueParameter<*>) {
-                parameter.stringValue = arg2
-                return 2
+
+            if (autoCompleteIndex == 1) {
+                parameter.autoComplete(autoCompleteValue)
+                return arguments.size // Consume ALL remaining parameters. They do not need to be parsed.
+
             } else {
-                throw ParameterException(parameter, "Parameter $name cannot have a value")
+
+                if (arg2 == null) {
+                    throw ParameterException(parameter, "Expected a value for parameter $name")
+                }
+                if (parameter is ValueParameter<*>) {
+                    parameter.stringValue = arg2
+                    return 2
+                } else {
+                    throw ParameterException(parameter, "Parameter $name cannot have a value")
+                }
             }
+
         }
         return 0
     }
 
     private fun parseArgument(arg: String, arg2: String?): Int {
-        if (arg == "==") {
+        if (arg == "--") {
             endOfArgs = true
             return 1
         }
@@ -220,28 +223,33 @@ class TaskParser(val task: Task) {
             if (remove > 0) {
                 return remove
             }
-            throw RuntimeException(
-                    """Unknown parameter $name
+            if (!autoComplete) {
+                throw RuntimeException(
+                        """Unknown parameter $name
 NOTE, if you expect this argument to be used a "default" argument,
 then place the POSIX standard "--" BEFORE the "default" argument(s).
 """)
+            }
         }
         return 0
     }
 
     private fun parseExtraArguments() {
         task.taskD.unnamedParameter?.let { unnamedParameter ->
-            if (unnamedParameter is MultipleParameter<*,*>) {
-                for (arg in arguments) {
-                    unnamedParameter.addStringValue(arg)
+            if (autoComplete) {
+                unnamedParameter.autoComplete(autoCompleteValue)
+            } else {
+                if (unnamedParameter is MultipleParameter<*, *>) {
+                    for (arg in arguments) {
+                        unnamedParameter.addStringValue(arg)
+                    }
+                    return
                 }
-                return
-            }
+                unnamedParameter.stringValue = arguments[0]
 
-            unnamedParameter.stringValue = arguments[0]
-
-            if (arguments.size > 1) {
-                throw RuntimeException("Unexpected extra argumen ${arguments[1]}")
+                if (arguments.size > 1) {
+                    throw RuntimeException("Unexpected extra argument ${arguments[1]}")
+                }
             }
         }
     }

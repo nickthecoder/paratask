@@ -74,23 +74,13 @@ class HelpTask : AbstractTask() {
     }
 
     fun printTaskNames() {
-        val tasks = mutableSetOf<Task>()
-
-        TaskRegistry.listGroups().forEach {
-            tasks.addAll(it.listTasks())
-        }
-        tasks.sortedBy { it.taskD.name }.forEach { task ->
+        TaskRegistry.allTasks().sortedBy { it.taskD.name }.forEach { task ->
             println("    ${task.taskD.name} : ${task.taskD.description}")
         }
     }
 
     fun printTaskClasses() {
-        val tasks = mutableSetOf<Task>()
-
-        TaskRegistry.listGroups().forEach {
-            tasks.addAll(it.listTasks())
-        }
-        tasks.sortedBy { it.creationString() }.forEach { task ->
+        TaskRegistry.allTasks().sortedBy { it.creationString() }.forEach { task ->
             println("    ${task.creationString()} : ${task.taskD.description}")
         }
     }

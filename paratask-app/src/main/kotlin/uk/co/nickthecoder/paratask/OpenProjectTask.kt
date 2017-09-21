@@ -44,11 +44,6 @@ class OpenProjectTask : AbstractTask() {
 
     override var taskRunner: TaskRunner = UnthreadedTaskRunner(this)
 
-    val projectsP = MultipleParameter("projects",
-            description = "The names of the projects to load. (Do not include the .json suffix)") {
-        StringParameter("")
-    }
-
     val directoryP = FileParameter(
             "directory",
             mustExist = true,
@@ -56,12 +51,22 @@ class OpenProjectTask : AbstractTask() {
             value = Preferences.projectsDirectory,
             description = "The directory containing the project files\ndefault=${Preferences.projectsDirectory}")
 
+
+    val projectsP = MultipleParameter("projects",
+            description = "The names of the projects to load. (Do not include the .json suffix)") {
+        StringParameter("")
+    }
+
+    val projectFilesP = MultipleParameter("projectFiles") {
+        FileParameter("projectFile", mustExist = true, extensions = listOf("json"))
+    }
+
     val optionsPathP = MultipleParameter("optionsPath", minItems = 1) {
         FileParameter("optionsDirectory", expectFile = false)
     }
 
     init {
-        taskD.addParameters(projectsP, directoryP, optionsPathP)
+        taskD.addParameters(directoryP, projectsP, projectFilesP, optionsPathP)
 
         taskD.unnamedParameter = projectsP
         optionsPathP.value = Preferences.optionsPath
@@ -73,7 +78,8 @@ class OpenProjectTask : AbstractTask() {
 
         val projectFiles = projectsP.value.map {
             File(directoryP.value, it + ".json")
-        }
+        } + projectFilesP.value.filterNotNull()
+
         ParaTaskApp.openProjects(projectFiles)
     }
 }

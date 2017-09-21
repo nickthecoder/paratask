@@ -47,6 +47,15 @@ object TaskRegistry {
         }
     }
 
+    fun allTasks(): Set<Task> {
+        val tasks = mutableSetOf<Task>()
+
+        listGroups().forEach {
+            tasks.addAll(it.listTasks())
+        }
+        return tasks
+    }
+
     /**
      * Finds a registered task by its name.
      * First, the name is used to look for a registered task with the same creation string.
