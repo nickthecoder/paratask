@@ -1,6 +1,11 @@
 TODO
 
+Squash the fields together - especially needed in grep's header.
+
+Command based tools "run" should paste text into a terminal, so that the commmand can be changed and re-run easily.
 Implement command line tab completion
+
+Copy paste doesn't work for real terminal.
 
 For toolbar buttons with linked open tools, save the link, and restore it.
 	After saving tools and toolbars, Iterate over each toolbar, and each button within it.
@@ -40,6 +45,8 @@ FileOperations
 Implement MythTool using the service API, not using the DB directly
 	Can't get my myth server to listen on anything except localhost. Grrr.
 	Maybe put it in a different (sub) project, as it is by no means a core feature.
+
+Convert some of my scripts to paratask-core for their parameters, and add feature to generate a bash completion script for each.
 
 Later Version
 =============

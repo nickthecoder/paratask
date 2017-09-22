@@ -177,7 +177,7 @@ class TaskParser(val task: Task) {
     private fun parseArgument(taskD: TaskDescription, name: String, arg2: String?): Int {
         taskD.root.find(name)?.let { parameter ->
 
-            if (parameter is BooleanParameter) {
+            if (parameter is BooleanParameter && !parameter.needsValue()) {
                 parameter.value = name == parameter.name
                 return 1
             }

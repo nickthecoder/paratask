@@ -71,7 +71,7 @@ class ParaTaskCore : Registers {
 
         val paratask = TaskGroup("ParaTask")
         paratask.addTasks(OptionsTool(), OptionsFilesTool(), ShortcutsTool())
-        paratask.addTasks(OpenProjectTask(), GenerateCompletionTask())
+        paratask.addTasks(OpenProjectTask(), GenerateCompletionTask(), GenerateTaskCompletionTask())
 
         val misc = TaskGroup("Miscellaneous")
         misc.addTasks(CodeHeaderTool(), MythRecordedTool(), ProcessesTool())

@@ -59,6 +59,21 @@ class BooleanParameter(
 
     internal var comboBoxLabels: Map<Boolean?, String>? = null
 
+    /**
+     * Does the parameter need a value after the name when using the command line?
+     * Optional values always require a value, because that's the only way to pass "null"
+     * Required values without an opposite name only need a value, if the default value is true.
+     */
+    open fun needsValue(): Boolean {
+        if (required == false) {
+            return true
+        }
+        if (oppositeName == null) {
+            return value == true
+        }
+        return false
+    }
+
     override fun isStretchy() = false
 
     override fun createField(): ParameterField {
@@ -87,6 +102,15 @@ class BooleanParameter(
 
     fun asComboBox(trueLabel: String, falseLabel: String, nullLabel: String) {
         asComboBox(mapOf(Pair(true, trueLabel), Pair(false, falseLabel), Pair(null, nullLabel)))
+    }
+
+
+    override fun autoComplete(currentValue: String) {
+        if (required) {
+            autoComplete(currentValue, listOf("true", "false"))
+        } else {
+            autoComplete(currentValue, listOf("true", "false", "null"))
+        }
     }
 
     override fun toString(): String = "Boolean" + super.toString()

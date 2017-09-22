@@ -21,29 +21,27 @@ import uk.co.nickthecoder.paratask.parameters.TaskParameterFactory
 
 class RegisteredTaskFactory : TaskParameterFactory {
 
-    // NOTE, We need to use "by lazy", because without it, we risk trying to access the TaskRegistry while it
-    // is still being constructed, leading to infinite recursion.
+    private var cachedMapping: Map<String, Task>? = null
 
-    override val creationStringToTask by lazy {
-        creationStringMapping()
-    }
+    override val creationStringToTask: Map<String, Task>
+        get () {
+            if (cachedMapping == null) {
+                val newMap = mutableMapOf<String, Task>()
+                cachedMapping = newMap
+                TaskRegistry.listGroups().forEach { group ->
+                    group.listTasks().forEach { task ->
+                        newMap[task.creationString()] = task
+                    }
+                }
+            }
+            return cachedMapping!!
+        }
 
     override val topLevelTasks by lazy {
         TaskRegistry.topLevel.listTasks()
     }
 
     override val taskGroups by lazy { TaskRegistry.listGroups().filter { it != TaskRegistry.topLevel } }
-
-
-    private fun creationStringMapping(): Map<String, Task> {
-        val map = mutableMapOf<String, Task>()
-        TaskRegistry.listGroups().forEach { group ->
-            group.listTasks().forEach { task ->
-                map.put(task.creationString(), task)
-            }
-        }
-        return map
-    }
 
     companion object {
         val instance = RegisteredTaskFactory()

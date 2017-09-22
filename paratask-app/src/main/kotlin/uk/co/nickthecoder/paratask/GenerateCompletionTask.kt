@@ -1,12 +1,15 @@
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.util.child
 import uk.co.nickthecoder.paratask.util.currentDirectory
 import java.io.PrintStream
 
 /**
- * Generates a bash script suitable for adding to /etc/bash_completion.d
+ * Generates a bash script suitable for adding to /etc/bash_completion.d, which aids prompting of the
+ * paratask script (which is the main entry point into the application, and can launch any of the
+ * registered tasks or tools).
  *
  * See Gnu's documentation on how command completion works :
  * https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html
@@ -35,17 +38,13 @@ class GenerateCompletionTask : AbstractTask() {
             out.println("# Copy to /etc/bash_completion.d/$commandName for system wide tab-completion of paratask commands.")
             out.println()
 
-            out.println("_${commandName}FileComplete()")
-            out.println("{")
-            out.println("    complete -F _${commandName}Complete $commandName")
-            out.println("    return 0")
-            out.println("}\n")
+            GenerateTaskCompletionTask.generateFileComplete(out, commandName)
 
             out.println("_${commandName}Complete()")
             out.println("{")
             out.println("    local taskName cur prev")
             out.println("    COMPREPLY=()")
-            out.println("    _get_comp_words_by_ref cur prev")
+            out.println("    _get_comp_words_by_ref cur prev\n")
 
             out.println("    if [ \"\${COMP_CWORD}\" == 1 ]")
             out.println("    then")
@@ -55,49 +54,11 @@ class GenerateCompletionTask : AbstractTask() {
             out.println("        case \$taskName in")
 
             TaskRegistry.allTasks().sortedBy { it.taskD.name }.forEach { task ->
-                out.println("            ${task.taskD.name})")
-                val parameterNames = task.taskD.valueParameters().map { "--${it.name}" }
-                // val booleanParameters = booleanParameters(task)
-                // TODO Check if boolean parameter was prev, in which case, prompt using parameter names.
-
-                val choiceParameters = choiceParameters(task)
-                val fileParameters = fileParameters(task)
-                val directoryParameters = directoryParameters(task)
-
-                out.println("                if [[ \"\$prev\" == --* ]] ; then")
-
-                if (choiceParameters.isNotEmpty() || fileParameters.isNotEmpty() || directoryParameters.isNotEmpty()) {
-                    out.println("                case \$prev in")
-                    choiceParameters.forEach { (name, choiceParameter) ->
-                        out.println("                    --$name)")
-                        out.println("                        COMPREPLY=(${choiceParameter.choiceKeys().joinToString(separator = " ")})")
-                        out.println("                        return 0")
-                        out.println("                        ;;")
-                    }
-                    if (fileParameters.isNotEmpty()) {
-                        out.println("                    ${fileParameters.map { "--" + it.first }.joinToString(separator = "|")})")
-                        out.println("                        complete -F _${commandName}FileComplete -o filenames $commandName")
-                        out.println("                        return 124")
-                        out.println("                        ;;")
-                    }
-                    if (directoryParameters.isNotEmpty()) {
-                        out.println("                    ${directoryParameters.map { "--" + it.first }.joinToString(separator = "|")})")
-                        out.println("                        complete -F _${commandName}FileComplete -o dirnames $commandName")
-                        out.println("                        return 124")
-                        out.println("                        ;;")
-                    }
-                    out.println("                esac") // End Case parameter name
-                } else {
-                    out.println("                    # No choice or file parameters")
-                    out.println("                    COMPREPLY=()")
-                }
-                out.println("                else")
-                out.println("                    COMPREPLY=( \$( compgen -W '${parameterNames.joinToString(separator = " ")}' -- \$cur) )")
-                out.println("                    return 0")
-                out.println("                fi")
+                out.println("            ${task.taskD.name})\n")
+                GenerateTaskCompletionTask.generateForTask(out, task, commandName)
                 out.println("                ;;\n")
-
             }
+
             out.println("        esac") // End case TASK
             out.println("        ")
             out.println("    fi")
@@ -112,32 +73,6 @@ class GenerateCompletionTask : AbstractTask() {
         }
     }
 
-    inline fun <reified T : Parameter> multipleParametersInners(task: Task): List<Pair<String, T>> {
-        return task.taskD.valueParameters().filterIsInstance<MultipleParameter<*, *>>().filter { it.factory() is T }.map { Pair(it.name, it.factory() as T) }
-    }
-
-    fun choiceParameters(task: Task): List<Pair<String, ChoiceParameter<*>>> {
-        return task.taskD.valueParameters().filterIsInstance<ChoiceParameter<*>>().map { Pair(it.name, it) } +
-                multipleParametersInners<ChoiceParameter<*>>(task)
-    }
-
-    fun allFileParameters(task: Task): List<Pair<String, FileParameter>> {
-        return task.taskD.valueParameters().filterIsInstance<FileParameter>().map { Pair(it.name, it) } +
-                multipleParametersInners<FileParameter>(task)
-    }
-
-    fun fileParameters(task: Task): List<Pair<String, FileParameter>> {
-        return allFileParameters(task).filter { it.second.expectFile != false }
-    }
-
-    fun directoryParameters(task: Task): List<Pair<String, FileParameter>> {
-        return allFileParameters(task).filter { it.second.expectFile == false }
-    }
-
-    fun booleanParameters(task: Task): List<Pair<String, BooleanParameter>> {
-        return task.taskD.valueParameters().filterIsInstance<BooleanParameter>().map { Pair(it.name, it) } +
-                multipleParametersInners<BooleanParameter>(task)
-    }
 }
 
 
