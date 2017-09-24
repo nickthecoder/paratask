@@ -109,9 +109,15 @@ class GenerateTaskCompletionTask : AbstractTask() {
 
             val boolConditions = boolWithoutValues.map { (name, _) -> "&& [[ \"\${prev}\" != --$name ]] " }.joinToString(separator = "")
 
+            var unnamedParameter = task.taskD.unnamedParameter
+            val unnamedName = unnamedParameter?.name
+            if (unnamedParameter is MultipleParameter<*, *>) {
+                unnamedParameter = unnamedParameter.factory()
+            }
+
             out.println("    if [[ \"\$prev\" == --* ]] $boolConditions; then")
 
-            if (choiceParameters.isNotEmpty() || fileParameters.isNotEmpty() || directoryParameters.isNotEmpty()) {
+            if (choiceParameters.isNotEmpty() || fileParameters.isNotEmpty() || directoryParameters.isNotEmpty() || boolWithValues.isNotEmpty()) {
                 out.println("    case \$prev in")
                 if (trueFalseValues.isNotEmpty()) {
                     out.println("        ${trueFalseValues.map { "--" + it.first }.joinToString(separator = "|")})")
@@ -126,8 +132,9 @@ class GenerateTaskCompletionTask : AbstractTask() {
                     out.println("            ;;")
                 }
                 choiceParameters.forEach { (name, choiceParameter) ->
+                    val choices = choiceParameter.choiceKeys().joinToString(separator = " ")
                     out.println("        --$name)")
-                    out.println("            COMPREPLY=( \$( compgen -W '${choiceParameter.choiceKeys().joinToString(separator = " ")}' -- \$cur) )")
+                    out.println("            COMPREPLY=( \$( compgen -W '$choices' -- \$cur) )")
                     out.println("            return 0")
                     out.println("            ;;")
                 }
@@ -149,7 +156,30 @@ class GenerateTaskCompletionTask : AbstractTask() {
                 out.println("        COMPREPLY=()")
             }
             out.println("    else")
-            out.println("        COMPREPLY=( \$( compgen -W '${parameterNames.joinToString(separator = " ")}' -- \$cur) )")
+            // The current argument is either a parameter name (such as "--file"), or it is a value for the "unnamed" parameter
+            // if the task has an unnamed parameter.
+            val parameterName = parameterNames.joinToString(separator = " ")
+            if (unnamedParameter is ChoiceParameter<*>) {
+                val choices = unnamedParameter.choiceKeys().joinToString(separator = " ")
+                out.println("        COMPREPLY=( \$( compgen -W '$parameterNames $choices' -- \$cur) )")
+            } else if (unnamedParameter is BooleanParameter && unnamedParameter.needsValue()) {
+                val choices = if (unnamedParameter.required) listOf("true", "false") else listOf("true", "false", "null")
+                out.println("        COMPREPLY=( \$( compgen -W '$parameterNames $choices' -- \$cur) )")
+            } else if (unnamedParameter is FileParameter) {
+                // Hmm, I can't see a way to provide completions of parameter names AND filenames together, so instead,
+                // prompt for parameter names if the current is empty or begins with "--", otherwise prompt for filenames.
+                out.println("        if [ -z \"\$cur\" ] || [[ \"\$cur\" == --* ]] ; then")
+                out.println("            COMPREPLY=( \$( compgen -W '${parameterNames.joinToString(separator = " ")}' -- \$cur) )")
+                out.println("        else")
+                if (unnamedParameter.expectFile == false) {
+                    out.println("            complete -F _${commandName}FileComplete -o dirnames $commandName")
+                } else {
+                    out.println("            complete -F _${commandName}FileComplete -o default $commandName")
+                }
+                out.println("        fi")
+            } else {
+                out.println("        COMPREPLY=( \$( compgen -W '${parameterNames.joinToString(separator = " ")}' -- \$cur) )")
+            }
             out.println("        return 0")
             out.println("    fi")
 
@@ -191,6 +221,6 @@ fun main(args: Array<String>) {
     val task = GenerateTaskCompletionTask()
     task.taskP.value = OpenProjectTask()
     task.taskOrTaskStringP.value = task.taskP
-    task.commandNameP.value = "pt"
+    task.commandNameP.value = "ptp"
     TaskParser(task).go(args, prompt = true)
 }

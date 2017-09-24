@@ -238,10 +238,6 @@ class MultipleParameter<T, P : ValueParameter<T>>(
         return result
     }
 
-    override fun autoComplete(currentValue: String) {
-        factory().autoComplete(currentValue)
-    }
-
     data class ListDetailsInfo<P>(
             var height: Int = 300,
             var allowReordering: Boolean = true,

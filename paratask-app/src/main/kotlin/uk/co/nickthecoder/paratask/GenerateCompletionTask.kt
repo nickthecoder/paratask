@@ -20,7 +20,7 @@ class GenerateCompletionTask : AbstractTask() {
     val commandName by commandNameP
 
     val outputFileP = FileParameter("output", expectFile = true, mustExist = null,
-            value = currentDirectory.child("src", "dist", "bash_complete.d", "paratask-static"))
+            value = currentDirectory.child("src", "dist", "bash_complete.d", "paratask"))
 
     override val taskD = TaskDescription("generateCompletion")
             .addParameters(commandNameP, outputFileP)

@@ -59,11 +59,6 @@ interface Parameter : Labelled {
 
     fun isProgrammingMode(): Boolean = findTaskD()?.programmingMode ?: false
 
-    fun autoComplete(currentValue: String) {}
-
     fun copy(): Parameter
 
-    fun autoComplete(currentValue: String, possibleValues: List<String>) {
-        possibleValues.filter { it.startsWith(currentValue) }.sorted().forEach { println(it) }
-    }
 }

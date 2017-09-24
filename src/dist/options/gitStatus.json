@@ -3,7 +3,6 @@
     "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitStatusTool",
     "includes": [
         "git",
-        "gradle",
         "fileOrDir"
     ],
     "options": [

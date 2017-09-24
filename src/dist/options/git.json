@@ -1,7 +1,7 @@
 {
     "toolClassName": "uk.co.nickthecoder.paratask.tools.git.GitTool",
     "includes": [
-        
+        "gradle"
     ],
     "options": [
         {

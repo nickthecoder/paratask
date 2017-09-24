@@ -148,10 +148,6 @@ open class ChoiceParameter<T>(
         }
     }
 
-    override fun autoComplete(currentValue: String) {
-        autoComplete(currentValue, keyToValueMap.keys.toList())
-    }
-
     override fun copy(): ChoiceParameter<T> {
         val result = ChoiceParameter(name = name, label = label, description = description, value = value!!,
                 required = required)

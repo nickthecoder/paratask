@@ -37,7 +37,7 @@ interface ValueParameter<T>
             value = converter.fromString(v)
         }
 
-    val expressionProperty: StringProperty
+        val expressionProperty: StringProperty
 
     var expression: String?
         get() = expressionProperty.get()

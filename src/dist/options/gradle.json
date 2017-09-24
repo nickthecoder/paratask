@@ -149,6 +149,43 @@
                     "value": "false"
                 }
             ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.terminal.TerminalTool",
+            "code": "clean",
+            "label": "Gradle Clean",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": true,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "gradle"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "clean"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "title",
+                    "value": "Gradle Clean"
+                },
+                {
+                    "name": "closeWhenFinished",
+                    "value": "false"
+                }
+            ]
         }
     ]
 }
