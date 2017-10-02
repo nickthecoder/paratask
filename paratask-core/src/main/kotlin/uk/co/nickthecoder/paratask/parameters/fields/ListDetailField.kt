@@ -17,14 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package uk.co.nickthecoder.paratask.parameters.fields
 
-import javafx.event.EventHandler
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
+import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.parameters.*
 
 class ListDetailField<T, P : ValueParameter<T>>(
@@ -39,20 +39,22 @@ class ListDetailField<T, P : ValueParameter<T>>(
 
     val detailsContainer = StackPane()
 
+    val listAndButtons = VBox()
+
     val buttons = FlowPane()
 
-    val addButton = Button("Add")
+    val addButton = ApplicationActions.ITEM_ADD.createButton { onAdd() }
 
-    val removeButton = Button("Remove")
+    val removeButton = ApplicationActions.ITEM_REMOVE.createButton { onRemove() }
 
-    val upButton = Button("Move Up")
+    val upButton = ApplicationActions.ITEM_UP.createButton { onMoveUp() }
 
-    val downButton = Button("Move Down")
+    val downButton = ApplicationActions.ITEM_DOWN.createButton { onMoveDown() }
 
     override fun createControl(): Node {
 
         with(buttons) {
-            styleClass.addAll("buttons", "left")
+            styleClass.addAll("small-buttons")
             children.addAll(addButton, removeButton)
             if (info.allowReordering) {
                 children.addAll(upButton, downButton)
@@ -63,17 +65,16 @@ class ListDetailField<T, P : ValueParameter<T>>(
             styleClass.add("multiple-details")
         }
 
-        addButton.onAction = EventHandler { onAdd() }
-        removeButton.onAction = EventHandler { onRemove() }
-        upButton.onAction = EventHandler { onMoveUp() }
-        downButton.onAction = EventHandler { onMoveDown() }
-
         buildList()
+
+        with(listAndButtons) {
+            prefWidth = info.width.toDouble()
+            children.addAll(list, buttons)
+        }
 
         with(list) {
             selectionModel.selectionMode = SelectionMode.MULTIPLE
             prefHeight = info.height.toDouble()
-            prefWidth = info.width.toDouble()
             selectionModel.selectedItemProperty().addListener { _, _, selectedData ->
                 selectionChanged(selectedData)
             }
@@ -81,9 +82,8 @@ class ListDetailField<T, P : ValueParameter<T>>(
         selectionChanged(list.selectionModel.selectedItem)
 
         with(borderPane) {
-            left = list
+            left = listAndButtons
             center = detailsContainer
-            bottom = buttons
         }
 
         return borderPane

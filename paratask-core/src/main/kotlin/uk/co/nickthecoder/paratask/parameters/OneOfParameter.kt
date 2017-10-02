@@ -64,13 +64,29 @@ class OneOfParameter(
     }
 
     override fun createField(): ParameterField {
-        choiceP.clear()
+        // choiceP.clear() // We cannot clear, because custom labels may have been applied.
+        // If we need to handle removed parameters, then we need a new workaround.
         children.filter { it !== choiceP }.forEach { child ->
-            choiceP.addChoice(child.name, child, child.label)
+            // Don't add it to the choices, if its already been added via the "add" method, which allows a free
+            // choice of label.
+            if (!choiceP.choiceKeys().contains(child.name)) {
+                choiceP.addChoice(child.name, child, child.label)
+            }
             child.hidden = value != child
         }
 
         return super.createField()
+    }
+
+    fun add(label: String, child: Parameter): OneOfParameter {
+        choiceP.addChoice(child.name, child, label)
+        add(child)
+        return this
+    }
+
+    fun addParameters(vararg children: Pair<String, Parameter>): OneOfParameter {
+        children.forEach { add(it.first, it.second) }
+        return this
     }
 
     override fun errorMessage(v: Parameter?): String? {

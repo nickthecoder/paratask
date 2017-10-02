@@ -125,6 +125,7 @@ open class ChoiceParameter<T>(
     }
 
     fun clear() {
+        valueToKeyMap.clear()
         keyToValueMap.clear()
         valueToLabelMap.clear()
         labelToValueMap.clear()

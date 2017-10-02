@@ -40,8 +40,6 @@ class ParataskAction(
         tooltip: String? = null,
         label: String? = null) : ApplicationAction(name, keyCode, shift, control, alt, meta, shortcut, tooltip, label) {
 
-    override val image: Image? = ParaTask.imageResource("buttons/$name.png")
-
     init {
         ParataskActions.add(this)
     }

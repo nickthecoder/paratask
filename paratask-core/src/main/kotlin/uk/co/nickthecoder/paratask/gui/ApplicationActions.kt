@@ -27,5 +27,9 @@ object ApplicationActions {
 
     val UP_DIRECTORY = ApplicationAction("directory-up", KeyCode.UP, alt = true)
     val COMPLETE_FILE = ApplicationAction("directory-complete", KeyCode.DOWN, alt = true)
-    val NEW_ITEM = ApplicationAction("new-item", KeyCode.N, control = true)
+
+    val ITEM_ADD = ApplicationAction("item.add", KeyCode.PLUS, control = true)
+    val ITEM_REMOVE = ApplicationAction("item.remove", null)
+    val ITEM_UP = ApplicationAction("item.up", KeyCode.UP, control = true)
+    val ITEM_DOWN = ApplicationAction("item.down", KeyCode.DOWN, control = true)
 }

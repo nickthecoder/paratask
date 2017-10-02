@@ -214,7 +214,7 @@ class MultipleParameter<T, P : ValueParameter<T>>(
         super.coerce(v)
     }
 
-    fun asListDetail(height: Int = 200, width: Int = 200, allowReordering: Boolean = true, labelFactory: (P) -> String): MultipleParameter<T, P> {
+    fun asListDetail(width: Int = 200, height: Int = 200, allowReordering: Boolean = true, labelFactory: (P) -> String): MultipleParameter<T, P> {
         return asListDetail(ListDetailsInfo(height = height, width = width, allowReordering = allowReordering, labelFactory = labelFactory))
     }
 

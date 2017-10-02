@@ -25,6 +25,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import uk.co.nickthecoder.paratask.ParaTask
 
 /**
  */
@@ -45,7 +46,7 @@ open class ApplicationAction(
 
     var keyCodeCombination = defaultKeyCodeCombination
 
-    open val image: Image? = null
+    open val image: Image? = ParaTask.imageResource("buttons/$name.png")
 
     fun revert() {
         keyCodeCombination = defaultKeyCodeCombination

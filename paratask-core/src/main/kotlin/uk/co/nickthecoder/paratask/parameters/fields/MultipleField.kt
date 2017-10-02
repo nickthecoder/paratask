@@ -24,7 +24,10 @@ import javafx.scene.control.Tooltip
 import javafx.scene.layout.HBox
 import uk.co.nickthecoder.paratask.gui.ApplicationActions
 import uk.co.nickthecoder.paratask.gui.ShortcutHelper
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.Parameter
+import uk.co.nickthecoder.paratask.parameters.ParameterEvent
+import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 import uk.co.nickthecoder.paratask.util.focusNext
 
 class MultipleField<T>(val multipleParameter: MultipleParameter<T, *>)
@@ -37,7 +40,7 @@ class MultipleField<T>(val multipleParameter: MultipleParameter<T, *>)
     val shortcuts = ShortcutHelper("MultipleField", parametersForm, false)
 
     init {
-        shortcuts.add(ApplicationActions.NEW_ITEM) { extraValue() }
+        shortcuts.add(ApplicationActions.ITEM_ADD) { extraValue() }
     }
 
 

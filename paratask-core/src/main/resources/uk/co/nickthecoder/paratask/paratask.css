@@ -127,6 +127,11 @@
 .buttons .button {
     -fx-min-width: 90px;
 }
+.small-buttons {
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-alignment: top-center;
+}
 
 
 /****************************
