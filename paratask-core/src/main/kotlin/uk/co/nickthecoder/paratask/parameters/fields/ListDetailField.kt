@@ -73,6 +73,7 @@ class ListDetailField<T, P : ValueParameter<T>>(
         with(list) {
             selectionModel.selectionMode = SelectionMode.MULTIPLE
             prefHeight = info.height.toDouble()
+            prefWidth = info.width.toDouble()
             selectionModel.selectedItemProperty().addListener { _, _, selectedData ->
                 selectionChanged(selectedData)
             }

@@ -29,11 +29,13 @@ class TaskForm(val task: Task) {
 
     val scrollPane = ScrollPane(form)
 
-    fun build() {
+    fun build(): ScrollPane {
         scrollPane.fitToWidthProperty().set(true)
         form.buildContent()
         task.taskD.width?.let { scrollPane.prefWidth = it.toDouble() }
         task.taskD.height?.let { scrollPane.prefHeight = it.toDouble() }
+
+        return scrollPane
     }
 
     fun check(): Boolean {

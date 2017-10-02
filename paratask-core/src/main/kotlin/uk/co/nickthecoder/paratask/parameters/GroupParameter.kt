@@ -91,6 +91,7 @@ abstract class GroupParameter(
 
     fun remove(child: Parameter) {
         children.remove(child)
+        child.parent = null
     }
 
     fun find(name: String): Parameter? {
