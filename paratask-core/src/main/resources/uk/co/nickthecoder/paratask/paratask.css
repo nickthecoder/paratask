@@ -83,6 +83,10 @@
     -fx-vgap : 10px;
 }
 
+.vertical-group {
+    -fx-spacing: 6px;
+}
+
 .box-group > .hbox {
     -fx-spacing: 10px;
     -fx-alignment: center-left;

@@ -18,10 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package uk.co.nickthecoder.paratask.parameters
 
 import uk.co.nickthecoder.paratask.ParameterException
-import uk.co.nickthecoder.paratask.parameters.fields.GridGroupField
-import uk.co.nickthecoder.paratask.parameters.fields.GroupField
-import uk.co.nickthecoder.paratask.parameters.fields.HorizontalGroupField
-import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
+import uk.co.nickthecoder.paratask.parameters.fields.*
 import uk.co.nickthecoder.paratask.util.uncamel
 
 abstract class GroupParameter(
@@ -166,6 +163,13 @@ inline fun <reified T : GroupParameter> T.asPlain(): T {
 inline fun <reified T : GroupParameter> T.asHorizontal(labelPosition: LabelPosition = LabelPosition.LEFT, isBoxed: Boolean = false): T {
     fieldFactory = {
         HorizontalGroupField(this, labelPosition = labelPosition, isBoxed = isBoxed).build()
+    }
+    return this
+}
+
+inline fun <reified T : GroupParameter> T.asVertical(labelPosition: LabelPosition = LabelPosition.LEFT, isBoxed: Boolean = false): T {
+    fieldFactory = {
+        VerticalGroupField(this, labelPosition = labelPosition, isBoxed = isBoxed).build()
     }
     return this
 }
