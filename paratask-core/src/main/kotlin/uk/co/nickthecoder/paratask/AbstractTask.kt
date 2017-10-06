@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-abstract class AbstractTask : Task {
+abstract class AbstractTask(threaded: Boolean = true) : Task {
 
-    override val taskRunner: TaskRunner by lazy { ThreadedTaskRunner(this) }
+    override val taskRunner: TaskRunner by lazy { if (threaded) ThreadedTaskRunner(this) else UnthreadedTaskRunner(this) }
 
     override val icon = null
 
