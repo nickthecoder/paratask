@@ -21,6 +21,9 @@ import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.DoubleField
 import uk.co.nickthecoder.paratask.util.uncamel
+import java.text.DecimalFormat
+
+private val doubleFormat = DecimalFormat("0.#######")
 
 open class DoubleParameter(
         name: String,
@@ -28,8 +31,9 @@ open class DoubleParameter(
         description: String = "",
         value: Double? = null,
         required: Boolean = true,
-        var minValue: Double = 0.0,
-        var maxValue: Double = Double.MAX_VALUE)
+        val columnCount: Int = 8,
+        val minValue: Double = 0.0,
+        val maxValue: Double = Double.MAX_VALUE)
 
     : AbstractValueParameter<Double?>(
         name = name,
@@ -60,7 +64,7 @@ open class DoubleParameter(
             if (obj == l.toDouble()) {
                 return l.toString()
             } else {
-                return obj.toString()
+                return doubleFormat.format(obj)
             }
         }
     }
@@ -87,5 +91,5 @@ open class DoubleParameter(
 
     override fun toString(): String = "Double" + super.toString()
 
-    override fun copy() = DoubleParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue)
+    override fun copy() = DoubleParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
 }

@@ -10,11 +10,14 @@ class DoubleExample : AbstractTask() {
     val lengthP = DoubleParameter("length", value = 0.0)
     var length by lengthP
 
+    val deltaP = DoubleParameter("delta", minValue = -Double.MAX_VALUE, value = 0.0)
+    var delta by deltaP
+
     override val taskD = TaskDescription("doubleExample")
-            .addParameters(lengthP)
+            .addParameters(lengthP, deltaP)
 
     override fun run() {
-        println("Length = $length")
+        println("Length = $length, Delta = $delta")
     }
 
 }

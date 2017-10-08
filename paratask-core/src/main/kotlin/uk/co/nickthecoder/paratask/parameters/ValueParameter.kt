@@ -37,7 +37,7 @@ interface ValueParameter<T>
             value = converter.fromString(v)
         }
 
-        val expressionProperty: StringProperty
+    val expressionProperty: StringProperty
 
     var expression: String?
         get() = expressionProperty.get()
@@ -53,7 +53,7 @@ interface ValueParameter<T>
      */
     fun evaluated(v: Any?) {
         val parent = parent
-        if (v is Iterable<*> && parent is MultipleParameter<*,*>) {
+        if (v is Iterable<*> && parent is MultipleParameter<*, *>) {
             parent.evaluateMultiple(this, v)
         } else {
             coerce(v)
@@ -97,9 +97,10 @@ interface ValueParameter<T>
         this.value = value
     }
 
-    fun link(): ValueParameter<T> {
-        @Suppress("UNCHECKED_CAST")
-        val copy = copy() as ValueParameter<T>
+    override fun copy(): ValueParameter<T>
+
+    fun copyBounded(): ValueParameter<T> {
+        val copy = copy()
         copy.value = value
         copy.listen {
             this.value = copy.value

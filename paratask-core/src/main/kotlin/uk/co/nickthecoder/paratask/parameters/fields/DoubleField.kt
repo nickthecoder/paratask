@@ -112,6 +112,8 @@ open class DoubleField(val doubleParameter: DoubleParameter)
 
         spinner.valueFactory.valueProperty().bindBidirectional(doubleParameter.valueProperty)
         spinner.editor.text = doubleParameter.converter.toString(doubleParameter.value)
+        spinner.editor.prefColumnCount = doubleParameter.columnCount
+
         return spinner
     }
 

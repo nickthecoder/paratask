@@ -57,8 +57,8 @@ class GitTool : AbstractTool(), HasDirectory, Filtered {
 
     init {
         logGroupP.addParameters(
-                gitLog.maxItemsP.link(), gitLog.grepP.link(), gitLog.grepTypeP.link(), gitLog.mergesP.link(),
-                gitLog.matchCaseP.link(), gitLog.sinceP.link(), gitLog.untilP.link())
+                gitLog.maxItemsP.copyBounded(), gitLog.grepP.copyBounded(), gitLog.grepTypeP.copyBounded(), gitLog.mergesP.copyBounded(),
+                gitLog.matchCaseP.copyBounded(), gitLog.sinceP.copyBounded(), gitLog.untilP.copyBounded())
 
         taskD.addParameters(directoryP, logGroupP)
     }
