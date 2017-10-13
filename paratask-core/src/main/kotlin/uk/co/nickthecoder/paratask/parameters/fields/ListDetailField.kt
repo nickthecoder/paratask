@@ -175,9 +175,8 @@ class ListDetailField<T, P : ValueParameter<T>>(
                     list.items.removeAt(position)
                     list.items.add(position - 1, item)
 
-                    val value = multipleParameter.value[position]
-                    multipleParameter.removeAt(position)
-                    multipleParameter.addValue(value, position - 1)
+
+                    multipleParameter.moveInnerParameter(position, position - 1)
 
                     previousPosition = position - 1
                     newSelection.add(position - 1)
@@ -210,9 +209,7 @@ class ListDetailField<T, P : ValueParameter<T>>(
                     list.items.removeAt(position)
                     list.items.add(position + 1, item)
 
-                    val value = multipleParameter.value[position]
-                    multipleParameter.removeAt(position)
-                    multipleParameter.addValue(value, position + 1)
+                    multipleParameter.moveInnerParameter(position, position + 1)
 
                     previousPosition = position + 1
                     newSelection.add(position + 1)

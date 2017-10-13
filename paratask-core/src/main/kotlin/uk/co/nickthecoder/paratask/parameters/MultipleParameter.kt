@@ -170,6 +170,16 @@ class MultipleParameter<T, P : ValueParameter<T>>(
         return innerParameter
     }
 
+    fun moveInnerParameter(oldIndex: Int, newIndex: Int) {
+        if (newIndex == oldIndex) {
+            return
+        }
+        val inner = innerParameters[oldIndex]
+        innerParameters.removeAt(oldIndex)
+        innerParameters.add(newIndex, inner)
+        parameterListeners.fireStructureChanged(this)
+    }
+
     fun newValue(index: Int = value.size): P {
         return addInnerParameter(index) {}
     }
