@@ -118,7 +118,7 @@ open class DoubleField(val doubleParameter: DoubleParameter)
     }
 
     class DoubleSpinnerValueFactory(
-            val min: Double = Double.MIN_VALUE,
+            val min: Double = -Double.MAX_VALUE,
             val max: Double = Double.MAX_VALUE,
             initialValue: Double? = null,
             val amountToStepBy: Double = 1.0)
