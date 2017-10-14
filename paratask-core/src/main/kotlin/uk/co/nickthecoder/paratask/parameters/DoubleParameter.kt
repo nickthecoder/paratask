@@ -34,7 +34,7 @@ open class DoubleParameter(
         value: Double? = null,
         required: Boolean = true,
         val columnCount: Int = 8,
-        val minValue: Double = 0.0,
+        val minValue: Double = -Double.MAX_VALUE,
         val maxValue: Double = Double.MAX_VALUE)
 
     : AbstractValueParameter<Double?>(

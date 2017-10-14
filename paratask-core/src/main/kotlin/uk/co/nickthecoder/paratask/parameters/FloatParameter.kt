@@ -32,7 +32,7 @@ open class FloatParameter(
         value: Float? = null,
         required: Boolean = true,
         val columnCount: Int = 8,
-        val minValue: Float = 0f,
+        val minValue: Float = -Float.MAX_VALUE,
         val maxValue: Float = Float.MAX_VALUE)
 
     : AbstractValueParameter<Float?>(
