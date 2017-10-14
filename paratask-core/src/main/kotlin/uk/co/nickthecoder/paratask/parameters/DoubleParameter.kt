@@ -20,6 +20,8 @@ package uk.co.nickthecoder.paratask.parameters
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.ParameterException
 import uk.co.nickthecoder.paratask.parameters.fields.DoubleField
+import uk.co.nickthecoder.paratask.parameters.fields.DoubleSliderField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.text.DecimalFormat
 
@@ -41,6 +43,17 @@ open class DoubleParameter(
         description = description,
         value = value,
         required = required) {
+
+    var fieldFactory: (DoubleParameter) -> ParameterField = {
+        DoubleField(this).build()
+    }
+
+    fun asSlider(sliderInfo: SliderInfo = SliderInfo()): DoubleParameter {
+        fieldFactory = {
+            DoubleSliderField(this, sliderInfo).build()
+        }
+        return this
+    }
 
     override val converter = object : StringConverter<Double?>() {
         override fun fromString(str: String): Double? {
@@ -86,10 +99,19 @@ open class DoubleParameter(
 
     override fun isStretchy() = false
 
-    override fun createField(): DoubleField =
-            DoubleField(this).build() as DoubleField
+    override fun createField(): ParameterField = fieldFactory(this)
 
     override fun toString(): String = "Double" + super.toString()
 
     override fun copy() = DoubleParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
+
+
+    data class SliderInfo(
+            val blockIncrement: Double = 1.0,
+            val majorTickUnit: Double = 1.0,
+            val minorTickCount: Int = 0,
+            val horizontal: Boolean = true,
+            val snapToTicks: Boolean = true,
+            val showValue: Boolean = false
+    )
 }

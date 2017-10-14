@@ -7,6 +7,9 @@ import uk.co.nickthecoder.paratask.parameters.fields.ColorField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
+/**
+ * A Color, without an alpha channel.
+ */
 class ColorParameter(
         name: String,
         label: String = name.uncamel(),

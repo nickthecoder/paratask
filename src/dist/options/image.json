@@ -120,39 +120,6 @@
         {
             "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "ink",
-            "label": "Open in Inkscape",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "inkscape"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "expression": "row.file"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "expression": "row.file.parentFile"
-                },
-                {
-                    "name": "output",
-                    "value": "IGNORE"
-                }
-            ]
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
             "code": "jpg",
             "label": "Convert Image to JPG",
             "isRow": true,
@@ -264,6 +231,39 @@
                 {
                     "name": "output",
                     "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "ink",
+            "label": "Open in Inkscape",
+            "isRow": true,
+            "isMultiple": false,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "inkscape"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "expression": "row.file"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "row.file.parentFile"
+                },
+                {
+                    "name": "output",
+                    "value": "IGNORE"
                 }
             ]
         }
