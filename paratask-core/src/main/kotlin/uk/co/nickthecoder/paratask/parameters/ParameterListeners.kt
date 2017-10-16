@@ -31,8 +31,8 @@ class ParameterListeners : Listeners<ParameterListener>() {
         }
     }
 
-    fun fireStructureChanged(parameter: Parameter) {
-        val event = ParameterEvent(parameter, ParameterEventType.STRUCTURAL)
+    fun fireStructureChanged(parameter: Parameter, child : Parameter? = null) {
+        val event = ParameterEvent(parameter, ParameterEventType.STRUCTURAL, child)
         forEach {
             it.parameterChanged(event)
         }

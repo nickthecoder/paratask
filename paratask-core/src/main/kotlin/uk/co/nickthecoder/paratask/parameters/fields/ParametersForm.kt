@@ -35,7 +35,7 @@ import uk.co.nickthecoder.paratask.parameters.*
  * Contains a list of {@link ParametersField}s laid out vertically, so that the controls line up (sharing the same x coordinate).
  */
 class ParametersForm(val parentParameter: ParentParameter, val parameterField: ParameterField?)
-    : Region(), FieldParent {
+    : Region(), FieldParent, ParameterListener {
 
     private val columns = mutableListOf<FieldColumn>()
 
@@ -47,6 +47,7 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
         columns.add(FieldColumn(0.0)) // Label
         columns.add(FieldColumn()) // Main Control
         styleClass.add("form")
+        parentParameter.parameterListeners.add(this)
     }
 
     override fun iterator(): Iterator<ParameterField> {
@@ -119,6 +120,30 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
         }
         addThem(this)
         return list
+    }
+
+    override fun parameterChanged(event: ParameterEvent) {
+        if (event.type == ParameterEventType.STRUCTURAL) {
+            event.innerParameter?.let { child ->
+                if (child.parent == null) {
+                    // The child has been removed. Remove the FormField from the Node tree and formFields collection
+                    findField(child)?.let { field ->
+                        formFields.filter { it.parameterField === field }.firstOrNull()?.let { formField ->
+                            formFields.remove(formField)
+                            children.remove(formField)
+                            field.fieldParent = null
+                            return
+                        }
+                    }
+                } else {
+                    if (findField(child) == null) {
+                        clear()
+                        buildContent()
+                    } else {
+                    }
+                }
+            }
+        }
     }
 
     fun findField(parameter: Parameter): ParameterField? {

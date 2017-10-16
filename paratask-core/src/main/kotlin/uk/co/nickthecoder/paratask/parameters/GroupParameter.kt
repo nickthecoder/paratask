@@ -84,11 +84,13 @@ abstract class GroupParameter(
 
         children.add(child)
         child.parent = this
+        parameterListeners.fireStructureChanged(this, child)
     }
 
     fun remove(child: Parameter) {
         children.remove(child)
         child.parent = null
+        parameterListeners.fireStructureChanged(this, child)
     }
 
     fun find(name: String): Parameter? {
