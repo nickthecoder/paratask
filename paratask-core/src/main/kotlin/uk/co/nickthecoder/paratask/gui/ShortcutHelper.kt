@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.gui
 
+import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
@@ -26,11 +27,13 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
 
     val actions = mutableListOf<Pair<ApplicationAction, () -> Unit>>()
 
+    val keyHandler = EventHandler<KeyEvent> { keyPressed(it) }
+
     init {
         if (filter) {
-            node.addEventFilter(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+            node.addEventFilter(KeyEvent.KEY_PRESSED, keyHandler)
         } else {
-            node.addEventHandler(KeyEvent.KEY_PRESSED, { keyPressed(it) })
+            node.addEventHandler(KeyEvent.KEY_PRESSED, keyHandler)
         }
     }
 
@@ -53,6 +56,14 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
 
     fun clear() {
         actions.clear()
+    }
+
+    fun remove() {
+        if (filter) {
+            node.removeEventFilter(KeyEvent.KEY_PRESSED, keyHandler)
+        } else {
+            node.removeEventHandler(KeyEvent.KEY_PRESSED, keyHandler)
+        }
     }
 
     companion object {
