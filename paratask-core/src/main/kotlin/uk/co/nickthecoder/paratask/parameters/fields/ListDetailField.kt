@@ -31,7 +31,7 @@ class ListDetailField<T, P : ValueParameter<T>>(
         val multipleParameter: MultipleParameter<T, P>,
         val info: MultipleParameter.ListDetailsInfo<P>)
 
-    : ParameterField(multipleParameter), FieldParent {
+    : ParameterField(multipleParameter, isBoxed = info.isBoxed), FieldParent {
 
     val borderPane = BorderPane()
 
