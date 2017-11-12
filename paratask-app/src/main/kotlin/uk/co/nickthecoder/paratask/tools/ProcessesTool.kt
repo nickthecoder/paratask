@@ -28,8 +28,6 @@ import java.util.regex.Pattern
 
 class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
 
-    override val taskD = TaskDescription("processes", description = "List Processes using the Unix 'ps' command")
-
     val allP = InformationParameter("all", label = "All", information = "All Processes")
 
     val commandP = StringParameter("command")
@@ -43,15 +41,16 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
     }
 
     val choiceP = OneOfParameter("filter", value = allP, choiceLabel = "Filter Type")
+            .addChoices(allP, commandP, userP, groupP, pidsP)
+
+    override val taskD = TaskDescription("processes", description = "List Processes using the Unix 'ps' command")
+            .addParameters(choiceP, allP, commandP, userP, groupP, pidsP)
 
     override val rowFilter = RowFilter(this, columns, ProcessRow(0, "", "", 0.0, 0.0, ""))
 
 
     init {
         userP.value = System.getProperty("user.name") ?: ""
-
-        taskD.addParameters(choiceP)
-        choiceP.addParameters(allP, commandP, userP, groupP, pidsP)
 
         columns.add(Column<ProcessRow, Int>("pid", width = 100, getter = { it.pid }))
         columns.add(Column<ProcessRow, String>("user", width = 100, getter = { it.user }))
@@ -68,6 +67,7 @@ class ProcessesTool : AbstractCommandTool<ProcessesTool.ProcessRow>() {
             super.loadProblem(parameterName, expression, stringValue)
         }
     }
+
     override fun createCommand(): OSCommand {
         val command = OSCommand("ps", "--no-headers", "--format", "pid user group %cpu %mem cmd")
 

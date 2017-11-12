@@ -17,96 +17,60 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.parameters
 
-import javafx.beans.property.SimpleStringProperty
-import javafx.util.StringConverter
-import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.uncamel
 
 class OneOfParameter(
         name: String,
-        val required: Boolean = true,
+        required: Boolean = true,
         label: String = name.uncamel(),
         val choiceLabel: String,
         description: String = "",
         value: Parameter? = null)
 
-    : GroupParameter(name, label = label, description = description), PropertyValueParameter<Parameter?> {
-
-    override fun saveChildren() = true
-
-    val choiceP = OneOfChoiceParameter(value)
-
-    override val expressionProperty = SimpleStringProperty()
-
-    override val valueProperty = choiceP.valueProperty
-
-    override val converter: StringConverter<Parameter?> = object : StringConverter<Parameter?>() {
-        override fun toString(v: Parameter?): String {
-            return v?.name ?: ""
-        }
-
-        override fun fromString(v: String): Parameter? {
-            if (v == "") return null
-            return children.firstOrNull { it.name == v }
-        }
-    }
-
+    : ChoiceParameter<Parameter?>(name, label = label, description = description, required = required, value = value) {
 
     init {
-        addParameters(choiceP)
         this.value = value
 
-        choiceP.listen {
-            children.filter { it != choiceP }.forEach { child ->
-                child.hidden = child != choiceP.value
+        listen {
+            choiceValues().forEach { parameter ->
+                parameter?.hidden = parameter != this.value
             }
         }
     }
 
-    override fun createField(): ParameterField {
-        // choiceP.clear() // We cannot clear, because custom labels may have been applied.
-        // If we need to handle removed parameters, then we need a new workaround.
-        children.filter { it !== choiceP }.forEach { child ->
-            // Don't add it to the choices, if its already been added via the "add" method, which allows a free
-            // choice of label.
-            if (!choiceP.choiceKeys().contains(child.name)) {
-                choiceP.addChoice(child.name, child, child.label)
-            }
-            child.hidden = value != child
+    override fun addChoice(key: String, value: Parameter?, label: String): OneOfParameter {
+        val parameter = value
+        super.addChoice(key, parameter, label)
+        parameter?.hidden = this.value != parameter
+        return this
+    }
+
+    fun addChoices(vararg parameters: Parameter): OneOfParameter {
+        parameters.forEach { parameter ->
+            addChoice(parameter.name, parameter, parameter.label)
         }
-
-        return super.createField()
-    }
-
-    fun add(label: String, child: Parameter): OneOfParameter {
-        choiceP.addChoice(child.name, child, label)
-        add(child)
         return this
     }
 
-    fun addParameters(vararg children: Pair<String, Parameter>): OneOfParameter {
-        children.forEach { add(it.first, it.second) }
+    fun addChoices(parameterMap: Map<String, Parameter>): OneOfParameter {
+        parameterMap.forEach { label, parameter ->
+            addChoice(parameter.name, parameter, label)
+            parameter.hidden = parameter != value
+        }
         return this
     }
 
-    override fun errorMessage(v: Parameter?): String? {
-        return null
+    fun addChoices(vararg labelledParameters: Pair<String, Parameter>): OneOfParameter {
+        labelledParameters.forEach { (label, parameter) ->
+            addChoice(parameter.name, parameter, label)
+            parameter.hidden = parameter != value
+        }
+        return this
     }
 
     override fun copy(): OneOfParameter {
         val result = OneOfParameter(name = name, label = label, choiceLabel = choiceLabel, description = description, value = null)
-        children.forEach { child ->
-            val copiedChild = child.copy()
-            result.addParameters(copiedChild)
-            if (child === value) {
-                result.value = copiedChild
-            }
-        }
         return result
     }
-
-    inner class OneOfChoiceParameter(value: Parameter?) : ChoiceParameter<Parameter?>(name + "_choice", label = choiceLabel, value = value, required = required) {
-        override fun saveValue(): Boolean = false
-    }
 }
-

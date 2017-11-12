@@ -17,10 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask
 
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.Parameter
-import uk.co.nickthecoder.paratask.parameters.RootParameter
-import uk.co.nickthecoder.paratask.parameters.ValueParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 import java.lang.Integer.min
@@ -83,6 +80,19 @@ class TaskDescription(
 
             }
         }
+
+        // We need special processing for OneOfParameters, because their choices are themselves PARAMETERS, which
+        // have been copied. So create duplicate choices
+        source.root.descendants().filterIsInstance<OneOfParameter>().forEach { oneOfSource ->
+            source.root.find(oneOfSource.name)?.let { oneOfDest ->
+                if (oneOfDest is OneOfParameter) {
+                    oneOfSource.choices().forEach { (key, _, label) ->
+                        oneOfDest.addChoice(key, source.root.find(key))
+                    }
+                }
+            }
+        }
+
     }
 
     override fun toString(): String {

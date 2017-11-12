@@ -1,4 +1,22 @@
+
 TODO
+====
+
+Dependant projects : GoKo, Tickle
+
+Current
+--------
+
+OneOff Parameter should NOT be a group - just hide/show parameters that belongs to it.
+	Change the name of "addParameter" (avoids confusion, and allow old code to be updated easier - as it will error).
+
+Next
+----
+
+Horizontal groups to not leave space if the label is blank.
+
+Later
+-----
 
 Squash the fields together - especially needed in grep's header.
 
@@ -48,8 +66,8 @@ Implement MythTool using the service API, not using the DB directly
 
 Convert some of my scripts to paratask-core for their parameters, and add feature to generate a bash completion script for each.
 
-Later Version
-=============
+Much Later
+----------
 
 Create a WEB front end
 	Why? It can be used as a general purpose application framework!
@@ -60,11 +78,11 @@ Write a generic DB tool
 	Work with Tables
 	Work with Users
 	Work with Rows
-Ideally, it would work with at least MariaDB/MySQL, SQLLite and ProgresSql
+Ideally, it would work with at least MariaDB/MySQL, SQLLite and ProgresSQL
 
 
 Hard Bugs
-=========
+---------
 
 I've tried to fix them, but have not found a solution.
 

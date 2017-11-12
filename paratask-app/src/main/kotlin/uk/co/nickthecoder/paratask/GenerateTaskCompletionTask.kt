@@ -20,7 +20,8 @@ class GenerateTaskCompletionTask : AbstractTask() {
     val taskP = TaskParameter("task", taskFactory = RegisteredTaskFactory.instance, required = true)
 
     val taskOrTaskStringP = OneOfParameter("taskOrTaskString", value = taskStringP, choiceLabel = "Choose")
-            .addParameters(taskStringP, taskP)
+            .addChoices(taskStringP, taskP)
+
 
     val commandNameP = StringParameter("commandName", value = "paratask")
     val commandName by commandNameP
@@ -29,7 +30,7 @@ class GenerateTaskCompletionTask : AbstractTask() {
             value = homeDirectory.child(".bash_completion.d"))
 
     override val taskD = TaskDescription("generateTaskCompletion")
-            .addParameters(taskOrTaskStringP, commandNameP, outputFileP)
+            .addParameters(taskOrTaskStringP, taskStringP, taskP, commandNameP, outputFileP)
 
     lateinit var out: PrintStream
 
@@ -110,7 +111,6 @@ class GenerateTaskCompletionTask : AbstractTask() {
             val boolConditions = boolWithoutValues.map { (name, _) -> "&& [[ \"\${prev}\" != --$name ]] " }.joinToString(separator = "")
 
             var unnamedParameter = task.taskD.unnamedParameter
-            val unnamedName = unnamedParameter?.name
             if (unnamedParameter is MultipleParameter<*, *>) {
                 unnamedParameter = unnamedParameter.factory()
             }
@@ -158,7 +158,6 @@ class GenerateTaskCompletionTask : AbstractTask() {
             out.println("    else")
             // The current argument is either a parameter name (such as "--file"), or it is a value for the "unnamed" parameter
             // if the task has an unnamed parameter.
-            val parameterName = parameterNames.joinToString(separator = " ")
             if (unnamedParameter is ChoiceParameter<*>) {
                 val choices = unnamedParameter.choiceKeys().joinToString(separator = " ")
                 out.println("        COMPREPLY=( \$( compgen -W '$parameterNames $choices' -- \$cur) )")

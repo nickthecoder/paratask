@@ -22,7 +22,6 @@ import uk.co.nickthecoder.paratask.parameters.fields.ChoiceField
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
 
-
 open class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
@@ -102,7 +101,18 @@ open class ChoiceParameter<T>(
 
     fun valueKey() = valueToKeyMap[value]
 
-    fun addChoice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
+    fun choices(): List<Triple<String, T?, String>> {
+        val result = mutableListOf<Triple<String, T?, String>>()
+
+        keyToValueMap.forEach { key, value ->
+            val label = valueToLabelMap[value]!!
+            result.add(Triple<String, T?, String>(key, value, label))
+        }
+
+        return result
+    }
+
+    open fun addChoice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
         keyToValueMap.put(key, value)
         valueToKeyMap.put(value, key)
         valueToLabelMap.put(value, label)
@@ -167,7 +177,7 @@ inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(
         mixCase: Boolean = false): ChoiceParameter<T?> {
 
     choice(nullKey, null, nullLabel)
-    
+
     enumValues<T>().forEach { item ->
         val label = if (item is Labelled) {
             item.label

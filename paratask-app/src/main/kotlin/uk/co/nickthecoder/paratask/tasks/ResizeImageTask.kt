@@ -25,8 +25,6 @@ import uk.co.nickthecoder.paratask.util.process.OSCommand
 
 class ResizeImageTask : AbstractCommandTask() {
 
-    override val taskD = TaskDescription("resizeImage")
-
     val inputFileP = FileParameter("inputFile", label = "Input Image")
 
     val outputFileP = FileParameter("outputFile", label = "Output Image", mustExist = null)
@@ -37,23 +35,19 @@ class ResizeImageTask : AbstractCommandTask() {
 
     val heightP = IntParameter("height", label = "x")
 
-    val sizeP = SimpleGroupParameter("size")
-
     val keepAspectRationP = BooleanParameter("keepAspectRatio", value = true)
 
+    val sizeP = SimpleGroupParameter("size")
+            .addParameters(widthP, heightP, keepAspectRationP)
+            .asHorizontal(LabelPosition.LEFT)
+
     val resizeOptionP = OneOfParameter("resizeOptions", choiceLabel = "Resize Type", value = sizeP)
+            .addChoices(sizeP, percentageP)
 
     val onlyShrinkP = BooleanParameter("onlyShrink", value = true)
 
-
-    init {
-        sizeP.addParameters(widthP, heightP, keepAspectRationP)
-        resizeOptionP.addParameters(sizeP, percentageP)
-
-        sizeP.asHorizontal(LabelPosition.LEFT)
-
-        taskD.addParameters(inputFileP, resizeOptionP, outputFileP, outputP)
-    }
+    override val taskD = TaskDescription("resizeImage")
+            .addParameters(inputFileP, resizeOptionP, sizeP, percentageP, outputFileP, outputP)
 
     override fun createCommand(): OSCommand {
         var size: String

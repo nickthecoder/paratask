@@ -85,9 +85,9 @@ This class (Example.kt) can be found in sub-project paratask-app, package uk.co.
         taskD.addParameters(requiredInt, optionalInt, doubleP, optionalDoubleP,
                 fileP, informationP, buttonP,
                 taskP, simpleStringP, yesNoP, dateP, isoDateP, yesNoMaybeP,
-                directoryP, resourceP, choiceP, groupP, oneOfP, multipleP)
+                directoryP, resourceP, choiceP, groupP, oneOfP, aP, bP, multipleP)
 
-        oneOfP.addParameters(aP, bP)
+        oneOfP.addChoices(aP, bP)
     }
 
     override fun run() {

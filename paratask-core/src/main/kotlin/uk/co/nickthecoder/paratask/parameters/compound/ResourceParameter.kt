@@ -42,7 +42,7 @@ class ResourceParameter(
     var url by urlP
 
     val fileOrUrlP = OneOfParameter(name + "_fileOrUrl", label = "", value = fileP, choiceLabel = "")
-            .addParameters(fileP, urlP)
+            .addChoices(fileP, urlP)
     var fileOrUrl by fileOrUrlP
 
     override var value: Resource?
@@ -75,8 +75,7 @@ class ResourceParameter(
     override val converter = Resource.converter
 
     init {
-        addParameters(fileOrUrlP)
-        fileOrUrlP.asHorizontal(LabelPosition.NONE)
+        addParameters(fileOrUrlP, fileP, urlP)
         asHorizontal(LabelPosition.NONE)
 
         this.value = value

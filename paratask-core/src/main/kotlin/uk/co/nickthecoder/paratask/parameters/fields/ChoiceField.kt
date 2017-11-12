@@ -24,7 +24,7 @@ import uk.co.nickthecoder.paratask.parameters.ChoiceParameter
 import uk.co.nickthecoder.paratask.parameters.ParameterEvent
 import uk.co.nickthecoder.paratask.parameters.ParameterEventType
 
-// Note. JavaFX cannot handle null values in Combobox correctly
+// Note. JavaFX cannot handle null values in ComboBox correctly
 // See : http://stackoverflow.com/questions/25877323/no-select-item-on-javafx-combobox
 // So I've added a "special" value, and made the generic type "ANY?"
 // and added a bodgeProperty, which forwards get/sets to the parameter's property

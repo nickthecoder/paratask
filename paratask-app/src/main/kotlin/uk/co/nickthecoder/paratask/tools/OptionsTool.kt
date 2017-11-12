@@ -189,8 +189,6 @@ class OptionsTool() : ListTableTool<Option>() {
 
         : AbstractTask() {
 
-        final override val taskD = TaskDescription(name)
-
         val code = StringParameter("code", value = option.code)
 
         val aliases = MultipleParameter("aliases", value = option.aliases) { StringParameter("") }
@@ -221,13 +219,15 @@ class OptionsTool() : ListTableTool<Option>() {
                 rows = 10, columns = 40, value = (option as? GroovyOption)?.script ?: "",
                 scriptVariables = fileOptions.scriptVariables)
 
-        val scriptOrTaskP = OneOfParameter("action", choiceLabel = "Action Type")
-
         var taskP = TaskParameter("task", value = (option as? TaskOption)?.task, taskFactory = RegisteredTaskFactory())
 
+        val scriptOrTaskP = OneOfParameter("action", choiceLabel = "Action Type")
+                .addChoices(taskP, groovyScriptP)
+
+        final override val taskD = TaskDescription(name)
+                .addParameters(code, aliases, label, flagsGroupP, scriptOrTaskP, groovyScriptP, taskP, shortcutP)
+
         init {
-            scriptOrTaskP.addParameters(taskP, groovyScriptP)
-            taskD.addParameters(code, aliases, label, flagsGroupP, scriptOrTaskP, shortcutP)
 
             taskP.scriptVariables = fileOptions.scriptVariables
 
