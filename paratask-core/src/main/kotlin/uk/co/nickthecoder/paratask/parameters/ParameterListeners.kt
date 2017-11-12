@@ -31,11 +31,12 @@ class ParameterListeners : Listeners<ParameterListener>() {
         }
     }
 
-    fun fireStructureChanged(parameter: Parameter, child : Parameter? = null) {
+    fun fireStructureChanged(parameter: Parameter, child: Parameter? = null) {
         val event = ParameterEvent(parameter, ParameterEventType.STRUCTURAL, child)
         forEach {
             it.parameterChanged(event)
         }
+        fireValueChanged(parameter)
     }
 
     fun fireInnerParameterChanged(parameter: Parameter, innerParameter: Parameter) {
