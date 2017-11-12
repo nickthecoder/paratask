@@ -108,6 +108,10 @@ open class HorizontalGroupField(
 
         val container: Node
 
+        if (childField.label.text.isEmpty()) {
+            return childField.control!!
+        }
+
         if (labelPosition == LabelPosition.TOP) {
             container = BorderPane()
             container.top = childField.label
