@@ -30,11 +30,7 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
     val keyHandler = EventHandler<KeyEvent> { keyPressed(it) }
 
     init {
-        if (filter) {
-            node.addEventFilter(KeyEvent.KEY_PRESSED, keyHandler)
-        } else {
-            node.addEventHandler(KeyEvent.KEY_PRESSED, keyHandler)
-        }
+        enable()
     }
 
     fun add(action: ApplicationAction, func: () -> Unit) {
@@ -58,7 +54,15 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
         actions.clear()
     }
 
-    fun remove() {
+    fun enable() {
+        if (filter) {
+            node.addEventFilter(KeyEvent.KEY_PRESSED, keyHandler)
+        } else {
+            node.addEventHandler(KeyEvent.KEY_PRESSED, keyHandler)
+        }
+    }
+
+    fun disable() {
         if (filter) {
             node.removeEventFilter(KeyEvent.KEY_PRESSED, keyHandler)
         } else {

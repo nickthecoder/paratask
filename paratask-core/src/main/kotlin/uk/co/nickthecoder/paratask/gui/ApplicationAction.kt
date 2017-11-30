@@ -79,6 +79,8 @@ open class ApplicationAction(
         return Tooltip(result.toString())
     }
 
+    fun shortcutLabel() = keyCodeCombination?.displayText
+
     fun createMenuItem(shortcuts: ShortcutHelper? = null, action: () -> Unit): MenuItem {
         shortcuts?.add(this, action)
 
