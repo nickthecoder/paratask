@@ -16,8 +16,8 @@ class AlphaColorParameter(
         description = description) {
 
 
-    val rgbP = ColorParameter(name + "_rgb", label = "")
-    val alphaP = DoubleParameter(name + "_alpha", label = "Alpha", value = 1.0, minValue = 0.0, maxValue = 1.0)
+    val rgbP = ColorParameter(name + "_rgb", label = "", value = value)
+    val alphaP = DoubleParameter(name + "_alpha", label = "Alpha", value = value.opacity, minValue = 0.0, maxValue = 1.0)
             .asSlider(DoubleParameter.SliderInfo(blockIncrement = 0.1, majorTickUnit = 0.5, minorTickCount = 5, snapToTicks = false))
 
     override var value: Color

@@ -86,7 +86,7 @@ class TaskDescription(
         source.root.descendants().filterIsInstance<OneOfParameter>().forEach { oneOfSource ->
             source.root.find(oneOfSource.name)?.let { oneOfDest ->
                 if (oneOfDest is OneOfParameter) {
-                    oneOfSource.choices().forEach { (key, _, label) ->
+                    oneOfSource.choices().forEach { (key, _, _) ->
                         oneOfDest.addChoice(key, source.root.find(key))
                     }
                 }

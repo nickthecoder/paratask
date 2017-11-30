@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import uk.co.nickthecoder.paratask.ParaTask
+import kotlin.reflect.KMutableProperty0
 
 /**
  */
@@ -88,6 +89,21 @@ open class ApplicationAction(
         menuItem.onAction = EventHandler { action() }
         image?.let { menuItem.graphic = ImageView(it) }
         menuItem.accelerator = keyCodeCombination
+        return menuItem
+    }
+
+    fun createCheckMenuItem(shortcuts: ShortcutHelper? = null, property: KMutableProperty0<Boolean>, action: () -> Unit): CheckMenuItem {
+
+        val menuItem = CheckMenuItem(label)
+        menuItem.isSelected = property.getter.call()
+        val updateAction = {
+            menuItem.isSelected != menuItem.isSelected
+            property.setter.call(menuItem.isSelected)
+            action()
+        }
+        shortcuts?.add(this, updateAction)
+        menuItem.accelerator = keyCodeCombination
+        menuItem.onAction = EventHandler { updateAction() }
         return menuItem
     }
 
