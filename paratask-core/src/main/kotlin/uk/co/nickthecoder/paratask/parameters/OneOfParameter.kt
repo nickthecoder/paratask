@@ -33,8 +33,8 @@ class OneOfParameter(
         this.value = value
 
         listen {
-            choiceValues().forEach { parameter ->
-                parameter?.hidden = parameter != this.value
+            choices().forEach { choice ->
+                choice.value?.hidden = choice.value != value
             }
         }
     }

@@ -19,14 +19,17 @@ package uk.co.nickthecoder.paratask.parameters
 
 import javafx.util.StringConverter
 import uk.co.nickthecoder.paratask.parameters.fields.ChoiceField
+import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
+
+data class Choice<T>(val key: String, val value: T, val label: String)
 
 open class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
-        value: T,
+        value: T? = null,
         required: Boolean = true)
 
     : AbstractValueParameter<T?>(
@@ -36,24 +39,20 @@ open class ChoiceParameter<T>(
         value = value,
         required = required) {
 
-
-    private val valueToKeyMap = LinkedHashMap<T?, String>()
-    private val keyToValueMap = LinkedHashMap<String, T?>()
-    private val valueToLabelMap = LinkedHashMap<T?, String>()
-    private val labelToValueMap = LinkedHashMap<String, T?>()
+    protected val choices = mutableListOf<Choice<T>>()
 
     override val converter = object : StringConverter<T?>() {
 
         override fun fromString(str: String): T? {
-            return keyToValueMap[str]
+            return choices.firstOrNull { it.key == str }?.value
         }
 
         override fun toString(obj: T?): String {
-            return valueToKeyMap[obj] ?: "<unknown>"
+            return choices.firstOrNull { it.value == obj }?.key ?: "<unknown>"
         }
     }
 
-    fun choice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
+    fun choice(key: String, value: T, label: String = key.uncamel()): ChoiceParameter<T> {
         addChoice(key, value, label)
         return this
     }
@@ -70,89 +69,60 @@ open class ChoiceParameter<T>(
 
         if (v == null) return super.errorMessage(v)
 
-        if (valueToKeyMap[v] == null) {
+        if (choices.firstOrNull { it.value == v } == null) {
             return "Invalid choice"
         }
 
         return null
     }
 
-    override fun createField(): ChoiceField<T> {
+    override fun createField(): ParameterField {
         val result = ChoiceField(this)
         result.build()
         return result
     }
 
-    override fun toString(): String = "Choice" + super.toString()
-
-    fun choiceValues(): Collection<T?> {
-        return keyToValueMap.values
+    fun choices(): List<Choice<T>> {
+        return choices
     }
 
     fun getLabelForValue(value: T?): String? {
-        return valueToLabelMap[value]
+        return choices.firstOrNull { it.value == value }?.label
     }
 
     fun getValueForLabel(label: String?): T? {
-        return labelToValueMap[label]
+        return choices.firstOrNull { it.label == label }?.value
     }
 
-    fun choiceKeys(): Collection<String> = valueToKeyMap.values
-
-    fun valueKey() = valueToKeyMap[value]
-
-    fun choices(): List<Triple<String, T?, String>> {
-        val result = mutableListOf<Triple<String, T?, String>>()
-
-        keyToValueMap.forEach { key, value ->
-            val label = valueToLabelMap[value]!!
-            result.add(Triple<String, T?, String>(key, value, label))
-        }
-
-        return result
-    }
-
-    open fun addChoice(key: String, value: T?, label: String = key.uncamel()): ChoiceParameter<T> {
-        keyToValueMap.put(key, value)
-        valueToKeyMap.put(value, key)
-        valueToLabelMap.put(value, label)
-        labelToValueMap.put(label, value)
+    open fun addChoice(key: String, value: T, label: String = key.uncamel()): ChoiceParameter<T> {
+        choices.add(Choice(key, value, label))
 
         parameterListeners.fireStructureChanged(this)
         return this
     }
 
     fun removeKey(key: String) {
-        val value = keyToValueMap[key]
-        val label = valueToLabelMap[value]
-
-        keyToValueMap.remove(key)
-        valueToKeyMap.remove(value)
-        valueToLabelMap.remove(value)
-        labelToValueMap.remove(label)
+        choices.removeIf { it.key == key }
 
         parameterListeners.fireStructureChanged(this)
     }
 
     fun clear() {
-        valueToKeyMap.clear()
-        keyToValueMap.clear()
-        valueToLabelMap.clear()
-        labelToValueMap.clear()
+        choices.clear()
 
         parameterListeners.fireStructureChanged(this)
     }
 
     override fun coerce(v: Any?) {
         // If it is in the map of values, then we can use it without problem
-        if (valueToKeyMap.containsKey(v)) {
+        if (choices.firstOrNull { it.value == v } != null) {
             @Suppress("UNCHECKED_CAST")
             value = v as T
 
         } else {
             val str = v.toString()
-            valueToKeyMap.keys.first { str == it.toString() }?.let {
-                value = it
+            choices.firstOrNull { str == it.value.toString() }?.let {
+                value = it.value
                 return
             }
             super.coerce(v)
@@ -163,11 +133,11 @@ open class ChoiceParameter<T>(
         val result = ChoiceParameter(name = name, label = label, description = description, value = value!!,
                 required = required)
 
-        keyToValueMap.forEach { (key, value) ->
-            result.addChoice(key, value, valueToLabelMap[value]!!)
-        }
+        result.choices.addAll(choices)
         return result
     }
+
+    override fun toString(): String = "Choice" + super.toString()
 
 }
 

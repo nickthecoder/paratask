@@ -83,8 +83,8 @@ class ChoiceField<T>(val choiceParameter: ChoiceParameter<T>)
         val pValue = choiceParameter.value
 
         comboBox.items.clear()
-        for (value: T? in choiceParameter.choiceValues()) {
-            comboBox.items.add(value ?: FAKE_NULL)
+        choiceParameter.choices().map { it.value ?: FAKE_NULL }.forEach {
+            comboBox.items.add(it)
         }
         comboBox.value = pValue
     }
