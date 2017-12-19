@@ -8,6 +8,7 @@ class GroupedChoiceParameter<T>(
         label: String = name.uncamel(),
         description: String = "",
         value: T? = null,
+        val allowSingleItemSubMenus: Boolean = false,
         required: Boolean = true)
 
     : ChoiceParameter<T>(name, label, description, value, required) {

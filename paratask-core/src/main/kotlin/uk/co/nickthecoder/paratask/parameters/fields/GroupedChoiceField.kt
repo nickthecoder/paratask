@@ -44,7 +44,7 @@ class GroupedChoiceField<T>(val groupedChoiceParameter: GroupedChoiceParameter<T
         groupedChoiceParameter.groups().toSortedMap().forEach { label, group ->
 
             val items: ObservableList<MenuItem>
-            if (label.isNotBlank() && groupedChoiceParameter.groups().size > 1 && group.groupChoices.size > 1) {
+            if (label.isNotBlank() && groupedChoiceParameter.groups().size > 1 && (group.groupChoices.size > 1 || groupedChoiceParameter.allowSingleItemSubMenus)) {
                 val subMenu = Menu(label)
                 items = subMenu.items
                 menuButton.items.add(subMenu)
