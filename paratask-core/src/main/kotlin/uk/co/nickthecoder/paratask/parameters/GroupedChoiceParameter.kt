@@ -16,6 +16,11 @@ class GroupedChoiceParameter<T>(
 
     fun groups(): Map<String, Group> = groups
 
+    override fun clear() {
+        groups.clear()
+        super.clear()
+    }
+
     override fun addChoice(key: String, value: T, label: String): GroupedChoiceParameter<T> {
         group("").choice(key, value, label)
         return this

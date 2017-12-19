@@ -107,7 +107,7 @@ open class ChoiceParameter<T>(
         parameterListeners.fireStructureChanged(this)
     }
 
-    fun clear() {
+    open fun clear() {
         choices.clear()
 
         parameterListeners.fireStructureChanged(this)
