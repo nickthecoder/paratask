@@ -34,7 +34,7 @@ class OneOfParameter(
 
         listen {
             choices().forEach { choice ->
-                choice.value?.hidden = choice.value != value
+                choice.value?.hidden = choice.value != this.value
             }
         }
     }
