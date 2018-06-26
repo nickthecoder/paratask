@@ -36,6 +36,10 @@
                     "expression": "tool.directory"
                 },
                 {
+                    "name": "title",
+                    "value": "Terminal"
+                },
+                {
                     "name": "closeWhenFinished",
                     "value": "true"
                 }
@@ -100,6 +104,39 @@
                 {
                     "name": "autoRefresh",
                     "expression": "tool.autoRefreshP.value"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "+",
+            "label": "Create empty file",
+            "isRow": false,
+            "isMultiple": false,
+            "prompt": true,
+            "newTab": false,
+            "refresh": true,
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "touch"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "newfile.txt"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "expression": "tool.directory"
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }

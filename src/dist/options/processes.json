@@ -21,26 +21,6 @@
                 {
                     "name": "filter",
                     "value": "all"
-                },
-                {
-                    "name": "command",
-                    "value": ""
-                },
-                {
-                    "name": "user",
-                    "value": "nick"
-                },
-                {
-                    "name": "group",
-                    "value": ""
-                },
-                {
-                    "name": "pids",
-                    "values": [
-                        {
-                            "value": ""
-                        }
-                    ]
                 }
             ]
         },
@@ -54,42 +34,6 @@
             "prompt": false,
             "newTab": false,
             "refresh": false
-        },
-        {
-            "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "cont",
-            "label": "Continue",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "kill"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "-CONT"
-                        },
-                        {
-                            "expression": "rows.collect{ it.pid }"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": ""
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
         },
         {
             "type": "task",
@@ -233,42 +177,6 @@
         },
         {
             "type": "task",
-            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
-            "code": "stop",
-            "label": "Stop",
-            "isRow": true,
-            "isMultiple": true,
-            "prompt": false,
-            "newTab": false,
-            "refresh": false,
-            "parameters": [
-                {
-                    "name": "program",
-                    "value": "kill"
-                },
-                {
-                    "name": "arguments",
-                    "values": [
-                        {
-                            "value": "-STOP"
-                        },
-                        {
-                            "expression": "rows.collect{ it.pid }"
-                        }
-                    ]
-                },
-                {
-                    "name": "directory",
-                    "value": ""
-                },
-                {
-                    "name": "output",
-                    "value": "INHERRIT"
-                }
-            ]
-        },
-        {
-            "type": "task",
             "task": "uk.co.nickthecoder.paratask.tools.ProcessesTool",
             "code": "user",
             "label": "User Processes",
@@ -310,6 +218,84 @@
                 {
                     "name": "user",
                     "value": "root"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "stop",
+            "label": "Stop",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                "\""
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-STOP"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
+                }
+            ]
+        },
+        {
+            "type": "task",
+            "task": "uk.co.nickthecoder.paratask.tools.CommandTask",
+            "code": "cont",
+            "label": "Continue",
+            "isRow": true,
+            "isMultiple": true,
+            "prompt": false,
+            "newTab": false,
+            "refresh": false,
+            "aliases": [
+                ">"
+            ],
+            "parameters": [
+                {
+                    "name": "program",
+                    "value": "kill"
+                },
+                {
+                    "name": "arguments",
+                    "values": [
+                        {
+                            "value": "-CONT"
+                        },
+                        {
+                            "expression": "rows.collect{ it.pid }"
+                        }
+                    ]
+                },
+                {
+                    "name": "directory",
+                    "value": ""
+                },
+                {
+                    "name": "output",
+                    "value": "INHERRIT"
                 }
             ]
         }

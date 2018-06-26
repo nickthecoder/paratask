@@ -24,5 +24,9 @@ enum class ParameterEventType {
 data class ParameterEvent(
         val parameter: Parameter,
         val type: ParameterEventType,
+        /**
+         * The old value of the parameter.
+         */
+        val oldValue: Any?,
         val innerParameter: Parameter? = null // Will be non-null for ParameterEventType.INNER
 )

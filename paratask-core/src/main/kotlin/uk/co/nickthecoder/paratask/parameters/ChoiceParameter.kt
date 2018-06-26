@@ -86,6 +86,10 @@ open class ChoiceParameter<T>(
         return choices
     }
 
+    fun getKeyForValue(value: T?): String? {
+        return choices.firstOrNull { it.value == value }?.key
+    }
+
     fun getLabelForValue(value: T?): String? {
         return choices.firstOrNull { it.value == value }?.label
     }

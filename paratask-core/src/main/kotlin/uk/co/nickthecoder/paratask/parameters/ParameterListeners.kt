@@ -21,13 +21,13 @@ import uk.co.nickthecoder.paratask.util.Listeners
 
 class ParameterListeners : Listeners<ParameterListener>() {
 
-    fun fireValueChanged(parameter: Parameter) {
-        val event = ParameterEvent(parameter, ParameterEventType.VALUE)
+    fun fireValueChanged(parameter: Parameter, oldValue: Any?) {
+        val event = ParameterEvent(parameter, ParameterEventType.VALUE, oldValue)
         forEach {
             it.parameterChanged(event)
         }
         parameter.parent?.let { parent ->
-            parent.parameterListeners.fireInnerParameterChanged(parent, parameter)
+            parent.parameterListeners.fireInnerParameterChanged(parent, parameter, oldValue)
         }
     }
 
@@ -36,28 +36,28 @@ class ParameterListeners : Listeners<ParameterListener>() {
         forEach {
             it.parameterChanged(event)
         }
-        fireValueChanged(parameter)
+        fireValueChanged(parameter, null)
     }
 
-    fun fireInnerParameterChanged(parameter: Parameter, innerParameter: Parameter) {
+    fun fireInnerParameterChanged(parameter: Parameter, innerParameter: Parameter, oldValue: Any?) {
         val event = ParameterEvent(parameter, ParameterEventType.INNER, innerParameter)
         forEach {
             it.parameterChanged(event)
         }
         parameter.parent?.let { parent ->
-            parent.parameterListeners.fireInnerParameterChanged(parent, innerParameter)
+            parent.parameterListeners.fireInnerParameterChanged(parent, innerParameter, oldValue)
         }
     }
 
     fun fireVisibilityChanged(parameter: Parameter) {
-        val event = ParameterEvent(parameter, ParameterEventType.VISIBILITY)
+        val event = ParameterEvent(parameter, ParameterEventType.VISIBILITY, null)
         forEach {
             it.parameterChanged(event)
         }
     }
 
     fun fireEnabledChanged(parameter: Parameter) {
-        val event = ParameterEvent(parameter, ParameterEventType.ENABLED)
+        val event = ParameterEvent(parameter, ParameterEventType.ENABLED, null)
         forEach {
             it.parameterChanged(event)
         }

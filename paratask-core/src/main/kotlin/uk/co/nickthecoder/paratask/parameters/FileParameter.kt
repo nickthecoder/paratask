@@ -117,6 +117,7 @@ open class FileParameter(
 
             : ChoiceParameter<String?> {
 
+        val oldValue = value // Needed?
         val filenameP = ChoiceParameter<String?>(name, value = null)
         listen {
             filenameP.clear()
@@ -127,7 +128,8 @@ open class FileParameter(
                 }
             }
         }
-        parameterListeners.fireValueChanged(this)
+        // TODO Hmm, this looks odd, why are we firing a value changed???
+        parameterListeners.fireValueChanged(this, oldValue)
 
         return filenameP
     }

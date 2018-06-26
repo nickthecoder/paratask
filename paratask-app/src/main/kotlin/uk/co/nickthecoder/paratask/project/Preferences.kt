@@ -50,7 +50,7 @@ object Preferences {
     ): ChoiceParameter<File?> {
 
         val value = if (required) optionsPath.first() else null
-        val result = ChoiceParameter(name, required = required, value = value)
+        val result: ChoiceParameter<File?> = ChoiceParameter(name, required = required, value = value)
         if (!required) {
             result.choice("", null, "<ALL>")
         }

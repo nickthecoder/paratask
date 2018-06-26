@@ -72,7 +72,7 @@ class MultipleParameter<T, P : ValueParameter<T>>(
 
     val innerListener = object : ParameterListener {
         override fun parameterChanged(event: ParameterEvent) {
-            parameterListeners.fireInnerParameterChanged(this@MultipleParameter, event.parameter)
+            parameterListeners.fireInnerParameterChanged(this@MultipleParameter, event.parameter, event.oldValue)
         }
     }
 

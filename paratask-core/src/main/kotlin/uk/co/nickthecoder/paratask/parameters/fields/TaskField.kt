@@ -62,7 +62,8 @@ class TaskField(val taskParameter: TaskParameter)
                 task.taskD.programmingMode = true
             }
             val taskPrompter = EditTaskPrompter(task, taskParameter.scriptVariables) {
-                taskParameter.parameterListeners.fireValueChanged(taskParameter)
+                // TODO Why are we firing a value changed? Hmm.
+                taskParameter.parameterListeners.fireValueChanged(taskParameter, null)
             }
             taskPrompter.placeOnStage(Stage())
         }
