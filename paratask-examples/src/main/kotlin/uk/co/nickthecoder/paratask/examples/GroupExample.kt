@@ -5,7 +5,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.parameters.*
 
-class GroupExample : AbstractTask() {
+class GroupExample : AbstractTask(), ParameterListener {
 
     val normalIntP = IntParameter("normalInt", label = "Int")
     val normalStringP = StringParameter("normalString", label = "String", columns = 10)
@@ -22,6 +22,14 @@ class GroupExample : AbstractTask() {
 
 There are other ways to lay out groups. See HorizontalGroupExample, and GridGroupExample.""")
             .addParameters(normalGroupP, plainGroupP)
+
+    init {
+        plainGroupP.parameterListeners.add(this)
+    }
+
+    override fun parameterChanged(event: ParameterEvent) {
+        println("parameter=${event.parameter} inner=${event.innerParameter} type=${event.type} oldValue=${event.oldValue}")
+    }
 
     override fun run() {
     }

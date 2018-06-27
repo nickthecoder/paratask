@@ -40,7 +40,7 @@ class ParameterListeners : Listeners<ParameterListener>() {
     }
 
     fun fireInnerParameterChanged(parameter: Parameter, innerParameter: Parameter, oldValue: Any?) {
-        val event = ParameterEvent(parameter, ParameterEventType.INNER, innerParameter)
+        val event = ParameterEvent(parameter, ParameterEventType.INNER, oldValue, innerParameter)
         forEach {
             it.parameterChanged(event)
         }

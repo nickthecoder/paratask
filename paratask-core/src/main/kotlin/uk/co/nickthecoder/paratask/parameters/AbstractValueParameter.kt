@@ -43,9 +43,8 @@ abstract class AbstractValueParameter<T>(
 
     override var valueProperty = object : SimpleObjectProperty<T>() {
         override fun set(v: T) {
-            val oldValue = v
-            val changed = v != get()
-            if (changed) {
+            val oldValue = get()
+            if (v != oldValue) {
                 super.set(v)
                 parameterListeners.fireValueChanged(this@AbstractValueParameter, oldValue)
             }
