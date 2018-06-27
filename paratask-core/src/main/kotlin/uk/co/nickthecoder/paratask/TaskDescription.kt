@@ -84,12 +84,10 @@ class TaskDescription(
         // We need special processing for OneOfParameters, because their choices are themselves PARAMETERS, which
         // have been copied.
         source.root.descendants().filterIsInstance<OneOfParameter>().forEach { oneOfSource ->
-            if (oneOfSource is OneOfParameter) {
-                root.find(oneOfSource.name)?.let { oneOfDest ->
-                    if (oneOfDest is OneOfParameter) {
-                        oneOfSource.choices().forEach { (key, _, _) ->
-                            oneOfDest.addChoice(key, root.find(key))
-                        }
+            root.find(oneOfSource.name)?.let { oneOfDest ->
+                if (oneOfDest is OneOfParameter) {
+                    oneOfSource.choices().forEach { (key, _, _) ->
+                        oneOfDest.addChoice(key, root.find(key))
                     }
                 }
             }
