@@ -82,17 +82,18 @@ class TaskDescription(
         }
 
         // We need special processing for OneOfParameters, because their choices are themselves PARAMETERS, which
-        // have been copied. So create duplicate choices
+        // have been copied.
         source.root.descendants().filterIsInstance<OneOfParameter>().forEach { oneOfSource ->
-            source.root.find(oneOfSource.name)?.let { oneOfDest ->
-                if (oneOfDest is OneOfParameter) {
-                    oneOfSource.choices().forEach { (key, _, _) ->
-                        oneOfDest.addChoice(key, source.root.find(key))
+            if (oneOfSource is OneOfParameter) {
+                root.find(oneOfSource.name)?.let { oneOfDest ->
+                    if (oneOfDest is OneOfParameter) {
+                        oneOfSource.choices().forEach { (key, _, _) ->
+                            oneOfDest.addChoice(key, root.find(key))
+                        }
                     }
                 }
             }
         }
-
     }
 
     override fun toString(): String {
