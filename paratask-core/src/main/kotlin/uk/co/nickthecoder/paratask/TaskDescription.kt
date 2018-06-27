@@ -84,7 +84,7 @@ class TaskDescription(
         // We need special processing for OneOfParameters, because their choices are themselves PARAMETERS, which
         // have been copied. So create duplicate choices
         source.root.descendants().filterIsInstance<OneOfParameter>().forEach { oneOfSource ->
-            source.root.find(oneOfSource.name)?.let { oneOfDest ->
+            root.find(oneOfSource.name)?.let { oneOfDest ->
                 if (oneOfDest is OneOfParameter) {
                     oneOfSource.choices().forEach { (key, _, _) ->
                         oneOfDest.addChoice(key, source.root.find(key))

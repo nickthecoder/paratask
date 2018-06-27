@@ -132,7 +132,7 @@ class GenerateTaskCompletionTask : AbstractTask() {
                     out.println("            ;;")
                 }
                 choiceParameters.forEach { (name, choiceParameter) ->
-                    val choices = choiceParameter.choiceKeys().joinToString(separator = " ")
+                    val choices = choiceParameter.choices().map { it.key }.joinToString(separator = " ")
                     out.println("        --$name)")
                     out.println("            COMPREPLY=( \$( compgen -W '$choices' -- \$cur) )")
                     out.println("            return 0")
@@ -159,7 +159,7 @@ class GenerateTaskCompletionTask : AbstractTask() {
             // The current argument is either a parameter name (such as "--file"), or it is a value for the "unnamed" parameter
             // if the task has an unnamed parameter.
             if (unnamedParameter is ChoiceParameter<*>) {
-                val choices = unnamedParameter.choiceKeys().joinToString(separator = " ")
+                val choices = unnamedParameter.choices().map { it.key }.joinToString(separator = " ")
                 out.println("        COMPREPLY=( \$( compgen -W '$parameterNames $choices' -- \$cur) )")
             } else if (unnamedParameter is BooleanParameter && unnamedParameter.needsValue()) {
                 val choices = if (unnamedParameter.required) listOf("true", "false") else listOf("true", "false", "null")

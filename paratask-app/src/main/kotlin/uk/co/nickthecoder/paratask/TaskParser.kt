@@ -243,10 +243,10 @@ then place the POSIX standard "--" BEFORE the "default" argument(s).
                 if (parameter is ChoiceParameter<*>) {
                     print(indent)
                     print("Possible values : ")
-                    print(parameter.choiceKeys().joinToString())
-                    if (parameter.value != null) {
-                        print(". (default=${parameter.valueKey()})")
-                    }
+                    print(parameter.choices().map { it.key }.joinToString())
+                    //if (parameter.value != null) {
+                    //    print(". (default=${parameter.valueKey()})")
+                    //}
                     println()
                 }
                 if (parameter is BooleanParameter && parameter.oppositeName != null) {
