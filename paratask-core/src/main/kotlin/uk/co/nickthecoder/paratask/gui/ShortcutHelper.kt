@@ -41,8 +41,14 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
         try {
             actions.forEach { (action, func) ->
                 if (action.keyCodeCombination?.match(event) == true) {
+                    try {
+                        func()
+                    } catch (e: Exception) {
+                        // If the event throws an exception, don't consume the event.
+                        // This allows other handlers to handle the event.
+                        return
+                    }
                     event.consume()
-                    func()
                 }
             }
         } catch (e: ConcurrentModificationException) {
@@ -75,5 +81,12 @@ class ShortcutHelper(val name: String, val node: Node, val filter: Boolean = tru
         val FOCUS_NEXT = ApplicationAction.createKeyCodeCombination(KeyCode.TAB)
         val INSERT_TAB = ApplicationAction.createKeyCodeCombination(KeyCode.TAB, control = true)
 
+        /**
+         * When called from an event handler of a shortcut, prevents the event from being consumed, so that
+         * the event can be handled by another handler.
+         */
+        fun ignore() {
+            throw Exception( "Ignore shortcut event")
+        }
     }
 }
