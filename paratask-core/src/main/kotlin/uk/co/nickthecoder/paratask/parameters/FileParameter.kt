@@ -28,6 +28,7 @@ open class FileParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         required: Boolean = true,
         val expectFile: Boolean? = true, // false=expect Directory, null=expect either
         val mustExist: Boolean? = true, // false=must NOT exist, null=MAY exist
@@ -40,6 +41,7 @@ open class FileParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -148,8 +150,9 @@ open class FileParameter(
 
     override fun toString() = "File" + super.toString()
 
-    override fun copy() = FileParameter(name = name, label = label, description = description, value = value,
-            required = required, mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile, extensions = extensions)
+    override fun copy() = FileParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required,
+            mustExist = mustExist, baseDirectory = baseDirectory, expectFile = expectFile, extensions = extensions)
 
     companion object {
         var showDragIcon: Boolean = true

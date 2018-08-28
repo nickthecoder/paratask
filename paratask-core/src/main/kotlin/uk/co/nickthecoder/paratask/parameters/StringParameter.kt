@@ -25,6 +25,7 @@ class StringParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: String = "",
         required: Boolean = true,
         val columns: Int = 30,
@@ -37,6 +38,7 @@ class StringParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required,
         isBoxed = isBoxed) {
@@ -60,6 +62,7 @@ class StringParameter(
 
     override fun toString() = "String" + super.toString()
 
-    override fun copy() = StringParameter(name = name, label = label, description = description, value = value,
-            required = required, columns = columns, rows = rows, style = style, stretchy = stretchy, isBoxed = isBoxed)
+    override fun copy() = StringParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required,
+            columns = columns, rows = rows, style = style, stretchy = stretchy, isBoxed = isBoxed)
 }

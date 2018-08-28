@@ -7,11 +7,12 @@ class GroupedChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: T? = null,
         val allowSingleItemSubMenus: Boolean = false,
         required: Boolean = true)
 
-    : ChoiceParameter<T>(name, label, description, value, required) {
+    : ChoiceParameter<T>(name, label, description, hint = hint, value = value, required = required) {
 
     private val groups = mutableMapOf<String, Group>()
 
@@ -43,7 +44,9 @@ class GroupedChoiceParameter<T>(
     }
 
     override fun copy(): GroupedChoiceParameter<T> {
-        val copy = GroupedChoiceParameter<T>(name, label, description, value, required)
+        val copy = GroupedChoiceParameter<T>(name, label, description, hint = hint,
+                value = value, required = required)
+
         groups.values.forEach { group ->
             val groupCopy = copy.group(group.label)
             group.groupChoices.forEach { choice ->

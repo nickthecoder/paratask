@@ -28,6 +28,7 @@ open class IntParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Int? = null,
         required: Boolean = true,
         val minValue: Int = Int.MIN_VALUE,
@@ -38,6 +39,7 @@ open class IntParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -46,7 +48,7 @@ open class IntParameter(
         IntField(this).build()
     }
 
-    fun asSlider(sliderInfo: SliderInfo = SliderInfo()) : IntParameter {
+    fun asSlider(sliderInfo: SliderInfo = SliderInfo()): IntParameter {
         fieldFactory = {
             IntSliderField(this, sliderInfo).build()
         }
@@ -95,14 +97,8 @@ open class IntParameter(
 
     override fun toString(): String = "Int" + super.toString()
 
-    override fun copy() = IntParameter(
-            name = name,
-            label = label,
-            description = description,
-            value = value,
-            required = required,
-            minValue = minValue,
-            maxValue = maxValue)
+    override fun copy() = IntParameter(name = name, label = label, description = description, hint = hint, value = value,
+            required = required, minValue = minValue, maxValue = maxValue)
 
     data class SliderInfo(
             val blockIncrement: Int = 1,

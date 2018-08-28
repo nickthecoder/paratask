@@ -28,6 +28,7 @@ abstract class AbstractValueParameter<T>(
         name: String,
         label: String,
         description: String,
+        hint: String,
         value: T,
         var required: Boolean = false,
         isBoxed: Boolean = false)
@@ -35,6 +36,7 @@ abstract class AbstractValueParameter<T>(
     : AbstractParameter(
         name, label = label,
         description = description,
+        hint = hint,
         isBoxed = isBoxed),
 
         PropertyValueParameter<T> {

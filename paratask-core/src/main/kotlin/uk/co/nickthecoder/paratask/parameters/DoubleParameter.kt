@@ -31,6 +31,7 @@ open class DoubleParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Double? = null,
         required: Boolean = true,
         val columnCount: Int = 8,
@@ -41,6 +42,7 @@ open class DoubleParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -103,7 +105,8 @@ open class DoubleParameter(
 
     override fun toString(): String = "Double" + super.toString()
 
-    override fun copy() = DoubleParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
+    override fun copy() = DoubleParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
 
 
     data class SliderInfo(

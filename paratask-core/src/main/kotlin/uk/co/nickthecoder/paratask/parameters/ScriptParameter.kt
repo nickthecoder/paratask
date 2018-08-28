@@ -27,6 +27,7 @@ class ScriptParameter(
         val scriptVariables: ScriptVariables,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: String = "",
         required: Boolean = true,
         val columns: Int = 30,
@@ -36,6 +37,7 @@ class ScriptParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required,
         isBoxed = true) {
@@ -60,6 +62,6 @@ class ScriptParameter(
     override fun toString() = "Script" + super.toString()
 
     override fun copy() = ScriptParameter(name = name, scriptVariables = scriptVariables,
-            label = label, description = description, value = value,
+            label = label, description = description, hint = hint, value = value,
             required = required, columns = columns, rows = rows)
 }

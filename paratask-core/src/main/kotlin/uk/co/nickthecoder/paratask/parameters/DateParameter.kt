@@ -30,6 +30,7 @@ open class DateParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: LocalDate? = null,
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM),
         required: Boolean = true)
@@ -38,6 +39,7 @@ open class DateParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -74,6 +76,6 @@ open class DateParameter(
 
     override fun toString(): String = "Date" + super.toString()
 
-    override fun copy() = DateParameter(name = name, label = label, description = description, value = value,
-            dateFormat = dateFormat, required = required)
+    override fun copy() = DateParameter(name = name, label = label, description = description, hint = hint,
+            value = value, dateFormat = dateFormat, required = required)
 }

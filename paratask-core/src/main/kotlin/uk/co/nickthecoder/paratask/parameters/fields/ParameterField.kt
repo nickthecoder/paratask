@@ -45,6 +45,8 @@ abstract class ParameterField(
 
     val error = Label()
 
+    val hint: Label? = if (parameter.hint.isBlank()) null else Label(parameter.hint)
+
     var control: Node? = null
 
     /**

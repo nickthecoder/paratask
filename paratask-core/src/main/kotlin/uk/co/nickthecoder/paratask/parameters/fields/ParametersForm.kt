@@ -321,6 +321,10 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
                 children.add(parameterField.labelNode)
             }
             children.addAll(parameterField.controlContainer, parameterField.error)
+            parameterField.hint?.let {
+                children.addAll(it)
+                it.styleClass.add("hint")
+            }
             parameterField.parameter.parameterListeners.add(this)
             isVisible = !parameterField.parameter.hidden
         }
@@ -339,8 +343,8 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
                 controlHeight
             }
             val err = if (parameterField.error.isVisible) parameterField.error.minHeight(width) else 0.0
-
-            return both + err
+            val hint = parameterField.hint?.minHeight(width) ?: 0.0
+            return both + err + hint
         }
 
         override fun computePrefHeight(width: Double): Double {
@@ -351,7 +355,8 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
                 controlHeight
             }
             val err = if (parameterField.error.isVisible) parameterField.error.prefHeight(width) else 0.0
-            return both + err
+            val hint = parameterField.hint?.prefHeight(width) ?: 0.0
+            return both + err + hint
         }
 
         override fun computeMinWidth(height: Double): Double {
@@ -437,6 +442,13 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
                 h = parameterField.error.prefHeight(-1.0)
                 w = width - insets.left - insets.right
                 layoutInArea(parameterField.error, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
+                y += h
+            }
+
+            parameterField.hint?.let {
+                h = it.prefHeight(-1.0)
+                w = width - insets.left - insets.right
+                layoutInArea(it, x, y, w, h, 0.0, HPos.LEFT, VPos.TOP)
             }
         }
 
@@ -457,6 +469,7 @@ class ParametersForm(val parentParameter: ParentParameter, val parameterField: P
             }
             adjustColumnWidth(columns[1], parameterField.controlContainer!!)
         }
+
     }
 
 }

@@ -32,6 +32,15 @@
     -fx-padding: 0;
 }
 
+.information {
+    -fx-text-fill: #080;
+}
+
+.hint {
+    -fx-text-fill: #080;
+    -fx-padding: 2px 0 0 0;
+}
+
 .error {
     -fx-text-fill: #a00;
     -fx-padding: 5px 0 0 0;

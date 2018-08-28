@@ -26,6 +26,7 @@ class RegexParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: String = "",
         required: Boolean = true,
         val columns: Int = 30,
@@ -36,6 +37,7 @@ class RegexParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -81,6 +83,6 @@ class RegexParameter(
 
     override fun toString() = "Regex" + super.toString()
 
-    override fun copy() = RegexParameter(name = name, label = label, description = description, value = value,
-            required = required, columns = columns, style = style, stretchy = stretchy)
+    override fun copy() = RegexParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required, columns = columns, style = style, stretchy = stretchy)
 }

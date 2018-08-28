@@ -14,12 +14,14 @@ class ColorParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Color = Color.WHITE)
 
     : AbstractValueParameter<Color>(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value) {
 
     override val converter = object : StringConverter<Color>() {
@@ -59,9 +61,6 @@ class ColorParameter(
     override fun toString(): String = "Color" + super.toString()
 
     override fun copy() = ColorParameter(
-            name = name,
-            label = label,
-            description = description,
-            value = value)
+            name = name, label = label, description = description, hint = hint, value = value)
 
 }

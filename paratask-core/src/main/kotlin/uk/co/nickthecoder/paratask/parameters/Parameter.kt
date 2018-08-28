@@ -31,6 +31,8 @@ interface Parameter : Labelled {
 
     val description: String
 
+    val hint: String
+
     var parent: Parameter?
 
     val parameterListeners: ParameterListeners
@@ -61,4 +63,5 @@ interface Parameter : Labelled {
 
     fun copy(): Parameter
 
+    fun createInfo() = InformationParameter("info_${name}", label = "", information = description)
 }

@@ -21,6 +21,7 @@ abstract class AbstractParameter(
         override val name: String,
         override val label: String,
         override val description: String,
+        override val hint: String = "",
         override val isBoxed: Boolean = false)
 
     : Parameter {

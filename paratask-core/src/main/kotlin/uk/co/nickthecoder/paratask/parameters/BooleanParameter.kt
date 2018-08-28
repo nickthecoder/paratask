@@ -28,6 +28,7 @@ class BooleanParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Boolean? = null,
         required: Boolean = true,
         val oppositeName: String? = null,
@@ -37,6 +38,7 @@ class BooleanParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -106,8 +108,8 @@ class BooleanParameter(
 
     override fun toString(): String = "Boolean" + super.toString()
 
-    override fun copy() = BooleanParameter(name = name, label = label, description = description, value = value,
-            required = required, oppositeName = oppositeName, labelOnLeft = labelOnLeft)
+    override fun copy() = BooleanParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required, oppositeName = oppositeName, labelOnLeft = labelOnLeft)
 
     companion object {
 

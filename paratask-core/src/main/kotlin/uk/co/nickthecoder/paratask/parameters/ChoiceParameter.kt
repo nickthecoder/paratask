@@ -29,6 +29,7 @@ open class ChoiceParameter<T>(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: T? = null,
         required: Boolean = true)
 
@@ -36,6 +37,7 @@ open class ChoiceParameter<T>(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -134,8 +136,9 @@ open class ChoiceParameter<T>(
     }
 
     override fun copy(): ChoiceParameter<T> {
-        val result = ChoiceParameter(name = name, label = label, description = description, value = value!!,
-                required = required)
+        val result = ChoiceParameter(
+                name = name, label = label, description = description, hint = hint,
+                value = value!!, required = required)
 
         result.choices.addAll(choices)
         return result

@@ -35,6 +35,7 @@ class TaskParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Task? = null,
         required: Boolean = true,
         val programmable: Boolean = true,
@@ -44,6 +45,7 @@ class TaskParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -107,7 +109,8 @@ class TaskParameter(
 
     override fun toString(): String = "Task" + super.toString()
 
-    override fun copy() = TaskParameter(name = name, label = label, description = description, value = value, required = required, taskFactory = taskFactory)
+    override fun copy() = TaskParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required, taskFactory = taskFactory)
 }
 
 interface TaskParameterFactory {

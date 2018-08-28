@@ -29,6 +29,7 @@ open class FloatParameter(
         name: String,
         label: String = name.uncamel(),
         description: String = "",
+        hint: String = "",
         value: Float? = null,
         required: Boolean = true,
         val columnCount: Int = 8,
@@ -39,6 +40,7 @@ open class FloatParameter(
         name = name,
         label = label,
         description = description,
+        hint = hint,
         value = value,
         required = required) {
 
@@ -91,5 +93,6 @@ open class FloatParameter(
 
     override fun toString(): String = "Double" + super.toString()
 
-    override fun copy() = FloatParameter(name = name, label = label, description = description, value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
+    override fun copy() = FloatParameter(name = name, label = label, description = description, hint = hint,
+            value = value, required = required, minValue = minValue, maxValue = maxValue, columnCount = columnCount)
 }
