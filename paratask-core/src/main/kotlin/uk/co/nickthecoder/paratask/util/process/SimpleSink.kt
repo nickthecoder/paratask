@@ -37,9 +37,9 @@ open class SimpleSink(val bufferSize: Int = 200) : Sink {
         try {
             val buffer = CharArray(bufferSize)
 
-            while ( true ) {
+            while (true) {
                 val amount: Int = reader.read(buffer, 0, bufferSize)
-                if ( amount == -1 ) {
+                if (amount == -1) {
                     break
                 }
                 sink(buffer, amount)
@@ -59,4 +59,22 @@ open class SimpleSink(val bufferSize: Int = 200) : Sink {
         //e.printStackTrace()
     }
 
+}
+
+/**
+ * Prints the output to System.out
+ */
+class PrintOutSink : SimpleSink() {
+    override fun sink(buffer: CharArray, len: Int) {
+        System.out.print(buffer)
+    }
+}
+
+/**
+ * Prints the output to System.err
+ */
+class PrintErrSink : SimpleSink() {
+    override fun sink(buffer: CharArray, len: Int) {
+        System.err.print(buffer)
+    }
 }
