@@ -83,6 +83,7 @@ class GroupedChoiceParameter<T>(
             val choice = Choice(key, value, label)
             groupChoices.add(choice)
             choices.add(choice)
+            parameterListeners.fireStructureChanged(this@GroupedChoiceParameter)
             return this
         }
     }
