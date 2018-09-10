@@ -14,7 +14,7 @@ apply plugin: 'idea'
 apply plugin: 'application'
 mainClassName = "uk.co.nickthecoder.paratask.ParaTaskAppKt"
 
-defaultTasks 'installApp'
+defaultTasks 'install', 'installDist'
 
 dependencies {
     compile project(':paratask-core')

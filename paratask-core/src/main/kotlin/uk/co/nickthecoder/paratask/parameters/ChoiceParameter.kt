@@ -22,6 +22,7 @@ import uk.co.nickthecoder.paratask.parameters.fields.ChoiceField
 import uk.co.nickthecoder.paratask.parameters.fields.ParameterField
 import uk.co.nickthecoder.paratask.util.Labelled
 import uk.co.nickthecoder.paratask.util.uncamel
+import kotlin.reflect.KClass
 
 data class Choice<T>(val key: String, val value: T, val label: String)
 
@@ -146,6 +147,39 @@ open class ChoiceParameter<T>(
 
     override fun toString(): String = "Choice" + super.toString()
 
+}
+
+fun createEnumParameter(
+        enumClass: KClass<out Enum<*>>,
+        name: String,
+        label: String,
+        description: String = "",
+        hint: String = "",
+        value: Enum<*> = enumClass.java.enumConstants.first()
+): ChoiceParameter<Enum<*>> {
+
+    val parameter: ChoiceParameter<Enum<*>> = ChoiceParameter(name, label, description, hint = hint, value = value, required = true)
+
+    enumClass.java.enumConstants.forEach {
+        parameter.choice(it.name, it)
+    }
+    return parameter
+}
+
+
+inline fun <reified T : Enum<T>> createEnumParameter(
+        name: String,
+        label: String,
+        description: String = "",
+        hint: String = "",
+        value: Enum<T> = enumValues<T>().first()
+): ChoiceParameter<Enum<T>> {
+
+    val parameter: ChoiceParameter<Enum<T>> = ChoiceParameter(name, label, description, hint = hint, value = value, required = true)
+    enumValues<T>().forEach {
+        parameter.choice(it.name, it)
+    }
+    return parameter
 }
 
 inline fun <reified T : Enum<T>> ChoiceParameter<T?>.nullableEnumChoices(
