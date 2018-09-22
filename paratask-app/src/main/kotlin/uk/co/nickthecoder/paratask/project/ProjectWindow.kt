@@ -39,6 +39,7 @@ import uk.co.nickthecoder.paratask.tools.WebTool
 import uk.co.nickthecoder.paratask.tools.places.DirectoryTool
 import uk.co.nickthecoder.paratask.tools.places.TrashTool
 import uk.co.nickthecoder.paratask.util.AutoExit
+import uk.co.nickthecoder.tedi.TediArea
 
 class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
@@ -63,6 +64,7 @@ class ProjectWindow(width: Double = 800.0, height: Double = 600.0) {
 
     init {
         scene.userData = this
+        TediArea.style(scene)
 
         topToolBars.styleClass.add("toolbar-container")
         bottomToolBars.styleClass.addAll("toolbar-container", "bottom")

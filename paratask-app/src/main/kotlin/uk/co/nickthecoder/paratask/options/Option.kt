@@ -25,7 +25,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import uk.co.nickthecoder.paratask.Tool
-import uk.co.nickthecoder.paratask.util.JsonHelper
+import uk.co.nickthecoder.paratask.JsonHelper
 import java.io.Externalizable
 import java.io.ObjectInput
 import java.io.ObjectOutput

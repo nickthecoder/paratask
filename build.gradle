@@ -60,8 +60,6 @@ project(':paratask-core') {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-        compile 'org.codehaus.groovy:groovy-all:2.4.9'
-        compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
     }
 
     defaultTasks 'install'
@@ -72,13 +70,12 @@ project(':paratask-app') {
     apply plugin: 'kotlin'
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile project(':paratask-core')
+
         compile 'org.codehaus.groovy:groovy-all:2.4.9'
         compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
-        compile 'org.fxmisc.richtext:richtextfx:0.6.10'
+        compile 'uk.co.nickthecoder:tedi-core:0.1'
         compile 'mysql:mysql-connector-java:5.1.6'
-
-        compile project(':paratask-core')
 
         testCompile 'junit:junit:4.11'
         testCompile group: 'org.loadui', name: 'testFx', version: '3.1.0'

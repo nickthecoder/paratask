@@ -29,7 +29,7 @@ import uk.co.nickthecoder.paratask.parameters.FileParameter
 import uk.co.nickthecoder.paratask.parameters.SimpleGroupParameter
 import uk.co.nickthecoder.paratask.parameters.addParameters
 import uk.co.nickthecoder.paratask.tools.ExceptionTool
-import uk.co.nickthecoder.paratask.util.JsonHelper
+import uk.co.nickthecoder.paratask.JsonHelper
 import java.io.*
 
 class Project(val projectWindow: ProjectWindow) {

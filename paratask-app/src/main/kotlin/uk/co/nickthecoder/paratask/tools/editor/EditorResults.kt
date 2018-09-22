@@ -17,14 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package uk.co.nickthecoder.paratask.tools.editor
 
-import javafx.application.Platform
-import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.ToolBar
 import javafx.scene.input.DataFormat
 import javafx.scene.input.TransferMode
-import org.fxmisc.richtext.CodeArea
-import org.fxmisc.richtext.LineNumberFactory
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
 import uk.co.nickthecoder.paratask.ParaTaskApp
 import uk.co.nickthecoder.paratask.gui.CompoundDropHelper
 import uk.co.nickthecoder.paratask.gui.DropFiles
@@ -34,6 +32,12 @@ import uk.co.nickthecoder.paratask.project.AbstractResults
 import uk.co.nickthecoder.paratask.project.ParataskActions
 import uk.co.nickthecoder.paratask.project.ResultsTab
 import uk.co.nickthecoder.paratask.project.ToolPane
+import uk.co.nickthecoder.tedi.BetterUndoRedo
+import uk.co.nickthecoder.tedi.TediArea
+import uk.co.nickthecoder.tedi.ui.FindBar
+import uk.co.nickthecoder.tedi.ui.RemoveHiddenChildren
+import uk.co.nickthecoder.tedi.ui.ReplaceBar
+import uk.co.nickthecoder.tedi.ui.TextInputControlMatcher
 import java.io.File
 
 class EditorResults(
@@ -44,13 +48,23 @@ class EditorResults(
 
     val toolBar = ToolBar()
 
-    val codeArea = CodeArea()
+    val tediArea = TediArea()
 
-    override val node = codeArea
+    private val matcher = TextInputControlMatcher(tediArea)
 
-    val searcher = Searcher(codeArea)
+    private val findBar = FindBar(matcher)
 
-    val findBar = FindBar(searcher, this)
+    private val replaceBar = ReplaceBar(matcher)
+
+    private val borderPane = BorderPane()
+
+    private val searchAndReplace = VBox()
+
+    private val toggleFind = findBar.createToggleButton()
+
+    private val toggleReplace = replaceBar.createToggleButton()
+
+    override val node = borderPane
 
     val dirtyProperty = SimpleBooleanProperty()
 
@@ -72,37 +86,52 @@ class EditorResults(
     val compoundDropHelper = CompoundDropHelper(filesDropHelper, textDropHelper)
 
     init {
-        codeArea.paragraphGraphicFactory = LineNumberFactory.get(codeArea)
-        compoundDropHelper.applyTo(codeArea)
+
+        RemoveHiddenChildren(searchAndReplace.children)
+        with(searchAndReplace) {
+            children.addAll(findBar.toolBar, replaceBar.toolBar)
+        }
+        matcher.inUse = false
+
+        with(borderPane) {
+            center = tediArea
+            top = searchAndReplace
+        }
+
+        with(tediArea) {
+            undoRedo = BetterUndoRedo(tediArea)
+            displayLineNumbers = true
+            styleClass.add("code")
+        }
+
+        compoundDropHelper.applyTo(tediArea)
 
         val shortcuts = ShortcutHelper("EditorTool", node)
-
-        shortcuts.add(ParataskActions.EDIT_FIND_PREV) { searcher.onFindPrev() }
-        shortcuts.add(ParataskActions.EDIT_FIND_NEXT) { searcher.onFindNext() }
 
         shortcuts.add(ParataskActions.EDIT_CUT) { onCut() }
         shortcuts.add(ParataskActions.EDIT_COPY) { onCopy() }
         shortcuts.add(ParataskActions.EDIT_PASTE) { onPaste() }
+        shortcuts.add(ParataskActions.EDIT_FIND) { matcher.inUse = true }
+        shortcuts.add(ParataskActions.EDIT_REPLACE) { onReplace() }
         shortcuts.add(ParataskActions.ESCAPE) { onEscape() }
 
+        toolBar.styleClass.add("bottom")
         with(toolBar.items)
         {
             val save = ParataskActions.FILE_SAVE.createButton(shortcuts) { onSave() }
             val undo = ParataskActions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
             val redo = ParataskActions.EDIT_REDO.createButton(shortcuts) { onRedo() }
-            val find = ParataskActions.EDIT_FIND.createButton(shortcuts) { onFind() }
 
-            undo.disableProperty().bind(Bindings.not(codeArea.undoAvailableProperty()))
-            redo.disableProperty().bind(Bindings.not(codeArea.redoAvailableProperty()))
-            save.disableProperty().bind(Bindings.not(dirtyProperty))
+            undo.disableProperty().bind(tediArea.undoRedo.undoableProperty.not())
+            redo.disableProperty().bind(tediArea.undoRedo.redoableProperty.not())
+            save.disableProperty().bind(dirtyProperty.not())
 
-            addAll(save, undo, redo, find)
+            addAll(save, undo, redo, toggleFind, toggleReplace)
         }
 
         file?.let { load(it) }
 
-        codeArea.plainTextChanges().addObserver { dirty = true }
-        findBar.isVisible = false
+        tediArea.textProperty().addListener { _, _, _ -> dirty = true }
     }
 
     constructor(tool: EditorTool, text: String) : this(tool, null) {
@@ -115,38 +144,13 @@ class EditorResults(
         file?.path?.let { tool.longTitle = "Editor $it" }
     }
 
-    override fun deselected() {
-        hideToolBar()
-    }
-
     override fun focus() {
-        ParaTaskApp.logFocus("EditorResults.focus. codeArea.requestFocus()")
-        codeArea.requestFocus()
+        ParaTaskApp.logFocus("EditorResults.focus. tediArea.requestFocus()")
+        tediArea.requestFocus()
     }
 
     override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
         super.attached(resultsTab, toolPane)
-
-        tool.goToLineP.value?.let {
-            codeArea.positionCaret(codeArea.position(it - 1, 0).toOffset())
-        }
-
-        if (tool.findTextP.value != "") {
-            searcher.searchString = tool.findTextP.value
-            searcher.matchCase = tool.matchCaseP.value == true
-            searcher.useRegex = tool.useRegexP.value == true
-
-            Platform.runLater {
-                // Without the run later, the selection stays off screen.
-                searcher.beginFind()
-                showFindBar()
-            }
-        }
-    }
-
-    override fun detaching() {
-        super.detaching()
-        hideToolBar()
     }
 
     override fun closed() {
@@ -154,77 +158,56 @@ class EditorResults(
         tool.filesP.remove(file)
     }
 
-    fun hideToolBar() {
-        findBar.detaching()
-        findBar.isVisible = false
-        tool.toolPane?.halfTab?.toolBars?.bottom = null
-        tool.toolPane?.halfTab?.toolBars?.left = null
-        ParaTaskApp.logFocus("SimpleTerminal.hideToolBar. codeArea.requestFocus()")
-        codeArea.requestFocus()
-    }
-
-    fun showFindBar() {
-        if (findBar.isVisible) {
-            ParaTaskApp.logFocus("SimpleTerminal.showFindBar. findBar.focus()")
-            findBar.focus()
-        } else {
-            findBar.isVisible = true
-            tool.toolPane?.halfTab?.toolBars?.bottom = findBar
-            findBar.attached()
-        }
-    }
-
     fun load(text: String) {
-        codeArea.replaceText(0, codeArea.length, text)
-        codeArea.selectRange(0, 0)
-        codeArea.positionCaret(0)
+        tediArea.replaceText(0, tediArea.length, text)
+        tediArea.selectRange(0, 0)
+        tediArea.positionCaret(0)
     }
 
     fun load(file: File) {
         load(file.readText())
-        codeArea.undoManager.forgetHistory()
+        tediArea.undoRedo.clear()
         dirty = false
     }
 
     fun onSave() {
         dirty = false
-        file?.writeText(codeArea.text)
+        file?.writeText(tediArea.text)
     }
 
     fun onUndo() {
-        if (codeArea.isUndoAvailable) {
-            codeArea.undo()
-        }
+        tediArea.undoRedo.undo()
     }
 
     fun onRedo() {
-        if (codeArea.isRedoAvailable) {
-            codeArea.redo()
-        }
+        tediArea.undoRedo.redo()
     }
 
     fun onCopy() {
-        codeArea.copy()
+        tediArea.copy()
     }
 
     fun onPaste() {
-        codeArea.paste()
+        tediArea.paste()
     }
 
     fun onCut() {
-        codeArea.cut()
+        tediArea.cut()
+    }
+
+    fun onReplace() {
+        val wasInUse = matcher.inUse
+        replaceBar.toolBar.isVisible = true
+        if (wasInUse) {
+            replaceBar.requestFocus()
+        }
     }
 
     fun onEscape() {
-        hideToolBar()
-        searcher.reset()
-    }
-
-    fun onFind() {
-        showFindBar()
+        matcher.inUse = false
     }
 
     fun insertText(text: String) {
-        codeArea.insertText(codeArea.caretPosition, text)
+        tediArea.insertText(tediArea.caretPosition, text)
     }
 }

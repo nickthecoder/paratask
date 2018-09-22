@@ -89,9 +89,7 @@ object ParataskActions {
     // EditorTool
 
     val EDIT_FIND = ParataskAction("edit.find", KeyCode.F, control = true, tooltip = "Find")
-    val EDIT_FIND_GO = ParataskAction("edit.find.go", KeyCode.ENTER, label = "Find")
-    val EDIT_FIND_NEXT = ParataskAction("edit.find.next", KeyCode.G, control = true, tooltip = "Find Next")
-    val EDIT_FIND_PREV = ParataskAction("edit.find.prev", KeyCode.G, control = true, shift = true, tooltip = "Find Next")
+    val EDIT_REPLACE = ParataskAction("edit.replace", KeyCode.H, control = true, tooltip = "Replace")
 
     // General
 

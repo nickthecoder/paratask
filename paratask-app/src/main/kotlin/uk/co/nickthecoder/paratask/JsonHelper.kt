@@ -15,12 +15,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package uk.co.nickthecoder.paratask.util
+package uk.co.nickthecoder.paratask
 
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonObject
-import uk.co.nickthecoder.paratask.Task
-import uk.co.nickthecoder.paratask.TaskFactory
 import uk.co.nickthecoder.paratask.parameters.*
 
 object JsonHelper {
@@ -106,7 +104,7 @@ object JsonHelper {
 
         val jparameters = jtask.get("parameters")
         if (jparameters != null) {
-            JsonHelper.read(jparameters.asArray(), task)
+            read(jparameters.asArray(), task)
         }
         return task
     }

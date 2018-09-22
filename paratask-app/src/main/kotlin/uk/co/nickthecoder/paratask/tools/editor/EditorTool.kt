@@ -24,7 +24,10 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.DropHelper
-import uk.co.nickthecoder.paratask.parameters.*
+import uk.co.nickthecoder.paratask.parameters.BooleanParameter
+import uk.co.nickthecoder.paratask.parameters.FileParameter
+import uk.co.nickthecoder.paratask.parameters.MultipleParameter
+import uk.co.nickthecoder.paratask.parameters.StringParameter
 import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
@@ -39,14 +42,6 @@ class EditorTool() : AbstractTool() {
     val ignoreFileSizeCheckP = BooleanParameter("ignoreFileSizeCheck", value = false)
 
     val initialTextP = StringParameter("initialText", required = false)
-
-    val findTextP = StringParameter("findText", required = false)
-
-    val matchCaseP = BooleanParameter("matchCase", value = false)
-
-    val useRegexP = BooleanParameter("useRegex", value = false)
-
-    val goToLineP = IntParameter("goToLine", required = false)
 
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         files.filter { it.isFile }.forEach { addFile(it) }
@@ -76,12 +71,8 @@ class EditorTool() : AbstractTool() {
     init {
         ignoreFileSizeCheckP.hidden = true
         initialTextP.hidden = true
-        goToLineP.hidden = true
-        findTextP.hidden = true
-        matchCaseP.hidden = true
-        useRegexP.hidden = true
 
-        taskD.addParameters(filesP, ignoreFileSizeCheckP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
+        taskD.addParameters(filesP, ignoreFileSizeCheckP, initialTextP)
         taskD.unnamedParameter = filesP
     }
 
