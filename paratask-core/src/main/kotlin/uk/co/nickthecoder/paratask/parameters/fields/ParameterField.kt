@@ -28,7 +28,9 @@ import uk.co.nickthecoder.paratask.parameters.*
 abstract class ParameterField(
         val parameter: Parameter,
         label: String = parameter.label,
-        val isBoxed: Boolean = parameter.isBoxed)
+        val isBoxed: Boolean = parameter.isBoxed,
+        val isExpanded: Boolean = parameter.isExpanded)
+
     : ParameterListener {
 
     private var labelStack = StackPane()
@@ -117,7 +119,8 @@ abstract class ParameterField(
         if (isBoxed) {
             val box = TitledPane()
             box.text = parameter.label
-            box.isCollapsible = false
+            box.isExpanded = isExpanded
+            box.isCollapsible = !isExpanded
             box.content = expControl
             controlContainer = box
             this.box = box

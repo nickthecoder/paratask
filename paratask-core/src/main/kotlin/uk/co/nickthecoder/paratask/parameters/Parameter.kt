@@ -39,6 +39,11 @@ interface Parameter : Labelled {
 
     val isBoxed: Boolean
 
+    /**
+     * Only used when isBoxed is true
+     */
+    var isExpanded: Boolean
+
     var hidden: Boolean
 
     var enabled: Boolean

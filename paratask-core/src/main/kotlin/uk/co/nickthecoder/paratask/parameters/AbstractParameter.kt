@@ -26,6 +26,8 @@ abstract class AbstractParameter(
 
     : Parameter {
 
+    override var isExpanded = false
+
     override val aliases = mutableListOf<String>()
 
     override val parameterListeners = ParameterListeners()

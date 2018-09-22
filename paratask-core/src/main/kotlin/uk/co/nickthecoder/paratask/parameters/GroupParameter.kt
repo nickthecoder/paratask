@@ -148,8 +148,9 @@ inline fun <reified T : GroupParameter> T.addParameters(vararg parameters: Param
     return this
 }
 
-inline fun <reified T : GroupParameter> T.asBox(): T {
+inline fun <reified T : GroupParameter> T.asBox(isExpanded: Boolean = true): T {
     fieldFactory = {
+        this.isExpanded = isExpanded
         GroupField(this, isBoxed = true).build()
     }
     return this

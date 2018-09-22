@@ -151,6 +151,19 @@ class EditorResults(
 
     override fun attached(resultsTab: ResultsTab, toolPane: ToolPane) {
         super.attached(resultsTab, toolPane)
+
+        tool.goToLineP.value?.let {
+            tediArea.positionCaret(tediArea.lineStartPosition(it))
+        }
+
+        if (tool.findTextP.value != "") {
+            matcher.find = tool.findTextP.value
+            matcher.matchCase = tool.matchCaseP.value == true
+            matcher.matchRegex = tool.useRegexP.value == true
+
+            matcher.inUse = true
+            matcher.startFind()
+        }
     }
 
     override fun closed() {
@@ -159,9 +172,7 @@ class EditorResults(
     }
 
     fun load(text: String) {
-        tediArea.replaceText(0, tediArea.length, text)
-        tediArea.selectRange(0, 0)
-        tediArea.positionCaret(0)
+        tediArea.text = text
     }
 
     fun load(file: File) {

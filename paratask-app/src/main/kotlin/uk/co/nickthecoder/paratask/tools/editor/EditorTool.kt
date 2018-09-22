@@ -24,10 +24,7 @@ import uk.co.nickthecoder.paratask.TaskDescription
 import uk.co.nickthecoder.paratask.TaskParser
 import uk.co.nickthecoder.paratask.gui.DropFiles
 import uk.co.nickthecoder.paratask.gui.DropHelper
-import uk.co.nickthecoder.paratask.parameters.BooleanParameter
-import uk.co.nickthecoder.paratask.parameters.FileParameter
-import uk.co.nickthecoder.paratask.parameters.MultipleParameter
-import uk.co.nickthecoder.paratask.parameters.StringParameter
+import uk.co.nickthecoder.paratask.parameters.*
 import uk.co.nickthecoder.paratask.project.Results
 import java.io.File
 
@@ -35,13 +32,26 @@ private val MAX_FILE_SIZE = 1_000_000
 
 class EditorTool() : AbstractTool() {
 
-    override val taskD = TaskDescription("editor", description = "A simple text editor")
-
     val filesP = MultipleParameter("file") { FileParameter("aFile") }
 
     val ignoreFileSizeCheckP = BooleanParameter("ignoreFileSizeCheck", value = false)
 
     val initialTextP = StringParameter("initialText", required = false)
+
+    val findTextP = StringParameter("findText", required = false)
+
+    val matchCaseP = BooleanParameter("matchCase", value = false)
+
+    val useRegexP = BooleanParameter("useRegex", value = false)
+
+    val goToLineP = IntParameter("goToLine", required = false)
+
+    val extraP = SimpleGroupParameter("extra")
+            .addParameters(ignoreFileSizeCheckP, initialTextP, goToLineP, findTextP, matchCaseP, useRegexP)
+            .asBox(false)
+
+    override val taskD = TaskDescription("editor", description = "A simple text editor")
+            .addParameters(filesP, extraP)
 
     override var tabDropHelper: DropHelper? = DropFiles(arrayOf(TransferMode.COPY)) { _, files ->
         files.filter { it.isFile }.forEach { addFile(it) }
@@ -69,10 +79,6 @@ class EditorTool() : AbstractTool() {
     }
 
     init {
-        ignoreFileSizeCheckP.hidden = true
-        initialTextP.hidden = true
-
-        taskD.addParameters(filesP, ignoreFileSizeCheckP, initialTextP)
         taskD.unnamedParameter = filesP
     }
 

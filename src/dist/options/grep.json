@@ -110,6 +110,30 @@
                             "expression": "row.file"
                         }
                     ]
+                },
+                {
+                    "name": "ignoreFileSizeCheck",
+                    "value": "false"
+                },
+                {
+                    "name": "initialText",
+                    "value": ""
+                },
+                {
+                    "name": "goToLine",
+                    "value": ""
+                },
+                {
+                    "name": "findText",
+                    "expression": ""
+                },
+                {
+                    "name": "matchCase",
+                    "value": "false"
+                },
+                {
+                    "name": "useRegex",
+                    "value": "false"
                 }
             ]
         }
