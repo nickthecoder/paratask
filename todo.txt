@@ -18,58 +18,51 @@ Implement command line tab completion
 Copy paste doesn't work for real terminal.
 
 For toolbar buttons with linked open tools, save the link, and restore it.
-	After saving tools and toolbars, Iterate over each toolbar, and each button within it.
-	If the button is a ToolButton, and the tool is visible, then save that info.
-	e.g. toolbarLinks: [ link: {toolbar=1, button=3, tab=3, right=true}, ... ]
-	When loading, IFF there were no errors, then re-link the tools (test that the tool is of the correct type).
-	When saving, make a list of toolbars (when saving a ToolBarTool in a tab, and also when saving the ToolBars without a tabbed tool)
-		Create a similar list when loading.
-		That way we can be sure that the toolbar index will be correct.
+    After saving tools and toolbars, Iterate over each toolbar, and each button within it.
+    If the button is a ToolButton, and the tool is visible, then save that info.
+    e.g. toolbarLinks: [ link: {toolbar=1, button=3, tab=3, right=true}, ... ]
+    When loading, IFF there were no errors, then re-link the tools (test that the tool is of the correct type).
+    When saving, make a list of toolbars (when saving a ToolBarTool in a tab, and also when saving the ToolBars without a tabbed tool)
+        Create a similar list when loading.
+        That way we can be sure that the toolbar index will be correct.
 
 Save/Load filters in Project files
 
-Check if GitTool rm and rmf are working.
-
 COPY Drag of Files to the same directory make a COPY of the files.
-	Maybe ask first? To prevent accidental drags screwing things up.
+    Maybe ask first? To prevent accidental drags screwing things up.
 
 Editor must not discard changes or blank documents when re-run.
 Consider saving new documents in the project file (A hidden multiple of string parameter).
-	May need a "preSave" method on Tool
+    May need a "preSave" method on Tool
 Dialog box to ask if Editor's buffers should be saved
-	All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
-	If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
-	The action is in the window title bar. e.g. "Close Tab", "Merge Tabs", "Close Right Panel"
-	Cancel sends nothing, and abandons the operation.
-	Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS
-		If every group has only ONE question, then we don't need to show as groups.
+    All operations that may close/detach a tab must do so via a "confirmDetatch" method (not specific to Editor).
+    If any of the tools require confirmation, then the action isn't performed until the confirmation dialog is "Ok"ed.
+    The action is in the window title bar. e.g. "Close Tab", "Merge Tabs", "Close Right Panel"
+    Cancel sends nothing, and abandons the operation.
+    Closing a whole Project window may yield MANY questions, in which case, show them in GROUPS
+        If every group has only ONE question, then we don't need to show as groups.
 
 FileOperations
-	Report errors
-	Include a cancel button
-	Inlucde a pause button. Pause the thread AND the process
-	Allow ctrl+C  / ctrl+X and ctrl+V to copy/move files from one DirectoryTool to another.
-		Implement as options when rows have shortcuts?
-		Or maybe use the Drag/Drop infrastructure, which may allow copy/paste of other types of data, such as Places.
+    Report errors
+    Include a cancel button
+    Include a pause button. Pause the thread AND the process
+    Allow ctrl+C  / ctrl+X and ctrl+V to copy/move files from one DirectoryTool to another.
+        Implement as options when rows have shortcuts?
+        Or maybe use the Drag/Drop infrastructure, which may allow copy/paste of other types of data, such as Places.
 
 Implement MythTool using the service API, not using the DB directly
-	Can't get my myth server to listen on anything except localhost. Grrr.
-	Maybe put it in a different (sub) project, as it is by no means a core feature.
+    Can't get my myth server to listen on anything except localhost. Grrr.
+    Maybe put it in a different (sub) project, as it is by no means a core feature.
 
 Convert some of my scripts to paratask-core for their parameters, and add feature to generate a bash completion script for each.
 
 Much Later
 ----------
 
-Create a WEB front end
-	Why? It can be used as a general purpose application framework!
-	Have a "Regular" mode, where row option are buttons at the top, and there's a check box against each row.
-		Non-row options are buttons at the bottom.
-
 Write a generic DB tool
-	Work with Tables
-	Work with Users
-	Work with Rows
+    Work with Tables
+    Work with Users
+    Work with Rows
 Ideally, it would work with at least MariaDB/MySQL, SQLLite and ProgresSQL
 
 
@@ -79,9 +72,9 @@ Hard Bugs
 I've tried to fix them, but have not found a solution.
 
 WebTool does not detect when a redirect occurs.
-	This puts TWO moments in the history (one for the address requested and another for the redirected address).
+    This puts TWO moments in the history (one for the address requested and another for the redirected address).
 
 JediTerm problem when using a split pane - sometime the Swing component stops working.
-	This is a long standing known bug with JediTerm.
-	Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
+    This is a long standing known bug with JediTerm.
+    Hmm, perhaps I should try an all-javafx solution instead of JediTerm.
 

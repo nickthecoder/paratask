@@ -122,8 +122,8 @@ class EditorResults(
             val undo = ParataskActions.EDIT_UNDO.createButton(shortcuts) { onUndo() }
             val redo = ParataskActions.EDIT_REDO.createButton(shortcuts) { onRedo() }
 
-            undo.disableProperty().bind(tediArea.undoRedo.undoableProperty.not())
-            redo.disableProperty().bind(tediArea.undoRedo.redoableProperty.not())
+            undo.disableProperty().bind(tediArea.undoRedo.undoableProperty().not())
+            redo.disableProperty().bind(tediArea.undoRedo.redoableProperty().not())
             save.disableProperty().bind(dirtyProperty.not())
 
             addAll(save, undo, redo, toggleFind, toggleReplace)
@@ -153,7 +153,7 @@ class EditorResults(
         super.attached(resultsTab, toolPane)
 
         tool.goToLineP.value?.let {
-            tediArea.positionCaret(tediArea.lineStartPosition(it))
+            tediArea.positionCaret(tediArea.positionOfLine(it))
         }
 
         if (tool.findTextP.value != "") {
