@@ -26,7 +26,7 @@ abstract class AbstractParameter(
 
     : Parameter {
 
-    override var isExpanded = false
+    override var isExpanded = true
 
     override val aliases = mutableListOf<String>()
 
